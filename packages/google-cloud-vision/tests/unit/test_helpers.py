@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+import builtins
 import io
 import unittest
 
@@ -21,7 +22,7 @@ import mock
 from google.auth.credentials import Credentials
 
 from google.cloud.vision_v1 import ImageAnnotatorClient
-from google.cloud.vision_v1 import types
+import google.cloud.vision_v1 as vision_v1
 
 
 class TestSingleImageHelper(unittest.TestCase):
@@ -32,8 +33,8 @@ class TestSingleImageHelper(unittest.TestCase):
     @mock.patch.object(ImageAnnotatorClient, "batch_annotate_images")
     def test_all_features_default(self, batch_annotate):
         # Set up an image annotation request with no features.
-        image = types.Image(source={"image_uri": "http://foo.com/img.jpg"})
-        request = types.AnnotateImageRequest(image=image)
+        image = vision_v1.Image(source={"image_uri": "http://foo.com/img.jpg"})
+        request = vision_v1.AnnotateImageRequest(image=image)
         assert not request.features
 
         # Perform the single image request.
@@ -44,24 +45,24 @@ class TestSingleImageHelper(unittest.TestCase):
         _, args, kwargs = batch_annotate.mock_calls[0]
 
         # Only a single request object should be sent.
-        assert len(args[0]) == 1
+        assert len(kwargs["requests"]) == 1
 
         # Evalute the request object to ensure it looks correct.
-        request_sent = args[0][0]
+        request_sent = kwargs["requests"][0]
         all_features = self.client._get_all_features()
-        assert request_sent.image is request.image
+        assert request_sent.image == request.image
         assert len(request_sent.features) == len(all_features)
 
     @mock.patch.object(ImageAnnotatorClient, "batch_annotate_images")
     def test_explicit_features(self, batch_annotate):
         # Set up an image annotation request with no features.
-        image = types.Image(source={"image_uri": "http://foo.com/img.jpg"})
-        request = types.AnnotateImageRequest(
+        image = vision_v1.Image(source={"image_uri": "http://foo.com/img.jpg"})
+        request = vision_v1.AnnotateImageRequest(
             image=image,
             features=[
-                types.Feature(type=1),
-                types.Feature(type=2),
-                types.Feature(type=3),
+                vision_v1.Feature(type_=1),
+                vision_v1.Feature(type_=2),
+                vision_v1.Feature(type_=3),
             ],
         )
 
@@ -73,14 +74,14 @@ class TestSingleImageHelper(unittest.TestCase):
         _, args, kwargs = batch_annotate.mock_calls[0]
 
         # Only a single request object should be sent.
-        assert len(args[0]) == 1
+        assert len(kwargs["requests"]) == 1
 
         # Evalute the request object to ensure it looks correct.
-        request_sent = args[0][0]
-        assert request_sent.image is request.image
+        request_sent = kwargs["requests"][0]
+        assert request_sent.image == request.image
         assert len(request_sent.features) == 3
         for feature, i in zip(request_sent.features, range(1, 4)):
-            assert feature.type == i
+            assert feature.type_ == i
             assert feature.max_results == 0
 
     @mock.patch.object(ImageAnnotatorClient, "batch_annotate_images")
@@ -96,14 +97,14 @@ class TestSingleImageHelper(unittest.TestCase):
         _, args, kwargs = batch_annotate.mock_calls[0]
 
         # Only a single request object should be sent.
-        assert len(args[0]) == 1
+        assert len(kwargs["requests"]) == 1
 
         # Evalute the request object to ensure it looks correct.
-        request_sent = args[0][0]
+        request_sent = kwargs["requests"][0]
         assert request_sent["image"]["content"] == b"bogus=="
 
     @mock.patch.object(ImageAnnotatorClient, "batch_annotate_images")
-    @mock.patch.object(io, "open")
+    @mock.patch.object(builtins, "open")
     def test_image_filename(self, io_open, batch_annotate):
         # Make io.open send back a mock with a read method.
         file_ = mock.MagicMock(spec=io.BytesIO)
@@ -122,8 +123,8 @@ class TestSingleImageHelper(unittest.TestCase):
         _, args, kwargs = batch_annotate.mock_calls[0]
 
         # Only a single request object should be sent.
-        assert len(args[0]) == 1
+        assert len(kwargs["requests"]) == 1
 
         # Evalute the request object to ensure it looks correct.
-        request_sent = args[0][0]
+        request_sent = kwargs["requests"][0]
         assert request_sent["image"]["content"] == b"imagefile=="

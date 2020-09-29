@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import io
+import proto
 
 from google.api_core import protobuf_helpers as protobuf
 
@@ -26,7 +26,7 @@ class VisionHelpers(object):
     See the :class:`~google.cloud.vision_v1.ImageAnnotatorClient`.
     """
 
-    def annotate_image(self, request, retry=None, timeout=None):
+    def annotate_image(self, request, *, retry=None, timeout=None, metadata=()):
         """Run image detection and annotation for an image.
 
         Example:
@@ -40,36 +40,42 @@ class VisionHelpers(object):
             >>> response = client.annotate_image(request)
 
         Args:
-            request (:class:`~.vision_v1.types.AnnotateImageRequest`)
-            retry (Optional[google.api_core.retry.Retry]):  A retry object used
-                to retry requests. If ``None`` is specified, requests will not
-                be retried.
-            timeout (Optional[float]): The amount of time, in seconds, to wait
-                for the request to complete. Note that if ``retry`` is
-                specified, the timeout applies to each individual attempt.
+            request (:class:`~.vision_v1.AnnotateImageRequest`)
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
 
         Returns:
-            :class:`~.vision_v1.types.AnnotateImageResponse` The API response.
+            :class:`~.vision_v1.AnnotateImageResponse` The API response.
         """
-        # If the image is a file handler, set the content.
-        image = protobuf.get(request, "image")
-        if hasattr(image, "read"):
-            img_bytes = image.read()
-            protobuf.set(request, "image", {})
-            protobuf.set(request, "image.content", img_bytes)
+        if not isinstance(request, proto.Message):
+            # If the image is a file handler, set the content.
             image = protobuf.get(request, "image")
+            if not isinstance(image, proto.Message):
+                if hasattr(image, "read"):
+                    img_bytes = image.read()
+                    protobuf.set(request, "image", {})
+                    protobuf.set(request, "image.content", img_bytes)
+                    image = protobuf.get(request, "image")
 
-        # If a filename is provided, read the file.
-        filename = protobuf.get(image, "source.filename", default=None)
-        if filename:
-            with io.open(filename, "rb") as img_file:
-                protobuf.set(request, "image.content", img_file.read())
-                protobuf.set(request, "image.source", None)
+                # If a filename is provided, read the file.
+                filename = protobuf.get(image, "source.filename", default=None)
+                if filename:
+                    with open(filename, "rb") as img_file:
+                        protobuf.set(request, "image.content", img_file.read())
+                        protobuf.set(request, "image.source", None)
 
         # This method allows features not to be specified, and you get all
         # of them.
-        protobuf.setdefault(request, "features", self._get_all_features())
-        r = self.batch_annotate_images([request], retry=retry, timeout=timeout)
+        if not isinstance(request, proto.Message):
+            protobuf.setdefault(request, "features", self._get_all_features())
+        elif len(request.features) == 0:
+            request.features = self._get_all_features()
+        r = self.batch_annotate_images(
+            requests=[request], retry=retry, timeout=timeout, metadata=metadata
+        )
         return r.responses[0]
 
     def _get_all_features(self):
@@ -78,6 +84,4 @@ class VisionHelpers(object):
         Returns:
             list: A list of all available features.
         """
-        return [
-            {"type": feature} for feature in self.enums.Feature.Type if feature != 0
-        ]
+        return [{"type_": feature} for feature in self.Feature.Type if feature != 0]

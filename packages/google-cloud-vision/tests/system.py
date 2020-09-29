@@ -26,6 +26,7 @@ import pytest
 from google.api_core import exceptions
 from google.cloud import storage
 from google.cloud import vision
+from google.protobuf import field_mask_pb2 as field_mask
 
 from test_utils.retry import RetryErrors
 from test_utils.system import unique_resource_id
@@ -141,14 +142,16 @@ class TestVisionClientLogo(VisionSystemTestBase):
                     )
                 }
             },
-            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+            "features": [{"type_": vision.Feature.Type.LOGO_DETECTION}],
         }
         method_name = "test_detect_logos_async"
         output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
             bucket=self.test_bucket.name, method_name=method_name
         )
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
-        response = self.client.async_batch_annotate_images([request], output_config)
+        response = self.client.async_batch_annotate_images(
+            requests=[request], output_config=output_config
+        )
 
         # Wait for the operation to complete.
         lro_waiting_seconds = 90
@@ -204,10 +207,10 @@ class TestVisionClientFiles(VisionSystemTestBase):
                 },
                 "mime_type": "application/pdf",
             },
-            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "features": [{"type_": vision.Feature.Type.DOCUMENT_TEXT_DETECTION}],
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
-        response = self.client.async_batch_annotate_files([request])
+        response = self.client.async_batch_annotate_files(requests=[request])
 
         # Wait for the operation to complete.
         lro_waiting_seconds = 90
@@ -253,9 +256,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         self.products_to_delete = []
         self.product_sets_to_delete = []
         self.location = "us-west1"
-        self.location_path = self.ps_client.location_path(
-            project=PROJECT_ID, location=self.location
-        )
+        self.location_path = f"projects/{PROJECT_ID}/locations/{self.location}"
 
     def tearDown(self):
         VisionSystemTestBase.tearDown(self)
@@ -277,7 +278,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_create_product_set(self):
         # Create a ProductSet.
-        product_set = vision.types.ProductSet(display_name="display name")
+        product_set = vision.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
@@ -293,7 +294,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_get_product_set(self):
         # Create a ProductSet.
-        product_set = vision.types.ProductSet(display_name="display name")
+        product_set = vision.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
@@ -311,7 +312,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_list_product_sets(self):
         # Create a ProductSet.
-        product_set = vision.types.ProductSet(display_name="display name")
+        product_set = vision.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
@@ -335,7 +336,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_update_product_set(self):
         # Create a ProductSet.
-        product_set = vision.types.ProductSet(display_name="display name")
+        product_set = vision.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
@@ -349,10 +350,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         self.assertEqual(response.name, product_set_path)
         # Update the ProductSet.
         new_display_name = "updated name"
-        updated_product_set_request = vision.types.ProductSet(
+        updated_product_set_request = vision.ProductSet(
             name=product_set_path, display_name=new_display_name
         )
-        update_mask = vision.types.FieldMask(paths=["display_name"])
+        update_mask = field_mask.FieldMask(paths=["display_name"])
         updated_product_set = self.ps_client.update_product_set(
             product_set=updated_product_set_request, update_mask=update_mask
         )
@@ -360,7 +361,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_create_product(self):
         # Create a Product.
-        product = vision.types.Product(
+        product = vision.Product(
             display_name="product display name", product_category="apparel"
         )
         product_id = "product" + unique_resource_id()
@@ -376,7 +377,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_get_product(self):
         # Create a Product.
-        product = vision.types.Product(
+        product = vision.Product(
             display_name="product display name", product_category="apparel"
         )
         product_id = "product" + unique_resource_id()
@@ -394,7 +395,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_update_product(self):
         # Create a Product.
-        product = vision.types.Product(
+        product = vision.Product(
             display_name="product display name", product_category="apparel"
         )
         product_id = "product" + unique_resource_id()
@@ -408,10 +409,10 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         self.assertEqual(response.name, product_path)
         # Update the Product.
         new_display_name = "updated product name"
-        updated_product_request = vision.types.Product(
+        updated_product_request = vision.Product(
             name=product_path, display_name=new_display_name
         )
-        update_mask = vision.types.FieldMask(paths=["display_name"])
+        update_mask = field_mask.FieldMask(paths=["display_name"])
         updated_product = self.ps_client.update_product(
             product=updated_product_request, update_mask=update_mask
         )
@@ -419,7 +420,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_list_products(self):
         # Create a Product.
-        product = vision.types.Product(
+        product = vision.Product(
             display_name="product display name", product_category="apparel"
         )
         product_id = "product" + unique_resource_id()
@@ -441,7 +442,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_list_products_in_product_set(self):
         # Create a ProductSet.
-        product_set = vision.types.ProductSet(display_name="display name")
+        product_set = vision.ProductSet(display_name="display name")
         product_set_id = "set" + unique_resource_id()
         product_set_path = self.ps_client.product_set_path(
             project=PROJECT_ID, location=self.location, product_set=product_set_id
@@ -454,7 +455,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         self.product_sets_to_delete.append(response.name)
         self.assertEqual(response.name, product_set_path)
         # Create a Product.
-        product = vision.types.Product(
+        product = vision.Product(
             display_name="product display name", product_category="apparel"
         )
         product_id = "product" + unique_resource_id()
@@ -483,7 +484,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
 
     def test_reference_image(self):
         # Create a Product.
-        product = vision.types.Product(
+        product = vision.Product(
             display_name="product display name", product_category="apparel"
         )
         product_id = "product" + unique_resource_id()
@@ -507,7 +508,7 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
             product=product_id,
             reference_image=reference_image_id,
         )
-        reference_image = vision.types.ReferenceImage(uri=gcs_uri)
+        reference_image = vision.ReferenceImage(uri=gcs_uri)
         response = self.ps_client.create_reference_image(
             parent=product_path,
             reference_image=reference_image,
@@ -595,12 +596,12 @@ class TestVisionClientProductSearch(VisionSystemTestBase):
         blob.upload_from_string(csv_data)
 
         # Make the import_product_sets request.
-        gcs_source = vision.types.ImportProductSetsGcsSource(
+        gcs_source = vision.ImportProductSetsGcsSource(
             csv_file_uri="gs://{bucket}/{blob}".format(
                 bucket=self.test_bucket.name, blob=csv_filename
             )
         )
-        input_config = vision.types.ImportProductSetsInputConfig(gcs_source=gcs_source)
+        input_config = vision.ImportProductSetsInputConfig(gcs_source=gcs_source)
         response = self.ps_client.import_product_sets(
             parent=self.location_path, input_config=input_config
         )
@@ -625,8 +626,8 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
         super(TestVisionClientProductSearchVpcsc, self).setUp()
         uniq = unique_resource_id()
         self.location = "us-west1"
-        self.location_path = self.ps_client.location_path(
-            project=vpcsc_config.project_outside, location=self.location
+        self.location_path = (
+            f"projects/{vpcsc_config.project_outside}/locations/{self.location}"
         )
         self.product_set_id = product_set_id = "set" + uniq
         self.product_set_path = self.ps_client.product_set_path(
@@ -677,7 +678,7 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
         assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_update_product_set_blocked(self):
-        product_set = vision.types.ProductSet(name=self.product_set_path)
+        product_set = vision.ProductSet(name=self.product_set_path)
         with pytest.raises(exceptions.PermissionDenied) as exc:
             self.ps_client.update_product_set(product_set=product_set)
 
@@ -704,7 +705,7 @@ class TestVisionClientProductSearchVpcsc(VisionSystemTestBase):
         assert exc.value.message.startswith(_VPCSC_PROHIBITED_MESSAGE)
 
     def test_update_product_blocked(self):
-        product = vision.types.Product(name=self.product_path)
+        product = vision.Product(name=self.product_path)
         with pytest.raises(exceptions.PermissionDenied) as exc:
             self.ps_client.update_product(product=product)
 
@@ -781,16 +782,16 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
         self.gcs_read_error_message = "Error opening file: gs://"
         self.gcs_write_error_message = "Error writing final output to"
         self.location = "us-west1"
-        self.location_path = self.ps_client.location_path(
-            project=vpcsc_config.project_inside, location=self.location
+        self.location_path = (
+            f"projects/{vpcsc_config.project_inside}/locations/{self.location}"
         )
 
     def test_import_product_sets_blocked(self):
         # The csv file is outside the secure perimeter.
-        gcs_source = vision.types.ImportProductSetsGcsSource(
+        gcs_source = vision.ImportProductSetsGcsSource(
             csv_file_uri=self.gcs_uri_blocked_file
         )
-        input_config = vision.types.ImportProductSetsInputConfig(gcs_source=gcs_source)
+        input_config = vision.ImportProductSetsInputConfig(gcs_source=gcs_source)
         with pytest.raises(exceptions.Forbidden) as exc:
             self.ps_client.import_product_sets(
                 parent=self.location_path, input_config=input_config
@@ -810,7 +811,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
                 "gcs_source": {"uri": self.gcs_uri_blocked_file},
                 "mime_type": "application/pdf",
             },
-            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "features": [{"type_": vision.Feature.Type.DOCUMENT_TEXT_DETECTION}],
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
         with pytest.raises(exceptions.Forbidden) as exc:
@@ -840,7 +841,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
                 },
                 "mime_type": "application/pdf",
             },
-            "features": [{"type": vision.enums.Feature.Type.DOCUMENT_TEXT_DETECTION}],
+            "features": [{"type_": vision.Feature.Type.DOCUMENT_TEXT_DETECTION}],
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
         response = self.client.async_batch_annotate_files([request])
@@ -860,7 +861,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
     def test_async_batch_annotate_images_read_blocked(self):
         request = {
             "image": {"source": {"image_uri": self.gcs_uri_blocked_file}},
-            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+            "features": [{"type_": vision.Feature.Type.LOGO_DETECTION}],
         }
         method_name = "test_async_batch_annotate_images_read_blocked"
         output_gcs_uri_prefix = "gs://{bucket}/{method_name}".format(
@@ -895,7 +896,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
     def test_async_batch_annotate_images_write_blocked(self):
         request = {
             "image": {"source": {"image_uri": self.gcs_uri_blocked_file}},
-            "features": [{"type": vision.enums.Feature.Type.LOGO_DETECTION}],
+            "features": [{"type_": vision.Feature.Type.LOGO_DETECTION}],
         }
         method_name = "test_async_batch_annotate_images_write_blocked"
 

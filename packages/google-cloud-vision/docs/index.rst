@@ -82,10 +82,10 @@ This package includes clients for multiple versions of the Vision
 API. By default, you will get ``v1``, the latest stable version.
 
 .. toctree::
-  :maxdepth: 2
+    :maxdepth: 2
 
-  gapic/v1/api
-  gapic/v1/types
+    vision_v1/services
+    vision_v1/types
 
 
 A new beta release with additional features over the current stable version,
@@ -96,8 +96,8 @@ usual beta admonishment (changes are possible, etc.) applies.
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1p4beta1/api
-    gapic/v1p4beta1/types
+    vision_v1p4beta1/services
+    vision_v1p4beta1/types
 
 Previous beta releases ``v1p3beta1`` and ``v1p2beta1`` are provided as well.
 
@@ -106,8 +106,8 @@ An API and type reference is provided for ``v1p3beta1``:
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1p3beta1/api
-    gapic/v1p3beta1/types
+    vision_v1p3beta1/services
+    vision_v1p3beta1/types
 
 
 An API and type reference is provided for ``v1p2beta1``:
@@ -115,8 +115,18 @@ An API and type reference is provided for ``v1p2beta1``:
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1p2beta1/api
-    gapic/v1p2beta1/types
+    vision_v1p2beta1/services
+    vision_v1p2beta1/types
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
 
 Changelog
 ---------

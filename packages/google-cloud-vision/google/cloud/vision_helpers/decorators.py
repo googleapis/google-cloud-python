@@ -22,12 +22,12 @@ def add_single_feature_methods(cls):
     defined on the Feature enum.
     """
     # Sanity check: This only makes sense if we are building the GAPIC
-    # subclass and have enums already attached.
-    if not hasattr(cls, "enums"):
+    # subclass and have Feature enums already attached.
+    if not hasattr(cls, "Feature"):
         return cls
 
     # Add each single-feature method to the class.
-    for feature in cls.enums.Feature.Type:
+    for feature in cls.Feature.Type:
         # Sanity check: Do not make a method for the falsy feature.
         if feature.name == "TYPE_UNSPECIFIED":
             continue
@@ -54,7 +54,7 @@ def _create_single_feature_method(feature):
 
     Args:
         feature (enum): A specific feature defined as a member of
-            :class:`~enums.Feature.Type`.
+            :class:`~Feature.Type`.
 
     Returns:
         function: A helper function to detect just that feature.
@@ -71,24 +71,35 @@ def _create_single_feature_method(feature):
     fx_doc += """
 
     Args:
-        image (:class:`~.{module}.types.Image`): The image to analyze.
+        image (:class:`~.{module}.Image`): The image to analyze.
         max_results (int):
             Number of results to return, does not apply for
             TEXT_DETECTION, DOCUMENT_TEXT_DETECTION, or CROP_HINTS.
         retry (int): Number of retries to do before giving up.
         timeout (int): Number of seconds before timing out.
+        metadata (Sequence[Tuple[str, str]]): Strings which should be
+            sent along with the request as metadata.
         kwargs (dict): Additional properties to be set on the
             :class:`~.{module}.types.AnnotateImageRequest`.
 
     Returns:
-        :class:`~.{module}.types.AnnotateImageResponse`: The API response.
+        :class:`~.{module}.AnnotateImageResponse`: The API response.
     """
 
     # Get the actual feature value to send.
-    feature_value = {"type": feature}
+    feature_value = {"type_": feature}
 
     # Define the function to be returned.
-    def inner(self, image, max_results=None, retry=None, timeout=None, **kwargs):
+    def inner(
+        self,
+        image,
+        *,
+        max_results=None,
+        retry=None,
+        timeout=None,
+        metadata=(),
+        **kwargs
+    ):
         """Return a single feature annotation for the given image.
 
         Intended for use with functools.partial, to create the particular
@@ -98,7 +109,9 @@ def _create_single_feature_method(feature):
         if max_results is not None:
             copied_features["max_results"] = max_results
         request = dict(image=image, features=[copied_features], **kwargs)
-        response = self.annotate_image(request, retry=retry, timeout=timeout)
+        response = self.annotate_image(
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
         return response
 
     # Set the appropriate function metadata.

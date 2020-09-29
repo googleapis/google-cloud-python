@@ -38,7 +38,7 @@ class DecoratorTests(unittest.TestCase):
 
     def test_with_enums(self):
         class A(object):
-            enums = vision.enums
+            Feature = vision.Feature
 
         # There should not be detection methods yet.
         assert not hasattr(A, "face_detection")
@@ -55,7 +55,7 @@ class DecoratorTests(unittest.TestCase):
 class SingleFeatureMethodTests(unittest.TestCase):
     @mock.patch.object(vision.ImageAnnotatorClient, "annotate_image")
     def test_runs_generic_single_image(self, ai):
-        ai.return_value = vision.types.AnnotateImageResponse()
+        ai.return_value = vision.AnnotateImageResponse()
 
         # Prove that other aspects of the AnnotateImageRequest, such as the
         # image context, will be preserved.
@@ -68,14 +68,14 @@ class SingleFeatureMethodTests(unittest.TestCase):
         response = client.face_detection(
             image, image_context=SENTINEL, max_results=max_results
         )
-        assert isinstance(response, vision.types.AnnotateImageResponse)
+        assert isinstance(response, vision.AnnotateImageResponse)
 
         # Assert that the single-image method was called as expected.
         ai.assert_called_once_with(
             {
                 "features": [
                     {
-                        "type": vision.enums.Feature.Type.FACE_DETECTION,
+                        "type_": vision.Feature.Type.FACE_DETECTION,
                         "max_results": max_results,
                     }
                 ],
@@ -84,11 +84,12 @@ class SingleFeatureMethodTests(unittest.TestCase):
             },
             retry=None,
             timeout=None,
+            metadata=(),
         )
 
     @mock.patch.object(vision.ImageAnnotatorClient, "annotate_image")
     def test_runs_generic_single_image_without_max_results(self, ai):
-        ai.return_value = vision.types.AnnotateImageResponse()
+        ai.return_value = vision.AnnotateImageResponse()
 
         # Prove that other aspects of the AnnotateImageRequest, such as the
         # image context, will be preserved.
@@ -98,15 +99,16 @@ class SingleFeatureMethodTests(unittest.TestCase):
         client = vision.ImageAnnotatorClient(credentials=mock.Mock(spec=Credentials))
         image = {"source": {"image_uri": "gs://my-test-bucket/image.jpg"}}
         response = client.face_detection(image, image_context=SENTINEL)
-        assert isinstance(response, vision.types.AnnotateImageResponse)
+        assert isinstance(response, vision.AnnotateImageResponse)
 
         # Assert that the single-image method was called as expected.
         ai.assert_called_once_with(
             {
-                "features": [{"type": vision.enums.Feature.Type.FACE_DETECTION}],
+                "features": [{"type_": vision.Feature.Type.FACE_DETECTION}],
                 "image": image,
                 "image_context": SENTINEL,
             },
             retry=None,
             timeout=None,
+            metadata=(),
         )
