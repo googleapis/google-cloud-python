@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.34.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.8...v0.34.0) (2020-09-29)
+
+
+### Features
+
+* add support for common resource paths ([#622](https://www.github.com/googleapis/gapic-generator-python/issues/622)) ([15a7fde](https://www.github.com/googleapis/gapic-generator-python/commit/15a7fdeb966cb64a742b6305d2c71dd3d485d0f9))
+
 ### [0.33.8](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.7...v0.33.8) (2020-09-25)
 
 
