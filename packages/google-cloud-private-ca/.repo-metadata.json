@@ -1,0 +1,12 @@
+{
+    "name": "privateca",
+    "name_pretty": "Private Certificate Authority",
+    "product_documentation": "https://cloud.google.com/certificate-authority-service",
+    "client_documentation": "https://googleapis.dev/python/privateca/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-security-private-ca",
+    "distribution_name": "google-cloud-security-private-ca",
+    "api_id": "privateca.googleapis.com"
+}
