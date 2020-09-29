@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-vision/compare/v1.0.0...v2.0.0) (2020-09-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate to use microgen (#52)
+
+### Features
+
+* migrate to use microgen ([#52](https://www.github.com/googleapis/python-vision/issues/52)) ([cf3d353](https://www.github.com/googleapis/python-vision/commit/cf3d35306c3a8f6d32cc7ce1eb436c965acc30fe))
+
+
+### Bug Fixes
+
+* update retry configs ([#29](https://www.github.com/googleapis/python-vision/issues/29)) ([39c1652](https://www.github.com/googleapis/python-vision/commit/39c16522f7bc97544c361f8e14dbc9a2a5d4c0e4))
+
+
+### Documentation
+
+* added note about not supported device ([#24](https://www.github.com/googleapis/python-vision/issues/24)) ([b33fa88](https://www.github.com/googleapis/python-vision/commit/b33fa88e4f1e9cb2f6e029e6a34364fb6cdc1a96))
+
 ## [1.0.0](https://www.github.com/googleapis/python-vision/compare/v0.42.0...v1.0.0) (2020-02-28)
 
 
