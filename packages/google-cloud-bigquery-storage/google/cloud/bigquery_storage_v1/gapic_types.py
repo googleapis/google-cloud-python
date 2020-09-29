@@ -22,10 +22,10 @@ import sys
 
 import proto
 
-from google.cloud.bigquery.storage_v1.types import arrow
-from google.cloud.bigquery.storage_v1.types import avro
-from google.cloud.bigquery.storage_v1.types import storage
-from google.cloud.bigquery.storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.types import arrow
+from google.cloud.bigquery_storage_v1.types import avro
+from google.cloud.bigquery_storage_v1.types import storage
+from google.cloud.bigquery_storage_v1.types import stream
 
 from google.protobuf import message as protobuf_message
 from google.protobuf import timestamp_pb2

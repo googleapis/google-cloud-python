@@ -20,7 +20,7 @@ import uuid
 
 import pytest
 
-from google.cloud.bigquery import storage
+from google.cloud import bigquery_storage
 
 _TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
 
@@ -43,7 +43,7 @@ def credentials():
 
 @pytest.fixture(scope="session")
 def client(credentials):
-    return storage.BigQueryReadClient(credentials=credentials)
+    return bigquery_storage.BigQueryReadClient(credentials=credentials)
 
 
 @pytest.fixture()

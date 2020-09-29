@@ -32,15 +32,15 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigquery.storage_v1.services.big_query_read import (
+from google.cloud.bigquery_storage_v1.services.big_query_read import (
     BigQueryReadAsyncClient,
 )
-from google.cloud.bigquery.storage_v1.services.big_query_read import BigQueryReadClient
-from google.cloud.bigquery.storage_v1.services.big_query_read import transports
-from google.cloud.bigquery.storage_v1.types import arrow
-from google.cloud.bigquery.storage_v1.types import avro
-from google.cloud.bigquery.storage_v1.types import storage
-from google.cloud.bigquery.storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.services.big_query_read import BigQueryReadClient
+from google.cloud.bigquery_storage_v1.services.big_query_read import transports
+from google.cloud.bigquery_storage_v1.types import arrow
+from google.cloud.bigquery_storage_v1.types import avro
+from google.cloud.bigquery_storage_v1.types import storage
+from google.cloud.bigquery_storage_v1.types import stream
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
@@ -416,7 +416,7 @@ def test_big_query_read_client_client_options_credentials_file(
 
 def test_big_query_read_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.bigquery.storage_v1.services.big_query_read.transports.BigQueryReadGrpcTransport.__init__"
+        "google.cloud.bigquery_storage_v1.services.big_query_read.transports.BigQueryReadGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = BigQueryReadClient(client_options={"api_endpoint": "squid.clam.whelk"})
@@ -1062,7 +1062,7 @@ def test_big_query_read_base_transport_error():
 def test_big_query_read_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.bigquery.storage_v1.services.big_query_read.transports.BigQueryReadTransport.__init__"
+        "google.cloud.bigquery_storage_v1.services.big_query_read.transports.BigQueryReadTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.BigQueryReadTransport(
@@ -1086,7 +1086,7 @@ def test_big_query_read_base_transport_with_credentials_file():
     with mock.patch.object(
         auth, "load_credentials_from_file"
     ) as load_creds, mock.patch(
-        "google.cloud.bigquery.storage_v1.services.big_query_read.transports.BigQueryReadTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_storage_v1.services.big_query_read.transports.BigQueryReadTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
@@ -1107,7 +1107,7 @@ def test_big_query_read_base_transport_with_credentials_file():
 def test_big_query_read_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(auth, "default") as adc, mock.patch(
-        "google.cloud.bigquery.storage_v1.services.big_query_read.transports.BigQueryReadTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_storage_v1.services.big_query_read.transports.BigQueryReadTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (credentials.AnonymousCredentials(), None)

@@ -19,7 +19,7 @@ import numpy
 import pyarrow.types
 import pytest
 
-from google.cloud.bigquery.storage import types
+from google.cloud.bigquery_storage import types
 
 
 def test_read_v1(client, project_id):

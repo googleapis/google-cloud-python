@@ -18,9 +18,9 @@
 import proto  # type: ignore
 
 
-from google.cloud.bigquery.storage_v1.types import arrow
-from google.cloud.bigquery.storage_v1.types import avro
-from google.cloud.bigquery.storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.types import arrow
+from google.cloud.bigquery_storage_v1.types import avro
+from google.cloud.bigquery_storage_v1.types import stream
 
 
 __protobuf__ = proto.module(

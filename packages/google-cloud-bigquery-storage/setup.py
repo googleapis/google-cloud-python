@@ -50,9 +50,6 @@ namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
 
-if "google.cloud.bigquery" in packages:
-    namespaces.append("google.cloud.bigquery")
-
 setuptools.setup(
     name=name,
     version=version,
@@ -80,7 +77,7 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require=extras,
     python_requires=">=3.6",
-    scripts=["scripts/fixup_storage_v1_keywords.py"],
+    scripts=["scripts/fixup_bigquery_storage_v1_keywords.py"],
     include_package_data=True,
     zip_safe=False,
 )

@@ -33,9 +33,10 @@ The 2.0.0 release requires Python 3.6+.
 
 ## Import Path
 
-The library was moved into `google.cloud.bigquery` namespace. It is recommended
-to use this path in order to reduce the chance of future compatibility issues
-in case the library is restuctured internally.
+The library's top-level namespace is `google.cloud.bigquery_storage`. Importing
+from `google.cloud.bigquery_storage_v1` still works, but it is advisable to use
+the `google.cloud.bigquery_storage` path in order to reduce the chance of future
+compatibility issues should the library be restuctured internally.
 
 **Before:**
 ```py
@@ -44,7 +45,7 @@ from google.cloud.bigquery_storage_v1 import BigQueryReadClient
 
 **After:**
 ```py
-from google.cloud.bigquery.storage import BigQueryReadClient
+from google.cloud.bigquery_storage import BigQueryReadClient
 ```
 
 
@@ -65,7 +66,7 @@ data_format = BigQueryReadClient.enums.DataFormat.ARROW
 
 **After:**
 ```py
-from google.cloud.bigquery.storage import types
+from google.cloud.bigquery_storage import types
 
 data_format = types.DataFormat.ARROW
 ```
@@ -157,13 +158,13 @@ session = client.create_read_session(
 
 **After:**
 ```py
-from google.cloud.bigquery import storage
+from google.cloud import bigquery_storage
 
-client = storage.BigQueryReadClient()
+client = bigquery_storage.BigQueryReadClient()
 
-requested_session = storage.types.ReadSession(
+requested_session = bigquery_storage.types.ReadSession(
     table="projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID",
-    data_format=storage.types.DataFormat.ARROW,
+    data_format=bigquery_storage.types.DataFormat.ARROW,
 )
 session = client.create_read_session(
     request={

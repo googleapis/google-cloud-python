@@ -18,9 +18,9 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    storage_v1/library
-    storage_v1/services
-    storage_v1/types
+    bigquery_storage_v1/library
+    bigquery_storage_v1/services
+    bigquery_storage_v1/types
 
 
 Migration Guide

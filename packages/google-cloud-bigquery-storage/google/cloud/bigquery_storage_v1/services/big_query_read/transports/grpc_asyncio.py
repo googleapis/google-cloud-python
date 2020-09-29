@@ -27,8 +27,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.bigquery.storage_v1.types import storage
-from google.cloud.bigquery.storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.types import storage
+from google.cloud.bigquery_storage_v1.types import stream
 
 from .base import BigQueryReadTransport, DEFAULT_CLIENT_INFO
 from .grpc import BigQueryReadGrpcTransport

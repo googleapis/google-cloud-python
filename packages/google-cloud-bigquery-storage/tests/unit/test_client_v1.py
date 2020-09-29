@@ -16,7 +16,7 @@ from google.api_core.gapic_v1 import client_info
 import mock
 import pytest
 
-from google.cloud.bigquery.storage import types
+from google.cloud.bigquery_storage import types
 
 
 PROJECT = "my-project"
@@ -25,7 +25,7 @@ SERVICE_ACCOUNT_PROJECT = "project-from-credentials"
 
 @pytest.fixture()
 def mock_transport(monkeypatch):
-    from google.cloud.bigquery.storage_v1.services.big_query_read import transports
+    from google.cloud.bigquery_storage_v1.services.big_query_read import transports
 
     fake_create_session_rpc = mock.Mock(name="create_read_session_rpc")
     fake_read_rows_rpc = mock.Mock(name="read_rows_rpc")
@@ -47,13 +47,13 @@ def mock_transport(monkeypatch):
 
 @pytest.fixture()
 def client_under_test(mock_transport):
-    from google.cloud.bigquery import storage
+    from google.cloud import bigquery_storage
 
-    return storage.BigQueryReadClient(transport=mock_transport)
+    return bigquery_storage.BigQueryReadClient(transport=mock_transport)
 
 
 def test_constructor_w_client_info():
-    from google.cloud.bigquery import storage
+    from google.cloud import bigquery_storage
 
     class MyTransport:
         def __init__(self, *args, **kwargs):
@@ -61,11 +61,13 @@ def test_constructor_w_client_info():
             self.kwargs = kwargs
 
     transport_class_patcher = mock.patch.object(
-        storage.BigQueryReadClient, "get_transport_class", return_value=MyTransport
+        bigquery_storage.BigQueryReadClient,
+        "get_transport_class",
+        return_value=MyTransport,
     )
 
     with transport_class_patcher:
-        client_under_test = storage.BigQueryReadClient(
+        client_under_test = bigquery_storage.BigQueryReadClient(
             client_info=client_info.ClientInfo(
                 client_library_version="test-client-version"
             ),

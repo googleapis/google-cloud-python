@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## 2.0.0
+
+09-24-2020 08:21 PDT
+
+### Implementation Changes
+
+- Transition the library to microgenerator. ([#62](https://github.com/googleapis/python-bigquery-storage/pull/62))
+  This is a **breaking change** that introduces several **method signature changes** and **drops support
+  for Python 2.7 and 3.5**. See [migration guide](https://googleapis.dev/python/bigquerystorage/latest/UPGRADING.html)
+  for more info.
+
 ## 1.1.0
 
 09-14-2020 08:51 PDT

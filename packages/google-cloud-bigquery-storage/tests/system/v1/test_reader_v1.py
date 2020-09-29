@@ -24,7 +24,7 @@ import pytest
 import pytz
 
 from google.cloud import bigquery
-from google.cloud.bigquery.storage import types
+from google.cloud.bigquery_storage import types
 
 
 def _to_bq_table_ref(table_name_string, partition_suffix=""):

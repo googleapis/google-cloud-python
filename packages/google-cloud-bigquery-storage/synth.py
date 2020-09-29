@@ -94,34 +94,36 @@ s.replace(
     '\g<0>\n\n    session.install("google-cloud-bigquery")',
 )
 
-# We want the default client accessible through "google.cloud.bigquery.storage"
-# to be the hand-written client that wrap the generated client, as this path is
-# the users' main "entry point" into the library.
-# HOWEVER - we don't want to expose the async client just yet.
+# We don't want the generated client to be accessible through
+# "google.cloud.bigquery_storage", replace it with the hand written client that
+# wraps it.
 s.replace(
-    "google/cloud/bigquery/storage/__init__.py",
-    r"from google\.cloud\.bigquery\.storage_v1\.services.big_query_read.client import",
+    "google/cloud/bigquery_storage/__init__.py",
+    r"from google\.cloud\.bigquery_storage_v1\.services.big_query_read.client import",
     "from google.cloud.bigquery_storage_v1 import"
 )
+
+# We also don't want to expose the async client just yet, at least not until
+# it is wrapped in its own manual client class.
 s.replace(
-    "google/cloud/bigquery/storage/__init__.py",
+    "google/cloud/bigquery_storage/__init__.py",
     (
-        r"from google\.cloud\.bigquery\.storage_v1\.services.big_query_read.async_client "
+        r"from google\.cloud\.bigquery_storage_v1\.services.big_query_read.async_client "
         r"import BigQueryReadAsyncClient\n"
     ),
     "",
 )
 s.replace(
-    "google/cloud/bigquery/storage/__init__.py",
+    "google/cloud/bigquery_storage/__init__.py",
    r"""["']BigQueryReadAsyncClient["'],\n""",
     "",
 )
 
-# Ditto for types and __version__, make them accessible through the consolidated
+# We want types and __version__ to be accessible through the "main" library
 # entry point.
 s.replace(
-    "google/cloud/bigquery/storage/__init__.py",
-    r"from google\.cloud\.bigquery\.storage_v1\.types\.arrow import ArrowRecordBatch",
+    "google/cloud/bigquery_storage/__init__.py",
+    r"from google\.cloud\.bigquery_storage_v1\.types\.arrow import ArrowRecordBatch",
     (
         "from google.cloud.bigquery_storage_v1 import types\n"
         "from google.cloud.bigquery_storage_v1 import __version__\n"
@@ -129,7 +131,7 @@ s.replace(
     ),
 )
 s.replace(
-    "google/cloud/bigquery/storage/__init__.py",
+    "google/cloud/bigquery_storage/__init__.py",
     r"""["']ArrowRecordBatch["']""",
     (
         '"__version__",\n'
@@ -138,12 +140,34 @@ s.replace(
     ),
 )
 
-# Fix redundant library installations in nox sessions (unit and system tests).
+# We want to expose all types through "google.cloud.bigquery_storage.types",
+# not just the types generated for the BQ Storage library. For example, we also
+# want to include common proto types such as Timestamp.
+s.replace(
+    "google/cloud/bigquery_storage/__init__.py",
+    r"import types",
+    "import gapic_types as types",
+)
+
+# The DataFormat enum is not exposed in bigquery_storage_v1/types, add it there.
+s.replace(
+    "google/cloud/bigquery_storage_v1/types/__init__.py",
+    r"from \.stream import \(",
+    "\g<0>\n    DataFormat,",
+)
+s.replace(
+    "google/cloud/bigquery_storage_v1/types/__init__.py",
+    r"""["']ReadSession["']""",
+    '"DataFormat",\n    \g<0>',
+)
+
+# Fix library installations in nox sessions (unit and system tests) - it's
+# redundant to install the library twice.
 s.replace(
     "noxfile.py",
     (
         r'session\.install\("-e", "\."\)\n    '
-        r'(?=session\.install\("-e", "\.\[fastavro)'
+        r'(?=session\.install\("-e", "\.\[fastavro)'  # in unit tests session
     ),
     "",
 )
@@ -151,9 +175,24 @@ s.replace(
     "noxfile.py",
     (
         r'(?<=google-cloud-testutils", \)\n)'
-        r'    session\.install\("-e", "\."\)\n'
+        r'    session\.install\("-e", "\."\)\n'  # in system tests session
     ),
     '    session.install("-e", ".[fastavro,pandas,pyarrow]")\n',
+)
+
+# Fix test coverage plugin paths.
+s.replace(
+    "noxfile.py",
+    r'"--cov=google\.cloud\.bigquerystorage"',
+    (
+        '"--cov=google.cloud.bigquery_storage",\n'
+        '        "--cov=google.cloud.bigquery_storage_v1"'
+    ),
+)
+s.replace(
+    "noxfile.py",
+    r'--cov=tests\.unit',
+    '--cov=tests/unit',
 )
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition

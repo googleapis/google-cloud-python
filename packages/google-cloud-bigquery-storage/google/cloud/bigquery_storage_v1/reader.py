@@ -81,11 +81,11 @@ class ReadRowsStream(object):
 
         Args:
             wrapped (Iterable[ \
-                ~google.cloud.bigquery.storage.types.ReadRowsResponse \
+                ~google.cloud.bigquery_storage.types.ReadRowsResponse \
             ]):
                 The ReadRows stream to read.
             client ( \
-                ~google.cloud.bigquery.storage_v1.services. \
+                ~google.cloud.bigquery_storage_v1.services. \
                     big_query_read.BigQueryReadClient \
             ):
                 A GAPIC client used to reconnect to a ReadRows stream. This
@@ -104,7 +104,7 @@ class ReadRowsStream(object):
 
         Returns:
             Iterable[ \
-                ~google.cloud.bigquery_storage_v1.types.ReadRowsResponse \
+                ~google.cloud.bigquery_storage.types.ReadRowsResponse \
             ]:
                 A sequence of row messages.
         """

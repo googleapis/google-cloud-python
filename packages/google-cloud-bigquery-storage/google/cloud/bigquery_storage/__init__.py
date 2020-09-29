@@ -16,22 +16,22 @@
 #
 
 from google.cloud.bigquery_storage_v1 import BigQueryReadClient
-from google.cloud.bigquery_storage_v1 import types
+from google.cloud.bigquery_storage_v1 import gapic_types as types
 from google.cloud.bigquery_storage_v1 import __version__
-from google.cloud.bigquery.storage_v1.types.arrow import ArrowRecordBatch
-from google.cloud.bigquery.storage_v1.types.arrow import ArrowSchema
-from google.cloud.bigquery.storage_v1.types.avro import AvroRows
-from google.cloud.bigquery.storage_v1.types.avro import AvroSchema
-from google.cloud.bigquery.storage_v1.types.storage import CreateReadSessionRequest
-from google.cloud.bigquery.storage_v1.types.storage import ReadRowsRequest
-from google.cloud.bigquery.storage_v1.types.storage import ReadRowsResponse
-from google.cloud.bigquery.storage_v1.types.storage import SplitReadStreamRequest
-from google.cloud.bigquery.storage_v1.types.storage import SplitReadStreamResponse
-from google.cloud.bigquery.storage_v1.types.storage import StreamStats
-from google.cloud.bigquery.storage_v1.types.storage import ThrottleState
-from google.cloud.bigquery.storage_v1.types.stream import DataFormat
-from google.cloud.bigquery.storage_v1.types.stream import ReadSession
-from google.cloud.bigquery.storage_v1.types.stream import ReadStream
+from google.cloud.bigquery_storage_v1.types.arrow import ArrowRecordBatch
+from google.cloud.bigquery_storage_v1.types.arrow import ArrowSchema
+from google.cloud.bigquery_storage_v1.types.avro import AvroRows
+from google.cloud.bigquery_storage_v1.types.avro import AvroSchema
+from google.cloud.bigquery_storage_v1.types.storage import CreateReadSessionRequest
+from google.cloud.bigquery_storage_v1.types.storage import ReadRowsRequest
+from google.cloud.bigquery_storage_v1.types.storage import ReadRowsResponse
+from google.cloud.bigquery_storage_v1.types.storage import SplitReadStreamRequest
+from google.cloud.bigquery_storage_v1.types.storage import SplitReadStreamResponse
+from google.cloud.bigquery_storage_v1.types.storage import StreamStats
+from google.cloud.bigquery_storage_v1.types.storage import ThrottleState
+from google.cloud.bigquery_storage_v1.types.stream import DataFormat
+from google.cloud.bigquery_storage_v1.types.stream import ReadSession
+from google.cloud.bigquery_storage_v1.types.stream import ReadStream
 
 __all__ = (
     "__version__",

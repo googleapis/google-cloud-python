@@ -24,6 +24,7 @@ from .avro import (
     AvroRows,
 )
 from .stream import (
+    DataFormat,
     ReadSession,
     ReadStream,
 )
@@ -43,6 +44,7 @@ __all__ = (
     "ArrowRecordBatch",
     "AvroSchema",
     "AvroRows",
+    "DataFormat",
     "ReadSession",
     "ReadStream",
     "CreateReadSessionRequest",

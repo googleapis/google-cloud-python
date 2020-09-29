@@ -23,8 +23,8 @@ from __future__ import absolute_import
 
 import google.api_core.gapic_v1.method
 
-from google.cloud.bigquery import storage_v1
 from google.cloud.bigquery_storage_v1 import reader
+from google.cloud.bigquery_storage_v1.services import big_query_read
 
 
 _SCOPES = (
@@ -33,7 +33,7 @@ _SCOPES = (
 )
 
 
-class BigQueryReadClient(storage_v1.BigQueryReadClient):
+class BigQueryReadClient(big_query_read.BigQueryReadClient):
     """Client for interacting with BigQuery Storage API.
 
     The BigQuery storage API can be used to read data stored in BigQuery.
@@ -60,9 +60,9 @@ class BigQueryReadClient(storage_v1.BigQueryReadClient):
         to read data.
 
         Example:
-            >>> from google.cloud.bigquery import storage
+            >>> from google.cloud import bigquery_storage
             >>>
-            >>> client = storage.BigQueryReadClient()
+            >>> client = bigquery_storage.BigQueryReadClient()
             >>>
             >>> # TODO: Initialize ``table``:
             >>> table = "projects/{}/datasets/{}/tables/{}".format(
@@ -74,9 +74,9 @@ class BigQueryReadClient(storage_v1.BigQueryReadClient):
             >>> # TODO: Initialize `parent`:
             >>> parent = 'projects/your-billing-project-id'
             >>>
-            >>> requested_session = storage.types.ReadSession(
+            >>> requested_session = bigquery_storage.types.ReadSession(
             ...     table=table,
-            ...     data_format=storage.types.DataFormat.AVRO,
+            ...     data_format=bigquery_storage.types.DataFormat.AVRO,
             ... )
             >>> session = client.create_read_session(
             ...     parent=parent, read_session=requested_session

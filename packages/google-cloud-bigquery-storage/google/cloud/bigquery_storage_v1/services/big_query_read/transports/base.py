@@ -25,8 +25,8 @@ from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
-from google.cloud.bigquery.storage_v1.types import storage
-from google.cloud.bigquery.storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.types import storage
+from google.cloud.bigquery_storage_v1.types import stream
 
 
 try:

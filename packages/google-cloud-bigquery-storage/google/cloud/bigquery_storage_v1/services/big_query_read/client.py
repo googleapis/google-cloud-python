@@ -16,9 +16,10 @@
 #
 
 from collections import OrderedDict
-import functools
+from distutils import util
+import os
 import re
-from typing import Dict, AsyncIterable, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Iterable, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -26,46 +27,151 @@ from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.bigquery.storage_v1.types import arrow
-from google.cloud.bigquery.storage_v1.types import avro
-from google.cloud.bigquery.storage_v1.types import storage
-from google.cloud.bigquery.storage_v1.types import stream
+from google.cloud.bigquery_storage_v1.types import arrow
+from google.cloud.bigquery_storage_v1.types import avro
+from google.cloud.bigquery_storage_v1.types import storage
+from google.cloud.bigquery_storage_v1.types import stream
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 from .transports.base import BigQueryReadTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import BigQueryReadGrpcTransport
 from .transports.grpc_asyncio import BigQueryReadGrpcAsyncIOTransport
-from .client import BigQueryReadClient
 
 
-class BigQueryReadAsyncClient:
+class BigQueryReadClientMeta(type):
+    """Metaclass for the BigQueryRead client.
+
+    This provides class-level methods for building and retrieving
+    support objects (e.g. transport) without polluting the client instance
+    objects.
+    """
+
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[BigQueryReadTransport]]
+    _transport_registry["grpc"] = BigQueryReadGrpcTransport
+    _transport_registry["grpc_asyncio"] = BigQueryReadGrpcAsyncIOTransport
+
+    def get_transport_class(cls, label: str = None,) -> Type[BigQueryReadTransport]:
+        """Return an appropriate transport class.
+
+        Args:
+            label: The name of the desired transport. If none is
+                provided, then the first transport in the registry is used.
+
+        Returns:
+            The transport class to use.
+        """
+        # If a specific transport is requested, return that one.
+        if label:
+            return cls._transport_registry[label]
+
+        # No transport is requested; return the default (that is, the first one
+        # in the dictionary).
+        return next(iter(cls._transport_registry.values()))
+
+
+class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
     """BigQuery Read API.
     The Read API can be used to read data from BigQuery.
     """
 
-    _client: BigQueryReadClient
+    @staticmethod
+    def _get_default_mtls_endpoint(api_endpoint):
+        """Convert api endpoint to mTLS endpoint.
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+        Args:
+            api_endpoint (Optional[str]): the api endpoint to convert.
+        Returns:
+            str: converted mTLS api endpoint.
+        """
+        if not api_endpoint:
+            return api_endpoint
 
-    DEFAULT_ENDPOINT = BigQueryReadClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = BigQueryReadClient.DEFAULT_MTLS_ENDPOINT
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
 
-    read_session_path = staticmethod(BigQueryReadClient.read_session_path)
-    parse_read_session_path = staticmethod(BigQueryReadClient.parse_read_session_path)
-    read_stream_path = staticmethod(BigQueryReadClient.read_stream_path)
-    parse_read_stream_path = staticmethod(BigQueryReadClient.parse_read_stream_path)
+        m = mtls_endpoint_re.match(api_endpoint)
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
 
-    from_service_account_file = BigQueryReadClient.from_service_account_file
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
+
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
+
+    DEFAULT_ENDPOINT = "bigquerystorage.googleapis.com"
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+        DEFAULT_ENDPOINT
+    )
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            {@api.name}: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
     from_service_account_json = from_service_account_file
 
-    get_transport_class = functools.partial(
-        type(BigQueryReadClient).get_transport_class, type(BigQueryReadClient)
-    )
+    @staticmethod
+    def read_session_path(project: str, location: str, session: str,) -> str:
+        """Return a fully-qualified read_session string."""
+        return "projects/{project}/locations/{location}/sessions/{session}".format(
+            project=project, location=location, session=session,
+        )
+
+    @staticmethod
+    def parse_read_session_path(path: str) -> Dict[str, str]:
+        """Parse a read_session path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sessions/(?P<session>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def read_stream_path(
+        project: str, location: str, session: str, stream: str,
+    ) -> str:
+        """Return a fully-qualified read_stream string."""
+        return "projects/{project}/locations/{location}/sessions/{session}/streams/{stream}".format(
+            project=project, location=location, session=session, stream=stream,
+        )
+
+    @staticmethod
+    def parse_read_stream_path(path: str) -> Dict[str, str]:
+        """Parse a read_stream path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sessions/(?P<session>.+?)/streams/(?P<stream>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     def __init__(
         self,
         *,
         credentials: credentials.Credentials = None,
-        transport: Union[str, BigQueryReadTransport] = "grpc_asyncio",
+        transport: Union[str, BigQueryReadTransport] = None,
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -96,20 +202,89 @@ class BigQueryReadAsyncClient:
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
+        if isinstance(client_options, dict):
+            client_options = ClientOptions.from_dict(client_options)
+        if client_options is None:
+            client_options = ClientOptions.ClientOptions()
 
-        self._client = BigQueryReadClient(
-            credentials=credentials,
-            transport=transport,
-            client_options=client_options,
-            client_info=client_info,
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-    async def create_read_session(
+        ssl_credentials = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                import grpc  # type: ignore
+
+                cert, key = client_options.client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+                is_mtls = True
+            else:
+                creds = SslCredentials()
+                is_mtls = creds.is_mtls
+                ssl_credentials = creds.ssl_credentials if is_mtls else None
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
+                )
+            else:
+                raise MutualTLSChannelError(
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                )
+
+        # Save or instantiate the transport.
+        # Ordinarily, we provide the transport, but allowing a custom transport
+        # instance provides an extensibility point for unusual situations.
+        if isinstance(transport, BigQueryReadTransport):
+            # transport is a BigQueryReadTransport instance.
+            if credentials or client_options.credentials_file:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
+            if client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its scopes directly."
+                )
+            self._transport = transport
+        else:
+            Transport = type(self).get_transport_class(transport)
+            self._transport = Transport(
+                credentials=credentials,
+                credentials_file=client_options.credentials_file,
+                host=api_endpoint,
+                scopes=client_options.scopes,
+                ssl_channel_credentials=ssl_credentials,
+                quota_project_id=client_options.quota_project_id,
+                client_info=client_info,
+            )
+
+    def create_read_session(
         self,
         request: storage.CreateReadSessionRequest = None,
         *,
@@ -191,39 +366,33 @@ class BigQueryReadAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, read_session, max_stream_count]):
+        has_flattened_params = any([parent, read_session, max_stream_count])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = storage.CreateReadSessionRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a storage.CreateReadSessionRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, storage.CreateReadSessionRequest):
+            request = storage.CreateReadSessionRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if read_session is not None:
-            request.read_session = read_session
-        if max_stream_count is not None:
-            request.max_stream_count = max_stream_count
+            if parent is not None:
+                request.parent = parent
+            if read_session is not None:
+                request.read_session = read_session
+            if max_stream_count is not None:
+                request.max_stream_count = max_stream_count
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_read_session,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_read_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -234,7 +403,7 @@ class BigQueryReadAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -248,7 +417,7 @@ class BigQueryReadAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[storage.ReadRowsResponse]:
+    ) -> Iterable[storage.ReadRowsResponse]:
         r"""Reads rows from the stream in the format prescribed
         by the ReadSession. Each response contains one or more
         table rows, up to a maximum of 100 MiB per response;
@@ -283,7 +452,7 @@ class BigQueryReadAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.storage.ReadRowsResponse]:
+            Iterable[~.storage.ReadRowsResponse]:
                 Response from calling ``ReadRows`` may include row data,
                 progress and throttling information.
 
@@ -291,35 +460,31 @@ class BigQueryReadAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([read_stream, offset]):
+        has_flattened_params = any([read_stream, offset])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = storage.ReadRowsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a storage.ReadRowsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, storage.ReadRowsRequest):
+            request = storage.ReadRowsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if read_stream is not None:
-            request.read_stream = read_stream
-        if offset is not None:
-            request.offset = offset
+            if read_stream is not None:
+                request.read_stream = read_stream
+            if offset is not None:
+                request.offset = offset
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.read_rows,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
-            ),
-            default_timeout=86400.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.read_rows]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -335,7 +500,7 @@ class BigQueryReadAsyncClient:
         # Done; return the response.
         return response
 
-    async def split_read_stream(
+    def split_read_stream(
         self,
         request: storage.SplitReadStreamRequest = None,
         *,
@@ -374,23 +539,16 @@ class BigQueryReadAsyncClient:
         """
         # Create or coerce a protobuf request object.
 
-        request = storage.SplitReadStreamRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a storage.SplitReadStreamRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, storage.SplitReadStreamRequest):
+            request = storage.SplitReadStreamRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.split_read_stream,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.split_read_stream]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -399,7 +557,7 @@ class BigQueryReadAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -415,4 +573,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("BigQueryReadAsyncClient",)
+__all__ = ("BigQueryReadClient",)

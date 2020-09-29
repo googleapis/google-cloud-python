@@ -29,7 +29,7 @@ import pytz
 import six
 
 import google.api_core.exceptions
-from google.cloud.bigquery.storage import types
+from google.cloud.bigquery_storage import types
 
 
 PROJECT = "my-project"
@@ -126,9 +126,9 @@ def class_under_test(mut):
 
 @pytest.fixture()
 def mock_gapic_client():
-    from google.cloud.bigquery import storage_v1
+    from google.cloud.bigquery_storage_v1.services import big_query_read
 
-    return mock.create_autospec(storage_v1.BigQueryReadClient)
+    return mock.create_autospec(big_query_read.BigQueryReadClient)
 
 
 def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
