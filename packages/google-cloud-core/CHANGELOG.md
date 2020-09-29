@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [1.4.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.1...v1.4.2) (2020-09-29)
+
+
+### Bug Fixes
+
+* handle query_params tuples in JSONConnection.build_api_url ([#34](https://www.github.com/googleapis/python-cloud-core/issues/34)) ([6a9adb3](https://www.github.com/googleapis/python-cloud-core/commit/6a9adb3dddd5f6d82032aba5efd673ea0641593c))
+
+
+### Performance Improvements
+
+* use prettyPrint=false by default ([#28](https://www.github.com/googleapis/python-cloud-core/issues/28)) ([c407b5d](https://www.github.com/googleapis/python-cloud-core/commit/c407b5d617c04affbdb4f444c188edffb25d4336))
+
 ### [1.4.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.0...v1.4.1) (2020-08-06)
 
 
