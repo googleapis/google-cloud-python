@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.34.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.0...v0.34.1) (2020-09-30)
+
+
+### Bug Fixes
+
+* fix typo attribue -> attribute ([#627](https://www.github.com/googleapis/gapic-generator-python/issues/627)) ([729146f](https://www.github.com/googleapis/gapic-generator-python/commit/729146fd53edf1e4ae4d3c9a90640a7520b1ba9d)), closes [#626](https://www.github.com/googleapis/gapic-generator-python/issues/626)
+
 ## [0.34.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.33.8...v0.34.0) (2020-09-29)
 
 
