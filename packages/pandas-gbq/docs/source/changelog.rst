@@ -1,6 +1,15 @@
 Changelog
 =========
 
+.. _changelog-0.13.3:
+
+0.13.3 / 2020-09-30
+-------------------
+
+- Include needed "extras" from ``google-cloud-bigquery`` package as
+  dependencies. Exclude incompatible 2.0 version. (:issue:`324`, :issue:`329`)
+
+
 .. _changelog-0.13.2:
 
 0.13.2 / 2020-05-14
