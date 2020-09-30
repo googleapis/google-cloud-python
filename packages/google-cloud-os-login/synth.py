@@ -18,6 +18,7 @@ from synthtool import gcp
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
+excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
 
 # ----------------------------------------------------------------------------
 # Generate oslogin GAPIC layer
@@ -28,42 +29,54 @@ library = gapic.py_library(
     bazel_target="//google/cloud/oslogin/v1:oslogin-v1-py",
     include_protos=True,
 )
-# pb2's are incorrectly generated into deeper directories, so copy separately into proto/
-s.move(
-    library,
-    excludes=[
-        "nox.py",
-        "setup.py",
-        "README.rst",
-        "docs/index.rst",
-        library / "google/cloud/oslogin_v1/proto/oslogin/**",
-        library / "google/cloud/oslogin_v1/proto/oslogin_v1/**",
-    ],
+
+s.move(library / "google/cloud/oslogin_v1")
+
+s.move(library / "google/cloud/oslogin", excludes=[library / "google/cloud/oslogin/common/**/*"])
+s.move(library / "google/cloud/oslogin/common", "google/cloud/oslogin_v1/common", excludes=[library / "google/cloud/oslogin/common/services"])
+
+s.move(library / "tests/unit/gapic/oslogin_v1")
+
+s.move(library / "scripts/fixup_oslogin_v1_keywords.py")
+
+s.move(library / "docs", excludes=[library / "docs/index.rst", library / "docs/common"])
+s.move(library / "docs/common", "docs/oslogin_v1/common", excludes=[library / "docs/common/services.rst"])
+s.replace(
+    "docs/oslogin_v1/common/types.rst",
+    "google.cloud.oslogin.common.types",
+    "google.cloud.oslogin_v1.common"
 )
-s.move(library / "google/cloud/oslogin_v1/proto/**/*.py", "google/cloud/oslogin_v1/proto")
-s.move(library / "google/cloud/oslogin/common/**/*.py", "google/cloud/oslogin_v1/proto")
 
 s.replace(
-    "google/cloud/oslogin_v1/gapic/os_login_service_client.py",
+    "google/cloud/oslogin_v1/**/*.py",
     "google-cloud-oslogin",
     "google-cloud-os-login",
 )
 
-# Fix up imports
+for file in ["google/cloud/**/*.py", "tests/**/*.py"]:
+    s.replace(
+        file,
+        "from google.cloud.oslogin.common import common_pb2 as common",
+        "from google.cloud.oslogin_v1 import common"
+    )
 s.replace(
-    "google/**/proto/*.py",
-    "from google.cloud.oslogin.common import common_pb2",
-    "from google.cloud.oslogin_v1.proto import common_pb2",
+    "google/cloud/oslogin_v1/**/*.py",
+    "google.cloud.oslogin.common",
+    "google.cloud.oslogin.v1"
+)
+s.replace(
+    "google/cloud/oslogin_v1/**/*.py",
+    "SshPublicKey.FromString",
+    "SshPublicKey.deserialize"
 )
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=70)
-s.move(templated_files)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
-
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+)
+s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
