@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 2.0.0
+
+09-30-2020 14:51 PDT
+
+
+### Implementation Changes
+
+- Transition the library to microgenerator. ([#278](https://github.com/googleapis/python-bigquery/pull/278))
+  This is a **breaking change** that **drops support for Python 2.7 and 3.5** and brings a few other changes.
+  See [migration guide](https://googleapis.dev/python/bigquery/latest/UPGRADING.html) for more info.
+
+
+
+### Internal / Testing Changes
+
+- Update protoc-generated comments (via synth). ([#270](https://github.com/googleapis/python-bigquery/pull/270))
+- Add CI secrets manager (via synth). ([#271](https://github.com/googleapis/python-bigquery/pull/271))
+
 ## [1.28.0](https://www.github.com/googleapis/python-bigquery/compare/v1.27.2...v1.28.0) (2020-09-22)
 
 
