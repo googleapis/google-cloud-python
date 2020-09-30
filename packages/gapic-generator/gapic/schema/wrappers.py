@@ -1012,7 +1012,7 @@ class Service:
     @utils.cached_property
     def resource_messages(self) -> FrozenSet[MessageType]:
         """Returns all the resource message types used in all
-        request fields in the service."""
+        request and response fields in the service."""
         def gen_resources(message):
             if message.resource_path:
                 yield message
@@ -1022,9 +1022,14 @@ class Service:
                     yield type_
 
         return frozenset(
-            resource_msg
+            msg
             for method in self.methods.values()
-            for resource_msg in gen_resources(method.input)
+            for msg in chain(
+                gen_resources(method.input),
+                gen_resources(
+                    method.lro.response_type if method.lro else method.output
+                ),
+            )
         )
 
     @utils.cached_property

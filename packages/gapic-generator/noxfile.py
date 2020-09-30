@@ -37,13 +37,18 @@ def unit(session):
 
     session.run(
         "py.test",
-        "-vv",
-        "-n=auto",
-        "--cov=gapic",
-        "--cov-config=.coveragerc",
-        "--cov-report=term",
-        "--cov-report=html",
-        *(session.posargs or [path.join("tests", "unit")]),
+        *(
+            session.posargs
+            or [
+                "-vv",
+                "-n=auto",
+                "--cov=gapic",
+                "--cov-config=.coveragerc",
+                "--cov-report=term",
+                "--cov-report=html",
+                path.join("tests", "unit"),
+            ]
+        ),
     )
 
 

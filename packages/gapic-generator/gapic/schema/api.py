@@ -460,7 +460,7 @@ class _ProtoBuilder:
             else:
                 raise TypeError(
                     f"Unknown type referenced in "
-                    "{self.file_descriptor.name}: '{key}'"
+                    f"{self.file_descriptor.name}: '{key}'"
                 )
 
         # Only generate the service if this is a target file to be generated.

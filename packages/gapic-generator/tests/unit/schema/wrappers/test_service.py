@@ -32,6 +32,24 @@ from test_utils.test_utils import (
     make_service_with_method_options,
 )
 
+################################
+# Helper Functions
+################################
+
+
+def make_resource_opts(*args):
+    # Resources are labeled via an options extension
+    opts = descriptor_pb2.MessageOptions()
+    opts.Extensions[resource_pb2.resource].pattern.append(
+        "/".join("{{{arg}}}/{arg}" for arg in args)
+    )
+    return opts
+
+
+################################
+# End Helper Functions
+################################
+
 
 def test_service_properties():
     service = make_service(name='ThingDoer')
@@ -162,14 +180,6 @@ def test_module_name():
 
 
 def test_resource_messages():
-    # Resources are labeled via an options extension
-    def make_resource_opts(*args):
-        opts = descriptor_pb2.MessageOptions()
-        opts.Extensions[resource_pb2.resource].pattern.append(
-            "/".join("{{{arg}}}/{arg}" for arg in args)
-        )
-        return opts
-
     # Regular, top level resource
     squid_resource = make_message("Squid", options=make_resource_opts("squid"))
     squid_request = make_message(
@@ -336,3 +346,34 @@ def test_common_resource_patterns():
     assert species_msg.resource_type == "Species"
     assert species_msg.resource_path_args == ["family", "genus", "species"]
     assert species_msg.path_regex_str == '^families/(?P<family>.+?)/genera/(?P<genus>.+?)/species/(?P<species>.+?)$'
+
+
+def test_resource_response():
+    # Top level response resource
+    squid_resource = make_message("Squid", options=make_resource_opts("squid"))
+    squid_request = make_message("CreateSquidRequest")
+
+    # Nested response resource
+    clam_resource = make_message("Clam", options=make_resource_opts("clam"))
+    clam_response = make_message(
+        "CreateClamResponse",
+        fields=(
+            make_field('clam', message=clam_resource),
+        ),
+    )
+    clam_request = make_message("CreateClamRequest")
+
+    mollusc_service = make_service(
+        "MolluscService",
+        methods=(
+            make_method(f"{request.name}", request, response)
+            for request, response in (
+                (squid_request, squid_resource),
+                (clam_request, clam_response),
+            )
+        ),
+    )
+
+    expected = {squid_resource, clam_resource}
+    actual = mollusc_service.resource_messages
+    assert expected == actual
