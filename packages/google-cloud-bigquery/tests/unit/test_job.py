@@ -35,9 +35,9 @@ try:
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 try:
-    from google.cloud import bigquery_storage_v1
+    from google.cloud import bigquery_storage
 except (ImportError, AttributeError):  # pragma: NO COVER
-    bigquery_storage_v1 = None
+    bigquery_storage = None
 try:
     from tqdm import tqdm
 except (ImportError, AttributeError):  # pragma: NO COVER
@@ -5667,7 +5667,7 @@ class TestQueryJob(unittest.TestCase, _Base):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_to_dataframe_bqstorage(self):
         query_resource = {
@@ -5685,8 +5685,8 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(self.PROJECT, connection=connection)
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
-        bqstorage_client = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)
-        session = bigquery_storage_v1.types.ReadSession()
+        bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        session = bigquery_storage.types.ReadSession()
         session.avro_schema.schema = json.dumps(
             {
                 "type": "record",
@@ -5704,9 +5704,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
             **resource["configuration"]["query"]["destinationTable"]
         )
-        expected_session = bigquery_storage_v1.types.ReadSession(
+        expected_session = bigquery_storage.types.ReadSession(
             table=destination_table,
-            data_format=bigquery_storage_v1.enums.DataFormat.ARROW,
+            data_format=bigquery_storage.types.DataFormat.ARROW,
         )
         bqstorage_client.create_read_session.assert_called_once_with(
             parent="projects/{}".format(self.PROJECT),
@@ -6259,7 +6259,7 @@ def test__contains_order_by(query, expected):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(
-    bigquery_storage_v1 is None, reason="Requires `google-cloud-bigquery-storage`"
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 @pytest.mark.parametrize(
     "query",
@@ -6295,8 +6295,8 @@ def test_to_dataframe_bqstorage_preserve_order(query):
     connection = _make_connection(get_query_results_resource, job_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(job_resource, client)
-    bqstorage_client = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)
-    session = bigquery_storage_v1.types.ReadSession()
+    bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    session = bigquery_storage.types.ReadSession()
     session.avro_schema.schema = json.dumps(
         {
             "type": "record",
@@ -6314,8 +6314,8 @@ def test_to_dataframe_bqstorage_preserve_order(query):
     destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
         **job_resource["configuration"]["query"]["destinationTable"]
     )
-    expected_session = bigquery_storage_v1.types.ReadSession(
-        table=destination_table, data_format=bigquery_storage_v1.enums.DataFormat.ARROW,
+    expected_session = bigquery_storage.types.ReadSession(
+        table=destination_table, data_format=bigquery_storage.types.DataFormat.ARROW,
     )
     bqstorage_client.create_read_session.assert_called_once_with(
         parent="projects/test-project",

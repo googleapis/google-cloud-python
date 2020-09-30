@@ -637,7 +637,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
         return None
 
     try:
-        from google.cloud import bigquery_storage_v1
+        from google.cloud import bigquery_storage
     except ImportError as err:
         customized_error = ImportError(
             "The default BigQuery Storage API client cannot be used, install "
@@ -655,7 +655,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials):
         )
         six.raise_from(customized_error, err)
 
-    return bigquery_storage_v1.BigQueryReadClient(
+    return bigquery_storage.BigQueryReadClient(
         credentials=credentials,
         client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
     )
@@ -670,10 +670,10 @@ def _close_transports(client, bqstorage_client):
     Args:
         client (:class:`~google.cloud.bigquery.client.Client`):
         bqstorage_client
-            (Optional[:class:`~google.cloud.bigquery_storage_v1.BigQueryReadClient`]):
+            (Optional[:class:`~google.cloud.bigquery_storage.BigQueryReadClient`]):
             A client for the BigQuery Storage API.
 
     """
     client.close()
     if bqstorage_client is not None:
-        bqstorage_client.transport.channel.close()
+        bqstorage_client._transport.grpc_channel.close()

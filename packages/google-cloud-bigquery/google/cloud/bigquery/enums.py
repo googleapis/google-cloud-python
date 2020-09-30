@@ -17,7 +17,7 @@ import re
 import enum
 import six
 
-from google.cloud.bigquery_v2.gapic import enums as gapic_enums
+from google.cloud.bigquery_v2 import types as gapic_types
 
 
 _SQL_SCALAR_TYPES = frozenset(
@@ -46,13 +46,13 @@ def _make_sql_scalars_enum():
         "StandardSqlDataTypes",
         (
             (member.name, member.value)
-            for member in gapic_enums.StandardSqlDataType.TypeKind
+            for member in gapic_types.StandardSqlDataType.TypeKind
             if member.name in _SQL_SCALAR_TYPES
         ),
     )
 
     # make sure the docstring for the new enum is also correct
-    orig_doc = gapic_enums.StandardSqlDataType.TypeKind.__doc__
+    orig_doc = gapic_types.StandardSqlDataType.TypeKind.__doc__
     skip_pattern = re.compile(
         "|".join(_SQL_NONSCALAR_TYPES)
         + "|because a JSON object"  # the second description line of STRUCT member

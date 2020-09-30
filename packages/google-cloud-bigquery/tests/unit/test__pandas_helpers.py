@@ -20,7 +20,6 @@ import operator
 import warnings
 
 import mock
-import six
 
 try:
     import pandas
@@ -300,10 +299,7 @@ def test_bq_to_arrow_data_type_w_struct(module_under_test, bq_type):
         )
     )
     assert pyarrow.types.is_struct(actual)
-    try:
-        assert actual.num_fields == len(fields)
-    except AttributeError:  # py27
-        assert actual.num_children == len(fields)
+    assert actual.num_fields == len(fields)
     assert actual.equals(expected)
 
 
@@ -348,10 +344,7 @@ def test_bq_to_arrow_data_type_w_array_struct(module_under_test, bq_type):
     )
     assert pyarrow.types.is_list(actual)
     assert pyarrow.types.is_struct(actual.value_type)
-    try:
-        assert actual.value_type.num_fields == len(fields)
-    except AttributeError:  # py27
-        assert actual.value_type.num_children == len(fields)
+    assert actual.value_type.num_fields == len(fields)
     assert actual.value_type.equals(expected_value_type)
 
 
@@ -553,12 +546,9 @@ def test_bq_to_arrow_schema_w_unknown_type(module_under_test):
         actual = module_under_test.bq_to_arrow_schema(fields)
     assert actual is None
 
-    if six.PY3:
-        assert len(warned) == 1
-        warning = warned[0]
-        assert "field3" in str(warning)
-    else:
-        assert len(warned) == 0
+    assert len(warned) == 1
+    warning = warned[0]
+    assert "field3" in str(warning)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -771,26 +761,6 @@ def test_dataframe_to_bq_schema_dict_sequence(module_under_test):
         schema.SchemaField("bool_column", "BOOL", "REQUIRED"),
     )
     assert returned_schema == expected_schema
-
-
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.skipif(not six.PY2, reason="Requires Python 2.7")
-def test_dataframe_to_bq_schema_w_struct_raises_py27(module_under_test):
-    dataframe = pandas.DataFrame(
-        data=[{"struct_field": {"int_col": 1}}, {"struct_field": {"int_col": 2}}]
-    )
-    bq_schema = [
-        schema.SchemaField(
-            "struct_field",
-            field_type="STRUCT",
-            fields=[schema.SchemaField("int_col", field_type="INT64")],
-        ),
-    ]
-
-    with pytest.raises(ValueError) as excinfo:
-        module_under_test.dataframe_to_bq_schema(dataframe, bq_schema=bq_schema)
-
-    assert "struct (record) column types is not supported" in str(excinfo.value)
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")

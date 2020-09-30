@@ -19,9 +19,9 @@ import mock
 import six
 
 try:
-    from google.cloud import bigquery_storage_v1
+    from google.cloud import bigquery_storage
 except ImportError:  # pragma: NO COVER
-    bigquery_storage_v1 = None
+    bigquery_storage = None
 
 
 class TestConnection(unittest.TestCase):
@@ -41,29 +41,26 @@ class TestConnection(unittest.TestCase):
         return mock_client
 
     def _mock_bqstorage_client(self):
-        if bigquery_storage_v1 is None:
-            return None
-        mock_client = mock.create_autospec(
-            bigquery_storage_v1.client.BigQueryReadClient
-        )
-        mock_client.transport = mock.Mock(spec=["channel"])
-        mock_client.transport.channel = mock.Mock(spec=["close"])
+        # Assumption: bigquery_storage exists. It's the test's responisbility to
+        # not use this helper or skip itself if bqstroage is not installed.
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        mock_client._transport = mock.Mock(spec=["channel"])
+        mock_client._transport.grpc_channel = mock.Mock(spec=["close"])
         return mock_client
 
     def test_ctor_wo_bqstorage_client(self):
         from google.cloud.bigquery.dbapi import Connection
 
         mock_client = self._mock_client()
-        mock_bqstorage_client = self._mock_bqstorage_client()
-        mock_client._create_bqstorage_client.return_value = mock_bqstorage_client
+        mock_client._create_bqstorage_client.return_value = None
 
         connection = self._make_one(client=mock_client)
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
-        self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
+        self.assertIs(connection._bqstorage_client, None)
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_ctor_w_bqstorage_client(self):
         from google.cloud.bigquery.dbapi import Connection
@@ -87,6 +84,9 @@ class TestConnection(unittest.TestCase):
         self.assertIsNotNone(connection._client)
         self.assertIsNotNone(connection._bqstorage_client)
 
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
     def test_connect_w_client(self):
         from google.cloud.bigquery.dbapi import connect
         from google.cloud.bigquery.dbapi import Connection
@@ -101,7 +101,7 @@ class TestConnection(unittest.TestCase):
         self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_connect_w_both_clients(self):
         from google.cloud.bigquery.dbapi import connect
@@ -130,7 +130,7 @@ class TestConnection(unittest.TestCase):
                 getattr(connection, method)()
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_close_closes_all_created_bigquery_clients(self):
         client = self._mock_client()
@@ -150,10 +150,10 @@ class TestConnection(unittest.TestCase):
         connection.close()
 
         self.assertTrue(client.close.called)
-        self.assertTrue(bqstorage_client.transport.channel.close.called)
+        self.assertTrue(bqstorage_client._transport.grpc_channel.close.called)
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_close_does_not_close_bigquery_clients_passed_to_it(self):
         client = self._mock_client()
@@ -163,7 +163,7 @@ class TestConnection(unittest.TestCase):
         connection.close()
 
         self.assertFalse(client.close.called)
-        self.assertFalse(bqstorage_client.transport.channel.called)
+        self.assertFalse(bqstorage_client._transport.grpc_channel.close.called)
 
     def test_close_closes_all_created_cursors(self):
         connection = self._make_one(client=self._mock_client())

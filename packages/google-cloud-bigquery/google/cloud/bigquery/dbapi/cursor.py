@@ -15,14 +15,8 @@
 """Cursor for the Google BigQuery DB-API."""
 
 import collections
+from collections import abc as collections_abc
 import copy
-import warnings
-
-try:
-    from collections import abc as collections_abc
-except ImportError:  # Python 2.7
-    import collections as collections_abc
-
 import logging
 
 import six
@@ -267,54 +261,27 @@ class Cursor(object):
                 A sequence of rows, represented as dictionaries.
         """
         # Hitting this code path with a BQ Storage client instance implies that
-        # bigquery_storage_v1* can indeed be imported here without errors.
-        from google.cloud import bigquery_storage_v1
-        from google.cloud import bigquery_storage_v1beta1
+        # bigquery_storage can indeed be imported here without errors.
+        from google.cloud import bigquery_storage
 
         table_reference = self._query_job.destination
 
-        is_v1beta1_client = isinstance(
-            bqstorage_client, bigquery_storage_v1beta1.BigQueryStorageClient
+        requested_session = bigquery_storage.types.ReadSession(
+            table=table_reference.to_bqstorage(),
+            data_format=bigquery_storage.types.DataFormat.ARROW,
         )
-
-        # We want to preserve compatibility with the v1beta1 BQ Storage clients,
-        # thus adjust the session creation if needed.
-        if is_v1beta1_client:
-            warnings.warn(
-                "Support for BigQuery Storage v1beta1 clients is deprecated, please "
-                "consider upgrading the client to BigQuery Storage v1 stable version.",
-                category=DeprecationWarning,
-            )
-            read_session = bqstorage_client.create_read_session(
-                table_reference.to_bqstorage(v1beta1=True),
-                "projects/{}".format(table_reference.project),
-                # a single stream only, as DB API is not well-suited for multithreading
-                requested_streams=1,
-                format_=bigquery_storage_v1beta1.enums.DataFormat.ARROW,
-            )
-        else:
-            requested_session = bigquery_storage_v1.types.ReadSession(
-                table=table_reference.to_bqstorage(),
-                data_format=bigquery_storage_v1.enums.DataFormat.ARROW,
-            )
-            read_session = bqstorage_client.create_read_session(
-                parent="projects/{}".format(table_reference.project),
-                read_session=requested_session,
-                # a single stream only, as DB API is not well-suited for multithreading
-                max_stream_count=1,
-            )
+        read_session = bqstorage_client.create_read_session(
+            parent="projects/{}".format(table_reference.project),
+            read_session=requested_session,
+            # a single stream only, as DB API is not well-suited for multithreading
+            max_stream_count=1,
+        )
 
         if not read_session.streams:
             return iter([])  # empty table, nothing to read
 
-        if is_v1beta1_client:
-            read_position = bigquery_storage_v1beta1.types.StreamPosition(
-                stream=read_session.streams[0],
-            )
-            read_rows_stream = bqstorage_client.read_rows(read_position)
-        else:
-            stream_name = read_session.streams[0].name
-            read_rows_stream = bqstorage_client.read_rows(stream_name)
+        stream_name = read_session.streams[0].name
+        read_rows_stream = bqstorage_client.read_rows(stream_name)
 
         rows_iterable = read_rows_stream.rows(read_session)
         return rows_iterable

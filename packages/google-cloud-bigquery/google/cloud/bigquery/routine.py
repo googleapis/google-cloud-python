@@ -189,14 +189,17 @@ class Routine(object):
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["return_type"])
         if not resource:
             return resource
+
         output = google.cloud.bigquery_v2.types.StandardSqlDataType()
-        output = json_format.ParseDict(resource, output, ignore_unknown_fields=True)
-        return output
+        raw_protobuf = json_format.ParseDict(
+            resource, output._pb, ignore_unknown_fields=True
+        )
+        return type(output).wrap(raw_protobuf)
 
     @return_type.setter
     def return_type(self, value):
         if value:
-            resource = json_format.MessageToDict(value)
+            resource = json_format.MessageToDict(value._pb)
         else:
             resource = None
         self._properties[self._PROPERTY_TO_API_FIELD["return_type"]] = resource
@@ -357,14 +360,17 @@ class RoutineArgument(object):
         resource = self._properties.get(self._PROPERTY_TO_API_FIELD["data_type"])
         if not resource:
             return resource
+
         output = google.cloud.bigquery_v2.types.StandardSqlDataType()
-        output = json_format.ParseDict(resource, output, ignore_unknown_fields=True)
-        return output
+        raw_protobuf = json_format.ParseDict(
+            resource, output._pb, ignore_unknown_fields=True
+        )
+        return type(output).wrap(raw_protobuf)
 
     @data_type.setter
     def data_type(self, value):
         if value:
-            resource = json_format.MessageToDict(value)
+            resource = json_format.MessageToDict(value._pb)
         else:
             resource = None
         self._properties[self._PROPERTY_TO_API_FIELD["data_type"]] = resource

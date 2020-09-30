@@ -49,16 +49,10 @@ def default(session):
         constraints_path,
     )
 
-    if session.python == "2.7":
-        # The [all] extra is not installable on Python 2.7.
-        session.install("-e", ".[pandas,pyarrow]", "-c", constraints_path)
-    elif session.python == "3.5":
-        session.install("-e", ".[all]", "-c", constraints_path)
-    else:
-        # fastparquet is not included in .[all] because, in general, it's
-        # redundant with pyarrow. We still want to run some unit tests with
-        # fastparquet serialization, though.
-        session.install("-e", ".[all,fastparquet]", "-c", constraints_path)
+    # fastparquet is not included in .[all] because, in general, it's
+    # redundant with pyarrow. We still want to run some unit tests with
+    # fastparquet serialization, though.
+    session.install("-e", ".[all,fastparquet]", "-c", constraints_path)
 
     session.install("ipython", "-c", constraints_path)
 
@@ -77,13 +71,13 @@ def default(session):
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["2.7", "3.8"])
+@nox.session(python=["3.8"])
 def system(session):
     """Run the system test suite."""
 
@@ -108,12 +102,7 @@ def system(session):
     )
     session.install("google-cloud-storage", "-c", constraints_path)
 
-    if session.python == "2.7":
-        # The [all] extra is not installable on Python 2.7.
-        session.install("-e", ".[pandas]", "-c", constraints_path)
-    else:
-        session.install("-e", ".[all]", "-c", constraints_path)
-
+    session.install("-e", ".[all]", "-c", constraints_path)
     session.install("ipython", "-c", constraints_path)
 
     # Run py.test against the system tests.
@@ -122,7 +111,7 @@ def system(session):
     )
 
 
-@nox.session(python=["2.7", "3.8"])
+@nox.session(python=["3.8"])
 def snippets(session):
     """Run the snippets test suite."""
 
@@ -139,11 +128,7 @@ def snippets(session):
     session.install("google-cloud-storage", "-c", constraints_path)
     session.install("grpcio", "-c", constraints_path)
 
-    if session.python == "2.7":
-        # The [all] extra is not installable on Python 2.7.
-        session.install("-e", ".[pandas]", "-c", constraints_path)
-    else:
-        session.install("-e", ".[all]", "-c", constraints_path)
+    session.install("-e", ".[all]", "-c", constraints_path)
 
     # Run py.test against the snippets tests.
     # Skip tests in samples/snippets, as those are run in a different session

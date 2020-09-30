@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Copyright 2019 Google LLC
 #
@@ -63,14 +62,14 @@ def test_ctor_w_properties(target_class):
         RoutineArgument(
             name="x",
             data_type=bigquery_v2.types.StandardSqlDataType(
-                type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+                type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
             ),
         )
     ]
     body = "x * 3"
     language = "SQL"
     return_type = bigquery_v2.types.StandardSqlDataType(
-        type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+        type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
     )
     type_ = "SCALAR_FUNCTION"
     description = "A routine description."
@@ -141,14 +140,14 @@ def test_from_api_repr(target_class):
         RoutineArgument(
             name="x",
             data_type=bigquery_v2.types.StandardSqlDataType(
-                type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+                type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
             ),
         )
     ]
     assert actual_routine.body == "42"
     assert actual_routine.language == "SQL"
     assert actual_routine.return_type == bigquery_v2.types.StandardSqlDataType(
-        type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+        type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
     )
     assert actual_routine.type_ == "SCALAR_FUNCTION"
     assert actual_routine._properties["someNewField"] == "someValue"

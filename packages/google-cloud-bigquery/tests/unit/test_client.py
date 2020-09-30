@@ -48,7 +48,7 @@ try:
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
-except (ImportError, AttributeError):
+except (ImportError, AttributeError):  # pragma: NO COVER
     opentelemetry = None
 try:
     import pyarrow
@@ -62,9 +62,9 @@ from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import DatasetReference
 
 try:
-    from google.cloud import bigquery_storage_v1
+    from google.cloud import bigquery_storage
 except (ImportError, AttributeError):  # pragma: NO COVER
-    bigquery_storage_v1 = None
+    bigquery_storage = None
 from test_utils.imports import maybe_fail_import
 from tests.unit.helpers import make_connection
 
@@ -794,17 +794,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(dataset.dataset_id, self.DS_ID)
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_create_bqstorage_client(self):
-        mock_client = mock.create_autospec(bigquery_storage_v1.BigQueryReadClient)
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
         mock_client_instance = object()
         mock_client.return_value = mock_client_instance
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
 
         with mock.patch(
-            "google.cloud.bigquery_storage_v1.BigQueryReadClient", mock_client
+            "google.cloud.bigquery_storage.BigQueryReadClient", mock_client
         ):
             bqstorage_client = client._create_bqstorage_client()
 
@@ -817,8 +817,8 @@ class TestClient(unittest.TestCase):
 
         def fail_bqstorage_import(name, globals, locals, fromlist, level):
             # NOTE: *very* simplified, assuming a straightforward absolute import
-            return "bigquery_storage_v1" in name or (
-                fromlist is not None and "bigquery_storage_v1" in fromlist
+            return "bigquery_storage" in name or (
+                fromlist is not None and "bigquery_storage" in fromlist
             )
 
         no_bqstorage = maybe_fail_import(predicate=fail_bqstorage_import)
@@ -2499,7 +2499,7 @@ class TestClient(unittest.TestCase):
             RoutineArgument(
                 name="x",
                 data_type=bigquery_v2.types.StandardSqlDataType(
-                    type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+                    type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
                 ),
             )
         ]
@@ -8032,49 +8032,35 @@ class TestClientUpload(object):
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
 
-        if six.PY2:
-            with pytest.raises(ValueError) as exc_info, load_patch:
-                client.load_table_from_dataframe(
-                    dataframe,
-                    self.TABLE_REF,
-                    job_config=job_config,
-                    location=self.LOCATION,
-                )
-
-            err_msg = str(exc_info.value)
-            assert "struct" in err_msg
-            assert "not support" in err_msg
-
-        else:
-            get_table_patch = mock.patch(
-                "google.cloud.bigquery.client.Client.get_table",
-                autospec=True,
-                side_effect=google.api_core.exceptions.NotFound("Table not found"),
-            )
-            with load_patch as load_table_from_file, get_table_patch:
-                client.load_table_from_dataframe(
-                    dataframe,
-                    self.TABLE_REF,
-                    job_config=job_config,
-                    location=self.LOCATION,
-                )
-
-            load_table_from_file.assert_called_once_with(
-                client,
-                mock.ANY,
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=google.api_core.exceptions.NotFound("Table not found"),
+        )
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_dataframe(
+                dataframe,
                 self.TABLE_REF,
-                num_retries=_DEFAULT_NUM_RETRIES,
-                rewind=True,
-                job_id=mock.ANY,
-                job_id_prefix=None,
+                job_config=job_config,
                 location=self.LOCATION,
-                project=None,
-                job_config=mock.ANY,
             )
 
-            sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
-            assert sent_config.source_format == job.SourceFormat.PARQUET
-            assert sent_config.schema == schema
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            rewind=True,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=self.LOCATION,
+            project=None,
+            job_config=mock.ANY,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.PARQUET
+        assert sent_config.schema == schema
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -8671,14 +8657,9 @@ class TestClientUpload(object):
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
 
-        if six.PY2:
-            open_patch = mock.patch(
-                "__builtin__.open", mock.mock_open(read_data=file_content)
-            )
-        else:
-            open_patch = mock.patch(
-                "builtins.open", new=mock.mock_open(read_data=file_content)
-            )
+        open_patch = mock.patch(
+            "builtins.open", new=mock.mock_open(read_data=file_content)
+        )
 
         with open_patch as _mock_file:
             actual = client.schema_from_json(mock_file_path)
@@ -8720,12 +8701,7 @@ class TestClientUpload(object):
         ]
 
         client = self._make_client()
-
-        if six.PY2:
-            fake_file = io.BytesIO(file_content)
-        else:
-            fake_file = io.StringIO(file_content)
-
+        fake_file = io.StringIO(file_content)
         actual = client.schema_from_json(fake_file)
 
         assert expected == actual
@@ -8762,11 +8738,7 @@ class TestClientUpload(object):
 
         client = self._make_client()
         mock_file_path = "/mocked/file.json"
-
-        if six.PY2:
-            open_patch = mock.patch("__builtin__.open", mock.mock_open())
-        else:
-            open_patch = mock.patch("builtins.open", mock.mock_open())
+        open_patch = mock.patch("builtins.open", mock.mock_open())
 
         with open_patch as mock_file, mock.patch("json.dump") as mock_dump:
             client.schema_to_json(schema_list, mock_file_path)
@@ -8808,10 +8780,7 @@ class TestClientUpload(object):
             SchemaField("sales", "FLOAT", "NULLABLE", "total sales"),
         ]
 
-        if six.PY2:
-            fake_file = io.BytesIO()
-        else:
-            fake_file = io.StringIO()
+        fake_file = io.StringIO()
 
         client = self._make_client()
 

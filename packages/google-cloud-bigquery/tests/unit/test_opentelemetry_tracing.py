@@ -25,7 +25,7 @@ try:
     from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
         InMemorySpanExporter,
     )
-except ImportError:
+except ImportError:  # pragma: NO COVER
     opentelemetry = None
 import pytest
 from six.moves import reload_module

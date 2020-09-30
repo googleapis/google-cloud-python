@@ -14,7 +14,6 @@
 
 import operator as op
 import unittest
-import warnings
 
 import mock
 import six
@@ -27,11 +26,9 @@ except ImportError:  # pragma: NO COVER
 from google.api_core import exceptions
 
 try:
-    from google.cloud import bigquery_storage_v1
-    from google.cloud import bigquery_storage_v1beta1
+    from google.cloud import bigquery_storage
 except ImportError:  # pragma: NO COVER
-    bigquery_storage_v1 = None
-    bigquery_storage_v1beta1 = None
+    bigquery_storage = None
 
 from tests.unit.helpers import _to_pyarrow
 
@@ -78,32 +75,17 @@ class TestCursor(unittest.TestCase):
 
         return mock_client
 
-    def _mock_bqstorage_client(self, rows=None, stream_count=0, v1beta1=False):
-        from google.cloud.bigquery_storage_v1 import client
-        from google.cloud.bigquery_storage_v1 import types
-        from google.cloud.bigquery_storage_v1beta1 import types as types_v1beta1
-
+    def _mock_bqstorage_client(self, rows=None, stream_count=0):
         if rows is None:
             rows = []
 
-        if v1beta1:
-            mock_client = mock.create_autospec(
-                bigquery_storage_v1beta1.BigQueryStorageClient
-            )
-            mock_read_session = mock.MagicMock(
-                streams=[
-                    types_v1beta1.Stream(name="streams/stream_{}".format(i))
-                    for i in range(stream_count)
-                ]
-            )
-        else:
-            mock_client = mock.create_autospec(client.BigQueryReadClient)
-            mock_read_session = mock.MagicMock(
-                streams=[
-                    types.ReadStream(name="streams/stream_{}".format(i))
-                    for i in range(stream_count)
-                ]
-            )
+        mock_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+        mock_read_session = mock.MagicMock(
+            streams=[
+                bigquery_storage.types.ReadStream(name="streams/stream_{}".format(i))
+                for i in range(stream_count)
+            ]
+        )
 
         mock_client.create_read_session.return_value = mock_read_session
 
@@ -291,7 +273,7 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(rows[0], (1,))
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_fetchall_w_bqstorage_client_fetch_success(self):
@@ -345,71 +327,7 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(sorted_row_data, expected_row_data)
 
     @unittest.skipIf(
-        bigquery_storage_v1beta1 is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_fetchall_w_bqstorage_client_v1beta1_fetch_success(self):
-        from google.cloud.bigquery import dbapi
-        from google.cloud.bigquery import table
-
-        # use unordered data to also test any non-determenistic key order in dicts
-        row_data = [
-            table.Row([1.4, 1.1, 1.3, 1.2], {"bar": 3, "baz": 2, "foo": 1, "quux": 0}),
-            table.Row([2.4, 2.1, 2.3, 2.2], {"bar": 3, "baz": 2, "foo": 1, "quux": 0}),
-        ]
-        bqstorage_streamed_rows = [
-            {
-                "bar": _to_pyarrow(1.2),
-                "foo": _to_pyarrow(1.1),
-                "quux": _to_pyarrow(1.4),
-                "baz": _to_pyarrow(1.3),
-            },
-            {
-                "bar": _to_pyarrow(2.2),
-                "foo": _to_pyarrow(2.1),
-                "quux": _to_pyarrow(2.4),
-                "baz": _to_pyarrow(2.3),
-            },
-        ]
-
-        mock_client = self._mock_client(rows=row_data)
-        mock_bqstorage_client = self._mock_bqstorage_client(
-            stream_count=1, rows=bqstorage_streamed_rows, v1beta1=True
-        )
-
-        connection = dbapi.connect(
-            client=mock_client, bqstorage_client=mock_bqstorage_client,
-        )
-        cursor = connection.cursor()
-        cursor.execute("SELECT foo, bar FROM some_table")
-
-        with warnings.catch_warnings(record=True) as warned:
-            rows = cursor.fetchall()
-
-        # a deprecation warning should have been emitted
-        expected_warnings = [
-            warning
-            for warning in warned
-            if issubclass(warning.category, DeprecationWarning)
-            and "v1beta1" in str(warning)
-        ]
-        self.assertEqual(len(expected_warnings), 1, "Deprecation warning not raised.")
-
-        # the default client was not used
-        mock_client.list_rows.assert_not_called()
-
-        # check the data returned
-        field_value = op.itemgetter(1)
-        sorted_row_data = [sorted(row.items(), key=field_value) for row in rows]
-        expected_row_data = [
-            [("foo", 1.1), ("bar", 1.2), ("baz", 1.3), ("quux", 1.4)],
-            [("foo", 2.1), ("bar", 2.2), ("baz", 2.3), ("quux", 2.4)],
-        ]
-
-        self.assertEqual(sorted_row_data, expected_row_data)
-
-    @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_fetchall_w_bqstorage_client_fetch_no_rows(self):
         from google.cloud.bigquery import dbapi
@@ -432,7 +350,7 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(rows, [])
 
     @unittest.skipIf(
-        bigquery_storage_v1 is None, "Requires `google-cloud-bigquery-storage`"
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_fetchall_w_bqstorage_client_fetch_error_no_fallback(self):
         from google.cloud.bigquery import dbapi

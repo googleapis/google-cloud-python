@@ -28,7 +28,7 @@ def target_class():
 
 def test_ctor(target_class):
     data_type = bigquery_v2.types.StandardSqlDataType(
-        type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+        type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
     )
     actual_arg = target_class(
         name="field_name", kind="FIXED_TYPE", mode="IN", data_type=data_type
@@ -51,7 +51,7 @@ def test_from_api_repr(target_class):
     assert actual_arg.kind == "FIXED_TYPE"
     assert actual_arg.mode == "IN"
     assert actual_arg.data_type == bigquery_v2.types.StandardSqlDataType(
-        type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+        type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
     )
 
 
@@ -72,7 +72,7 @@ def test_from_api_repr_w_unknown_fields(target_class):
 
 def test_eq(target_class):
     data_type = bigquery_v2.types.StandardSqlDataType(
-        type_kind=bigquery_v2.enums.StandardSqlDataType.TypeKind.INT64
+        type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.INT64
     )
     arg = target_class(
         name="field_name", kind="FIXED_TYPE", mode="IN", data_type=data_type

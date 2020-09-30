@@ -1,0 +1,16 @@
+fastparquet==0.4.1
+google-api-core==1.22.2
+google-cloud-bigquery-storage==2.0.0
+google-cloud-core==1.4.1
+google-resumable-media==0.6.0
+grpcio==1.32.0
+ipython==5.5
+libcst==0.2.5
+llvmlite==0.34.0
+# pandas 0.23.0 is the first version to work with pyarrow to_pandas.
+pandas==0.23.0
+proto-plus==1.10.0
+pyarrow==1.0.0
+python-snappy==0.5.4
+six==1.13.0
+tqdm==4.7.4

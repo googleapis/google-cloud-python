@@ -206,15 +206,15 @@ class TestSchemaField(unittest.TestCase):
         sql_type = self._get_standard_sql_data_type_class()
         examples = (
             # a few legacy types
-            ("INTEGER", sql_type.INT64),
-            ("FLOAT", sql_type.FLOAT64),
-            ("BOOLEAN", sql_type.BOOL),
-            ("DATETIME", sql_type.DATETIME),
+            ("INTEGER", sql_type.TypeKind.INT64),
+            ("FLOAT", sql_type.TypeKind.FLOAT64),
+            ("BOOLEAN", sql_type.TypeKind.BOOL),
+            ("DATETIME", sql_type.TypeKind.DATETIME),
             # a few standard types
-            ("INT64", sql_type.INT64),
-            ("FLOAT64", sql_type.FLOAT64),
-            ("BOOL", sql_type.BOOL),
-            ("GEOGRAPHY", sql_type.GEOGRAPHY),
+            ("INT64", sql_type.TypeKind.INT64),
+            ("FLOAT64", sql_type.TypeKind.FLOAT64),
+            ("BOOL", sql_type.TypeKind.BOOL),
+            ("GEOGRAPHY", sql_type.TypeKind.GEOGRAPHY),
         )
         for legacy_type, standard_type in examples:
             field = self._make_one("some_field", legacy_type)
@@ -258,26 +258,26 @@ class TestSchemaField(unittest.TestCase):
 
         # level 2 fields
         sub_sub_field_date = types.StandardSqlField(
-            name="date_field", type=sql_type(type_kind=sql_type.DATE)
+            name="date_field", type=sql_type(type_kind=sql_type.TypeKind.DATE)
         )
         sub_sub_field_time = types.StandardSqlField(
-            name="time_field", type=sql_type(type_kind=sql_type.TIME)
+            name="time_field", type=sql_type(type_kind=sql_type.TypeKind.TIME)
         )
 
         # level 1 fields
         sub_field_struct = types.StandardSqlField(
-            name="last_used", type=sql_type(type_kind=sql_type.STRUCT)
+            name="last_used", type=sql_type(type_kind=sql_type.TypeKind.STRUCT)
         )
         sub_field_struct.type.struct_type.fields.extend(
             [sub_sub_field_date, sub_sub_field_time]
         )
         sub_field_bytes = types.StandardSqlField(
-            name="image_content", type=sql_type(type_kind=sql_type.BYTES)
+            name="image_content", type=sql_type(type_kind=sql_type.TypeKind.BYTES)
         )
 
         # level 0 (top level)
         expected_result = types.StandardSqlField(
-            name="image_usage", type=sql_type(type_kind=sql_type.STRUCT)
+            name="image_usage", type=sql_type(type_kind=sql_type.TypeKind.STRUCT)
         )
         expected_result.type.struct_type.fields.extend(
             [sub_field_bytes, sub_field_struct]
@@ -304,8 +304,8 @@ class TestSchemaField(unittest.TestCase):
         sql_type = self._get_standard_sql_data_type_class()
 
         # construct expected result object
-        expected_sql_type = sql_type(type_kind=sql_type.ARRAY)
-        expected_sql_type.array_element_type.type_kind = sql_type.INT64
+        expected_sql_type = sql_type(type_kind=sql_type.TypeKind.ARRAY)
+        expected_sql_type.array_element_type.type_kind = sql_type.TypeKind.INT64
         expected_result = types.StandardSqlField(
             name="valid_numbers", type=expected_sql_type
         )
@@ -323,19 +323,19 @@ class TestSchemaField(unittest.TestCase):
 
         # define person STRUCT
         name_field = types.StandardSqlField(
-            name="name", type=sql_type(type_kind=sql_type.STRING)
+            name="name", type=sql_type(type_kind=sql_type.TypeKind.STRING)
         )
         age_field = types.StandardSqlField(
-            name="age", type=sql_type(type_kind=sql_type.INT64)
+            name="age", type=sql_type(type_kind=sql_type.TypeKind.INT64)
         )
         person_struct = types.StandardSqlField(
-            name="person_info", type=sql_type(type_kind=sql_type.STRUCT)
+            name="person_info", type=sql_type(type_kind=sql_type.TypeKind.STRUCT)
         )
         person_struct.type.struct_type.fields.extend([name_field, age_field])
 
         # define expected result - an ARRAY of person structs
         expected_sql_type = sql_type(
-            type_kind=sql_type.ARRAY, array_element_type=person_struct.type
+            type_kind=sql_type.TypeKind.ARRAY, array_element_type=person_struct.type
         )
         expected_result = types.StandardSqlField(
             name="known_people", type=expected_sql_type
@@ -358,7 +358,9 @@ class TestSchemaField(unittest.TestCase):
         standard_field = field.to_standard_sql()
 
         self.assertEqual(standard_field.name, "weird_field")
-        self.assertEqual(standard_field.type.type_kind, sql_type.TYPE_KIND_UNSPECIFIED)
+        self.assertEqual(
+            standard_field.type.type_kind, sql_type.TypeKind.TYPE_KIND_UNSPECIFIED
+        )
 
     def test___eq___wrong_type(self):
         field = self._make_one("test", "STRING")
