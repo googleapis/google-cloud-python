@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-oslogin/compare/v1.0.0...v2.0.0) (2020-09-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* move to microgen (#33). See [Migration Guide](https://github.com/googleapis/python-oslogin/blob/master/UPGRADING.md).
+
+### Features
+
+* move to microgen ([#33](https://www.github.com/googleapis/python-oslogin/issues/33)) ([97de222](https://www.github.com/googleapis/python-oslogin/commit/97de2223423162e39d25bb793c660a9ed5c30a2c))
+
+
+### Bug Fixes
+
+* update retry configs ([#24](https://www.github.com/googleapis/python-oslogin/issues/24)) ([13b6e8d](https://www.github.com/googleapis/python-oslogin/commit/13b6e8ddd1fbcf6f215ae706706bc44eb3e286c5))
+
 ## [1.0.0](https://www.github.com/googleapis/python-oslogin/compare/v0.3.0...v1.0.0) (2020-06-03)
 
 
