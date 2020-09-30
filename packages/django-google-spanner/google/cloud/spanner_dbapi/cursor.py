@@ -208,10 +208,7 @@ class Cursor:
         return self
 
     def __exit__(self, etype, value, traceback):
-        self.__clear()
-
-    def __clear(self):
-        self._connection = None
+        self.close()
 
     @property
     def description(self):
@@ -264,12 +261,20 @@ class Cursor:
 
         The cursor will be unusable from this point forward.
         """
-        self.__clear()
         self._is_closed = True
 
     def executemany(self, operation, seq_of_params):
-        if not self._connection:
-            raise ProgrammingError("Cursor is not connected to the database")
+        """
+        Execute the given SQL with every parameters set
+        from the given sequence of parameters.
+
+        :type operation: :class:`str`
+        :param operation: SQL code to execute.
+
+        :type seq_of_params: :class:`list`
+        :param seq_of_params: Sequence of params to run the query with.
+        """
+        self._raise_if_closed()
 
         for params in seq_of_params:
             self.execute(operation, params)

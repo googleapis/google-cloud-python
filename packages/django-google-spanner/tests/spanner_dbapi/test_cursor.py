@@ -52,3 +52,46 @@ class TestCursor(unittest.TestCase):
         self.assertTrue(cursor.is_closed)
         with self.assertRaises(InterfaceError):
             cursor.execute("SELECT * FROM database")
+
+    def test_executemany_on_closed_cursor(self):
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists",
+                return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+        cursor.close()
+
+        with self.assertRaises(InterfaceError):
+            cursor.executemany(
+                """SELECT * FROM table1 WHERE "col1" = @a1""", ()
+            )
+
+    def test_executemany(self):
+        operation = """SELECT * FROM table1 WHERE "col1" = @a1"""
+        params_seq = ((1,), (2,))
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists",
+            return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists",
+                return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+        with mock.patch(
+            "google.cloud.spanner_dbapi.cursor.Cursor.execute"
+        ) as execute_mock:
+            cursor.executemany(operation, params_seq)
+
+        execute_mock.assert_has_calls(
+            (mock.call(operation, (1,)), mock.call(operation, (2,)))
+        )
