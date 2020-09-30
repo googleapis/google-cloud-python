@@ -3,23 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-documentai.git",
-        "sha": "a566241ad52a86692cd2c188dda63449009d7bf4"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "ff1b4ff2cfb09b66e26510d2c659705607563c1b",
-        "internalRef": "317199748"
+        "remote": "git@github.com:googleapis/python-documentai",
+        "sha": "ec70a8cec0f1fbd0f8ec18189139e632ec28b025"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cd522c3b4dde821766d95c80ae5aeb43d7a41170"
+        "sha": "e6168630be3e31eede633ba2c6f1cd64248dec1c"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "e6168630be3e31eede633ba2c6f1cd64248dec1c"
       }
     }
   ],
@@ -37,7 +36,7 @@
       "client": {
         "source": "googleapis",
         "apiName": "documentai",
-        "apiVersion": "v1beta2",
+        "apiVersion": "v1beta3",
         "language": "python",
         "generator": "bazel"
       }

@@ -14,6 +14,8 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+from synthtool.languages import python
+
 import synthtool as s
 import synthtool.gcp as gcp
 import logging
@@ -26,29 +28,32 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate document AI GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="documentai",
-    version="v1beta2",
-    bazel_target="//google/cloud/documentai/v1beta2:documentai-v1beta2-py",
-)
 
-library = gapic.py_library("documentai", "v1beta2")
+versions = ["v1beta2", "v1beta3"]
 
-excludes = ["README.rst", "nox.py", "docs/index.rst", "setup.py"]
-s.move(library, excludes=excludes)
+for version in versions:
+    library = gapic.py_library(
+        service="documentai",
+        version=version,
+        bazel_target=f"//google/cloud/documentai/{version}:documentai-{version}-py",
+    )
+
+    excludes = ["README.rst", "nox.py", "docs/index.rst", "setup.py"]
+    s.move(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     cov_level=100,
-    unit_test_python_versions=["3.6", "3.7", "3.8"],
-    system_test_python_versions=["3.7"],
+    microgenerator=True,
+    samples=False,  # set to true if there are samples
 )
-s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+s.move(
+    templated_files,
+    excludes=[".coveragerc"],  # microgenerator has a good .coveragerc file
+) 
 
-# Extra lint ignores for microgenerator tests
-# TODO: Remove when https://github.com/googleapis/gapic-generator-python/issues/425 is closed
-s.replace(".flake8", "(ignore = .*)", "\g<1>, F401, F841")
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

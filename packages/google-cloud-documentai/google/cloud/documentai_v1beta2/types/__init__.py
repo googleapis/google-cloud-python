@@ -15,7 +15,11 @@
 # limitations under the License.
 #
 
-from .geometry import Vertex, NormalizedVertex, BoundingPoly
+from .geometry import (
+    Vertex,
+    NormalizedVertex,
+    BoundingPoly,
+)
 from .document import Document
 from .document_understanding import (
     BatchProcessDocumentsRequest,
