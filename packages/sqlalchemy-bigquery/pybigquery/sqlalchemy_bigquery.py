@@ -5,9 +5,9 @@ from __future__ import unicode_literals
 
 from google import auth
 from google.cloud import bigquery
-from google.cloud.bigquery import dbapi, QueryJobConfig
+from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
+from google.cloud.bigquery.table import TableReference
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
@@ -89,6 +89,7 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
         result = self.quote(name)
         return result
+
 
 _type_map = {
     'STRING': types.String,
@@ -292,7 +293,6 @@ class BigQueryDialect(DefaultDialect):
                 _, project_id = auth.default()
 
             job_config.default_dataset = '{}.{}'.format(project_id, dataset_id)
-
 
     def _create_client_from_credentials(self, credentials, default_query_job_config, project_id):
         if project_id is None:
