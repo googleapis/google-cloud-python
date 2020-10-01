@@ -17,43 +17,42 @@ import io
 from setuptools import setup
 
 
-DEPENDENCIES = (
-    'google-auth',
-    'httplib2 >= 0.9.1',
-    'six'
-)
+version = "0.0.4"
+
+DEPENDENCIES = ["google-auth", "httplib2 >= 0.9.1", "six"]
 
 
-with io.open('README.rst', 'r') as fh:
+with io.open("README.rst", "r") as fh:
     long_description = fh.read()
 
 
 setup(
-    name='google-auth-httplib2',
-    version='0.0.4',
-    author='Google Cloud Platform',
-    author_email='jonwayne+google-auth@google.com',
-    description='Google Authentication Library: httplib2 transport',
+    name="google-auth-httplib2",
+    version=version,
+    author="Google Cloud Platform",
+    author_email="googleapis-packages@google.com",
+    description="Google Authentication Library: httplib2 transport",
     long_description=long_description,
-    url='https://github.com/GoogleCloudPlatform/google-auth-library-python-httplib2',
-    py_modules=['google_auth_httplib2'],
+    url="https://github.com/GoogleCloudPlatform/google-auth-library-python-httplib2",
+    py_modules=["google_auth_httplib2"],
     install_requires=DEPENDENCIES,
-    license='Apache 2.0',
-    keywords='google auth oauth client',
-    classifiers=(
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: POSIX',
-        'Operating System :: Microsoft :: Windows',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: OS Independent',
-        'Topic :: Internet :: WWW/HTTP',
-    ),
+    license="Apache 2.0",
+    keywords="google auth oauth client",
+    classifiers=[
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: OS Independent",
+        "Topic :: Internet :: WWW/HTTP",
+    ],
 )

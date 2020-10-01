@@ -26,7 +26,7 @@ from six.moves import http_client
 
 _LOGGER = logging.getLogger(__name__)
 # Properties present in file-like streams / buffers.
-_STREAM_PROPERTIES = ('read', 'seek', 'tell')
+_STREAM_PROPERTIES = ("read", "seek", "tell")
 
 
 class _Response(transport.Response):
@@ -36,6 +36,7 @@ class _Response(transport.Response):
         response (httplib2.Response): The raw httplib2 response.
         data (bytes): The response body.
     """
+
     def __init__(self, response, data):
         self._response = response
         self._data = data
@@ -80,11 +81,13 @@ class Request(transport.Request):
 
     .. automethod:: __call__
     """
+
     def __init__(self, http):
         self.http = http
 
-    def __call__(self, url, method='GET', body=None, headers=None,
-                 timeout=None, **kwargs):
+    def __call__(
+        self, url, method="GET", body=None, headers=None, timeout=None, **kwargs
+    ):
         """Make an HTTP request using httplib2.
 
         Args:
@@ -107,14 +110,15 @@ class Request(transport.Request):
         """
         if timeout is not None:
             _LOGGER.warning(
-                'httplib2 transport does not support per-request timeout. '
-                'Set the timeout when constructing the httplib2.Http instance.'
+                "httplib2 transport does not support per-request timeout. "
+                "Set the timeout when constructing the httplib2.Http instance."
             )
 
         try:
-            _LOGGER.debug('Making request: %s %s', method, url)
+            _LOGGER.debug("Making request: %s %s", method, url)
             response, data = self.http.request(
-                url, method=method, body=body, headers=headers, **kwargs)
+                url, method=method, body=body, headers=headers, **kwargs
+            )
             return _Response(response, data)
         # httplib2 should catch the lower http error, this is a bug and
         # needs to be fixed there.  Catch the error for the meanwhile.
@@ -147,9 +151,14 @@ class AuthorizedHttp(object):
     The underlying :meth:`request` implementation handles adding the
     credentials' headers to the request and refreshing credentials as needed.
     """
-    def __init__(self, credentials, http=None,
-                 refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
-                 max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS):
+
+    def __init__(
+        self,
+        credentials,
+        http=None,
+        refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
+        max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+    ):
         """
         Args:
             credentials (google.auth.credentials.Credentials): The credentials
@@ -175,47 +184,59 @@ class AuthorizedHttp(object):
         # credentials.refresh).
         self._request = Request(self.http)
 
-    def request(self, uri, method='GET', body=None, headers=None,
-                redirections=httplib2.DEFAULT_MAX_REDIRECTS,
-                connection_type=None,
-                **kwargs):
+    def request(
+        self,
+        uri,
+        method="GET",
+        body=None,
+        headers=None,
+        redirections=httplib2.DEFAULT_MAX_REDIRECTS,
+        connection_type=None,
+        **kwargs
+    ):
         """Implementation of httplib2's Http.request."""
 
-        _credential_refresh_attempt = kwargs.pop(
-            '_credential_refresh_attempt', 0)
+        _credential_refresh_attempt = kwargs.pop("_credential_refresh_attempt", 0)
 
         # Make a copy of the headers. They will be modified by the credentials
         # and we want to pass the original headers if we recurse.
         request_headers = headers.copy() if headers is not None else {}
 
-        self.credentials.before_request(
-            self._request, method, uri, request_headers)
+        self.credentials.before_request(self._request, method, uri, request_headers)
 
         # Check if the body is a file-like stream, and if so, save the body
         # stream position so that it can be restored in case of refresh.
         body_stream_position = None
-        if all(getattr(body, stream_prop, None) for stream_prop in
-               _STREAM_PROPERTIES):
+        if all(getattr(body, stream_prop, None) for stream_prop in _STREAM_PROPERTIES):
             body_stream_position = body.tell()
 
         # Make the request.
         response, content = self.http.request(
-            uri, method, body=body, headers=request_headers,
-            redirections=redirections, connection_type=connection_type,
-            **kwargs)
+            uri,
+            method,
+            body=body,
+            headers=request_headers,
+            redirections=redirections,
+            connection_type=connection_type,
+            **kwargs
+        )
 
         # If the response indicated that the credentials needed to be
         # refreshed, then refresh the credentials and re-attempt the
         # request.
         # A stored token may expire between the time it is retrieved and
         # the time the request is made, so we may need to try twice.
-        if (response.status in self._refresh_status_codes
-                and _credential_refresh_attempt < self._max_refresh_attempts):
+        if (
+            response.status in self._refresh_status_codes
+            and _credential_refresh_attempt < self._max_refresh_attempts
+        ):
 
             _LOGGER.info(
-                'Refreshing credentials due to a %s response. Attempt %s/%s.',
-                response.status, _credential_refresh_attempt + 1,
-                self._max_refresh_attempts)
+                "Refreshing credentials due to a %s response. Attempt %s/%s.",
+                response.status,
+                _credential_refresh_attempt + 1,
+                self._max_refresh_attempts,
+            )
 
             self.credentials.refresh(self._request)
 
@@ -225,10 +246,15 @@ class AuthorizedHttp(object):
 
             # Recurse. Pass in the original headers, not our modified set.
             return self.request(
-                uri, method, body=body, headers=headers,
-                redirections=redirections, connection_type=connection_type,
+                uri,
+                method,
+                body=body,
+                headers=headers,
+                redirections=redirections,
+                connection_type=connection_type,
                 _credential_refresh_attempt=_credential_refresh_attempt + 1,
-                **kwargs)
+                **kwargs
+            )
 
         return response, content
 

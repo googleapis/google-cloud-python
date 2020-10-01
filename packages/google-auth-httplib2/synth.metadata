@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:GoogleCloudPlatform/google-auth-library-python-httplib2.git",
+        "sha": "0d77a5eaf383d5d77f51fbbebc5fd24c91f10f15"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "0762e8ee2ec21cdfc4d82020b985a104feb0453b"
+      }
+    }
+  ]
+}

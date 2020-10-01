@@ -19,12 +19,11 @@ from pytest_localserver.http import WSGIServer
 from six.moves import http_client
 
 # .invalid will never resolve, see https://tools.ietf.org/html/rfc2606
-NXDOMAIN = 'test.invalid'
+NXDOMAIN = "test.invalid"
 
 
 class RequestResponseTests(object):
-
-    @pytest.fixture(scope='module')
+    @pytest.fixture(scope="module")
     def server(self):
         """Provides a test HTTP server.
 
@@ -37,15 +36,16 @@ class RequestResponseTests(object):
 
         # pylint: disable=unused-variable
         # (pylint thinks the flask routes are unusued.)
-        @app.route('/basic')
+        @app.route("/basic")
         def index():
-            header_value = flask.request.headers.get('x-test-header', 'value')
-            headers = {'X-Test-Header': header_value}
-            return 'Basic Content', http_client.OK, headers
+            header_value = flask.request.headers.get("x-test-header", "value")
+            headers = {"X-Test-Header": header_value}
+            return "Basic Content", http_client.OK, headers
 
-        @app.route('/server_error')
+        @app.route("/server_error")
         def server_error():
-            return 'Error', http_client.INTERNAL_SERVER_ERROR
+            return "Error", http_client.INTERNAL_SERVER_ERROR
+
         # pylint: enable=unused-variable
 
         server = WSGIServer(application=app.wsgi_app)
@@ -55,38 +55,40 @@ class RequestResponseTests(object):
 
     def test_request_basic(self, server):
         request = self.make_request()
-        response = request(url=server.url + '/basic', method='GET')
+        response = request(url=server.url + "/basic", method="GET")
 
         assert response.status == http_client.OK
-        assert response.headers['x-test-header'] == 'value'
-        assert response.data == b'Basic Content'
+        assert response.headers["x-test-header"] == "value"
+        assert response.data == b"Basic Content"
 
     def test_request_timeout(self, server):
         request = self.make_request()
-        response = request(url=server.url + '/basic', method='GET', timeout=2)
+        response = request(url=server.url + "/basic", method="GET", timeout=2)
 
         assert response.status == http_client.OK
-        assert response.headers['x-test-header'] == 'value'
-        assert response.data == b'Basic Content'
+        assert response.headers["x-test-header"] == "value"
+        assert response.data == b"Basic Content"
 
     def test_request_headers(self, server):
         request = self.make_request()
         response = request(
-            url=server.url + '/basic', method='GET', headers={
-                'x-test-header': 'hello world'})
+            url=server.url + "/basic",
+            method="GET",
+            headers={"x-test-header": "hello world"},
+        )
 
         assert response.status == http_client.OK
-        assert response.headers['x-test-header'] == 'hello world'
-        assert response.data == b'Basic Content'
+        assert response.headers["x-test-header"] == "hello world"
+        assert response.data == b"Basic Content"
 
     def test_request_error(self, server):
         request = self.make_request()
-        response = request(url=server.url + '/server_error', method='GET')
+        response = request(url=server.url + "/server_error", method="GET")
 
         assert response.status == http_client.INTERNAL_SERVER_ERROR
-        assert response.data == b'Error'
+        assert response.data == b"Error"
 
     def test_connection_error(self):
         request = self.make_request()
         with pytest.raises(exceptions.TransportError):
-            request(url='http://{}'.format(NXDOMAIN), method='GET')
+            request(url="http://{}".format(NXDOMAIN), method="GET")
