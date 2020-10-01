@@ -29,11 +29,15 @@ class ValueRule:
     def to_python(self, value, *, absent: bool = None):
         """Coerce the given value to the appropriate Python type.
 
-        Note that setting ``null_value`` is distinct from not setting
-        a value, and the absent value will raise an exception.
+        Note that both NullValue and absent fields return None.
+        In order to disambiguate between these two options,
+        use containment check,
+        E.g.
+        "value" in foo
+        which is True for NullValue and False for an absent value.
         """
         kind = value.WhichOneof("kind")
-        if kind == "null_value":
+        if kind == "null_value" or absent:
             return None
         if kind == "bool_value":
             return bool(value.bool_value)
@@ -49,7 +53,9 @@ class ValueRule:
             return self._marshal.to_python(
                 struct_pb2.ListValue, value.list_value, absent=False,
             )
-        raise AttributeError
+        # If more variants are ever added, we want to fail loudly
+        # instead of tacitly returning None.
+        raise ValueError("Unexpected kind: %s" % kind)  # pragma: NO COVER
 
     def to_proto(self, value) -> struct_pb2.Value:
         """Return a protobuf Value object representing this value."""

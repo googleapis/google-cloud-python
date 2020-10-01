@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import imp
+import importlib
 from unittest import mock
 
 from google.protobuf import descriptor_pool
@@ -76,11 +76,11 @@ def pytest_runtest_setup(item):
     # If the marshal had previously registered the old message classes,
     # then reload the appropriate modules so the marshal is using the new ones.
     if "wrappers_pb2" in reloaded:
-        imp.reload(rules.wrappers)
+        importlib.reload(rules.wrappers)
     if "struct_pb2" in reloaded:
-        imp.reload(rules.struct)
+        importlib.reload(rules.struct)
     if reloaded.intersection({"timestamp_pb2", "duration_pb2"}):
-        imp.reload(rules.dates)
+        importlib.reload(rules.dates)
 
 
 def pytest_runtest_teardown(item):

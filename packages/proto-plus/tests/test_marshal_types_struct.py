@@ -30,6 +30,13 @@ def test_value_primitives_read():
     assert Foo(value=True).value is True
 
 
+def test_value_absent():
+    class Foo(proto.Message):
+        value = proto.Field(struct_pb2.Value, number=1)
+
+    assert Foo().value is None
+
+
 def test_value_primitives_rmw():
     class Foo(proto.Message):
         value = proto.Field(struct_pb2.Value, number=1)
@@ -158,7 +165,7 @@ def test_value_unset():
         value = proto.Field(struct_pb2.Value, number=1)
 
     foo = Foo()
-    assert not hasattr(foo, "value")
+    assert "value" not in foo
 
 
 def test_list_value_read():
