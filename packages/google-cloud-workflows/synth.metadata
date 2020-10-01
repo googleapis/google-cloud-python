@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-workflows.git",
-        "sha": "ff52f3b063bdd0e84984c8256706b2a7eef59037"
+        "sha": "60d393078c39eec8756c65338860e46aa641d31d"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a651c5fb763c69a921aecdd3e1d8dc51dbf20f8d"
+        "sha": "9b0da5204ab90bcc36f8cd4e5689eff1a54cc3e4"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a651c5fb763c69a921aecdd3e1d8dc51dbf20f8d"
+        "sha": "9b0da5204ab90bcc36f8cd4e5689eff1a54cc3e4"
       }
     }
   ],
