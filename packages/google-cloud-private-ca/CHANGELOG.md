@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-security-private-ca/compare/v0.1.0...v0.1.1) (2020-10-02)
+
+
+### Documentation
+
+* don't treat warnings as errors ([ca0837a](https://www.github.com/googleapis/python-security-private-ca/commit/ca0837a9798d0bf6f3c93dcc003aa38f86eddd5c))
+
 ## 0.1.0 (2020-10-02)
 
 
