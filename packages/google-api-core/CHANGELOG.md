@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.22.3](https://www.github.com/googleapis/python-api-core/compare/v1.22.2...v1.22.3) (2020-10-02)
+
+
+### Bug Fixes
+
+* **deps:** require six >= 1.13.0 ([#78](https://www.github.com/googleapis/python-api-core/issues/78)) ([a7a8b98](https://www.github.com/googleapis/python-api-core/commit/a7a8b98602a3eb277fdc607ac69f3bcb147f3351)), closes [/github.com/benjaminp/six/blob/c0be8815d13df45b6ae471c4c436cce8c192245d/CHANGES#L30-L31](https://www.github.com/googleapis//github.com/benjaminp/six/blob/c0be8815d13df45b6ae471c4c436cce8c192245d/CHANGES/issues/L30-L31)
+
 ### [1.22.2](https://www.github.com/googleapis/python-api-core/compare/v1.22.1...v1.22.2) (2020-09-03)
 
 
