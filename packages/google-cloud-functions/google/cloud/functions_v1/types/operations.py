@@ -18,7 +18,7 @@
 import proto  # type: ignore
 
 
-from google.protobuf import any_pb2 as any  # type: ignore
+from google.protobuf import any_pb2 as gp_any  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
@@ -43,9 +43,9 @@ class OperationMetadataV1(proto.Message):
         target (str):
             Target of the operation - for example
             projects/project-1/locations/region-1/functions/function-1
-        type (~.operations.OperationType):
+        type_ (~.operations.OperationType):
             Type of operation.
-        request (~.any.Any):
+        request (~.gp_any.Any):
             The original request that started the
             operation.
         version_id (int):
@@ -62,9 +62,9 @@ class OperationMetadataV1(proto.Message):
 
     target = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(proto.ENUM, number=2, enum="OperationType",)
+    type_ = proto.Field(proto.ENUM, number=2, enum="OperationType",)
 
-    request = proto.Field(proto.MESSAGE, number=3, message=any.Any,)
+    request = proto.Field(proto.MESSAGE, number=3, message=gp_any.Any,)
 
     version_id = proto.Field(proto.INT64, number=4)
 

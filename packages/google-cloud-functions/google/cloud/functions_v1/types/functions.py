@@ -198,13 +198,13 @@ class CloudFunction(proto.Message):
 
     description = proto.Field(proto.STRING, number=2)
 
-    source_archive_url = proto.Field(proto.STRING, number=3)
+    source_archive_url = proto.Field(proto.STRING, number=3, oneof="source_code")
 
     source_repository = proto.Field(
-        proto.MESSAGE, number=4, message="SourceRepository",
+        proto.MESSAGE, number=4, oneof="source_code", message="SourceRepository",
     )
 
-    source_upload_url = proto.Field(proto.STRING, number=16)
+    source_upload_url = proto.Field(proto.STRING, number=16, oneof="source_code")
 
     https_trigger = proto.Field(
         proto.MESSAGE, number=5, oneof="trigger", message="HttpsTrigger",
@@ -375,7 +375,7 @@ class FailurePolicy(proto.Message):
         Retried execution is charged as any other execution.
         """
 
-    retry = proto.Field(proto.MESSAGE, number=1, message=Retry,)
+    retry = proto.Field(proto.MESSAGE, number=1, oneof="action", message=Retry,)
 
 
 class CreateFunctionRequest(proto.Message):

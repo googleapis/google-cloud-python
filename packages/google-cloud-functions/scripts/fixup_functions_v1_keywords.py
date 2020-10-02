@@ -51,6 +51,7 @@ class functionsCallTransformer(cst.CSTTransformer):
     'set_iam_policy': ('resource', 'policy', ),
     'test_iam_permissions': ('resource', 'permissions', ),
     'update_function': ('function', 'update_mask', ),
+
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
