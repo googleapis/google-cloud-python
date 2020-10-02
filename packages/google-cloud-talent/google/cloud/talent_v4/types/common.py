@@ -200,8 +200,6 @@ class CommuteMethod(proto.Enum):
     COMMUTE_METHOD_UNSPECIFIED = 0
     DRIVING = 1
     TRANSIT = 2
-    WALKING = 3
-    CYCLING = 4
 
 
 class TimestampRange(proto.Message):
