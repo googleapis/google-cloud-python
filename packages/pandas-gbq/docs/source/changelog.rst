@@ -1,6 +1,23 @@
 Changelog
 =========
 
+.. _changelog-0.14.0:
+
+0.14.0 / TBD
+------------
+
+Dependency updates
+~~~~~~~~~~~~~~~~~~
+
+- Update the minimum version of ``pandas`` to 0.20.1.
+  (:issue:`331`)
+
+Internal changes
+~~~~~~~~~~~~~~~~
+
+- Update tests to run against for Python 3.8. (:issue:`331`)
+
+
 .. _changelog-0.13.3:
 
 0.13.3 / 2020-09-30
@@ -8,7 +25,6 @@ Changelog
 
 - Include needed "extras" from ``google-cloud-bigquery`` package as
   dependencies. Exclude incompatible 2.0 version. (:issue:`324`, :issue:`329`)
-
 
 .. _changelog-0.13.2:
 
@@ -25,7 +41,6 @@ Changelog
 
 - Fix ``AttributeError`` with BQ Storage API to download empty results.
   (:issue:`299`)
-
 
 .. _changelog-0.13.0:
 

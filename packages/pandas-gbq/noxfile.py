@@ -10,8 +10,9 @@ import shutil
 import nox
 
 
-supported_pythons = ["3.5", "3.6", "3.7"]
-latest_python = "3.7"
+supported_pythons = ["3.5", "3.6", "3.7", "3.8"]
+system_test_pythons = ["3.5", "3.8"]
+latest_python = "3.8"
 
 # Use a consistent version of black so CI is deterministic.
 black_package = "black==19.10b0"
@@ -35,7 +36,14 @@ def blacken(session):
 @nox.session(python=supported_pythons)
 def unit(session):
     session.install("pytest", "pytest-cov")
-    session.install("-e", ".")
+    session.install(
+        "-e",
+        ".",
+        # Use dependencies versions from constraints file. This enables testing
+        # across a more full range of versions of the dependencies.
+        "-c",
+        os.path.join(".", "ci", "constraints-{}.pip".format(session.python)),
+    )
     session.run(
         "pytest",
         os.path.join(".", "tests", "unit"),
@@ -77,19 +85,16 @@ def docs(session):
     )
 
 
-@nox.session(python=supported_pythons)
+@nox.session(python=system_test_pythons)
 def system(session):
     session.install("pytest", "pytest-cov")
     session.install(
-        "-r",
-        os.path.join(".", "ci", "requirements-{}.pip".format(session.python)),
-    )
-    session.install(
         "-e",
         ".",
-        # Use dependencies from requirements file instead.
-        # This enables testing with specific versions of the dependencies.
-        "--no-dependencies",
+        # Use dependencies versions from constraints file. This enables testing
+        # across a more full range of versions of the dependencies.
+        "-c",
+        os.path.join(".", "ci", "constraints-{}.pip".format(session.python)),
     )
 
     # Skip local auth tests on CI.
