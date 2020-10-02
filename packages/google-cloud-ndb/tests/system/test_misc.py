@@ -399,3 +399,59 @@ def test_parallel_threads_lookup_w_redis_cache(namespace, dispose_of):
         thread2.join()
 
         assert activity["calls"] == 2
+
+
+@pytest.mark.usefixtures("client_context")
+def test_non_transactional_means_no_transaction(dispose_of):
+    """Regression test for #552
+
+    https://github.com/googleapis/python-ndb/issues/552
+    """
+    N = 50
+
+    class SomeKind(ndb.Model):
+        pass
+
+    class OtherKind(ndb.Model):
+        pass
+
+    @ndb.tasklet
+    def create_entities():
+        parent_keys = yield [SomeKind().put_async() for _ in range(N)]
+
+        futures = []
+        for parent_key in parent_keys:
+            dispose_of(parent_key._key)
+            futures.append(OtherKind(parent=parent_key).put_async())
+            futures.append(OtherKind(parent=parent_key).put_async())
+
+        keys = yield futures
+        for key in keys:
+            dispose_of(key._key)
+
+        raise ndb.Return(keys)
+
+    @ndb.non_transactional()
+    @ndb.tasklet
+    def non_transactional_tasklet(keys):
+        entities = yield ndb.get_multi_async(keys)
+        raise ndb.Return(entities)
+
+    @ndb.non_transactional()
+    @ndb.tasklet
+    def also_a_non_transactional_tasklet():
+        entities = yield OtherKind.query().fetch_async()
+        raise ndb.Return(entities)
+
+    @ndb.transactional()
+    def test_lookup(keys):
+        entities = non_transactional_tasklet(keys).result()
+        assert len(entities) == N * 2
+
+    @ndb.transactional()
+    def test_query():
+        return also_a_non_transactional_tasklet().result()
+
+    keys = create_entities().result()
+    test_lookup(keys)
+    eventually(test_query, length_equals(N * 2))

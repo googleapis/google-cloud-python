@@ -125,8 +125,7 @@ def lookup(key, options):
     """
     context = context_module.get_context()
     use_datastore = context._use_datastore(key, options)
-    in_transaction = bool(_get_transaction(options))
-    if use_datastore and in_transaction:
+    if use_datastore and options.transaction:
         use_global_cache = False
     else:
         use_global_cache = context._use_global_cache(key, options)
@@ -316,8 +315,7 @@ def get_read_options(options, default_read_consistency=None):
         ValueError: When ``read_consistency`` is set to ``EVENTUAL`` and there
             is a transaction.
     """
-    transaction = _get_transaction(options)
-
+    transaction = options.transaction
     read_consistency = options.read_consistency
 
     if transaction is None:
@@ -330,27 +328,6 @@ def get_read_options(options, default_read_consistency=None):
     return datastore_pb2.ReadOptions(
         read_consistency=read_consistency, transaction=transaction
     )
-
-
-def _get_transaction(options):
-    """Get the transaction for a request.
-
-    If specified, this will return the transaction from ``options``. Otherwise,
-    it will return the transaction for the current context.
-
-    Args:
-        options (_options.ReadOptions): The options for the request. Only
-            ``transaction`` will have any bearing here.
-
-    Returns:
-        Union[bytes, NoneType]: The transaction identifier, or :data:`None`.
-    """
-    transaction = getattr(options, "transaction", None)
-    if transaction is None:
-        context = context_module.get_context()
-        transaction = context.transaction
-
-    return transaction
 
 
 @tasklets.tasklet
@@ -388,7 +365,7 @@ def put(entity, options):
             yield _cache.global_set(cache_key, cache_value, expires=expires)
 
     if use_datastore:
-        transaction = _get_transaction(options)
+        transaction = context.transaction
         if transaction:
             batch = _get_commit_batch(transaction, options)
         else:
@@ -432,7 +409,7 @@ def delete(key, options):
         if use_global_cache:
             yield _cache.global_lock(cache_key)
 
-        transaction = _get_transaction(options)
+        transaction = context.transaction
         if transaction:
             batch = _get_commit_batch(transaction, options)
         else:
