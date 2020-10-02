@@ -46,4 +46,10 @@ templated_files = common.py_library(cov_level=99, microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc"] ) # the microgenerator has a good coveragerc file
 
+# Ignore warnings
+s.replace(
+    "noxfile.py",
+    """["']-W["'],  # warnings as errors""",
+    ""
+)
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
