@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-talent/compare/v1.0.0...v2.0.0) (2020-10-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove WALKING and CYCLING from v4 commute methods (#37)
+
+### Bug Fixes
+
+* remove WALKING and CYCLING from v4 commute methods ([#37](https://www.github.com/googleapis/python-talent/issues/37)) ([e239d24](https://www.github.com/googleapis/python-talent/commit/e239d24bdd3ff94cfc759da3e58fbf6a377af015))
+
 ## [1.0.0](https://www.github.com/googleapis/python-talent/compare/v0.6.1...v1.0.0) (2020-09-28)
 
 
