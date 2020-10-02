@@ -5,6 +5,7 @@
 # https://developers.google.com/open-source/licenses/bsd
 
 import datetime
+import time
 from unittest import TestCase
 
 from google.cloud.spanner_dbapi.types import (
@@ -17,69 +18,49 @@ from google.cloud.spanner_dbapi.types import (
 )
 from google.cloud.spanner_dbapi.utils import PeekIterator
 
-tzUTC = 0  # 0 hours offset from UTC
+
+utcOffset = time.timezone  # offset for current timezone
 
 
 class TypesTests(TestCase):
     def test_Date(self):
-        got = Date(2019, 11, 3)
-        want = datetime.date(2019, 11, 3)
-        self.assertEqual(got, want, "mismatch between conversion")
+        actual = Date(2019, 11, 3)
+        expected = datetime.date(2019, 11, 3)
+        self.assertEqual(actual, expected, "mismatch between conversion")
 
     def test_Time(self):
-        got = Time(23, 8, 19)
-        want = datetime.time(23, 8, 19)
-        self.assertEqual(got, want, "mismatch between conversion")
+        actual = Time(23, 8, 19)
+        expected = datetime.time(23, 8, 19)
+        self.assertEqual(actual, expected, "mismatch between conversion")
 
     def test_Timestamp(self):
-        got = Timestamp(2019, 11, 3, 23, 8, 19)
-        want = datetime.datetime(2019, 11, 3, 23, 8, 19)
-        self.assertEqual(got, want, "mismatch between conversion")
+        actual = Timestamp(2019, 11, 3, 23, 8, 19)
+        expected = datetime.datetime(2019, 11, 3, 23, 8, 19)
+        self.assertEqual(actual, expected, "mismatch between conversion")
 
     def test_DateFromTicks(self):
-        epochTicks = 1572851662.9782631  # Sun Nov 03 23:14:22 2019
-        got = DateFromTicks(epochTicks)
-        # Since continuous integration infrastructure such as Travis CI
-        # uses clocks on UTC, it is useful to be able to compare against
-        # either of UTC or the known standard time.
-        want = (
-            datetime.date(2019, 11, 3),
-            datetime.datetime(2019, 11, 4, tzUTC).date(),
-        )
-        matches = got in want
-        self.assertTrue(
-            matches, "`%s` not present in any of\n`%s`" % (got, want)
-        )
+        epochTicks = 1572822862  # Sun Nov 03 23:14:22 2019 GMT
+
+        actual = DateFromTicks(epochTicks + utcOffset)
+        expected = datetime.date(2019, 11, 3)
+
+        self.assertEqual(actual, expected, "mismatch between conversion")
 
     def test_TimeFromTicks(self):
-        epochTicks = 1572851662.9782631  # Sun Nov 03 23:14:22 2019
-        got = TimeFromTicks(epochTicks)
-        # Since continuous integration infrastructure such as Travis CI
-        # uses clocks on UTC, it is useful to be able to compare against
-        # either of UTC or the known standard time.
-        want = (
-            datetime.time(23, 14, 22),
-            datetime.datetime(2019, 11, 4, 7, 14, 22, tzUTC).time(),
-        )
-        matches = got in want
-        self.assertTrue(
-            matches, "`%s` not present in any of\n`%s`" % (got, want)
-        )
+        epochTicks = 1572822862  # Sun Nov 03 23:14:22 2019 GMT
+
+        actual = TimeFromTicks(epochTicks + utcOffset)
+        expected = datetime.time(23, 14, 22)
+
+        self.assertEqual(actual, expected, "mismatch between conversion")
 
     def test_TimestampFromTicks(self):
-        epochTicks = 1572851662.9782631  # Sun Nov 03 23:14:22 2019
-        got = TimestampFromTicks(epochTicks)
-        # Since continuous integration infrastructure such as Travis CI
-        # uses clocks on UTC, it is useful to be able to compare against
-        # either of UTC or the known standard time.
-        want = (
-            datetime.datetime(2019, 11, 3, 23, 14, 22),
-            datetime.datetime(2019, 11, 4, 7, 14, 22, tzUTC),
-        )
-        matches = got in want
-        self.assertTrue(
-            matches, "`%s` not present in any of\n`%s`" % (got, want)
-        )
+        epochTicks = 1572822862  # Sun Nov 03 23:14:22 2019 GMT
+
+        actual = TimestampFromTicks(epochTicks + utcOffset)
+        expected = datetime.datetime(2019, 11, 3, 23, 14, 22)
+
+        self.assertEqual(actual, expected, "mismatch between conversion")
 
     def test_PeekIterator(self):
         cases = [
@@ -90,8 +71,8 @@ class TypesTests(TestCase):
             ("no_args", (), []),
         ]
 
-        for name, data_in, want in cases:
+        for name, data_in, expected in cases:
             with self.subTest(name=name):
                 pitr = PeekIterator(data_in)
-                got = list(pitr)
-                self.assertEqual(got, want)
+                actual = list(pitr)
+                self.assertEqual(actual, expected)
