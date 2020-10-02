@@ -6,6 +6,19 @@ Changelog
 0.14.0 / TBD
 ------------
 
+- Add ``dtypes`` argument to ``read_gbq``. Use this argument to override the
+  default ``dtype`` for a particular column in the query results. For
+  example, this can be used to select nullable integer columns as the
+  ``Int64`` nullable integer pandas extension type. (:issue:`242`,
+  :issue:`332`)
+
+.. code-block:: python
+
+   df = gbq.read_gbq(
+       "SELECT CAST(NULL AS INT64) AS null_integer",
+       dtypes={"null_integer": "Int64"},
+   )
+
 Dependency updates
 ~~~~~~~~~~~~~~~~~~
 
@@ -15,7 +28,7 @@ Dependency updates
 Internal changes
 ~~~~~~~~~~~~~~~~
 
-- Update tests to run against for Python 3.8. (:issue:`331`)
+- Update tests to run against Python 3.8. (:issue:`331`)
 
 
 .. _changelog-0.13.3:

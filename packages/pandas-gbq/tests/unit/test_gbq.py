@@ -476,6 +476,27 @@ def test_load_does_not_modify_schema_arg(mock_bigquery_client):
     assert original_schema == original_schema_cp
 
 
+def test_read_gbq_passes_dtypes(
+    mock_bigquery_client, mock_service_account_credentials
+):
+    mock_service_account_credentials.project_id = "service_account_project_id"
+    df = gbq.read_gbq(
+        "SELECT 1 AS int_col",
+        dialect="standard",
+        credentials=mock_service_account_credentials,
+        dtypes={"int_col": "my-custom-dtype"},
+    )
+    assert df is not None
+
+    mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
+
+    mock_list_rows.to_dataframe.assert_called_once_with(
+        dtypes={"int_col": "my-custom-dtype"},
+        bqstorage_client=mock.ANY,
+        progress_bar_type=mock.ANY,
+    )
+
+
 def test_read_gbq_calls_tqdm(
     mock_bigquery_client, mock_service_account_credentials
 ):

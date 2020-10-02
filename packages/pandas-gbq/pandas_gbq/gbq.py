@@ -526,18 +526,27 @@ class GbqConnector(object):
                 )
             )
 
+        dtypes = kwargs.get("dtypes")
         return self._download_results(
             query_reply,
             max_results=max_results,
             progress_bar_type=progress_bar_type,
+            user_dtypes=dtypes,
         )
 
     def _download_results(
-        self, query_job, max_results=None, progress_bar_type=None
+        self,
+        query_job,
+        max_results=None,
+        progress_bar_type=None,
+        user_dtypes=None,
     ):
         # No results are desired, so don't bother downloading anything.
         if max_results == 0:
             return None
+
+        if user_dtypes is None:
+            user_dtypes = {}
 
         try:
             bqstorage_client = None
@@ -555,9 +564,10 @@ class GbqConnector(object):
             )
 
             schema_fields = [field.to_api_repr() for field in rows_iter.schema]
-            nullsafe_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
+            conversion_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
+            conversion_dtypes.update(user_dtypes)
             df = rows_iter.to_dataframe(
-                dtypes=nullsafe_dtypes,
+                dtypes=conversion_dtypes,
                 bqstorage_client=bqstorage_client,
                 progress_bar_type=progress_bar_type,
             )
@@ -790,6 +800,7 @@ def read_gbq(
     verbose=None,
     private_key=None,
     progress_bar_type="tqdm",
+    dtypes=None,
 ):
     r"""Load data from Google BigQuery using google-cloud-python
 
@@ -910,6 +921,10 @@ def read_gbq(
         ``'tqdm_gui'``
             Use the :func:`tqdm.tqdm_gui` function to display a
             progress bar as a graphical dialog box.
+    dtypes : dict, optional
+        A dictionary of column names to pandas ``dtype``. The provided
+        ``dtype`` is used when constructing the series for the column
+        specified. Otherwise, a default ``dtype`` is used.
     verbose : None, deprecated
         Deprecated in Pandas-GBQ 0.4.0. Use the `logging module
         to adjust verbosity instead
@@ -965,6 +980,7 @@ def read_gbq(
         configuration=configuration,
         max_results=max_results,
         progress_bar_type=progress_bar_type,
+        dtypes=dtypes,
     )
 
     # Reindex the DataFrame on the provided column
