@@ -47,7 +47,7 @@ _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
 
 
 class VideoIntelligenceServiceClient(object):
-    """Service that implements Google Cloud Video Intelligence API."""
+    """Service that implements the Video Intelligence API."""
 
     SERVICE_ADDRESS = "videointelligence.googleapis.com:443"
     """The default address of the service."""
@@ -233,33 +233,33 @@ class VideoIntelligenceServiceClient(object):
 
         Args:
             features (list[~google.cloud.videointelligence_v1.types.Feature]): Required. Requested video annotation features.
-            input_uri (str): Input video location. Currently, only `Google Cloud
-                Storage <https://cloud.google.com/storage/>`__ URIs are supported, which
+            input_uri (str): Input video location. Currently, only `Cloud
+                Storage <https://cloud.google.com/storage/>`__ URIs are supported. URIs
                 must be specified in the following format: ``gs://bucket-id/object-id``
                 (other URI formats return ``google.rpc.Code.INVALID_ARGUMENT``). For
                 more information, see `Request
-                URIs <https://cloud.google.com/storage/docs/request-endpoints>`__. A
-                video URI may include wildcards in ``object-id``, and thus identify
-                multiple videos. Supported wildcards: '*' to match 0 or more characters;
+                URIs <https://cloud.google.com/storage/docs/request-endpoints>`__. To
+                identify multiple videos, a video URI may include wildcards in the
+                ``object-id``. Supported wildcards: '*' to match 0 or more characters;
                 '?' to match 1 character. If unset, the input video should be embedded
-                in the request as ``input_content``. If set, ``input_content`` should be
+                in the request as ``input_content``. If set, ``input_content`` must be
                 unset.
             input_content (bytes): The video data bytes. If unset, the input video(s) should be
-                specified via ``input_uri``. If set, ``input_uri`` should be unset.
+                specified via the ``input_uri``. If set, ``input_uri`` must be unset.
             video_context (Union[dict, ~google.cloud.videointelligence_v1.types.VideoContext]): Additional video context and/or feature-specific parameters.
 
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.videointelligence_v1.types.VideoContext`
             output_uri (str): Optional. Location where the output (in JSON format) should be
-                stored. Currently, only `Google Cloud
-                Storage <https://cloud.google.com/storage/>`__ URIs are supported, which
+                stored. Currently, only `Cloud
+                Storage <https://cloud.google.com/storage/>`__ URIs are supported. These
                 must be specified in the following format: ``gs://bucket-id/object-id``
                 (other URI formats return ``google.rpc.Code.INVALID_ARGUMENT``). For
                 more information, see `Request
                 URIs <https://cloud.google.com/storage/docs/request-endpoints>`__.
             location_id (str): Optional. Cloud region where annotation should take place. Supported
-                cloud regions: ``us-east1``, ``us-west1``, ``europe-west1``,
-                ``asia-east1``. If no region is specified, a region will be determined
+                cloud regions are: ``us-east1``, ``us-west1``, ``europe-west1``,
+                ``asia-east1``. If no region is specified, the region will be determined
                 based on video file location.
             retry (Optional[google.api_core.retry.Retry]):  A retry object used
                 to retry requests. If ``None`` is specified, requests will
