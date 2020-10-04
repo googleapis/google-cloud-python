@@ -10,6 +10,21 @@ from google.cloud.spanner_dbapi.utils import PeekIterator
 
 
 class UtilsTests(TestCase):
+    def test_PeekIterator(self):
+        cases = [
+            ("list", [1, 2, 3, 4, 6, 7], [1, 2, 3, 4, 6, 7]),
+            ("iter_from_list", iter([1, 2, 3, 4, 6, 7]), [1, 2, 3, 4, 6, 7]),
+            ("tuple", ("a", 12, 0xFF), ["a", 12, 0xFF]),
+            ("iter_from_tuple", iter(("a", 12, 0xFF)), ["a", 12, 0xFF]),
+            ("no_args", (), []),
+        ]
+
+        for name, data_in, expected in cases:
+            with self.subTest(name=name):
+                pitr = PeekIterator(data_in)
+                actual = list(pitr)
+                self.assertEqual(actual, expected)
+
     def test_peekIterator_list_rows_converted_to_tuples(self):
         # Cloud Spanner returns results in lists e.g. [result].
         # PeekIterator is used by BaseCursor in its fetch* methods.
