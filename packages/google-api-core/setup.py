@@ -22,7 +22,12 @@ import setuptools
 
 name = "google-api-core"
 description = "Google API client core library"
-version = "1.22.3"
+
+version = {}
+with open("google/api_core/version.py") as fp:
+    exec(fp.read(), version)
+version = version['__version__']
+
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
