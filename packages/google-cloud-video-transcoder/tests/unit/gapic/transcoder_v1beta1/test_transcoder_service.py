@@ -2613,31 +2613,6 @@ def test_transcoder_service_grpc_asyncio_transport_channel_mtls_with_adc(
         assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_job_path():
-    project = "squid"
-    location = "clam"
-    job = "whelk"
-
-    expected = "projects/{project}/locations/{location}/jobs/{job}".format(
-        project=project, location=location, job=job,
-    )
-    actual = TranscoderServiceClient.job_path(project, location, job)
-    assert expected == actual
-
-
-def test_parse_job_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "job": "nudibranch",
-    }
-    path = TranscoderServiceClient.job_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = TranscoderServiceClient.parse_job_path(path)
-    assert expected == actual
-
-
 def test_job_template_path():
     project = "squid"
     location = "clam"
@@ -2660,6 +2635,31 @@ def test_parse_job_template_path():
 
     # Check that the path construction is reversible.
     actual = TranscoderServiceClient.parse_job_template_path(path)
+    assert expected == actual
+
+
+def test_job_path():
+    project = "squid"
+    location = "clam"
+    job = "whelk"
+
+    expected = "projects/{project}/locations/{location}/jobs/{job}".format(
+        project=project, location=location, job=job,
+    )
+    actual = TranscoderServiceClient.job_path(project, location, job)
+    assert expected == actual
+
+
+def test_parse_job_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "job": "nudibranch",
+    }
+    path = TranscoderServiceClient.job_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TranscoderServiceClient.parse_job_path(path)
     assert expected == actual
 
 

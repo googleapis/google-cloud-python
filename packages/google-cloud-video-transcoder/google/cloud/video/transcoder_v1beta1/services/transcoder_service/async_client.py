@@ -52,9 +52,9 @@ class TranscoderServiceAsyncClient:
     DEFAULT_ENDPOINT = TranscoderServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = TranscoderServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    job_path = staticmethod(TranscoderServiceClient.job_path)
-
     job_template_path = staticmethod(TranscoderServiceClient.job_template_path)
+
+    job_path = staticmethod(TranscoderServiceClient.job_path)
 
     from_service_account_file = TranscoderServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
