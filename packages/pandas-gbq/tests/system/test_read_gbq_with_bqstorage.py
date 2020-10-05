@@ -6,7 +6,7 @@ import uuid
 import pytest
 
 
-pytest.importorskip("google.cloud.bigquery_storage_v1beta1")
+pytest.importorskip("google.cloud.bigquery", minversion="1.24.0")
 
 
 @pytest.fixture

@@ -56,9 +56,12 @@ def bigquery_client(project_id, private_key_path):
 @pytest.fixture()
 def random_dataset_id(bigquery_client):
     import google.api_core.exceptions
+    from google.cloud import bigquery
 
     dataset_id = "".join(["pandas_gbq_", str(uuid.uuid4()).replace("-", "_")])
-    dataset_ref = bigquery_client.dataset(dataset_id)
+    dataset_ref = bigquery.DatasetReference(
+        bigquery_client.project, dataset_id
+    )
     yield dataset_id
     try:
         bigquery_client.delete_dataset(dataset_ref, delete_contents=True)

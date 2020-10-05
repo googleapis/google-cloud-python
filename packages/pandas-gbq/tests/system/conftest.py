@@ -28,7 +28,9 @@ def gbq_connector(project, credentials):
 def random_dataset(bigquery_client, random_dataset_id):
     from google.cloud import bigquery
 
-    dataset_ref = bigquery_client.dataset(random_dataset_id)
+    dataset_ref = bigquery.DatasetReference(
+        bigquery_client.project, random_dataset_id
+    )
     dataset = bigquery.Dataset(dataset_ref)
     bigquery_client.create_dataset(dataset)
     return dataset
@@ -38,7 +40,9 @@ def random_dataset(bigquery_client, random_dataset_id):
 def tokyo_dataset(bigquery_client, random_dataset_id):
     from google.cloud import bigquery
 
-    dataset_ref = bigquery_client.dataset(random_dataset_id)
+    dataset_ref = bigquery.DatasetReference(
+        bigquery_client.project, random_dataset_id
+    )
     dataset = bigquery.Dataset(dataset_ref)
     dataset.location = "asia-northeast1"
     bigquery_client.create_dataset(dataset)

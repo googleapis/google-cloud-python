@@ -13,7 +13,7 @@ import pytest
 from pandas_gbq import gbq
 
 
-pytestmark = pytest.mark.filter_warnings(
+pytestmark = pytest.mark.filterwarnings(
     "ignore:credentials from Google Cloud SDK"
 )
 pandas_installed_version = pkg_resources.get_distribution(
@@ -490,9 +490,30 @@ def test_read_gbq_passes_dtypes(
 
     mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
 
+    _, to_dataframe_kwargs = mock_list_rows.to_dataframe.call_args
+    assert to_dataframe_kwargs["dtypes"] == {"int_col": "my-custom-dtype"}
+
+
+def test_read_gbq_use_bqstorage_api(
+    mock_bigquery_client, mock_service_account_credentials
+):
+    gbq._check_google_client_version()
+    if not gbq.HAS_BQSTORAGE_SUPPORT:
+        pytest.skip("requires BigQuery Storage API")
+
+    mock_service_account_credentials.project_id = "service_account_project_id"
+    df = gbq.read_gbq(
+        "SELECT 1 AS int_col",
+        dialect="standard",
+        credentials=mock_service_account_credentials,
+        use_bqstorage_api=True,
+    )
+    assert df is not None
+
+    mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
     mock_list_rows.to_dataframe.assert_called_once_with(
-        dtypes={"int_col": "my-custom-dtype"},
-        bqstorage_client=mock.ANY,
+        create_bqstorage_client=True,
+        dtypes=mock.ANY,
         progress_bar_type=mock.ANY,
     )
 
@@ -511,6 +532,5 @@ def test_read_gbq_calls_tqdm(
 
     mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
 
-    mock_list_rows.to_dataframe.assert_called_once_with(
-        dtypes=mock.ANY, bqstorage_client=mock.ANY, progress_bar_type="foobar"
-    )
+    _, to_dataframe_kwargs = mock_list_rows.to_dataframe.call_args
+    assert to_dataframe_kwargs["progress_bar_type"] == "foobar"

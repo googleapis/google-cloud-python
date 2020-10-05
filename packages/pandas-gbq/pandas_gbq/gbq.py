@@ -14,14 +14,8 @@ except ImportError:  # pragma: NO COVER
     bigquery = None
     google_exceptions = None
 
-try:
-    # The BigQuery Storage API client is an optional dependency. It is only
-    # required when use_bqstorage_api=True.
-    from google.cloud import bigquery_storage_v1beta1
-except ImportError:  # pragma: NO COVER
-    bigquery_storage_v1beta1 = None
-
 from pandas_gbq.exceptions import AccessDenied
+from pandas_gbq.exceptions import PerformanceWarning
 import pandas_gbq.schema
 import pandas_gbq.timestamp
 
@@ -30,7 +24,9 @@ logger = logging.getLogger(__name__)
 
 BIGQUERY_INSTALLED_VERSION = None
 BIGQUERY_CLIENT_INFO_VERSION = "1.12.0"
+BIGQUERY_BQSTORAGE_VERSION = "1.24.0"
 HAS_CLIENT_INFO = False
+HAS_BQSTORAGE_SUPPORT = False
 
 try:
     import tqdm  # noqa
@@ -39,7 +35,7 @@ except ImportError:
 
 
 def _check_google_client_version():
-    global BIGQUERY_INSTALLED_VERSION, HAS_CLIENT_INFO, SHOW_VERBOSE_DEPRECATION
+    global BIGQUERY_INSTALLED_VERSION, HAS_CLIENT_INFO, HAS_BQSTORAGE_SUPPORT, SHOW_VERBOSE_DEPRECATION
 
     try:
         import pkg_resources
@@ -47,10 +43,13 @@ def _check_google_client_version():
     except ImportError:
         raise ImportError("Could not import pkg_resources (setuptools).")
 
-    # https://github.com/GoogleCloudPlatform/google-cloud-python/blob/master/bigquery/CHANGELOG.md
+    # https://github.com/googleapis/python-bigquery/blob/master/CHANGELOG.md
     bigquery_minimum_version = pkg_resources.parse_version("1.11.0")
     bigquery_client_info_version = pkg_resources.parse_version(
         BIGQUERY_CLIENT_INFO_VERSION
+    )
+    bigquery_bqstorage_version = pkg_resources.parse_version(
+        BIGQUERY_BQSTORAGE_VERSION
     )
     BIGQUERY_INSTALLED_VERSION = pkg_resources.get_distribution(
         "google-cloud-bigquery"
@@ -58,6 +57,9 @@ def _check_google_client_version():
 
     HAS_CLIENT_INFO = (
         BIGQUERY_INSTALLED_VERSION >= bigquery_client_info_version
+    )
+    HAS_BQSTORAGE_SUPPORT = (
+        BIGQUERY_INSTALLED_VERSION >= bigquery_bqstorage_version
     )
 
     if BIGQUERY_INSTALLED_VERSION < bigquery_minimum_version:
@@ -548,14 +550,30 @@ class GbqConnector(object):
         if user_dtypes is None:
             user_dtypes = {}
 
-        try:
-            bqstorage_client = None
-            if max_results is None:
-                # Only use the BigQuery Storage API if the full result set is requested.
-                bqstorage_client = _make_bqstorage_client(
-                    self.use_bqstorage_api, self.credentials
-                )
+        if self.use_bqstorage_api and not HAS_BQSTORAGE_SUPPORT:
+            warnings.warn(
+                (
+                    "use_bqstorage_api was set, but have google-cloud-bigquery "
+                    "version {}. Requires google-cloud-bigquery version "
+                    "{} or later."
+                ).format(
+                    BIGQUERY_INSTALLED_VERSION, BIGQUERY_BQSTORAGE_VERSION
+                ),
+                PerformanceWarning,
+                stacklevel=4,
+            )
 
+        create_bqstorage_client = self.use_bqstorage_api
+        if max_results is not None:
+            create_bqstorage_client = False
+
+        to_dataframe_kwargs = {}
+        if HAS_BQSTORAGE_SUPPORT:
+            to_dataframe_kwargs[
+                "create_bqstorage_client"
+            ] = create_bqstorage_client
+
+        try:
             query_job.result()
             # Get the table schema, so that we can list rows.
             destination = self.client.get_table(query_job.destination)
@@ -568,16 +586,11 @@ class GbqConnector(object):
             conversion_dtypes.update(user_dtypes)
             df = rows_iter.to_dataframe(
                 dtypes=conversion_dtypes,
-                bqstorage_client=bqstorage_client,
                 progress_bar_type=progress_bar_type,
+                **to_dataframe_kwargs
             )
         except self.http_error as ex:
             self.process_http_error(ex)
-        finally:
-            if bqstorage_client:
-                # Clean up open socket resources. See:
-                # https://github.com/pydata/pandas-gbq/issues/294
-                bqstorage_client.transport.channel.close()
 
         if df.empty:
             df = _cast_empty_df_dtypes(schema_fields, df)
@@ -761,27 +774,6 @@ def _cast_empty_df_dtypes(schema_fields, df):
             df[column] = df[column].astype(dtype)
 
     return df
-
-
-def _make_bqstorage_client(use_bqstorage_api, credentials):
-    if not use_bqstorage_api:
-        return None
-
-    if bigquery_storage_v1beta1 is None:
-        raise ImportError(
-            "Install the google-cloud-bigquery-storage and fastavro/pyarrow "
-            "packages to use the BigQuery Storage API."
-        )
-
-    import google.api_core.gapic_v1.client_info
-    import pandas
-
-    client_info = google.api_core.gapic_v1.client_info.ClientInfo(
-        user_agent="pandas-{}".format(pandas.__version__)
-    )
-    return bigquery_storage_v1beta1.BigQueryStorageClient(
-        credentials=credentials, client_info=client_info
-    )
 
 
 def read_gbq(
