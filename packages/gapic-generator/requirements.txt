@@ -1,5 +1,5 @@
 click==7.1.2
-google-api-core==1.22.2
+google-api-core==1.22.3
 googleapis-common-protos==1.52.0
 jinja2==2.11.2
 MarkupSafe==1.1.1
