@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.22.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.22.0...v1.22.1) (2020-10-05)
+
+
+### Bug Fixes
+
+* move aiohttp to extra as it is currently internal surface ([#619](https://www.github.com/googleapis/google-auth-library-python/issues/619)) ([a924011](https://www.github.com/googleapis/google-auth-library-python/commit/a9240111e7af29338624d98ee10aed31462f4d19)), closes [#618](https://www.github.com/googleapis/google-auth-library-python/issues/618)
+
 ## [1.22.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.21.3...v1.22.0) (2020-09-28)
 
 
