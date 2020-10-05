@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [1.16.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.15.0...v1.16.0) (2020-10-02)
+
+
+### Features
+
+* **v1:** add PersonDetection and FaceDetection ([#53](https://www.github.com/googleapis/python-videointelligence/issues/53)) ([55415a8](https://www.github.com/googleapis/python-videointelligence/commit/55415a81e738badc997e93d60c37b5dbc8b373ea))
+* video speech transcription [([#1849](https://www.github.com/googleapis/python-videointelligence/issues/1849))](https://github.com/GoogleCloudPlatform/python-docs-samples/issues/1849) ([0bb8156](https://www.github.com/googleapis/python-videointelligence/commit/0bb8156ddda4fde4bbdda5f48d21fbbc34a2b0e8))
+
+
+### Documentation
+
+* corrects release badge and link ([#36](https://www.github.com/googleapis/python-videointelligence/issues/36)) ([20ad69c](https://www.github.com/googleapis/python-videointelligence/commit/20ad69cefb473565d5065e4b118398c675cd5f79))
+
 ## [1.15.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.14.0...v1.15.0) (2020-06-09)
 
 
