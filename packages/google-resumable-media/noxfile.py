@@ -18,15 +18,14 @@ import shutil
 
 import nox
 
-
-SYSTEM_TEST_ENV_VARS = (
-    'GOOGLE_APPLICATION_CREDENTIALS',
-)
-GOOGLE_AUTH = 'google-auth >= 0.10.0'
+SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
+BLACK_VERSION = "black==20.8b1"
+GOOGLE_AUTH = "google-auth >= 1.22.0, < 2.0dev"
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.5", "3.6", "3.7", "3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
+UNIT_TEST_SYNC_PYTHON_VERSIONS = ["2.7", "3.5"]
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
@@ -34,22 +33,50 @@ def unit(session):
     """Run the unit test suite."""
 
     # Install all test dependencies, then install this package in-place.
-    session.install('mock', 'pytest', 'pytest-cov')
-    session.install('-e', '.[requests]')
+    session.install("mock", "pytest", "pytest-cov", "pytest-asyncio", GOOGLE_AUTH)
+    session.install("-e", ".[requests]")
 
     # Run py.test against the unit tests.
     # NOTE: We don't require 100% line coverage for unit test runs since
     #       some have branches that are Py2/Py3 specific.
-    line_coverage = '--cov-fail-under=0'
+    line_coverage = "--cov-fail-under=0"
     session.run(
-        'py.test',
-        '--cov=google.resumable_media',
-        '--cov=tests.unit',
-        '--cov-append',
-        '--cov-config=.coveragerc',
-        '--cov-report=',
+        "py.test",
+        "--cov=google.resumable_media",
+        "--cov=google._async_resumable_media",
+        "--cov=tests.unit",
+        "--cov=tests_async.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
         line_coverage,
-        os.path.join('tests', 'unit'),
+        os.path.join("tests", "unit"),
+        os.path.join("tests_async", "unit"),
+        *session.posargs
+    )
+
+
+@nox.session(python=UNIT_TEST_SYNC_PYTHON_VERSIONS)
+def unit_2(session):
+    """Run the unit test suite."""
+
+    # Install all test dependencies, then install this package in-place.
+    session.install("mock", "pytest", "pytest-cov")
+    session.install("-e", ".[requests]")
+
+    # Run py.test against the unit tests.
+    # NOTE: We don't require 100% line coverage for unit test runs since
+    #       some have branches that are Py2/Py3 specific.
+    line_coverage = "--cov-fail-under=0"
+    session.run(
+        "py.test",
+        "--cov=google.resumable_media",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        line_coverage,
+        os.path.join("tests", "unit"),
         *session.posargs
     )
 
@@ -127,7 +154,8 @@ def doctest(session):
         "-W",
         "-b",
         "doctest",
-        "-d", os.path.join("docs", "_build", "doctrees"),
+        "-d",
+        os.path.join("docs", "_build", "doctrees"),
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "doctest"),
     )
@@ -140,28 +168,42 @@ def lint(session):
     Returns a failure if flake8 finds linting errors or sufficiently
     serious code quality issues.
     """
-    session.install('flake8', 'black')
-    session.install('-e', '.')
+    session.install("flake8", BLACK_VERSION)
+    session.install("-e", ".")
     session.run(
-        'flake8',
-        os.path.join('google', 'resumable_media'),
-        'tests',
+        "flake8",
+        os.path.join("google", "resumable_media"),
+        "tests",
+        os.path.join("google", "_async_resumable_media"),
+        "tests_async",
     )
-    session.run("black", "--check", os.path.join("google", "resumable_media"), "tests")
+    session.run(
+        "black",
+        "--check",
+        os.path.join("google", "resumable_media"),
+        "tests",
+        os.path.join("google", "_async_resumable_media"),
+        "tests_async",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
-    session.install('docutils', 'Pygments')
-    session.run(
-        'python', 'setup.py', 'check', '--restructuredtext', '--strict')
+    session.install("docutils", "Pygments")
+    session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    session.install("black")
-    session.run("black", os.path.join("google", "resumable_media"), "tests")
+    session.install(BLACK_VERSION)
+    session.run(
+        "black",
+        os.path.join("google", "resumable_media"),
+        "tests",
+        os.path.join("google", "_async_resumable_media"),
+        "tests_async",
+    )
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -176,21 +218,24 @@ def system(session):
 
     # Only run system tests if the environment variables are set.
     if missing:
-        all_vars = ', '.join(missing)
-        msg = 'Environment variable(s) unset: {}'.format(all_vars)
+        all_vars = ", ".join(missing)
+        msg = "Environment variable(s) unset: {}".format(all_vars)
         session.skip(msg)
 
     # Install all test dependencies, then install this package into the
-    # virutalenv's dist-packages.
-    session.install('mock', 'pytest', GOOGLE_AUTH, 'google-cloud-testutils')
-    session.install('-e', '.[requests]')
+    # virtualenv's dist-packages.
+    session.install("mock", "pytest", GOOGLE_AUTH, "google-cloud-testutils")
+    session.install("-e", ".[requests]")
+
+    # Run py.test against the async system tests.
+    if session.python.startswith("3"):
+        session.install("pytest-asyncio")
+        session.run(
+            "py.test", "-s", os.path.join("tests_async", "system"), *session.posargs
+        )
 
     # Run py.test against the system tests.
-    session.run(
-        'py.test',
-        os.path.join('tests', 'system'),
-        *session.posargs
-    )
+    session.run("py.test", "-s", os.path.join("tests", "system"), *session.posargs)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -200,6 +245,6 @@ def cover(session):
     This outputs the coverage report aggregating coverage from the unit
     test runs (not system test runs), and then erases coverage data.
     """
-    session.install('coverage', 'pytest-cov')
-    session.run('coverage', 'report', '--show-missing', '--fail-under=100')
-    session.run('coverage', 'erase')
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "erase")

@@ -19,8 +19,8 @@ uploads that contain both metadata and a small file as payload.
 """
 
 
-from google.resumable_media import _upload
-from google.resumable_media.requests import _request_helpers
+from google._async_resumable_media import _upload
+from google._async_resumable_media.requests import _request_helpers
 
 
 class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
@@ -38,15 +38,12 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def transmit(
+    async def transmit(
         self,
         transport,
         data,
         content_type,
-        timeout=(
-            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
-            _request_helpers._DEFAULT_READ_TIMEOUT,
-        ),
+        timeout=_request_helpers._DEFAULT_TIMEOUT,
     ):
         """Transmit the resource to be uploaded.
 
@@ -56,19 +53,18 @@ class SimpleUpload(_request_helpers.RequestsMixin, _upload.SimpleUpload):
             data (bytes): The resource content to be uploaded.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
-            timeout (Optional[Union[float, Tuple[float, float]]]):
+            timeout (Optional[Union[float, aiohttp.ClientTimeout]]):
                 The number of seconds to wait for the server response.
                 Depending on the retry strategy, a request may be repeated
                 several times using the same timeout each time.
-
-                Can also be passed as a tuple (connect_timeout, read_timeout).
-                See :meth:`requests.Session.request` documentation for details.
+                Can also be passed as an `aiohttp.ClientTimeout` object.
 
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
         """
         method, url, payload, headers = self._prepare_request(data, content_type)
-        response = _request_helpers.http_request(
+
+        response = await _request_helpers.http_request(
             transport,
             method,
             url,
@@ -101,16 +97,13 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
         upload_url (str): The URL where the content will be uploaded.
     """
 
-    def transmit(
+    async def transmit(
         self,
         transport,
         data,
         metadata,
         content_type,
-        timeout=(
-            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
-            _request_helpers._DEFAULT_READ_TIMEOUT,
-        ),
+        timeout=_request_helpers._DEFAULT_TIMEOUT,
     ):
         """Transmit the resource to be uploaded.
 
@@ -122,13 +115,11 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
                 ACL list.
             content_type (str): The content type of the resource, e.g. a JPEG
                 image has content type ``image/jpeg``.
-            timeout (Optional[Union[float, Tuple[float, float]]]):
+            timeout (Optional[Union[float, aiohttp.ClientTimeout]]):
                 The number of seconds to wait for the server response.
                 Depending on the retry strategy, a request may be repeated
                 several times using the same timeout each time.
-
-                Can also be passed as a tuple (connect_timeout, read_timeout).
-                See :meth:`requests.Session.request` documentation for details.
+                Can also be passed as an `aiohttp.ClientTimeout` object.
 
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
@@ -136,7 +127,8 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
         method, url, payload, headers = self._prepare_request(
             data, metadata, content_type
         )
-        response = _request_helpers.http_request(
+
+        response = await _request_helpers.http_request(
             transport,
             method,
             url,
@@ -145,7 +137,6 @@ class MultipartUpload(_request_helpers.RequestsMixin, _upload.MultipartUpload):
             retry_strategy=self._retry_strategy,
             timeout=timeout,
         )
-
         self._process_response(response)
         return response
 
@@ -340,7 +331,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             :data:`.UPLOAD_CHUNK_SIZE`.
     """
 
-    def initiate(
+    async def initiate(
         self,
         transport,
         stream,
@@ -348,10 +339,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         content_type,
         total_bytes=None,
         stream_final=True,
-        timeout=(
-            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
-            _request_helpers._DEFAULT_READ_TIMEOUT,
-        ),
+        timeout=_request_helpers._DEFAULT_TIMEOUT,
     ):
         """Initiate a resumable upload.
 
@@ -383,13 +371,11 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
                 "final" (i.e. no more bytes will be added to it). In this case
                 we determine the upload size from the size of the stream. If
                 ``total_bytes`` is passed, this argument will be ignored.
-            timeout (Optional[Union[float, Tuple[float, float]]]):
+            timeout (Optional[Union[float, aiohttp.ClientTimeout]]):
                 The number of seconds to wait for the server response.
                 Depending on the retry strategy, a request may be repeated
                 several times using the same timeout each time.
-
-                Can also be passed as a tuple (connect_timeout, read_timeout).
-                See :meth:`requests.Session.request` documentation for details.
+                Can also be passed as an `aiohttp.ClientTimeout` object.
 
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
@@ -401,7 +387,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             total_bytes=total_bytes,
             stream_final=stream_final,
         )
-        response = _request_helpers.http_request(
+        response = await _request_helpers.http_request(
             transport,
             method,
             url,
@@ -413,13 +399,8 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         self._process_initiate_response(response)
         return response
 
-    def transmit_next_chunk(
-        self,
-        transport,
-        timeout=(
-            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
-            _request_helpers._DEFAULT_READ_TIMEOUT,
-        ),
+    async def transmit_next_chunk(
+        self, transport, timeout=_request_helpers._DEFAULT_TIMEOUT
     ):
         """Transmit the next chunk of the resource to be uploaded.
 
@@ -474,13 +455,11 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         Args:
             transport (~requests.Session): A ``requests`` object which can
                 make authenticated requests.
-            timeout (Optional[Union[float, Tuple[float, float]]]):
+            timeout (Optional[Union[float, aiohttp.ClientTimeout]]):
                 The number of seconds to wait for the server response.
                 Depending on the retry strategy, a request may be repeated
                 several times using the same timeout each time.
-
-                Can also be passed as a tuple (connect_timeout, read_timeout).
-                See :meth:`requests.Session.request` documentation for details.
+                Can also be passed as an `aiohttp.ClientTimeout` object.
 
         Returns:
             ~requests.Response: The HTTP response returned by ``transport``.
@@ -493,7 +472,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
                 does not match or is not available.
         """
         method, url, payload, headers = self._prepare_request()
-        response = _request_helpers.http_request(
+        response = await _request_helpers.http_request(
             transport,
             method,
             url,
@@ -502,10 +481,10 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
             retry_strategy=self._retry_strategy,
             timeout=timeout,
         )
-        self._process_response(response, len(payload))
+        await self._process_response(response, len(payload))
         return response
 
-    def recover(self, transport):
+    async def recover(self, transport):
         """Recover from a failure.
 
         This method should be used when a :class:`ResumableUpload` is in an
@@ -524,7 +503,7 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         """
         method, url, payload, headers = self._prepare_recover_request()
         # NOTE: We assume "payload is None" but pass it along anyway.
-        response = _request_helpers.http_request(
+        response = await _request_helpers.http_request(
             transport,
             method,
             url,

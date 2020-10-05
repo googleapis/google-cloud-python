@@ -9,6 +9,11 @@ See the `docs`_ for examples and usage.
 
 .. _docs: https://googleapis.dev/python/google-resumable-media/latest/index.html
 
+Experimental `asyncio` Support
+------------------------------
+While still in development and subject to change, this library has `asyncio`
+support at `google._async_resumable_media`. 
+
 Supported Python Versions
 -------------------------
 Python >= 3.5

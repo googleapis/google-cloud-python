@@ -27,11 +27,13 @@ REQUIREMENTS = [
     'six',
     'google-crc32c >= 1.0, < 2.0dev; python_version>="3.5"',
     'crcmod >= 1.7; python_version=="2.7"',
+
 ]
 EXTRAS_REQUIRE = {
     'requests': [
         'requests >= 2.18.0, < 3.0.0dev',
     ],
+    'aiohttp': 'aiohttp >= 3.6.2, < 4.0.0dev; python_version>="3.6"'
 }
 
 setuptools.setup(
