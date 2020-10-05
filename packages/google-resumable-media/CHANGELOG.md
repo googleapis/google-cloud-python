@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [1.1.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v1.0.0...v1.1.0) (2020-10-05)
+
+
+### Features
+
+* add _async_resumable_media experimental support ([#179](https://www.github.com/googleapis/google-resumable-media-python/issues/179)) ([03c11ba](https://www.github.com/googleapis/google-resumable-media-python/commit/03c11bae0c43830d539f1e0adcc837a6c88f4e2e)), closes [#160](https://www.github.com/googleapis/google-resumable-media-python/issues/160) [#153](https://www.github.com/googleapis/google-resumable-media-python/issues/153) [#176](https://www.github.com/googleapis/google-resumable-media-python/issues/176) [#178](https://www.github.com/googleapis/google-resumable-media-python/issues/178)
+
+
+### Bug Fixes
+
+* allow space in checksum header ([#170](https://www.github.com/googleapis/google-resumable-media-python/issues/170)) ([224fc98](https://www.github.com/googleapis/google-resumable-media-python/commit/224fc9858b903396e0f94801757814e47cff45e7)), closes [#169](https://www.github.com/googleapis/google-resumable-media-python/issues/169)
+* **lint:** blacken 5 files ([#171](https://www.github.com/googleapis/google-resumable-media-python/issues/171)) ([cdea3ee](https://www.github.com/googleapis/google-resumable-media-python/commit/cdea3eec76c7586a66b1641bca906f630d915c0e))
+
 ## [1.0.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v0.7.1...v1.0.0) (2020-08-24)
 
 
