@@ -19,19 +19,19 @@ import json
 import platform
 import warnings
 
-from pkg_resources import get_distribution
 from six.moves import collections_abc
 from six.moves.urllib.parse import urlencode
 
 from google.api_core.client_info import ClientInfo
 from google.cloud import exceptions
+from google.cloud import version
 
 
 API_BASE_URL = "https://www.googleapis.com"
 """The base of the API call URL."""
 
 DEFAULT_USER_AGENT = "gcloud-python/{0}".format(
-    get_distribution("google-cloud-core").version
+    version.__version__
 )
 """The user agent for google-cloud-python requests."""
 

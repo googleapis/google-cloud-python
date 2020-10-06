@@ -22,7 +22,6 @@ import setuptools
 
 name = "google-cloud-core"
 description = "Google Cloud API client core library"
-version = "1.4.2"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -35,6 +34,11 @@ extras = {"grpc": "grpcio >= 1.8.2, < 2.0dev"}
 # Setup boilerplate below this line.
 
 package_root = os.path.abspath(os.path.dirname(__file__))
+
+version = {}
+with open(os.path.join(package_root, "google/cloud/version.py")) as fp:
+    exec(fp.read(), version)
+version = version['__version__']
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
