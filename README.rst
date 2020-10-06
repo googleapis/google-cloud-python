@@ -218,6 +218,7 @@ The following client libraries have **beta** support:
 -  `Google Cloud Billing Budgets`_ (`Billing Budgets README`_, `Billing Budgets Documentation`_)
 -  `Google Cloud Data Catalog`_ (`Data Catalog README`_, `Data Catalog Documentation`_)
 -  `Google Cloud Data Labeling`_ (`Data Labeling README`_, `Data Labeling Documentation`_)
+-  `Google Cloud Notebooks`_ (`Notebooks README`_, `Notebooks Documentation`_)
 -  `Google Cloud OS Config`_ (`OS Config README`_, `OS Config Documentation`_)
 -  `Google Cloud Phishing Protection`_ (`Phishing Protection README`_, `Phishing Protection Documentation`_)
 -  `Google Cloud Runtime Configuration`_ (`Runtime Config README`_, `Runtime Config Documentation`_)
@@ -239,6 +240,10 @@ The following client libraries have **beta** support:
 .. _Google Cloud Data Labeling: https://pypi.org/project/google-cloud-datalabeling/
 .. _Data Labeling README: https://github.com/googleapis/python-datalabeling#python-client-for-data-labeling-api-beta
 .. _Data Labeling Documentation: https://googleapis.dev/python/datalabeling/latest
+
+.. _Google Cloud Notebooks: https://pypi.org/project/google-cloud-notebooks/
+.. _Notebooks README: https://github.com/googleapis/python-notebooks
+.. _Notebooks Documentation: https://googleapis.dev/python/notebooks/latest
 
 .. _Google Cloud OS Config: https://pypi.org/project/google-cloud-os-config
 .. _OS Config README: https://github.com/googleapis/python-os-config
