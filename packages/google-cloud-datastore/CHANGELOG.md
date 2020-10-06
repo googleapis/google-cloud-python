@@ -11,6 +11,13 @@
 
 * use version.py instead of pkg_resources.get_distribution ([#94](https://www.github.com/googleapis/python-datastore/issues/94)) ([ea77534](https://www.github.com/googleapis/python-datastore/commit/ea77534bc973e22894357a81420dd17ed8db0027))
 
+### [1.15.2](https://www.github.com/googleapis/python-datastore/compare/v1.15.1...v1.15.2) (2020-10-06)
+
+
+### Bug Fixes
+
+* use version.py instead of pkg_resources.get_distribution ([#94](https://www.github.com/googleapis/python-datastore/issues/94)) ([ea77534](https://www.github.com/googleapis/python-datastore/commit/ea77534bc973e22894357a81420dd17ed8db0027))
+
 ### [1.15.1](https://www.github.com/googleapis/python-datastore/compare/v1.15.0...v1.15.1) (2020-09-23)
 
 
