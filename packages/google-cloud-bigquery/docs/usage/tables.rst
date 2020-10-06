@@ -58,6 +58,15 @@ Create an empty table with the
    :start-after: [START bigquery_create_table]
    :end-before: [END bigquery_create_table]
 
+Create a clustered table with the
+:func:`~google.cloud.bigquery.client.Client.create_table` method:
+
+.. literalinclude:: ../samples/create_table_clustered.py
+   :language: python
+   :dedent: 4
+   :start-after: [START bigquery_create_table_clustered]
+   :end-before: [END bigquery_create_table_clustered]
+
 Create an integer range partitioned table with the
 :func:`~google.cloud.bigquery.client.Client.create_table` method:
 
