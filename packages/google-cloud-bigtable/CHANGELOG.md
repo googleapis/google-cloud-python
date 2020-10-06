@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [1.5.1](https://www.github.com/googleapis/python-bigtable/compare/v1.5.0...v1.5.1) (2020-10-06)
+
+
+### Bug Fixes
+
+* harden version data gathering against DistributionNotFound ([#150](https://www.github.com/googleapis/python-bigtable/issues/150)) ([c815421](https://www.github.com/googleapis/python-bigtable/commit/c815421422f1c845983e174651a5292767cfe2e7))
+
 ## [1.5.0](https://www.github.com/googleapis/python-bigtable/compare/v1.4.0...v1.5.0) (2020-09-22)
 
 
