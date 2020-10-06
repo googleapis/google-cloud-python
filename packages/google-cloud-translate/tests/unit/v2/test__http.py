@@ -28,27 +28,53 @@ class TestConnection(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_build_api_url_no_extra_query_params(self):
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
         conn = self._make_one(object())
-        URI = "/".join(
-            [
-                conn.DEFAULT_API_ENDPOINT,
-                "language",
-                "translate",
-                conn.API_VERSION,
-                "foo",
-            ]
+        uri = conn.build_api_url("/foo")
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "language", "translate", conn.API_VERSION, "foo"])
         )
-        self.assertEqual(conn.build_api_url("/foo"), URI)
+        parms = dict(parse_qsl(qs))
+        pretty_print = parms.pop("prettyPrint", "false")
+        self.assertEqual(pretty_print, "false")
+        self.assertEqual(parms, {})
 
     def test_build_api_url_w_custom_endpoint(self):
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
         custom_endpoint = "https://foo-translation.googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
-        URI = "/".join(
-            [custom_endpoint, "language", "translate", conn.API_VERSION, "foo"]
+        uri = conn.build_api_url("/foo")
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual("%s://%s" % (scheme, netloc), custom_endpoint)
+        self.assertEqual(
+            path, "/".join(["", "language", "translate", conn.API_VERSION, "foo"])
         )
-        self.assertEqual(conn.build_api_url("/foo"), URI)
+        parms = dict(parse_qsl(qs))
+        pretty_print = parms.pop("prettyPrint", "false")
+        self.assertEqual(pretty_print, "false")
+        self.assertEqual(parms, {})
 
     def test_build_api_url_w_extra_query_params(self):
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
+        conn = self._make_one(object())
+        uri = conn.build_api_url("/foo", {"bar": "baz"})
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "language", "translate", conn.API_VERSION, "foo"])
+        )
+        parms = dict(parse_qsl(qs))
+        self.assertEqual(parms["bar"], "baz")
+
+    def test_build_api_url_w_extra_query_params_tuple(self):
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
 
@@ -59,8 +85,11 @@ class TestConnection(unittest.TestCase):
         self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
         expected_path = "/".join(["", "language", "translate", conn.API_VERSION, "foo"])
         self.assertEqual(path, expected_path)
-        params = parse_qsl(qs)
-        self.assertEqual(params, query_params)
+        params = list(
+            sorted(param for param in parse_qsl(qs) if param[0] != "prettyPrint")
+        )
+        expected_params = [("q", "val1"), ("q", "val2")]
+        self.assertEqual(params, expected_params)
 
     def test_extra_headers(self):
         import requests
