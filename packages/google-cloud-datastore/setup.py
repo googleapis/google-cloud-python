@@ -22,7 +22,11 @@ import setuptools
 
 name = "google-cloud-datastore"
 description = "Google Cloud Datastore API client library"
-version = "1.15.1"
+version = {}
+with open("google/cloud/datastore/version.py") as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
+
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

@@ -21,7 +21,7 @@ from google.auth.credentials import AnonymousCredentials
 from google.cloud._helpers import _LocalStack
 from google.cloud._helpers import _determine_default_project as _base_default_project
 from google.cloud.client import ClientWithProject
-from google.cloud.datastore import __version__
+from google.cloud.datastore.version import __version__
 from google.cloud.datastore import helpers
 from google.cloud.datastore._http import HTTPDatastoreAPI
 from google.cloud.datastore.batch import Batch

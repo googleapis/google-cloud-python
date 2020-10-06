@@ -36,11 +36,10 @@ from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import datastore_pb2_grpc
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
+from google.cloud.datastore.version import __version__
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-datastore",
-).version
+_GAPIC_LIBRARY_VERSION = __version__
 
 
 class DatastoreClient(object):
