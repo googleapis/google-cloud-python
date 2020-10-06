@@ -1427,3 +1427,71 @@ def _make_query_response(**kwargs):
         kwargs["document"] = document_pb
 
     return firestore.RunQueryResponse(**kwargs)
+
+
+def _make_cursor_pb(pair):
+    from google.cloud.firestore_v1 import _helpers
+    from google.cloud.firestore_v1.types import query
+
+    values, before = pair
+    value_pbs = [_helpers.encode_value(value) for value in values]
+    return query.Cursor(values=value_pbs, before=before)
+
+
+class TestQueryPartition(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1.base_query import QueryPartition
+
+        return QueryPartition
+
+    def _make_one(self, *args, **kwargs):
+        klass = self._get_target_class()
+        return klass(*args, **kwargs)
+
+    def test_constructor(self):
+        partition = self._make_one(mock.sentinel.query, "start", "end")
+        assert partition._query is mock.sentinel.query
+        assert partition.start_at == "start"
+        assert partition.end_at == "end"
+
+    def test_query_begin(self):
+        partition = self._make_one(DummyQuery("PARENT"), None, "end")
+        query = partition.query()
+        assert query._parent == "PARENT"
+        assert query.all_descendants == "YUP"
+        assert query.orders == "ORDER"
+        assert query.start_at is None
+        assert query.end_at == (["end"], True)
+
+    def test_query_middle(self):
+        partition = self._make_one(DummyQuery("PARENT"), "start", "end")
+        query = partition.query()
+        assert query._parent == "PARENT"
+        assert query.all_descendants == "YUP"
+        assert query.orders == "ORDER"
+        assert query.start_at == (["start"], True)
+        assert query.end_at == (["end"], True)
+
+    def test_query_end(self):
+        partition = self._make_one(DummyQuery("PARENT"), "start", None)
+        query = partition.query()
+        assert query._parent == "PARENT"
+        assert query.all_descendants == "YUP"
+        assert query.orders == "ORDER"
+        assert query.start_at == (["start"], True)
+        assert query.end_at is None
+
+
+class DummyQuery:
+    _all_descendants = "YUP"
+    _PARTITION_QUERY_ORDER = "ORDER"
+
+    def __init__(
+        self, parent, *, all_descendants=None, orders=None, start_at=None, end_at=None
+    ):
+        self._parent = parent
+        self.all_descendants = all_descendants
+        self.orders = orders
+        self.start_at = start_at
+        self.end_at = end_at

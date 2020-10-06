@@ -35,7 +35,7 @@ from google.cloud.firestore_v1.base_client import (
 )
 
 from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1.query import Query
+from google.cloud.firestore_v1.query import CollectionGroup
 from google.cloud.firestore_v1.batch import WriteBatch
 from google.cloud.firestore_v1.collection import CollectionReference
 from google.cloud.firestore_v1.document import DocumentReference
@@ -145,7 +145,7 @@ class Client(BaseClient):
         """
         return CollectionReference(*_path_helper(collection_path), client=self)
 
-    def collection_group(self, collection_id) -> Query:
+    def collection_group(self, collection_id) -> CollectionGroup:
         """
         Creates and returns a new Query that includes all documents in the
         database that are contained in a collection or subcollection with the
@@ -162,12 +162,10 @@ class Client(BaseClient):
                 path will be included. Cannot contain a slash.
 
         Returns:
-            :class:`~google.cloud.firestore_v1.query.Query`:
+            :class:`~google.cloud.firestore_v1.query.CollectionGroup`:
             The created Query.
         """
-        return Query(
-            self._get_collection_reference(collection_id), all_descendants=True
-        )
+        return CollectionGroup(self._get_collection_reference(collection_id))
 
     def document(self, *document_path) -> DocumentReference:
         """Get a reference to a document in a collection.

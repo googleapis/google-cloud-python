@@ -14,6 +14,7 @@
 
 import asyncio
 import datetime
+import itertools
 import math
 import pytest
 import operator
@@ -54,7 +55,7 @@ def _get_credentials_and_project():
     return credentials, project
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 def client():
     credentials, project = _get_credentials_and_project()
     yield firestore.AsyncClient(project=project, credentials=credentials)
@@ -399,7 +400,7 @@ async def test_document_get(client, cleanup):
         "fire": 199099299,
         "referee": ref_doc,
         "gio": firestore.GeoPoint(45.5, 90.0),
-        "deep": [u"some", b"\xde\xad\xbe\xef"],
+        "deep": ["some", b"\xde\xad\xbe\xef"],
         "map": {"ice": True, "water": None, "vapor": {"deeper": now}},
     }
     write_result = await document.create(data)
@@ -741,9 +742,9 @@ async def test_query_with_order_dot_key(client, cleanup):
         .stream()
     ]
     found_data = [
-        {u"count": 30, u"wordcount": {u"page1": 130}},
-        {u"count": 40, u"wordcount": {u"page1": 140}},
-        {u"count": 50, u"wordcount": {u"page1": 150}},
+        {"count": 30, "wordcount": {"page1": 130}},
+        {"count": 40, "wordcount": {"page1": 140}},
+        {"count": 50, "wordcount": {"page1": 150}},
     ]
     assert found_data == [snap.to_dict() for snap in found]
     cursor_with_dotted_paths = {"wordcount.page1": last_value}
@@ -915,6 +916,61 @@ async def test_collection_group_queries_filters(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
+async def test_partition_query_no_partitions(client, cleanup):
+    collection_group = "b" + UNIQUE_RESOURCE_ID
+
+    # less than minimum partition size
+    doc_paths = [
+        "abc/123/" + collection_group + "/cg-doc1",
+        "abc/123/" + collection_group + "/cg-doc2",
+        collection_group + "/cg-doc3",
+        collection_group + "/cg-doc4",
+        "def/456/" + collection_group + "/cg-doc5",
+    ]
+
+    batch = client.batch()
+    cleanup_batch = client.batch()
+    cleanup(cleanup_batch.commit)
+    for doc_path in doc_paths:
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {"x": 1})
+        cleanup_batch.delete(doc_ref)
+
+    await batch.commit()
+
+    query = client.collection_group(collection_group)
+    partitions = [i async for i in query.get_partitions(3)]
+    streams = [partition.query().stream() for partition in partitions]
+    found = [snapshot.id async for snapshot in _chain(*streams)]
+    expected = ["cg-doc1", "cg-doc2", "cg-doc3", "cg-doc4", "cg-doc5"]
+    assert found == expected
+
+
+async def test_partition_query(client, cleanup):
+    collection_group = "b" + UNIQUE_RESOURCE_ID
+    n_docs = 128 * 2 + 127  # Minimum partition size is 128
+    parents = itertools.cycle(("", "abc/123/", "def/456/", "ghi/789/"))
+    batch = client.batch()
+    cleanup_batch = client.batch()
+    cleanup(cleanup_batch.commit)
+    expected = []
+    for i, parent in zip(range(n_docs), parents):
+        doc_path = parent + collection_group + f"/cg-doc{i:03d}"
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {"x": i})
+        cleanup_batch.delete(doc_ref)
+        expected.append(doc_path)
+
+    await batch.commit()
+
+    query = client.collection_group(collection_group)
+    partitions = [i async for i in query.get_partitions(3)]
+    streams = [partition.query().stream() for partition in partitions]
+    found = [snapshot.reference.path async for snapshot in _chain(*streams)]
+    expected.sort()
+    assert found == expected
+
+
 @pytest.mark.skipif(FIRESTORE_EMULATOR, reason="Internal Issue b/137865992")
 async def test_get_all(client, cleanup):
     collection_name = "get-all" + UNIQUE_RESOURCE_ID
@@ -1013,3 +1069,10 @@ async def test_batch(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
     assert not (await document3.get()).exists
+
+
+async def _chain(*iterators):
+    """Asynchronous reimplementation of `itertools.chain`."""
+    for iterator in iterators:
+        async for value in iterator:
+            yield value

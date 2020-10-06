@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import itertools
 import math
 import operator
 
@@ -52,7 +53,7 @@ def _get_credentials_and_project():
     return credentials, project
 
 
-@pytest.fixture(scope=u"module")
+@pytest.fixture(scope="module")
 def client():
     credentials, project = _get_credentials_and_project()
     yield firestore.Client(project=project, credentials=credentials)
@@ -389,7 +390,7 @@ def test_document_get(client, cleanup):
         "fire": 199099299,
         "referee": ref_doc,
         "gio": firestore.GeoPoint(45.5, 90.0),
-        "deep": [u"some", b"\xde\xad\xbe\xef"],
+        "deep": ["some", b"\xde\xad\xbe\xef"],
         "map": {"ice": True, "water": None, "vapor": {"deeper": now}},
     }
     write_result = document.create(data)
@@ -717,9 +718,9 @@ def test_query_with_order_dot_key(client, cleanup):
         .stream()
     )
     found_data = [
-        {u"count": 30, u"wordcount": {u"page1": 130}},
-        {u"count": 40, u"wordcount": {u"page1": 140}},
-        {u"count": 50, u"wordcount": {u"page1": 150}},
+        {"count": 30, "wordcount": {"page1": 130}},
+        {"count": 40, "wordcount": {"page1": 140}},
+        {"count": 50, "wordcount": {"page1": 150}},
     ]
     assert found_data == [snap.to_dict() for snap in found]
     cursor_with_dotted_paths = {"wordcount.page1": last_value}
@@ -890,6 +891,63 @@ def test_collection_group_queries_filters(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
+def test_partition_query_no_partitions(client, cleanup):
+    collection_group = "b" + UNIQUE_RESOURCE_ID
+
+    # less than minimum partition size
+    doc_paths = [
+        "abc/123/" + collection_group + "/cg-doc1",
+        "abc/123/" + collection_group + "/cg-doc2",
+        collection_group + "/cg-doc3",
+        collection_group + "/cg-doc4",
+        "def/456/" + collection_group + "/cg-doc5",
+    ]
+
+    batch = client.batch()
+    cleanup_batch = client.batch()
+    cleanup(cleanup_batch.commit)
+    for doc_path in doc_paths:
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {"x": 1})
+        cleanup_batch.delete(doc_ref)
+
+    batch.commit()
+
+    query = client.collection_group(collection_group)
+    partitions = list(query.get_partitions(3))
+    streams = [partition.query().stream() for partition in partitions]
+    snapshots = itertools.chain(*streams)
+    found = [snapshot.id for snapshot in snapshots]
+    expected = ["cg-doc1", "cg-doc2", "cg-doc3", "cg-doc4", "cg-doc5"]
+    assert found == expected
+
+
+def test_partition_query(client, cleanup):
+    collection_group = "b" + UNIQUE_RESOURCE_ID
+    n_docs = 128 * 2 + 127  # Minimum partition size is 128
+    parents = itertools.cycle(("", "abc/123/", "def/456/", "ghi/789/"))
+    batch = client.batch()
+    cleanup_batch = client.batch()
+    cleanup(cleanup_batch.commit)
+    expected = []
+    for i, parent in zip(range(n_docs), parents):
+        doc_path = parent + collection_group + f"/cg-doc{i:03d}"
+        doc_ref = client.document(doc_path)
+        batch.set(doc_ref, {"x": i})
+        cleanup_batch.delete(doc_ref)
+        expected.append(doc_path)
+
+    batch.commit()
+
+    query = client.collection_group(collection_group)
+    partitions = list(query.get_partitions(3))
+    streams = [partition.query().stream() for partition in partitions]
+    snapshots = itertools.chain(*streams)
+    found = [snapshot.reference.path for snapshot in snapshots]
+    expected.sort()
+    assert found == expected
+
+
 @pytest.mark.skipif(FIRESTORE_EMULATOR, reason="Internal Issue b/137865992")
 def test_get_all(client, cleanup):
     collection_name = "get-all" + UNIQUE_RESOURCE_ID
@@ -989,11 +1047,11 @@ def test_batch(client, cleanup):
 
 def test_watch_document(client, cleanup):
     db = client
-    collection_ref = db.collection(u"wd-users" + UNIQUE_RESOURCE_ID)
-    doc_ref = collection_ref.document(u"alovelace")
+    collection_ref = db.collection("wd-users" + UNIQUE_RESOURCE_ID)
+    doc_ref = collection_ref.document("alovelace")
 
     # Initial setting
-    doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
+    doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
     sleep(1)
@@ -1007,7 +1065,7 @@ def test_watch_document(client, cleanup):
     doc_ref.on_snapshot(on_snapshot)
 
     # Alter document
-    doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
+    doc_ref.set({"first": "Ada", "last": "Lovelace", "born": 1815})
 
     sleep(1)
 
@@ -1025,11 +1083,11 @@ def test_watch_document(client, cleanup):
 
 def test_watch_collection(client, cleanup):
     db = client
-    collection_ref = db.collection(u"wc-users" + UNIQUE_RESOURCE_ID)
-    doc_ref = collection_ref.document(u"alovelace")
+    collection_ref = db.collection("wc-users" + UNIQUE_RESOURCE_ID)
+    doc_ref = collection_ref.document("alovelace")
 
     # Initial setting
-    doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
+    doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
     # Setup listener
@@ -1046,7 +1104,7 @@ def test_watch_collection(client, cleanup):
     # delay here so initial on_snapshot occurs and isn't combined with set
     sleep(1)
 
-    doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
+    doc_ref.set({"first": "Ada", "last": "Lovelace", "born": 1815})
 
     for _ in range(10):
         if on_snapshot.born == 1815:
@@ -1061,12 +1119,12 @@ def test_watch_collection(client, cleanup):
 
 def test_watch_query(client, cleanup):
     db = client
-    collection_ref = db.collection(u"wq-users" + UNIQUE_RESOURCE_ID)
-    doc_ref = collection_ref.document(u"alovelace")
-    query_ref = collection_ref.where("first", "==", u"Ada")
+    collection_ref = db.collection("wq-users" + UNIQUE_RESOURCE_ID)
+    doc_ref = collection_ref.document("alovelace")
+    query_ref = collection_ref.where("first", "==", "Ada")
 
     # Initial setting
-    doc_ref.set({u"first": u"Jane", u"last": u"Doe", u"born": 1900})
+    doc_ref.set({"first": "Jane", "last": "Doe", "born": 1900})
     cleanup(doc_ref.delete)
 
     sleep(1)
@@ -1076,7 +1134,7 @@ def test_watch_query(client, cleanup):
         on_snapshot.called_count += 1
 
         # A snapshot should return the same thing as if a query ran now.
-        query_ran = collection_ref.where("first", "==", u"Ada").stream()
+        query_ran = collection_ref.where("first", "==", "Ada").stream()
         assert len(docs) == len([i for i in query_ran])
 
     on_snapshot.called_count = 0
@@ -1084,7 +1142,7 @@ def test_watch_query(client, cleanup):
     query_ref.on_snapshot(on_snapshot)
 
     # Alter document
-    doc_ref.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
+    doc_ref.set({"first": "Ada", "last": "Lovelace", "born": 1815})
 
     for _ in range(10):
         if on_snapshot.called_count == 1:
@@ -1100,14 +1158,14 @@ def test_watch_query(client, cleanup):
 
 def test_watch_query_order(client, cleanup):
     db = client
-    collection_ref = db.collection(u"users")
-    doc_ref1 = collection_ref.document(u"alovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref2 = collection_ref.document(u"asecondlovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref3 = collection_ref.document(u"athirdlovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref4 = collection_ref.document(u"afourthlovelace" + UNIQUE_RESOURCE_ID)
-    doc_ref5 = collection_ref.document(u"afifthlovelace" + UNIQUE_RESOURCE_ID)
+    collection_ref = db.collection("users")
+    doc_ref1 = collection_ref.document("alovelace" + UNIQUE_RESOURCE_ID)
+    doc_ref2 = collection_ref.document("asecondlovelace" + UNIQUE_RESOURCE_ID)
+    doc_ref3 = collection_ref.document("athirdlovelace" + UNIQUE_RESOURCE_ID)
+    doc_ref4 = collection_ref.document("afourthlovelace" + UNIQUE_RESOURCE_ID)
+    doc_ref5 = collection_ref.document("afifthlovelace" + UNIQUE_RESOURCE_ID)
 
-    query_ref = collection_ref.where("first", "==", u"Ada").order_by("last")
+    query_ref = collection_ref.where("first", "==", "Ada").order_by("last")
 
     # Setup listener
     def on_snapshot(docs, changes, read_time):
@@ -1139,19 +1197,19 @@ def test_watch_query_order(client, cleanup):
 
     sleep(1)
 
-    doc_ref1.set({u"first": u"Ada", u"last": u"Lovelace", u"born": 1815})
+    doc_ref1.set({"first": "Ada", "last": "Lovelace", "born": 1815})
     cleanup(doc_ref1.delete)
 
-    doc_ref2.set({u"first": u"Ada", u"last": u"SecondLovelace", u"born": 1815})
+    doc_ref2.set({"first": "Ada", "last": "SecondLovelace", "born": 1815})
     cleanup(doc_ref2.delete)
 
-    doc_ref3.set({u"first": u"Ada", u"last": u"ThirdLovelace", u"born": 1815})
+    doc_ref3.set({"first": "Ada", "last": "ThirdLovelace", "born": 1815})
     cleanup(doc_ref3.delete)
 
-    doc_ref4.set({u"first": u"Ada", u"last": u"FourthLovelace", u"born": 1815})
+    doc_ref4.set({"first": "Ada", "last": "FourthLovelace", "born": 1815})
     cleanup(doc_ref4.delete)
 
-    doc_ref5.set({u"first": u"Ada", u"last": u"lovelace", u"born": 1815})
+    doc_ref5.set({"first": "Ada", "last": "lovelace", "born": 1815})
     cleanup(doc_ref5.delete)
 
     for _ in range(10):

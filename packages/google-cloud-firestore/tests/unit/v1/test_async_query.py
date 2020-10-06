@@ -18,7 +18,11 @@ import aiounittest
 
 import mock
 from tests.unit.v1.test__helpers import AsyncMock, AsyncIter
-from tests.unit.v1.test_base_query import _make_credentials, _make_query_response
+from tests.unit.v1.test_base_query import (
+    _make_credentials,
+    _make_query_response,
+    _make_cursor_pb,
+)
 
 
 class MockAsyncIter:
@@ -432,6 +436,116 @@ class TestAsyncQuery(aiounittest.AsyncTestCase):
             },
             metadata=client._rpc_metadata,
         )
+
+
+class TestCollectionGroup(aiounittest.AsyncTestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
+
+        return AsyncCollectionGroup
+
+    def _make_one(self, *args, **kwargs):
+        klass = self._get_target_class()
+        return klass(*args, **kwargs)
+
+    def test_constructor(self):
+        query = self._make_one(mock.sentinel.parent)
+        self.assertIs(query._parent, mock.sentinel.parent)
+        self.assertIsNone(query._projection)
+        self.assertEqual(query._field_filters, ())
+        self.assertEqual(query._orders, ())
+        self.assertIsNone(query._limit)
+        self.assertIsNone(query._offset)
+        self.assertIsNone(query._start_at)
+        self.assertIsNone(query._end_at)
+        self.assertTrue(query._all_descendants)
+
+    def test_constructor_all_descendents_is_false(self):
+        with pytest.raises(ValueError):
+            self._make_one(mock.sentinel.parent, all_descendants=False)
+
+    @pytest.mark.asyncio
+    async def test_get_partitions(self):
+        # Create a minimal fake GAPIC.
+        firestore_api = AsyncMock(spec=["partition_query"])
+
+        # Attach the fake GAPIC to a real client.
+        client = _make_client()
+        client._firestore_api_internal = firestore_api
+
+        # Make a **real** collection reference as parent.
+        parent = client.collection("charles")
+
+        # Make two **real** document references to use as cursors
+        document1 = parent.document("one")
+        document2 = parent.document("two")
+
+        # Add cursor pb's to the minimal fake GAPIC.
+        cursor_pb1 = _make_cursor_pb(([document1], False))
+        cursor_pb2 = _make_cursor_pb(([document2], False))
+        firestore_api.partition_query.return_value = AsyncIter([cursor_pb1, cursor_pb2])
+
+        # Execute the query and check the response.
+        query = self._make_one(parent)
+        get_response = query.get_partitions(2)
+        self.assertIsInstance(get_response, types.AsyncGeneratorType)
+        returned = [i async for i in get_response]
+        self.assertEqual(len(returned), 3)
+
+        # Verify the mock call.
+        parent_path, _ = parent._parent_info()
+        partition_query = self._make_one(
+            parent, orders=(query._make_order("__name__", query.ASCENDING),),
+        )
+        firestore_api.partition_query.assert_called_once_with(
+            request={
+                "parent": parent_path,
+                "structured_query": partition_query._to_protobuf(),
+                "partition_count": 2,
+            },
+            metadata=client._rpc_metadata,
+        )
+
+    async def test_get_partitions_w_filter(self):
+        # Make a **real** collection reference as parent.
+        client = _make_client()
+        parent = client.collection("charles")
+
+        # Make a query that fails to partition
+        query = self._make_one(parent).where("foo", "==", "bar")
+        with pytest.raises(ValueError):
+            [i async for i in query.get_partitions(2)]
+
+    async def test_get_partitions_w_projection(self):
+        # Make a **real** collection reference as parent.
+        client = _make_client()
+        parent = client.collection("charles")
+
+        # Make a query that fails to partition
+        query = self._make_one(parent).select("foo")
+        with pytest.raises(ValueError):
+            [i async for i in query.get_partitions(2)]
+
+    async def test_get_partitions_w_limit(self):
+        # Make a **real** collection reference as parent.
+        client = _make_client()
+        parent = client.collection("charles")
+
+        # Make a query that fails to partition
+        query = self._make_one(parent).limit(10)
+        with pytest.raises(ValueError):
+            [i async for i in query.get_partitions(2)]
+
+    async def test_get_partitions_w_offset(self):
+        # Make a **real** collection reference as parent.
+        client = _make_client()
+        parent = client.collection("charles")
+
+        # Make a query that fails to partition
+        query = self._make_one(parent).offset(10)
+        with pytest.raises(ValueError):
+            [i async for i in query.get_partitions(2)]
 
 
 def _make_client(project="project-project"):

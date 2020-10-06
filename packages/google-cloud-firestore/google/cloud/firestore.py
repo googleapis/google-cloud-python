@@ -26,6 +26,7 @@ from google.cloud.firestore_v1 import async_transactional
 from google.cloud.firestore_v1 import AsyncTransaction
 from google.cloud.firestore_v1 import AsyncWriteBatch
 from google.cloud.firestore_v1 import Client
+from google.cloud.firestore_v1 import CollectionGroup
 from google.cloud.firestore_v1 import CollectionReference
 from google.cloud.firestore_v1 import DELETE_FIELD
 from google.cloud.firestore_v1 import DocumentReference
@@ -61,6 +62,7 @@ __all__: List[str] = [
     "AsyncTransaction",
     "AsyncWriteBatch",
     "Client",
+    "CollectionGroup",
     "CollectionReference",
     "DELETE_FIELD",
     "DocumentReference",

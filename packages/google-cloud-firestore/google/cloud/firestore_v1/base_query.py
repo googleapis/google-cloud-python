@@ -1020,3 +1020,115 @@ def _collection_group_query_response_to_snapshot(
         update_time=response_pb._pb.document.update_time,
     )
     return snapshot
+
+
+class BaseCollectionGroup(BaseQuery):
+    """Represents a Collection Group in the Firestore API.
+
+    This is a specialization of :class:`.Query` that includes all documents in the
+    database that are contained in a collection or subcollection of the given
+    parent.
+
+    Args:
+        parent (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
+            The collection that this query applies to.
+    """
+
+    _PARTITION_QUERY_ORDER = (
+        BaseQuery._make_order(
+            field_path_module.FieldPath.document_id(), BaseQuery.ASCENDING,
+        ),
+    )
+
+    def __init__(
+        self,
+        parent,
+        projection=None,
+        field_filters=(),
+        orders=(),
+        limit=None,
+        limit_to_last=False,
+        offset=None,
+        start_at=None,
+        end_at=None,
+        all_descendants=True,
+    ) -> None:
+        if not all_descendants:
+            raise ValueError("all_descendants must be True for collection group query.")
+
+        super(BaseCollectionGroup, self).__init__(
+            parent=parent,
+            projection=projection,
+            field_filters=field_filters,
+            orders=orders,
+            limit=limit,
+            limit_to_last=limit_to_last,
+            offset=offset,
+            start_at=start_at,
+            end_at=end_at,
+            all_descendants=all_descendants,
+        )
+
+    def _validate_partition_query(self):
+        if self._field_filters:
+            raise ValueError("Can't partition query with filters.")
+
+        if self._projection:
+            raise ValueError("Can't partition query with projection.")
+
+        if self._limit:
+            raise ValueError("Can't partition query with limit.")
+
+        if self._offset:
+            raise ValueError("Can't partition query with offset.")
+
+
+class QueryPartition:
+    """Represents a bounded partition of a collection group query.
+
+    Contains cursors that can be used in a query as a starting and/or end point for the
+    collection group query. The cursors may only be used in a query that matches the
+    constraints of the query that produced this partition.
+
+    Args:
+        query (BaseQuery): The original query that this is a partition of.
+        start_at (Optional[~google.cloud.firestore_v1.document.DocumentSnapshot]):
+            Cursor for first query result to include. If `None`, the partition starts at
+            the beginning of the result set.
+        end_at (Optional[~google.cloud.firestore_v1.document.DocumentSnapshot]):
+            Cursor for first query result after the last result included in the
+            partition. If `None`, the partition runs to the end of the result set.
+
+        """
+
+    def __init__(self, query, start_at, end_at):
+        self._query = query
+        self._start_at = start_at
+        self._end_at = end_at
+
+    @property
+    def start_at(self):
+        return self._start_at
+
+    @property
+    def end_at(self):
+        return self._end_at
+
+    def query(self):
+        """Generate a new query using this partition's bounds.
+
+        Returns:
+            BaseQuery: Copy of the original query with start and end bounds set by the
+                cursors from this partition.
+        """
+        query = self._query
+        start_at = ([self.start_at], True) if self.start_at else None
+        end_at = ([self.end_at], True) if self.end_at else None
+
+        return type(query)(
+            query._parent,
+            all_descendants=query._all_descendants,
+            orders=query._PARTITION_QUERY_ORDER,
+            start_at=start_at,
+            end_at=end_at,
+        )

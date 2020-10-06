@@ -35,7 +35,7 @@ from google.cloud.firestore_v1.base_client import (
 )
 
 from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1.async_query import AsyncQuery
+from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 from google.cloud.firestore_v1.async_document import (
@@ -150,7 +150,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncCollectionReference(*_path_helper(collection_path), client=self)
 
-    def collection_group(self, collection_id) -> AsyncQuery:
+    def collection_group(self, collection_id) -> AsyncCollectionGroup:
         """
         Creates and returns a new AsyncQuery that includes all documents in the
         database that are contained in a collection or subcollection with the
@@ -167,12 +167,10 @@ class AsyncClient(BaseClient):
                 path will be included. Cannot contain a slash.
 
         Returns:
-            :class:`~google.cloud.firestore_v1.async_query.AsyncQuery`:
+            :class:`~google.cloud.firestore_v1.async_query.AsyncCollectionGroup`:
             The created AsyncQuery.
         """
-        return AsyncQuery(
-            self._get_collection_reference(collection_id), all_descendants=True
-        )
+        return AsyncCollectionGroup(self._get_collection_reference(collection_id))
 
     def document(self, *document_path) -> AsyncDocumentReference:
         """Get a reference to a document in a collection.

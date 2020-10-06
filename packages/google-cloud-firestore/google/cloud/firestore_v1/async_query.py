@@ -19,7 +19,9 @@ a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
 from google.cloud.firestore_v1.base_query import (
+    BaseCollectionGroup,
     BaseQuery,
+    QueryPartition,
     _query_response_to_snapshot,
     _collection_group_query_response_to_snapshot,
     _enum_from_direction,
@@ -207,3 +209,83 @@ class AsyncQuery(BaseQuery):
                 )
             if snapshot is not None:
                 yield snapshot
+
+
+class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
+    """Represents a Collection Group in the Firestore API.
+
+    This is a specialization of :class:`.AsyncQuery` that includes all documents in the
+    database that are contained in a collection or subcollection of the given
+    parent.
+
+    Args:
+        parent (:class:`~google.cloud.firestore_v1.collection.CollectionReference`):
+            The collection that this query applies to.
+    """
+
+    def __init__(
+        self,
+        parent,
+        projection=None,
+        field_filters=(),
+        orders=(),
+        limit=None,
+        limit_to_last=False,
+        offset=None,
+        start_at=None,
+        end_at=None,
+        all_descendants=True,
+    ) -> None:
+        super(AsyncCollectionGroup, self).__init__(
+            parent=parent,
+            projection=projection,
+            field_filters=field_filters,
+            orders=orders,
+            limit=limit,
+            limit_to_last=limit_to_last,
+            offset=offset,
+            start_at=start_at,
+            end_at=end_at,
+            all_descendants=all_descendants,
+        )
+
+    async def get_partitions(
+        self, partition_count
+    ) -> AsyncGenerator[QueryPartition, None]:
+        """Partition a query for parallelization.
+
+        Partitions a query by returning partition cursors that can be used to run the
+        query in parallel. The returned partition cursors are split points that can be
+        used as starting/end points for the query results.
+
+        Args:
+            partition_count (int): The desired maximum number of partition points. The
+                number must be strictly positive. The actual number of partitions
+                returned may be fewer.
+        """
+        self._validate_partition_query()
+        query = AsyncQuery(
+            self._parent,
+            orders=self._PARTITION_QUERY_ORDER,
+            start_at=self._start_at,
+            end_at=self._end_at,
+            all_descendants=self._all_descendants,
+        )
+
+        parent_path, expected_prefix = self._parent._parent_info()
+        pager = await self._client._firestore_api.partition_query(
+            request={
+                "parent": parent_path,
+                "structured_query": query._to_protobuf(),
+                "partition_count": partition_count,
+            },
+            metadata=self._client._rpc_metadata,
+        )
+
+        start_at = None
+        async for cursor_pb in pager:
+            cursor = self._client.document(cursor_pb.values[0].reference_value)
+            yield QueryPartition(self, start_at, cursor)
+            start_at = cursor
+
+        yield QueryPartition(self, start_at, None)
