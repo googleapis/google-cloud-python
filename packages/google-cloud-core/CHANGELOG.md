@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [1.4.3](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.2...v1.4.3) (2020-10-06)
+
+
+### Bug Fixes
+
+* avoid using 'pkg_resources' to determine version ([#40](https://www.github.com/googleapis/python-cloud-core/issues/40)) ([568578d](https://www.github.com/googleapis/python-cloud-core/commit/568578d33f71117564ee9212daad72d4e2b739a6)), closes [#39](https://www.github.com/googleapis/python-cloud-core/issues/39)
+
 ### [1.4.2](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.1...v1.4.2) (2020-09-29)
 
 
