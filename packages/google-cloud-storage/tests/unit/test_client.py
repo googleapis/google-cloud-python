@@ -21,6 +21,7 @@ import re
 import requests
 import unittest
 from six.moves import http_client
+from six.moves.urllib import parse as urlparse
 
 from google.oauth2.service_account import Credentials
 from . import _read_local_json
@@ -291,16 +292,24 @@ class TestClient(unittest.TestCase):
         service_account_email = client.get_service_account_email(timeout=42)
 
         self.assertEqual(service_account_email, EMAIL)
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects/%s/serviceAccount" % (PROJECT,),
-            ]
-        )
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY, timeout=42
+            method="GET", url=mock.ANY, data=None, headers=mock.ANY, timeout=42
+        )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    PROJECT,
+                    "serviceAccount",
+                ]
+            ),
         )
 
     def test_get_service_account_email_w_project(self):
@@ -317,20 +326,28 @@ class TestClient(unittest.TestCase):
         service_account_email = client.get_service_account_email(project=OTHER_PROJECT)
 
         self.assertEqual(service_account_email, EMAIL)
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects/%s/serviceAccount" % (OTHER_PROJECT,),
-            ]
-        )
         http.request.assert_called_once_with(
             method="GET",
-            url=URI,
+            url=mock.ANY,
             data=None,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
+        )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    OTHER_PROJECT,
+                    "serviceAccount",
+                ]
+            ),
         )
 
     def test_bucket(self):
@@ -381,15 +398,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         NONESUCH = "nonesuch"
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "nonesuch?projection=noAcl",
-            ]
-        )
         http = _make_requests_session(
             [_make_json_response({}, status=http_client.NOT_FOUND)]
         )
@@ -399,8 +407,17 @@ class TestClient(unittest.TestCase):
             client.get_bucket(NONESUCH, timeout=42)
 
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=42
+            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=42
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", NONESUCH]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_get_bucket_with_string_hit(self):
         from google.cloud.storage.bucket import Bucket
@@ -410,16 +427,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BUCKET_NAME = "bucket-name"
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?projection=noAcl" % (BUCKET_NAME,),
-            ]
-        )
-
         data = {"name": BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -430,11 +437,20 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
             method="GET",
-            url=URI,
+            url=mock.ANY,
             data=mock.ANY,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_get_bucket_with_metageneration_match(self):
         from google.cloud.storage.bucket import Bucket
@@ -445,26 +461,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BUCKET_NAME = "bucket-name"
-        URI1 = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?projection=noAcl&ifMetagenerationMatch=%s"
-                % (BUCKET_NAME, METAGENERATION_NUMBER),
-            ]
-        )
-        URI2 = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?ifMetagenerationMatch=%s&projection=noAcl"
-                % (BUCKET_NAME, METAGENERATION_NUMBER),
-            ]
-        )
         data = {"name": BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -482,7 +478,15 @@ class TestClient(unittest.TestCase):
             timeout=self._get_default_timeout(),
         )
         _, kwargs = http.request.call_args
-        self.assertIn(kwargs.get("url"), (URI1, URI2))
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["ifMetagenerationMatch"], str(METAGENERATION_NUMBER))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_get_bucket_with_object_miss(self):
         from google.cloud.exceptions import NotFound
@@ -494,15 +498,6 @@ class TestClient(unittest.TestCase):
 
         nonesuch = "nonesuch"
         bucket_obj = Bucket(client, nonesuch)
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "nonesuch?projection=noAcl",
-            ]
-        )
         http = _make_requests_session(
             [_make_json_response({}, status=http_client.NOT_FOUND)]
         )
@@ -513,11 +508,20 @@ class TestClient(unittest.TestCase):
 
         http.request.assert_called_once_with(
             method="GET",
-            url=URI,
+            url=mock.ANY,
             data=mock.ANY,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", nonesuch]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_get_bucket_with_object_hit(self):
         from google.cloud.storage.bucket import Bucket
@@ -528,16 +532,6 @@ class TestClient(unittest.TestCase):
 
         bucket_name = "bucket-name"
         bucket_obj = Bucket(client, bucket_name)
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?projection=noAcl" % (bucket_name,),
-            ]
-        )
-
         data = {"name": bucket_name}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -548,11 +542,20 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, bucket_name)
         http.request.assert_called_once_with(
             method="GET",
-            url=URI,
+            url=mock.ANY,
             data=mock.ANY,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", bucket_name]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_lookup_bucket_miss(self):
         PROJECT = "PROJECT"
@@ -560,15 +563,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         NONESUCH = "nonesuch"
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "nonesuch?projection=noAcl",
-            ]
-        )
         http = _make_requests_session(
             [_make_json_response({}, status=http_client.NOT_FOUND)]
         )
@@ -578,8 +572,17 @@ class TestClient(unittest.TestCase):
 
         self.assertIsNone(bucket)
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=mock.ANY, headers=mock.ANY, timeout=42
+            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=42
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", NONESUCH]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_lookup_bucket_hit(self):
         from google.cloud.storage.bucket import Bucket
@@ -589,15 +592,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BUCKET_NAME = "bucket-name"
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?projection=noAcl" % (BUCKET_NAME,),
-            ]
-        )
         data = {"name": BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -608,11 +602,20 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, BUCKET_NAME)
         http.request.assert_called_once_with(
             method="GET",
-            url=URI,
+            url=mock.ANY,
             data=mock.ANY,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_lookup_bucket_with_metageneration_match(self):
         from google.cloud.storage.bucket import Bucket
@@ -623,26 +626,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
         BUCKET_NAME = "bucket-name"
-        URI1 = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?projection=noAcl&ifMetagenerationMatch=%s"
-                % (BUCKET_NAME, METAGENERATION_NUMBER),
-            ]
-        )
-        URI2 = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-                "%s?ifMetagenerationMatch=%s&projection=noAcl"
-                % (BUCKET_NAME, METAGENERATION_NUMBER),
-            ]
-        )
         data = {"name": BUCKET_NAME}
         http = _make_requests_session([_make_json_response(data)])
         client._http_internal = http
@@ -660,7 +643,15 @@ class TestClient(unittest.TestCase):
             timeout=self._get_default_timeout(),
         )
         _, kwargs = http.request.call_args
-        self.assertIn(kwargs.get("url"), (URI1, URI2))
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["projection"], "noAcl")
+        self.assertEqual(parms["ifMetagenerationMatch"], str(METAGENERATION_NUMBER))
 
     def test_create_bucket_w_missing_client_project(self):
         credentials = _make_credentials()
@@ -710,23 +701,26 @@ class TestClient(unittest.TestCase):
         http = _make_requests_session([_make_json_response(json_expected)])
         client._http_internal = http
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b?project=%s" % (project,),
-            ]
-        )
-
         bucket = client.create_bucket(bucket_name, requester_pays=True)
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=mock.ANY
+            method="POST",
+            url=mock.ANY,
+            data=mock.ANY,
+            headers=mock.ANY,
+            timeout=mock.ANY,
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "storage", client._connection.API_VERSION, "b"])
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["project"], project)
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
@@ -930,14 +924,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(project=project, credentials=credentials)
 
         bucket_name = "bucket-name"
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b?project=%s" % (project,),
-            ]
-        )
         json_expected = {"name": bucket_name}
         data = json_expected
         http = _make_requests_session([_make_json_response(data)])
@@ -948,8 +934,20 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
         http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=mock.ANY
+            method="POST",
+            url=mock.ANY,
+            data=mock.ANY,
+            headers=mock.ANY,
+            timeout=mock.ANY,
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "storage", client._connection.API_VERSION, "b"]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["project"], project)
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
@@ -965,14 +963,6 @@ class TestClient(unittest.TestCase):
         bucket_obj.storage_class = "COLDLINE"
         bucket_obj.requester_pays = True
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b?project=%s" % (project,),
-            ]
-        )
         json_expected = {
             "name": bucket_name,
             "billing": {"requesterPays": True},
@@ -988,8 +978,20 @@ class TestClient(unittest.TestCase):
         self.assertEqual(bucket.name, bucket_name)
         self.assertTrue(bucket.requester_pays)
         http.request.assert_called_once_with(
-            method="POST", url=URI, data=mock.ANY, headers=mock.ANY, timeout=mock.ANY
+            method="POST",
+            url=mock.ANY,
+            data=mock.ANY,
+            headers=mock.ANY,
+            timeout=mock.ANY,
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "storage", client._connection.API_VERSION, "b"]),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["project"], project)
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
@@ -1129,9 +1131,6 @@ class TestClient(unittest.TestCase):
             client.list_buckets()
 
     def test_list_buckets_empty(self):
-        from six.moves.urllib.parse import parse_qs
-        from six.moves.urllib.parse import urlparse
-
         PROJECT = "PROJECT"
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -1150,26 +1149,17 @@ class TestClient(unittest.TestCase):
             headers=mock.ANY,
             timeout=mock.ANY,
         )
-
-        requested_url = http.request.mock_calls[0][2]["url"]
-        expected_base_url = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-            ]
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "storage", client._connection.API_VERSION, "b"])
         )
-        self.assertTrue(requested_url.startswith(expected_base_url))
-
-        expected_query = {"project": [PROJECT], "projection": ["noAcl"]}
-        uri_parts = urlparse(requested_url)
-        self.assertEqual(parse_qs(uri_parts.query), expected_query)
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["project"], PROJECT)
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_list_buckets_explicit_project(self):
-        from six.moves.urllib.parse import parse_qs
-        from six.moves.urllib.parse import urlparse
-
         PROJECT = "PROJECT"
         OTHER_PROJECT = "OTHER_PROJECT"
         CREDENTIALS = _make_credentials()
@@ -1189,21 +1179,15 @@ class TestClient(unittest.TestCase):
             headers=mock.ANY,
             timeout=mock.ANY,
         )
-
-        requested_url = http.request.mock_calls[0][2]["url"]
-        expected_base_url = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-            ]
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "storage", client._connection.API_VERSION, "b"])
         )
-        self.assertTrue(requested_url.startswith(expected_base_url))
-
-        expected_query = {"project": [OTHER_PROJECT], "projection": ["noAcl"]}
-        uri_parts = urlparse(requested_url)
-        self.assertEqual(parse_qs(uri_parts.query), expected_query)
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["project"], str(OTHER_PROJECT))
+        self.assertEqual(parms["projection"], "noAcl")
 
     def test_list_buckets_non_empty(self):
         PROJECT = "PROJECT"
@@ -1230,9 +1214,6 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_buckets_all_arguments(self):
-        from six.moves.urllib.parse import parse_qs
-        from six.moves.urllib.parse import urlparse
-
         PROJECT = "foo-bar"
         CREDENTIALS = _make_credentials()
         client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
@@ -1259,28 +1240,19 @@ class TestClient(unittest.TestCase):
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=42
         )
-
-        requested_url = http.request.mock_calls[0][2]["url"]
-        expected_base_url = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "b",
-            ]
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path, "/".join(["", "storage", client._connection.API_VERSION, "b"])
         )
-        self.assertTrue(requested_url.startswith(expected_base_url))
-
-        expected_query = {
-            "project": [PROJECT],
-            "maxResults": [str(MAX_RESULTS)],
-            "pageToken": [PAGE_TOKEN],
-            "prefix": [PREFIX],
-            "projection": [PROJECTION],
-            "fields": [FIELDS],
-        }
-        uri_parts = urlparse(requested_url)
-        self.assertEqual(parse_qs(uri_parts.query), expected_query)
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["project"], PROJECT)
+        self.assertEqual(parms["maxResults"], str(MAX_RESULTS))
+        self.assertEqual(parms["pageToken"], PAGE_TOKEN)
+        self.assertEqual(parms["prefix"], PREFIX)
+        self.assertEqual(parms["projection"], PROJECTION)
+        self.assertEqual(parms["fields"], FIELDS)
 
     def test_list_buckets_page_empty_response(self):
         from google.api_core import page_iterator
@@ -1322,7 +1294,6 @@ class TestClient(unittest.TestCase):
     ):
         import datetime
         from pytz import UTC
-        from six.moves.urllib.parse import urlencode
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         PROJECT = "PROJECT"
@@ -1375,25 +1346,33 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metadata._properties, RESOURCE["metadata"])
         self.assertEqual(secret, RESOURCE["secret"])
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects",
-                expected_project,
-                "hmacKeys",
-            ]
-        )
         qs_params = {"serviceAccountEmail": EMAIL}
 
         if user_project is not None:
             qs_params["userProject"] = user_project
 
-        FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
         http.request.assert_called_once_with(
-            method="POST", url=FULL_URI, data=None, headers=mock.ANY, timeout=timeout
+            method="POST", url=mock.ANY, data=None, headers=mock.ANY, timeout=timeout
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    expected_project,
+                    "hmacKeys",
+                ]
+            ),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        for param, expected in qs_params.items():
+            self.assertEqual(parms[param], expected)
 
     def test_create_hmac_key_defaults(self):
         self._create_hmac_key_helper()
@@ -1416,26 +1395,31 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(len(metadatas), 0)
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects",
-                PROJECT,
-                "hmacKeys",
-            ]
-        )
         http.request.assert_called_once_with(
             method="GET",
-            url=URI,
+            url=mock.ANY,
             data=None,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    PROJECT,
+                    "hmacKeys",
+                ]
+            ),
+        )
 
     def test_list_hmac_keys_explicit_non_empty(self):
-        from six.moves.urllib.parse import parse_qsl
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         PROJECT = "PROJECT"
@@ -1479,31 +1463,30 @@ class TestClient(unittest.TestCase):
             self.assertIs(metadata._client, client)
             self.assertEqual(metadata._properties, resource)
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects",
-                OTHER_PROJECT,
-                "hmacKeys",
-            ]
-        )
-        EXPECTED_QPARAMS = {
-            "maxResults": str(MAX_RESULTS),
-            "serviceAccountEmail": EMAIL,
-            "showDeletedKeys": "True",
-            "userProject": USER_PROJECT,
-        }
         http.request.assert_called_once_with(
             method="GET", url=mock.ANY, data=None, headers=mock.ANY, timeout=42
         )
-        kwargs = http.request.mock_calls[0].kwargs
-        uri = kwargs["url"]
-        base, qparam_str = uri.split("?")
-        qparams = dict(parse_qsl(qparam_str))
-        self.assertEqual(base, URI)
-        self.assertEqual(qparams, EXPECTED_QPARAMS)
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    OTHER_PROJECT,
+                    "hmacKeys",
+                ]
+            ),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["maxResults"], str(MAX_RESULTS))
+        self.assertEqual(parms["serviceAccountEmail"], EMAIL)
+        self.assertEqual(parms["showDeletedKeys"], "True")
+        self.assertEqual(parms["userProject"], USER_PROJECT)
 
     def test_get_hmac_key_metadata_wo_project(self):
         from google.cloud.storage.hmac_key import HMACKeyMetadata
@@ -1531,23 +1514,28 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metadata.access_id, ACCESS_ID)
         self.assertEqual(metadata.project, PROJECT)
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects",
-                PROJECT,
-                "hmacKeys",
-                ACCESS_ID,
-            ]
-        )
         http.request.assert_called_once_with(
-            method="GET", url=URI, data=None, headers=mock.ANY, timeout=42
+            method="GET", url=mock.ANY, data=None, headers=mock.ANY, timeout=42
+        )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    PROJECT,
+                    "hmacKeys",
+                    ACCESS_ID,
+                ]
+            ),
         )
 
     def test_get_hmac_key_metadata_w_project(self):
-        from six.moves.urllib.parse import urlencode
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         PROJECT = "PROJECT"
@@ -1577,28 +1565,32 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metadata.access_id, ACCESS_ID)
         self.assertEqual(metadata.project, OTHER_PROJECT)
 
-        URI = "/".join(
-            [
-                client._connection.API_BASE_URL,
-                "storage",
-                client._connection.API_VERSION,
-                "projects",
-                OTHER_PROJECT,
-                "hmacKeys",
-                ACCESS_ID,
-            ]
-        )
-
-        qs_params = {"userProject": USER_PROJECT}
-        FULL_URI = "{}?{}".format(URI, urlencode(qs_params))
-
         http.request.assert_called_once_with(
             method="GET",
-            url=FULL_URI,
+            url=mock.ANY,
             data=None,
             headers=mock.ANY,
             timeout=self._get_default_timeout(),
         )
+        _, kwargs = http.request.call_args
+        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
+        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
+        self.assertEqual(
+            path,
+            "/".join(
+                [
+                    "",
+                    "storage",
+                    client._connection.API_VERSION,
+                    "projects",
+                    OTHER_PROJECT,
+                    "hmacKeys",
+                    ACCESS_ID,
+                ]
+            ),
+        )
+        parms = dict(urlparse.parse_qsl(qs))
+        self.assertEqual(parms["userProject"], USER_PROJECT)
 
     def test_get_signed_policy_v4(self):
         import datetime

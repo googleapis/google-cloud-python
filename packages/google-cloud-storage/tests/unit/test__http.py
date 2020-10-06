@@ -60,15 +60,33 @@ class TestConnection(unittest.TestCase):
         )
 
     def test_build_api_url_no_extra_query_params(self):
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
         conn = self._make_one(object())
-        URI = "/".join([conn.DEFAULT_API_ENDPOINT, "storage", conn.API_VERSION, "foo"])
-        self.assertEqual(conn.build_api_url("/foo"), URI)
+        uri = conn.build_api_url("/foo")
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
+        self.assertEqual(path, "/".join(["", "storage", conn.API_VERSION, "foo"]))
+        parms = dict(parse_qsl(qs))
+        pretty_print = parms.pop("prettyPrint", "false")
+        self.assertEqual(pretty_print, "false")
+        self.assertEqual(parms, {})
 
     def test_build_api_url_w_custom_endpoint(self):
-        custom_endpoint = "https://foo-googleapis.com"
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
+        custom_endpoint = "https://foo-storage.googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
-        URI = "/".join([custom_endpoint, "storage", conn.API_VERSION, "foo"])
-        self.assertEqual(conn.build_api_url("/foo"), URI)
+        uri = conn.build_api_url("/foo")
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual("%s://%s" % (scheme, netloc), custom_endpoint)
+        self.assertEqual(path, "/".join(["", "storage", conn.API_VERSION, "foo"]))
+        parms = dict(parse_qsl(qs))
+        pretty_print = parms.pop("prettyPrint", "false")
+        self.assertEqual(pretty_print, "false")
+        self.assertEqual(parms, {})
 
     def test_build_api_url_w_extra_query_params(self):
         from six.moves.urllib.parse import parse_qsl
