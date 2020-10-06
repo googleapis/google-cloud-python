@@ -1090,7 +1090,7 @@ class Client(ClientWithProject):
                 "x-goog-credential": x_goog_credential,
                 "x-goog-date": timestamp,
                 "x-goog-signature": signature,
-                "policy": str_to_sign,
+                "policy": str_to_sign.decode("utf-8"),
             }
         )
         # designate URL
