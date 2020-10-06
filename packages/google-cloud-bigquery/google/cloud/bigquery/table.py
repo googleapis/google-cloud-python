@@ -1980,6 +1980,12 @@ class TimePartitioningType(object):
     HOUR = "HOUR"
     """str: Generates one partition per hour."""
 
+    MONTH = "MONTH"
+    """str: Generates one partition per month."""
+
+    YEAR = "YEAR"
+    """str: Generates one partition per year."""
+
 
 class TimePartitioning(object):
     """Configures time-based partitioning for a table.
@@ -1987,13 +1993,24 @@ class TimePartitioning(object):
     Args:
         type_ (Optional[google.cloud.bigquery.table.TimePartitioningType]):
             Specifies the type of time partitioning to perform. Defaults to
-            :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`,
-            which is the only currently supported type.
+            :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`.
+
+            Supported values are:
+
+            * :attr:`~google.cloud.bigquery.table.TimePartitioningType.HOUR`
+            * :attr:`~google.cloud.bigquery.table.TimePartitioningType.DAY`
+            * :attr:`~google.cloud.bigquery.table.TimePartitioningType.MONTH`
+            * :attr:`~google.cloud.bigquery.table.TimePartitioningType.YEAR`
+
         field (Optional[str]):
             If set, the table is partitioned by this field. If not set, the
             table is partitioned by pseudo column ``_PARTITIONTIME``. The field
-            must be a top-level ``TIMESTAMP`` or ``DATE`` field. Its mode must
-            be ``NULLABLE`` or ``REQUIRED``.
+            must be a top-level ``TIMESTAMP``, ``DATETIME``, or ``DATE``
+            field. Its mode must be ``NULLABLE`` or ``REQUIRED``.
+
+            See the `time-unit column-partitioned tables guide
+            <https://cloud.google.com/bigquery/docs/creating-column-partitions>`_
+            in the BigQuery documentation.
         expiration_ms(Optional[int]):
             Number of milliseconds for which to keep the storage for a
             partition.
