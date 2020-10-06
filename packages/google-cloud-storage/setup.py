@@ -22,7 +22,6 @@ import setuptools
 
 name = "google-cloud-storage"
 description = "Google Cloud Storage API client library"
-version = "1.31.2"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -40,6 +39,11 @@ extras = {}
 # Setup boilerplate below this line.
 
 package_root = os.path.abspath(os.path.dirname(__file__))
+
+version = {}
+with open(os.path.join(package_root, "google/cloud/storage/version.py")) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
