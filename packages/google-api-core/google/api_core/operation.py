@@ -132,8 +132,9 @@ class Operation(polling.PollingFuture):
                 )
                 self.set_result(response)
             elif self._operation.HasField("error"):
-                exception = exceptions.GoogleAPICallError(
-                    self._operation.error.message,
+                exception = exceptions.from_grpc_status(
+                    status_code=self._operation.error.code,
+                    message=self._operation.error.message,
                     errors=(self._operation.error,),
                     response=self._operation,
                 )

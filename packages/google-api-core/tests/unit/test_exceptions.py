@@ -161,6 +161,17 @@ def test_from_grpc_status():
     assert exception.errors == []
 
 
+def test_from_grpc_status_as_int():
+    message = "message"
+    exception = exceptions.from_grpc_status(11, message)
+    assert isinstance(exception, exceptions.BadRequest)
+    assert isinstance(exception, exceptions.OutOfRange)
+    assert exception.code == http_client.BAD_REQUEST
+    assert exception.grpc_status_code == grpc.StatusCode.OUT_OF_RANGE
+    assert exception.message == message
+    assert exception.errors == []
+
+
 def test_from_grpc_status_with_errors_and_response():
     message = "message"
     response = mock.sentinel.response

@@ -146,6 +146,23 @@ def test_exception():
     assert expected_exception.message in "{!r}".format(exception)
 
 
+def test_exception_with_error_code():
+    expected_exception = status_pb2.Status(message="meep", code=5)
+    responses = [
+        make_operation_proto(),
+        # Second operation response includes the error.
+        make_operation_proto(done=True, error=expected_exception),
+    ]
+    future, _, _ = make_operation_future(responses)
+
+    exception = future.exception()
+
+    assert expected_exception.message in "{!r}".format(exception)
+    # Status Code 5 maps to Not Found
+    # https://developers.google.com/maps-booking/reference/grpc-api/status_codes
+    assert isinstance(exception, exceptions.NotFound)
+
+
 def test_unexpected_result():
     responses = [
         make_operation_proto(),
