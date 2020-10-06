@@ -36,9 +36,12 @@ from google.cloud.bigtable_v2.proto import bigtable_pb2_grpc
 from google.cloud.bigtable_v2.proto import data_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-bigtable",
-).version
+try:
+    _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+        "google-cloud-bigtable"
+    ).version
+except pkg_resources.DistributionNotFound:
+    _GAPIC_LIBRARY_VERSION = None
 
 
 class BigtableClient(object):
