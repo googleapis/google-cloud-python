@@ -18,7 +18,6 @@ import os
 import time
 
 from google.cloud import monitoring_v3
-from google.cloud.monitoring_v3.proto import metric_service_pb2
 
 
 class TestSystemMetricService(object):
@@ -26,5 +25,5 @@ class TestSystemMetricService(object):
         project_id = os.environ["PROJECT_ID"]
 
         client = monitoring_v3.MetricServiceClient()
-        name = client.project_path(project_id)
-        response = client.list_monitored_resource_descriptors(name)
+        name = f"projects/{project_id}"
+        response = client.list_monitored_resource_descriptors(name=name)

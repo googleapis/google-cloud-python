@@ -24,9 +24,9 @@ import datetime
 
 import six
 
+import google.cloud.monitoring_v3 as monitoring_v3
 from google.cloud.monitoring_v3 import _dataframe
 from google.cloud.monitoring_v3 import types
-from google.cloud.monitoring_v3.gapic import enums
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 
@@ -103,7 +103,7 @@ class Query(object):
             raise ValueError("Non-zero duration required for time interval.")
 
         self._client = client
-        self._project_path = self._client.project_path(project)
+        self._project_path = f"projects/{project}"
         self._end_time = end_time
         self._start_time = start_time
         self._filter = _Filter(metric_type)
@@ -334,20 +334,20 @@ class Query(object):
 
         Example::
 
-            from google.cloud.monitoring import enums
+            from google.cloud import monitoring
             query = query.align(
-                enums.Aggregation.Aligner.ALIGN_MEAN, minutes=5)
+                monitoring.Aggregation.Aligner.ALIGN_MEAN, minutes=5)
 
         It is also possible to specify the aligner as a literal string::
 
             query = query.align('ALIGN_MEAN', minutes=5)
 
         :type per_series_aligner: str or
-            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Aligner`
+            :class:`~google.cloud.monitoring_v3.Aggregation.Aligner`
         :param per_series_aligner: The approach to be used to align
             individual time series. For example: :data:`Aligner.ALIGN_MEAN`.
             See
-            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Aligner`
+            :class:`~google.cloud.monitoring_v3.Aggregation.Aligner`
             and the descriptions of the `supported aligners`_.
 
         :type seconds: int
@@ -380,16 +380,16 @@ class Query(object):
         For example, you could request an aggregated time series for each
         combination of project and zone as follows::
 
-            from google.cloud.monitoring import enums
-            query = query.reduce(enums.Aggregation.Reducer.REDUCE_MEAN,
+            from google.cloud import monitoring
+            query = query.reduce(monitoring.Aggregation.Reducer.REDUCE_MEAN,
                                  'resource.project_id', 'resource.zone')
 
         :type cross_series_reducer: str or
-            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Reducer`
+            :class:`~google.cloud.monitoring_v3.Aggregation.Reducer`
         :param cross_series_reducer:
             The approach to be used to combine time series. For example:
             :data:`Reducer.REDUCE_MEAN`. See
-            :class:`~google.cloud.monitoring_v3.gapic.enums.Aggregation.Reducer`
+            :class:`~google.cloud.monitoring_v3.Aggregation.Reducer`
             and the descriptions of the `supported reducers`_.
 
         :type group_by_fields: strs
@@ -460,12 +460,13 @@ class Query(object):
             from this request. Non-positive values are ignored. Defaults
             to a sensible value set by the API.
         """
-        params = {"name": self._project_path, "filter_": self.filter}
-
-        params["interval"] = types.TimeInterval()
-        params["interval"].end_time.FromDatetime(self._end_time)
-        if self._start_time:
-            params["interval"].start_time.FromDatetime(self._start_time)
+        params = {
+            "name": self._project_path,
+            "filter": self.filter,
+            "interval": types.TimeInterval(
+                start_time=self._start_time, end_time=self._end_time
+            ),
+        }
 
         if (
             self._per_series_aligner
@@ -480,10 +481,8 @@ class Query(object):
                 alignment_period={"seconds": self._alignment_period_seconds},
             )
 
-        if headers_only:
-            params["view"] = enums.ListTimeSeriesRequest.TimeSeriesView.HEADERS
-        else:
-            params["view"] = enums.ListTimeSeriesRequest.TimeSeriesView.FULL
+        tsv = monitoring_v3.ListTimeSeriesRequest.TimeSeriesView
+        params["view"] = tsv.HEADERS if headers_only else tsv.FULL
 
         if page_size is not None:
             params["page_size"] = page_size

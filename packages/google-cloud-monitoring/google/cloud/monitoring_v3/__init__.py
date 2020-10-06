@@ -1,86 +1,225 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.monitoring_v3 import types
-from google.cloud.monitoring_v3.gapic import alert_policy_service_client
-from google.cloud.monitoring_v3.gapic import enums
-from google.cloud.monitoring_v3.gapic import group_service_client
-from google.cloud.monitoring_v3.gapic import metric_service_client
-from google.cloud.monitoring_v3.gapic import (
-    notification_channel_service_client as notification_client,
-)
-from google.cloud.monitoring_v3.gapic import service_monitoring_service_client
-from google.cloud.monitoring_v3.gapic import uptime_check_service_client
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7."
-        "More details about Python 2 support for Google Cloud Client Libraries"
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
-
-
-class AlertPolicyServiceClient(alert_policy_service_client.AlertPolicyServiceClient):
-    __doc__ = alert_policy_service_client.AlertPolicyServiceClient.__doc__
-    enums = enums
-
-
-class GroupServiceClient(group_service_client.GroupServiceClient):
-    __doc__ = group_service_client.GroupServiceClient.__doc__
-    enums = enums
-
-
-class MetricServiceClient(metric_service_client.MetricServiceClient):
-    __doc__ = metric_service_client.MetricServiceClient.__doc__
-    enums = enums
-
-
-class NotificationChannelServiceClient(
-    notification_client.NotificationChannelServiceClient
-):
-    __doc__ = notification_client.NotificationChannelServiceClient.__doc__
-    enums = enums
-
-
-class ServiceMonitoringServiceClient(
-    service_monitoring_service_client.ServiceMonitoringServiceClient
-):
-    __doc__ = service_monitoring_service_client.ServiceMonitoringServiceClient.__doc__
-    enums = enums
-
-
-class UptimeCheckServiceClient(uptime_check_service_client.UptimeCheckServiceClient):
-    __doc__ = uptime_check_service_client.UptimeCheckServiceClient.__doc__
-    enums = enums
+from .services.alert_policy_service import AlertPolicyServiceClient
+from .services.group_service import GroupServiceClient
+from .services.metric_service import MetricServiceClient
+from .services.notification_channel_service import NotificationChannelServiceClient
+from .services.service_monitoring_service import ServiceMonitoringServiceClient
+from .services.uptime_check_service import UptimeCheckServiceClient
+from .types.alert import AlertPolicy
+from .types.alert_service import CreateAlertPolicyRequest
+from .types.alert_service import DeleteAlertPolicyRequest
+from .types.alert_service import GetAlertPolicyRequest
+from .types.alert_service import ListAlertPoliciesRequest
+from .types.alert_service import ListAlertPoliciesResponse
+from .types.alert_service import UpdateAlertPolicyRequest
+from .types.common import Aggregation
+from .types.common import ComparisonType
+from .types.common import ServiceTier
+from .types.common import TimeInterval
+from .types.common import TypedValue
+from .types.dropped_labels import DroppedLabels
+from .types.group import Group
+from .types.group_service import CreateGroupRequest
+from .types.group_service import DeleteGroupRequest
+from .types.group_service import GetGroupRequest
+from .types.group_service import ListGroupMembersRequest
+from .types.group_service import ListGroupMembersResponse
+from .types.group_service import ListGroupsRequest
+from .types.group_service import ListGroupsResponse
+from .types.group_service import UpdateGroupRequest
+from .types.metric import LabelValue
+from .types.metric import Point
+from .types.metric import QueryError
+from .types.metric import TextLocator
+from .types.metric import TimeSeries
+from .types.metric import TimeSeriesData
+from .types.metric import TimeSeriesDescriptor
+from .types.metric_service import CreateMetricDescriptorRequest
+from .types.metric_service import CreateTimeSeriesError
+from .types.metric_service import CreateTimeSeriesRequest
+from .types.metric_service import CreateTimeSeriesSummary
+from .types.metric_service import DeleteMetricDescriptorRequest
+from .types.metric_service import GetMetricDescriptorRequest
+from .types.metric_service import GetMonitoredResourceDescriptorRequest
+from .types.metric_service import ListMetricDescriptorsRequest
+from .types.metric_service import ListMetricDescriptorsResponse
+from .types.metric_service import ListMonitoredResourceDescriptorsRequest
+from .types.metric_service import ListMonitoredResourceDescriptorsResponse
+from .types.metric_service import ListTimeSeriesRequest
+from .types.metric_service import ListTimeSeriesResponse
+from .types.metric_service import QueryErrorList
+from .types.metric_service import QueryTimeSeriesRequest
+from .types.metric_service import QueryTimeSeriesResponse
+from .types.mutation_record import MutationRecord
+from .types.notification import NotificationChannel
+from .types.notification import NotificationChannelDescriptor
+from .types.notification_service import CreateNotificationChannelRequest
+from .types.notification_service import DeleteNotificationChannelRequest
+from .types.notification_service import GetNotificationChannelDescriptorRequest
+from .types.notification_service import GetNotificationChannelRequest
+from .types.notification_service import GetNotificationChannelVerificationCodeRequest
+from .types.notification_service import GetNotificationChannelVerificationCodeResponse
+from .types.notification_service import ListNotificationChannelDescriptorsRequest
+from .types.notification_service import ListNotificationChannelDescriptorsResponse
+from .types.notification_service import ListNotificationChannelsRequest
+from .types.notification_service import ListNotificationChannelsResponse
+from .types.notification_service import SendNotificationChannelVerificationCodeRequest
+from .types.notification_service import UpdateNotificationChannelRequest
+from .types.notification_service import VerifyNotificationChannelRequest
+from .types.service import BasicSli
+from .types.service import DistributionCut
+from .types.service import Range
+from .types.service import RequestBasedSli
+from .types.service import Service
+from .types.service import ServiceLevelIndicator
+from .types.service import ServiceLevelObjective
+from .types.service import TimeSeriesRatio
+from .types.service import WindowsBasedSli
+from .types.service_service import CreateServiceLevelObjectiveRequest
+from .types.service_service import CreateServiceRequest
+from .types.service_service import DeleteServiceLevelObjectiveRequest
+from .types.service_service import DeleteServiceRequest
+from .types.service_service import GetServiceLevelObjectiveRequest
+from .types.service_service import GetServiceRequest
+from .types.service_service import ListServiceLevelObjectivesRequest
+from .types.service_service import ListServiceLevelObjectivesResponse
+from .types.service_service import ListServicesRequest
+from .types.service_service import ListServicesResponse
+from .types.service_service import UpdateServiceLevelObjectiveRequest
+from .types.service_service import UpdateServiceRequest
+from .types.span_context import SpanContext
+from .types.uptime import GroupResourceType
+from .types.uptime import InternalChecker
+from .types.uptime import UptimeCheckConfig
+from .types.uptime import UptimeCheckIp
+from .types.uptime import UptimeCheckRegion
+from .types.uptime_service import CreateUptimeCheckConfigRequest
+from .types.uptime_service import DeleteUptimeCheckConfigRequest
+from .types.uptime_service import GetUptimeCheckConfigRequest
+from .types.uptime_service import ListUptimeCheckConfigsRequest
+from .types.uptime_service import ListUptimeCheckConfigsResponse
+from .types.uptime_service import ListUptimeCheckIpsRequest
+from .types.uptime_service import ListUptimeCheckIpsResponse
+from .types.uptime_service import UpdateUptimeCheckConfigRequest
 
 
 __all__ = (
-    "enums",
-    "types",
+    "Aggregation",
+    "AlertPolicy",
     "AlertPolicyServiceClient",
+    "BasicSli",
+    "ComparisonType",
+    "CreateAlertPolicyRequest",
+    "CreateGroupRequest",
+    "CreateMetricDescriptorRequest",
+    "CreateNotificationChannelRequest",
+    "CreateServiceLevelObjectiveRequest",
+    "CreateServiceRequest",
+    "CreateTimeSeriesError",
+    "CreateTimeSeriesRequest",
+    "CreateTimeSeriesSummary",
+    "CreateUptimeCheckConfigRequest",
+    "DeleteAlertPolicyRequest",
+    "DeleteGroupRequest",
+    "DeleteMetricDescriptorRequest",
+    "DeleteNotificationChannelRequest",
+    "DeleteServiceLevelObjectiveRequest",
+    "DeleteServiceRequest",
+    "DeleteUptimeCheckConfigRequest",
+    "DistributionCut",
+    "DroppedLabels",
+    "GetAlertPolicyRequest",
+    "GetGroupRequest",
+    "GetMetricDescriptorRequest",
+    "GetMonitoredResourceDescriptorRequest",
+    "GetNotificationChannelDescriptorRequest",
+    "GetNotificationChannelRequest",
+    "GetNotificationChannelVerificationCodeRequest",
+    "GetNotificationChannelVerificationCodeResponse",
+    "GetServiceLevelObjectiveRequest",
+    "GetServiceRequest",
+    "GetUptimeCheckConfigRequest",
+    "Group",
+    "GroupResourceType",
     "GroupServiceClient",
+    "InternalChecker",
+    "LabelValue",
+    "ListAlertPoliciesRequest",
+    "ListAlertPoliciesResponse",
+    "ListGroupMembersRequest",
+    "ListGroupMembersResponse",
+    "ListGroupsRequest",
+    "ListGroupsResponse",
+    "ListMetricDescriptorsRequest",
+    "ListMetricDescriptorsResponse",
+    "ListMonitoredResourceDescriptorsRequest",
+    "ListMonitoredResourceDescriptorsResponse",
+    "ListNotificationChannelDescriptorsRequest",
+    "ListNotificationChannelDescriptorsResponse",
+    "ListNotificationChannelsRequest",
+    "ListNotificationChannelsResponse",
+    "ListServiceLevelObjectivesRequest",
+    "ListServiceLevelObjectivesResponse",
+    "ListServicesRequest",
+    "ListServicesResponse",
+    "ListTimeSeriesRequest",
+    "ListTimeSeriesResponse",
+    "ListUptimeCheckConfigsRequest",
+    "ListUptimeCheckConfigsResponse",
+    "ListUptimeCheckIpsRequest",
+    "ListUptimeCheckIpsResponse",
     "MetricServiceClient",
+    "MutationRecord",
+    "NotificationChannel",
+    "NotificationChannelDescriptor",
     "NotificationChannelServiceClient",
+    "Point",
+    "QueryError",
+    "QueryErrorList",
+    "QueryTimeSeriesRequest",
+    "QueryTimeSeriesResponse",
+    "Range",
+    "RequestBasedSli",
+    "SendNotificationChannelVerificationCodeRequest",
+    "Service",
+    "ServiceLevelIndicator",
+    "ServiceLevelObjective",
     "ServiceMonitoringServiceClient",
+    "ServiceTier",
+    "SpanContext",
+    "TextLocator",
+    "TimeInterval",
+    "TimeSeries",
+    "TimeSeriesData",
+    "TimeSeriesDescriptor",
+    "TimeSeriesRatio",
+    "TypedValue",
+    "UpdateAlertPolicyRequest",
+    "UpdateGroupRequest",
+    "UpdateNotificationChannelRequest",
+    "UpdateServiceLevelObjectiveRequest",
+    "UpdateServiceRequest",
+    "UpdateUptimeCheckConfigRequest",
+    "UptimeCheckConfig",
+    "UptimeCheckIp",
+    "UptimeCheckRegion",
+    "VerifyNotificationChannelRequest",
+    "WindowsBasedSli",
     "UptimeCheckServiceClient",
 )

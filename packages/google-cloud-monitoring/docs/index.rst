@@ -8,8 +8,18 @@ Api Reference
     :maxdepth: 2
 
     query.rst
-    gapic/v3/api
-    gapic/v3/types
+    monitoring_v3/services
+    monitoring_v3/types
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
 
 Changelog
 ---------

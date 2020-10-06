@@ -1,0 +1,215 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+import proto  # type: ignore
+
+
+from google.api import label_pb2 as label  # type: ignore
+from google.api import launch_stage_pb2 as ga_launch_stage  # type: ignore
+from google.cloud.monitoring_v3.types import common
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
+
+
+__protobuf__ = proto.module(
+    package="google.monitoring.v3",
+    manifest={"NotificationChannelDescriptor", "NotificationChannel",},
+)
+
+
+class NotificationChannelDescriptor(proto.Message):
+    r"""A description of a notification channel. The descriptor
+    includes the properties of the channel and the set of labels or
+    fields that must be specified to configure channels of a given
+    type.
+
+    Attributes:
+        name (str):
+            The full REST resource name for this descriptor. The format
+            is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[TYPE]
+
+            In the above, ``[TYPE]`` is the value of the ``type`` field.
+        type_ (str):
+            The type of notification channel, such as
+            "email", "sms", etc. Notification channel types
+            are globally unique.
+        display_name (str):
+            A human-readable name for the notification
+            channel type.  This form of the name is suitable
+            for a user interface.
+        description (str):
+            A human-readable description of the
+            notification channel type. The description may
+            include a description of the properties of the
+            channel and pointers to external documentation.
+        labels (Sequence[~.label.LabelDescriptor]):
+            The set of labels that must be defined to
+            identify a particular channel of the
+            corresponding type. Each label includes a
+            description for how that field should be
+            populated.
+        supported_tiers (Sequence[~.common.ServiceTier]):
+            The tiers that support this notification channel; the
+            project service tier must be one of the supported_tiers.
+        launch_stage (~.ga_launch_stage.LaunchStage):
+            The product launch stage for channels of this
+            type.
+    """
+
+    name = proto.Field(proto.STRING, number=6)
+
+    type_ = proto.Field(proto.STRING, number=1)
+
+    display_name = proto.Field(proto.STRING, number=2)
+
+    description = proto.Field(proto.STRING, number=3)
+
+    labels = proto.RepeatedField(
+        proto.MESSAGE, number=4, message=label.LabelDescriptor,
+    )
+
+    supported_tiers = proto.RepeatedField(
+        proto.ENUM, number=5, enum=common.ServiceTier,
+    )
+
+    launch_stage = proto.Field(proto.ENUM, number=7, enum=ga_launch_stage.LaunchStage,)
+
+
+class NotificationChannel(proto.Message):
+    r"""A ``NotificationChannel`` is a medium through which an alert is
+    delivered when a policy violation is detected. Examples of channels
+    include email, SMS, and third-party messaging applications. Fields
+    containing sensitive information like authentication tokens or
+    contact info are only partially populated on retrieval.
+
+    Attributes:
+        type_ (str):
+            The type of the notification channel. This field matches the
+            value of the
+            [NotificationChannelDescriptor.type][google.monitoring.v3.NotificationChannelDescriptor.type]
+            field.
+        name (str):
+            The full REST resource name for this channel. The format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+
+            The ``[CHANNEL_ID]`` is automatically assigned by the server
+            on creation.
+        display_name (str):
+            An optional human-readable name for this
+            notification channel. It is recommended that you
+            specify a non-empty and unique name in order to
+            make it easier to identify the channels in your
+            project, though this is not enforced. The
+            display name is limited to 512 Unicode
+            characters.
+        description (str):
+            An optional human-readable description of
+            this notification channel. This description may
+            provide additional details, beyond the display
+            name, for the channel. This may not exceed 1024
+            Unicode characters.
+        labels (Sequence[~.notification.NotificationChannel.LabelsEntry]):
+            Configuration fields that define the channel and its
+            behavior. The permissible and required labels are specified
+            in the
+            [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels]
+            of the ``NotificationChannelDescriptor`` corresponding to
+            the ``type`` field.
+        user_labels (Sequence[~.notification.NotificationChannel.UserLabelsEntry]):
+            User-supplied key/value data that does not need to conform
+            to the corresponding ``NotificationChannelDescriptor``'s
+            schema, unlike the ``labels`` field. This field is intended
+            to be used for organizing and identifying the
+            ``NotificationChannel`` objects.
+
+            The field can contain up to 64 entries. Each key and value
+            is limited to 63 Unicode characters or 128 bytes, whichever
+            is smaller. Labels and values can contain only lowercase
+            letters, numerals, underscores, and dashes. Keys must begin
+            with a letter.
+        verification_status (~.notification.NotificationChannel.VerificationStatus):
+            Indicates whether this channel has been verified or not. On
+            a
+            [``ListNotificationChannels``][google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
+            or
+            [``GetNotificationChannel``][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
+            operation, this field is expected to be populated.
+
+            If the value is ``UNVERIFIED``, then it indicates that the
+            channel is non-functioning (it both requires verification
+            and lacks verification); otherwise, it is assumed that the
+            channel works.
+
+            If the channel is neither ``VERIFIED`` nor ``UNVERIFIED``,
+            it implies that the channel is of a type that does not
+            require verification or that this specific channel has been
+            exempted from verification because it was created prior to
+            verification being required for channels of this type.
+
+            This field cannot be modified using a standard
+            [``UpdateNotificationChannel``][google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel]
+            operation. To change the value of this field, you must call
+            [``VerifyNotificationChannel``][google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel].
+        enabled (~.wrappers.BoolValue):
+            Whether notifications are forwarded to the
+            described channel. This makes it possible to
+            disable delivery of notifications to a
+            particular channel without removing the channel
+            from all alerting policies that reference the
+            channel. This is a more convenient approach when
+            the change is temporary and you want to receive
+            notifications from the same set of alerting
+            policies on the channel at some point in the
+            future.
+    """
+
+    class VerificationStatus(proto.Enum):
+        r"""Indicates whether the channel has been verified or not. It is
+        illegal to specify this field in a
+        [``CreateNotificationChannel``][google.monitoring.v3.NotificationChannelService.CreateNotificationChannel]
+        or an
+        [``UpdateNotificationChannel``][google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel]
+        operation.
+        """
+        VERIFICATION_STATUS_UNSPECIFIED = 0
+        UNVERIFIED = 1
+        VERIFIED = 2
+
+    type_ = proto.Field(proto.STRING, number=1)
+
+    name = proto.Field(proto.STRING, number=6)
+
+    display_name = proto.Field(proto.STRING, number=3)
+
+    description = proto.Field(proto.STRING, number=4)
+
+    labels = proto.MapField(proto.STRING, proto.STRING, number=5)
+
+    user_labels = proto.MapField(proto.STRING, proto.STRING, number=8)
+
+    verification_status = proto.Field(proto.ENUM, number=9, enum=VerificationStatus,)
+
+    enabled = proto.Field(proto.MESSAGE, number=11, message=wrappers.BoolValue,)
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))
