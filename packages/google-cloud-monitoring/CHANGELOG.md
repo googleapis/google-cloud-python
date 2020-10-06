@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-monitoring/compare/v1.1.0...v2.0.0) (2020-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* move to use microgen (#54). See [Migration Guide](https://github.com/googleapis/python-monitoring/blob/master/UPGRADING.md).
+
+### Features
+
+* move to use microgen ([#54](https://www.github.com/googleapis/python-monitoring/issues/54)) ([d25e49f](https://www.github.com/googleapis/python-monitoring/commit/d25e49f13e6f880e77fcb0dc5ef4e3c61fba079a))
+
 ## [1.1.0](https://www.github.com/googleapis/python-monitoring/compare/v1.0.0...v1.1.0) (2020-08-20)
 
 
