@@ -29,7 +29,7 @@ pip-log.txt
 .nox
 .cache
 .pytest_cache
-pytype_output
+.pytype
 
 
 # Mac
@@ -47,6 +47,7 @@ pytype_output
 # Built documentation
 docs/_build
 bigquery/docs/generated
+docs.metadata
 
 # Virtual environment
 env/
