@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [1.15.3](https://www.github.com/googleapis/python-datastore/compare/v1.15.2...v1.15.3) (2020-10-06)
+
+
+### Bug Fixes
+
+* use full path and os.path to version.py in setup.py ([#97](https://www.github.com/googleapis/python-datastore/issues/97)) ([0f5506f](https://www.github.com/googleapis/python-datastore/commit/0f5506fe8bcb899e64cc7c1cf881edc3d3aaead8))
+
 ### [1.15.2](https://www.github.com/googleapis/python-datastore/compare/v1.15.1...v1.15.2) (2020-10-06)
 
 
