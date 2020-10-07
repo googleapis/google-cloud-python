@@ -30,12 +30,12 @@ from google.protobuf import descriptor_pb2
 
 import grpc  # type: ignore
 
-from gapic.generator import options
 from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
 from gapic.utils import cached_property
 from gapic.utils import nth
+from gapic.utils import Options
 from gapic.utils import to_snake_case
 from gapic.utils import RESERVED_NAMES
 
@@ -60,7 +60,7 @@ class Proto:
     def build(
         cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
         file_to_generate: bool, naming: api_naming.Naming,
-        opts: options.Options = options.Options(),
+        opts: Options = Options(),
         prior_protos: Mapping[str, 'Proto'] = None,
         load_services: bool = True
     ) -> 'Proto':
@@ -201,7 +201,7 @@ class API:
         cls,
         file_descriptors: Sequence[descriptor_pb2.FileDescriptorProto],
         package: str = '',
-        opts: options.Options = options.Options(),
+        opts: Options = Options(),
         prior_protos: Mapping[str, 'Proto'] = None,
     ) -> 'API':
         """Build the internal API schema based on the request.
@@ -388,7 +388,7 @@ class _ProtoBuilder:
         file_descriptor: descriptor_pb2.FileDescriptorProto,
         file_to_generate: bool,
         naming: api_naming.Naming,
-        opts: options.Options = options.Options(),
+        opts: Options = Options(),
         prior_protos: Mapping[str, Proto] = None,
         load_services: bool = True
     ):

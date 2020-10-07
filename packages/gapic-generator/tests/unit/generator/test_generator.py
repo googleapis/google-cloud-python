@@ -23,16 +23,16 @@ from google.protobuf import descriptor_pb2
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 from gapic.generator import generator
-from gapic.generator import options
 from gapic.samplegen_utils import types, yaml
 from gapic.schema import api
 from gapic.schema import naming
 from gapic.schema import wrappers
+from gapic.utils import Options
 
 
 def test_custom_template_directory():
     # Create a generator.
-    opts = options.Options.build("python-gapic-templates=/templates/")
+    opts = Options.build("python-gapic-templates=/templates/")
     g = generator.Generator(opts)
 
     # Assert that the Jinja loader will pull from the correct location.
@@ -46,7 +46,7 @@ def test_get_response():
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
             cgr = g.get_response(api_schema=make_api(),
-                                 opts=options.Options.build(""))
+                                 opts=Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
@@ -66,7 +66,7 @@ def test_get_response_ignores_empty_files():
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("# Meaningless comment")
             cgr = g.get_response(api_schema=make_api(),
-                                 opts=options.Options.build(""))
+                                 opts=Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
@@ -88,7 +88,7 @@ def test_get_response_ignores_private_files():
         with mock.patch.object(jinja2.Environment, "get_template") as gt:
             gt.return_value = jinja2.Template("I am a template result.")
             cgr = g.get_response(api_schema=make_api(),
-                                 opts=options.Options.build(""))
+                                 opts=Options.build(""))
             lt.assert_called_once()
             gt.assert_has_calls(
                 [
@@ -110,7 +110,7 @@ def test_get_response_fails_invalid_file_paths():
         ]
         with pytest.raises(ValueError) as ex:
             g.get_response(api_schema=make_api(),
-                           opts=options.Options.build(""))
+                           opts=Options.build(""))
 
         ex_str = str(ex.value)
         assert "%proto" in ex_str and "%service" in ex_str
@@ -139,7 +139,7 @@ def test_get_response_enumerates_services():
                         ),
                     )
                 ),
-                opts=options.Options.build(""),
+                opts=Options.build(""),
             )
             assert len(cgr.file) == 2
             assert {i.name for i in cgr.file} == {
@@ -164,7 +164,7 @@ def test_get_response_enumerates_proto():
                     make_proto(
                         descriptor_pb2.FileDescriptorProto(name="b.proto")),
                 ),
-                opts=options.Options.build(""),
+                opts=Options.build(""),
             )
             assert len(cgr.file) == 2
             assert {i.name for i in cgr.file} == {"foo/a.py", "foo/b.py"}
@@ -206,7 +206,7 @@ def test_get_response_divides_subpackages():
             """.strip()
             )
             cgr = g.get_response(api_schema=api_schema,
-                                 opts=options.Options.build(""))
+                                 opts=Options.build(""))
             assert len(cgr.file) == 6
             assert {i.name for i in cgr.file} == {
                 "foo/types/top.py",
@@ -327,7 +327,7 @@ def test_parse_sample_paths(fs):
     )
 
     with pytest.raises(types.InvalidConfig):
-        options.Options.build("samples=sampledir/,")
+        Options.build("samples=sampledir/,")
 
 
 @mock.patch(
@@ -365,14 +365,14 @@ def test_samplegen_config_to_output_files(
         ),
     )
 
-    g = generator.Generator(options.Options.build("samples=samples.yaml",))
+    g = generator.Generator(Options.build("samples=samples.yaml",))
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
     api_schema = make_api(naming=naming.NewNaming(
         name="Mollusc", version="v6"))
     actual_response = g.get_response(
-        api_schema, opts=options.Options.build(""))
+        api_schema, opts=Options.build(""))
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
@@ -451,14 +451,14 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
             """
         ),
     )
-    g = generator.Generator(options.Options.build("samples=samples.yaml"))
+    g = generator.Generator(Options.build("samples=samples.yaml"))
     # Need to have the sample template visible to the generator.
     g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
 
     api_schema = make_api(naming=naming.NewNaming(
         name="Mollusc", version="v6"))
     actual_response = g.get_response(api_schema,
-                                     opts=options.Options.build(""))
+                                     opts=Options.build(""))
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
@@ -532,7 +532,7 @@ def test_generator_duplicate_samples(fs):
 
     with pytest.raises(types.DuplicateSample):
         generator.get_response(api_schema=api_schema,
-                               opts=options.Options.build(""))
+                               opts=Options.build(""))
 
 
 @mock.patch("gapic.samplegen.samplegen.generate_sample", return_value="")
@@ -637,13 +637,13 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
     expected.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
 
     actual = generator.get_response(
-        api_schema=api_schema, opts=options.Options.build("")
+        api_schema=api_schema, opts=Options.build("")
     )
     assert actual == expected
 
 
 def make_generator(opts_str: str = "") -> generator.Generator:
-    return generator.Generator(options.Options.build(opts_str))
+    return generator.Generator(Options.build(opts_str))
 
 
 def make_proto(

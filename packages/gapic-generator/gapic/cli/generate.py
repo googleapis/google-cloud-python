@@ -22,7 +22,7 @@ from google.protobuf.compiler import plugin_pb2
 
 from gapic import generator
 from gapic.schema import api
-from gapic.generator import options
+from gapic.utils import Options
 
 
 @click.command()
@@ -41,7 +41,7 @@ def generate(
     req = plugin_pb2.CodeGeneratorRequest.FromString(request.read())
 
     # Pull apart arguments in the request.
-    opts = options.Options.build(req.parameter)
+    opts = Options.build(req.parameter)
 
     # Determine the appropriate package.
     # This generator uses a slightly different mechanism for determining

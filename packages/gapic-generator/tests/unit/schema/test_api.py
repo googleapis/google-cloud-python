@@ -22,11 +22,11 @@ from google.api_core import exceptions
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 
-from gapic.generator import options
 from gapic.schema import api
 from gapic.schema import imp
 from gapic.schema import naming
 from gapic.schema import wrappers
+from gapic.utils import Options
 
 from test_utils.test_utils import (
     make_enum_pb2,
@@ -737,7 +737,7 @@ def test_services():
         }
 
     # Set up retry information.
-    opts = options.Options(retry={'methodConfig': [
+    opts = Options(retry={'methodConfig': [
         {'name': [_n('TimeoutableGetFoo')], 'timeout': '30s'},
         {'name': [_n('RetryableGetFoo')], 'retryPolicy': {
             'maxAttempts': 3,

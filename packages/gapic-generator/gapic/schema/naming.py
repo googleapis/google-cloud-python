@@ -21,7 +21,7 @@ from typing import cast, List, Match, Tuple
 from google.protobuf import descriptor_pb2
 
 from gapic import utils
-from gapic.generator import options
+from gapic.utils import Options
 
 # See https://github.com/python/mypy/issues/5374 for details on the mypy false
 # positive.
@@ -50,7 +50,7 @@ class Naming(abc.ABC):
     @staticmethod
     def build(
         *file_descriptors: descriptor_pb2.FileDescriptorProto,
-        opts: options.Options = options.Options(),
+        opts: Options = Options(),
     ) -> 'Naming':
         """Return a full Naming instance based on these file descriptors.
 

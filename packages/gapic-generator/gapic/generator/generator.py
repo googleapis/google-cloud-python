@@ -22,10 +22,10 @@ from collections import OrderedDict, defaultdict
 from gapic.samplegen_utils.utils import coerce_response_name, is_valid_sample_cfg
 from gapic.samplegen_utils.types import DuplicateSample
 from gapic.samplegen import manifest, samplegen
-from gapic.generator import options
 from gapic.generator import formatter
 from gapic.schema import api
 from gapic import utils
+from gapic.utils import Options
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorResponse
 
 
@@ -43,7 +43,7 @@ class Generator:
             this application are used.
     """
 
-    def __init__(self, opts: options.Options) -> None:
+    def __init__(self, opts: Options) -> None:
       # Create the jinja environment with which to render templates.
         self._env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(searchpath=opts.templates),
@@ -61,7 +61,7 @@ class Generator:
         self._sample_configs = opts.sample_configs
 
     def get_response(
-        self, api_schema: api.API, opts: options.Options
+        self, api_schema: api.API, opts: Options
     ) -> CodeGeneratorResponse:
         """Return a :class:`~.CodeGeneratorResponse` for this library.
 
@@ -209,7 +209,7 @@ class Generator:
         return output_files
 
     def _render_template(
-            self, template_name: str, *, api_schema: api.API, opts: options.Options,
+            self, template_name: str, *, api_schema: api.API, opts: Options,
     ) -> Dict[str, CodeGeneratorResponse.File]:
         """Render the requested templates.
 
@@ -297,7 +297,7 @@ class Generator:
         self,
         template_name: str,
         *,
-        opts: options.Options,
+        opts: Options,
         api_schema=api.API,
         **context: Mapping,
     ):

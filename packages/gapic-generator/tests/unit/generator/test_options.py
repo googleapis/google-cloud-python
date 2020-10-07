@@ -17,12 +17,12 @@ import pytest
 from unittest import mock
 import warnings
 
-from gapic.generator import options
 from gapic.samplegen_utils import types
+from gapic.utils import Options
 
 
 def test_options_empty():
-    opts = options.Options.build('')
+    opts = Options.build('')
     assert len(opts.templates) == 1
     assert opts.templates[0].endswith('gapic/templates')
     assert not opts.lazy_import
@@ -30,13 +30,13 @@ def test_options_empty():
 
 
 def test_options_replace_templates():
-    opts = options.Options.build('python-gapic-templates=/foo/')
+    opts = Options.build('python-gapic-templates=/foo/')
     assert len(opts.templates) == 1
     assert opts.templates[0] == '/foo'
 
 
 def test_options_relative_templates():
-    opts = options.Options.build('python-gapic-templates=../../squid/clam')
+    opts = Options.build('python-gapic-templates=../../squid/clam')
 
     expected = (os.path.abspath('../squid/clam'),)
     assert opts.templates == expected
@@ -44,26 +44,26 @@ def test_options_relative_templates():
 
 def test_options_unrecognized():
     with mock.patch.object(warnings, 'warn') as warn:
-        options.Options.build('python-gapic-abc=xyz')
+        Options.build('python-gapic-abc=xyz')
     warn.assert_called_once_with('Unrecognized option: `python-gapic-abc`.')
 
 
 def test_flags_unrecognized():
     with mock.patch.object(warnings, 'warn') as warn:
-        options.Options.build('python-gapic-abc')
+        Options.build('python-gapic-abc')
     warn.assert_called_once_with('Unrecognized option: `python-gapic-abc`.')
 
 
 def test_options_unrecognized_likely_typo():
     with mock.patch.object(warnings, 'warn') as warn:
-        options.Options.build('go-gapic-abc=xyz')
+        Options.build('go-gapic-abc=xyz')
     assert len(warn.mock_calls) == 0
 
 
 def test_options_trim_whitespace():
     # When writing shell scripts, users may construct options strings with
     # whitespace that needs to be trimmed after tokenizing.
-    opts = options.Options.build(
+    opts = Options.build(
         '''
         python-gapic-templates=/squid/clam/whelk ,
         python-gapic-name=mollusca ,
@@ -75,11 +75,11 @@ def test_options_trim_whitespace():
 def test_options_no_valid_sample_config(fs):
     fs.create_file("sampledir/not_a_config.yaml")
     with pytest.raises(types.InvalidConfig):
-        options.Options.build("samples=sampledir/")
+        Options.build("samples=sampledir/")
 
 
 def test_options_service_config(fs):
-    opts = options.Options.build("")
+    opts = Options.build("")
     assert opts.retry is None
 
     # Default of None is okay, verify build can read a config.
@@ -109,7 +109,7 @@ def test_options_service_config(fs):
     }""")
 
     opt_string = f"retry-config={service_config_fpath}"
-    opts = options.Options.build(opt_string)
+    opts = Options.build(opt_string)
 
     # Verify the config was read in correctly.
     expected_cfg = {
@@ -140,15 +140,15 @@ def test_options_service_config(fs):
 
 
 def test_options_lazy_import():
-    opts = options.Options.build('lazy-import')
+    opts = Options.build('lazy-import')
     assert opts.lazy_import
 
 
 def test_options_old_naming():
-    opts = options.Options.build('old-naming')
+    opts = Options.build('old-naming')
     assert opts.old_naming
 
 
 def test_options_add_iam_methods():
-    opts = options.Options.build('add-iam-methods')
+    opts = Options.build('add-iam-methods')
     assert opts.add_iam_methods
