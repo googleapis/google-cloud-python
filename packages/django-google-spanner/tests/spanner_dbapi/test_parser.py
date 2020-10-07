@@ -10,7 +10,6 @@ from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 from google.cloud.spanner_dbapi.parser import (
     ARGS,
     FUNC,
-    TERMINAL,
     VALUES,
     a_args,
     expect,
@@ -21,35 +20,6 @@ from google.cloud.spanner_dbapi.parser import (
 
 
 class ParserTests(TestCase):
-    def test_terminal(self):
-        cases = [
-            ("%s", "", pyfmt_str),
-            ("  %s", "", pyfmt_str),
-            ("  %s   ", "", pyfmt_str),
-        ]
-
-        for text, want_unconsumed, want_parsed in cases:
-            with self.subTest(text=text):
-                got_unconsumed, got_parsed = expect(text, TERMINAL)
-                self.assertEqual(got_parsed, want_parsed)
-                self.assertEqual(got_unconsumed, want_unconsumed)
-
-    def test_terminal_fail(self):
-        cases = [
-            ("", "TERMINAL: `` is not %s"),
-            ("fdp", "TERMINAL: `fdp` is not %s"),
-            ("%%s", "TERMINAL: `%%s` is not %s"),
-            ("%sa", "TERMINAL: `%sa` is not %s"),
-        ]
-
-        for text, wantException in cases:
-            with self.subTest(text=text):
-                self.assertRaisesRegex(
-                    ProgrammingError,
-                    wantException,
-                    lambda: expect(text, TERMINAL),
-                )
-
     def test_func(self):
         cases = [
             ("_91())", ")", func("_91", a_args([]))),
