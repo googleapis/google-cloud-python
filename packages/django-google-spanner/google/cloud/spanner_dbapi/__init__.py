@@ -93,7 +93,7 @@ def connect(
     if not database.exists():
         raise ValueError("database '%s' does not exist." % database_id)
 
-    return Connection(database)
+    return Connection(instance, database)
 
 
 __all__ = [

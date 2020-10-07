@@ -217,6 +217,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "admin_views.test_multidb.MultiDatabaseTests.test_change_view",
         "admin_views.test_multidb.MultiDatabaseTests.test_delete_view",
         "auth_tests.test_admin_multidb.MultiDatabaseTests.test_add_view",
+        "auth_tests.test_remote_user_deprecation.RemoteUserCustomTest.test_configure_user_deprecation_warning",
         "contenttypes_tests.test_models.ContentTypesMultidbTests.test_multidb",
         # Tests that by-pass using django_spanner and generate
         # invalid DDL: https://github.com/orijtech/django-spanner/issues/298
