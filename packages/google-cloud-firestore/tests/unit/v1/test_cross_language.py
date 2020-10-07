@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO(microgen): currently cross language tests don't run as part of test pass
-# This should be updated (and its makefile) to generate like other proto classes
 import functools
 import glob
 import json
@@ -22,19 +20,21 @@ import os
 import mock
 import pytest
 
-from google.protobuf import json_format
 from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import firestore
-from google.cloud.firestore_v1.proto import tests_pb2
 from google.cloud.firestore_v1.types import write
+
+from tests.unit.v1 import conformance_tests
 
 
 def _load_test_json(filename):
-    with open(filename, "r") as tp_file:
-        tp_json = json.load(tp_file)
-    test_file = tests_pb2.TestFile()
-    json_format.ParseDict(tp_json, test_file)
     shortname = os.path.split(filename)[-1]
+
+    with open(filename, "r") as tp_file:
+        tp_json = tp_file.read()
+
+    test_file = conformance_tests.TestFile.from_json(tp_json)
+
     for test_proto in test_file.tests:
         test_proto.description = test_proto.description + " (%s)" % shortname
         yield test_proto
@@ -48,51 +48,31 @@ for filename in sorted(_globs):
     ALL_TESTPROTOS.extend(_load_test_json(filename))
 
 _CREATE_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "create"
+    test_proto for test_proto in ALL_TESTPROTOS if "create" in test_proto
 ]
 
-_GET_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "get"
-]
+_GET_TESTPROTOS = [test_proto for test_proto in ALL_TESTPROTOS if "get" in test_proto]
 
-_SET_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "set"
-]
+_SET_TESTPROTOS = [test_proto for test_proto in ALL_TESTPROTOS if "set_" in test_proto]
 
 _UPDATE_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "update"
+    test_proto for test_proto in ALL_TESTPROTOS if "update" in test_proto
 ]
 
 _UPDATE_PATHS_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "update_paths"
+    test_proto for test_proto in ALL_TESTPROTOS if "update_paths" in test_proto
 ]
 
 _DELETE_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "delete"
+    test_proto for test_proto in ALL_TESTPROTOS if "delete" in test_proto
 ]
 
 _LISTEN_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "listen"
+    test_proto for test_proto in ALL_TESTPROTOS if "listen" in test_proto
 ]
 
 _QUERY_TESTPROTOS = [
-    test_proto
-    for test_proto in ALL_TESTPROTOS
-    if test_proto.WhichOneof("test") == "query"
+    test_proto for test_proto in ALL_TESTPROTOS if "query" in test_proto
 ]
 
 
@@ -125,11 +105,19 @@ def _run_testcase(testcase, call, firestore_api, client):
             call()
     else:
         call()
+
+        wrapped_writes = [
+            write.Write.wrap(write_pb) for write_pb in testcase.request.writes
+        ]
+
+        expected_request = {
+            "database": client._database_string,
+            "writes": wrapped_writes,
+            "transaction": None,
+        }
+
         firestore_api.commit.assert_called_once_with(
-            client._database_string,
-            list(testcase.request.writes),
-            transaction=None,
-            metadata=client._rpc_metadata,
+            request=expected_request, metadata=client._rpc_metadata,
         )
 
 
@@ -153,18 +141,24 @@ def test_get_testprotos(test_proto):
 
     doc.get()  # No '.textprotos' for errors, field_paths.
 
+    expected_request = {
+        "name": doc._document_path,
+        "mask": None,
+        "transaction": None,
+    }
+
     firestore_api.get_document.assert_called_once_with(
-        doc._document_path, mask=None, transaction=None, metadata=client._rpc_metadata,
+        request=expected_request, metadata=client._rpc_metadata,
     )
 
 
 @pytest.mark.parametrize("test_proto", _SET_TESTPROTOS)
 def test_set_testprotos(test_proto):
-    testcase = test_proto.set
+    testcase = test_proto.set_
     firestore_api = _mock_firestore_api()
     client, doc = _make_client_document(firestore_api, testcase)
     data = convert_data(json.loads(testcase.json_data))
-    if testcase.HasField("option"):
+    if "option" in testcase:
         merge = convert_set_option(testcase.option)
     else:
         merge = False
@@ -178,7 +172,7 @@ def test_update_testprotos(test_proto):
     firestore_api = _mock_firestore_api()
     client, doc = _make_client_document(firestore_api, testcase)
     data = convert_data(json.loads(testcase.json_data))
-    if testcase.HasField("precondition"):
+    if "precondition" in testcase:
         option = convert_precondition(testcase.precondition)
     else:
         option = None
@@ -197,7 +191,7 @@ def test_delete_testprotos(test_proto):
     testcase = test_proto.delete
     firestore_api = _mock_firestore_api()
     client, doc = _make_client_document(firestore_api, testcase)
-    if testcase.HasField("precondition"):
+    if "precondition" in testcase:
         option = convert_precondition(testcase.precondition)
     else:
         option = None
@@ -245,9 +239,12 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                 db_str = "projects/projectID/databases/(default)"
                 watch._firestore._database_string_internal = db_str
 
+                wrapped_responses = [
+                    firestore.ListenResponse.wrap(proto) for proto in testcase.responses
+                ]
                 if testcase.is_error:
                     try:
-                        for proto in testcase.responses:
+                        for proto in wrapped_responses:
                             watch.on_snapshot(proto)
                     except RuntimeError:
                         # listen-target-add-wrong-id.textpro
@@ -255,7 +252,7 @@ def test_listen_testprotos(test_proto):  # pragma: NO COVER
                         pass
 
                 else:
-                    for proto in testcase.responses:
+                    for proto in wrapped_responses:
                         watch.on_snapshot(proto)
 
                     assert len(snapshots) == len(testcase.snapshots)
@@ -328,7 +325,7 @@ def convert_set_option(option):
             _helpers.FieldPath(*field.field).to_api_repr() for field in option.fields
         ]
 
-    assert option.all
+    assert option.all_
     return True
 
 
@@ -454,40 +451,39 @@ def parse_query(testcase):
     query = collection
 
     for clause in testcase.clauses:
-        kind = clause.WhichOneof("clause")
 
-        if kind == "select":
+        if "select" in clause:
             field_paths = [
                 ".".join(field_path.field) for field_path in clause.select.fields
             ]
             query = query.select(field_paths)
-        elif kind == "where":
+        elif "where" in clause:
             path = ".".join(clause.where.path.field)
             value = convert_data(json.loads(clause.where.json_value))
             query = query.where(path, clause.where.op, value)
-        elif kind == "order_by":
+        elif "order_by" in clause:
             path = ".".join(clause.order_by.path.field)
             direction = clause.order_by.direction
             direction = _directions.get(direction, direction)
             query = query.order_by(path, direction=direction)
-        elif kind == "offset":
+        elif "offset" in clause:
             query = query.offset(clause.offset)
-        elif kind == "limit":
+        elif "limit" in clause:
             query = query.limit(clause.limit)
-        elif kind == "start_at":
+        elif "start_at" in clause:
             cursor = parse_cursor(clause.start_at, client)
             query = query.start_at(cursor)
-        elif kind == "start_after":
+        elif "start_after" in clause:
             cursor = parse_cursor(clause.start_after, client)
             query = query.start_after(cursor)
-        elif kind == "end_at":
+        elif "end_at" in clause:
             cursor = parse_cursor(clause.end_at, client)
             query = query.end_at(cursor)
-        elif kind == "end_before":
+        elif "end_before" in clause:
             cursor = parse_cursor(clause.end_before, client)
             query = query.end_before(cursor)
         else:  # pragma: NO COVER
-            raise ValueError("Unknown query clause: {}".format(kind))
+            raise ValueError("Unknown query clause: {}".format(clause))
 
     return query
 
@@ -501,7 +497,7 @@ def parse_cursor(cursor, client):
     from google.cloud.firestore_v1 import DocumentReference
     from google.cloud.firestore_v1 import DocumentSnapshot
 
-    if cursor.HasField("doc_snapshot"):
+    if "doc_snapshot" in cursor:
         path = parse_path(cursor.doc_snapshot.path)
         doc_ref = DocumentReference(*path, client=client)
 

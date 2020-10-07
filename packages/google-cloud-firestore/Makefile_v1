@@ -11,30 +11,51 @@ GOOGLEAPIS_REPO = $(REPO_DIR)/googleapis
 TESTS_REPO = $(REPO_DIR)/conformance-tests
 TEST_PROTO_DIR = $(TESTS_REPO)/firestore/v1
 TEST_PROTO_SRC = $(TEST_PROTO_DIR)/proto/google/cloud/conformance/firestore/v1/tests.proto
+TESTDATA_DIR = `pwd`/tests/unit/v1/testdata/
 
 TMPDIR = /tmp/python-fs-proto
-TMPDIR_FS = $(TMPDIR)/google/cloud/firestore_v1/proto
+TMPDIR_FS = $(TMPDIR)/google/cloud/firestore_v1/types
 TEST_PROTO_COPY = $(TMPDIR_FS)/tests.proto
+TEST_GEN_OUT = tests/unit/v1/conformance_tests.py
+OUTDIR = /tmp/python-fs-gen
 
-.PHONY: sync-protos gen-protos
+.PHONY: sync-protos gen-protos docker-pull
 
-gen-protos: sync-protos tweak-protos
-	# TODO(jba): Put the generated proto somewhere more suitable.
-	$(PROTOC) --python_out=. \
-		-I $(TMPDIR) \
-		-I $(PROTOBUF_REPO)/src \
-		-I $(GOOGLEAPIS_REPO) \
-		$(TEST_PROTO_COPY)
+gen-protos: sync-protos tweak-protos docker-pull gen-protos-raw
+
+gen-protos-raw:
+	mkdir -p $(OUTDIR)
+	docker run \
+		--mount type=bind,source=$(TMPDIR),destination="/in",readonly \
+		--mount type=bind,source=$(OUTDIR),destination="/out" \
+		--rm \
+		--user `id -u`:`id -g` \
+	gcr.io/gapic-images/gapic-generator-python
+	cp $(OUTDIR)/google/cloud/firestore_v1/types/tests.py \
+		$(TEST_GEN_OUT)
+	sed -i -e \
+		"s@package='google.cloud.firestore_v1'@package='tests.unit.v1'@" \
+		$(TEST_GEN_OUT)
 
 tweak-protos:
 	mkdir -p $(TMPDIR_FS)
 	cp $(GOOGLEAPIS_REPO)/google/firestore/v1/*.proto $(TMPDIR_FS)
-	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TMPDIR_FS)/*.proto
+	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/types@' $(TMPDIR_FS)/*.proto
+	sed -i -e 's@package google\.firestore\.v1@package google.cloud.firestore_v1@' $(TMPDIR_FS)/*.proto
 	cp $(TEST_PROTO_SRC) $(TEST_PROTO_COPY)
-	sed -i -e 's@package google.cloud.conformance.firestore.v1@package google.cloud.firestore_v1.proto@' $(TEST_PROTO_COPY)
-	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/proto@' $(TEST_PROTO_COPY)
+	sed -i -e 's@package google\.cloud\.conformance\.firestore\.v1@package google.cloud.firestore_v1@' $(TEST_PROTO_COPY)
+	sed -i -e 's@google/firestore/v1@google/cloud/firestore_v1/types@' $(TEST_PROTO_COPY)
+	sed -i -e 's@google\.firestore\.v1@google.cloud.firestore_v1@' $(TEST_PROTO_COPY)
+	sed -i -e 's@Cursor@Cursor_@' $(TEST_PROTO_COPY)
 
 sync-protos:
 	cd $(PROTOBUF_REPO); git pull
 	cd $(GOOGLEAPIS_REPO); git pull
 	cd $(TESTS_REPO); git pull
+
+docker-pull:
+	docker pull gcr.io/gapic-images/gapic-generator-python:latest
+
+copy-testdata:
+	rm $(TESTDATA_DIR)/*.json
+	cp $(TEST_PROTO_DIR)/*.json $(TESTDATA_DIR)/
