@@ -15,7 +15,6 @@
 """Shared helper functions for BigQuery API classes."""
 
 import base64
-import copy
 import datetime
 import decimal
 import re
@@ -397,13 +396,9 @@ def _repeated_field_to_json(field, row_value):
     Returns:
         List[Any]: A list of JSON-serializable objects.
     """
-    # Remove the REPEATED, but keep the other fields. This allows us to process
-    # each item as if it were a top-level field.
-    item_field = copy.deepcopy(field)
-    item_field._mode = "NULLABLE"
     values = []
     for item in row_value:
-        values.append(_field_to_json(item_field, item))
+        values.append(_single_field_to_json(field, item))
     return values
 
 
@@ -462,6 +457,33 @@ def _record_field_to_json(fields, row_value):
     return record
 
 
+def _single_field_to_json(field, row_value):
+    """Convert a single field into JSON-serializable values.
+
+    Ignores mode so that this can function for ARRAY / REPEATING fields
+    without requiring a deepcopy of the field. See:
+    https://github.com/googleapis/python-bigquery/issues/6
+
+    Args:
+        field (google.cloud.bigquery.schema.SchemaField):
+            The SchemaField to use for type conversion and field name.
+
+        row_value (Any):
+            Scalar or Struct to be inserted. The type
+            is inferred from the SchemaField's field_type.
+
+    Returns:
+        Any: A JSON-serializable object.
+    """
+    if row_value is None:
+        return None
+
+    if field.field_type == "RECORD":
+        return _record_field_to_json(field.fields, row_value)
+
+    return _scalar_field_to_json(field, row_value)
+
+
 def _field_to_json(field, row_value):
     """Convert a field into JSON-serializable values.
 
@@ -483,10 +505,7 @@ def _field_to_json(field, row_value):
     if field.mode == "REPEATED":
         return _repeated_field_to_json(field, row_value)
 
-    if field.field_type == "RECORD":
-        return _record_field_to_json(field.fields, row_value)
-
-    return _scalar_field_to_json(field, row_value)
+    return _single_field_to_json(field, row_value)
 
 
 def _snake_to_camel_case(value):
