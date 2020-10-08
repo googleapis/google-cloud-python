@@ -31,7 +31,6 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.10.0",
-    "libcst >= 0.2.5",
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "google-resumable-media >= 0.6.0, < 2.0dev",
     "six >=1.13.0,< 2.0.0dev",
@@ -125,7 +124,6 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require=extras,
     python_requires=">=3.6",
-    scripts=["scripts/fixup_bigquery_v2_keywords.py"],
     include_package_data=True,
     zip_safe=False,
 )

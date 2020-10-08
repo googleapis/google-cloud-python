@@ -36,6 +36,7 @@ s.move(
         "README.rst",
         "noxfile.py",
         "setup.py",
+        "scripts/fixup_bigquery_v2_keywords.py",
         library / f"google/cloud/bigquery/__init__.py",
         library / f"google/cloud/bigquery/py.typed",
         # There are no public API endpoints for the generated ModelServiceClient,
