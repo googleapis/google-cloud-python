@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.10.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.10.0...v1.10.1) (2020-10-08)
+
+
+### Bug Fixes
+
+* accessing an unset struct_pb2.Value field does not raise ([#140](https://www.github.com/googleapis/proto-plus-python/issues/140)) ([d045cbf](https://www.github.com/googleapis/proto-plus-python/commit/d045cbf058cbb8f4ca98dd06741270fcaee865be))
+* add LICENSE and tests to package ([#146](https://www.github.com/googleapis/proto-plus-python/issues/146)) ([815c943](https://www.github.com/googleapis/proto-plus-python/commit/815c9439a1dadb2d4111784eb18ba673ce6e6cc2))
+
 ## [1.10.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.9.1...v1.10.0) (2020-09-24)
 
 
