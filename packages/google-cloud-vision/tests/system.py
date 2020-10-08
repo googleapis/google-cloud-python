@@ -815,7 +815,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
         with pytest.raises(exceptions.Forbidden) as exc:
-            self.client.async_batch_annotate_files([request])
+            self.client.async_batch_annotate_files(requests=[request])
 
         assert self.gcs_read_error_message in exc.value.message
 
@@ -844,7 +844,7 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             "features": [{"type_": vision.Feature.Type.DOCUMENT_TEXT_DETECTION}],
             "output_config": {"gcs_destination": {"uri": output_gcs_uri_prefix}},
         }
-        response = self.client.async_batch_annotate_files([request])
+        response = self.client.async_batch_annotate_files(requests=[request])
 
         # Wait for the operation to complete.
         lro_waiting_seconds = 90
@@ -868,7 +868,9 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             bucket=self.test_bucket.name, method_name=method_name
         )
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
-        response = self.client.async_batch_annotate_images([request], output_config)
+        response = self.client.async_batch_annotate_images(
+            requests=[request], output_config=output_config
+        )
         # Wait for the operation to complete.
         lro_waiting_seconds = 90
         start_time = time.time()
@@ -905,7 +907,9 @@ class TestVisionClientVpcsc(VisionSystemTestBase):
             bucket=vpcsc_config.bucket_outside, method_name=method_name
         )
         output_config = {"gcs_destination": {"uri": output_gcs_uri_prefix}}
-        response = self.client.async_batch_annotate_images([request], output_config)
+        response = self.client.async_batch_annotate_images(
+            requests=[request], output_config=output_config
+        )
         # Wait for the operation to complete.
         lro_waiting_seconds = 90
         start_time = time.time()
