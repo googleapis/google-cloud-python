@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.0.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.7.1...v1.0.0) (2020-10-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* generate with microgenerator. See [Migration Guide](https://github.com/googleapis/python-securitycenter/blob/master/UPGRADING.md)(#49)
+
+### Features
+
+* generate with microgenerator ([#49](https://www.github.com/googleapis/python-securitycenter/issues/49)) ([838dbc8](https://www.github.com/googleapis/python-securitycenter/commit/838dbc8445046b755b775f96f654944ecb707e35))
+
 ### [0.7.1](https://www.github.com/googleapis/python-securitycenter/compare/v0.7.0...v0.7.1) (2020-09-18)
 
 

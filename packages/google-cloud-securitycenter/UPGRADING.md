@@ -1,6 +1,6 @@
-# 2.0.0 Migration Guide
+# 1.0.0 Migration Guide
 
-The 2.0 release of the `google-cloud-securitycenter` client is a significant upgrade based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for earlier versions of this library will likely require updates to use this version. This document describes the changes that have been made, and what you need to do to update your usage.
+The 1.0 release of the `google-cloud-securitycenter` client is a significant upgrade based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for earlier versions of this library will likely require updates to use this version. This document describes the changes that have been made, and what you need to do to update your usage.
 
 If you experience issues or have questions, please file an [issue](https://github.com/googleapis/python-securitycenter/issues).
 
@@ -8,7 +8,7 @@ If you experience issues or have questions, please file an [issue](https://githu
 
 > **WARNING**: Breaking change
 
-The 2.0.0 release requires Python 3.6+.
+The 1.0.0 release requires Python 3.6+.
 
 
 ## Method Calls
@@ -59,7 +59,7 @@ assets = client.list_assets(
 
 ### More Details
 
-In `google-cloud-securitycenter<2.0.0`, parameters required by the API were positional parameters and optional parameters were keyword parameters.
+In `google-cloud-securitycenter<1.0.0`, parameters required by the API were positional parameters and optional parameters were keyword parameters.
 
 **Before:**
 ```py
@@ -78,7 +78,7 @@ In `google-cloud-securitycenter<2.0.0`, parameters required by the API were posi
     ):
 ```
 
-In the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
+In the 1.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
 
 Some methods have additional keyword only parameters. The available parameters depend on the `google.api.method_signature` annotation specified by the API producer.
 
