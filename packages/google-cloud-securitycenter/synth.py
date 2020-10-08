@@ -29,32 +29,44 @@ for version in versions:
         service="securitycenter",
         version=version,
         bazel_target=f"//google/cloud/securitycenter/{version}:securitycenter-{version}-py",
-        include_protos=True
+        include_protos=True,
     )
-    s.move(library / f"google/cloud/securitycenter_{version}")
-    s.move(library / f"tests/unit/gapic/{version}")
-    s.move(library / f"docs/gapic/{version}")
+    s.move(library, excludes=["README.rst", "docs/index.rst", "setup.py"])
 
-# Use the highest version library to generate import alias.
-s.move(library / "google/cloud/securitycenter.py")
 
-# Fix bad line wrapping in docstring
-s.replace("google/**/security_marks_pb2.py",
-"""“organizations/\{organization_id\}/assets/\{asset_
-\s+id\}/securityMarks” “organizations/\{organization_id\}/sources/\{s
-\s+ource_id\}/findings/\{finding_id\}/securityMarks”\.""",
-"""``organizations/{organization_id}/assets/{asset_id}/securityMarks``
-          ``organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks``.""")
+# TODO(busunkim): Remove once https://github.com/googleapis/gapic-generator-python/pull/555 is merged
+s.replace(
+    "google/**/base.py",
+    """from google\.api_core import gapic_v1\s+# type: ignore""",
+    """from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore""",
+)
+
+# fix bad indentation
+s.replace(
+    "google/**/*service.py",
+    """(\s+)settings resource.
+\s+If empty all mutable fields will be updated.""",
+    """\g<1>settings resource.
+\g<1>If empty all mutable fields will be updated.""",
+)
+
+# fix bulleted lists
+s.replace("google/**/*client.py", "\-  state_change", "-  state_change\n")
+s.replace("google/**/*client.py", "\-  parent", "- parent\n")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=88, samples=True)
-s.move(templated_files)
+templated_files = common.py_library(
+    samples=True,
+    microgenerator=True,  # set to True only if there are samples
+    cov_level=99,
+)
+s.move(
+    templated_files, excludes=[".coveragerc"]
+)  # microgenerator has a good .coveragerc file
 
-python.py_samples(root="samples", skip_readmes=True)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

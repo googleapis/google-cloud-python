@@ -1,45 +1,77 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.securitycenter_v1beta1 import types
-from google.cloud.securitycenter_v1beta1.gapic import enums
-from google.cloud.securitycenter_v1beta1.gapic import security_center_client
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7. "
-        "More details about Python 2 support for Google Cloud Client Libraries "
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
-
-
-class SecurityCenterClient(security_center_client.SecurityCenterClient):
-    __doc__ = security_center_client.SecurityCenterClient.__doc__
-    enums = enums
+from .services.security_center import SecurityCenterClient
+from .types.asset import Asset
+from .types.finding import Finding
+from .types.organization_settings import OrganizationSettings
+from .types.run_asset_discovery_response import RunAssetDiscoveryResponse
+from .types.security_marks import SecurityMarks
+from .types.securitycenter_service import CreateFindingRequest
+from .types.securitycenter_service import CreateSourceRequest
+from .types.securitycenter_service import GetOrganizationSettingsRequest
+from .types.securitycenter_service import GetSourceRequest
+from .types.securitycenter_service import GroupAssetsRequest
+from .types.securitycenter_service import GroupAssetsResponse
+from .types.securitycenter_service import GroupFindingsRequest
+from .types.securitycenter_service import GroupFindingsResponse
+from .types.securitycenter_service import GroupResult
+from .types.securitycenter_service import ListAssetsRequest
+from .types.securitycenter_service import ListAssetsResponse
+from .types.securitycenter_service import ListFindingsRequest
+from .types.securitycenter_service import ListFindingsResponse
+from .types.securitycenter_service import ListSourcesRequest
+from .types.securitycenter_service import ListSourcesResponse
+from .types.securitycenter_service import RunAssetDiscoveryRequest
+from .types.securitycenter_service import SetFindingStateRequest
+from .types.securitycenter_service import UpdateFindingRequest
+from .types.securitycenter_service import UpdateOrganizationSettingsRequest
+from .types.securitycenter_service import UpdateSecurityMarksRequest
+from .types.securitycenter_service import UpdateSourceRequest
+from .types.source import Source
 
 
 __all__ = (
-    "enums",
-    "types",
+    "Asset",
+    "CreateFindingRequest",
+    "CreateSourceRequest",
+    "Finding",
+    "GetOrganizationSettingsRequest",
+    "GetSourceRequest",
+    "GroupAssetsRequest",
+    "GroupAssetsResponse",
+    "GroupFindingsRequest",
+    "GroupFindingsResponse",
+    "GroupResult",
+    "ListAssetsRequest",
+    "ListAssetsResponse",
+    "ListFindingsRequest",
+    "ListFindingsResponse",
+    "ListSourcesRequest",
+    "ListSourcesResponse",
+    "OrganizationSettings",
+    "RunAssetDiscoveryRequest",
+    "RunAssetDiscoveryResponse",
+    "SecurityMarks",
+    "SetFindingStateRequest",
+    "Source",
+    "UpdateFindingRequest",
+    "UpdateOrganizationSettingsRequest",
+    "UpdateSecurityMarksRequest",
+    "UpdateSourceRequest",
     "SecurityCenterClient",
 )

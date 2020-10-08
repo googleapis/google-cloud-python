@@ -10,21 +10,36 @@ v1
 .. toctree::
     :maxdepth: 2
 
-    gapic/v1/api
-    gapic/v1/types
+    securitycenter_v1/services
+    securitycenter_v1/types
 
 v1beta1
 ~~~~~~~
 .. toctree::
-    gapic/v1beta1/api
-    gapic/v1beta1/types
+    :maxdepth: 2
+
+    securitycenter_v1beta1/services
+    securitycenter_v1beta1/types
 
 
 v1p1beta1
 ~~~~~~~~~
 .. toctree::
-    gapic/v1p1beta1/api
-    gapic/v1p1beta1/types
+    :maxdepth: 2
+
+    securitycenter_v1p1beta1/services
+    securitycenter_v1p1beta1/types
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
+
 
 Changelog
 ----------
