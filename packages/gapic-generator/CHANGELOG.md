@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.34.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.2...v0.34.3) (2020-10-08)
+
+
+### Bug Fixes
+
+* fix types on server and bidi streaming callables ([#641](https://www.github.com/googleapis/gapic-generator-python/issues/641)) ([d92c202](https://www.github.com/googleapis/gapic-generator-python/commit/d92c2029398c969ebf2a68a5bf77c5eb4fff7b31))
+
 ### [0.34.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.1...v0.34.2) (2020-09-30)
 
 
