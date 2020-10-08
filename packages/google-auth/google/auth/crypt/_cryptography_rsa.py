@@ -25,22 +25,9 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 import cryptography.x509
-import pkg_resources
 
 from google.auth import _helpers
 from google.auth.crypt import base
-
-_IMPORT_ERROR_MSG = (
-    "cryptography>=1.4.0 is required to use cryptography-based RSA " "implementation."
-)
-
-try:  # pragma: NO COVER
-    release = pkg_resources.get_distribution("cryptography").parsed_version
-    if release < pkg_resources.parse_version("1.4.0"):
-        raise ImportError(_IMPORT_ERROR_MSG)
-except pkg_resources.DistributionNotFound:  # pragma: NO COVER
-    raise ImportError(_IMPORT_ERROR_MSG)
-
 
 _CERTIFICATE_MARKER = b"-----BEGIN CERTIFICATE-----"
 _BACKEND = backends.default_backend()

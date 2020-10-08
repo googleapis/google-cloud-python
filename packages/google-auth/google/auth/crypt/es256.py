@@ -25,21 +25,9 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
 from cryptography.hazmat.primitives.asymmetric.utils import encode_dss_signature
 import cryptography.x509
-import pkg_resources
 
 from google.auth import _helpers
 from google.auth.crypt import base
-
-_IMPORT_ERROR_MSG = (
-    "cryptography>=1.4.0 is required to use cryptography-based ECDSA " "algorithms"
-)
-
-try:  # pragma: NO COVER
-    release = pkg_resources.get_distribution("cryptography").parsed_version
-    if release < pkg_resources.parse_version("1.4.0"):
-        raise ImportError(_IMPORT_ERROR_MSG)
-except pkg_resources.DistributionNotFound:  # pragma: NO COVER
-    raise ImportError(_IMPORT_ERROR_MSG)
 
 
 _CERTIFICATE_MARKER = b"-----BEGIN CERTIFICATE-----"
