@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.6.1](https://www.github.com/googleapis/python-ndb/compare/v1.6.0...v1.6.1) (2020-10-08)
+
+
+### Bug Fixes
+
+* `[@non](https://www.github.com/non)_transactional` decorator was not working correctly with async ([#554](https://www.github.com/googleapis/python-ndb/issues/554)) ([758c8e6](https://www.github.com/googleapis/python-ndb/commit/758c8e66314da4cb1f077e9fbe8cf1ae09bccd4e)), closes [#552](https://www.github.com/googleapis/python-ndb/issues/552)
+* fix a connection leak in RedisCache ([#556](https://www.github.com/googleapis/python-ndb/issues/556)) ([47ae172](https://www.github.com/googleapis/python-ndb/commit/47ae172edc435a49d25687d83747afff153b59d2))
+* get_by_id and get_or_insert should use default namespace when passed in ([#542](https://www.github.com/googleapis/python-ndb/issues/542)) ([3674650](https://www.github.com/googleapis/python-ndb/commit/3674650a7ba1a1dd7a72b728f343f623f660ba6a)), closes [#535](https://www.github.com/googleapis/python-ndb/issues/535)
+
+
+### Documentation
+
+* address docs builds and memcached customization to docker file ([#548](https://www.github.com/googleapis/python-ndb/issues/548)) ([88e7e24](https://www.github.com/googleapis/python-ndb/commit/88e7e244854acb2409c324855deb9229f33a44fd))
+* update docker image used for docs generation [#549](https://www.github.com/googleapis/python-ndb/issues/549) ([5e8bf57](https://www.github.com/googleapis/python-ndb/commit/5e8bf57508e3b995f51dcc3171e5ea77c4bc4484))
+
 ## [1.6.0](https://www.github.com/googleapis/python-ndb/compare/v1.5.2...v1.6.0) (2020-09-14)
 
 
