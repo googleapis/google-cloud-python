@@ -346,6 +346,7 @@ class Test_lookup_WithGlobalCache:
         assert future.result() is _api._NOT_FOUND
 
         assert global_cache.get([cache_key]) == [_cache._LOCKED]
+        assert len(global_cache._watch_keys) == 0
 
 
 class Test_LookupBatch:

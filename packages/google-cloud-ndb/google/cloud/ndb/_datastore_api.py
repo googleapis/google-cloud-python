@@ -154,10 +154,15 @@ def lookup(key, options):
         entity_pb = yield batch.add(key)
 
         # Do not cache misses
-        if use_global_cache and not key_locked and entity_pb is not _NOT_FOUND:
-            expires = context._global_cache_timeout(key, options)
-            serialized = entity_pb.SerializeToString()
-            yield _cache.global_compare_and_swap(cache_key, serialized, expires=expires)
+        if use_global_cache and not key_locked:
+            if entity_pb is not _NOT_FOUND:
+                expires = context._global_cache_timeout(key, options)
+                serialized = entity_pb.SerializeToString()
+                yield _cache.global_compare_and_swap(
+                    cache_key, serialized, expires=expires
+                )
+            else:
+                yield _cache.global_unwatch(cache_key)
 
     raise tasklets.Return(entity_pb)
 

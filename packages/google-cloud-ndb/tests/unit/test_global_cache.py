@@ -38,6 +38,9 @@ class TestGlobalCache:
             def watch(self, keys):
                 return super(MockImpl, self).watch(keys)
 
+            def unwatch(self, keys):
+                return super(MockImpl, self).unwatch(keys)
+
             def compare_and_swap(self, items, expires=None):
                 return super(MockImpl, self).compare_and_swap(items, expires=expires)
 
@@ -62,6 +65,11 @@ class TestGlobalCache:
         cache = self.make_one()
         with pytest.raises(NotImplementedError):
             cache.watch(b"foo")
+
+    def test_unwatch(self):
+        cache = self.make_one()
+        with pytest.raises(NotImplementedError):
+            cache.unwatch(b"foo")
 
     def test_compare_and_swap(self):
         cache = self.make_one()
@@ -147,6 +155,16 @@ class TestInProcessGlobalCache:
         result = cache.get([b"one", b"two", b"three"])
         assert result == [None, b"hamburgers", None]
 
+    @staticmethod
+    def test_watch_unwatch():
+        cache = global_cache._InProcessGlobalCache()
+        result = cache.watch([b"one", b"two", b"three"])
+        assert result is None
+
+        result = cache.unwatch([b"one", b"two", b"three"])
+        assert result is None
+        assert cache._watch_keys == {}
+
 
 class TestRedisCache:
     @staticmethod
@@ -224,6 +242,23 @@ class TestRedisCache:
             "foo": global_cache._Pipeline(pipe, "abc123"),
             "bar": global_cache._Pipeline(pipe, "abc123"),
         }
+
+    @staticmethod
+    def test_unwatch():
+        redis = mock.Mock(spec=())
+        cache = global_cache.RedisCache(redis)
+        pipe1 = mock.Mock(spec=("reset",))
+        pipe2 = mock.Mock(spec=("reset",))
+        cache._pipes.pipes = {
+            "ay": global_cache._Pipeline(pipe1, "abc123"),
+            "be": global_cache._Pipeline(pipe1, "abc123"),
+            "see": global_cache._Pipeline(pipe2, "def456"),
+            "dee": global_cache._Pipeline(pipe2, "def456"),
+            "whatevs": global_cache._Pipeline(None, "himom!"),
+        }
+
+        cache.unwatch(["ay", "be", "see", "dee", "nuffin"])
+        assert cache.pipes == {"whatevs": global_cache._Pipeline(None, "himom!")}
 
     @staticmethod
     def test_compare_and_swap():
@@ -449,6 +484,17 @@ class TestMemcacheCache:
             key1: b"0",
             key2: b"1",
         }
+
+    @staticmethod
+    def test_unwatch():
+        client = mock.Mock(spec=())
+        cache = global_cache.MemcacheCache(client)
+        key2 = cache._key(b"two")
+        cache.caskeys[key2] = b"5"
+        cache.caskeys["whatevs"] = b"6"
+        cache.unwatch([b"one", b"two"])
+
+        assert cache.caskeys == {"whatevs": b"6"}
 
     @staticmethod
     def test_compare_and_swap():

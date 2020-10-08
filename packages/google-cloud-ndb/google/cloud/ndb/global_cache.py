@@ -93,6 +93,19 @@ class GlobalCache(object):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def unwatch(self, keys):
+        """End an optimistic transaction for the given keys.
+
+        Indicates that value for the key wasn't found in the database, so there will not
+        be a future call to :meth:`compare_and_swap`, and we no longer need to watch
+        this key.
+
+        Arguments:
+            keys (List[bytes]): The keys to watch.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def compare_and_swap(self, items, expires=None):
         """Like :meth:`set` but using an optimistic transaction.
 
@@ -159,6 +172,11 @@ class _InProcessGlobalCache(GlobalCache):
         """Implements :meth:`GlobalCache.watch`."""
         for key in keys:
             self._watch_keys[key] = self.cache.get(key)
+
+    def unwatch(self, keys):
+        """Implements :meth:`GlobalCache.unwatch`."""
+        for key in keys:
+            self._watch_keys.pop(key, None)
 
     def compare_and_swap(self, items, expires=None):
         """Implements :meth:`GlobalCache.compare_and_swap`."""
@@ -238,6 +256,13 @@ class RedisCache(GlobalCache):
         holder = _Pipeline(pipe, str(uuid.uuid4()))
         for key in keys:
             self.pipes[key] = holder
+
+    def unwatch(self, keys):
+        """Implements :meth:`GlobalCache.watch`."""
+        for key in keys:
+            holder = self.pipes.pop(key, None)
+            if holder:
+                holder.pipe.reset()
 
     def compare_and_swap(self, items, expires=None):
         """Implements :meth:`GlobalCache.compare_and_swap`."""
@@ -390,6 +415,13 @@ class MemcacheCache(GlobalCache):
         caskeys = self.caskeys
         for key, (value, caskey) in self.client.gets_many(keys).items():
             caskeys[key] = caskey
+
+    def unwatch(self, keys):
+        """Implements :meth:`GlobalCache.unwatch`."""
+        keys = [self._key(key) for key in keys]
+        caskeys = self.caskeys
+        for key in keys:
+            caskeys.pop(key, None)
 
     def compare_and_swap(self, items, expires=None):
         """Implements :meth:`GlobalCache.compare_and_swap`."""

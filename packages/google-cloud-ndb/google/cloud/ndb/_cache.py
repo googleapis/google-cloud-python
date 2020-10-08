@@ -305,7 +305,37 @@ class _GlobalCacheWatchBatch(_GlobalCacheDeleteBatch):
 
     def future_info(self, key):
         """Generate info string for Future."""
-        return "GlobalWatch.delete({})".format(key)
+        return "GlobalCache.watch({})".format(key)
+
+
+def global_unwatch(key):
+    """End optimistic transaction with global cache.
+
+    Indicates that value for the key wasn't found in the database, so there will not be
+    a future call to :func:`global_compare_and_swap`, and we no longer need to watch
+    this key.
+
+    Args:
+        key (bytes): The key to unwatch.
+
+    Returns:
+        tasklets.Future: Eventual result will be ``None``.
+    """
+    batch = _batch.get_batch(_GlobalCacheUnwatchBatch)
+    return batch.add(key)
+
+
+class _GlobalCacheUnwatchBatch(_GlobalCacheWatchBatch):
+    """Batch for global cache unwatch requests. """
+
+    def make_call(self):
+        """Call :method:`GlobalCache.unwatch`."""
+        cache = context_module.get_context().global_cache
+        return cache.unwatch(self.keys)
+
+    def future_info(self, key):
+        """Generate info string for Future."""
+        return "GlobalCache.unwatch({})".format(key)
 
 
 def global_compare_and_swap(key, value, expires=None):

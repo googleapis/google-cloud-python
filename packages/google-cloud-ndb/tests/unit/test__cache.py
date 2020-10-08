@@ -284,6 +284,31 @@ class Test_GlobalCacheWatchBatch:
         assert future2.result() is None
 
 
+@mock.patch("google.cloud.ndb._cache._batch")
+def test_global_unwatch(_batch):
+    batch = _batch.get_batch.return_value
+    assert _cache.global_unwatch(b"key") is batch.add.return_value
+    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheUnwatchBatch)
+    batch.add.assert_called_once_with(b"key")
+
+
+class Test_GlobalCacheUnwatchBatch:
+    @staticmethod
+    def test_add_and_idle_and_done_callbacks(in_context):
+        cache = mock.Mock()
+
+        batch = _cache._GlobalCacheUnwatchBatch({})
+        future1 = batch.add(b"foo")
+        future2 = batch.add(b"bar")
+
+        with in_context.new(global_cache=cache).use():
+            batch.idle_callback()
+
+        cache.unwatch.assert_called_once_with([b"foo", b"bar"])
+        assert future1.result() is None
+        assert future2.result() is None
+
+
 class Test_global_compare_and_swap:
     @staticmethod
     @mock.patch("google.cloud.ndb._cache._batch")
