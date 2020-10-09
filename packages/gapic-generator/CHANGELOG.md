@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.35.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.4...v0.35.0) (2020-10-09)
+
+
+### Features
+
+* file_level and indirectly used resources generate helper methods ([#642](https://www.github.com/googleapis/gapic-generator-python/issues/642)) ([42e224c](https://www.github.com/googleapis/gapic-generator-python/commit/42e224cb100f6e2aa9370bc6a5179d62979b5c4d)), closes [#637](https://www.github.com/googleapis/gapic-generator-python/issues/637)
+
 ### [0.34.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.3...v0.34.4) (2020-10-09)
 
 
