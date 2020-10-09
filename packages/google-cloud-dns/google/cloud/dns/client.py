@@ -91,14 +91,23 @@ class Client(ClientWithProject):
 
         :rtype: mapping
         :returns: keys for the mapping correspond to those of the ``quota``
-                  sub-mapping of the project resource.
+                  sub-mapping of the project resource. ``kind`` is stripped
+                  from the results.
         """
         path = "/projects/%s" % (self.project,)
         resp = self._connection.api_request(method="GET", path=path)
 
-        return {
-            key: int(value) for key, value in resp["quota"].items() if key != "kind"
-        }
+        quotas = resp["quota"]
+        # Remove the key "kind"
+        # https://cloud.google.com/dns/docs/reference/v1/projects#resource
+        quotas.pop("kind", None)
+        if "whitelistedKeySpecs" in quotas:
+            # whitelistedKeySpecs is a list of dicts that represent keyspecs
+            # Remove "kind" here as well
+            for key_spec in quotas["whitelistedKeySpecs"]:
+                key_spec.pop("kind", None)
+
+        return quotas
 
     def list_zones(self, max_results=None, page_token=None):
         """List zones for the project associated with this client.

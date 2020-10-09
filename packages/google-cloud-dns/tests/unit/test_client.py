@@ -127,12 +127,12 @@ class TestClient(unittest.TestCase):
         TOTAL_SIZE = 67890
         DATA = {
             "quota": {
-                "managedZones": str(MANAGED_ZONES),
-                "resourceRecordsPerRrset": str(RRS_PER_RRSET),
-                "rrsetsPerManagedZone": str(RRSETS_PER_ZONE),
-                "rrsetAdditionsPerChange": str(RRSET_ADDITIONS),
-                "rrsetDeletionsPerChange": str(RRSET_DELETIONS),
-                "totalRrdataSizePerChange": str(TOTAL_SIZE),
+                "managedZones": MANAGED_ZONES,
+                "resourceRecordsPerRrset": RRS_PER_RRSET,
+                "rrsetsPerManagedZone": RRSETS_PER_ZONE,
+                "rrsetAdditionsPerChange": RRSET_ADDITIONS,
+                "rrsetDeletionsPerChange": RRSET_DELETIONS,
+                "totalRrdataSizePerChange": TOTAL_SIZE,
             }
         }
         CONVERTED = {key: int(value) for key, value in DATA["quota"].items()}
@@ -159,17 +159,25 @@ class TestClient(unittest.TestCase):
         TOTAL_SIZE = 67890
         DATA = {
             "quota": {
-                "managedZones": str(MANAGED_ZONES),
-                "resourceRecordsPerRrset": str(RRS_PER_RRSET),
-                "rrsetsPerManagedZone": str(RRSETS_PER_ZONE),
-                "rrsetAdditionsPerChange": str(RRSET_ADDITIONS),
-                "rrsetDeletionsPerChange": str(RRSET_DELETIONS),
-                "totalRrdataSizePerChange": str(TOTAL_SIZE),
+                "managedZones": MANAGED_ZONES,
+                "resourceRecordsPerRrset": RRS_PER_RRSET,
+                "rrsetsPerManagedZone": RRSETS_PER_ZONE,
+                "rrsetAdditionsPerChange": RRSET_ADDITIONS,
+                "rrsetDeletionsPerChange": RRSET_DELETIONS,
+                "totalRrdataSizePerChange": TOTAL_SIZE,
+                "whitelistedKeySpecs": [
+                    {
+                        "keyType": "keySigning",
+                        "algorithm": "rsasha512",
+                        "keyLength": 2048,
+                    }
+                ],
             }
         }
-        CONVERTED = {key: int(value) for key, value in DATA["quota"].items()}
+        CONVERTED = DATA["quota"]
         WITH_KIND = {"quota": DATA["quota"].copy()}
         WITH_KIND["quota"]["kind"] = "dns#quota"
+        WITH_KIND["quota"]["whitelistedKeySpecs"][0]["kind"] = "dns#dnsKeySpec"
         creds = _make_credentials()
         client = self._make_one(self.PROJECT, creds)
         conn = client._connection = _Connection(WITH_KIND)
