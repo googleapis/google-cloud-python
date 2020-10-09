@@ -19,12 +19,15 @@ through an :class:`~.API` object.
 
 import collections
 import dataclasses
+import itertools
 import keyword
 import os
 import sys
 from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
+from types import MappingProxyType
 
 from google.api_core import exceptions  # type: ignore
+from google.api import resource_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import descriptor_pb2
 
@@ -58,11 +61,14 @@ class Proto:
 
     @classmethod
     def build(
-        cls, file_descriptor: descriptor_pb2.FileDescriptorProto,
-        file_to_generate: bool, naming: api_naming.Naming,
-        opts: Options = Options(),
-        prior_protos: Mapping[str, 'Proto'] = None,
-        load_services: bool = True
+            cls,
+            file_descriptor: descriptor_pb2.FileDescriptorProto,
+            file_to_generate: bool,
+            naming: api_naming.Naming,
+            opts: Options = Options(),
+            prior_protos: Mapping[str, 'Proto'] = None,
+            load_services: bool = True,
+            all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ) -> 'Proto':
         """Build and return a Proto instance.
 
@@ -85,7 +91,8 @@ class Proto:
             naming=naming,
             opts=opts,
             prior_protos=prior_protos or {},
-            load_services=load_services
+            load_services=load_services,
+            all_resources=all_resources or {},
         ).proto
 
     @cached_property
@@ -102,6 +109,24 @@ class Proto:
         return collections.OrderedDict(
             (k, v) for k, v in self.all_messages.items()
             if not v.meta.address.parent
+        )
+
+    @cached_property
+    def resource_messages(self) -> Mapping[str, wrappers.MessageType]:
+        """Return the file level resources of the proto."""
+        file_resource_messages = (
+            (res.type, wrappers.CommonResource.build(res).message_type)
+            for res in self.file_pb2.options.Extensions[resource_pb2.resource_definition]
+        )
+        resource_messages = (
+            (msg.options.Extensions[resource_pb2.resource].type, msg)
+            for msg in self.messages.values()
+            if msg.options.Extensions[resource_pb2.resource].type
+        )
+        return collections.OrderedDict(
+            itertools.chain(
+                file_resource_messages, resource_messages,
+            )
         )
 
     @property
@@ -264,6 +289,13 @@ class API:
                 load_services=False,
             )
 
+        # A file descriptor's file-level resources are NOT visible to any importers.
+        # The only way to make referenced resources visible is to aggregate them at
+        # the API level and then pass that around.
+        all_file_resources = collections.ChainMap(
+            *(proto.resource_messages for proto in pre_protos.values())
+        )
+
         # Second pass uses all the messages and enums defined in the entire API.
         # This allows LRO returning methods to see all the types in the API,
         # bypassing the above missing import problem.
@@ -274,6 +306,7 @@ class API:
                 naming=naming,
                 opts=opts,
                 prior_protos=pre_protos,
+                all_resources=MappingProxyType(all_file_resources),
             )
             for name, proto in pre_protos.items()
         }
@@ -390,7 +423,8 @@ class _ProtoBuilder:
         naming: api_naming.Naming,
         opts: Options = Options(),
         prior_protos: Mapping[str, Proto] = None,
-        load_services: bool = True
+        load_services: bool = True,
+        all_resources: Optional[Mapping[str, wrappers.MessageType]] = None,
     ):
         self.proto_messages: Dict[str, wrappers.MessageType] = {}
         self.proto_enums: Dict[str, wrappers.EnumType] = {}
@@ -432,9 +466,11 @@ class _ProtoBuilder:
         # below is because `repeated DescriptorProto message_type = 4;` in
         # descriptor.proto itself).
         self._load_children(file_descriptor.enum_type, self._load_enum,
-                            address=self.address, path=(5,))
+                            address=self.address, path=(5,),
+                            resources=all_resources or {})
         self._load_children(file_descriptor.message_type, self._load_message,
-                            address=self.address, path=(4,))
+                            address=self.address, path=(4,),
+                            resources=all_resources or {})
 
         # Edge case: Protocol buffers is not particularly picky about
         # ordering, and it is possible that a message will have had a field
@@ -469,7 +505,8 @@ class _ProtoBuilder:
         # same files.
         if file_to_generate and load_services:
             self._load_children(file_descriptor.service, self._load_service,
-                                address=self.address, path=(6,))
+                                address=self.address, path=(6,),
+                                resources=all_resources or {})
         # TODO(lukesneeringer): oneofs are on path 7.
 
     @property
@@ -528,7 +565,8 @@ class _ProtoBuilder:
 
     def _load_children(self,
                        children: Sequence, loader: Callable, *,
-                       address: metadata.Address, path: Tuple[int, ...]) -> Mapping:
+                       address: metadata.Address, path: Tuple[int, ...],
+                       resources: Mapping[str, wrappers.MessageType]) -> Mapping:
         """Return wrapped versions of arbitrary children from a Descriptor.
 
         Args:
@@ -554,7 +592,8 @@ class _ProtoBuilder:
         # applicable loader function on each.
         answer = {}
         for child, i in zip(children, range(0, sys.maxsize)):
-            wrapped = loader(child, address=address, path=path + (i,))
+            wrapped = loader(child, address=address, path=path + (i,),
+                             resources=resources)
             answer[wrapped.name] = wrapped
         return answer
 
@@ -794,6 +833,7 @@ class _ProtoBuilder:
                       message_pb: descriptor_pb2.DescriptorProto,
                       address: metadata.Address,
                       path: Tuple[int],
+                      resources: Mapping[str, wrappers.MessageType],
                       ) -> wrappers.MessageType:
         """Load message descriptions from DescriptorProtos."""
         address = address.child(message_pb.name, path)
@@ -810,12 +850,14 @@ class _ProtoBuilder:
             address=address,
             loader=self._load_enum,
             path=path + (4,),
+            resources=resources,
         )
         nested_messages = self._load_children(
             message_pb.nested_type,
             address=address,
             loader=self._load_message,
             path=path + (3,),
+            resources=resources,
         )
 
         oneofs = self._get_oneofs(
@@ -856,6 +898,7 @@ class _ProtoBuilder:
                    enum: descriptor_pb2.EnumDescriptorProto,
                    address: metadata.Address,
                    path: Tuple[int],
+                   resources: Mapping[str, wrappers.MessageType],
                    ) -> wrappers.EnumType:
         """Load enum descriptions from EnumDescriptorProtos."""
         address = address.child(enum.name, path)
@@ -886,6 +929,7 @@ class _ProtoBuilder:
                       service: descriptor_pb2.ServiceDescriptorProto,
                       address: metadata.Address,
                       path: Tuple[int],
+                      resources: Mapping[str, wrappers.MessageType],
                       ) -> wrappers.Service:
         """Load comments for a service and its methods."""
         address = address.child(service.name, path)
@@ -905,6 +949,7 @@ class _ProtoBuilder:
             ),
             methods=methods,
             service_pb=service,
+            visible_resources=resources,
         )
         return self.proto_services[address.proto]
 

@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
+
 from typing import Sequence
 from unittest import mock
 
 import pytest
 
 from google.api import client_pb2
+from google.api import resource_pb2
 from google.api_core import exceptions
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
@@ -1079,3 +1082,135 @@ def test_enums():
     assert enum.values[1].meta.doc == 'This is the one value.'
     assert enum.values[2].name == 'THREE'
     assert enum.values[2].meta.doc == ''
+
+
+def test_file_level_resources():
+    fdp = make_file_pb2(
+        name="nomenclature.proto",
+        package="nomenclature.linneaen.v1",
+        messages=(
+            make_message_pb2(
+                name="CreateSpeciesRequest",
+                fields=(
+                    make_field_pb2(name='species', number=1, type=9),
+                ),
+            ),
+            make_message_pb2(
+                name="CreateSpeciesResponse",
+            ),
+        ),
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="SpeciesService",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="CreateSpecies",
+                        input_type="nomenclature.linneaen.v1.CreateSpeciesRequest",
+                        output_type="nomenclature.linneaen.v1.CreateSpeciesResponse",
+                    ),
+                ),
+            ),
+        ),
+    )
+    res_pb2 = fdp.options.Extensions[resource_pb2.resource_definition]
+    definitions = [
+        ("nomenclature.linnaen.com/Species",
+         "families/{family}/genera/{genus}/species/{species}"),
+        ("nomenclature.linnaen.com/Phylum",
+         "kingdoms/{kingdom}/phyla/{phylum}"),
+    ]
+    for type_, pattern in definitions:
+        resource_definition = res_pb2.add()
+        resource_definition.type = type_
+        resource_definition.pattern.append(pattern)
+
+    species_field = fdp.message_type[0].field[0]
+    resource_reference = species_field.options.Extensions[resource_pb2.resource_reference]
+    resource_reference.type = "nomenclature.linnaen.com/Species"
+
+    api_schema = api.API.build([fdp], package='nomenclature.linneaen.v1')
+    actual = api_schema.protos['nomenclature.proto'].resource_messages
+    expected = collections.OrderedDict((
+        ("nomenclature.linnaen.com/Species",
+         wrappers.CommonResource(
+             type_name="nomenclature.linnaen.com/Species",
+             pattern="families/{family}/genera/{genus}/species/{species}"
+         ).message_type),
+        ("nomenclature.linnaen.com/Phylum",
+         wrappers.CommonResource(
+             type_name="nomenclature.linnaen.com/Phylum",
+             pattern="kingdoms/{kingdom}/phyla/{phylum}"
+         ).message_type),
+    ))
+
+    assert actual == expected
+
+    # The proto file _owns_ the file level resources, but the service needs to
+    # see them too because the client class owns all the helper methods.
+    service = api_schema.services["nomenclature.linneaen.v1.SpeciesService"]
+    actual = service.visible_resources
+    assert actual == expected
+
+    # The service doesn't own any method that owns a message that references
+    # Phylum, so the service doesn't count it among its resource messages.
+    expected.pop("nomenclature.linnaen.com/Phylum")
+    expected = frozenset(expected.values())
+    actual = service.resource_messages
+
+    assert actual == expected
+
+
+def test_resources_referenced_but_not_typed(reference_attr="type"):
+    fdp = make_file_pb2(
+        name="nomenclature.proto",
+        package="nomenclature.linneaen.v1",
+        messages=(
+            make_message_pb2(
+                name="Species",
+            ),
+            make_message_pb2(
+                name="CreateSpeciesRequest",
+                fields=(
+                    make_field_pb2(name='species', number=1, type=9),
+                ),
+            ),
+            make_message_pb2(
+                name="CreateSpeciesResponse",
+            ),
+        ),
+        services=(
+            descriptor_pb2.ServiceDescriptorProto(
+                name="SpeciesService",
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name="CreateSpecies",
+                        input_type="nomenclature.linneaen.v1.CreateSpeciesRequest",
+                        output_type="nomenclature.linneaen.v1.CreateSpeciesResponse",
+                    ),
+                ),
+            ),
+        ),
+    )
+
+    # Set up the resource
+    species_resource_opts = fdp.message_type[0].options.Extensions[resource_pb2.resource]
+    species_resource_opts.type = "nomenclature.linnaen.com/Species"
+    species_resource_opts.pattern.append(
+        "families/{family}/genera/{genus}/species/{species}")
+
+    # Set up the reference
+    name_resource_opts = fdp.message_type[1].field[0].options.Extensions[resource_pb2.resource_reference]
+    if reference_attr == "type":
+        name_resource_opts.type = species_resource_opts.type
+    else:
+        name_resource_opts.child_type = species_resource_opts.type
+
+    api_schema = api.API.build([fdp], package="nomenclature.linneaen.v1")
+    expected = {api_schema.messages["nomenclature.linneaen.v1.Species"]}
+    actual = api_schema.services["nomenclature.linneaen.v1.SpeciesService"].resource_messages
+
+    assert actual == expected
+
+
+def test_resources_referenced_but_not_typed_child_type():
+    test_resources_referenced_but_not_typed("child_type")

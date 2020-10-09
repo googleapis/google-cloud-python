@@ -80,7 +80,8 @@ def test_generate_sample_basic():
                     "classify_target": DummyField(name="classify_target")
                 }
             )
-        }
+        },
+        visible_resources={},
     )
 
     schema = DummyApiSchema(
@@ -216,7 +217,8 @@ def test_generate_sample_basic_unflattenable():
                 input=input_type,
                 output=message_factory("$resp.taxonomy"),
             )
-        }
+        },
+        visible_resources={},
     )
 
     schema = DummyApiSchema(

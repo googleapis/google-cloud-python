@@ -33,7 +33,6 @@ import re
 from itertools import chain
 from typing import (cast, Dict, FrozenSet, Iterable, List, Mapping,
                     ClassVar, Optional, Sequence, Set, Tuple, Union)
-
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
@@ -61,6 +60,12 @@ class Field:
 
     def __getattr__(self, name):
         return getattr(self.field_pb, name)
+
+    def __hash__(self):
+        # The only sense in which it is meaningful to say a field is equal to
+        # another field is if they are the same, i.e. they live in the same
+        # message type under the same moniker, i.e. they have the same id.
+        return id(self)
 
     @property
     def name(self) -> str:
@@ -304,6 +309,15 @@ class MessageType:
                     types.add(field.type)
 
         return tuple(types)
+
+    @utils.cached_property
+    def recursive_fields(self) -> FrozenSet[Field]:
+        return frozenset(chain(
+            self.fields.values(),
+            (field
+             for t in self.recursive_field_types if isinstance(t, MessageType)
+             for field in t.fields.values()),
+        ))
 
     @property
     def map(self) -> bool:
@@ -860,6 +874,13 @@ class CommonResource:
     type_name: str
     pattern: str
 
+    @classmethod
+    def build(cls, resource: resource_pb2.ResourceDescriptor):
+        return cls(
+            type_name=resource.type,
+            pattern=next(iter(resource.pattern))
+        )
+
     @utils.cached_property
     def message_type(self):
         message_pb = descriptor_pb2.DescriptorProto()
@@ -880,6 +901,10 @@ class Service:
     """Description of a service (defined with the ``service`` keyword)."""
     service_pb: descriptor_pb2.ServiceDescriptorProto
     methods: Mapping[str, Method]
+    # N.B.: visible_resources is intended to be a read-only view
+    # whose backing store is owned by the API.
+    # This is represented by a types.MappingProxyType instance.
+    visible_resources: Mapping[str, MessageType]
     meta: metadata.Metadata = dataclasses.field(
         default_factory=metadata.Metadata,
     )
@@ -1021,12 +1046,24 @@ class Service:
                 if type_.resource_path:
                     yield type_
 
+        def gen_indirect_resources_used(message):
+            for field in message.recursive_fields:
+                resource = field.options.Extensions[
+                    resource_pb2.resource_reference]
+                resource_type = resource.type or resource.child_type
+                if resource_type:
+                    yield self.visible_resources[resource_type]
+
         return frozenset(
             msg
             for method in self.methods.values()
             for msg in chain(
                 gen_resources(method.input),
                 gen_resources(
+                    method.lro.response_type if method.lro else method.output
+                ),
+                gen_indirect_resources_used(method.input),
+                gen_indirect_resources_used(
                     method.lro.response_type if method.lro else method.output
                 ),
             )

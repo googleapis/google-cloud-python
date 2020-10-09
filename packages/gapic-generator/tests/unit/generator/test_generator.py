@@ -262,6 +262,7 @@ def test_get_filename_with_service():
                     methods=[],
                     service_pb=descriptor_pb2.ServiceDescriptorProto(
                         name="Eggs"),
+                    visible_resources={},
                 ),
             },
         )

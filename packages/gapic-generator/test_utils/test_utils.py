@@ -24,9 +24,16 @@ from google.api import http_pb2
 from google.protobuf import descriptor_pb2 as desc
 
 
-def make_service(name: str = 'Placeholder', host: str = '',
-                 methods: typing.Tuple[wrappers.Method] = (),
-                 scopes: typing.Tuple[str] = ()) -> wrappers.Service:
+def make_service(
+    name: str = "Placeholder",
+    host: str = "",
+    methods: typing.Tuple[wrappers.Method] = (),
+    scopes: typing.Tuple[str] = (),
+    visible_resources: typing.Optional[
+        typing.Mapping[str, wrappers.CommonResource]
+    ] = None,
+) -> wrappers.Service:
+    visible_resources = visible_resources or {}
     # Define a service descriptor, and set a host and oauth scopes if
     # appropriate.
     service_pb = desc.ServiceDescriptorProto(name=name)
@@ -38,6 +45,7 @@ def make_service(name: str = 'Placeholder', host: str = '',
     return wrappers.Service(
         service_pb=service_pb,
         methods={m.name: m for m in methods},
+        visible_resources=visible_resources,
     )
 
 
@@ -47,7 +55,8 @@ def make_service_with_method_options(
     *,
     http_rule: http_pb2.HttpRule = None,
     method_signature: str = '',
-    in_fields: typing.Tuple[desc.FieldDescriptorProto] = ()
+    in_fields: typing.Tuple[desc.FieldDescriptorProto] = (),
+    visible_resources: typing.Optional[typing.Mapping[str, wrappers.CommonResource]] = None,
 ) -> wrappers.Service:
     # Declare a method with options enabled for long-running operations and
     # field headers.
@@ -69,6 +78,7 @@ def make_service_with_method_options(
     return wrappers.Service(
         service_pb=service_pb,
         methods={method.name: method},
+        visible_resources=visible_resources or {},
     )
 
 
