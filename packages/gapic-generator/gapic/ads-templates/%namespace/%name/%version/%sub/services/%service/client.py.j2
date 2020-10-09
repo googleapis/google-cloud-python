@@ -141,7 +141,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         m = re.match(r"{{ message.path_regex_str }}", path)
         return m.groupdict() if m else {}
     {% endfor %}
-    {% for resource_msg in service.common_resources|sort(attribute="type_name") -%}
+    {% for resource_msg in service.common_resources.values()|sort(attribute="type_name") -%}
     @staticmethod
     def common_{{ resource_msg.message_type.resource_type|snake_case }}_path({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}: str, {%endfor %}) -> str:
         """Return a fully-qualified {{ resource_msg.message_type.resource_type|snake_case }} string."""

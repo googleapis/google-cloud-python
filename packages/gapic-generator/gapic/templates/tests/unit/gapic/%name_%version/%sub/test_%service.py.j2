@@ -1328,7 +1328,7 @@ def test_parse_{{ message.resource_type|snake_case }}_path():
     assert expected == actual
 
 {% endfor -%}
-{% for resource_msg in service.common_resources -%}
+{% for resource_msg in service.common_resources.values()|sort(attribute="type_name") -%}
 def test_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
     {% for arg in resource_msg.message_type.resource_path_args -%}
     {{ arg }} = "{{ molluscs.next() }}"

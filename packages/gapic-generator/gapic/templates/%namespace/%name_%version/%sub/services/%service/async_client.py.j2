@@ -42,7 +42,7 @@ class {{ service.async_client_name }}:
     {{ message.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.{{ message.resource_type|snake_case }}_path)
     parse_{{ message.resource_type|snake_case}}_path = staticmethod({{ service.client_name }}.parse_{{ message.resource_type|snake_case }}_path)
     {% endfor %}
-    {% for resource_msg in service.common_resources %}
+    {% for resource_msg in service.common_resources.values()|sort(attribute="type_name") %}
     common_{{ resource_msg.message_type.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.common_{{ resource_msg.message_type.resource_type|snake_case }}_path)
     parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path)
     {% endfor %}

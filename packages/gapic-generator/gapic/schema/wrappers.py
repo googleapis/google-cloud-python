@@ -909,29 +909,29 @@ class Service:
         default_factory=metadata.Metadata,
     )
 
-    common_resources: ClassVar[Sequence[CommonResource]] = dataclasses.field(
-        default=(
-            CommonResource(
+    common_resources: ClassVar[Mapping[str, CommonResource]] = dataclasses.field(
+        default={
+            "cloudresourcemanager.googleapis.com/Project": CommonResource(
                 "cloudresourcemanager.googleapis.com/Project",
                 "projects/{project}",
             ),
-            CommonResource(
+            "cloudresourcemanager.googleapis.com/Organization": CommonResource(
                 "cloudresourcemanager.googleapis.com/Organization",
                 "organizations/{organization}",
             ),
-            CommonResource(
+            "cloudresourcemanager.googleapis.com/Folder": CommonResource(
                 "cloudresourcemanager.googleapis.com/Folder",
                 "folders/{folder}",
             ),
-            CommonResource(
+            "cloudbilling.googleapis.com/BillingAccount": CommonResource(
                 "cloudbilling.googleapis.com/BillingAccount",
                 "billingAccounts/{billing_account}",
             ),
-            CommonResource(
+            "locations.googleapis.com/Location": CommonResource(
                 "locations.googleapis.com/Location",
                 "projects/{project}/locations/{location}",
             ),
-        ),
+        },
         init=False,
         compare=False,
     )
@@ -1051,7 +1051,10 @@ class Service:
                 resource = field.options.Extensions[
                     resource_pb2.resource_reference]
                 resource_type = resource.type or resource.child_type
-                if resource_type:
+                # The common resources are defined (and rendered) explicitly
+                # by separate logic, and the resource definitions are never
+                # visible in any of the APIs file descriptor protos.
+                if resource_type and resource_type not in self.common_resources:
                     yield self.visible_resources[resource_type]
 
         return frozenset(

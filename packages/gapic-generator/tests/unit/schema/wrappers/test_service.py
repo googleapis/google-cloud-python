@@ -311,28 +311,28 @@ def test_has_pagers():
 def test_default_common_resources():
     service = make_service(name="MolluscMaker")
 
-    assert service.common_resources == (
-        CommonResource(
+    assert service.common_resources == {
+        "cloudresourcemanager.googleapis.com/Project": CommonResource(
             "cloudresourcemanager.googleapis.com/Project",
             "projects/{project}",
         ),
-        CommonResource(
+        "cloudresourcemanager.googleapis.com/Organization": CommonResource(
             "cloudresourcemanager.googleapis.com/Organization",
             "organizations/{organization}",
         ),
-        CommonResource(
+        "cloudresourcemanager.googleapis.com/Folder": CommonResource(
             "cloudresourcemanager.googleapis.com/Folder",
             "folders/{folder}",
         ),
-        CommonResource(
+        "cloudbilling.googleapis.com/BillingAccount": CommonResource(
             "cloudbilling.googleapis.com/BillingAccount",
             "billingAccounts/{billing_account}",
         ),
-        CommonResource(
+        "locations.googleapis.com/Location": CommonResource(
             "locations.googleapis.com/Location",
             "projects/{project}/locations/{location}",
         ),
-    )
+    }
 
 
 def test_common_resource_patterns():
