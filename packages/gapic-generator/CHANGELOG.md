@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.34.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.3...v0.34.4) (2020-10-09)
+
+
+### Bug Fixes
+
+* expose transport property for clients ([#645](https://www.github.com/googleapis/gapic-generator-python/issues/645)) ([13cddda](https://www.github.com/googleapis/gapic-generator-python/commit/13cddda0623bd4d24ae7973752b1be0eaa40523a)), closes [#640](https://www.github.com/googleapis/gapic-generator-python/issues/640)
+
 ### [0.34.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.2...v0.34.3) (2020-10-08)
 
 
