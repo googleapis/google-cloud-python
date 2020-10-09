@@ -124,6 +124,15 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> {{ service.name }}Transport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            {{ service.name }}Transport: The transport used by the client instance.
+        """
+        return self._transport
+
 
     {% for message in service.resource_messages|sort(attribute="resource_type") -%}
     @staticmethod
@@ -150,7 +159,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         """Parse a {{ resource_msg.message_type.resource_type|snake_case }} path into its component segments."""
         m = re.match(r"{{ resource_msg.message_type.path_regex_str }}", path)
         return m.groupdict() if m else {}
-      
+
     {% endfor %} {# common resources #}
 
     def __init__(self, *,
@@ -186,12 +195,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
-                
+
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
@@ -200,10 +209,10 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        
+
         # Create SSL credentials for mutual TLS if needed.
         use_client_cert = bool(util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")))
-        
+
         ssl_credentials = None
         is_mtls = False
         if use_client_cert:

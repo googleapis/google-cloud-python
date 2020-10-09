@@ -66,12 +66,12 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file():
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
         client = {{ service.client_name }}.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = {{ service.client_name }}.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        {% if service.host %}assert client._transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
+        {% if service.host %}assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
 
 
 def test_{{ service.client_name|snake_case }}_get_transport_class():
@@ -170,7 +170,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env)
                 else:
                     expected_ssl_channel_creds = ssl_channel_creds
                     expected_host = client.DEFAULT_MTLS_ENDPOINT
-                
+
                 grpc_transport.assert_called_once_with(
                     ssl_channel_credentials=expected_ssl_channel_creds,
                     credentials=None,
@@ -182,9 +182,9 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env)
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
-            with mock.patch('google.auth.transport.grpc.SslCredentials.__init__', return_value=None):                
+            with mock.patch('google.auth.transport.grpc.SslCredentials.__init__', return_value=None):
                 with mock.patch('google.auth.transport.grpc.SslCredentials.is_mtls', new_callable=mock.PropertyMock) as is_mtls_mock:
-                    with mock.patch('google.auth.transport.grpc.SslCredentials.ssl_credentials', new_callable=mock.PropertyMock) as ssl_credentials_mock: 
+                    with mock.patch('google.auth.transport.grpc.SslCredentials.ssl_credentials', new_callable=mock.PropertyMock) as ssl_credentials_mock:
                         if use_client_cert_env == "false":
                             is_mtls_mock.return_value = False
                             ssl_credentials_mock.return_value = None
@@ -195,7 +195,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env)
                             ssl_credentials_mock.return_value = mock.Mock()
                             expected_host = client.DEFAULT_MTLS_ENDPOINT
                             expected_ssl_channel_creds = ssl_credentials_mock.return_value
-                        
+
                         grpc_transport.return_value = None
                         client = {{ service.client_name }}()
                         grpc_transport.assert_called_once_with(
@@ -208,7 +208,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env)
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
-            with mock.patch('google.auth.transport.grpc.SslCredentials.__init__', return_value=None):                
+            with mock.patch('google.auth.transport.grpc.SslCredentials.__init__', return_value=None):
                 with mock.patch('google.auth.transport.grpc.SslCredentials.is_mtls', new_callable=mock.PropertyMock) as is_mtls_mock:
                     is_mtls_mock.return_value = False
                     grpc_transport.return_value = None
@@ -251,7 +251,7 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void -%}
@@ -331,7 +331,7 @@ def test_{{ method.name|snake_case }}_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         {% if method.void -%}
         call.return_value = None
@@ -367,7 +367,7 @@ def test_{{ method.name|snake_case }}_from_dict():
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void -%}
@@ -397,7 +397,7 @@ def test_{{ method.name|snake_case }}_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
         {% if method.void -%}
@@ -462,7 +462,7 @@ def test_{{ method.name|snake_case }}_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -521,7 +521,7 @@ def test_{{ method.name|snake_case }}_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-            type(client._transport.{{ method.name|snake_case }}),
+            type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -580,7 +580,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = {{ service.client_name }}(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_grpc_default():
@@ -589,7 +589,7 @@ def test_transport_grpc_default():
         credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client._transport,
+        client.transport,
         transports.{{ service.name }}GrpcTransport,
     )
 
@@ -669,7 +669,7 @@ def test_{{ service.name|snake_case }}_host_no_port():
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
     )
-    assert client._transport._host == '{{ host }}:443'
+    assert client.transport._host == '{{ host }}:443'
     {% endwith %}
 
 
@@ -679,7 +679,7 @@ def test_{{ service.name|snake_case }}_host_with_port():
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
     )
-    assert client._transport._host == '{{ host }}:8000'
+    assert client.transport._host == '{{ host }}:8000'
     {% endwith %}
 
 
@@ -701,7 +701,7 @@ def test_{{ service.name|snake_case }}_grpc_lro_client():
         credentials=credentials.AnonymousCredentials(),
         transport='grpc',
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(
