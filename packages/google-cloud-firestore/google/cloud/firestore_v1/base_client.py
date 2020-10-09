@@ -41,6 +41,7 @@ from typing import (
     Any,
     AsyncGenerator,
     Generator,
+    Iterable,
     List,
     Optional,
     Tuple,
@@ -227,10 +228,10 @@ class BaseClient(ClientWithProject):
     def collection(self, *collection_path) -> BaseCollectionReference:
         raise NotImplementedError
 
-    def collection_group(self, collection_id) -> BaseQuery:
+    def collection_group(self, collection_id: str) -> BaseQuery:
         raise NotImplementedError
 
-    def _get_collection_reference(self, collection_id) -> BaseCollectionReference:
+    def _get_collection_reference(self, collection_id: str) -> BaseCollectionReference:
         """Checks validity of collection_id and then uses subclasses collection implementation.
 
         Args:
@@ -271,7 +272,7 @@ class BaseClient(ClientWithProject):
         return joined_path.split(_helpers.DOCUMENT_PATH_DELIMITER)
 
     @staticmethod
-    def field_path(*field_names) -> Any:
+    def field_path(*field_names: Tuple[str]) -> Any:
         """Create a **field path** from a list of nested field names.
 
         A **field path** is a ``.``-delimited concatenation of the field
@@ -353,7 +354,10 @@ class BaseClient(ClientWithProject):
             raise TypeError(_BAD_OPTION_ERR, extra)
 
     def get_all(
-        self, references, field_paths=None, transaction=None
+        self,
+        references: list,
+        field_paths: Iterable[str] = None,
+        transaction: BaseTransaction = None,
     ) -> Union[
         AsyncGenerator[DocumentSnapshot, Any], Generator[DocumentSnapshot, Any, Any]
     ]:
@@ -374,7 +378,7 @@ class BaseClient(ClientWithProject):
         raise NotImplementedError
 
 
-def _reference_info(references) -> Tuple[list, dict]:
+def _reference_info(references: list) -> Tuple[list, dict]:
     """Get information about document references.
 
     Helper for :meth:`~google.cloud.firestore_v1.client.Client.get_all`.
@@ -401,7 +405,7 @@ def _reference_info(references) -> Tuple[list, dict]:
     return document_paths, reference_map
 
 
-def _get_reference(document_path, reference_map) -> Any:
+def _get_reference(document_path: str, reference_map: dict) -> Any:
     """Get a document reference from a dictionary.
 
     This just wraps a simple dictionary look-up with a helpful error that is
@@ -427,7 +431,11 @@ def _get_reference(document_path, reference_map) -> Any:
         raise ValueError(msg)
 
 
-def _parse_batch_get(get_doc_response, reference_map, client) -> DocumentSnapshot:
+def _parse_batch_get(
+    get_doc_response: types.BatchGetDocumentsResponse,
+    reference_map: dict,
+    client: BaseClient,
+) -> DocumentSnapshot:
     """Parse a `BatchGetDocumentsResponse` protobuf.
 
     Args:
@@ -477,7 +485,7 @@ def _parse_batch_get(get_doc_response, reference_map, client) -> DocumentSnapsho
     return snapshot
 
 
-def _get_doc_mask(field_paths,) -> Optional[types.common.DocumentMask]:
+def _get_doc_mask(field_paths: Iterable[str]) -> Optional[types.common.DocumentMask]:
     """Get a document mask if field paths are provided.
 
     Args:
@@ -495,7 +503,7 @@ def _get_doc_mask(field_paths,) -> Optional[types.common.DocumentMask]:
         return types.DocumentMask(field_paths=field_paths)
 
 
-def _item_to_collection_ref(iterator, item) -> Any:
+def _item_to_collection_ref(iterator, item: str) -> Any:
     """Convert collection ID to collection ref.
 
     Args:
@@ -506,7 +514,7 @@ def _item_to_collection_ref(iterator, item) -> Any:
     return iterator.client.collection(item)
 
 
-def _path_helper(path) -> Any:
+def _path_helper(path: tuple) -> Any:
     """Standardize path into a tuple of path segments.
 
     Args:

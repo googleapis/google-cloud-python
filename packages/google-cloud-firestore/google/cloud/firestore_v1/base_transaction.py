@@ -67,7 +67,9 @@ class BaseTransaction(object):
     def _add_write_pbs(self, write_pbs) -> NoReturn:
         raise NotImplementedError
 
-    def _options_protobuf(self, retry_id) -> Optional[types.common.TransactionOptions]:
+    def _options_protobuf(
+        self, retry_id: Union[bytes, None]
+    ) -> Optional[types.common.TransactionOptions]:
         """Convert the current object to protobuf.
 
         The ``retry_id`` value is used when retrying a transaction that
@@ -139,7 +141,7 @@ class BaseTransaction(object):
     def _commit(self) -> Union[list, Coroutine[Any, Any, list]]:
         raise NotImplementedError
 
-    def get_all(self, references) -> NoReturn:
+    def get_all(self, references: list) -> NoReturn:
         raise NotImplementedError
 
     def get(self, ref_or_query) -> NoReturn:

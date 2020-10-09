@@ -21,7 +21,10 @@ from google.cloud.firestore_v1.base_collection import (
 from google.cloud.firestore_v1 import query as query_mod
 from google.cloud.firestore_v1.watch import Watch
 from google.cloud.firestore_v1 import document
-from typing import Any, Generator, Tuple
+from typing import Any, Callable, Generator, Tuple
+
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.transaction import Transaction
 
 
 class CollectionReference(BaseCollectionReference):
@@ -61,7 +64,7 @@ class CollectionReference(BaseCollectionReference):
         """
         return query_mod.Query(self)
 
-    def add(self, document_data, document_id=None) -> Tuple[Any, Any]:
+    def add(self, document_data: dict, document_id: str = None) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
 
         Args:
@@ -92,7 +95,7 @@ class CollectionReference(BaseCollectionReference):
         write_result = document_ref.create(document_data)
         return write_result.update_time, document_ref
 
-    def list_documents(self, page_size=None) -> Generator[Any, Any, None]:
+    def list_documents(self, page_size: int = None) -> Generator[Any, Any, None]:
         """List all subdocuments of the current collection.
 
         Args:
@@ -119,7 +122,7 @@ class CollectionReference(BaseCollectionReference):
         )
         return (_item_to_document_ref(self, i) for i in iterator)
 
-    def get(self, transaction=None) -> list:
+    def get(self, transaction: Transaction = None) -> list:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -141,7 +144,7 @@ class CollectionReference(BaseCollectionReference):
         return query.get(transaction=transaction)
 
     def stream(
-        self, transaction=None
+        self, transaction: Transaction = None
     ) -> Generator[document.DocumentSnapshot, Any, None]:
         """Read the documents in this collection.
 
@@ -172,7 +175,7 @@ class CollectionReference(BaseCollectionReference):
         query = query_mod.Query(self)
         return query.stream(transaction=transaction)
 
-    def on_snapshot(self, callback) -> Watch:
+    def on_snapshot(self, callback: Callable) -> Watch:
         """Monitor the documents in this collection.
 
         This starts a watch on this collection using a background thread. The

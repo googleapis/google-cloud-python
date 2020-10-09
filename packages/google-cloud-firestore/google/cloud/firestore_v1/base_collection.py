@@ -24,6 +24,7 @@ from typing import (
     Generator,
     AsyncIterator,
     Iterator,
+    Iterable,
     NoReturn,
     Tuple,
     Union,
@@ -32,6 +33,7 @@ from typing import (
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.base_query import BaseQuery
+from google.cloud.firestore_v1.transaction import Transaction
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -103,7 +105,7 @@ class BaseCollectionReference(object):
     def _query(self) -> BaseQuery:
         raise NotImplementedError
 
-    def document(self, document_id=None) -> Any:
+    def document(self, document_id: str = None) -> Any:
         """Create a sub-document underneath the current collection.
 
         Args:
@@ -145,18 +147,18 @@ class BaseCollectionReference(object):
         return parent_path, expected_prefix
 
     def add(
-        self, document_data, document_id=None
+        self, document_data: dict, document_id: str = None
     ) -> Union[Tuple[Any, Any], Coroutine[Any, Any, Tuple[Any, Any]]]:
         raise NotImplementedError
 
     def list_documents(
-        self, page_size=None
+        self, page_size: int = None
     ) -> Union[
         Generator[DocumentReference, Any, Any], AsyncGenerator[DocumentReference, Any]
     ]:
         raise NotImplementedError
 
-    def select(self, field_paths) -> BaseQuery:
+    def select(self, field_paths: Iterable[str]) -> BaseQuery:
         """Create a "select" query with this collection as parent.
 
         See
@@ -175,7 +177,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.select(field_paths)
 
-    def where(self, field_path, op_string, value) -> BaseQuery:
+    def where(self, field_path: str, op_string: str, value) -> BaseQuery:
         """Create a "where" query with this collection as parent.
 
         See
@@ -199,7 +201,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.where(field_path, op_string, value)
 
-    def order_by(self, field_path, **kwargs) -> BaseQuery:
+    def order_by(self, field_path: str, **kwargs) -> BaseQuery:
         """Create an "order by" query with this collection as parent.
 
         See
@@ -221,7 +223,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.order_by(field_path, **kwargs)
 
-    def limit(self, count) -> BaseQuery:
+    def limit(self, count: int) -> BaseQuery:
         """Create a limited query with this collection as parent.
 
         .. note::
@@ -243,7 +245,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.limit(count)
 
-    def limit_to_last(self, count):
+    def limit_to_last(self, count: int):
         """Create a limited to last query with this collection as parent.
         .. note::
            `limit` and `limit_to_last` are mutually exclusive.
@@ -261,7 +263,7 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.limit_to_last(count)
 
-    def offset(self, num_to_skip) -> BaseQuery:
+    def offset(self, num_to_skip: int) -> BaseQuery:
         """Skip to an offset in a query with this collection as parent.
 
         See
@@ -279,7 +281,9 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.offset(num_to_skip)
 
-    def start_at(self, document_fields) -> BaseQuery:
+    def start_at(
+        self, document_fields: Union[DocumentSnapshot, dict, list, tuple]
+    ) -> BaseQuery:
         """Start query at a cursor with this collection as parent.
 
         See
@@ -300,7 +304,9 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.start_at(document_fields)
 
-    def start_after(self, document_fields) -> BaseQuery:
+    def start_after(
+        self, document_fields: Union[DocumentSnapshot, dict, list, tuple]
+    ) -> BaseQuery:
         """Start query after a cursor with this collection as parent.
 
         See
@@ -321,7 +327,9 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.start_after(document_fields)
 
-    def end_before(self, document_fields) -> BaseQuery:
+    def end_before(
+        self, document_fields: Union[DocumentSnapshot, dict, list, tuple]
+    ) -> BaseQuery:
         """End query before a cursor with this collection as parent.
 
         See
@@ -342,7 +350,9 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.end_before(document_fields)
 
-    def end_at(self, document_fields) -> BaseQuery:
+    def end_at(
+        self, document_fields: Union[DocumentSnapshot, dict, list, tuple]
+    ) -> BaseQuery:
         """End query at a cursor with this collection as parent.
 
         See
@@ -364,14 +374,14 @@ class BaseCollectionReference(object):
         return query.end_at(document_fields)
 
     def get(
-        self, transaction=None
+        self, transaction: Transaction = None
     ) -> Union[
         Generator[DocumentSnapshot, Any, Any], AsyncGenerator[DocumentSnapshot, Any]
     ]:
         raise NotImplementedError
 
     def stream(
-        self, transaction=None
+        self, transaction: Transaction = None
     ) -> Union[Iterator[DocumentSnapshot], AsyncIterator[DocumentSnapshot]]:
         raise NotImplementedError
 

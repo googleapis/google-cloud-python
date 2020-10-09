@@ -17,6 +17,10 @@
 
 from google.cloud.firestore_v1 import _helpers
 
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.document import DocumentReference
+from typing import Union
+
 
 class BaseWriteBatch(object):
     """Accumulate write operations to be sent in a batch.
@@ -36,7 +40,7 @@ class BaseWriteBatch(object):
         self.write_results = None
         self.commit_time = None
 
-    def _add_write_pbs(self, write_pbs) -> None:
+    def _add_write_pbs(self, write_pbs: list) -> None:
         """Add `Write`` protobufs to this transaction.
 
         This method intended to be over-ridden by subclasses.
@@ -47,7 +51,7 @@ class BaseWriteBatch(object):
         """
         self._write_pbs.extend(write_pbs)
 
-    def create(self, reference, document_data) -> None:
+    def create(self, reference: DocumentReference, document_data: dict) -> None:
         """Add a "change" to this batch to create a document.
 
         If the document given by ``reference`` already exists, then this
@@ -62,7 +66,12 @@ class BaseWriteBatch(object):
         write_pbs = _helpers.pbs_for_create(reference._document_path, document_data)
         self._add_write_pbs(write_pbs)
 
-    def set(self, reference, document_data, merge=False) -> None:
+    def set(
+        self,
+        reference: DocumentReference,
+        document_data: dict,
+        merge: Union[bool, list] = False,
+    ) -> None:
         """Add a "change" to replace a document.
 
         See
@@ -90,7 +99,12 @@ class BaseWriteBatch(object):
 
         self._add_write_pbs(write_pbs)
 
-    def update(self, reference, field_updates, option=None) -> None:
+    def update(
+        self,
+        reference: DocumentReference,
+        field_updates: dict,
+        option: _helpers.WriteOption = None,
+    ) -> None:
         """Add a "change" to update a document.
 
         See
@@ -113,7 +127,9 @@ class BaseWriteBatch(object):
         )
         self._add_write_pbs(write_pbs)
 
-    def delete(self, reference, option=None) -> None:
+    def delete(
+        self, reference: DocumentReference, option: _helpers.WriteOption = None
+    ) -> None:
         """Add a "change" to delete a document.
 
         See

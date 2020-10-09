@@ -18,7 +18,7 @@ import copy
 
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import field_path as field_path_module
-from typing import Any, NoReturn
+from typing import Any, Iterable, NoReturn, Tuple
 
 
 class BaseDocumentReference(object):
@@ -164,7 +164,7 @@ class BaseDocumentReference(object):
         parent_path = self._path[:-1]
         return self._client.collection(*parent_path)
 
-    def collection(self, collection_id) -> Any:
+    def collection(self, collection_id: str) -> Any:
         """Create a sub-collection underneath the current document.
 
         Args:
@@ -178,22 +178,26 @@ class BaseDocumentReference(object):
         child_path = self._path + (collection_id,)
         return self._client.collection(*child_path)
 
-    def create(self, document_data) -> NoReturn:
+    def create(self, document_data: dict) -> NoReturn:
         raise NotImplementedError
 
-    def set(self, document_data, merge=False) -> NoReturn:
+    def set(self, document_data: dict, merge: bool = False) -> NoReturn:
         raise NotImplementedError
 
-    def update(self, field_updates, option=None) -> NoReturn:
+    def update(
+        self, field_updates: dict, option: _helpers.WriteOption = None
+    ) -> NoReturn:
         raise NotImplementedError
 
-    def delete(self, option=None) -> NoReturn:
+    def delete(self, option: _helpers.WriteOption = None) -> NoReturn:
         raise NotImplementedError
 
-    def get(self, field_paths=None, transaction=None) -> "DocumentSnapshot":
+    def get(
+        self, field_paths: Iterable[str] = None, transaction=None
+    ) -> "DocumentSnapshot":
         raise NotImplementedError
 
-    def collections(self, page_size=None) -> NoReturn:
+    def collections(self, page_size: int = None) -> NoReturn:
         raise NotImplementedError
 
     def on_snapshot(self, callback) -> NoReturn:
@@ -291,7 +295,7 @@ class DocumentSnapshot(object):
         """
         return self._reference
 
-    def get(self, field_path) -> Any:
+    def get(self, field_path: str) -> Any:
         """Get a value from the snapshot data.
 
         If the data is nested, for example:
@@ -371,7 +375,7 @@ class DocumentSnapshot(object):
         return copy.deepcopy(self._data)
 
 
-def _get_document_path(client, path) -> str:
+def _get_document_path(client, path: Tuple[str]) -> str:
     """Convert a path tuple into a full path string.
 
     Of the form:
@@ -423,7 +427,7 @@ def _consume_single_get(response_iterator) -> Any:
     return all_responses[0]
 
 
-def _first_write_result(write_results) -> Any:
+def _first_write_result(write_results: list) -> Any:
     """Get first write result from list.
 
     For cases where ``len(write_results) > 1``, this assumes the writes
@@ -449,7 +453,7 @@ def _first_write_result(write_results) -> Any:
     return write_results[0]
 
 
-def _item_to_collection_ref(iterator, item) -> Any:
+def _item_to_collection_ref(iterator, item: str) -> Any:
     """Convert collection ID to collection ref.
 
     Args:

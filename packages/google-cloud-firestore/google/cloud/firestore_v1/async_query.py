@@ -31,6 +31,9 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import async_document
 from typing import AsyncGenerator
 
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.transaction import Transaction
+
 
 class AsyncQuery(BaseQuery):
     """Represents a query to the Firestore API.
@@ -114,7 +117,7 @@ class AsyncQuery(BaseQuery):
             all_descendants=all_descendants,
         )
 
-    async def get(self, transaction=None) -> list:
+    async def get(self, transaction: Transaction = None) -> list:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -154,7 +157,7 @@ class AsyncQuery(BaseQuery):
         return result
 
     async def stream(
-        self, transaction=None
+        self, transaction: Transaction = None
     ) -> AsyncGenerator[async_document.DocumentSnapshot, None]:
         """Read the documents in the collection that match this query.
 

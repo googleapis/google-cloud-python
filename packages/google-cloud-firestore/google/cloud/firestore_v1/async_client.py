@@ -49,7 +49,7 @@ from google.cloud.firestore_v1.services.firestore import (
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, Iterable, Tuple
 
 
 class AsyncClient(BaseClient):
@@ -119,7 +119,7 @@ class AsyncClient(BaseClient):
         """
         return self._target_helper(firestore_client.FirestoreAsyncClient)
 
-    def collection(self, *collection_path) -> AsyncCollectionReference:
+    def collection(self, *collection_path: Tuple[str]) -> AsyncCollectionReference:
         """Get a reference to a collection.
 
         For a top-level collection:
@@ -150,7 +150,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncCollectionReference(*_path_helper(collection_path), client=self)
 
-    def collection_group(self, collection_id) -> AsyncCollectionGroup:
+    def collection_group(self, collection_id: str) -> AsyncCollectionGroup:
         """
         Creates and returns a new AsyncQuery that includes all documents in the
         database that are contained in a collection or subcollection with the
@@ -172,7 +172,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncCollectionGroup(self._get_collection_reference(collection_id))
 
-    def document(self, *document_path) -> AsyncDocumentReference:
+    def document(self, *document_path: Tuple[str]) -> AsyncDocumentReference:
         """Get a reference to a document in a collection.
 
         For a top-level document:
@@ -208,7 +208,7 @@ class AsyncClient(BaseClient):
         )
 
     async def get_all(
-        self, references, field_paths=None, transaction=None
+        self, references: list, field_paths: Iterable[str] = None, transaction=None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieve a batch of documents.
 

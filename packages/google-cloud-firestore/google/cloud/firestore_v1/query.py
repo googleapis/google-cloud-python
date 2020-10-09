@@ -30,7 +30,7 @@ from google.cloud.firestore_v1.base_query import (
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
-from typing import Any, Generator
+from typing import Any, Callable, Generator
 
 
 class Query(BaseQuery):
@@ -209,7 +209,7 @@ class Query(BaseQuery):
             if snapshot is not None:
                 yield snapshot
 
-    def on_snapshot(self, callback) -> Watch:
+    def on_snapshot(self, callback: Callable) -> Watch:
         """Monitor the documents in this collection that match this query.
 
         This starts a watch on this query using a background thread. The

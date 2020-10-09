@@ -28,6 +28,9 @@ from google.cloud.firestore_v1.document import DocumentReference
 from typing import AsyncIterator
 from typing import Any, AsyncGenerator, Tuple
 
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.transaction import Transaction
+
 
 class AsyncCollectionReference(BaseCollectionReference):
     """A reference to a collection in a Firestore database.
@@ -66,7 +69,9 @@ class AsyncCollectionReference(BaseCollectionReference):
         """
         return async_query.AsyncQuery(self)
 
-    async def add(self, document_data, document_id=None) -> Tuple[Any, Any]:
+    async def add(
+        self, document_data: dict, document_id: str = None
+    ) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
 
         Args:
@@ -98,7 +103,7 @@ class AsyncCollectionReference(BaseCollectionReference):
         return write_result.update_time, document_ref
 
     async def list_documents(
-        self, page_size=None
+        self, page_size: int = None
     ) -> AsyncGenerator[DocumentReference, None]:
         """List all subdocuments of the current collection.
 
@@ -127,7 +132,7 @@ class AsyncCollectionReference(BaseCollectionReference):
         async for i in iterator:
             yield _item_to_document_ref(self, i)
 
-    async def get(self, transaction=None) -> list:
+    async def get(self, transaction: Transaction = None) -> list:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -149,7 +154,7 @@ class AsyncCollectionReference(BaseCollectionReference):
         return await query.get(transaction=transaction)
 
     async def stream(
-        self, transaction=None
+        self, transaction: Transaction = None
     ) -> AsyncIterator[async_document.DocumentSnapshot]:
         """Read the documents in this collection.
 

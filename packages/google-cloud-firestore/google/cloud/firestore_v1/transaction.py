@@ -36,7 +36,7 @@ from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import batch
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.query import Query
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 
 class Transaction(batch.WriteBatch, BaseTransaction):
@@ -57,7 +57,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         super(Transaction, self).__init__(client)
         BaseTransaction.__init__(self, max_attempts, read_only)
 
-    def _add_write_pbs(self, write_pbs) -> None:
+    def _add_write_pbs(self, write_pbs: list) -> None:
         """Add `Write`` protobufs to this transaction.
 
         Args:
@@ -72,7 +72,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
 
         super(Transaction, self)._add_write_pbs(write_pbs)
 
-    def _begin(self, retry_id=None) -> None:
+    def _begin(self, retry_id: bytes = None) -> None:
         """Begin the transaction.
 
         Args:
@@ -136,7 +136,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         self._clean_up()
         return list(commit_response.write_results)
 
-    def get_all(self, references) -> Any:
+    def get_all(self, references: list) -> Any:
         """Retrieves multiple documents from Firestore.
 
         Args:
@@ -182,7 +182,7 @@ class _Transactional(_BaseTransactional):
     def __init__(self, to_wrap) -> None:
         super(_Transactional, self).__init__(to_wrap)
 
-    def _pre_commit(self, transaction, *args, **kwargs) -> Any:
+    def _pre_commit(self, transaction: Transaction, *args, **kwargs) -> Any:
         """Begin transaction and call the wrapped callable.
 
         If the callable raises an exception, the transaction will be rolled
@@ -220,7 +220,7 @@ class _Transactional(_BaseTransactional):
             transaction._rollback()
             raise
 
-    def _maybe_commit(self, transaction) -> Optional[bool]:
+    def _maybe_commit(self, transaction: Transaction) -> Optional[bool]:
         """Try to commit the transaction.
 
         If the transaction is read-write and the ``Commit`` fails with the
@@ -248,7 +248,7 @@ class _Transactional(_BaseTransactional):
             else:
                 raise
 
-    def __call__(self, transaction, *args, **kwargs):
+    def __call__(self, transaction: Transaction, *args, **kwargs):
         """Execute the wrapped callable within a transaction.
 
         Args:
@@ -286,7 +286,7 @@ class _Transactional(_BaseTransactional):
         raise ValueError(msg)
 
 
-def transactional(to_wrap) -> _Transactional:
+def transactional(to_wrap: Callable) -> _Transactional:
     """Decorate a callable so that it runs in a transaction.
 
     Args:
@@ -301,7 +301,7 @@ def transactional(to_wrap) -> _Transactional:
     return _Transactional(to_wrap)
 
 
-def _commit_with_retry(client, write_pbs, transaction_id) -> Any:
+def _commit_with_retry(client, write_pbs: list, transaction_id: bytes) -> Any:
     """Call ``Commit`` on the GAPIC client with retry / sleep.
 
     Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level
@@ -344,7 +344,9 @@ def _commit_with_retry(client, write_pbs, transaction_id) -> Any:
         current_sleep = _sleep(current_sleep)
 
 
-def _sleep(current_sleep, max_sleep=_MAX_SLEEP, multiplier=_MULTIPLIER) -> Any:
+def _sleep(
+    current_sleep: float, max_sleep: float = _MAX_SLEEP, multiplier: float = _MULTIPLIER
+) -> Any:
     """Sleep and produce a new sleep time.
 
     .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\

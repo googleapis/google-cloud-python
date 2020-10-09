@@ -39,7 +39,10 @@ from google.cloud.firestore_v1 import types
 from google.cloud.firestore_v1.async_document import AsyncDocumentReference
 from google.cloud.firestore_v1.async_document import DocumentSnapshot
 from google.cloud.firestore_v1.async_query import AsyncQuery
-from typing import Any, AsyncGenerator, Coroutine
+from typing import Any, AsyncGenerator, Callable, Coroutine
+
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.client import Client
 
 
 class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
@@ -60,7 +63,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
         super(AsyncTransaction, self).__init__(client)
         BaseTransaction.__init__(self, max_attempts, read_only)
 
-    def _add_write_pbs(self, write_pbs) -> None:
+    def _add_write_pbs(self, write_pbs: list) -> None:
         """Add `Write`` protobufs to this transaction.
 
         Args:
@@ -75,7 +78,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
 
         super(AsyncTransaction, self)._add_write_pbs(write_pbs)
 
-    async def _begin(self, retry_id=None) -> None:
+    async def _begin(self, retry_id: bytes = None) -> None:
         """Begin the transaction.
 
         Args:
@@ -141,7 +144,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
         self._clean_up()
         return list(commit_response.write_results)
 
-    async def get_all(self, references) -> Coroutine:
+    async def get_all(self, references: list) -> Coroutine:
         """Retrieves multiple documents from Firestore.
 
         Args:
@@ -187,7 +190,9 @@ class _AsyncTransactional(_BaseTransactional):
     def __init__(self, to_wrap) -> None:
         super(_AsyncTransactional, self).__init__(to_wrap)
 
-    async def _pre_commit(self, transaction, *args, **kwargs) -> Coroutine:
+    async def _pre_commit(
+        self, transaction: AsyncTransaction, *args, **kwargs
+    ) -> Coroutine:
         """Begin transaction and call the wrapped coroutine.
 
         If the coroutine raises an exception, the transaction will be rolled
@@ -225,7 +230,7 @@ class _AsyncTransactional(_BaseTransactional):
             await transaction._rollback()
             raise
 
-    async def _maybe_commit(self, transaction) -> bool:
+    async def _maybe_commit(self, transaction: AsyncTransaction) -> bool:
         """Try to commit the transaction.
 
         If the transaction is read-write and the ``Commit`` fails with the
@@ -291,7 +296,9 @@ class _AsyncTransactional(_BaseTransactional):
         raise ValueError(msg)
 
 
-def async_transactional(to_wrap) -> _AsyncTransactional:
+def async_transactional(
+    to_wrap: Callable[[AsyncTransaction], Any]
+) -> _AsyncTransactional:
     """Decorate a callable so that it runs in a transaction.
 
     Args:
@@ -307,7 +314,9 @@ def async_transactional(to_wrap) -> _AsyncTransactional:
 
 
 # TODO(crwilcox): this was 'coroutine' from pytype merge-pyi...
-async def _commit_with_retry(client, write_pbs, transaction_id) -> types.CommitResponse:
+async def _commit_with_retry(
+    client: Client, write_pbs: list, transaction_id: bytes
+) -> types.CommitResponse:
     """Call ``Commit`` on the GAPIC client with retry / sleep.
 
     Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level
@@ -350,7 +359,9 @@ async def _commit_with_retry(client, write_pbs, transaction_id) -> types.CommitR
         current_sleep = await _sleep(current_sleep)
 
 
-async def _sleep(current_sleep, max_sleep=_MAX_SLEEP, multiplier=_MULTIPLIER) -> float:
+async def _sleep(
+    current_sleep: float, max_sleep: float = _MAX_SLEEP, multiplier: float = _MULTIPLIER
+) -> float:
     """Sleep and produce a new sleep time.
 
     .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\
