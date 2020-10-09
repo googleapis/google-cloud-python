@@ -4,15 +4,22 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery.git",
-        "sha": "fbbe0cb0ea22161d81f1e5504bb89b55e4198634"
+        "sha": "31644d380b35a76a9147801a4b6b0271c246fd0c"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "0dc0a6c0f1a9f979bc0690f0caa5fbafa3000c2c",
-        "internalRef": "327026955"
+        "sha": "c941026e5e3d600817a20e9ab4d4be03dff21a68",
+        "internalRef": "334645418"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "f3c04883d6c43261ff13db1f52d03a283be06871"
       }
     },
     {
@@ -33,5 +40,86 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/presubmit/system-3.8.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/bigquery_v2/services.rst",
+    "docs/bigquery_v2/types.rst",
+    "docs/conf.py",
+    "google/cloud/bigquery_v2/__init__.py",
+    "google/cloud/bigquery_v2/proto/encryption_config.proto",
+    "google/cloud/bigquery_v2/proto/model.proto",
+    "google/cloud/bigquery_v2/proto/model_reference.proto",
+    "google/cloud/bigquery_v2/proto/standard_sql.proto",
+    "google/cloud/bigquery_v2/py.typed",
+    "google/cloud/bigquery_v2/types/__init__.py",
+    "google/cloud/bigquery_v2/types/encryption_config.py",
+    "google/cloud/bigquery_v2/types/model.py",
+    "google/cloud/bigquery_v2/types/model_reference.py",
+    "google/cloud/bigquery_v2/types/standard_sql.py",
+    "mypy.ini",
+    "renovate.json",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_bigquery_v2_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore"
   ]
 }
