@@ -19,6 +19,117 @@ from .parser import parse_values
 from .types import DateStr, TimestampStr
 from .utils import sanitize_literals_for_upload
 
+TYPES_MAP = {
+    bool: spanner.param_types.BOOL,
+    bytes: spanner.param_types.BYTES,
+    str: spanner.param_types.STRING,
+    int: spanner.param_types.INT64,
+    float: spanner.param_types.FLOAT64,
+    datetime.datetime: spanner.param_types.TIMESTAMP,
+    datetime.date: spanner.param_types.DATE,
+    DateStr: spanner.param_types.DATE,
+    TimestampStr: spanner.param_types.TIMESTAMP,
+}
+
+SPANNER_RESERVED_KEYWORDS = {
+    "ALL",
+    "AND",
+    "ANY",
+    "ARRAY",
+    "AS",
+    "ASC",
+    "ASSERT_ROWS_MODIFIED",
+    "AT",
+    "BETWEEN",
+    "BY",
+    "CASE",
+    "CAST",
+    "COLLATE",
+    "CONTAINS",
+    "CREATE",
+    "CROSS",
+    "CUBE",
+    "CURRENT",
+    "DEFAULT",
+    "DEFINE",
+    "DESC",
+    "DISTINCT",
+    "DROP",
+    "ELSE",
+    "END",
+    "ENUM",
+    "ESCAPE",
+    "EXCEPT",
+    "EXCLUDE",
+    "EXISTS",
+    "EXTRACT",
+    "FALSE",
+    "FETCH",
+    "FOLLOWING",
+    "FOR",
+    "FROM",
+    "FULL",
+    "GROUP",
+    "GROUPING",
+    "GROUPS",
+    "HASH",
+    "HAVING",
+    "IF",
+    "IGNORE",
+    "IN",
+    "INNER",
+    "INTERSECT",
+    "INTERVAL",
+    "INTO",
+    "IS",
+    "JOIN",
+    "LATERAL",
+    "LEFT",
+    "LIKE",
+    "LIMIT",
+    "LOOKUP",
+    "MERGE",
+    "NATURAL",
+    "NEW",
+    "NO",
+    "NOT",
+    "NULL",
+    "NULLS",
+    "OF",
+    "ON",
+    "OR",
+    "ORDER",
+    "OUTER",
+    "OVER",
+    "PARTITION",
+    "PRECEDING",
+    "PROTO",
+    "RANGE",
+    "RECURSIVE",
+    "RESPECT",
+    "RIGHT",
+    "ROLLUP",
+    "ROWS",
+    "SELECT",
+    "SET",
+    "SOME",
+    "STRUCT",
+    "TABLESAMPLE",
+    "THEN",
+    "TO",
+    "TREAT",
+    "TRUE",
+    "UNBOUNDED",
+    "UNION",
+    "UNNEST",
+    "USING",
+    "WHEN",
+    "WHERE",
+    "WINDOW",
+    "WITH",
+    "WITHIN",
+}
+
 STMT_DDL = "DDL"
 STMT_NON_UPDATING = "NON_UPDATING"
 STMT_UPDATING = "UPDATING"
@@ -359,36 +470,39 @@ def sql_pyformat_args_to_spanner(sql, params):
     return sanitize_literals_for_upload(sql), named_args
 
 
-def cast_for_spanner(param):
-    """Convert param to its Cloud Spanner equivalent type."""
-    if isinstance(param, decimal.Decimal):
-        return float(param)
-    else:
-        return param
+def cast_for_spanner(value):
+    """Convert the param to its Cloud Spanner equivalent type.
+
+    :type value: Any
+    :param value: Value to convert to a Cloud Spanner type.
+
+    :rtype: Any
+    :returns: Value converted to a Cloud Spanner type.
+    """
+    if isinstance(value, decimal.Decimal):
+        return float(value)
+    return value
 
 
 def get_param_types(params):
-    """
-    Return a dictionary of spanner.param_types for a dictionary of parameters.
+    """Determine Cloud Spanner types for the given parameters.
+
+    :type params: :class:`dict`
+    :param params: Parameters requiring to find Cloud Spanner types.
+
+    :rtype: :class:`dict`
+    :returns: The types index for the given parameters.
     """
     if params is None:
-        return None
+        return
+
     param_types = {}
+
     for key, value in params.items():
-        if isinstance(value, bool):
-            param_types[key] = spanner.param_types.BOOL
-        elif isinstance(value, float):
-            param_types[key] = spanner.param_types.FLOAT64
-        elif isinstance(value, int):
-            param_types[key] = spanner.param_types.INT64
-        elif isinstance(value, (TimestampStr, datetime.datetime)):
-            param_types[key] = spanner.param_types.TIMESTAMP
-        elif isinstance(value, (DateStr, datetime.date)):
-            param_types[key] = spanner.param_types.DATE
-        elif isinstance(value, str):
-            param_types[key] = spanner.param_types.STRING
-        elif isinstance(value, bytes):
-            param_types[key] = spanner.param_types.BYTES
+        type_ = type(value)
+        if type_ in TYPES_MAP:
+            param_types[key] = TYPES_MAP[type_]
+
     return param_types
 
 
@@ -405,110 +519,16 @@ def ensure_where_clause(sql):
     return sql + " WHERE 1=1"
 
 
-SPANNER_RESERVED_KEYWORDS = {
-    "ALL",
-    "AND",
-    "ANY",
-    "ARRAY",
-    "AS",
-    "ASC",
-    "ASSERT_ROWS_MODIFIED",
-    "AT",
-    "BETWEEN",
-    "BY",
-    "CASE",
-    "CAST",
-    "COLLATE",
-    "CONTAINS",
-    "CREATE",
-    "CROSS",
-    "CUBE",
-    "CURRENT",
-    "DEFAULT",
-    "DEFINE",
-    "DESC",
-    "DISTINCT",
-    "DROP",
-    "ELSE",
-    "END",
-    "ENUM",
-    "ESCAPE",
-    "EXCEPT",
-    "EXCLUDE",
-    "EXISTS",
-    "EXTRACT",
-    "FALSE",
-    "FETCH",
-    "FOLLOWING",
-    "FOR",
-    "FROM",
-    "FULL",
-    "GROUP",
-    "GROUPING",
-    "GROUPS",
-    "HASH",
-    "HAVING",
-    "IF",
-    "IGNORE",
-    "IN",
-    "INNER",
-    "INTERSECT",
-    "INTERVAL",
-    "INTO",
-    "IS",
-    "JOIN",
-    "LATERAL",
-    "LEFT",
-    "LIKE",
-    "LIMIT",
-    "LOOKUP",
-    "MERGE",
-    "NATURAL",
-    "NEW",
-    "NO",
-    "NOT",
-    "NULL",
-    "NULLS",
-    "OF",
-    "ON",
-    "OR",
-    "ORDER",
-    "OUTER",
-    "OVER",
-    "PARTITION",
-    "PRECEDING",
-    "PROTO",
-    "RANGE",
-    "RECURSIVE",
-    "RESPECT",
-    "RIGHT",
-    "ROLLUP",
-    "ROWS",
-    "SELECT",
-    "SET",
-    "SOME",
-    "STRUCT",
-    "TABLESAMPLE",
-    "THEN",
-    "TO",
-    "TREAT",
-    "TRUE",
-    "UNBOUNDED",
-    "UNION",
-    "UNNEST",
-    "USING",
-    "WHEN",
-    "WHERE",
-    "WINDOW",
-    "WITH",
-    "WITHIN",
-}
-
-
 def escape_name(name):
     """
-    Escape name by applying backticks to value that either
-    contain '-' or are any of Cloud Spanner's reserved keywords.
+    Apply backticks to the name that either contain '-' or
+    ' ', or is a Cloud Spanner's reserved keyword.
+
+    :type name: :class:`str`
+    :param name: Name to escape.
+
+    :rtype: :class:`str`
+    :returns: Name escaped if it has to be escaped.
     """
     if "-" in name or " " in name or name.upper() in SPANNER_RESERVED_KEYWORDS:
         return "`" + name + "`"

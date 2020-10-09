@@ -17,6 +17,7 @@ from google.cloud.spanner_dbapi.parse_utils import (
     STMT_UPDATING,
     DateStr,
     TimestampStr,
+    cast_for_spanner,
     classify_stmt,
     ensure_where_clause,
     escape_name,
@@ -337,112 +338,40 @@ class ParseUtilsTests(TestCase):
                 )
 
     def test_get_param_types(self):
-        cases = [
-            (
-                {
-                    "a1": 10,
-                    "b1": "2005-08-30T01:01:01.000001Z",
-                    "c1": "2019-12-05",
-                    "d1": 10.39,
-                },
-                {
-                    "a1": param_types.INT64,
-                    "b1": param_types.STRING,
-                    "c1": param_types.STRING,
-                    "d1": param_types.FLOAT64,
-                },
-            ),
-            (
-                {
-                    "a1": 10,
-                    "b1": TimestampStr("2005-08-30T01:01:01.000001Z"),
-                    "c1": "2019-12-05",
-                },
-                {
-                    "a1": param_types.INT64,
-                    "b1": param_types.TIMESTAMP,
-                    "c1": param_types.STRING,
-                },
-            ),
-            (
-                {
-                    "a1": 10,
-                    "b1": "2005-08-30T01:01:01.000001Z",
-                    "c1": DateStr("2019-12-05"),
-                },
-                {
-                    "a1": param_types.INT64,
-                    "b1": param_types.STRING,
-                    "c1": param_types.DATE,
-                },
-            ),
-            (
-                {"a1": 10, "b1": "2005-08-30T01:01:01.000001Z"},
-                {"a1": param_types.INT64, "b1": param_types.STRING},
-            ),
-            (
-                {
-                    "a1": 10,
-                    "b1": TimestampStr("2005-08-30T01:01:01.000001Z"),
-                    "c1": DateStr("2005-08-30"),
-                },
-                {
-                    "a1": param_types.INT64,
-                    "b1": param_types.TIMESTAMP,
-                    "c1": param_types.DATE,
-                },
-            ),
-            (
-                {"a1": 10, "b1": "aaaaa08-30T01:01:01.000001Z"},
-                {"a1": param_types.INT64, "b1": param_types.STRING},
-            ),
-            (
-                {
-                    "a1": 10,
-                    "b1": "2005-08-30T01:01:01.000001",
-                    "t1": True,
-                    "t2": False,
-                    "f1": 99e9,
-                },
-                {
-                    "a1": param_types.INT64,
-                    "b1": param_types.STRING,
-                    "t1": param_types.BOOL,
-                    "t2": param_types.BOOL,
-                    "f1": param_types.FLOAT64,
-                },
-            ),
-            (
-                {"a1": 10, "b1": "2019-11-26T02:55:41.000000Z"},
-                {"a1": param_types.INT64, "b1": param_types.STRING},
-            ),
-            (
-                {
-                    "a1": 10,
-                    "b1": TimestampStr("2019-11-26T02:55:41.000000Z"),
-                    "dt1": datetime.datetime(2011, 9, 1, 13, 20, 30),
-                    "d1": datetime.date(2011, 9, 1),
-                },
-                {
-                    "a1": param_types.INT64,
-                    "b1": param_types.TIMESTAMP,
-                    "dt1": param_types.TIMESTAMP,
-                    "d1": param_types.DATE,
-                },
-            ),
-            (
-                {"a1": 10, "b1": TimestampStr("2019-11-26T02:55:41.000000Z")},
-                {"a1": param_types.INT64, "b1": param_types.TIMESTAMP},
-            ),
-            ({"a1": b"bytes"}, {"a1": param_types.BYTES}),
-            ({"a1": 10, "b1": None}, {"a1": param_types.INT64}),
-            (None, None),
-        ]
+        params = {
+            "a1": 10,
+            "b1": "string",
+            "c1": 10.39,
+            "d1": TimestampStr("2005-08-30T01:01:01.000001Z"),
+            "e1": DateStr("2019-12-05"),
+            "f1": True,
+            "g1": datetime.datetime(2011, 9, 1, 13, 20, 30),
+            "h1": datetime.date(2011, 9, 1),
+            "i1": b"bytes",
+            "j1": None,
+        }
+        want_types = {
+            "a1": param_types.INT64,
+            "b1": param_types.STRING,
+            "c1": param_types.FLOAT64,
+            "d1": param_types.TIMESTAMP,
+            "e1": param_types.DATE,
+            "f1": param_types.BOOL,
+            "g1": param_types.TIMESTAMP,
+            "h1": param_types.DATE,
+            "i1": param_types.BYTES,
+        }
+        got_types = get_param_types(params)
+        self.assertEqual(got_types, want_types)
 
-        for i, (params, want_param_types) in enumerate(cases):
-            with self.subTest(i=i):
-                got_param_types = get_param_types(params)
-                self.assertEqual(got_param_types, want_param_types)
+    def test_get_param_types_none(self):
+        self.assertEqual(get_param_types(None), None)
+
+    def test_cast_for_spanner(self):
+        value = decimal.Decimal(3)
+        self.assertEqual(cast_for_spanner(value), float(3.0))
+        self.assertEqual(cast_for_spanner(5), 5)
+        self.assertEqual(cast_for_spanner("string"), "string")
 
     def test_ensure_where_clause(self):
         cases = [
@@ -475,14 +404,13 @@ class ParseUtilsTests(TestCase):
                 self.assertEqual(got, want)
 
     def test_escape_name(self):
-        cases = [
+        cases = (
             ("SELECT", "`SELECT`"),
-            ("id", "id"),
-            ("", ""),
             ("dashed-value", "`dashed-value`"),
             ("with space", "`with space`"),
-        ]
-
+            ("name", "name"),
+            ("", ""),
+        )
         for name, want in cases:
             with self.subTest(name=name):
                 got = escape_name(name)
