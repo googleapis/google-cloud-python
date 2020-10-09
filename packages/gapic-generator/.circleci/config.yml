@@ -577,7 +577,7 @@ jobs:
           name: Install pandoc
           command: |
             apt-get update
-            apt-get install -y pandoc gcc
+            apt-get install -y pandoc gcc git
       - run:
           name: Install nox and codecov.
           command: |
@@ -599,7 +599,7 @@ jobs:
           name: Install pandoc
           command: |
             apt-get update
-            apt-get install -y pandoc gcc
+            apt-get install -y pandoc gcc git
       - run:
           name: Install nox and codecov.
           command: |
@@ -621,7 +621,7 @@ jobs:
           name: Install pandoc
           command: |
             apt-get update
-            apt-get install -y pandoc gcc
+            apt-get install -y pandoc gcc git
       - run:
           name: Install nox and codecov.
           command: |
