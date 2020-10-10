@@ -26,46 +26,41 @@
               },
               "currentDocument": {
                 "exists": true
-              }
-            },
-            {
-              "transform": {
-                "document": "projects/projectID/databases/(default)/documents/C/d",
-                "fieldTransforms": [
-                  {
-                    "fieldPath": "b",
-                    "appendMissingElements": {
-                      "values": [
-                        {
-                          "integerValue": "1"
-                        },
-                        {
-                          "integerValue": "2"
-                        },
-                        {
-                          "integerValue": "3"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "fieldPath": "c.d",
-                    "appendMissingElements": {
-                      "values": [
-                        {
-                          "integerValue": "4"
-                        },
-                        {
-                          "integerValue": "5"
-                        },
-                        {
-                          "integerValue": "6"
-                        }
-                      ]
-                    }
+              },
+              "updateTransforms": [
+                {
+                  "fieldPath": "b",
+                  "appendMissingElements": {
+                    "values": [
+                      {
+                        "integerValue": "1"
+                      },
+                      {
+                        "integerValue": "2"
+                      },
+                      {
+                        "integerValue": "3"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "fieldPath": "c.d",
+                  "appendMissingElements": {
+                    "values": [
+                      {
+                        "integerValue": "4"
+                      },
+                      {
+                        "integerValue": "5"
+                      },
+                      {
+                        "integerValue": "6"
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ]
         }

@@ -10,18 +10,22 @@
           "database": "projects/projectID/databases/(default)",
           "writes": [
             {
-              "transform": {
-                "document": "projects/projectID/databases/(default)/documents/C/d",
-                "fieldTransforms": [
-                  {
-                    "fieldPath": "a.b.c",
-                    "setToServerValue": "REQUEST_TIME"
-                  }
-                ]
-              },
               "currentDocument": {
                 "exists": true
-              }
+              },
+              "update": {
+                "fields": {},
+                "name": "projects/projectID/databases/(default)/documents/C/d"
+              },
+              "updateMask": {
+                "fieldPaths": []
+              },
+              "updateTransforms": [
+                {
+                  "fieldPath": "a.b.c",
+                  "setToServerValue": "REQUEST_TIME"
+                }
+              ]
             }
           ]
         }

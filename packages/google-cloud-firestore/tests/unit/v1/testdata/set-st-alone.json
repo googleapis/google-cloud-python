@@ -13,18 +13,13 @@
               "update": {
                 "name": "projects/projectID/databases/(default)/documents/C/d",
                 "fields": {}
-              }
-            },
-            {
-              "transform": {
-                "document": "projects/projectID/databases/(default)/documents/C/d",
-                "fieldTransforms": [
-                  {
-                    "fieldPath": "a",
-                    "setToServerValue": "REQUEST_TIME"
-                  }
-                ]
-              }
+              },
+              "updateTransforms": [
+                {
+                  "fieldPath": "a",
+                  "setToServerValue": "REQUEST_TIME"
+                }
+              ]
             }
           ]
         }

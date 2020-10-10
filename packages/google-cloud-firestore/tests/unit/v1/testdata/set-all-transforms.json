@@ -17,50 +17,45 @@
                     "integerValue": "1"
                   }
                 }
-              }
-            },
-            {
-              "transform": {
-                "document": "projects/projectID/databases/(default)/documents/C/d",
-                "fieldTransforms": [
-                  {
-                    "fieldPath": "b",
-                    "setToServerValue": "REQUEST_TIME"
-                  },
-                  {
-                    "fieldPath": "c",
-                    "appendMissingElements": {
-                      "values": [
-                        {
-                          "integerValue": "1"
-                        },
-                        {
-                          "integerValue": "2"
-                        },
-                        {
-                          "integerValue": "3"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "fieldPath": "d",
-                    "removeAllFromArray": {
-                      "values": [
-                        {
-                          "integerValue": "4"
-                        },
-                        {
-                          "integerValue": "5"
-                        },
-                        {
-                          "integerValue": "6"
-                        }
-                      ]
-                    }
+              },
+              "updateTransforms": [
+                {
+                  "fieldPath": "b",
+                  "setToServerValue": "REQUEST_TIME"
+                },
+                {
+                  "fieldPath": "c",
+                  "appendMissingElements": {
+                    "values": [
+                      {
+                        "integerValue": "1"
+                      },
+                      {
+                        "integerValue": "2"
+                      },
+                      {
+                        "integerValue": "3"
+                      }
+                    ]
                   }
-                ]
-              }
+                },
+                {
+                  "fieldPath": "d",
+                  "removeAllFromArray": {
+                    "values": [
+                      {
+                        "integerValue": "4"
+                      },
+                      {
+                        "integerValue": "5"
+                      },
+                      {
+                        "integerValue": "6"
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ]
         }

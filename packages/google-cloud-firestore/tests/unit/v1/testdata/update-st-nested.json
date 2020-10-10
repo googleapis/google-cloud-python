@@ -26,18 +26,13 @@
               },
               "currentDocument": {
                 "exists": true
-              }
-            },
-            {
-              "transform": {
-                "document": "projects/projectID/databases/(default)/documents/C/d",
-                "fieldTransforms": [
-                  {
-                    "fieldPath": "b.c",
-                    "setToServerValue": "REQUEST_TIME"
-                  }
-                ]
-              }
+              },
+              "updateTransforms": [
+                {
+                  "fieldPath": "b.c",
+                  "setToServerValue": "REQUEST_TIME"
+                }
+              ]
             }
           ]
         }

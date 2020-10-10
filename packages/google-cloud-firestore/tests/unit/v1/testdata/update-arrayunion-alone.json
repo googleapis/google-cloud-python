@@ -10,30 +10,34 @@
           "database": "projects/projectID/databases/(default)",
           "writes": [
             {
-              "transform": {
-                "document": "projects/projectID/databases/(default)/documents/C/d",
-                "fieldTransforms": [
-                  {
-                    "fieldPath": "a",
-                    "appendMissingElements": {
-                      "values": [
-                        {
-                          "integerValue": "1"
-                        },
-                        {
-                          "integerValue": "2"
-                        },
-                        {
-                          "integerValue": "3"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
               "currentDocument": {
                 "exists": true
-              }
+              },
+              "update": {
+                "fields": {},
+                "name": "projects/projectID/databases/(default)/documents/C/d"
+              },
+              "updateMask": {
+                "fieldPaths": []
+              },
+              "updateTransforms": [
+                {
+                  "appendMissingElements": {
+                    "values": [
+                      {
+                        "integerValue": "1"
+                      },
+                      {
+                        "integerValue": "2"
+                      },
+                      {
+                        "integerValue": "3"
+                      }
+                    ]
+                  },
+                  "fieldPath": "a"
+                }
+              ]
             }
           ]
         }

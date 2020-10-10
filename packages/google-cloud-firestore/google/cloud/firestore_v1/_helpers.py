@@ -495,7 +495,9 @@ class DocumentExtractor(object):
 
         return update_pb
 
-    def get_transform_pb(self, document_path, exists=None) -> types.write.Write:
+    def get_field_transform_pbs(
+        self, document_path
+    ) -> List[types.write.DocumentTransform.FieldTransform]:
         def make_array_value(values):
             value_list = [encode_value(element) for element in values]
             return document.ArrayValue(values=value_list)
@@ -559,9 +561,10 @@ class DocumentExtractor(object):
                 for path, value in self.minimums.items()
             ]
         )
-        field_transforms = [
-            transform for path, transform in sorted(path_field_transforms)
-        ]
+        return [transform for path, transform in sorted(path_field_transforms)]
+
+    def get_transform_pb(self, document_path, exists=None) -> types.write.Write:
+        field_transforms = self.get_field_transform_pbs(document_path)
         transform_pb = write.Write(
             transform=write.DocumentTransform(
                 document=document_path, field_transforms=field_transforms
@@ -592,19 +595,13 @@ def pbs_for_create(document_path, document_data) -> List[types.write.Write]:
     if extractor.deleted_fields:
         raise ValueError("Cannot apply DELETE_FIELD in a create request.")
 
-    write_pbs = []
-
-    # Conformance tests require skipping the 'update_pb' if the document
-    # contains only transforms.
-    if extractor.empty_document or extractor.set_fields:
-        write_pbs.append(extractor.get_update_pb(document_path, exists=False))
+    create_pb = extractor.get_update_pb(document_path, exists=False)
 
     if extractor.has_transforms:
-        exists = None if write_pbs else False
-        transform_pb = extractor.get_transform_pb(document_path, exists)
-        write_pbs.append(transform_pb)
+        field_transform_pbs = extractor.get_field_transform_pbs(document_path)
+        create_pb.update_transforms.extend(field_transform_pbs)
 
-    return write_pbs
+    return [create_pb]
 
 
 def pbs_for_set_no_merge(document_path, document_data) -> List[types.write.Write]:
@@ -627,15 +624,13 @@ def pbs_for_set_no_merge(document_path, document_data) -> List[types.write.Write
             "specifying 'merge=True' or 'merge=[field_paths]'."
         )
 
-    # Conformance tests require send the 'update_pb' even if the document
-    # contains only transforms.
-    write_pbs = [extractor.get_update_pb(document_path)]
+    set_pb = extractor.get_update_pb(document_path)
 
     if extractor.has_transforms:
-        transform_pb = extractor.get_transform_pb(document_path)
-        write_pbs.append(transform_pb)
+        field_transform_pbs = extractor.get_field_transform_pbs(document_path)
+        set_pb.update_transforms.extend(field_transform_pbs)
 
-    return write_pbs
+    return [set_pb]
 
 
 class DocumentExtractorForMerge(DocumentExtractor):
@@ -799,19 +794,14 @@ def pbs_for_set_with_merge(
     extractor.apply_merge(merge)
 
     merge_empty = not document_data
+    allow_empty_mask = merge_empty or extractor.transform_paths
 
-    write_pbs = []
-
-    if extractor.has_updates or merge_empty:
-        write_pbs.append(
-            extractor.get_update_pb(document_path, allow_empty_mask=merge_empty)
-        )
-
+    set_pb = extractor.get_update_pb(document_path, allow_empty_mask=allow_empty_mask)
     if extractor.transform_paths:
-        transform_pb = extractor.get_transform_pb(document_path)
-        write_pbs.append(transform_pb)
+        field_transform_pbs = extractor.get_field_transform_pbs(document_path)
+        set_pb.update_transforms.extend(field_transform_pbs)
 
-    return write_pbs
+    return [set_pb]
 
 
 class DocumentExtractorForUpdate(DocumentExtractor):
@@ -876,22 +866,14 @@ def pbs_for_update(document_path, field_updates, option) -> List[types.write.Wri
     if option is None:  # Default is to use ``exists=True``.
         option = ExistsOption(exists=True)
 
-    write_pbs = []
-
-    if extractor.field_paths or extractor.deleted_fields:
-        update_pb = extractor.get_update_pb(document_path)
-        option.modify_write(update_pb)
-        write_pbs.append(update_pb)
+    update_pb = extractor.get_update_pb(document_path)
+    option.modify_write(update_pb)
 
     if extractor.has_transforms:
-        transform_pb = extractor.get_transform_pb(document_path)
-        if not write_pbs:
-            # NOTE: set the write option on the ``transform_pb`` only if there
-            #       is no ``update_pb``
-            option.modify_write(transform_pb)
-        write_pbs.append(transform_pb)
+        field_transform_pbs = extractor.get_field_transform_pbs(document_path)
+        update_pb.update_transforms.extend(field_transform_pbs)
 
-    return write_pbs
+    return [update_pb]
 
 
 def pb_for_delete(document_path, option) -> types.write.Write:
