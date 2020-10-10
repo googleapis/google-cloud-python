@@ -31,7 +31,7 @@ except ImportError:  # pragma: NO COVER
     grpc = None
 
 # Lookup tables for mapping exceptions from HTTP and gRPC transports.
-# Populated by _APICallErrorMeta
+# Populated by _GoogleAPICallErrorMeta
 _HTTP_CODE_TO_EXCEPTION = {}
 _GRPC_CODE_TO_EXCEPTION = {}
 
