@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.0...v0.35.1) (2020-10-09)
+
+
+### Bug Fixes
+
+* the common resources are not targets for lookup ([#650](https://www.github.com/googleapis/gapic-generator-python/issues/650)) ([8e1b384](https://www.github.com/googleapis/gapic-generator-python/commit/8e1b384e812ef519c421c8c288d5118961d8b4cf))
+
 ## [0.35.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.34.4...v0.35.0) (2020-10-09)
 
 
