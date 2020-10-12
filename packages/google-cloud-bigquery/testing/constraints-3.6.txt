@@ -1,4 +1,3 @@
-fastparquet==0.4.1
 google-api-core==1.22.2
 google-cloud-bigquery-storage==2.0.0
 google-cloud-core==1.4.1

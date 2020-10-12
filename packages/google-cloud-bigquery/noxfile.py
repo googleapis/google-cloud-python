@@ -49,10 +49,7 @@ def default(session):
         constraints_path,
     )
 
-    # fastparquet is not included in .[all] because, in general, it's
-    # redundant with pyarrow. We still want to run some unit tests with
-    # fastparquet serialization, though.
-    session.install("-e", ".[all,fastparquet]", "-c", constraints_path)
+    session.install("-e", ".[all]", "-c", constraints_path)
 
     session.install("ipython", "-c", constraints_path)
 

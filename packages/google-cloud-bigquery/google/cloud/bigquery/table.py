@@ -50,7 +50,6 @@ from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
-from google.cloud.bigquery.exceptions import PyarrowMissingWarning
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
@@ -1679,75 +1678,38 @@ class RowIterator(HTTPIterator):
             create_bqstorage_client = False
             bqstorage_client = None
 
-        if pyarrow is not None:
-            # If pyarrow is available, calling to_arrow, then converting to a
-            # pandas dataframe is about 2x faster. This is because pandas.concat is
-            # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
-            # usually no-copy.
-            record_batch = self.to_arrow(
-                progress_bar_type=progress_bar_type,
-                bqstorage_client=bqstorage_client,
-                create_bqstorage_client=create_bqstorage_client,
-            )
+        record_batch = self.to_arrow(
+            progress_bar_type=progress_bar_type,
+            bqstorage_client=bqstorage_client,
+            create_bqstorage_client=create_bqstorage_client,
+        )
 
-            # When converting timestamp values to nanosecond precision, the result
-            # can be out of pyarrow bounds. To avoid the error when converting to
-            # Pandas, we set the timestamp_as_object parameter to True, if necessary.
-            types_to_check = {
-                pyarrow.timestamp("us"),
-                pyarrow.timestamp("us", tz=pytz.UTC),
-            }
+        # When converting timestamp values to nanosecond precision, the result
+        # can be out of pyarrow bounds. To avoid the error when converting to
+        # Pandas, we set the timestamp_as_object parameter to True, if necessary.
+        types_to_check = {
+            pyarrow.timestamp("us"),
+            pyarrow.timestamp("us", tz=pytz.UTC),
+        }
 
-            for column in record_batch:
-                if column.type in types_to_check:
-                    try:
-                        column.cast("timestamp[ns]")
-                    except pyarrow.lib.ArrowInvalid:
-                        timestamp_as_object = True
-                        break
-            else:
-                timestamp_as_object = False
-
-            extra_kwargs = {"timestamp_as_object": timestamp_as_object}
-
-            df = record_batch.to_pandas(date_as_object=date_as_object, **extra_kwargs)
-
-            for column in dtypes:
-                df[column] = pandas.Series(df[column], dtype=dtypes[column])
-            return df
+        for column in record_batch:
+            if column.type in types_to_check:
+                try:
+                    column.cast("timestamp[ns]")
+                except pyarrow.lib.ArrowInvalid:
+                    timestamp_as_object = True
+                    break
         else:
-            warnings.warn(
-                "Converting to a dataframe without pyarrow installed is "
-                "often slower and will become unsupported in the future. "
-                "Please install the pyarrow package.",
-                PyarrowMissingWarning,
-                stacklevel=2,
-            )
+            timestamp_as_object = False
 
-        # The bqstorage_client is only used if pyarrow is available, so the
-        # rest of this method only needs to account for tabledata.list.
-        progress_bar = self._get_progress_bar(progress_bar_type)
+        extra_kwargs = {"timestamp_as_object": timestamp_as_object}
 
-        frames = []
-        for frame in self.to_dataframe_iterable(dtypes=dtypes):
-            frames.append(frame)
+        df = record_batch.to_pandas(date_as_object=date_as_object, **extra_kwargs)
 
-            if progress_bar is not None:
-                # In some cases, the number of total rows is not populated
-                # until the first page of rows is fetched. Update the
-                # progress bar's total to keep an accurate count.
-                progress_bar.total = progress_bar.total or self.total_rows
-                progress_bar.update(len(frame))
+        for column in dtypes:
+            df[column] = pandas.Series(df[column], dtype=dtypes[column])
 
-        if progress_bar is not None:
-            # Indicate that the download has finished.
-            progress_bar.close()
-
-        # Avoid concatting an empty list.
-        if not frames:
-            column_names = [field.name for field in self._schema]
-            return pandas.DataFrame(columns=column_names)
-        return pandas.concat(frames, ignore_index=True)
+        return df
 
 
 class _EmptyRowIterator(object):

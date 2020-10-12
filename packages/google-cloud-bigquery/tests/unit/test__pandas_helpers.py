@@ -1329,3 +1329,11 @@ def test_download_dataframe_tabledata_list_dict_sequence_schema(module_under_tes
         )
     )
     assert result.equals(expected_result)
+
+    with pytest.raises(StopIteration):
+        result = next(results_gen)
+
+
+def test_table_data_listpage_to_dataframe_skips_stop_iteration(module_under_test):
+    dataframe = module_under_test._tabledata_list_page_to_dataframe([], [], {})
+    assert isinstance(dataframe, pandas.DataFrame)

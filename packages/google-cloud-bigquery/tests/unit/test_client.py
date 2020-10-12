@@ -33,10 +33,6 @@ import pytz
 import pkg_resources
 
 try:
-    import fastparquet
-except (ImportError, AttributeError):  # pragma: NO COVER
-    fastparquet = None
-try:
     import pandas
 except (ImportError, AttributeError):  # pragma: NO COVER
     pandas = None
@@ -7838,80 +7834,6 @@ class TestClientUpload(object):
             job_config=mock.ANY,
         )
 
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
-    def test_load_table_from_dataframe_no_pyarrow_warning(self):
-        from google.cloud.bigquery.client import PyarrowMissingWarning
-
-        client = self._make_client()
-
-        # Pick at least one column type that translates to Pandas dtype
-        # "object". A string column matches that.
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
-        dataframe = pandas.DataFrame(records)
-
-        get_table_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.get_table",
-            autospec=True,
-            side_effect=google.api_core.exceptions.NotFound("Table not found"),
-        )
-        load_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
-        )
-        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
-        pyarrow_patch_helpers = mock.patch(
-            "google.cloud.bigquery._pandas_helpers.pyarrow", None
-        )
-        catch_warnings = warnings.catch_warnings(record=True)
-
-        with get_table_patch, load_patch, pyarrow_patch, pyarrow_patch_helpers, catch_warnings as warned:
-            client.load_table_from_dataframe(
-                dataframe, self.TABLE_REF, location=self.LOCATION
-            )
-
-        matches = [
-            warning for warning in warned if warning.category is PyarrowMissingWarning
-        ]
-        assert matches, "A missing pyarrow deprecation warning was not raised."
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
-    def test_load_table_from_dataframe_no_schema_warning_wo_pyarrow(self):
-        client = self._make_client()
-
-        # Pick at least one column type that translates to Pandas dtype
-        # "object". A string column matches that.
-        records = [{"name": "Monty", "age": 100}, {"name": "Python", "age": 60}]
-        dataframe = pandas.DataFrame(records)
-
-        get_table_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.get_table",
-            autospec=True,
-            side_effect=google.api_core.exceptions.NotFound("Table not found"),
-        )
-        load_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
-        )
-        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
-        pyarrow_patch_helpers = mock.patch(
-            "google.cloud.bigquery._pandas_helpers.pyarrow", None
-        )
-        catch_warnings = warnings.catch_warnings(record=True)
-
-        with get_table_patch, load_patch, pyarrow_patch, pyarrow_patch_helpers, catch_warnings as warned:
-            client.load_table_from_dataframe(
-                dataframe, self.TABLE_REF, location=self.LOCATION
-            )
-
-        matches = [
-            warning
-            for warning in warned
-            if warning.category in (DeprecationWarning, PendingDeprecationWarning)
-            and "could not be detected" in str(warning)
-            and "please provide a schema" in str(warning)
-        ]
-        assert matches, "A missing schema deprecation warning was not raised."
-
     @unittest.skipIf(
         pandas is None or PANDAS_INSTALLED_VERSION < PANDAS_MINIUM_VERSION,
         "Only `pandas version >=1.0.0` supported",
@@ -8182,7 +8104,6 @@ class TestClientUpload(object):
         assert "unknown_col" in message
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(fastparquet is None, "Requires `fastparquet`")
     def test_load_table_from_dataframe_w_partial_schema_missing_types(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -8238,55 +8159,6 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_w_schema_wo_pyarrow(self):
-        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
-        from google.cloud.bigquery import job
-        from google.cloud.bigquery.schema import SchemaField
-
-        client = self._make_client()
-        records = [{"name": u"Monty", "age": 100}, {"name": u"Python", "age": 60}]
-        dataframe = pandas.DataFrame(records, columns=["name", "age"])
-        schema = (SchemaField("name", "STRING"), SchemaField("age", "INTEGER"))
-        job_config = job.LoadJobConfig(schema=schema)
-
-        load_patch = mock.patch(
-            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
-        )
-        pyarrow_patch = mock.patch("google.cloud.bigquery.client.pyarrow", None)
-
-        with load_patch as load_table_from_file, pyarrow_patch, warnings.catch_warnings(
-            record=True
-        ) as warned:
-            client.load_table_from_dataframe(
-                dataframe, self.TABLE_REF, job_config=job_config, location=self.LOCATION
-            )
-
-        assert warned  # there should be at least one warning
-        for warning in warned:
-            assert "pyarrow" in str(warning)
-            assert issubclass(
-                warning.category, (DeprecationWarning, PendingDeprecationWarning)
-            )
-
-        load_table_from_file.assert_called_once_with(
-            client,
-            mock.ANY,
-            self.TABLE_REF,
-            num_retries=_DEFAULT_NUM_RETRIES,
-            rewind=True,
-            job_id=mock.ANY,
-            job_id_prefix=None,
-            location=self.LOCATION,
-            project=None,
-            job_config=mock.ANY,
-        )
-
-        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
-        assert sent_config.source_format == job.SourceFormat.PARQUET
-        assert tuple(sent_config.schema) == schema
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_load_table_from_dataframe_w_schema_arrow_custom_compression(self):
         from google.cloud.bigquery import job
         from google.cloud.bigquery.schema import SchemaField
@@ -8320,7 +8192,7 @@ class TestClientUpload(object):
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_load_table_from_dataframe_wo_pyarrow_custom_compression(self):
+    def test_load_table_from_dataframe_wo_pyarrow_raises_error(self):
         client = self._make_client()
         records = [{"id": 1, "age": 100}, {"id": 2, "age": 60}]
         dataframe = pandas.DataFrame(records)
@@ -8338,24 +8210,14 @@ class TestClientUpload(object):
             dataframe, "to_parquet", wraps=dataframe.to_parquet
         )
 
-        with load_patch, get_table_patch, pyarrow_patch, to_parquet_patch as to_parquet_spy:
-            with warnings.catch_warnings(record=True) as warned:
+        with load_patch, get_table_patch, pyarrow_patch, to_parquet_patch:
+            with pytest.raises(ValueError):
                 client.load_table_from_dataframe(
                     dataframe,
                     self.TABLE_REF,
                     location=self.LOCATION,
                     parquet_compression="gzip",
                 )
-
-        call_args = to_parquet_spy.call_args
-        assert call_args is not None
-        assert call_args.kwargs.get("compression") == "gzip"
-
-        assert len(warned) == 2
-        warning = warned[0]
-        assert "Loading dataframe data without pyarrow" in str(warning)
-        warning = warned[1]
-        assert "Please install the pyarrow package" in str(warning)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")

@@ -38,7 +38,6 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import StandardSqlDataTypes
-from google.cloud.bigquery.exceptions import PyarrowMissingWarning
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
 from google.cloud.bigquery.external_config import BigtableColumnFamily
@@ -143,8 +142,6 @@ __all__ = [
     "WriteDisposition",
     # EncryptionConfiguration
     "EncryptionConfiguration",
-    # Errors and warnings
-    "PyarrowMissingWarning",
 ]
 
 

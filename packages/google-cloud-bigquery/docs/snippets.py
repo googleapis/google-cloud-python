@@ -27,10 +27,6 @@ import time
 import pytest
 
 try:
-    import fastparquet
-except (ImportError, AttributeError):
-    fastparquet = None
-try:
     import pandas
 except (ImportError, AttributeError):
     pandas = None

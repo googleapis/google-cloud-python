@@ -2149,6 +2149,49 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df_2["age"][0], 33)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_iterable_with_dtypes(self):
+        from google.cloud.bigquery.schema import SchemaField
+        import types
+
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+
+        path = "/foo"
+        api_request = mock.Mock(
+            side_effect=[
+                {
+                    "rows": [{"f": [{"v": "Bengt"}, {"v": "32"}]}],
+                    "pageToken": "NEXTPAGE",
+                },
+                {"rows": [{"f": [{"v": "Sven"}, {"v": "33"}]}]},
+            ]
+        )
+
+        row_iterator = self._make_one(
+            _mock_client(), api_request, path, schema, page_size=1, max_results=5
+        )
+        dfs = row_iterator.to_dataframe_iterable(dtypes={"age": "int32"})
+
+        self.assertIsInstance(dfs, types.GeneratorType)
+
+        df_1 = next(dfs)
+        self.assertIsInstance(df_1, pandas.DataFrame)
+        self.assertEqual(df_1.name.dtype.name, "object")
+        self.assertEqual(df_1.age.dtype.name, "int32")
+        self.assertEqual(len(df_1), 1)  # verify the number of rows
+        self.assertEqual(
+            df_1["name"][0], "Bengt"
+        )  # verify the first value of 'name' column
+        self.assertEqual(df_1["age"][0], 32)  # verify the first value of 'age' column
+
+        df_2 = next(dfs)
+        self.assertEqual(len(df_2), 1)  # verify the number of rows
+        self.assertEqual(df_2["name"][0], "Sven")
+        self.assertEqual(df_2["age"][0], 33)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
         bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
@@ -2328,38 +2371,6 @@ class TestRowIterator(unittest.TestCase):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    def test_to_dataframe_warning_wo_pyarrow(self):
-        from google.cloud.bigquery.client import PyarrowMissingWarning
-        from google.cloud.bigquery.schema import SchemaField
-
-        schema = [
-            SchemaField("name", "STRING", mode="REQUIRED"),
-            SchemaField("age", "INTEGER", mode="REQUIRED"),
-        ]
-        rows = [
-            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
-            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
-        ]
-        path = "/foo"
-        api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
-
-        no_pyarrow_patch = mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
-        catch_warnings = warnings.catch_warnings(record=True)
-
-        with no_pyarrow_patch, catch_warnings as warned:
-            df = row_iterator.to_dataframe()
-
-        self.assertIsInstance(df, pandas.DataFrame)
-        self.assertEqual(len(df), 2)
-        matches = [
-            warning for warning in warned if warning.category is PyarrowMissingWarning
-        ]
-        self.assertTrue(
-            matches, msg="A missing pyarrow deprecation warning was not raised."
-        )
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui")
     @mock.patch("tqdm.tqdm_notebook")
@@ -2398,50 +2409,6 @@ class TestRowIterator(unittest.TestCase):
             progress_bar_mock().update.assert_called()
             progress_bar_mock().close.assert_called_once()
             self.assertEqual(len(df), 4)
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(tqdm is None, "Requires `tqdm`")
-    @mock.patch("tqdm.tqdm_gui")
-    @mock.patch("tqdm.tqdm_notebook")
-    @mock.patch("tqdm.tqdm")
-    def test_to_dataframe_progress_bar_wo_pyarrow(
-        self, tqdm_mock, tqdm_notebook_mock, tqdm_gui_mock
-    ):
-        from google.cloud.bigquery.schema import SchemaField
-
-        schema = [
-            SchemaField("name", "STRING", mode="REQUIRED"),
-            SchemaField("age", "INTEGER", mode="REQUIRED"),
-        ]
-        rows = [
-            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
-            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
-            {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
-            {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
-        ]
-        path = "/foo"
-        api_request = mock.Mock(return_value={"rows": rows})
-
-        progress_bars = (
-            ("tqdm", tqdm_mock),
-            ("tqdm_notebook", tqdm_notebook_mock),
-            ("tqdm_gui", tqdm_gui_mock),
-        )
-
-        for progress_bar_type, progress_bar_mock in progress_bars:
-            row_iterator = self._make_one(_mock_client(), api_request, path, schema)
-            with mock.patch("google.cloud.bigquery.table.pyarrow", None):
-                with warnings.catch_warnings(record=True) as warned:
-                    df = row_iterator.to_dataframe(progress_bar_type=progress_bar_type)
-
-            progress_bar_mock.assert_called()
-            progress_bar_mock().update.assert_called()
-            progress_bar_mock().close.assert_called_once()
-            self.assertEqual(len(df), 4)
-
-            self.assertEqual(len(warned), 1)
-            warning = warned[0]
-            self.assertTrue("without pyarrow" in str(warning))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
@@ -2556,57 +2523,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    def test_to_dataframe_w_empty_results_wo_pyarrow(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        with mock.patch("google.cloud.bigquery.table.pyarrow", None):
-            schema = [
-                SchemaField("name", "STRING", mode="REQUIRED"),
-                SchemaField("age", "INTEGER", mode="REQUIRED"),
-            ]
-            api_request = mock.Mock(return_value={"rows": []})
-            row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
-
-            with warnings.catch_warnings(record=True) as warned:
-                df = row_iterator.to_dataframe()
-
-            self.assertIsInstance(df, pandas.DataFrame)
-            self.assertEqual(len(df), 0)  # verify the number of rows
-            self.assertEqual(list(df), ["name", "age"])  # verify the column names
-
-            self.assertEqual(len(warned), 1)
-            warning = warned[0]
-            self.assertTrue("without pyarrow" in str(warning))
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    def test_to_dataframe_w_no_results_wo_pyarrow(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        with mock.patch("google.cloud.bigquery.table.pyarrow", None):
-            schema = [
-                SchemaField("name", "STRING", mode="REQUIRED"),
-                SchemaField("age", "INTEGER", mode="REQUIRED"),
-            ]
-            api_request = mock.Mock(return_value={"rows": []})
-            row_iterator = self._make_one(_mock_client(), api_request, schema=schema)
-
-            def empty_iterable(dtypes=None):
-                return []
-
-            row_iterator.to_dataframe_iterable = empty_iterable
-
-            with warnings.catch_warnings(record=True) as warned:
-                df = row_iterator.to_dataframe()
-
-            self.assertIsInstance(df, pandas.DataFrame)
-            self.assertEqual(len(df), 0)  # verify the number of rows
-            self.assertEqual(list(df), ["name", "age"])  # verify the column names
-
-            self.assertEqual(len(warned), 1)
-            warning = warned[0]
-            self.assertTrue("without pyarrow" in str(warning))
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_w_various_types_nullable(self):
@@ -3423,68 +3339,6 @@ class TestRowIterator(unittest.TestCase):
 
         # Don't close the client if it was passed in.
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
-
-    @unittest.skipIf(pandas is None, "Requires `pandas`")
-    def test_to_dataframe_concat_categorical_dtype_wo_pyarrow(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        schema = [
-            SchemaField("col_str", "STRING"),
-            SchemaField("col_category", "STRING"),
-        ]
-        row_data = [
-            [u"foo", u"low"],
-            [u"bar", u"medium"],
-            [u"baz", u"low"],
-            [u"foo_page2", u"medium"],
-            [u"bar_page2", u"high"],
-            [u"baz_page2", u"low"],
-        ]
-        path = "/foo"
-
-        rows = [{"f": [{"v": field} for field in row]} for row in row_data[:3]]
-        rows_page2 = [{"f": [{"v": field} for field in row]} for row in row_data[3:]]
-        api_request = mock.Mock(
-            side_effect=[{"rows": rows, "pageToken": "NEXTPAGE"}, {"rows": rows_page2}]
-        )
-
-        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
-
-        mock_pyarrow = mock.patch("google.cloud.bigquery.table.pyarrow", None)
-        catch_warnings = warnings.catch_warnings(record=True)
-
-        with mock_pyarrow, catch_warnings as warned:
-            got = row_iterator.to_dataframe(
-                dtypes={
-                    "col_category": pandas.core.dtypes.dtypes.CategoricalDtype(
-                        categories=["low", "medium", "high"], ordered=False,
-                    ),
-                },
-            )
-
-        self.assertIsInstance(got, pandas.DataFrame)
-        self.assertEqual(len(got), 6)  # verify the number of rows
-        expected_columns = [field.name for field in schema]
-        self.assertEqual(list(got), expected_columns)  # verify the column names
-
-        # Are column types correct?
-        expected_dtypes = [
-            pandas.core.dtypes.dtypes.np.dtype("O"),  # the default for string data
-            pandas.core.dtypes.dtypes.CategoricalDtype(
-                categories=["low", "medium", "high"], ordered=False,
-            ),
-        ]
-        self.assertEqual(list(got.dtypes), expected_dtypes)
-
-        # And the data in the categorical column?
-        self.assertEqual(
-            list(got["col_category"]),
-            ["low", "medium", "low", "medium", "high", "low"],
-        )
-
-        self.assertEqual(len(warned), 1)
-        warning = warned[0]
-        self.assertTrue("without pyarrow" in str(warning))
 
 
 class TestPartitionRange(unittest.TestCase):
