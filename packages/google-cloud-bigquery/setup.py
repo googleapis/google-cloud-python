@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-bigquery"
 description = "Google BigQuery API client library"
-version = "2.1.0"
+
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -82,6 +82,11 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
+
+version = {}
+with open(os.path.join(package_root, "google/cloud/bigquery/version.py")) as fp:
+    exec(fp.read(), version)
+version = version["__version__"]
 
 # Only include packages under the 'google' namespace. Do not include tests,
 # benchmarks, etc.

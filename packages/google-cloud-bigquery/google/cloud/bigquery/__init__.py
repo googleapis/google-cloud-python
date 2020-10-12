@@ -28,9 +28,9 @@ The main concepts with this API are:
 """
 
 
-from pkg_resources import get_distribution
+from google.cloud.bigquery import version as bigquery_version
 
-__version__ = get_distribution("google-cloud-bigquery").version
+__version__ = bigquery_version.__version__
 
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery.dataset import AccessEntry
