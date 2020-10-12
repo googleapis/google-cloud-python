@@ -15,6 +15,7 @@
 """This script is used to synthesize generated parts of this library."""
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -56,7 +57,14 @@ templated_files = common.py_library(
        'webob',
        'django'
     ],
+    samples=True,
 )
 s.move(templated_files, excludes=[".coveragerc"])
+
+# --------------------------------------------------------------------------
+# Samples templates
+# --------------------------------------------------------------------------
+
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

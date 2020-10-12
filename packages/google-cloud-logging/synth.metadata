@@ -1,32 +1,32 @@
 {
   "sources": [
     {
-      "generator": {
-        "name": "artman",
-        "version": "2.0.0",
-        "dockerImage": "googleapis/artman@sha256:b3b47805231a305d0f40c4bf069df20f6a2635574e6d4259fac651d3f9f6e098"
-      }
-    },
-    {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-logging",
-        "sha": "a22a3bfdd4c8a4d6e9cc0c7d7504322ff31ad7ea"
+        "remote": "git@github.com:googleapis/python-logging.git",
+        "sha": "98029b5a0d997963a7a30758933e0cc8ee8f5127"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "aaff764c185e18a6c73227357c3df5fa60fec85a",
-        "internalRef": "309426927"
+        "sha": "fd31b1600fc496d6127665d29f095371d985c637",
+        "internalRef": "336344634"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "cdddf139b36000b3a7c65fd2a7781e253262359a"
+        "sha": "befc24dcdeb8e57ec1259826fd33120b05137e8f"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "befc24dcdeb8e57ec1259826fd33120b05137e8f"
       }
     }
   ],
@@ -37,8 +37,7 @@
         "apiName": "logging",
         "apiVersion": "v2",
         "language": "python",
-        "generator": "gapic",
-        "config": "google/logging/artman_logging.yaml"
+        "generator": "bazel"
       }
     }
   ]
