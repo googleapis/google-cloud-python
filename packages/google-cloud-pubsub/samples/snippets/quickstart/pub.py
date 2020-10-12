@@ -15,56 +15,25 @@
 # limitations under the License.
 
 import argparse
-import time
 
 from google.cloud import pubsub_v1
-
-
-def get_callback(api_future, data, ref):
-    """Wrap message data in the context of the callback function."""
-
-    def callback(api_future):
-        try:
-            print(
-                "Published message {} now has message ID {}".format(
-                    data, api_future.result()
-                )
-            )
-            ref["num_messages"] += 1
-        except Exception:
-            print(
-                "A problem occurred when publishing {}: {}\n".format(
-                    data, api_future.exception()
-                )
-            )
-            raise
-
-    return callback
 
 
 def pub(project_id, topic_id):
     """Publishes a message to a Pub/Sub topic."""
     # Initialize a Publisher client.
     client = pubsub_v1.PublisherClient()
-    # Create a fully qualified identifier in the form of
-    # `projects/{project_id}/topics/{topic_id}`
+    # Create a fully qualified identifier of form `projects/{project_id}/topics/{topic_id}`
     topic_path = client.topic_path(project_id, topic_id)
 
     # Data sent to Cloud Pub/Sub must be a bytestring.
     data = b"Hello, World!"
 
-    # Keep track of the number of published messages.
-    ref = dict({"num_messages": 0})
-
     # When you publish a message, the client returns a future.
     api_future = client.publish(topic_path, data)
-    api_future.add_done_callback(get_callback(api_future, data, ref))
+    message_id = api_future.result()
 
-    # Keep the main thread from exiting while the message future
-    # gets resolved in the background.
-    while api_future.running():
-        time.sleep(0.5)
-        print("Published {} message(s).".format(ref["num_messages"]))
+    print(f"Published {data} to {topic_path}: {message_id}")
 
 
 if __name__ == "__main__":

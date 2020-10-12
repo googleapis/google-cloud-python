@@ -55,7 +55,7 @@ def create_topic(project_id, topic_id):
 
     topic = publisher.create_topic(request={"name": topic_path})
 
-    print("Topic created: {}".format(topic))
+    print("Created topic: {}".format(topic.name))
     # [END pubsub_quickstart_create_topic]
     # [END pubsub_create_topic]
 
@@ -101,7 +101,7 @@ def publish_messages(project_id, topic_id):
         future = publisher.publish(topic_path, data)
         print(future.result())
 
-    print("Published messages.")
+    print(f"Published messages to {topic_path}.")
     # [END pubsub_quickstart_publisher]
     # [END pubsub_publish]
 
@@ -129,7 +129,7 @@ def publish_messages_with_custom_attributes(project_id, topic_id):
         )
         print(future.result())
 
-    print("Published messages with custom attributes.")
+    print(f"Published messages with custom attributes to {topic_path}.")
     # [END pubsub_publish_custom_attributes]
 
 
@@ -172,7 +172,7 @@ def publish_messages_with_error_handler(project_id, topic_id):
     while futures:
         time.sleep(5)
 
-    print("Published message with error handler.")
+    print(f"Published messages with error handler to {topic_path}.")
     # [END pubsub_publish_with_error_handler]
 
 
@@ -208,7 +208,7 @@ def publish_messages_with_batch_settings(project_id, topic_id):
         # Non-blocking. Allow the publisher client to batch multiple messages.
         future.add_done_callback(callback)
 
-    print("Published messages with batch settings.")
+    print(f"Published messages with batch settings to {topic_path}.")
     # [END pubsub_publisher_batch_settings]
 
 
@@ -249,7 +249,7 @@ def publish_messages_with_retry_settings(project_id, topic_id):
         future = publisher.publish(topic=topic_path, data=data, retry=custom_retry)
         print(future.result())
 
-    print("Published messages with retry settings.")
+    print(f"Published messages with retry settings to {topic_path}.")
     # [END pubsub_publisher_retry_settings]
 
 
@@ -262,15 +262,12 @@ def publish_with_ordering_keys(project_id, topic_id):
     # project_id = "your-project-id"
     # topic_id = "your-topic-id"
 
-    publisher_options = pubsub_v1.types.PublisherOptions(
-        enable_message_ordering=True
-    )
+    publisher_options = pubsub_v1.types.PublisherOptions(enable_message_ordering=True)
     # Sending messages to the same region ensures they are received in order
     # even when multiple publishers are used.
     client_options = {"api_endpoint": "us-east1-pubsub.googleapis.com:443"}
     publisher = pubsub_v1.PublisherClient(
-        publisher_options=publisher_options,
-        client_options=client_options
+        publisher_options=publisher_options, client_options=client_options
     )
     # The `topic_path` method creates a fully qualified identifier
     # in the form `projects/{project_id}/topics/{topic_id}`
@@ -286,12 +283,10 @@ def publish_with_ordering_keys(project_id, topic_id):
         data = message[0].encode("utf-8")
         ordering_key = message[1]
         # When you publish a message, the client returns a future.
-        future = publisher.publish(
-            topic_path, data=data, ordering_key=ordering_key
-        )
+        future = publisher.publish(topic_path, data=data, ordering_key=ordering_key)
         print(future.result())
 
-    print("Published messages with ordering keys.")
+    print(f"Published messages with ordering keys to {topic_path}.")
     # [END pubsub_publish_with_ordering_keys]
 
 
@@ -304,15 +299,12 @@ def resume_publish_with_ordering_keys(project_id, topic_id):
     # project_id = "your-project-id"
     # topic_id = "your-topic-id"
 
-    publisher_options = pubsub_v1.types.PublisherOptions(
-        enable_message_ordering=True
-    )
+    publisher_options = pubsub_v1.types.PublisherOptions(enable_message_ordering=True)
     # Sending messages to the same region ensures they are received in order
     # even when multiple publishers are used.
     client_options = {"api_endpoint": "us-east1-pubsub.googleapis.com:443"}
     publisher = pubsub_v1.PublisherClient(
-        publisher_options=publisher_options,
-        client_options=client_options
+        publisher_options=publisher_options, client_options=client_options
     )
     # The `topic_path` method creates a fully qualified identifier
     # in the form `projects/{project_id}/topics/{topic_id}`
@@ -328,17 +320,46 @@ def resume_publish_with_ordering_keys(project_id, topic_id):
         data = message[0].encode("utf-8")
         ordering_key = message[1]
         # When you publish a message, the client returns a future.
-        future = publisher.publish(
-            topic_path, data=data, ordering_key=ordering_key
-        )
+        future = publisher.publish(topic_path, data=data, ordering_key=ordering_key)
         try:
             print(future.result())
         except RuntimeError:
             # Resume publish on an ordering key that has had unrecoverable errors.
             publisher.resume_publish(topic_path, ordering_key)
 
-    print("Published messages with ordering keys.")
+    print(f"Resumed publishing messages with ordering keys to {topic_path}.")
     # [END pubsub_resume_publish_with_ordering_keys]
+
+
+def detach_subscription(project_id, subscription_id):
+    """Detaches a subscription from a topic and drops all messages retained in it."""
+    # [START pubsub_detach_subscription]
+    from google.api_core.exceptions import GoogleAPICallError, RetryError
+    from google.cloud import pubsub_v1
+
+    # TODO(developer): Choose an existing subscription.
+    # project_id = "your-project-id"
+    # subscription_id = "your-subscription-id"
+
+    publisher_client = pubsub_v1.PublisherClient()
+    subscriber_client = pubsub_v1.SubscriberClient()
+    subscription_path = subscriber_client.subscription_path(project_id, subscription_id)
+
+    try:
+        publisher_client.detach_subscription(
+            request={"subscription": subscription_path}
+        )
+    except (GoogleAPICallError, RetryError, ValueError, Exception) as err:
+        print(err)
+
+    subscription = subscriber_client.get_subscription(
+        request={"subscription": subscription_path}
+    )
+    if subscription.detached:
+        print(f"{subscription_path} is detached.")
+    else:
+        print(f"{subscription_path} is NOT detached.")
+    # [END pubsub_detach_subscription]
 
 
 if __name__ == "__main__":
@@ -356,9 +377,7 @@ if __name__ == "__main__":
     delete_parser = subparsers.add_parser("delete", help=delete_topic.__doc__)
     delete_parser.add_argument("topic_id")
 
-    publish_parser = subparsers.add_parser(
-        "publish", help=publish_messages.__doc__
-    )
+    publish_parser = subparsers.add_parser("publish", help=publish_messages.__doc__)
     publish_parser.add_argument("topic_id")
 
     publish_with_custom_attributes_parser = subparsers.add_parser(
@@ -368,8 +387,7 @@ if __name__ == "__main__":
     publish_with_custom_attributes_parser.add_argument("topic_id")
 
     publish_with_error_handler_parser = subparsers.add_parser(
-        "publish-with-error-handler",
-        help=publish_messages_with_error_handler.__doc__,
+        "publish-with-error-handler", help=publish_messages_with_error_handler.__doc__,
     )
     publish_with_error_handler_parser.add_argument("topic_id")
 
@@ -396,6 +414,11 @@ if __name__ == "__main__":
     )
     resume_publish_with_ordering_keys_parser.add_argument("topic_id")
 
+    detach_subscription_parser = subparsers.add_parser(
+        "detach-subscription", help=detach_subscription.__doc__,
+    )
+    detach_subscription_parser.add_argument("subscription_id")
+
     args = parser.parse_args()
 
     if args.command == "list":
@@ -418,3 +441,5 @@ if __name__ == "__main__":
         publish_with_ordering_keys(args.project_id, args.topic_id)
     elif args.command == "resume-publish-with-ordering-keys":
         resume_publish_with_ordering_keys(args.project_id, args.topic_id)
+    elif args.command == "detach-subscription":
+        detach_subscription(args.project_id, args.subscription_id)

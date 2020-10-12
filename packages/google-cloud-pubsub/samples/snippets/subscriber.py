@@ -85,7 +85,7 @@ def create_subscription(project_id, topic_id, subscription_id):
             request={"name": subscription_path, "topic": topic_path}
         )
 
-    print("Subscription created: {}".format(subscription))
+    print(f"Subscription created: {subscription}")
     # [END pubsub_create_pull_subscription]
 
 
@@ -128,16 +128,12 @@ def create_subscription_with_dead_letter_topic(
         }
         subscription = subscriber.create_subscription(request)
 
-    print("Subscription created: {}".format(subscription.name))
+    print(f"Subscription created: {subscription.name}")
     print(
-        "It will forward dead letter messages to: {}".format(
-            subscription.dead_letter_policy.dead_letter_topic
-        )
+        f"It will forward dead letter messages to: {subscription.dead_letter_policy.dead_letter_topic}."
     )
     print(
-        "After {} delivery attempts.".format(
-            subscription.dead_letter_policy.max_delivery_attempts
-        )
+        f"After {subscription.dead_letter_policy.max_delivery_attempts} delivery attempts."
     )
     # [END pubsub_dead_letter_create_subscription]
 
@@ -171,8 +167,8 @@ def create_push_subscription(project_id, topic_id, subscription_id, endpoint):
             }
         )
 
-    print("Push subscription created: {}".format(subscription))
-    print("Endpoint for subscription is: {}".format(endpoint))
+    print(f"Push subscription created: {subscription}.")
+    print(f"Endpoint for subscription is: {endpoint}")
     # [END pubsub_create_push_subscription]
 
 
@@ -199,7 +195,7 @@ def create_subscription_with_ordering(project_id, topic_id, subscription_id):
                 "enable_message_ordering": True,
             }
         )
-        print("Created subscription with ordering: {}".format(subscription))
+        print(f"Created subscription with ordering: {subscription}")
     # [END pubsub_enable_subscription_ordering]
 
 
@@ -220,7 +216,7 @@ def delete_subscription(project_id, subscription_id):
     with subscriber:
         subscriber.delete_subscription(request={"subscription": subscription_path})
 
-    print("Subscription deleted: {}".format(subscription_path))
+    print(f"Subscription deleted: {subscription_path}.")
     # [END pubsub_delete_subscription]
 
 
@@ -257,8 +253,8 @@ def update_push_subscription(project_id, topic_id, subscription_id, endpoint):
             request={"subscription": subscription, "update_mask": update_mask}
         )
 
-    print("Subscription updated: {}".format(subscription_path))
-    print("New endpoint for subscription is: {}".format(result.push_config))
+    print(f"Subscription updated: {subscription_path}")
+    print(f"New endpoint for subscription is: {result.push_config}.")
     # [END pubsub_update_push_configuration]
 
 
@@ -291,7 +287,7 @@ def update_subscription_with_dead_letter_policy(
     subscription_before_update = subscriber.get_subscription(
         request={"subscription": subscription_path}
     )
-    print("Before the update: {}".format(subscription_before_update))
+    print(f"Before the update: {subscription_before_update}.")
 
     # Indicates which fields in the provided subscription to update.
     update_mask = FieldMask(paths=["dead_letter_policy.max_delivery_attempts"])
@@ -313,7 +309,7 @@ def update_subscription_with_dead_letter_policy(
             request={"subscription": subscription, "update_mask": update_mask}
         )
 
-    print("After the update: {}".format(subscription_after_update))
+    print(f"After the update: {subscription_after_update}.")
     # [END pubsub_dead_letter_update_subscription]
     return subscription_after_update
 
@@ -340,7 +336,7 @@ def remove_dead_letter_policy(project_id, topic_id, subscription_id):
     subscription_before_update = subscriber.get_subscription(
         request={"subscription": subscription_path}
     )
-    print("Before removing the policy: {}".format(subscription_before_update))
+    print(f"Before removing the policy: {subscription_before_update}.")
 
     # Indicates which fields in the provided subscription to update.
     update_mask = FieldMask(
@@ -361,7 +357,7 @@ def remove_dead_letter_policy(project_id, topic_id, subscription_id):
             request={"subscription": subscription, "update_mask": update_mask}
         )
 
-    print("After removing the policy: {}".format(subscription_after_update))
+    print(f"After removing the policy: {subscription_after_update}.")
     # [END pubsub_dead_letter_remove]
     return subscription_after_update
 
@@ -385,11 +381,11 @@ def receive_messages(project_id, subscription_id, timeout=None):
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     def callback(message):
-        print("Received message: {}".format(message))
+        print(f"Received {message}.")
         message.ack()
 
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
-    print("Listening for messages on {}..\n".format(subscription_path))
+    print(f"Listening for messages on {subscription_path}..\n")
 
     # Wrap subscriber in a 'with' block to automatically call close() when done.
     with subscriber:
@@ -419,16 +415,16 @@ def receive_messages_with_custom_attributes(project_id, subscription_id, timeout
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     def callback(message):
-        print("Received message: {}".format(message.data))
+        print(f"Received {message.data}.")
         if message.attributes:
             print("Attributes:")
             for key in message.attributes:
                 value = message.attributes.get(key)
-                print("{}: {}".format(key, value))
+                print(f"{key}: {value}")
         message.ack()
 
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
-    print("Listening for messages on {}..\n".format(subscription_path))
+    print(f"Listening for messages on {subscription_path}..\n")
 
     # Wrap subscriber in a 'with' block to automatically call close() when done.
     with subscriber:
@@ -457,7 +453,7 @@ def receive_messages_with_flow_control(project_id, subscription_id, timeout=None
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     def callback(message):
-        print("Received message: {}".format(message.data))
+        print(f"Received {message.data}.")
         message.ack()
 
     # Limit the subscriber to only have ten outstanding messages at a time.
@@ -466,7 +462,7 @@ def receive_messages_with_flow_control(project_id, subscription_id, timeout=None
     streaming_pull_future = subscriber.subscribe(
         subscription_path, callback=callback, flow_control=flow_control
     )
-    print("Listening for messages on {}..\n".format(subscription_path))
+    print(f"Listening for messages on {subscription_path}..\n")
 
     # Wrap subscriber in a 'with' block to automatically call close() when done.
     with subscriber:
@@ -503,7 +499,7 @@ def synchronous_pull(project_id, subscription_id):
 
         ack_ids = []
         for received_message in response.received_messages:
-            print("Received: {}".format(received_message.message.data))
+            print(f"Received: {received_message.message.data}.")
             ack_ids.append(received_message.ack_id)
 
         # Acknowledges the received messages so they will not be sent again.
@@ -512,9 +508,7 @@ def synchronous_pull(project_id, subscription_id):
         )
 
         print(
-            "Received and acknowledged {} messages. Done.".format(
-                len(response.received_messages)
-            )
+            f"Received and acknowledged {len(response.received_messages)} messages from {subscription_path}."
         )
     # [END pubsub_subscriber_sync_pull]
 
@@ -524,10 +518,15 @@ def synchronous_pull_with_lease_management(project_id, subscription_id):
     # [START pubsub_subscriber_sync_pull_with_lease]
     import logging
     import multiprocessing
-    import random
+    import sys
     import time
 
     from google.cloud import pubsub_v1
+
+    multiprocessing.log_to_stderr()
+    logger = multiprocessing.get_logger()
+    logger.setLevel(logging.INFO)
+    processes = dict()
 
     # TODO(developer)
     # project_id = "your-project-id"
@@ -536,77 +535,46 @@ def synchronous_pull_with_lease_management(project_id, subscription_id):
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
-    NUM_MESSAGES = 2
-    ACK_DEADLINE = 30
-    SLEEP_TIME = 10
-
-    # The subscriber pulls a specific number of messages.
     response = subscriber.pull(
-        request={"subscription": subscription_path, "max_messages": NUM_MESSAGES}
+        request={"subscription": subscription_path, "max_messages": 3}
     )
 
-    multiprocessing.log_to_stderr()
-    logger = multiprocessing.get_logger()
-    logger.setLevel(logging.INFO)
-
-    def worker(msg):
-        """Simulates a long-running process."""
-        RUN_TIME = random.randint(1, 60)
-        logger.info(
-            "{}: Running {} for {}s".format(
-                time.strftime("%X", time.gmtime()), msg.message.data, RUN_TIME
-            )
-        )
-        time.sleep(RUN_TIME)
-
-    # `processes` stores process as key and ack id and message as values.
-    processes = dict()
+    # Start a process for each message based on its size modulo 10.
     for message in response.received_messages:
-        process = multiprocessing.Process(target=worker, args=(message,))
+        process = multiprocessing.Process(
+            target=time.sleep, args=(sys.getsizeof(message) % 10,)
+        )
         processes[process] = (message.ack_id, message.message.data)
         process.start()
 
     while processes:
+        # Take a break every second.
+        if processes:
+            time.sleep(1)
+
         for process in list(processes):
             ack_id, msg_data = processes[process]
-            # If the process is still running, reset the ack deadline as
-            # specified by ACK_DEADLINE once every while as specified
-            # by SLEEP_TIME.
+            # If the process is running, reset the ack deadline.
             if process.is_alive():
-                # `ack_deadline_seconds` must be between 10 to 600.
                 subscriber.modify_ack_deadline(
                     request={
                         "subscription": subscription_path,
                         "ack_ids": [ack_id],
-                        "ack_deadline_seconds": ACK_DEADLINE,
+                        # Must be between 10 and 600.
+                        "ack_deadline_seconds": 15,
                     }
                 )
-                logger.info(
-                    "{}: Reset ack deadline for {} for {}s".format(
-                        time.strftime("%X", time.gmtime()), msg_data, ACK_DEADLINE,
-                    )
-                )
+                logger.info(f"Reset ack deadline for {msg_data}.")
 
-            # If the processs is finished, acknowledges using `ack_id`.
+            # If the process is complete, acknowledge the message.
             else:
                 subscriber.acknowledge(
                     request={"subscription": subscription_path, "ack_ids": [ack_id]}
                 )
-                logger.info(
-                    "{}: Acknowledged {}".format(
-                        time.strftime("%X", time.gmtime()), msg_data
-                    )
-                )
+                logger.info(f"Acknowledged {msg_data}.")
                 processes.pop(process)
-
-        # If there are still processes running, sleeps the thread.
-        if processes:
-            time.sleep(SLEEP_TIME)
-
     print(
-        "Received and acknowledged {} messages. Done.".format(
-            len(response.received_messages)
-        )
+        f"Received and acknowledged {len(response.received_messages)} messages from {subscription_path}."
     )
 
     # Close the underlying gPRC channel. Alternatively, wrap subscriber in
@@ -630,11 +598,11 @@ def listen_for_errors(project_id, subscription_id, timeout=None):
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     def callback(message):
-        print("Received message: {}".format(message))
+        print(f"Received {message}.")
         message.ack()
 
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
-    print("Listening for messages on {}..\n".format(subscription_path))
+    print(f"Listening for messages on {subscription_path}..\n")
 
     # Wrap subscriber in a 'with' block to automatically call close() when done.
     with subscriber:
@@ -644,11 +612,7 @@ def listen_for_errors(project_id, subscription_id, timeout=None):
             streaming_pull_future.result(timeout=timeout)
         except Exception as e:
             streaming_pull_future.cancel()
-            print(
-                "Listening for messages on {} threw an exception: {}.".format(
-                    subscription_id, e
-                )
-            )
+            print(f"Listening for messages on {subscription_path} threw an exception: {e}.")
     # [END pubsub_subscriber_error_listener]
 
 
@@ -665,12 +629,12 @@ def receive_messages_with_delivery_attempts(project_id, subscription_id, timeout
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     def callback(message):
-        print("Received message: {}".format(message))
-        print("With delivery attempts: {}".format(message.delivery_attempt))
+        print(f"Received {message}.")
+        print(f"With delivery attempts: {message.delivery_attempt}.")
         message.ack()
 
     streaming_pull_future = subscriber.subscribe(subscription_path, callback=callback)
-    print("Listening for messages on {}..\n".format(subscription_path))
+    print(f"Listening for messages on {subscription_path}..\n")
 
     # Wrap subscriber in a 'with' block to automatically call close() when done.
     with subscriber:

@@ -181,37 +181,6 @@ def check_subscription_permissions(project_id, subscription_id):
     # [END pubsub_test_subscription_permissions]
 
 
-def detach_subscription(project_id, subscription_id):
-    """Detaches a subscription from a topic and drops all messages retained in it."""
-    # [START pubsub_detach_subscription]
-    from google.api_core.exceptions import GoogleAPICallError, RetryError
-    from google.cloud import pubsub_v1
-
-    # TODO(developer): Choose an existing subscription.
-    # project_id = "your-project-id"
-    # subscription_id = "your-subscription-id"
-
-    publisher_client = pubsub_v1.PublisherClient()
-    subscriber_client = pubsub_v1.SubscriberClient()
-    subscription_path = subscriber_client.subscription_path(project_id, subscription_id)
-
-    try:
-        publisher_client.detach_subscription(
-            request={"subscription": subscription_path}
-        )
-    except (GoogleAPICallError, RetryError, ValueError, Exception) as err:
-        print(err)
-
-    subscription = subscriber_client.get_subscription(
-        request={"subscription": subscription_path}
-    )
-    if subscription.detached:
-        print("Subscription is detached.")
-    else:
-        print("Subscription is NOT detached.")
-    # [END pubsub_detach_subscription]
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -250,11 +219,6 @@ if __name__ == "__main__":
     )
     check_subscription_permissions_parser.add_argument("subscription_id")
 
-    detach_subscription_parser = subparsers.add_parser(
-        "detach-subscription", help=detach_subscription.__doc__,
-    )
-    detach_subscription_parser.add_argument("subscription_id")
-
     args = parser.parse_args()
 
     if args.command == "get-topic-policy":
@@ -269,5 +233,3 @@ if __name__ == "__main__":
         check_topic_permissions(args.project_id, args.topic_id)
     elif args.command == "check-subscription-permissions":
         check_subscription_permissions(args.project_id, args.subscription_id)
-    elif args.command == "detach-subscription":
-        detach_subscription(args.project_id, args.subscription_id)

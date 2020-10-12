@@ -17,6 +17,7 @@ import time
 import uuid
 
 import backoff
+from google.api_core.exceptions import NotFound
 from google.cloud import pubsub_v1
 import mock
 import pytest
@@ -24,41 +25,57 @@ import pytest
 import publisher
 
 UUID = uuid.uuid4().hex
-PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
-TOPIC_ADMIN = "publisher-test-topic-admin-" + UUID
-TOPIC_PUBLISH = "publisher-test-topic-publish-" + UUID
+PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
+TOPIC_ID = "publisher-test-topic-" + UUID
+SUBSCRIPTION_ID = "publisher-test-subscription-" + UUID
+# Allow 60s for tests to finish.
+MAX_TIME = 60
 
 
-@pytest.fixture
-def client():
+@pytest.fixture(scope="module")
+def publisher_client():
     yield pubsub_v1.PublisherClient()
 
 
-@pytest.fixture
-def topic_admin(client):
-    topic_path = client.topic_path(PROJECT, TOPIC_ADMIN)
+@pytest.fixture(scope="module")
+def subscriber_client():
+    subscriber_client = pubsub_v1.SubscriberClient()
+    yield subscriber_client
+    # Close the subscriber client properly during teardown.
+    subscriber_client.close()
+
+
+@pytest.fixture(scope="module")
+def topic_path(publisher_client):
+    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
 
     try:
-        topic = client.get_topic(request={"topic": topic_path})
-    except:  # noqa
-        topic = client.create_topic(request={"name": topic_path})
-
-    yield topic.name
-    # Teardown of `topic_admin` is handled in `test_delete()`.
-
-
-@pytest.fixture
-def topic_publish(client):
-    topic_path = client.topic_path(PROJECT, TOPIC_PUBLISH)
-
-    try:
-        topic = client.get_topic(request={"topic": topic_path})
-    except:  # noqa
-        topic = client.create_topic(request={"name": topic_path})
+        topic = publisher_client.get_topic(request={"topic": topic_path})
+    except NotFound:
+        topic = publisher_client.create_topic(request={"name": topic_path})
 
     yield topic.name
 
-    client.delete_topic(request={"topic": topic.name})
+    try:
+        publisher_client.delete_topic(request={"topic": topic.name})
+    except NotFound:
+        pass
+
+
+@pytest.fixture(scope="module")
+def subscription_path(subscriber_client, topic_path):
+    subscription_path = subscriber_client.subscription_path(PROJECT_ID, SUBSCRIPTION_ID)
+    subscription = subscriber_client.create_subscription(
+        request={"name": subscription_path, "topic": topic_path}
+    )
+    yield subscription.name
+
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
 
 
 def _make_sleep_patch():
@@ -74,87 +91,92 @@ def _make_sleep_patch():
     return mock.patch("time.sleep", new=new_sleep)
 
 
-def test_list(client, topic_admin, capsys):
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
-    def eventually_consistent_test():
-        publisher.list_topics(PROJECT)
-        out, _ = capsys.readouterr()
-        assert topic_admin in out
+def test_create(publisher_client, capsys):
+    # The scope of `topic_path` is limited to this function.
+    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
 
-    eventually_consistent_test()
-
-
-def test_create(client):
-    topic_path = client.topic_path(PROJECT, TOPIC_ADMIN)
     try:
-        client.delete_topic(request={"topic": topic_path})
-    except Exception:
+        publisher_client.delete_topic(request={"topic": topic_path})
+    except NotFound:
         pass
 
-    publisher.create_topic(PROJECT, TOPIC_ADMIN)
+    publisher.create_topic(PROJECT_ID, TOPIC_ID)
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
-    def eventually_consistent_test():
-        assert client.get_topic(request={"topic": topic_path})
-
-    eventually_consistent_test()
+    out, _ = capsys.readouterr()
+    assert f"Created topic: {topic_path}" in out
 
 
-def test_delete(client, topic_admin):
-    publisher.delete_topic(PROJECT, TOPIC_ADMIN)
+def test_list(topic_path, capsys):
+    publisher.list_topics(PROJECT_ID)
+    out, _ = capsys.readouterr()
 
-    @backoff.on_exception(backoff.expo, AssertionError, max_time=60)
+    assert topic_path in out
+
+
+def test_publish(topic_path, capsys):
+    publisher.publish_messages(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages to {topic_path}." in out
+
+
+def test_publish_with_custom_attributes(topic_path, capsys):
+    publisher.publish_messages_with_custom_attributes(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages with custom attributes to {topic_path}." in out
+
+
+def test_publish_with_batch_settings(topic_path, capsys):
+    publisher.publish_messages_with_batch_settings(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages with batch settings to {topic_path}." in out
+
+
+def test_publish_with_retry_settings(topic_path, capsys):
+    publisher.publish_messages_with_retry_settings(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages with retry settings to {topic_path}." in out
+
+
+def test_publish_with_error_handler(topic_path, capsys):
+    publisher.publish_messages_with_error_handler(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages with error handler to {topic_path}." in out
+
+
+def test_publish_with_ordering_keys(topic_path, capsys):
+    publisher.publish_with_ordering_keys(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages with ordering keys to {topic_path}." in out
+
+
+def test_resume_publish_with_error_handler(topic_path, capsys):
+    publisher.resume_publish_with_ordering_keys(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Resumed publishing messages with ordering keys to {topic_path}." in out
+
+
+def test_detach_subscription(subscription_path, capsys):
+    publisher.detach_subscription(PROJECT_ID, SUBSCRIPTION_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"{subscription_path} is detached." in out
+
+
+def test_delete(publisher_client):
+    publisher.delete_topic(PROJECT_ID, TOPIC_ID)
+
+    @backoff.on_exception(backoff.expo, AssertionError, max_time=MAX_TIME)
     def eventually_consistent_test():
         with pytest.raises(Exception):
-            client.get_topic(request={"topic": client.topic_path(PROJECT, TOPIC_ADMIN)})
+            publisher_client.get_topic(
+                request={"topic": publisher_client.topic_path(PROJECT_ID, TOPIC_ID)}
+            )
 
     eventually_consistent_test()
-
-
-def test_publish(topic_publish, capsys):
-    publisher.publish_messages(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published" in out
-
-
-def test_publish_with_custom_attributes(topic_publish, capsys):
-    publisher.publish_messages_with_custom_attributes(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published" in out
-
-
-def test_publish_with_batch_settings(topic_publish, capsys):
-    publisher.publish_messages_with_batch_settings(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published" in out
-
-
-def test_publish_with_retry_settings(topic_publish, capsys):
-    publisher.publish_messages_with_retry_settings(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published" in out
-
-
-def test_publish_with_error_handler(topic_publish, capsys):
-    publisher.publish_messages_with_error_handler(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published" in out
-
-
-def test_publish_with_ordering_keys(topic_publish, capsys):
-    publisher.publish_with_ordering_keys(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published messages with ordering keys." in out
-
-
-def test_resume_publish_with_error_handler(topic_publish, capsys):
-    publisher.resume_publish_with_ordering_keys(PROJECT, TOPIC_PUBLISH)
-
-    out, _ = capsys.readouterr()
-    assert "Published messages with ordering keys." in out
