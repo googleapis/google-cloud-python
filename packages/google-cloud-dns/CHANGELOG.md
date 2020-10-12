@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+### [0.32.1](https://www.github.com/googleapis/python-dns/compare/v0.32.0...v0.32.1) (2020-10-12)
+
+
+### Bug Fixes
+
+* fix client.quotas() method ([#24](https://www.github.com/googleapis/python-dns/issues/24)) ([9d97955](https://www.github.com/googleapis/python-dns/commit/9d979552512c633366e5ff34d155b5550ec7f6f3))
+
+
+### Documentation
+
+* remove samples in library docs ([#17](https://www.github.com/googleapis/python-dns/issues/17)) ([51d4d10](https://www.github.com/googleapis/python-dns/commit/51d4d10884d3e13bb9051114537a1a6eddab0086))
+* update README.rst ([#25](https://www.github.com/googleapis/python-dns/issues/25)) ([3e511cb](https://www.github.com/googleapis/python-dns/commit/3e511cb0b4c6496d310365aeb326cf720a8d5609))
+
 ## [0.32.0](https://www.github.com/googleapis/python-dns/compare/v0.31.0...v0.32.0) (2020-02-11)
 
 
