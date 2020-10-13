@@ -80,9 +80,6 @@ Python 3.7, so you will need that installed. (Most Linux distributions ship
 with earlier versions.) Use `pyenv`_ to get Python 3.7 installed in a
 friendly way.
 
-As for this library itself, the recommended installation approach is
-`pipsi`_.
-
 .. code-block:: shell
 
     # Due to its experimental state, this tool is not published to a
@@ -91,11 +88,19 @@ As for this library itself, the recommended installation approach is
     git clone https://github.com/googleapis/gapic-generator-python.git
     cd gapic-generator-python/
 
-    # Install the tool. This will handle the virtualenv for you, and
+	# Install a version of python that is supported by the microgenerator.
+	# We use 3.8.6 as an example.
+	# You may need to install additional packages in order to
+	# build python from source.
+	# Setting a 'global' python is convenient for development but may interfere
+	# with other system activities. Adjust as your environment requires.
+	pyenv install 3.8.6 && pyenv global 3.8.6
+
+	# Install the tool. This will handle the virtualenv for you, and
     # make an appropriately-aliased executable.
     # The `--editable` flag is only necessary if you want to work on the
     # tool (as opposed to just use it).
-    pipsi install --editable --python=`which python3.7` .
+    python -m pip install --editable .
 
 To ensure the tool is installed properly:
 
@@ -105,7 +110,6 @@ To ensure the tool is installed properly:
   /path/to/protoc-gen-python_gapic
 
 .. _pyenv: https://github.com/pyenv/pyenv
-.. _pipsi: https://github.com/mitsuhiko/pipsi
 
 Usage
 -----
@@ -151,7 +155,7 @@ This plugin is invoked under the hood via. the ``--python_gapic_out`` switch.
   the common protos must come first, and then the path to the API being built.
 
 .. include:: _samplegen.rst
-  
+
 .. code-block:: shell
 
   # Multiple sample paths or directories can be passed simultaneously by duplicating
