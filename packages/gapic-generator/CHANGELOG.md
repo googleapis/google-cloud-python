@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.2...v0.35.3) (2020-10-13)
+
+
+### Documentation
+
+* remove references to pipsi ([#656](https://www.github.com/googleapis/gapic-generator-python/issues/656)) ([39c612b](https://www.github.com/googleapis/gapic-generator-python/commit/39c612b545bc93c7c738a78f074672ee66365efb))
+
 ### [0.35.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.1...v0.35.2) (2020-10-13)
 
 
