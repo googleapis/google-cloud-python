@@ -625,8 +625,8 @@ class Table(object):
 
         .. note::
 
-           As of 2018-06-29, clustering fields cannot be set on a table
-           which does not also have time partioning defined.
+           BigQuery supports clustering for both partitioned and
+           non-partitioned tables.
         """
         prop = self._properties.get("clustering")
         if prop is not None:
@@ -1030,8 +1030,8 @@ class TableListItem(object):
 
         .. note::
 
-           As of 2018-06-29, clustering fields cannot be set on a table
-           which does not also have time partioning defined.
+           BigQuery supports clustering for both partitioned and
+           non-partitioned tables.
         """
         prop = self._properties.get("clustering")
         if prop is not None:
