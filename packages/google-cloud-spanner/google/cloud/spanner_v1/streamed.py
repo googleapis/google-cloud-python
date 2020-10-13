@@ -286,7 +286,13 @@ def _merge_struct(lhs, rhs, type_):
         lhs.append(first)
     else:
         last = lhs.pop()
-        lhs.append(_merge_by_type(last, first, candidate_type))
+        try:
+            merged = _merge_by_type(last, first, candidate_type)
+        except Unmergeable:
+            lhs.append(last)
+            lhs.append(first)
+        else:
+            lhs.append(merged)
     return Value(list_value=ListValue(values=lhs + rhs))
 
 
