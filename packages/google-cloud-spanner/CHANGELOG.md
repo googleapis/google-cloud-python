@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+### [1.19.1](https://www.github.com/googleapis/python-spanner/compare/v1.19.0...v1.19.1) (2020-10-13)
+
+
+### Bug Fixes
+
+* handle Unmergable errors when merging struct responses ([#152](https://www.github.com/googleapis/python-spanner/issues/152)) ([d132409](https://www.github.com/googleapis/python-spanner/commit/d132409dd4300cb2dca7c4bc7dbdd4d429d2fa7c))
+
+
+### Documentation
+
+* update samples dep to 'google-cloud-spanner==1.19.0' ([#137](https://www.github.com/googleapis/python-spanner/issues/137)) ([0fba41a](https://www.github.com/googleapis/python-spanner/commit/0fba41a5c19b02b0424705618dd1e2e5ca12238f))
+* update samples from python-docs-samples ([#146](https://www.github.com/googleapis/python-spanner/issues/146)) ([7549383](https://www.github.com/googleapis/python-spanner/commit/754938386c96814a3546d30d38d874734d1c201c))
+
 ## [1.19.0](https://www.github.com/googleapis/python-spanner/compare/v1.18.0...v1.19.0) (2020-09-08)
 
 
