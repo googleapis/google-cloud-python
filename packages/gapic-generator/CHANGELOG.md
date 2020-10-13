@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.1...v0.35.2) (2020-10-13)
+
+
+### Bug Fixes
+
+* modules referenced in MapField message type are properly aliased ([#654](https://www.github.com/googleapis/gapic-generator-python/issues/654)) ([2c79349](https://www.github.com/googleapis/gapic-generator-python/commit/2c79349e7b89435bc45e499885f7b12ac0bc2d9f)), closes [#618](https://www.github.com/googleapis/gapic-generator-python/issues/618)
+
 ### [0.35.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.0...v0.35.1) (2020-10-09)
 
 
