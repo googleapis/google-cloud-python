@@ -70,7 +70,7 @@ class DataSourceParameter(proto.Message):
             Parameter display name in the user interface.
         description (str):
             Parameter description.
-        type (~.datatransfer.DataSourceParameter.Type):
+        type_ (~.datatransfer.DataSourceParameter.Type):
             Parameter type.
         required (bool):
             Is parameter required.
@@ -122,7 +122,7 @@ class DataSourceParameter(proto.Message):
 
     description = proto.Field(proto.STRING, number=3)
 
-    type = proto.Field(proto.ENUM, number=4, enum=Type,)
+    type_ = proto.Field(proto.ENUM, number=4, enum=Type,)
 
     required = proto.Field(proto.BOOL, number=5)
 
