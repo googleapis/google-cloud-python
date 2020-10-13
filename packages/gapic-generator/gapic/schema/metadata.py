@@ -90,6 +90,20 @@ class Address:
         # Return the Python identifier.
         return '.'.join(self.parent + (self.name,))
 
+    def __repr__(self) -> str:
+        return "({})".format(
+            ", ".join(
+                (
+                    self.name,
+                    self.module,
+                    str(self.module_path),
+                    str(self.package),
+                    str(self.parent),
+                    str(self.api_naming),
+                )
+            )
+        )
+
     @property
     def module_alias(self) -> str:
         """Return an appropriate module alias if necessary.

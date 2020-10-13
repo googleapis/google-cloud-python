@@ -222,7 +222,12 @@ class Field:
         raise TypeError(f'Unrecognized protobuf type: {self.field_pb.type}. '
                         'This code should not be reachable; please file a bug.')
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'Field':
+    def with_context(
+            self,
+            *,
+            collisions: FrozenSet[str],
+            visited_messages: FrozenSet["MessageType"],
+    ) -> 'Field':
         """Return a derivative of this field with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -233,7 +238,8 @@ class Field:
             self,
             message=self.message.with_context(
                 collisions=collisions,
-                skip_fields=True,
+                skip_fields=self.message in visited_messages,
+                visited_messages=visited_messages,
             ) if self.message else None,
             enum=self.enum.with_context(collisions=collisions)
             if self.enum else None,
@@ -406,7 +412,10 @@ class MessageType:
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
-            return cursor.with_context(collisions=collisions)
+            return cursor.with_context(
+                collisions=collisions,
+                visited_messages=frozenset({self}),
+            )
 
         # Sanity check: If cursor is a repeated field, then raise an exception.
         # Repeated fields are only permitted in the terminal position.
@@ -433,6 +442,7 @@ class MessageType:
     def with_context(self, *,
                      collisions: FrozenSet[str],
                      skip_fields: bool = False,
+                     visited_messages: FrozenSet["MessageType"] = frozenset(),
                      ) -> 'MessageType':
         """Return a derivative of this message with the provided context.
 
@@ -444,10 +454,14 @@ class MessageType:
         underlying fields. This provides for an "exit" in the case of circular
         references.
         """
+        visited_messages = visited_messages | {self}
         return dataclasses.replace(
             self,
             fields=collections.OrderedDict(
-                (k, v.with_context(collisions=collisions))
+                (k, v.with_context(
+                    collisions=collisions,
+                    visited_messages=visited_messages
+                ))
                 for k, v in self.fields.items()
             ) if not skip_fields else self.fields,
             nested_enums=collections.OrderedDict(
@@ -457,7 +471,9 @@ class MessageType:
             nested_messages=collections.OrderedDict(
                 (k, v.with_context(
                     collisions=collisions,
-                    skip_fields=skip_fields,))
+                    skip_fields=skip_fields,
+                    visited_messages=visited_messages,
+                ))
                 for k, v in self.nested_messages.items()),
             meta=self.meta.with_context(collisions=collisions),
         )

@@ -1214,3 +1214,76 @@ def test_resources_referenced_but_not_typed(reference_attr="type"):
 
 def test_resources_referenced_but_not_typed_child_type():
     test_resources_referenced_but_not_typed("child_type")
+
+
+def test_map_field_name_disambiguation():
+    squid_file_pb = descriptor_pb2.FileDescriptorProto(
+        name="mollusc.proto",
+        package="animalia.mollusca.v2",
+        message_type=(
+            descriptor_pb2.DescriptorProto(
+                name="Mollusc",
+            ),
+        ),
+    )
+    method_types_file_pb = descriptor_pb2.FileDescriptorProto(
+        name="mollusc_service.proto",
+        package="animalia.mollusca.v2",
+        message_type=(
+            descriptor_pb2.DescriptorProto(
+                name="CreateMolluscRequest",
+                field=(
+                    descriptor_pb2.FieldDescriptorProto(
+                        name="mollusc",
+                        type="TYPE_MESSAGE",
+                        type_name=".animalia.mollusca.v2.Mollusc",
+                        number=1,
+                    ),
+                    descriptor_pb2.FieldDescriptorProto(
+                        name="molluscs_map",
+                        type="TYPE_MESSAGE",
+                        number=2,
+                        type_name=".animalia.mollusca.v2.CreateMolluscRequest.MolluscsMapEntry",
+                        label="LABEL_REPEATED",
+                    ),
+                ),
+                nested_type=(
+                    descriptor_pb2.DescriptorProto(
+                        name="MolluscsMapEntry",
+                        field=(
+                            descriptor_pb2.FieldDescriptorProto(
+                                name="key",
+                                type="TYPE_STRING",
+                                number=1,
+                            ),
+                            descriptor_pb2.FieldDescriptorProto(
+                                name="value",
+                                type="TYPE_MESSAGE",
+                                number=2,
+                                # We use the same type for the map value as for
+                                # the singleton above to better highlight the
+                                # problem raised in
+                                # https://github.com/googleapis/gapic-generator-python/issues/618.
+                                # The module _is_ disambiguated for singleton
+                                # fields but NOT for map fields.
+                                type_name=".animalia.mollusca.v2.Mollusc"
+                            ),
+                        ),
+                        options=descriptor_pb2.MessageOptions(map_entry=True),
+                    ),
+                ),
+            ),
+        ),
+    )
+    my_api = api.API.build(
+        file_descriptors=[squid_file_pb, method_types_file_pb],
+    )
+    create = my_api.messages['animalia.mollusca.v2.CreateMolluscRequest']
+    mollusc = create.fields['mollusc']
+    molluscs_map = create.fields['molluscs_map']
+    mollusc_ident = str(mollusc.type.ident)
+    mollusc_map_ident = str(molluscs_map.message.fields['value'].type.ident)
+
+    # The same module used in the same place should have the same import alias.
+    # Because there's a "mollusc" name used, the import should be disambiguated.
+    assert mollusc_ident == mollusc_map_ident == "am_mollusc.Mollusc"
