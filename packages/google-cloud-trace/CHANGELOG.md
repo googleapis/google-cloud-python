@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-trace/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-trace/compare/v1.0.0...v1.1.0) (2020-10-13)
+
+
+### Features
+
+* bump to GA ([#51](https://www.github.com/googleapis/python-trace/issues/51)) ([1985fef](https://www.github.com/googleapis/python-trace/commit/1985feff307ee117d552e1c13c1ef8b2b86278e0))
+
+
+### Documentation
+
+* state >=3.6 requirement in README ([#42](https://www.github.com/googleapis/python-trace/issues/42)) ([c162047](https://www.github.com/googleapis/python-trace/commit/c162047a779478a43561a7e1f1b8687dda5ecc89))
+
+
+### Dependencies
+
+* remove unused google-cloud-core dependency ([#50](https://www.github.com/googleapis/python-trace/issues/50)) ([e748cb4](https://www.github.com/googleapis/python-trace/commit/e748cb4d27fdc6c7cdde2d63417f7892820c75dd))
+
 ## [1.0.0](https://www.github.com/googleapis/python-trace/compare/v0.24.0...v1.0.0) (2020-09-14)
 
 
