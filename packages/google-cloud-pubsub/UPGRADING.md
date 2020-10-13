@@ -32,6 +32,9 @@ python3 -m pip install google-cloud-pubsub
 
 * The script `fixup_pubsub_v1_keywords.py` is shipped with the library. It expects
 an input directory (with the code to convert) and an empty destination directory.
+Optionally, the `--use-keywords` switch can be added to generate flattened keyword
+parameters instead of a request dictionary (see the following section for an
+explanation).
 
 ```sh
 $ scripts/fixup_pubsub_v1_keywords.py --input-directory .samples/ --output-directory samples/
