@@ -22,4 +22,4 @@ run on other Python platforms as well.
 GA
 
 ### Officially Supported Python Versions
-Python 2.7 & Python 3.6-3.7
+Python 2.7 & Python 3.6, 3.7, 3.8, 3.9

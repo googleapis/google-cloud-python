@@ -24,10 +24,10 @@ import nox
 
 LOCAL_DEPS = ("google-cloud-core", "google-api-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
-DEFAULT_INTERPRETER = "3.7"
-ALL_INTERPRETERS = ("2.7", "3.6", "3.7")
-PY3_INTERPRETERS = ("3.6", "3.7")
-MAJOR_INTERPRETERS = ("2.7", "3.7")
+DEFAULT_INTERPRETER = "3.8"
+ALL_INTERPRETERS = ("2.7", "3.6", "3.7", "3.8", "3.9")
+PY3_INTERPRETERS = ("3.6", "3.7", "3.8", "3.9")
+MAJOR_INTERPRETERS = ("2.7", "3.8")
 
 BLACK_VERSION = "black==20.8b1"
 
@@ -42,7 +42,7 @@ def unit(session):
     session.install("pytest", "pytest-cov")
     session.install("mock")
     session.install(".")
-    # THis variable is used to skip coverage by Python version
+    # This variable is used to skip coverage by Python version
     session.env["PY_VERSION"] = session.python[0]
     # Run py.test against the unit tests.
     run_args = ["pytest"]
