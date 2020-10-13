@@ -133,19 +133,26 @@ def subscription_async(subscriber_client, topic):
 
 
 @pytest.fixture(scope="module")
-def subscription_dlq(subscriber_client, topic):
+def subscription_dlq(subscriber_client, topic, dead_letter_topic):
+    from google.cloud.pubsub_v1.types import DeadLetterPolicy
+
     subscription_path = subscriber_client.subscription_path(
         PROJECT_ID, SUBSCRIPTION_DLQ
     )
 
     try:
-        subscription = subscriber_client.get_subscription(
+        subscription = subscriber_client.delete_subscription(
             request={"subscription": subscription_path}
         )
     except NotFound:
-        subscription = subscriber_client.create_subscription(
-            request={"name": subscription_path, "topic": topic}
-        )
+        request = {
+            "name": subscription_path,
+            "topic": topic,
+            "dead_letter_policy": DeadLetterPolicy(
+                dead_letter_topic=dead_letter_topic, max_delivery_attempts=10
+            ),
+        }
+        subscription = subscriber_client.create_subscription(request)
 
     yield subscription.name
 
@@ -210,12 +217,14 @@ def test_create_subscription_with_dead_letter_policy(
     assert "After 10 delivery attempts." in out
 
 
-def test_update_dead_letter_policy(capsys):
+def test_update_dead_letter_policy(subscription_dlq, dead_letter_topic, capsys):
     _ = subscriber.update_subscription_with_dead_letter_policy(
         PROJECT_ID, TOPIC, SUBSCRIPTION_DLQ, DEAD_LETTER_TOPIC
     )
 
     out, _ = capsys.readouterr()
+    assert dead_letter_topic in out
+    assert subscription_dlq in out
     assert "max_delivery_attempts: 20" in out
 
 
@@ -366,12 +375,10 @@ def test_receive_with_delivery_attempts(
 ):
     _publish_messages(publisher_client, topic)
 
-    subscriber.receive_messages_with_delivery_attempts(PROJECT_ID, SUBSCRIPTION_DLQ, 10)
+    subscriber.receive_messages_with_delivery_attempts(PROJECT_ID, SUBSCRIPTION_DLQ, 15)
 
     out, _ = capsys.readouterr()
-    assert subscription_dlq in out
-    assert "Received" in out
-    assert "message 4" in out
+    assert f"Listening for messages on {subscription_dlq}.." in out
     assert "With delivery attempts: " in out
 
 

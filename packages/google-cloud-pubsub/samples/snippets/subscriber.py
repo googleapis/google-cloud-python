@@ -612,7 +612,9 @@ def listen_for_errors(project_id, subscription_id, timeout=None):
             streaming_pull_future.result(timeout=timeout)
         except Exception as e:
             streaming_pull_future.cancel()
-            print(f"Listening for messages on {subscription_path} threw an exception: {e}.")
+            print(
+                f"Listening for messages on {subscription_path} threw an exception: {e}."
+            )
     # [END pubsub_subscriber_error_listener]
 
 
