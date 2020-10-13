@@ -1,22 +1,22 @@
-Python Client for Stackdriver Trace API
+Python Client for Cloud Trace API
 =======================================
 
-|alpha| |pypi| |versions| 
+|ga| |pypi| |versions| 
 
-The `Stackdriver Trace API`_ sends application trace data to Stackdriver Trace
+The `Cloud Trace API`_ sends application trace data to Cloud Trace
 for viewing. Trace data is collected for all App Engine applications by
 default. Trace data from other applications can be provided using this API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-trace.svg
    :target: https://pypi.org/project/google-cloud-trace/
-.. _Stackdriver Trace API: https://cloud.google.com/trace
+.. _Cloud Trace API: https://cloud.google.com/trace
 .. _Client Library Documentation: https://googleapis.dev/python/cloudtrace/latest
 .. _Product Documentation:  https://cloud.google.com/trace
 
@@ -54,8 +54,8 @@ Supported Python Versions
 Python >= 3.6
 
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Python == 2.7.
 
 The last version of this library compatible with Python 2.7 is google-cloud-trace==0.24.0
@@ -92,7 +92,7 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Stackdriver Trace API
+-  Read the `Client Library Documentation`_ for Cloud Trace API
    to see other available methods on the client.
 -  Read the `Product documentation`_ to learn more about the product and see
    How-to Guides.
