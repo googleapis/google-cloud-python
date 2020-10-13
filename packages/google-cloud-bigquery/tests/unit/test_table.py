@@ -1433,6 +1433,17 @@ class TestTableListItem(unittest.TestCase):
         labels["foo"] = "bar"  # update in place
         self.assertEqual(table.labels, {"foo": "bar"})
 
+    def test_to_api_repr(self):
+        resource = {
+            "tableReference": {
+                "projectId": "testproject",
+                "datasetId": "testdataset",
+                "tableId": "testtable",
+            }
+        }
+        table = self._make_one(resource)
+        self.assertEqual(table.to_api_repr(), resource)
+
 
 class TestRow(unittest.TestCase):
     def test_row(self):

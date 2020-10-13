@@ -1071,6 +1071,14 @@ class TableListItem(object):
         """
         return self.reference.to_bqstorage()
 
+    def to_api_repr(self):
+        """Constructs the API resource of this table
+
+        Returns:
+            Dict[str, object]: Table represented as an API resource
+        """
+        return copy.deepcopy(self._properties)
+
 
 def _row_from_mapping(mapping, schema):
     """Convert a mapping to a row tuple using the schema.
