@@ -309,7 +309,7 @@ def test__make_bqstorage_client_false():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
-    got = magics._make_bqstorage_client(False, credentials_mock)
+    got = magics._make_bqstorage_client(False, credentials_mock, {})
     assert got is None
 
 
@@ -320,7 +320,7 @@ def test__make_bqstorage_client_true():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
-    got = magics._make_bqstorage_client(True, credentials_mock)
+    got = magics._make_bqstorage_client(True, credentials_mock, {})
     assert isinstance(got, bigquery_storage.BigQueryReadClient)
 
 
@@ -330,7 +330,7 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     )
 
     with pytest.raises(ImportError) as exc_context, missing_bq_storage:
-        magics._make_bqstorage_client(True, credentials_mock)
+        magics._make_bqstorage_client(True, credentials_mock, {})
 
     error_msg = str(exc_context.value)
     assert "google-cloud-bigquery-storage" in error_msg
@@ -347,7 +347,7 @@ def test__make_bqstorage_client_true_missing_gapic(missing_grpcio_lib):
     )
 
     with pytest.raises(ImportError) as exc_context, missing_grpcio_lib:
-        magics._make_bqstorage_client(True, credentials_mock)
+        magics._make_bqstorage_client(True, credentials_mock, {})
 
     assert "grpcio" in str(exc_context.value)
 
@@ -1178,6 +1178,96 @@ def test_bigquery_magic_with_project():
         assert client_used.project == "specific-project"
         # context project should not change
         assert magics.context.project == "general-project"
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_with_bigquery_api_endpoint(ipython_ns_cleanup):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._connection = None
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic(
+            "bigquery",
+            "--bigquery_api_endpoint=https://bigquery_api.endpoint.com",
+            "SELECT 17 as num",
+        )
+
+    connection_used = run_query_mock.call_args_list[0][0][0]._connection
+    assert connection_used.API_BASE_URL == "https://bigquery_api.endpoint.com"
+    # context client options should not change
+    assert magics.context.bigquery_client_options.api_endpoint is None
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_with_bigquery_api_endpoint_context_dict():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._connection = None
+    magics.context.bigquery_client_options = {}
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic(
+            "bigquery",
+            "--bigquery_api_endpoint=https://bigquery_api.endpoint.com",
+            "SELECT 17 as num",
+        )
+
+    connection_used = run_query_mock.call_args_list[0][0][0]._connection
+    assert connection_used.API_BASE_URL == "https://bigquery_api.endpoint.com"
+    # context client options should not change
+    assert magics.context.bigquery_client_options == {}
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_with_bqstorage_api_endpoint(ipython_ns_cleanup):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._connection = None
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic(
+            "bigquery",
+            "--bqstorage_api_endpoint=https://bqstorage_api.endpoint.com",
+            "SELECT 17 as num",
+        )
+
+    client_used = run_query_mock.mock_calls[1][2]["bqstorage_client"]
+    assert client_used._transport._host == "https://bqstorage_api.endpoint.com"
+    # context client options should not change
+    assert magics.context.bqstorage_client_options.api_endpoint is None
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_with_bqstorage_api_endpoint_context_dict():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._connection = None
+    magics.context.bqstorage_client_options = {}
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic(
+            "bigquery",
+            "--bqstorage_api_endpoint=https://bqstorage_api.endpoint.com",
+            "SELECT 17 as num",
+        )
+
+    client_used = run_query_mock.mock_calls[1][2]["bqstorage_client"]
+    assert client_used._transport._host == "https://bqstorage_api.endpoint.com"
+    # context client options should not change
+    assert magics.context.bqstorage_client_options == {}
 
 
 @pytest.mark.usefixtures("ipython_interactive")
