@@ -318,3 +318,47 @@ def test_repr(target_class):
         "Model(reference=ModelReference("
         "project_id='my-proj', dataset_id='my_dset', model_id='my_model'))"
     )
+
+
+def test_to_api_repr(target_class):
+    from google.protobuf import json_format
+
+    model = target_class("my-proj.my_dset.my_model")
+    resource = {
+        "etag": "abcdefg",
+        "modelReference": {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "modelId": "my_model",
+        },
+        "creationTime": "1274284800000",
+        "lastModifiedTime": "1317484800000",
+        "modelType": "LOGISTIC_REGRESSION",
+        "trainingRuns": [
+            {
+                "trainingOptions": {"initialLearnRate": 1.0},
+                "startTime": "2010-05-19T16:00:00Z",
+            },
+            {
+                "trainingOptions": {"initialLearnRate": 0.5},
+                "startTime": "2011-10-01T16:00:00Z",
+            },
+            {
+                "trainingOptions": {"initialLearnRate": 0.25},
+                "startTime": "2012-12-21T16:00:00Z",
+            },
+        ],
+        "description": "A friendly description.",
+        "location": "US",
+        "friendlyName": "A friendly name.",
+        "labels": {"greeting": "こんにちは"},
+        "expirationTime": "1356105600000",
+        "encryptionConfiguration": {
+            "kmsKeyName": "projects/1/locations/us/keyRings/1/cryptoKeys/1"
+        },
+    }
+    model._proto = json_format.ParseDict(
+        resource, types.Model()._pb, ignore_unknown_fields=True
+    )
+    got = model.to_api_repr()
+    assert got == resource

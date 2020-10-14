@@ -317,6 +317,14 @@ class Model(object):
     def __repr__(self):
         return "Model(reference={})".format(repr(self.reference))
 
+    def to_api_repr(self):
+        """Construct the API resource representation of this model.
+
+        Returns:
+            Dict[str, object]: Model reference represented as an API resource
+        """
+        return json_format.MessageToDict(self._proto)
+
 
 class ModelReference(object):
     """ModelReferences are pointers to models.
