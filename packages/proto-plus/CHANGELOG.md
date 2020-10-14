@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.10.2](https://www.github.com/googleapis/proto-plus-python/compare/v1.10.1...v1.10.2) (2020-10-14)
+
+
+### Documentation
+
+* explain how to use repeated struct.Value ([#148](https://www.github.com/googleapis/proto-plus-python/issues/148)) ([9634ea8](https://www.github.com/googleapis/proto-plus-python/commit/9634ea8fa464c0d34f13469016f23cc2e986d973)), closes [#104](https://www.github.com/googleapis/proto-plus-python/issues/104)
+
 ### [1.10.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.10.0...v1.10.1) (2020-10-08)
 
 
