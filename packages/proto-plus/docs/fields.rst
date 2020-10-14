@@ -56,6 +56,36 @@ Declare them in Python using the :class:`~.RepeatedField` class:
         publisher = proto.Field(proto.STRING, number=2)
 
 
+.. note::
+
+    Elements **must** be appended individually for repeated fields of `struct.Value`.
+
+    .. code-block:: python
+
+        class Row(proto.Message):
+            values = proto.RepeatedField(proto.MESSAGE, number=1, message=struct.Value,)
+
+        >>> row = Row()
+        >>> values = [struct_pb2.Value(string_value="hello")]
+        >>> for v in values:
+        >>>    row.values.append(v)
+
+    Direct assignment will result in an error.
+
+    .. code-block:: python
+
+        class Row(proto.Message):
+            values = proto.RepeatedField(proto.MESSAGE, number=1, message=struct.Value,)
+
+        >>> row = Row()
+        >>> row.values = [struct_pb2.Value(string_value="hello")]
+        Traceback (most recent call last):
+        File "<stdin>", line 1, in <module>
+        File "/usr/local/google/home/busunkim/github/python-automl/.nox/unit-3-8/lib/python3.8/site-packages/proto/message.py", line 543, in __setattr__
+            self._pb.MergeFrom(self._meta.pb(**{key: pb_value}))
+        TypeError: Value must be iterable
+
+
 Map fields
 ----------
 
@@ -168,3 +198,6 @@ one-variant ``oneof``. See the protocolbuffers documentation_ for more
 information.
 
 .. _documentation: https://github.com/protocolbuffers/protobuf/blob/v3.12.0/docs/field_presence.md
+
+
+

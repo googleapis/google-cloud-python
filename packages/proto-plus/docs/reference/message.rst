@@ -5,8 +5,11 @@ Message and Field
     :members:
 
     .. automethod:: pb
+    .. automethod:: wrap
     .. automethod:: serialize
     .. automethod:: deserialize
+    .. automethod:: to_json
+    .. automethod:: from_json
 
 
 .. automodule:: proto.fields
