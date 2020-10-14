@@ -2237,11 +2237,13 @@ class Client(ClientWithProject):
                 dataframe.to_parquet(tmppath, compression=parquet_compression)
 
             with open(tmppath, "rb") as parquet_file:
+                file_size = os.path.getsize(tmppath)
                 return self.load_table_from_file(
                     parquet_file,
                     destination,
                     num_retries=num_retries,
                     rewind=True,
+                    size=file_size,
                     job_id=job_id,
                     job_id_prefix=job_id_prefix,
                     location=location,
@@ -2343,11 +2345,12 @@ class Client(ClientWithProject):
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
 
         data_str = u"\n".join(json.dumps(item) for item in json_rows)
-        data_file = io.BytesIO(data_str.encode())
-
+        encoded_str = data_str.encode()
+        data_file = io.BytesIO(encoded_str)
         return self.load_table_from_file(
             data_file,
             destination,
+            size=len(encoded_str),
             num_retries=num_retries,
             job_id=job_id,
             job_id_prefix=job_id_prefix,
