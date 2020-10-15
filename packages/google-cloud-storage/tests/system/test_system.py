@@ -1035,13 +1035,12 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(download_blob.md5_hash, blob.md5_hash)
 
 
-class TestUnicode(unittest.TestCase):
-    @vpcsc_config.skip_if_inside_vpcsc
+class TestUnicode(TestStorageFiles):
     def test_fetch_object_and_check_content(self):
-        client = storage.Client()
-        bucket = client.bucket("storage-library-test-bucket")
+        # Historical note: This test when originally written accessed public
+        # files with Unicode names. These files are no longer available, so it
+        # was rewritten to upload them first.
 
-        # Note: These files are public.
         # Normalization form C: a single character for e-acute;
         # URL should end with Cafe%CC%81
         # Normalization Form D: an ASCII e followed by U+0301 combining
@@ -1050,10 +1049,15 @@ class TestUnicode(unittest.TestCase):
             u"Caf\u00e9": b"Normalization Form C",
             u"Cafe\u0301": b"Normalization Form D",
         }
+
         for blob_name, file_contents in test_data.items():
-            blob = bucket.blob(blob_name)
-            self.assertEqual(blob.name, blob_name)
+            blob = self.bucket.blob(blob_name)
+            blob.upload_from_string(file_contents)
+
+        for blob_name, file_contents in test_data.items():
+            blob = self.bucket.blob(blob_name)
             self.assertEqual(blob.download_as_bytes(), file_contents)
+            self.assertEqual(blob.name, blob_name)
 
 
 class TestStorageListFiles(TestStorageFiles):
