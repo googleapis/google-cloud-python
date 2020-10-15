@@ -23,6 +23,118 @@ from google.cloud.ndb import utils
 log = logging.getLogger(__name__)
 
 
+class _Propagation(object):
+    """This class aims to emulate the same behaviour as was provided by the old
+    Datastore RPC library.
+
+    https://cloud.google.com/appengine/docs/standard/python/ndb/functions#context_options
+
+    It provides limited support for transactions within transactions. It has a
+    single public method func:`handle_propagation`.
+
+    Args:
+        propagation (int): The desired `propagation` option, corresponding
+            to a class:`TransactionOptions` option.
+        join (:obj:`bool`, optional): If the provided join argument must be
+            changed to conform to the requested propagation option then a
+            warning will be emitted. If it is not provided, it will be set
+            according to the propagation option but no warning is emitted.
+    """
+
+    def __init__(self, propagation, join=None):
+        # Avoid circular import in Python 2.7
+        from google.cloud.ndb import context as context_module
+
+        propagation_options = context_module.TransactionOptions._PROPAGATION
+        if propagation is None or propagation in propagation_options:
+            self.propagation = propagation
+        else:
+            raise ValueError(
+                "Unexpected value for propagation. Got: {}. Expected one of: "
+                "{}".format(propagation, propagation_options)
+            )
+
+        propagation_names = context_module.TransactionOptions._INT_TO_NAME
+        self.propagation_name = propagation_names.get(self.propagation)
+
+        self.join = join
+        joinable_options = context_module.TransactionOptions._JOINABLE
+        self.joinable = propagation in joinable_options
+
+    def _handle_nested(self):
+        """The NESTED propagation policy would commit all changes in the outer
+        and inner transactions together when the outer policy commits. However,
+        if an exception is thrown in the inner transaction all changes there
+        would get thrown out but allow the outer transaction to optionally
+        recover and continue. The NESTED policy is not supported. If you use
+        this policy, your code will throw a BadRequestError exception.
+        """
+        raise exceptions.BadRequestError("Nested transactions are not supported.")
+
+    def _handle_mandatory(self):
+        """Always propagate an existing transaction; throw an exception if
+        there is no existing transaction. If a function that uses this policy
+        throws an exception, it's probably not safe to catch the exception and
+        commit the outer transaction; the function may have left the outer
+        transaction in a bad state.
+        """
+        if not in_transaction():
+            raise exceptions.BadRequestError("Requires an existing transaction.")
+
+    def _handle_allowed(self):
+        """If there is an existing transaction, propagate it. If a function
+        that uses this policy throws an exception, it's probably not safe to
+        catch the exception and commit the outer transaction; the function may
+        have left the outer transaction in a bad state.
+        """
+        # no special handling needed.
+        pass
+
+    def _handle_independent(self):
+        """Always use a new transaction, "pausing" any existing transactions.
+        A function that uses this policy should not return any entities read in
+        the new transaction, as the entities are not transactionally consistent
+        with the caller's transaction.
+        """
+        if in_transaction():
+            # Avoid circular import in Python 2.7
+            from google.cloud.ndb import context as context_module
+
+            context = context_module.get_context()
+            new_context = context.new(transaction=None)
+            return new_context
+
+    def _handle_join(self):
+        change_to = self.joinable
+        if self.join != change_to:
+            if self.join is not None:
+                logging.warning(
+                    "Modifying join behaviour to maintain old NDB behaviour. "
+                    "Setting join to {} for propagation value: {} ({})".format(
+                        change_to, self.propagation, self.propagation_name
+                    )
+                )
+            self.join = change_to
+
+    def handle_propagation(self):
+        """Ensure the conditions needed to maintain legacy NDB behaviour are
+        met.
+
+        Returns:
+            Context: A new :class:`Context` instance that should be
+                used to run the transaction in or :data:`None` if the
+                transaction should run in the existing :class:`Context`.
+            bool: :data:`True` if the new transaction is to be joined to an
+                existing one otherwise :data:`False`.
+        """
+        context = None
+        if self.propagation:
+            # ensure we use the correct joining method.
+            context = getattr(self, "_handle_{}".format(self.propagation_name))()
+            self._handle_join()
+        return context, self.join
+
+
 def in_transaction():
     """Determine if there is a currently active transaction.
 
@@ -58,9 +170,10 @@ def transaction(
         xg (bool): Enable cross-group transactions. This argument is included
             for backwards compatibility reasons and is ignored. All Datastore
             transactions are cross-group, up to 25 entity groups, all the time.
-        propagation (Any): Deprecated, will raise `NotImplementedError` if
-            passed. Transaction propagation was a feature of the old Datastore
-            RPC library and is no longer available.
+        propagation (int): An element from :class:`ndb.TransactionOptions`.
+            This parameter controls what happens if you try to start a new
+            transaction within an existing transaction. If this argument is
+            provided, the `join` argument will be ignored.
     """
     future = transaction_async(
         callback,
@@ -74,6 +187,25 @@ def transaction(
 
 
 def transaction_async(
+    callback,
+    retries=_retry._DEFAULT_RETRIES,
+    read_only=False,
+    join=False,
+    xg=True,
+    propagation=None,
+):
+    new_context, join = _Propagation(propagation, join).handle_propagation()
+    args = (callback, retries, read_only, join, xg, None)
+    if new_context is None:
+        transaction_return_value = transaction_async_(*args)
+    else:
+        with new_context.use() as context:
+            transaction_return_value = transaction_async_(*args)
+            context.flush()
+    return transaction_return_value
+
+
+def transaction_async_(
     callback,
     retries=_retry._DEFAULT_RETRIES,
     read_only=False,
@@ -321,17 +453,18 @@ def non_transactional(allow_existing=True):
     def non_transactional_wrapper(wrapped):
         @functools.wraps(wrapped)
         def non_transactional_inner_wrapper(*args, **kwargs):
-            from . import context
+            # Avoid circular import in Python 2.7
+            from google.cloud.ndb import context as context_module
 
-            ctx = context.get_context()
-            if not ctx.in_transaction():
+            context = context_module.get_context()
+            if not context.in_transaction():
                 return wrapped(*args, **kwargs)
             if not allow_existing:
                 raise exceptions.BadRequestError(
                     "{} cannot be called within a transaction".format(wrapped.__name__)
                 )
-            new_ctx = ctx.new(transaction=None)
-            with new_ctx.use():
+            new_context = context.new(transaction=None)
+            with new_context.use():
                 return wrapped(*args, **kwargs)
 
         return non_transactional_inner_wrapper

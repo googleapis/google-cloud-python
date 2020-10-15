@@ -1490,6 +1490,21 @@ class Test_Result:
             result._compare("other")
 
     @staticmethod
+    def test__compare_with_order_by():
+        result = _datastore_query._Result(
+            None,
+            mock.Mock(
+                cursor=b"123",
+                spec=("cursor",),
+            ),
+            [
+                query_module.PropertyOrder("foo"),
+                query_module.PropertyOrder("bar", reverse=True),
+            ],
+        )
+        assert result._compare("other") == NotImplemented
+
+    @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query.model")
     def test_entity_unsupported_result_type(model):
         model._entity_from_protobuf.return_value = "bar"

@@ -435,8 +435,7 @@ class TestContextOptions:
 class TestTransactionOptions:
     @staticmethod
     def test_constructor():
-        with pytest.raises(NotImplementedError):
-            context_module.TransactionOptions()
+        assert len(context_module.TransactionOptions._PROPAGATION) == 4
 
 
 class Test_default_cache_policy:

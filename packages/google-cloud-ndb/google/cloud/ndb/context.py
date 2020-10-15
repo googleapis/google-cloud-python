@@ -625,8 +625,19 @@ class ContextOptions(object):
 
 
 class TransactionOptions(object):
-    def __init__(self, *args, **kwargs):
-        raise exceptions.NoLongerImplementedError()
+    NESTED = 1  # join=False
+    MANDATORY = 2  # join=True
+    ALLOWED = 3  # join=True
+    INDEPENDENT = 4  # join=False
+
+    _PROPAGATION = frozenset((NESTED, MANDATORY, ALLOWED, INDEPENDENT))
+    _JOINABLE = frozenset((MANDATORY, ALLOWED))
+    _INT_TO_NAME = {
+        NESTED: "nested",
+        MANDATORY: "mandatory",
+        ALLOWED: "allowed",
+        INDEPENDENT: "independent",
+    }
 
 
 class AutoBatcher(object):
