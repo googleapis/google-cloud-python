@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.3...v0.35.4) (2020-10-16)
+
+
+### Bug Fixes
+
+* minor typo in ads template ([#664](https://www.github.com/googleapis/gapic-generator-python/issues/664)) ([816f965](https://www.github.com/googleapis/gapic-generator-python/commit/816f965c8560bf65d8043bd67672c660a2b1300b))
+
 ### [0.35.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.2...v0.35.3) (2020-10-13)
 
 
