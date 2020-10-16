@@ -112,13 +112,17 @@ def system(session):
 def snippets(session):
     """Run the snippets test suite."""
 
-    constraints_path = str(
-        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
-    )
+    # Check the value of `RUN_SNIPPETS_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_SNIPPETS_TESTS", "true") == "false":
+        session.skip("RUN_SNIPPETS_TESTS is set to false, skipping")
 
     # Sanity check: Only run snippets tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable.")
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
 
     # Install all test dependencies, then install local packages in place.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
