@@ -8,6 +8,7 @@ libcst==0.2.5
 llvmlite==0.34.0
 # pandas 0.23.0 is the first version to work with pyarrow to_pandas.
 pandas==0.23.0
+protobuf == 3.12.0
 proto-plus==1.10.0
 pyarrow==1.0.0
 python-snappy==0.5.4
