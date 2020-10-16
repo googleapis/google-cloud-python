@@ -78,16 +78,18 @@ class PollingFuture(base.Future):
         # pylint: disable=redundant-returns-doc, missing-raises-doc
         raise NotImplementedError()
 
-    def _done_or_raise(self):
+    def _done_or_raise(self, retry=DEFAULT_RETRY):
         """Check if the future is done and raise if it's not."""
-        if not self.done():
+        kwargs = {} if retry is DEFAULT_RETRY else {"retry": retry}
+
+        if not self.done(**kwargs):
             raise _OperationNotComplete()
 
     def running(self):
         """True if the operation is currently running."""
         return not self.done()
 
-    def _blocking_poll(self, timeout=None):
+    def _blocking_poll(self, timeout=None, retry=DEFAULT_RETRY):
         """Poll and wait for the Future to be resolved.
 
         Args:
@@ -101,13 +103,14 @@ class PollingFuture(base.Future):
         retry_ = self._retry.with_deadline(timeout)
 
         try:
-            retry_(self._done_or_raise)()
+            kwargs = {} if retry is DEFAULT_RETRY else {"retry": retry}
+            retry_(self._done_or_raise)(**kwargs)
         except exceptions.RetryError:
             raise concurrent.futures.TimeoutError(
                 "Operation did not complete within the designated " "timeout."
             )
 
-    def result(self, timeout=None):
+    def result(self, timeout=None, retry=DEFAULT_RETRY):
         """Get the result of the operation, blocking if necessary.
 
         Args:
@@ -122,7 +125,8 @@ class PollingFuture(base.Future):
             google.api_core.GoogleAPICallError: If the operation errors or if
                 the timeout is reached before the operation completes.
         """
-        self._blocking_poll(timeout=timeout)
+        kwargs = {} if retry is DEFAULT_RETRY else {"retry": retry}
+        self._blocking_poll(timeout=timeout, **kwargs)
 
         if self._exception is not None:
             # pylint: disable=raising-bad-type
