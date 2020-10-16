@@ -16,6 +16,8 @@ import unittest
 
 import mock
 
+from google.cloud.storage.retry import DEFAULT_RETRY
+
 
 class TestBucketNotification(unittest.TestCase):
 
@@ -269,6 +271,7 @@ class TestBucketNotification(unittest.TestCase):
             query_params={},
             data=data,
             timeout=self._get_default_timeout(),
+            retry=None,
         )
 
     def test_create_w_explicit_client(self):
@@ -320,6 +323,7 @@ class TestBucketNotification(unittest.TestCase):
             query_params={"userProject": USER_PROJECT},
             data=data,
             timeout=42,
+            retry=None,
         )
 
     def test_exists_wo_notification_id(self):
@@ -391,7 +395,11 @@ class TestBucketNotification(unittest.TestCase):
             notification.reload(timeout=42)
 
         api_request.assert_called_once_with(
-            method="GET", path=self.NOTIFICATION_PATH, query_params={}, timeout=42
+            method="GET",
+            path=self.NOTIFICATION_PATH,
+            query_params={},
+            timeout=42,
+            retry=DEFAULT_RETRY,
         )
 
     def test_reload_hit(self):
@@ -425,6 +433,7 @@ class TestBucketNotification(unittest.TestCase):
             path=self.NOTIFICATION_PATH,
             query_params={"userProject": USER_PROJECT},
             timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
     def test_delete_wo_notification_id(self):
@@ -449,7 +458,11 @@ class TestBucketNotification(unittest.TestCase):
             notification.delete(timeout=42)
 
         api_request.assert_called_once_with(
-            method="DELETE", path=self.NOTIFICATION_PATH, query_params={}, timeout=42
+            method="DELETE",
+            path=self.NOTIFICATION_PATH,
+            query_params={},
+            timeout=42,
+            retry=DEFAULT_RETRY,
         )
 
     def test_delete_hit(self):
@@ -468,6 +481,7 @@ class TestBucketNotification(unittest.TestCase):
             path=self.NOTIFICATION_PATH,
             query_params={"userProject": USER_PROJECT},
             timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
 

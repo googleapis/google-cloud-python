@@ -16,6 +16,9 @@ import unittest
 
 import mock
 
+from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
+
 
 class Test__get_storage_host(unittest.TestCase):
     @staticmethod
@@ -122,6 +125,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "headers": {},
                 "_target_object": derived,
                 "timeout": 42,
+                "retry": DEFAULT_RETRY,
             },
         )
         self.assertEqual(derived._changes, set())
@@ -158,6 +162,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "headers": {},
                 "_target_object": derived,
                 "timeout": 42,
+                "retry": DEFAULT_RETRY,
             },
         )
         self.assertEqual(derived._changes, set())
@@ -183,6 +188,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "headers": {},
                 "_target_object": derived,
                 "timeout": self._get_default_timeout(),
+                "retry": DEFAULT_RETRY,
             },
         )
         self.assertEqual(derived._changes, set())
@@ -207,6 +213,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "headers": {},
                 "_target_object": derived,
                 "timeout": 42,
+                "retry": DEFAULT_RETRY,
             },
         )
         self.assertEqual(derived._changes, set())
@@ -246,6 +253,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "data": {"bar": BAR},
                 "_target_object": derived,
                 "timeout": 42,
+                "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
             },
         )
         # Make sure changes get reset by patch().
@@ -286,6 +294,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "data": {"bar": BAR},
                 "_target_object": derived,
                 "timeout": 42,
+                "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
             },
         )
         # Make sure changes get reset by patch().
@@ -315,6 +324,7 @@ class Test_PropertyMixin(unittest.TestCase):
                 "data": {"bar": BAR},
                 "_target_object": derived,
                 "timeout": self._get_default_timeout(),
+                "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
             },
         )
         # Make sure changes get reset by patch().
@@ -338,6 +348,7 @@ class Test_PropertyMixin(unittest.TestCase):
         self.assertEqual(kw[0]["query_params"], {"projection": "full"})
         self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
         self.assertEqual(kw[0]["timeout"], 42)
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
@@ -366,6 +377,7 @@ class Test_PropertyMixin(unittest.TestCase):
         )
         self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
         self.assertEqual(kw[0]["timeout"], 42)
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
@@ -390,6 +402,7 @@ class Test_PropertyMixin(unittest.TestCase):
         )
         self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
         self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 

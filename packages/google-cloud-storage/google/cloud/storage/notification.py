@@ -19,6 +19,7 @@ import re
 from google.api_core.exceptions import NotFound
 
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 OBJECT_FINALIZE_EVENT_TYPE = "OBJECT_FINALIZE"
@@ -271,6 +272,7 @@ class BucketNotification(object):
             query_params=query_params,
             data=properties,
             timeout=timeout,
+            retry=None,
         )
 
     def exists(self, client=None, timeout=_DEFAULT_TIMEOUT):
@@ -347,7 +349,11 @@ class BucketNotification(object):
             query_params["userProject"] = self.bucket.user_project
 
         response = client._connection.api_request(
-            method="GET", path=self.path, query_params=query_params, timeout=timeout
+            method="GET",
+            path=self.path,
+            query_params=query_params,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
         self._set_properties(response)
 
@@ -385,7 +391,11 @@ class BucketNotification(object):
             query_params["userProject"] = self.bucket.user_project
 
         client._connection.api_request(
-            method="DELETE", path=self.path, query_params=query_params, timeout=timeout
+            method="DELETE",
+            path=self.path,
+            query_params=query_params,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
 
 

@@ -45,6 +45,7 @@ from google.cloud.storage.hmac_key import HMACKeyMetadata
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 _marker = object()
@@ -255,7 +256,7 @@ class Client(ClientWithProject):
             project = self.project
         path = "/projects/%s/serviceAccount" % (project,)
         api_response = self._base_connection.api_request(
-            method="GET", path=path, timeout=timeout
+            method="GET", path=path, timeout=timeout, retry=DEFAULT_RETRY,
         )
         return api_response["email_address"]
 
@@ -531,6 +532,7 @@ class Client(ClientWithProject):
             data=properties,
             _target_object=bucket,
             timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
 
         bucket._set_properties(api_response)
@@ -777,7 +779,9 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params["fields"] = fields
 
-        api_request = functools.partial(self._connection.api_request, timeout=timeout)
+        api_request = functools.partial(
+            self._connection.api_request, retry=DEFAULT_RETRY, timeout=timeout
+        )
 
         return page_iterator.HTTPIterator(
             client=self,
@@ -829,7 +833,11 @@ class Client(ClientWithProject):
             qs_params["userProject"] = user_project
 
         api_response = self._connection.api_request(
-            method="POST", path=path, query_params=qs_params, timeout=timeout
+            method="POST",
+            path=path,
+            query_params=qs_params,
+            timeout=timeout,
+            retry=None,
         )
         metadata = HMACKeyMetadata(self)
         metadata._properties = api_response["metadata"]
@@ -893,7 +901,9 @@ class Client(ClientWithProject):
         if user_project is not None:
             extra_params["userProject"] = user_project
 
-        api_request = functools.partial(self._connection.api_request, timeout=timeout)
+        api_request = functools.partial(
+            self._connection.api_request, timeout=timeout, retry=DEFAULT_RETRY
+        )
 
         return page_iterator.HTTPIterator(
             client=self,

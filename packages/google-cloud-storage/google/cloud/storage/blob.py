@@ -74,6 +74,7 @@ from google.cloud.storage.constants import MULTI_REGIONAL_LEGACY_STORAGE_CLASS
 from google.cloud.storage.constants import NEARLINE_STORAGE_CLASS
 from google.cloud.storage.constants import REGIONAL_LEGACY_STORAGE_CLASS
 from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 
 
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
@@ -2856,6 +2857,7 @@ class Blob(_PropertyMixin):
             data=request,
             _target_object=self,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
         self._set_properties(api_response)
 
@@ -3000,6 +3002,7 @@ class Blob(_PropertyMixin):
             headers=headers,
             _target_object=self,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
         rewritten = int(api_response["totalBytesRewritten"])
         size = int(api_response["objectSize"])

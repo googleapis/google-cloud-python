@@ -24,6 +24,8 @@ import os
 
 from six.moves.urllib.parse import urlsplit
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
 
 STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
@@ -205,6 +207,7 @@ class _PropertyMixin(object):
             headers=self._encryption_headers(),
             _target_object=self,
             timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
         self._set_properties(api_response)
 
@@ -306,6 +309,7 @@ class _PropertyMixin(object):
             query_params=query_params,
             _target_object=self,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
         )
         self._set_properties(api_response)
 
@@ -368,6 +372,7 @@ class _PropertyMixin(object):
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
         )
+
         api_response = client._connection.api_request(
             method="PUT",
             path=self.path,
@@ -375,6 +380,7 @@ class _PropertyMixin(object):
             query_params=query_params,
             _target_object=self,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
         )
         self._set_properties(api_response)
 

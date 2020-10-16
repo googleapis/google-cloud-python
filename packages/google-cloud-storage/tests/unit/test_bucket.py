@@ -18,6 +18,10 @@ import unittest
 import mock
 import pytest
 
+from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
+
 
 def _make_connection(*responses):
     import google.cloud.storage._http
@@ -1021,6 +1025,7 @@ class Test_Bucket(unittest.TestCase):
                 "query_params": {},
                 "_target_object": None,
                 "timeout": self._get_default_timeout(),
+                "retry": DEFAULT_RETRY,
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1042,6 +1047,7 @@ class Test_Bucket(unittest.TestCase):
                 "_target_object": None,
                 "query_params": {"userProject": USER_PROJECT},
                 "timeout": 42,
+                "retry": DEFAULT_RETRY,
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1065,6 +1071,7 @@ class Test_Bucket(unittest.TestCase):
                 "query_params": {},
                 "_target_object": None,
                 "timeout": self._get_default_timeout(),
+                "retry": DEFAULT_RETRY,
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1090,6 +1097,7 @@ class Test_Bucket(unittest.TestCase):
                 "query_params": {"ifMetagenerationMatch": METAGENERATION_NUMBER},
                 "_target_object": None,
                 "timeout": self._get_default_timeout(),
+                "retry": DEFAULT_RETRY,
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1112,6 +1120,7 @@ class Test_Bucket(unittest.TestCase):
                 "query_params": {},
                 "_target_object": None,
                 "timeout": self._get_default_timeout(),
+                "retry": DEFAULT_RETRY,
             }
         ]
         self.assertEqual(connection._deleted_buckets, expected_cw)
@@ -1160,6 +1169,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
         self.assertEqual(kw["timeout"], 42)
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blob_hit_with_generation(self):
         NAME = "name"
@@ -1175,6 +1185,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw["query_params"], {"generation": GENERATION})
         self.assertEqual(kw["timeout"], self._get_default_timeout())
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blob_with_generation_match(self):
         NAME = "name"
@@ -1200,6 +1211,7 @@ class Test_Bucket(unittest.TestCase):
             {"ifGenerationMatch": GENERATION, "ifMetagenerationMatch": METAGENERATION},
         )
         self.assertEqual(kw["timeout"], self._get_default_timeout())
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blobs_empty(self):
         NAME = "name"
@@ -1223,6 +1235,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
         self.assertEqual(kw[0]["timeout"], 42)
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blobs_w_generation_match(self):
         NAME = "name"
@@ -1248,12 +1261,14 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(
             kw[0]["query_params"], {"ifGenerationMatch": GENERATION_NUMBER}
         )
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
         self.assertEqual(kw[1]["method"], "DELETE")
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME2))
         self.assertEqual(kw[1]["timeout"], 42)
         self.assertEqual(
             kw[1]["query_params"], {"ifGenerationMatch": GENERATION_NUMBER2}
         )
+        self.assertEqual(kw[1]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blobs_w_generation_match_wrong_len(self):
         NAME = "name"
@@ -1295,10 +1310,12 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(
             kw[0]["query_params"], {"ifGenerationMatch": GENERATION_NUMBER}
         )
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
         self.assertEqual(kw[1]["method"], "DELETE")
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME2))
         self.assertEqual(kw[1]["timeout"], 42)
         self.assertEqual(kw[1]["query_params"], {})
+        self.assertEqual(kw[1]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blobs_miss_no_on_error(self):
         from google.cloud.exceptions import NotFound
@@ -1315,9 +1332,11 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "DELETE")
         self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
         self.assertEqual(kw[1]["method"], "DELETE")
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
         self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
+        self.assertEqual(kw[1]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_delete_blobs_miss_w_on_error(self):
         NAME = "name"
@@ -1334,9 +1353,11 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw[0]["method"], "DELETE")
         self.assertEqual(kw[0]["path"], "/b/%s/o/%s" % (NAME, BLOB_NAME))
         self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
+        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
         self.assertEqual(kw[1]["method"], "DELETE")
         self.assertEqual(kw[1]["path"], "/b/%s/o/%s" % (NAME, NONESUCH))
         self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
+        self.assertEqual(kw[1]["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_reload_bucket_w_metageneration_match(self):
         NAME = "name"
@@ -1385,6 +1406,7 @@ class Test_Bucket(unittest.TestCase):
             req["query_params"],
             {"projection": "full", "ifMetagenerationMatch": METAGENERATION_NUMBER},
         )
+        self.assertEqual(req["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
 
     def test_update_bucket_w_generation_match(self):
         connection = _Connection({})
@@ -1426,6 +1448,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
         self.assertEqual(kw["timeout"], 42)
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_copy_blobs_source_generation(self):
         SOURCE = "source"
@@ -1452,6 +1475,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {"sourceGeneration": GENERATION})
         self.assertEqual(kw["timeout"], self._get_default_timeout())
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_copy_blobs_w_generation_match(self):
         SOURCE = "source"
@@ -1489,6 +1513,7 @@ class Test_Bucket(unittest.TestCase):
             },
         )
         self.assertEqual(kw["timeout"], self._get_default_timeout())
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
@@ -1522,6 +1547,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw1["path"], COPY_PATH)
         self.assertEqual(kw1["query_params"], {})
         self.assertEqual(kw1["timeout"], self._get_default_timeout())
+        self.assertEqual(kw1["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
         self.assertEqual(kw2["method"], "PATCH")
         self.assertEqual(kw2["path"], NEW_BLOB_PATH)
@@ -1553,6 +1579,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {"userProject": USER_PROJECT})
         self.assertEqual(kw["timeout"], self._get_default_timeout())
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def test_rename_blob(self):
         BUCKET_NAME = "BUCKET_NAME"
@@ -1579,6 +1606,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
         self.assertEqual(kw["timeout"], 42)
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
         blob.delete.assert_called_once_with(
             client=client,
@@ -1628,6 +1656,7 @@ class Test_Bucket(unittest.TestCase):
             },
         )
         self.assertEqual(kw["timeout"], 42)
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
         blob.delete.assert_called_once_with(
             client=client,
@@ -1660,6 +1689,7 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(kw["path"], COPY_PATH)
         self.assertEqual(kw["query_params"], {})
         self.assertEqual(kw["timeout"], self._get_default_timeout())
+        self.assertEqual(kw["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
         blob.delete.assert_not_called()
 
@@ -2272,6 +2302,7 @@ class Test_Bucket(unittest.TestCase):
             data=DATA,
             _target_object=bucket,
             timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
         mock_warn.assert_called_with(

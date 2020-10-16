@@ -14,6 +14,8 @@
 
 """Create / interact with Google Cloud Storage connections."""
 
+import functools
+
 from google.cloud import _http
 
 from google.cloud.storage import __version__
@@ -46,3 +48,16 @@ class Connection(_http.JSONConnection):
 
     API_URL_TEMPLATE = "{api_base_url}/storage/{api_version}{path}"
     """A template for the URL of a particular API call."""
+
+    def api_request(self, *args, **kwargs):
+        retry = kwargs.pop("retry", None)
+        call = functools.partial(super(Connection, self).api_request, *args, **kwargs)
+        if retry:
+            # If this is a ConditionalRetryPolicy, check conditions.
+            try:
+                retry = retry.get_retry_policy_if_conditions_met(**kwargs)
+            except AttributeError:  # This is not a ConditionalRetryPolicy.
+                pass
+            if retry:
+                call = retry(call)
+        return call()

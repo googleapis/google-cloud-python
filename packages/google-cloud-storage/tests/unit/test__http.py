@@ -99,3 +99,117 @@ class TestConnection(unittest.TestCase):
         self.assertEqual(path, "/".join(["", "storage", conn.API_VERSION, "foo"]))
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms["bar"], "baz")
+
+    def test_api_request_no_retry(self):
+        import requests
+
+        http = mock.create_autospec(requests.Session, instance=True)
+        client = mock.Mock(_http=http, spec=["_http"])
+
+        conn = self._make_one(client)
+        response = requests.Response()
+        response.status_code = 200
+        data = b"brent-spiner"
+        response._content = data
+        http.request.return_value = response
+
+        req_data = "hey-yoooouuuuu-guuuuuyyssss"
+        conn.api_request("GET", "/rainbow", data=req_data, expect_json=False)
+        http.request.assert_called_once()
+
+    def test_api_request_basic_retry(self):
+        # For this test, the "retry" function will just short-circuit.
+        FAKE_RESPONSE_STRING = "fake_response"
+
+        def retry(_):
+            def fake_response():
+                return FAKE_RESPONSE_STRING
+
+            return fake_response
+
+        import requests
+
+        http = mock.create_autospec(requests.Session, instance=True)
+        client = mock.Mock(_http=http, spec=["_http"])
+
+        # Some of this is unnecessary if the test succeeds, but we'll leave it
+        # to ensure a failure produces a less confusing error message.
+        conn = self._make_one(client)
+        response = requests.Response()
+        response.status_code = 200
+        data = b"brent-spiner"
+        response._content = data
+        http.request.return_value = response
+
+        req_data = "hey-yoooouuuuu-guuuuuyyssss"
+        result = conn.api_request(
+            "GET", "/rainbow", data=req_data, expect_json=False, retry=retry
+        )
+        http.request.assert_not_called()
+        self.assertEqual(result, FAKE_RESPONSE_STRING)
+
+    def test_api_request_conditional_retry(self):
+        # For this test, the "retry" function will short-circuit.
+        FAKE_RESPONSE_STRING = "fake_response"
+
+        def retry(_):
+            def fake_response():
+                return FAKE_RESPONSE_STRING
+
+            return fake_response
+
+        conditional_retry_mock = mock.MagicMock()
+        conditional_retry_mock.get_retry_policy_if_conditions_met.return_value = retry
+
+        import requests
+
+        http = mock.create_autospec(requests.Session, instance=True)
+        client = mock.Mock(_http=http, spec=["_http"])
+
+        # Some of this is unnecessary if the test succeeds, but we'll leave it
+        # to ensure a failure produces a less confusing error message.
+        conn = self._make_one(client)
+        response = requests.Response()
+        response.status_code = 200
+        data = b"brent-spiner"
+        response._content = data
+        http.request.return_value = response
+
+        req_data = "hey-yoooouuuuu-guuuuuyyssss"
+        result = conn.api_request(
+            "GET",
+            "/rainbow",
+            data=req_data,
+            expect_json=False,
+            retry=conditional_retry_mock,
+        )
+        http.request.assert_not_called()
+        self.assertEqual(result, FAKE_RESPONSE_STRING)
+
+    def test_api_request_conditional_retry_failed(self):
+        conditional_retry_mock = mock.MagicMock()
+        conditional_retry_mock.get_retry_policy_if_conditions_met.return_value = None
+
+        import requests
+
+        http = mock.create_autospec(requests.Session, instance=True)
+        client = mock.Mock(_http=http, spec=["_http"])
+
+        # Some of this is unnecessary if the test succeeds, but we'll leave it
+        # to ensure a failure produces a less confusing error message.
+        conn = self._make_one(client)
+        response = requests.Response()
+        response.status_code = 200
+        data = b"brent-spiner"
+        response._content = data
+        http.request.return_value = response
+
+        req_data = "hey-yoooouuuuu-guuuuuyyssss"
+        conn.api_request(
+            "GET",
+            "/rainbow",
+            data=req_data,
+            expect_json=False,
+            retry=conditional_retry_mock,
+        )
+        http.request.assert_called_once()

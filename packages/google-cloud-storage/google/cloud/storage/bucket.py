@@ -57,7 +57,9 @@ from google.cloud.storage.constants import REGION_LOCATION_TYPE
 from google.cloud.storage.constants import STANDARD_STORAGE_CLASS
 from google.cloud.storage.notification import BucketNotification
 from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
-
+from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
 
 _UBLA_BPO_ENABLED_MESSAGE = (
     "Pass only one of 'uniform_bucket_level_access_enabled' / "
@@ -1244,7 +1246,9 @@ class Bucket(_PropertyMixin):
 
         client = self._require_client(client)
         path = self.path + "/o"
-        api_request = functools.partial(client._connection.api_request, timeout=timeout)
+        api_request = functools.partial(
+            client._connection.api_request, timeout=timeout, retry=DEFAULT_RETRY
+        )
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=api_request,
@@ -1283,7 +1287,9 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         path = self.path + "/notificationConfigs"
-        api_request = functools.partial(client._connection.api_request, timeout=timeout)
+        api_request = functools.partial(
+            client._connection.api_request, timeout=timeout, retry=DEFAULT_RETRY
+        )
         iterator = page_iterator.HTTPIterator(
             client=client,
             api_request=api_request,
@@ -1424,6 +1430,7 @@ class Bucket(_PropertyMixin):
             query_params=query_params,
             _target_object=None,
             timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
 
     def delete_blob(
@@ -1521,6 +1528,7 @@ class Bucket(_PropertyMixin):
             query_params=query_params,
             _target_object=None,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
 
     def delete_blobs(
@@ -1795,6 +1803,7 @@ class Bucket(_PropertyMixin):
             query_params=query_params,
             _target_object=new_blob,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
 
         if not preserve_acl:
@@ -2644,6 +2653,7 @@ class Bucket(_PropertyMixin):
             query_params=query_params,
             _target_object=None,
             timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
         return Policy.from_api_repr(info)
 
@@ -2689,6 +2699,7 @@ class Bucket(_PropertyMixin):
             data=resource,
             _target_object=None,
             timeout=timeout,
+            retry=DEFAULT_RETRY_IF_ETAG_IN_JSON,
         )
         return Policy.from_api_repr(info)
 
@@ -2727,7 +2738,11 @@ class Bucket(_PropertyMixin):
 
         path = "%s/iam/testPermissions" % (self.path,)
         resp = client._connection.api_request(
-            method="GET", path=path, query_params=query_params, timeout=timeout
+            method="GET",
+            path=path,
+            query_params=query_params,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
         return resp.get("permissions", [])
 
@@ -2967,6 +2982,7 @@ class Bucket(_PropertyMixin):
             query_params=query_params,
             _target_object=self,
             timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
         self._set_properties(api_response)
 
