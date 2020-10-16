@@ -1,1 +1,1 @@
-google-cloud-trace==1.0.0
+google-cloud-trace==1.1.0
