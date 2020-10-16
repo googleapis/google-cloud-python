@@ -7,8 +7,8 @@ API. By default, you will get ``v1``, the latest GA version.
 .. toctree::
   :maxdepth: 2
 
-  gapic/v1/api
-  gapic/v1/types
+  language_v1/services
+  language_v1/types
 
 If you are interested in beta features ahead of the latest GA, you may
 opt-in to the v1.1 beta, which is spelled ``v1beta2``. In order to do this,
@@ -20,8 +20,18 @@ An API and type reference is provided for the v1.1 beta also:
 .. toctree::
   :maxdepth: 2
 
-  gapic/v1beta2/api
-  gapic/v1beta2/types
+  language_v1beta2/services
+  language_v1beta2/types
+
+Migration Guide
+---------------
+
+See the guide below for instructions on migrating to the 2.x release of this library.
+
+.. toctree::
+    :maxdepth: 2
+
+    UPGRADING
 
 .. note::
 

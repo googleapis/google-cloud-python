@@ -33,35 +33,14 @@ for version in versions:
         bazel_target=f"//google/cloud/language/{version}:language-{version}-py",
         include_protos=True,
     )
-
-    s.move(library / f"google/cloud/language_{version}/proto")
-    s.move(library / f"google/cloud/language_{version}/gapic")
-    s.move(library / f"tests/unit/gapic/{version}")
-    s.move(library / f"tests/system/gapic/{version}")
-    s.move(library / f"samples")
+    s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])    
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=97, cov_level=100, samples=True)
+templated_files = common.py_library(cov_level=99, samples=True, microgenerator=True,)
 
-s.move(templated_files, excludes=['noxfile.py'])
-
-s.replace("google/cloud/**/language_service_pb2.py",
-'''__doc__ = """################################################################
-  #
-  
-  Represents the input to API methods.''',
-'''__doc__="""Represents the input to API methods.'''
-)
-s.replace(
-    f"google/cloud/**/gapic/language_service_client.py",
-    r"types\.EncodingType",
-    "enums.EncodingType",
-)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+s.move(templated_files, excludes=['.coveragerc'])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
