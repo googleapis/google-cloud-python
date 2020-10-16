@@ -17,7 +17,6 @@ branchProtectionRules:
     - 'ci/circleci: showcase-unit-3.7'
     - 'ci/circleci: showcase-unit-3.8'
     - 'ci/circleci: showcase-unit-add-iam-methods'
-    - 'ci/circleci: showcase-unit-alternative-templates-3.6'
     - 'ci/circleci: showcase-unit-alternative-templates-3.7'
     - 'ci/circleci: showcase-unit-alternative-templates-3.8'
     - 'ci/circleci: style-check'
