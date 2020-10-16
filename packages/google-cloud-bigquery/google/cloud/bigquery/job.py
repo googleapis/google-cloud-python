@@ -35,6 +35,7 @@ from google.cloud.bigquery.encryption_configuration import EncryptionConfigurati
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import _query_param_from_api_repr
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
@@ -47,8 +48,9 @@ from google.cloud.bigquery.schema import _to_schema_fields
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import _table_arg_to_table_ref
-from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableListItem
+from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import TimePartitioning
 
 _DONE_STATE = "DONE"
@@ -461,11 +463,11 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             Optional[datetime.datetime]:
                 the creation time (None until set from the server).
         """
-        statistics = self._properties.get("statistics")
-        if statistics is not None:
-            millis = statistics.get("creationTime")
-            if millis is not None:
-                return _helpers._datetime_from_microseconds(millis * 1000.0)
+        millis = _helpers._get_sub_prop(
+            self._properties, ["statistics", "creationTime"]
+        )
+        if millis is not None:
+            return _helpers._datetime_from_microseconds(millis * 1000.0)
 
     @property
     def started(self):
@@ -475,11 +477,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             Optional[datetime.datetime]:
                 the start time (None until set from the server).
         """
-        statistics = self._properties.get("statistics")
-        if statistics is not None:
-            millis = statistics.get("startTime")
-            if millis is not None:
-                return _helpers._datetime_from_microseconds(millis * 1000.0)
+        millis = _helpers._get_sub_prop(self._properties, ["statistics", "startTime"])
+        if millis is not None:
+            return _helpers._datetime_from_microseconds(millis * 1000.0)
 
     @property
     def ended(self):
@@ -489,11 +489,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             Optional[datetime.datetime]:
                 the end time (None until set from the server).
         """
-        statistics = self._properties.get("statistics")
-        if statistics is not None:
-            millis = statistics.get("endTime")
-            if millis is not None:
-                return _helpers._datetime_from_microseconds(millis * 1000.0)
+        millis = _helpers._get_sub_prop(self._properties, ["statistics", "endTime"])
+        if millis is not None:
+            return _helpers._datetime_from_microseconds(millis * 1000.0)
 
     def _job_statistics(self):
         """Helper for job-type specific statistics-based properties."""
@@ -535,14 +533,6 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if status is not None:
             return status.get("state")
 
-    def _scrub_local_properties(self, cleaned):
-        """Helper:  handle subclass properties in cleaned."""
-        pass
-
-    def _copy_configuration_properties(self, configuration):
-        """Helper:  assign subclass configuration properties in cleaned."""
-        raise NotImplementedError("Abstract")
-
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -550,7 +540,6 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             api_response (Dict): response returned from an API call.
         """
         cleaned = api_response.copy()
-        self._scrub_local_properties(cleaned)
 
         statistics = cleaned.get("statistics", {})
         if "creationTime" in statistics:
@@ -560,24 +549,23 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         if "endTime" in statistics:
             statistics["endTime"] = float(statistics["endTime"])
 
+        # Save configuration to keep reference same in self._configuration.
+        cleaned_config = cleaned.pop("configuration", {})
+        configuration = self._properties.pop("configuration", {})
         self._properties.clear()
         self._properties.update(cleaned)
-        self._copy_configuration_properties(cleaned.get("configuration", {}))
+        self._properties["configuration"] = configuration
+        self._properties["configuration"].update(cleaned_config)
 
         # For Future interface
         self._set_future_result()
 
     @classmethod
-    def _get_resource_config(cls, resource):
+    def _check_resource_config(cls, resource):
         """Helper for :meth:`from_api_repr`
 
         Args:
             resource (Dict): resource for the job.
-
-        Returns:
-            (str, Dict):
-                tuple (string, dict), where the first element is the
-                job ID and the second contains job-specific configuration.
 
         Raises:
             KeyError:
@@ -589,7 +577,6 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 "Resource lacks required identity information: "
                 '["jobReference"]["jobId"]'
             )
-        job_id = resource["jobReference"]["jobId"]
         if (
             "configuration" not in resource
             or cls._JOB_TYPE not in resource["configuration"]
@@ -598,7 +585,6 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
                 "Resource lacks required configuration: "
                 '["configuration"]["%s"]' % cls._JOB_TYPE
             )
-        return job_id, resource["configuration"]
 
     def to_api_repr(self):
         """Generate a resource for the job."""
@@ -1002,15 +988,15 @@ class _JobConfig(object):
 
         Args:
             resource (Dict):
-                An extract job configuration in the same representation as is
-                returned from the API.
+                A job configuration in the same representation as is returned
+                from the API.
 
         Returns:
             google.cloud.bigquery.job._JobConfig: Configuration parsed from ``resource``.
         """
-        config = cls()
-        config._properties = copy.deepcopy(resource)
-        return config
+        job_config = cls()
+        job_config._properties = resource
+        return job_config
 
 
 class LoadJobConfig(_JobConfig):
@@ -1450,12 +1436,23 @@ class LoadJob(_AsyncJob):
     def __init__(self, job_id, source_uris, destination, client, job_config=None):
         super(LoadJob, self).__init__(job_id, client)
 
-        if job_config is None:
+        if not job_config:
             job_config = LoadJobConfig()
 
-        self.source_uris = source_uris
-        self._destination = destination
         self._configuration = job_config
+        self._properties["configuration"] = job_config._properties
+
+        if source_uris is not None:
+            _helpers._set_sub_prop(
+                self._properties, ["configuration", "load", "sourceUris"], source_uris
+            )
+
+        if destination is not None:
+            _helpers._set_sub_prop(
+                self._properties,
+                ["configuration", "load", "destinationTable"],
+                destination.to_api_repr(),
+            )
 
     @property
     def destination(self):
@@ -1464,7 +1461,20 @@ class LoadJob(_AsyncJob):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.destination_table
         """
-        return self._destination
+        dest_config = _helpers._get_sub_prop(
+            self._properties, ["configuration", "load", "destinationTable"]
+        )
+        return TableReference.from_api_repr(dest_config)
+
+    @property
+    def source_uris(self):
+        """Optional[Sequence[str]]: URIs of data files to be loaded. See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.source_uris
+        for supported URI formats. None for jobs that load from a file.
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["configuration", "load", "sourceUris"]
+        )
 
     @property
     def allow_jagged_rows(self):
@@ -1687,23 +1697,11 @@ class LoadJob(_AsyncJob):
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
-        configuration = self._configuration.to_api_repr()
-        if self.source_uris is not None:
-            _helpers._set_sub_prop(
-                configuration, ["load", "sourceUris"], self.source_uris
-            )
-        _helpers._set_sub_prop(
-            configuration, ["load", "destinationTable"], self.destination.to_api_repr()
-        )
-
+        # Exclude statistics, if set.
         return {
             "jobReference": self._properties["jobReference"],
-            "configuration": configuration,
+            "configuration": self._properties["configuration"],
         }
-
-    def _copy_configuration_properties(self, configuration):
-        """Helper:  assign subclass configuration properties in cleaned."""
-        self._configuration._properties = copy.deepcopy(configuration)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -1724,16 +1722,9 @@ class LoadJob(_AsyncJob):
         Returns:
             google.cloud.bigquery.job.LoadJob: Job parsed from ``resource``.
         """
-        config_resource = resource.get("configuration", {})
-        config = LoadJobConfig.from_api_repr(config_resource)
-        # A load job requires a destination table.
-        dest_config = config_resource["load"]["destinationTable"]
-        ds_ref = DatasetReference(dest_config["projectId"], dest_config["datasetId"])
-        destination = TableReference(ds_ref, dest_config["tableId"])
-        # sourceUris will be absent if this is a file upload.
-        source_uris = _helpers._get_sub_prop(config_resource, ["load", "sourceUris"])
+        cls._check_resource_config(resource)
         job_ref = _JobReference._from_api_repr(resource["jobReference"])
-        job = cls(job_ref, source_uris, destination, client, config)
+        job = cls(job_ref, None, None, client)
         job._set_properties(resource)
         return job
 
@@ -1824,12 +1815,59 @@ class CopyJob(_AsyncJob):
     def __init__(self, job_id, sources, destination, client, job_config=None):
         super(CopyJob, self).__init__(job_id, client)
 
-        if job_config is None:
+        if not job_config:
             job_config = CopyJobConfig()
 
-        self.destination = destination
-        self.sources = sources
         self._configuration = job_config
+        self._properties["configuration"] = job_config._properties
+
+        if destination:
+            _helpers._set_sub_prop(
+                self._properties,
+                ["configuration", "copy", "destinationTable"],
+                destination.to_api_repr(),
+            )
+
+        if sources:
+            source_resources = [source.to_api_repr() for source in sources]
+            _helpers._set_sub_prop(
+                self._properties,
+                ["configuration", "copy", "sourceTables"],
+                source_resources,
+            )
+
+    @property
+    def destination(self):
+        """google.cloud.bigquery.table.TableReference: Table into which data
+        is to be loaded.
+        """
+        return TableReference.from_api_repr(
+            _helpers._get_sub_prop(
+                self._properties, ["configuration", "copy", "destinationTable"],
+            )
+        )
+
+    @property
+    def sources(self):
+        """List[google.cloud.bigquery.table.TableReference]): Table(s) from
+        which data is to be loaded.
+        """
+        source_configs = _helpers._get_sub_prop(
+            self._properties, ["configuration", "copy", "sourceTables"]
+        )
+        if source_configs is None:
+            single = _helpers._get_sub_prop(
+                self._properties, ["configuration", "copy", "sourceTable"]
+            )
+            if single is None:
+                raise KeyError("Resource missing 'sourceTables' / 'sourceTable'")
+            source_configs = [single]
+
+        sources = []
+        for source_config in source_configs:
+            table_ref = TableReference.from_api_repr(source_config)
+            sources.append(table_ref)
+        return sources
 
     @property
     def create_disposition(self):
@@ -1860,40 +1898,15 @@ class CopyJob(_AsyncJob):
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
-
-        source_refs = [
-            {
-                "projectId": table.project,
-                "datasetId": table.dataset_id,
-                "tableId": table.table_id,
-            }
-            for table in self.sources
-        ]
-
-        configuration = self._configuration.to_api_repr()
-        _helpers._set_sub_prop(configuration, ["copy", "sourceTables"], source_refs)
-        _helpers._set_sub_prop(
-            configuration,
-            ["copy", "destinationTable"],
-            {
-                "projectId": self.destination.project,
-                "datasetId": self.destination.dataset_id,
-                "tableId": self.destination.table_id,
-            },
-        )
-
+        # Exclude statistics, if set.
         return {
             "jobReference": self._properties["jobReference"],
-            "configuration": configuration,
+            "configuration": self._properties["configuration"],
         }
-
-    def _copy_configuration_properties(self, configuration):
-        """Helper:  assign subclass configuration properties in cleaned."""
-        self._configuration._properties = copy.deepcopy(configuration)
 
     @classmethod
     def from_api_repr(cls, resource, client):
-        """Factory:  construct a job given its API representation
+        """Factory: construct a job given its API representation
 
         .. note:
 
@@ -1902,7 +1915,6 @@ class CopyJob(_AsyncJob):
 
         Args:
             resource (Dict): dataset job representation returned from the API
-
             client (google.cloud.bigquery.client.Client):
                 Client which holds credentials and project
                 configuration for the dataset.
@@ -1910,22 +1922,9 @@ class CopyJob(_AsyncJob):
         Returns:
             google.cloud.bigquery.job.CopyJob: Job parsed from ``resource``.
         """
-        job_id, config_resource = cls._get_resource_config(resource)
-        config = CopyJobConfig.from_api_repr(config_resource)
-        # Copy required fields to the job.
-        copy_resource = config_resource["copy"]
-        destination = TableReference.from_api_repr(copy_resource["destinationTable"])
-        sources = []
-        source_configs = copy_resource.get("sourceTables")
-        if source_configs is None:
-            single = copy_resource.get("sourceTable")
-            if single is None:
-                raise KeyError("Resource missing 'sourceTables' / 'sourceTable'")
-            source_configs = [single]
-        for source_config in source_configs:
-            table_ref = TableReference.from_api_repr(source_config)
-            sources.append(table_ref)
-        job = cls(job_id, sources, destination, client=client, job_config=config)
+        cls._check_resource_config(resource)
+        job_ref = _JobReference._from_api_repr(resource["jobReference"])
+        job = cls(job_ref, None, None, client=client)
         job._set_properties(resource)
         return job
 
@@ -2038,9 +2037,60 @@ class ExtractJob(_AsyncJob):
         if job_config is None:
             job_config = ExtractJobConfig()
 
-        self.source = source
-        self.destination_uris = destination_uris
+        self._properties["configuration"] = job_config._properties
         self._configuration = job_config
+
+        if source:
+            source_ref = {
+                "projectId": source.project,
+                "datasetId": source.dataset_id,
+            }
+
+            if isinstance(source, (Table, TableListItem, TableReference)):
+                source_ref["tableId"] = source.table_id
+                source_key = "sourceTable"
+            else:
+                source_ref["modelId"] = source.model_id
+                source_key = "sourceModel"
+
+            _helpers._set_sub_prop(
+                self._properties, ["configuration", "extract", source_key], source_ref
+            )
+
+        if destination_uris:
+            _helpers._set_sub_prop(
+                self._properties,
+                ["configuration", "extract", "destinationUris"],
+                destination_uris,
+            )
+
+    @property
+    def source(self):
+        """Union[ \
+            google.cloud.bigquery.table.TableReference, \
+            google.cloud.bigquery.model.ModelReference \
+        ]: Table or Model from which data is to be loaded or extracted.
+        """
+        source_config = _helpers._get_sub_prop(
+            self._properties, ["configuration", "extract", "sourceTable"]
+        )
+        if source_config:
+            return TableReference.from_api_repr(source_config)
+        else:
+            source_config = _helpers._get_sub_prop(
+                self._properties, ["configuration", "extract", "sourceModel"]
+            )
+            return ModelReference.from_api_repr(source_config)
+
+    @property
+    def destination_uris(self):
+        """List[str]: URIs describing where the extracted data will be
+        written in Cloud Storage, using the format
+        ``gs://<bucket_name>/<object_name_or_glob>``.
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["configuration", "extract", "destinationUris"]
+        )
 
     @property
     def compression(self):
@@ -2092,33 +2142,11 @@ class ExtractJob(_AsyncJob):
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
-
-        configuration = self._configuration.to_api_repr()
-        source_ref = {
-            "projectId": self.source.project,
-            "datasetId": self.source.dataset_id,
-        }
-
-        source = "sourceTable"
-        if isinstance(self.source, TableReference):
-            source_ref["tableId"] = self.source.table_id
-        else:
-            source_ref["modelId"] = self.source.model_id
-            source = "sourceModel"
-
-        _helpers._set_sub_prop(configuration, ["extract", source], source_ref)
-        _helpers._set_sub_prop(
-            configuration, ["extract", "destinationUris"], self.destination_uris
-        )
-
+        # Exclude statistics, if set.
         return {
             "jobReference": self._properties["jobReference"],
-            "configuration": configuration,
+            "configuration": self._properties["configuration"],
         }
-
-    def _copy_configuration_properties(self, configuration):
-        """Helper:  assign subclass configuration properties in cleaned."""
-        self._configuration._properties = copy.deepcopy(configuration)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -2139,30 +2167,9 @@ class ExtractJob(_AsyncJob):
         Returns:
             google.cloud.bigquery.job.ExtractJob: Job parsed from ``resource``.
         """
-        job_id, config_resource = cls._get_resource_config(resource)
-        config = ExtractJobConfig.from_api_repr(config_resource)
-        source_config = _helpers._get_sub_prop(
-            config_resource, ["extract", "sourceTable"]
-        )
-        if source_config:
-            dataset = DatasetReference(
-                source_config["projectId"], source_config["datasetId"]
-            )
-            source = dataset.table(source_config["tableId"])
-        else:
-            source_config = _helpers._get_sub_prop(
-                config_resource, ["extract", "sourceModel"]
-            )
-            dataset = DatasetReference(
-                source_config["projectId"], source_config["datasetId"]
-            )
-            source = dataset.model(source_config["modelId"])
-
-        destination_uris = _helpers._get_sub_prop(
-            config_resource, ["extract", "destinationUris"]
-        )
-
-        job = cls(job_id, source, destination_uris, client=client, job_config=config)
+        cls._check_resource_config(resource)
+        job_ref = _JobReference._from_api_repr(resource["jobReference"])
+        job = cls(job_ref, None, None, client=client)
         job._set_properties(resource)
         return job
 
@@ -2631,11 +2638,14 @@ class QueryJob(_AsyncJob):
         if job_config.use_legacy_sql is None:
             job_config.use_legacy_sql = False
 
-        _helpers._set_sub_prop(
-            self._properties, ["configuration", "query", "query"], query
-        )
-
+        self._properties["configuration"] = job_config._properties
         self._configuration = job_config
+
+        if query:
+            _helpers._set_sub_prop(
+                self._properties, ["configuration", "query", "query"], query
+            )
+
         self._query_results = None
         self._done_timeout = None
         self._transport_timeout = None
@@ -2799,19 +2809,13 @@ class QueryJob(_AsyncJob):
 
     def to_api_repr(self):
         """Generate a resource for :meth:`_begin`."""
+        # Use to_api_repr to allow for some configuration properties to be set
+        # automatically.
         configuration = self._configuration.to_api_repr()
-
-        resource = {
+        return {
             "jobReference": self._properties["jobReference"],
             "configuration": configuration,
         }
-        configuration["query"]["query"] = self.query
-
-        return resource
-
-    def _copy_configuration_properties(self, configuration):
-        """Helper:  assign subclass configuration properties in cleaned."""
-        self._configuration._properties = copy.deepcopy(configuration)
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -2827,9 +2831,9 @@ class QueryJob(_AsyncJob):
         Returns:
             google.cloud.bigquery.job.QueryJob: Job parsed from ``resource``.
         """
-        job_id, config = cls._get_resource_config(resource)
-        query = _helpers._get_sub_prop(config, ["query", "query"])
-        job = cls(job_id, query, client=client)
+        cls._check_resource_config(resource)
+        job_ref = _JobReference._from_api_repr(resource["jobReference"])
+        job = cls(job_ref, None, client=client)
         job._set_properties(resource)
         return job
 

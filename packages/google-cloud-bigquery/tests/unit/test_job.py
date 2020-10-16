@@ -455,28 +455,9 @@ class Test_AsyncJob(unittest.TestCase):
         status["state"] = state
         self.assertEqual(job.state, state)
 
-    def test__scrub_local_properties(self):
-        before = {"foo": "bar"}
-        resource = before.copy()
-        client = _make_client(project=self.PROJECT)
-        job = self._make_one(self.JOB_ID, client)
-        job._scrub_local_properties(resource)  # no raise
-        self.assertEqual(resource, before)
-
-    def test__copy_configuration_properties(self):
-        before = {"foo": "bar"}
-        resource = before.copy()
-        client = _make_client(project=self.PROJECT)
-        job = self._make_one(self.JOB_ID, client)
-        with self.assertRaises(NotImplementedError):
-            job._copy_configuration_properties(resource)
-        self.assertEqual(resource, before)
-
     def _set_properties_job(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
-        job._scrub_local_properties = mock.Mock()
-        job._copy_configuration_properties = mock.Mock()
         job._set_future_result = mock.Mock()
         job._properties = {
             "jobReference": job._properties["jobReference"],
@@ -493,9 +474,6 @@ class Test_AsyncJob(unittest.TestCase):
 
         self.assertEqual(job._properties, resource)
 
-        job._scrub_local_properties.assert_called_once_with(resource)
-        job._copy_configuration_properties.assert_called_once_with(config)
-
     def test__set_properties_w_creation_time(self):
         now, millis = self._datetime_and_millis()
         config = {"test": True}
@@ -508,9 +486,6 @@ class Test_AsyncJob(unittest.TestCase):
         cleaned = copy.deepcopy(resource)
         cleaned["statistics"]["creationTime"] = float(millis)
         self.assertEqual(job._properties, cleaned)
-
-        job._scrub_local_properties.assert_called_once_with(resource)
-        job._copy_configuration_properties.assert_called_once_with(config)
 
     def test__set_properties_w_start_time(self):
         now, millis = self._datetime_and_millis()
@@ -525,9 +500,6 @@ class Test_AsyncJob(unittest.TestCase):
         cleaned["statistics"]["startTime"] = float(millis)
         self.assertEqual(job._properties, cleaned)
 
-        job._scrub_local_properties.assert_called_once_with(resource)
-        job._copy_configuration_properties.assert_called_once_with(config)
-
     def test__set_properties_w_end_time(self):
         now, millis = self._datetime_and_millis()
         config = {"test": True}
@@ -541,38 +513,35 @@ class Test_AsyncJob(unittest.TestCase):
         cleaned["statistics"]["endTime"] = float(millis)
         self.assertEqual(job._properties, cleaned)
 
-        job._scrub_local_properties.assert_called_once_with(resource)
-        job._copy_configuration_properties.assert_called_once_with(config)
-
-    def test__get_resource_config_missing_job_ref(self):
+    def test__check_resource_config_missing_job_ref(self):
         resource = {}
         klass = self._make_derived_class()
 
         with self.assertRaises(KeyError):
-            klass._get_resource_config(resource)
+            klass._check_resource_config(resource)
 
-    def test__get_resource_config_missing_job_id(self):
+    def test__check_resource_config_missing_job_id(self):
         resource = {"jobReference": {}}
         klass = self._make_derived_class()
 
         with self.assertRaises(KeyError):
-            klass._get_resource_config(resource)
+            klass._check_resource_config(resource)
 
-    def test__get_resource_config_missing_configuration(self):
+    def test__check_resource_config_missing_configuration(self):
         resource = {"jobReference": {"jobId": self.JOB_ID}}
         klass = self._make_derived_class()
 
         with self.assertRaises(KeyError):
-            klass._get_resource_config(resource)
+            klass._check_resource_config(resource)
 
-    def test__get_resource_config_missing_config_type(self):
+    def test__check_resource_config_missing_config_type(self):
         resource = {"jobReference": {"jobId": self.JOB_ID}, "configuration": {}}
         klass = self._make_derived_class()
 
         with self.assertRaises(KeyError):
-            klass._get_resource_config(resource)
+            klass._check_resource_config(resource)
 
-    def test__get_resource_config_ok(self):
+    def test__check_resource_config_ok(self):
         derived_config = {"foo": "bar"}
         resource = {
             "jobReference": {"jobId": self.JOB_ID},
@@ -580,10 +549,8 @@ class Test_AsyncJob(unittest.TestCase):
         }
         klass = self._make_derived_class()
 
-        job_id, config = klass._get_resource_config(resource)
-
-        self.assertEqual(job_id, self.JOB_ID)
-        self.assertEqual(config, {"derived": derived_config})
+        # Should not throw.
+        klass._check_resource_config(resource)
 
     def test__build_resource(self):
         client = _make_client(project=self.PROJECT)
@@ -2093,7 +2060,7 @@ class TestLoadJob(unittest.TestCase, _Base):
     def test_ctor(self):
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, [self.SOURCE1], self.TABLE_REF, client)
-        self.assertIs(job.destination, self.TABLE_REF)
+        self.assertEqual(job.destination, self.TABLE_REF)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
@@ -2907,7 +2874,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         source = self._table_ref(self.SOURCE_TABLE)
         destination = self._table_ref(self.DESTINATION_TABLE)
         job = self._make_one(self.JOB_ID, [source], destination, client)
-        self.assertIs(job.destination, destination)
+        self.assertEqual(job.destination, destination)
         self.assertEqual(job.sources, [source])
         self.assertIs(job._client, client)
         self.assertEqual(job.job_type, self.JOB_TYPE)
@@ -3041,8 +3008,9 @@ class TestCopyJob(unittest.TestCase, _Base):
             },
         }
         klass = self._get_target_class()
+        job = klass.from_api_repr(RESOURCE, client=client)
         with self.assertRaises(KeyError):
-            klass.from_api_repr(RESOURCE, client=client)
+            _ = job.sources
 
     def test_from_api_repr_w_properties(self):
         from google.cloud.bigquery.job import CreateDisposition
