@@ -23,7 +23,7 @@ setuptools.setup(
         'grpc-google-iam-v1',
     {%- endif %}
     ),
-    python_requires='>={% if opts.lazy_import %}3.7{% else %}3.6{% endif %}',{# Lazy import requires module-level getattr #}
+    python_requires='>=3.6',
     scripts=[
         'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
     ],

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import distutils
+import os
 import pytest
 
 from google.api_core import exceptions
@@ -28,12 +30,14 @@ def test_retry_bubble(echo):
         })
 
 
-@pytest.mark.asyncio
-async def test_retry_bubble_async(async_echo):
-    with pytest.raises(exceptions.DeadlineExceeded):
-        await async_echo.echo({
-            'error': {
-                'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
-                'message': 'This took longer than you said it should.',
-            },
-        })
+if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+
+    @pytest.mark.asyncio
+    async def test_retry_bubble_async(async_echo):
+        with pytest.raises(exceptions.DeadlineExceeded):
+            await async_echo.echo({
+                'error': {
+                    'code': code_pb2.Code.Value('DEADLINE_EXCEEDED'),
+                    'message': 'This took longer than you said it should.',
+                },
+            })

@@ -20,7 +20,7 @@ def unit(session):
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
-        os.path.join('tests', 'unit', '{{ api.naming.versioned_module_name }}'),
+        os.path.join('tests', 'unit', 'gapic', '{{ api.naming.versioned_module_name }}'),
     )
 
 

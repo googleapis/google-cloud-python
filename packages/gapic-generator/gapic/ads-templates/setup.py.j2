@@ -24,7 +24,7 @@ setuptools.setup(
         'grpc-google-iam-v1',
     {%- endif %}
     ),
-    python_requires='>={% if opts.lazy_import %}3.7{% else %}3.6{% endif %}',{# Lazy import requires module-level getattr #}
+    python_requires='>=3.7',{# Lazy import requires module-level getattr #}
     setup_requires=[
         'libcst >= 0.2.5',
     ],

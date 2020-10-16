@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import distutils
 import logging
+import os
 import pytest
-import asyncio
 import threading
 from google import showcase
 
@@ -77,129 +78,124 @@ def test_stream_stream_passing_dict(echo):
     assert responses.trailing_metadata() == metadata
 
 
-@pytest.mark.asyncio
-async def test_async_unary_stream_reader(async_echo):
-    content = 'The hail in Wales falls mainly on the snails.'
-    call = await async_echo.expand({
-        'content': content,
-    }, metadata=metadata)
+if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+    import asyncio
 
-    # Consume the response and ensure it matches what we expect.
-    # with pytest.raises(exceptions.NotFound) as exc:
-    for ground_truth in content.split(' '):
-        response = await call.read()
-        assert response.content == ground_truth
-    assert ground_truth == 'snails.'
+    @pytest.mark.asyncio
+    async def test_async_unary_stream_reader(async_echo):
+        content = 'The hail in Wales falls mainly on the snails.'
+        call = await async_echo.expand({
+            'content': content,
+        }, metadata=metadata)
 
-    trailing_metadata = await call.trailing_metadata()
-    assert trailing_metadata == metadata
+        # Consume the response and ensure it matches what we expect.
+        # with pytest.raises(exceptions.NotFound) as exc:
+        for ground_truth in content.split(' '):
+            response = await call.read()
+            assert response.content == ground_truth
+        assert ground_truth == 'snails.'
 
+        trailing_metadata = await call.trailing_metadata()
+        assert trailing_metadata == metadata
 
-@pytest.mark.asyncio
-async def test_async_unary_stream_async_generator(async_echo):
-    content = 'The hail in Wales falls mainly on the snails.'
-    call = await async_echo.expand({
-        'content': content,
-    }, metadata=metadata)
+    @pytest.mark.asyncio
+    async def test_async_unary_stream_async_generator(async_echo):
+        content = 'The hail in Wales falls mainly on the snails.'
+        call = await async_echo.expand({
+            'content': content,
+        }, metadata=metadata)
 
-    # Consume the response and ensure it matches what we expect.
-    # with pytest.raises(exceptions.NotFound) as exc:
-    tokens = iter(content.split(' '))
-    async for response in call:
-        ground_truth = next(tokens)
-        assert response.content == ground_truth
-    assert ground_truth == 'snails.'
+        # Consume the response and ensure it matches what we expect.
+        # with pytest.raises(exceptions.NotFound) as exc:
+        tokens = iter(content.split(' '))
+        async for response in call:
+            ground_truth = next(tokens)
+            assert response.content == ground_truth
+        assert ground_truth == 'snails.'
 
-    trailing_metadata = await call.trailing_metadata()
-    assert trailing_metadata == metadata
+        trailing_metadata = await call.trailing_metadata()
+        assert trailing_metadata == metadata
 
+    @pytest.mark.asyncio
+    async def test_async_stream_unary_iterable(async_echo):
+        requests = []
+        requests.append(showcase.EchoRequest(content="hello"))
+        requests.append(showcase.EchoRequest(content="world!"))
 
-@pytest.mark.asyncio
-async def test_async_stream_unary_iterable(async_echo):
-    requests = []
-    requests.append(showcase.EchoRequest(content="hello"))
-    requests.append(showcase.EchoRequest(content="world!"))
+        call = await async_echo.collect(requests)
+        response = await call
+        assert response.content == 'hello world!'
 
-    call = await async_echo.collect(requests)
-    response = await call
-    assert response.content == 'hello world!'
+    @pytest.mark.asyncio
+    async def test_async_stream_unary_async_generator(async_echo):
 
+        async def async_generator():
+            yield showcase.EchoRequest(content="hello")
+            yield showcase.EchoRequest(content="world!")
 
-@pytest.mark.asyncio
-async def test_async_stream_unary_async_generator(async_echo):
+        call = await async_echo.collect(async_generator())
+        response = await call
+        assert response.content == 'hello world!'
 
-    async def async_generator():
-        yield showcase.EchoRequest(content="hello")
-        yield showcase.EchoRequest(content="world!")
+    @pytest.mark.asyncio
+    async def test_async_stream_unary_writer(async_echo):
+        call = await async_echo.collect()
+        await call.write(showcase.EchoRequest(content="hello"))
+        await call.write(showcase.EchoRequest(content="world!"))
+        await call.done_writing()
 
-    call = await async_echo.collect(async_generator())
-    response = await call
-    assert response.content == 'hello world!'
+        response = await call
+        assert response.content == 'hello world!'
 
+    @pytest.mark.asyncio
+    async def test_async_stream_unary_passing_dict(async_echo):
+        requests = [{'content': 'hello'}, {'content': 'world!'}]
+        call = await async_echo.collect(iter(requests))
+        response = await call
+        assert response.content == 'hello world!'
 
-@pytest.mark.asyncio
-async def test_async_stream_unary_writer(async_echo):
-    call = await async_echo.collect()
-    await call.write(showcase.EchoRequest(content="hello"))
-    await call.write(showcase.EchoRequest(content="world!"))
-    await call.done_writing()
+    @pytest.mark.asyncio
+    async def test_async_stream_stream_reader_writier(async_echo):
+        call = await async_echo.chat(metadata=metadata)
+        await call.write(showcase.EchoRequest(content="hello"))
+        await call.write(showcase.EchoRequest(content="world!"))
+        await call.done_writing()
 
-    response = await call
-    assert response.content == 'hello world!'
+        contents = [
+            (await call.read()).content,
+            (await call.read()).content
+        ]
+        assert contents == ['hello', 'world!']
 
+        trailing_metadata = await call.trailing_metadata()
+        assert trailing_metadata == metadata
 
-@pytest.mark.asyncio
-async def test_async_stream_unary_passing_dict(async_echo):
-    requests = [{'content': 'hello'}, {'content': 'world!'}]
-    call = await async_echo.collect(iter(requests))
-    response = await call
-    assert response.content == 'hello world!'
+    @pytest.mark.asyncio
+    async def test_async_stream_stream_async_generator(async_echo):
 
+        async def async_generator():
+            yield showcase.EchoRequest(content="hello")
+            yield showcase.EchoRequest(content="world!")
 
-@pytest.mark.asyncio
-async def test_async_stream_stream_reader_writier(async_echo):
-    call = await async_echo.chat(metadata=metadata)
-    await call.write(showcase.EchoRequest(content="hello"))
-    await call.write(showcase.EchoRequest(content="world!"))
-    await call.done_writing()
+        call = await async_echo.chat(async_generator(), metadata=metadata)
 
-    contents = [
-        (await call.read()).content,
-        (await call.read()).content
-    ]
-    assert contents == ['hello', 'world!']
+        contents = []
+        async for response in call:
+            contents.append(response.content)
+        assert contents == ['hello', 'world!']
 
-    trailing_metadata = await call.trailing_metadata()
-    assert trailing_metadata == metadata
+        trailing_metadata = await call.trailing_metadata()
+        assert trailing_metadata == metadata
 
+    @pytest.mark.asyncio
+    async def test_async_stream_stream_passing_dict(async_echo):
+        requests = [{'content': 'hello'}, {'content': 'world!'}]
+        call = await async_echo.chat(iter(requests), metadata=metadata)
 
-@pytest.mark.asyncio
-async def test_async_stream_stream_async_generator(async_echo):
+        contents = []
+        async for response in call:
+            contents.append(response.content)
+        assert contents == ['hello', 'world!']
 
-    async def async_generator():
-        yield showcase.EchoRequest(content="hello")
-        yield showcase.EchoRequest(content="world!")
-
-    call = await async_echo.chat(async_generator(), metadata=metadata)
-
-    contents = []
-    async for response in call:
-        contents.append(response.content)
-    assert contents == ['hello', 'world!']
-
-    trailing_metadata = await call.trailing_metadata()
-    assert trailing_metadata == metadata
-
-
-@pytest.mark.asyncio
-async def test_async_stream_stream_passing_dict(async_echo):
-    requests = [{'content': 'hello'}, {'content': 'world!'}]
-    call = await async_echo.chat(iter(requests), metadata=metadata)
-
-    contents = []
-    async for response in call:
-        contents.append(response.content)
-    assert contents == ['hello', 'world!']
-
-    trailing_metadata = await call.trailing_metadata()
-    assert trailing_metadata == metadata
+        trailing_metadata = await call.trailing_metadata()
+        assert trailing_metadata == metadata

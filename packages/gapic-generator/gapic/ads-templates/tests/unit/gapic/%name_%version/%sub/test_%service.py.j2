@@ -144,7 +144,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
         with pytest.raises(ValueError):
-            client = client_class()
+            client = {{ service.client_name }}()
 
 
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
@@ -222,7 +222,7 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(use_client_cert_env)
 
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
-    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport.__init__') as grpc_transport:
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as grpc_transport:
         grpc_transport.return_value = None
         client = {{ service.client_name }}(
             client_options={'api_endpoint': 'squid.clam.whelk'}
@@ -583,6 +583,15 @@ def test_transport_instance():
     assert client.transport is transport
 
 
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.{{ service.name }}GrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = {{ service.client_name }}(
@@ -593,18 +602,20 @@ def test_transport_grpc_default():
         transports.{{ service.name }}GrpcTransport,
     )
 
-
-def test_transport_adc():
+@pytest.mark.parametrize("transport_class", [
+    transports.{{ service.grpc_transport_name }},
+])
+def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(auth, 'default') as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.{{ service.name }}Transport()
+        transport_class()
         adc.assert_called_once()
 
 
 def test_{{ service.name|snake_case }}_base_transport():
     # Instantiate the base transport.
-    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}GrpcTransport.__init__') as Transport:
+    with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport.__init__') as Transport:
         Transport.return_value = None
         transport = transports.{{ service.name }}Transport(
             credentials=credentials.AnonymousCredentials(),
@@ -693,6 +704,85 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+
+
+@pytest.mark.parametrize("transport_class", [transports.{{ service.grpc_transport_name }}])
+def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_source(
+    transport_class
+):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel", autospec=True) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
+
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, 'default') as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=(
+                    {%- for scope in service.oauth_scopes %}
+                    '{{ scope }}',
+                    {%- endfor %}
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+
+
+@pytest.mark.parametrize("transport_class", [transports.{{ service.grpc_transport_name }},])
+def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
+    transport_class
+):
+    mock_ssl_cred = mock.Mock()
+    with mock.patch.multiple(
+        "google.auth.transport.grpc.SslCredentials",
+        __init__=mock.Mock(return_value=None),
+        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
+    ):
+        with mock.patch.object(transport_class, "create_channel", autospec=True) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=(
+                    {%- for scope in service.oauth_scopes %}
+                    '{{ scope }}',
+                    {%- endfor %}
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
 {% if service.has_lro -%}

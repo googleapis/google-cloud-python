@@ -87,16 +87,20 @@ def showcase_library(
 
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
-        opts = f"--python_gapic_opt={template_opt}"
-        opts += ",".join(other_opts + ("lazy-import",))
-        session.run(
-            "protoc",
-            "--experimental_allow_proto3_optional",
+        opts = "--python_gapic_opt="
+        opts += ",".join(other_opts + (f"{template_opt}",))
+        cmd_tup = (
+            f"protoc",
+            f"--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
+            opts,
             f"--python_gapic_out={tmp_dir}",
-            "google/showcase/v1beta1/echo.proto",
-            "google/showcase/v1beta1/identity.proto",
-            "google/showcase/v1beta1/messaging.proto",
+            f"google/showcase/v1beta1/echo.proto",
+            f"google/showcase/v1beta1/identity.proto",
+            f"google/showcase/v1beta1/messaging.proto",
+        )
+        session.run(
+            *cmd_tup,
             external=True,
         )
 
@@ -108,20 +112,27 @@ def showcase_library(
 
 @nox.session(python="3.8")
 def showcase(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = None,
 ):
     """Run the Showcase test suite."""
 
     with showcase_library(session, templates=templates, other_opts=other_opts):
         session.install("mock", "pytest", "pytest-asyncio")
         session.run(
-            "py.test", "--quiet", *(session.posargs or [path.join("tests", "system")])
+            "py.test", "--quiet", *(session.posargs or [path.join("tests", "system")]),
+            env=env,
         )
 
 
 @nox.session(python="3.8")
 def showcase_mtls(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    session,
+    templates="DEFAULT",
+    other_opts: typing.Iterable[str] = (),
+    env: typing.Optional[typing.Dict[str, str]] = None,
 ):
     """Run the Showcase mtls test suite."""
 
@@ -132,19 +143,30 @@ def showcase_mtls(
             "--quiet",
             "--mtls",
             *(session.posargs or [path.join("tests", "system")]),
+            env=env,
         )
 
 
 @nox.session(python="3.8")
 def showcase_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase(session, templates=templates, other_opts=("old-naming",))
+    showcase(
+        session,
+        templates=templates,
+        other_opts=("old-naming",),
+        env={"GAPIC_PYTHON_ASYNC": "False"},
+    )
 
 
 @nox.session(python="3.8")
 def showcase_mtls_alternative_templates(session):
     templates = path.join(path.dirname(__file__), "gapic", "ads-templates")
-    showcase_mtls(session, templates=templates, other_opts=("old-naming",))
+    showcase_mtls(
+        session,
+        templates=templates,
+        other_opts=("old-naming",),
+        env={"GAPIC_PYTHON_ASYNC": "False"},
+    )
 
 
 @nox.session(python=["3.6", "3.7", "3.8"])

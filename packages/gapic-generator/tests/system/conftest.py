@@ -13,32 +13,53 @@
 # limitations under the License.
 
 import collections
+import distutils
+import grpc
 import mock
 import os
 import pytest
-import asyncio
 
 import google.api_core.client_options as ClientOptions
 from google.auth import credentials
-from google.showcase import EchoClient, EchoAsyncClient
-from google.showcase import IdentityClient, IdentityAsyncClient
+from google.showcase import EchoClient
+from google.showcase import IdentityClient
 from google.showcase import MessagingClient
 
-import grpc
-from grpc.experimental import aio
+if distutils.util.strtobool(os.environ.get("GAPIC_PYTHON_ASYNC", "true")):
+    from grpc.experimental import aio
+    import asyncio
+    from google.showcase import EchoAsyncClient
+    from google.showcase import IdentityAsyncClient
 
-_test_event_loop = asyncio.new_event_loop()
+    @pytest.fixture
+    def async_echo(use_mtls, event_loop):
+        return construct_client(
+            EchoAsyncClient,
+            use_mtls,
+            transport="grpc_asyncio",
+            channel_creator=aio.insecure_channel
+        )
 
-# NOTE(lidiz) We must override the default event_loop fixture from
-# pytest-asyncio. pytest fixture frees resources once there isn't any reference
-# to it. So, the event loop might close before tests finishes. In the
-# customized version, we don't close the event loop.
+    @pytest.fixture
+    def async_identity(use_mtls, event_loop):
+        return construct_client(
+            IdentityAsyncClient,
+            use_mtls,
+            transport="grpc_asyncio",
+            channel_creator=aio.insecure_channel
+        )
 
+    _test_event_loop = asyncio.new_event_loop()
 
-@pytest.fixture
-def event_loop():
-    asyncio.set_event_loop(_test_event_loop)
-    return asyncio.get_event_loop()
+    # NOTE(lidiz) We must override the default event_loop fixture from
+    # pytest-asyncio. pytest fixture frees resources once there isn't any reference
+    # to it. So, the event loop might close before tests finishes. In the
+    # customized version, we don't close the event loop.
+
+    @pytest.fixture
+    def event_loop():
+        asyncio.set_event_loop(_test_event_loop)
+        return asyncio.get_event_loop()
 
 
 dir = os.path.dirname(__file__)
@@ -100,31 +121,11 @@ def echo(use_mtls):
 
 
 @pytest.fixture
-def async_echo(use_mtls, event_loop):
-    return construct_client(
-        EchoAsyncClient,
-        use_mtls,
-        transport="grpc_asyncio",
-        channel_creator=aio.insecure_channel
-    )
-
-
-@pytest.fixture
 def identity():
     transport = IdentityClient.get_transport_class('grpc')(
         channel=grpc.insecure_channel('localhost:7469'),
     )
     return IdentityClient(transport=transport)
-
-
-@pytest.fixture
-def async_identity(use_mtls, event_loop):
-    return construct_client(
-        IdentityAsyncClient,
-        use_mtls,
-        transport="grpc_asyncio",
-        channel_creator=aio.insecure_channel
-    )
 
 
 @pytest.fixture

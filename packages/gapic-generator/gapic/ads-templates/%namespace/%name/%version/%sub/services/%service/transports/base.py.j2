@@ -55,10 +55,10 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
@@ -89,7 +89,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
                     {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                     predicate=retries.if_exception_type(
-                        {%- for ex in method.retry.retryable_exceptions|sort(attribute='__name__) %}
+                        {%- for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
                         exceptions.{{ ex.__name__ }},
                         {%- endfor %}
                     ),
