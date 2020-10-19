@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-bigquery/compare/v2.1.0...v2.2.0) (2020-10-19)
+
+
+### Features
+
+* add method api_repr for table list item ([#299](https://www.github.com/googleapis/python-bigquery/issues/299)) ([07c70f0](https://www.github.com/googleapis/python-bigquery/commit/07c70f0292f9212f0c968cd5c9206e8b0409c0da))
+* add support for listing arima, automl, boosted tree, DNN, and matrix factorization models ([#328](https://www.github.com/googleapis/python-bigquery/issues/328)) ([502a092](https://www.github.com/googleapis/python-bigquery/commit/502a0926018abf058cb84bd18043c25eba15a2cc))
+* add timeout paramter to load_table_from_file and it dependent methods ([#327](https://www.github.com/googleapis/python-bigquery/issues/327)) ([b0dd892](https://www.github.com/googleapis/python-bigquery/commit/b0dd892176e31ac25fddd15554b5bfa054299d4d))
+* add to_api_repr method to Model ([#326](https://www.github.com/googleapis/python-bigquery/issues/326)) ([fb401bd](https://www.github.com/googleapis/python-bigquery/commit/fb401bd94477323bba68cf252dd88166495daf54))
+* allow client options to be set in magics context ([#322](https://www.github.com/googleapis/python-bigquery/issues/322)) ([5178b55](https://www.github.com/googleapis/python-bigquery/commit/5178b55682f5e264bfc082cde26acb1fdc953a18))
+
+
+### Bug Fixes
+
+* make TimePartitioning repr evaluable ([#110](https://www.github.com/googleapis/python-bigquery/issues/110)) ([20f473b](https://www.github.com/googleapis/python-bigquery/commit/20f473bfff5ae98377f5d9cdf18bfe5554d86ff4)), closes [#109](https://www.github.com/googleapis/python-bigquery/issues/109)
+* use version.py instead of pkg_resources.get_distribution ([#307](https://www.github.com/googleapis/python-bigquery/issues/307)) ([b8f502b](https://www.github.com/googleapis/python-bigquery/commit/b8f502b14f21d1815697e4d57cf1225dfb4a7c5e))
+
+
+### Performance Improvements
+
+* add size parameter for load table from dataframe and json methods ([#280](https://www.github.com/googleapis/python-bigquery/issues/280)) ([3be78b7](https://www.github.com/googleapis/python-bigquery/commit/3be78b737add7111e24e912cd02fc6df75a07de6))
+
+
+### Documentation
+
+* update clustering field docstrings ([#286](https://www.github.com/googleapis/python-bigquery/issues/286)) ([5ea1ece](https://www.github.com/googleapis/python-bigquery/commit/5ea1ece2d911cdd1f3d9549ee01559ce8ed8269a)), closes [#285](https://www.github.com/googleapis/python-bigquery/issues/285)
+* update snippets samples to support version 2.0 ([#309](https://www.github.com/googleapis/python-bigquery/issues/309)) ([61634be](https://www.github.com/googleapis/python-bigquery/commit/61634be9bf9e3df7589fc1bfdbda87288859bb13))
+
+
+### Dependencies
+
+* add protobuf dependency ([#306](https://www.github.com/googleapis/python-bigquery/issues/306)) ([cebb5e0](https://www.github.com/googleapis/python-bigquery/commit/cebb5e0e911e8c9059bc8c9e7fce4440e518bff3)), closes [#305](https://www.github.com/googleapis/python-bigquery/issues/305)
+* require pyarrow for pandas support ([#314](https://www.github.com/googleapis/python-bigquery/issues/314)) ([801e4c0](https://www.github.com/googleapis/python-bigquery/commit/801e4c0574b7e421aa3a28cafec6fd6bcce940dd)), closes [#265](https://www.github.com/googleapis/python-bigquery/issues/265)
+
 ## [2.1.0](https://www.github.com/googleapis/python-bigquery/compare/v2.0.0...v2.1.0) (2020-10-08)
 
 
