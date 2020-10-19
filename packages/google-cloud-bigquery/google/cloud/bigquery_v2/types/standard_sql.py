@@ -58,6 +58,7 @@ class StandardSqlDataType(proto.Message):
         DATETIME = 21
         GEOGRAPHY = 22
         NUMERIC = 23
+        BIGNUMERIC = 24
         ARRAY = 16
         STRUCT = 17
 

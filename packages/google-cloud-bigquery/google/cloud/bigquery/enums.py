@@ -33,6 +33,7 @@ _SQL_SCALAR_TYPES = frozenset(
         "DATETIME",
         "GEOGRAPHY",
         "NUMERIC",
+        "BIGNUMERIC",
     )
 )
 
@@ -81,6 +82,7 @@ class SqlTypeNames(str, enum.Enum):
     FLOAT = "FLOAT"
     FLOAT64 = "FLOAT"
     NUMERIC = "NUMERIC"
+    BIGNUMERIC = "BIGNUMERIC"
     BOOLEAN = "BOOLEAN"
     BOOL = "BOOLEAN"
     GEOGRAPHY = "GEOGRAPHY"  # NOTE: not available in legacy types

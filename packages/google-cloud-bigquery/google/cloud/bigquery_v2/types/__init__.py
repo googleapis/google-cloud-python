@@ -22,6 +22,7 @@ from .standard_sql import (
     StandardSqlField,
     StandardSqlStructType,
 )
+from .table_reference import TableReference
 from .model import (
     Model,
     GetModelRequest,
@@ -38,6 +39,7 @@ __all__ = (
     "StandardSqlDataType",
     "StandardSqlField",
     "StandardSqlStructType",
+    "TableReference",
     "Model",
     "GetModelRequest",
     "PatchModelRequest",

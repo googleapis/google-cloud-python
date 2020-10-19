@@ -21,6 +21,7 @@ import proto  # type: ignore
 from google.cloud.bigquery_v2.types import encryption_config
 from google.cloud.bigquery_v2.types import model_reference as gcb_model_reference
 from google.cloud.bigquery_v2.types import standard_sql
+from google.cloud.bigquery_v2.types import table_reference
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
@@ -84,7 +85,9 @@ class Model(proto.Message):
             Custom encryption configuration (e.g., Cloud
             KMS keys). This shows the encryption
             configuration of the model data while stored in
-            BigQuery storage.
+            BigQuery storage. This field can be used with
+            PatchModel to update encryption key for an
+            already encrypted model.
         model_type (~.gcb_model.Model.ModelType):
             Output only. Type of the model resource.
         training_runs (Sequence[~.gcb_model.Model.TrainingRun]):
@@ -105,7 +108,15 @@ class Model(proto.Message):
         LINEAR_REGRESSION = 1
         LOGISTIC_REGRESSION = 2
         KMEANS = 3
+        MATRIX_FACTORIZATION = 4
+        DNN_CLASSIFIER = 5
         TENSORFLOW = 6
+        DNN_REGRESSOR = 7
+        BOOSTED_TREE_REGRESSOR = 9
+        BOOSTED_TREE_CLASSIFIER = 10
+        ARIMA = 11
+        AUTOML_REGRESSOR = 12
+        AUTOML_CLASSIFIER = 13
 
     class LossType(proto.Enum):
         r"""Loss metric to evaluate model training performance."""
@@ -132,6 +143,93 @@ class Model(proto.Message):
         NO_SPLIT = 4
         AUTO_SPLIT = 5
 
+    class DataFrequency(proto.Enum):
+        r"""Type of supported data frequency for time series forecasting
+        models.
+        """
+        DATA_FREQUENCY_UNSPECIFIED = 0
+        AUTO_FREQUENCY = 1
+        YEARLY = 2
+        QUARTERLY = 3
+        MONTHLY = 4
+        WEEKLY = 5
+        DAILY = 6
+        HOURLY = 7
+
+    class HolidayRegion(proto.Enum):
+        r"""Type of supported holiday regions for time series forecasting
+        models.
+        """
+        HOLIDAY_REGION_UNSPECIFIED = 0
+        GLOBAL = 1
+        NA = 2
+        JAPAC = 3
+        EMEA = 4
+        LAC = 5
+        AE = 6
+        AR = 7
+        AT = 8
+        AU = 9
+        BE = 10
+        BR = 11
+        CA = 12
+        CH = 13
+        CL = 14
+        CN = 15
+        CO = 16
+        CS = 17
+        CZ = 18
+        DE = 19
+        DK = 20
+        DZ = 21
+        EC = 22
+        EE = 23
+        EG = 24
+        ES = 25
+        FI = 26
+        FR = 27
+        GB = 28
+        GR = 29
+        HK = 30
+        HU = 31
+        ID = 32
+        IE = 33
+        IL = 34
+        IN = 35
+        IR = 36
+        IT = 37
+        JP = 38
+        KR = 39
+        LV = 40
+        MA = 41
+        MX = 42
+        MY = 43
+        NG = 44
+        NL = 45
+        NO = 46
+        NZ = 47
+        PE = 48
+        PH = 49
+        PK = 50
+        PL = 51
+        PT = 52
+        RO = 53
+        RS = 54
+        RU = 55
+        SA = 56
+        SE = 57
+        SG = 58
+        SI = 59
+        SK = 60
+        TH = 61
+        TR = 62
+        TW = 63
+        UA = 64
+        US = 65
+        VE = 66
+        VN = 67
+        ZA = 68
+
     class LearnRateStrategy(proto.Enum):
         r"""Indicates the learning rate optimization strategy to use."""
         LEARN_RATE_STRATEGY_UNSPECIFIED = 0
@@ -144,6 +242,27 @@ class Model(proto.Message):
         BATCH_GRADIENT_DESCENT = 1
         NORMAL_EQUATION = 2
 
+    class FeedbackType(proto.Enum):
+        r"""Indicates the training algorithm to use for matrix
+        factorization models.
+        """
+        FEEDBACK_TYPE_UNSPECIFIED = 0
+        IMPLICIT = 1
+        EXPLICIT = 2
+
+    class SeasonalPeriod(proto.Message):
+        r""""""
+
+        class SeasonalPeriodType(proto.Enum):
+            r""""""
+            SEASONAL_PERIOD_TYPE_UNSPECIFIED = 0
+            NO_SEASONALITY = 1
+            DAILY = 2
+            WEEKLY = 3
+            MONTHLY = 4
+            QUARTERLY = 5
+            YEARLY = 6
+
     class KmeansEnums(proto.Message):
         r""""""
 
@@ -154,6 +273,7 @@ class Model(proto.Message):
             KMEANS_INITIALIZATION_METHOD_UNSPECIFIED = 0
             RANDOM = 1
             CUSTOM = 2
+            KMEANS_PLUS_PLUS = 3
 
     class RegressionMetrics(proto.Message):
         r"""Evaluation metrics for regression and explicit feedback type
@@ -529,6 +649,129 @@ class Model(proto.Message):
             proto.MESSAGE, number=3, message="Model.ClusteringMetrics.Cluster",
         )
 
+    class RankingMetrics(proto.Message):
+        r"""Evaluation metrics used by weighted-ALS models specified by
+        feedback_type=implicit.
+
+        Attributes:
+            mean_average_precision (~.wrappers.DoubleValue):
+                Calculates a precision per user for all the
+                items by ranking them and then averages all the
+                precisions across all the users.
+            mean_squared_error (~.wrappers.DoubleValue):
+                Similar to the mean squared error computed in
+                regression and explicit recommendation models
+                except instead of computing the rating directly,
+                the output from evaluate is computed against a
+                preference which is 1 or 0 depending on if the
+                rating exists or not.
+            normalized_discounted_cumulative_gain (~.wrappers.DoubleValue):
+                A metric to determine the goodness of a
+                ranking calculated from the predicted confidence
+                by comparing it to an ideal rank measured by the
+                original ratings.
+            average_rank (~.wrappers.DoubleValue):
+                Determines the goodness of a ranking by
+                computing the percentile rank from the predicted
+                confidence and dividing it by the original rank.
+        """
+
+        mean_average_precision = proto.Field(
+            proto.MESSAGE, number=1, message=wrappers.DoubleValue,
+        )
+
+        mean_squared_error = proto.Field(
+            proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+        )
+
+        normalized_discounted_cumulative_gain = proto.Field(
+            proto.MESSAGE, number=3, message=wrappers.DoubleValue,
+        )
+
+        average_rank = proto.Field(
+            proto.MESSAGE, number=4, message=wrappers.DoubleValue,
+        )
+
+    class ArimaForecastingMetrics(proto.Message):
+        r"""Model evaluation metrics for ARIMA forecasting models.
+
+        Attributes:
+            non_seasonal_order (Sequence[~.gcb_model.Model.ArimaOrder]):
+                Non-seasonal order.
+            arima_fitting_metrics (Sequence[~.gcb_model.Model.ArimaFittingMetrics]):
+                Arima model fitting metrics.
+            seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                Seasonal periods. Repeated because multiple
+                periods are supported for one time series.
+            has_drift (Sequence[bool]):
+                Whether Arima model fitted with drift or not.
+                It is always false when d is not 1.
+            time_series_id (Sequence[str]):
+                Id to differentiate different time series for
+                the large-scale case.
+            arima_single_model_forecasting_metrics (Sequence[~.gcb_model.Model.ArimaForecastingMetrics.ArimaSingleModelForecastingMetrics]):
+                Repeated as there can be many metric sets
+                (one for each model) in auto-arima and the
+                large-scale case.
+        """
+
+        class ArimaSingleModelForecastingMetrics(proto.Message):
+            r"""Model evaluation metrics for a single ARIMA forecasting
+            model.
+
+            Attributes:
+                non_seasonal_order (~.gcb_model.Model.ArimaOrder):
+                    Non-seasonal order.
+                arima_fitting_metrics (~.gcb_model.Model.ArimaFittingMetrics):
+                    Arima fitting metrics.
+                has_drift (bool):
+                    Is arima model fitted with drift or not. It
+                    is always false when d is not 1.
+                time_series_id (str):
+                    The id to indicate different time series.
+                seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                    Seasonal periods. Repeated because multiple
+                    periods are supported for one time series.
+            """
+
+            non_seasonal_order = proto.Field(
+                proto.MESSAGE, number=1, message="Model.ArimaOrder",
+            )
+
+            arima_fitting_metrics = proto.Field(
+                proto.MESSAGE, number=2, message="Model.ArimaFittingMetrics",
+            )
+
+            has_drift = proto.Field(proto.BOOL, number=3)
+
+            time_series_id = proto.Field(proto.STRING, number=4)
+
+            seasonal_periods = proto.RepeatedField(
+                proto.ENUM, number=5, enum="Model.SeasonalPeriod.SeasonalPeriodType",
+            )
+
+        non_seasonal_order = proto.RepeatedField(
+            proto.MESSAGE, number=1, message="Model.ArimaOrder",
+        )
+
+        arima_fitting_metrics = proto.RepeatedField(
+            proto.MESSAGE, number=2, message="Model.ArimaFittingMetrics",
+        )
+
+        seasonal_periods = proto.RepeatedField(
+            proto.ENUM, number=3, enum="Model.SeasonalPeriod.SeasonalPeriodType",
+        )
+
+        has_drift = proto.RepeatedField(proto.BOOL, number=4)
+
+        time_series_id = proto.RepeatedField(proto.STRING, number=5)
+
+        arima_single_model_forecasting_metrics = proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="Model.ArimaForecastingMetrics.ArimaSingleModelForecastingMetrics",
+        )
+
     class EvaluationMetrics(proto.Message):
         r"""Evaluation metrics of a model. These are either computed on
         all training data or just the eval data based on whether eval
@@ -547,6 +790,11 @@ class Model(proto.Message):
                 classification/classifier models.
             clustering_metrics (~.gcb_model.Model.ClusteringMetrics):
                 Populated for clustering models.
+            ranking_metrics (~.gcb_model.Model.RankingMetrics):
+                Populated for implicit feedback type matrix
+                factorization models.
+            arima_forecasting_metrics (~.gcb_model.Model.ArimaForecastingMetrics):
+                Populated for ARIMA models.
         """
 
         regression_metrics = proto.Field(
@@ -571,6 +819,116 @@ class Model(proto.Message):
             proto.MESSAGE, number=4, oneof="metrics", message="Model.ClusteringMetrics",
         )
 
+        ranking_metrics = proto.Field(
+            proto.MESSAGE, number=5, oneof="metrics", message="Model.RankingMetrics",
+        )
+
+        arima_forecasting_metrics = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="metrics",
+            message="Model.ArimaForecastingMetrics",
+        )
+
+    class DataSplitResult(proto.Message):
+        r"""Data split result. This contains references to the training
+        and evaluation data tables that were used to train the model.
+
+        Attributes:
+            training_table (~.table_reference.TableReference):
+                Table reference of the training data after
+                split.
+            evaluation_table (~.table_reference.TableReference):
+                Table reference of the evaluation data after
+                split.
+        """
+
+        training_table = proto.Field(
+            proto.MESSAGE, number=1, message=table_reference.TableReference,
+        )
+
+        evaluation_table = proto.Field(
+            proto.MESSAGE, number=2, message=table_reference.TableReference,
+        )
+
+    class ArimaOrder(proto.Message):
+        r"""Arima order, can be used for both non-seasonal and seasonal
+        parts.
+
+        Attributes:
+            p (int):
+                Order of the autoregressive part.
+            d (int):
+                Order of the differencing part.
+            q (int):
+                Order of the moving-average part.
+        """
+
+        p = proto.Field(proto.INT64, number=1)
+
+        d = proto.Field(proto.INT64, number=2)
+
+        q = proto.Field(proto.INT64, number=3)
+
+    class ArimaFittingMetrics(proto.Message):
+        r"""ARIMA model fitting metrics.
+
+        Attributes:
+            log_likelihood (float):
+                Log-likelihood.
+            aic (float):
+                AIC.
+            variance (float):
+                Variance.
+        """
+
+        log_likelihood = proto.Field(proto.DOUBLE, number=1)
+
+        aic = proto.Field(proto.DOUBLE, number=2)
+
+        variance = proto.Field(proto.DOUBLE, number=3)
+
+    class GlobalExplanation(proto.Message):
+        r"""Global explanations containing the top most important
+        features after training.
+
+        Attributes:
+            explanations (Sequence[~.gcb_model.Model.GlobalExplanation.Explanation]):
+                A list of the top global explanations. Sorted
+                by absolute value of attribution in descending
+                order.
+            class_label (str):
+                Class label for this set of global
+                explanations. Will be empty/null for binary
+                logistic and linear regression models. Sorted
+                alphabetically in descending order.
+        """
+
+        class Explanation(proto.Message):
+            r"""Explanation for a single feature.
+
+            Attributes:
+                feature_name (str):
+                    Full name of the feature. For non-numerical features, will
+                    be formatted like <column_name>.<encoded_feature_name>.
+                    Overall size of feature name will always be truncated to
+                    first 120 characters.
+                attribution (~.wrappers.DoubleValue):
+                    Attribution of feature.
+            """
+
+            feature_name = proto.Field(proto.STRING, number=1)
+
+            attribution = proto.Field(
+                proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+            )
+
+        explanations = proto.RepeatedField(
+            proto.MESSAGE, number=1, message="Model.GlobalExplanation.Explanation",
+        )
+
+        class_label = proto.Field(proto.STRING, number=2)
+
     class TrainingRun(proto.Message):
         r"""Information about a single training query run for the model.
 
@@ -587,6 +945,14 @@ class Model(proto.Message):
             evaluation_metrics (~.gcb_model.Model.EvaluationMetrics):
                 The evaluation metrics over training/eval
                 data that were computed at the end of training.
+            data_split_result (~.gcb_model.Model.DataSplitResult):
+                Data split result of the training run. Only
+                set when the input data is actually split.
+            global_explanations (Sequence[~.gcb_model.Model.GlobalExplanation]):
+                Global explanations for important features of
+                the model. For multi-class models, there is one
+                entry for each label class. For other models,
+                there is only one entry in the list.
         """
 
         class TrainingOptions(proto.Message):
@@ -651,6 +1017,12 @@ class Model(proto.Message):
                     Weights associated with each label class, for
                     rebalancing the training data. Only applicable
                     for classification models.
+                user_column (str):
+                    User column specified for matrix
+                    factorization models.
+                item_column (str):
+                    Item column specified for matrix
+                    factorization models.
                 distance_type (~.gcb_model.Model.DistanceType):
                     Distance type for clustering models.
                 num_clusters (int):
@@ -661,12 +1033,71 @@ class Model(proto.Message):
                 optimization_strategy (~.gcb_model.Model.OptimizationStrategy):
                     Optimization strategy for training linear
                     regression models.
+                hidden_units (Sequence[int]):
+                    Hidden units for dnn models.
+                batch_size (int):
+                    Batch size for dnn models.
+                dropout (~.wrappers.DoubleValue):
+                    Dropout probability for dnn models.
+                max_tree_depth (int):
+                    Maximum depth of a tree for boosted tree
+                    models.
+                subsample (float):
+                    Subsample fraction of the training data to
+                    grow tree to prevent overfitting for boosted
+                    tree models.
+                min_split_loss (~.wrappers.DoubleValue):
+                    Minimum split loss for boosted tree models.
+                num_factors (int):
+                    Num factors specified for matrix
+                    factorization models.
+                feedback_type (~.gcb_model.Model.FeedbackType):
+                    Feedback type that specifies which algorithm
+                    to run for matrix factorization.
+                wals_alpha (~.wrappers.DoubleValue):
+                    Hyperparameter for matrix factoration when
+                    implicit feedback type is specified.
                 kmeans_initialization_method (~.gcb_model.Model.KmeansEnums.KmeansInitializationMethod):
                     The method used to initialize the centroids
                     for kmeans algorithm.
                 kmeans_initialization_column (str):
                     The column used to provide the initial centroids for kmeans
                     algorithm when kmeans_initialization_method is CUSTOM.
+                time_series_timestamp_column (str):
+                    Column to be designated as time series
+                    timestamp for ARIMA model.
+                time_series_data_column (str):
+                    Column to be designated as time series data
+                    for ARIMA model.
+                auto_arima (bool):
+                    Whether to enable auto ARIMA or not.
+                non_seasonal_order (~.gcb_model.Model.ArimaOrder):
+                    A specification of the non-seasonal part of
+                    the ARIMA model: the three components (p, d, q)
+                    are the AR order, the degree of differencing,
+                    and the MA order.
+                data_frequency (~.gcb_model.Model.DataFrequency):
+                    The data frequency of a time series.
+                include_drift (bool):
+                    Include drift when fitting an ARIMA model.
+                holiday_region (~.gcb_model.Model.HolidayRegion):
+                    The geographical region based on which the
+                    holidays are considered in time series modeling.
+                    If a valid value is specified, then holiday
+                    effects modeling is enabled.
+                time_series_id_column (str):
+                    The id column that will be used to indicate
+                    different time series to forecast in parallel.
+                horizon (int):
+                    The number of periods ahead that need to be
+                    forecasted.
+                preserve_input_structs (bool):
+                    Whether to preserve the input structs in output feature
+                    names. Suppose there is a struct A with field b. When false
+                    (default), the output feature name is A_b. When true, the
+                    output feature name is A.b.
+                auto_arima_max_order (int):
+                    The max value of non-seasonal p and q.
             """
 
             max_iterations = proto.Field(proto.INT64, number=1)
@@ -713,6 +1144,10 @@ class Model(proto.Message):
 
             label_class_weights = proto.MapField(proto.STRING, proto.DOUBLE, number=17)
 
+            user_column = proto.Field(proto.STRING, number=18)
+
+            item_column = proto.Field(proto.STRING, number=19)
+
             distance_type = proto.Field(
                 proto.ENUM, number=20, enum="Model.DistanceType",
             )
@@ -725,6 +1160,32 @@ class Model(proto.Message):
                 proto.ENUM, number=23, enum="Model.OptimizationStrategy",
             )
 
+            hidden_units = proto.RepeatedField(proto.INT64, number=24)
+
+            batch_size = proto.Field(proto.INT64, number=25)
+
+            dropout = proto.Field(
+                proto.MESSAGE, number=26, message=wrappers.DoubleValue,
+            )
+
+            max_tree_depth = proto.Field(proto.INT64, number=27)
+
+            subsample = proto.Field(proto.DOUBLE, number=28)
+
+            min_split_loss = proto.Field(
+                proto.MESSAGE, number=29, message=wrappers.DoubleValue,
+            )
+
+            num_factors = proto.Field(proto.INT64, number=30)
+
+            feedback_type = proto.Field(
+                proto.ENUM, number=31, enum="Model.FeedbackType",
+            )
+
+            wals_alpha = proto.Field(
+                proto.MESSAGE, number=32, message=wrappers.DoubleValue,
+            )
+
             kmeans_initialization_method = proto.Field(
                 proto.ENUM,
                 number=33,
@@ -732,6 +1193,34 @@ class Model(proto.Message):
             )
 
             kmeans_initialization_column = proto.Field(proto.STRING, number=34)
+
+            time_series_timestamp_column = proto.Field(proto.STRING, number=35)
+
+            time_series_data_column = proto.Field(proto.STRING, number=36)
+
+            auto_arima = proto.Field(proto.BOOL, number=37)
+
+            non_seasonal_order = proto.Field(
+                proto.MESSAGE, number=38, message="Model.ArimaOrder",
+            )
+
+            data_frequency = proto.Field(
+                proto.ENUM, number=39, enum="Model.DataFrequency",
+            )
+
+            include_drift = proto.Field(proto.BOOL, number=41)
+
+            holiday_region = proto.Field(
+                proto.ENUM, number=42, enum="Model.HolidayRegion",
+            )
+
+            time_series_id_column = proto.Field(proto.STRING, number=43)
+
+            horizon = proto.Field(proto.INT64, number=44)
+
+            preserve_input_structs = proto.Field(proto.BOOL, number=45)
+
+            auto_arima_max_order = proto.Field(proto.INT64, number=46)
 
         class IterationResult(proto.Message):
             r"""Information about a single iteration of the training run.
@@ -753,6 +1242,8 @@ class Model(proto.Message):
                 cluster_infos (Sequence[~.gcb_model.Model.TrainingRun.IterationResult.ClusterInfo]):
                     Information about top clusters for clustering
                     models.
+                arima_result (~.gcb_model.Model.TrainingRun.IterationResult.ArimaResult):
+
             """
 
             class ClusterInfo(proto.Message):
@@ -779,6 +1270,102 @@ class Model(proto.Message):
                     proto.MESSAGE, number=3, message=wrappers.Int64Value,
                 )
 
+            class ArimaResult(proto.Message):
+                r"""(Auto-)arima fitting result. Wrap everything in ArimaResult
+                for easier refactoring if we want to use model-specific
+                iteration results.
+
+                Attributes:
+                    arima_model_info (Sequence[~.gcb_model.Model.TrainingRun.IterationResult.ArimaResult.ArimaModelInfo]):
+                        This message is repeated because there are
+                        multiple arima models fitted in auto-arima. For
+                        non-auto-arima model, its size is one.
+                    seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                        Seasonal periods. Repeated because multiple
+                        periods are supported for one time series.
+                """
+
+                class ArimaCoefficients(proto.Message):
+                    r"""Arima coefficients.
+
+                    Attributes:
+                        auto_regressive_coefficients (Sequence[float]):
+                            Auto-regressive coefficients, an array of
+                            double.
+                        moving_average_coefficients (Sequence[float]):
+                            Moving-average coefficients, an array of
+                            double.
+                        intercept_coefficient (float):
+                            Intercept coefficient, just a double not an
+                            array.
+                    """
+
+                    auto_regressive_coefficients = proto.RepeatedField(
+                        proto.DOUBLE, number=1
+                    )
+
+                    moving_average_coefficients = proto.RepeatedField(
+                        proto.DOUBLE, number=2
+                    )
+
+                    intercept_coefficient = proto.Field(proto.DOUBLE, number=3)
+
+                class ArimaModelInfo(proto.Message):
+                    r"""Arima model information.
+
+                    Attributes:
+                        non_seasonal_order (~.gcb_model.Model.ArimaOrder):
+                            Non-seasonal order.
+                        arima_coefficients (~.gcb_model.Model.TrainingRun.IterationResult.ArimaResult.ArimaCoefficients):
+                            Arima coefficients.
+                        arima_fitting_metrics (~.gcb_model.Model.ArimaFittingMetrics):
+                            Arima fitting metrics.
+                        has_drift (bool):
+                            Whether Arima model fitted with drift or not.
+                            It is always false when d is not 1.
+                        time_series_id (str):
+                            The id to indicate different time series.
+                        seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                            Seasonal periods. Repeated because multiple
+                            periods are supported for one time series.
+                    """
+
+                    non_seasonal_order = proto.Field(
+                        proto.MESSAGE, number=1, message="Model.ArimaOrder",
+                    )
+
+                    arima_coefficients = proto.Field(
+                        proto.MESSAGE,
+                        number=2,
+                        message="Model.TrainingRun.IterationResult.ArimaResult.ArimaCoefficients",
+                    )
+
+                    arima_fitting_metrics = proto.Field(
+                        proto.MESSAGE, number=3, message="Model.ArimaFittingMetrics",
+                    )
+
+                    has_drift = proto.Field(proto.BOOL, number=4)
+
+                    time_series_id = proto.Field(proto.STRING, number=5)
+
+                    seasonal_periods = proto.RepeatedField(
+                        proto.ENUM,
+                        number=6,
+                        enum="Model.SeasonalPeriod.SeasonalPeriodType",
+                    )
+
+                arima_model_info = proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Model.TrainingRun.IterationResult.ArimaResult.ArimaModelInfo",
+                )
+
+                seasonal_periods = proto.RepeatedField(
+                    proto.ENUM,
+                    number=2,
+                    enum="Model.SeasonalPeriod.SeasonalPeriodType",
+                )
+
             index = proto.Field(proto.MESSAGE, number=1, message=wrappers.Int32Value,)
 
             duration_ms = proto.Field(
@@ -801,6 +1388,12 @@ class Model(proto.Message):
                 message="Model.TrainingRun.IterationResult.ClusterInfo",
             )
 
+            arima_result = proto.Field(
+                proto.MESSAGE,
+                number=9,
+                message="Model.TrainingRun.IterationResult.ArimaResult",
+            )
+
         training_options = proto.Field(
             proto.MESSAGE, number=1, message="Model.TrainingRun.TrainingOptions",
         )
@@ -813,6 +1406,14 @@ class Model(proto.Message):
 
         evaluation_metrics = proto.Field(
             proto.MESSAGE, number=7, message="Model.EvaluationMetrics",
+        )
+
+        data_split_result = proto.Field(
+            proto.MESSAGE, number=9, message="Model.DataSplitResult",
+        )
+
+        global_explanations = proto.RepeatedField(
+            proto.MESSAGE, number=10, message="Model.GlobalExplanation",
         )
 
     etag = proto.Field(proto.STRING, number=1)

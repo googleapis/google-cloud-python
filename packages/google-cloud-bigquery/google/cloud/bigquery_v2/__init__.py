@@ -27,6 +27,7 @@ from .types.model_reference import ModelReference
 from .types.standard_sql import StandardSqlDataType
 from .types.standard_sql import StandardSqlField
 from .types.standard_sql import StandardSqlStructType
+from .types.table_reference import TableReference
 
 
 __all__ = (
@@ -41,4 +42,5 @@ __all__ = (
     "StandardSqlDataType",
     "StandardSqlField",
     "StandardSqlStructType",
+    "TableReference",
 )
