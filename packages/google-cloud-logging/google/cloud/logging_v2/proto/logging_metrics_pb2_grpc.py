@@ -8,15 +8,14 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class MetricsServiceV2Stub(object):
-    """Service for configuring logs-based metrics.
-  """
+    """Service for configuring logs-based metrics."""
 
     def __init__(self, channel):
         """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
+        Args:
+          channel: A grpc.Channel.
+        """
         self.ListLogMetrics = channel.unary_unary(
             "/google.logging.v2.MetricsServiceV2/ListLogMetrics",
             request_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__metrics__pb2.ListLogMetricsRequest.SerializeToString,
@@ -45,40 +44,34 @@ class MetricsServiceV2Stub(object):
 
 
 class MetricsServiceV2Servicer(object):
-    """Service for configuring logs-based metrics.
-  """
+    """Service for configuring logs-based metrics."""
 
     def ListLogMetrics(self, request, context):
-        """Lists logs-based metrics.
-    """
+        """Lists logs-based metrics."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetLogMetric(self, request, context):
-        """Gets a logs-based metric.
-    """
+        """Gets a logs-based metric."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def CreateLogMetric(self, request, context):
-        """Creates a logs-based metric.
-    """
+        """Creates a logs-based metric."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateLogMetric(self, request, context):
-        """Creates or updates a logs-based metric.
-    """
+        """Creates or updates a logs-based metric."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteLogMetric(self, request, context):
-        """Deletes a logs-based metric.
-    """
+        """Deletes a logs-based metric."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

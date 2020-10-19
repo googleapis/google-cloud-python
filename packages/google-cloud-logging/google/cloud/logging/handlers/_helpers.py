@@ -41,8 +41,8 @@ _WEBAPP2_TRACE_HEADER = "X-CLOUD-TRACE-CONTEXT"
 def format_stackdriver_json(record, message):
     """Helper to format a LogRecord in in Stackdriver fluentd format.
 
-        :rtype: str
-        :returns: JSON str to be written to the log file.
+    :rtype: str
+    :returns: JSON str to be written to the log file.
     """
     subsecond, second = math.modf(record.created)
 

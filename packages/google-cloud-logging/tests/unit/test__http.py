@@ -49,10 +49,19 @@ class TestConnection(unittest.TestCase):
         self.assertIs(conn._client, client)
 
     def test_build_api_url_w_custom_endpoint(self):
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
         custom_endpoint = "https://foo-logging.googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
-        URI = "/".join([custom_endpoint, conn.API_VERSION, "foo"])
-        self.assertEqual(conn.build_api_url("/foo"), URI)
+        uri = conn.build_api_url("/foo")
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual("%s://%s" % (scheme, netloc), custom_endpoint)
+        self.assertEqual(path, "/".join(["", conn.API_VERSION, "foo"]))
+        parms = dict(parse_qsl(qs))
+        pretty_print = parms.pop("prettyPrint", "false")
+        self.assertEqual(pretty_print, "false")
+        self.assertEqual(parms, {})
 
     def test_extra_headers(self):
         import requests

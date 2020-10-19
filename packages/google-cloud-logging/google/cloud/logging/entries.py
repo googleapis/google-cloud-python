@@ -232,8 +232,7 @@ class LogEntry(_LogEntryTuple):
         return inst
 
     def to_api_repr(self):
-        """API repr (JSON format) for entry.
-        """
+        """API repr (JSON format) for entry."""
         info = {}
         if self.log_name is not None:
             info["logName"] = self.log_name
@@ -285,8 +284,7 @@ class TextEntry(LogEntry):
         return resource["textPayload"]
 
     def to_api_repr(self):
-        """API repr (JSON format) for entry.
-        """
+        """API repr (JSON format) for entry."""
         info = super(TextEntry, self).to_api_repr()
         info["textPayload"] = self.payload
         return info
@@ -313,8 +311,7 @@ class StructEntry(LogEntry):
         return resource["jsonPayload"]
 
     def to_api_repr(self):
-        """API repr (JSON format) for entry.
-        """
+        """API repr (JSON format) for entry."""
         info = super(StructEntry, self).to_api_repr()
         info["jsonPayload"] = self.payload
         return info
@@ -351,8 +348,7 @@ class ProtobufEntry(LogEntry):
             return self.payload
 
     def to_api_repr(self):
-        """API repr (JSON format) for entry.
-        """
+        """API repr (JSON format) for entry."""
         info = super(ProtobufEntry, self).to_api_repr()
         info["protoPayload"] = MessageToDict(self.payload)
         return info

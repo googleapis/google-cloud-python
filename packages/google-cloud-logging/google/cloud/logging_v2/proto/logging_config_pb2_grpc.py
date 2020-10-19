@@ -8,15 +8,14 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class ConfigServiceV2Stub(object):
-    """Service for configuring sinks used to route log entries.
-  """
+    """Service for configuring sinks used to route log entries."""
 
     def __init__(self, channel):
         """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
+        Args:
+          channel: A grpc.Channel.
+        """
         self.ListSinks = channel.unary_unary(
             "/google.logging.v2.ConfigServiceV2/ListSinks",
             request_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__config__pb2.ListSinksRequest.SerializeToString,
@@ -80,85 +79,78 @@ class ConfigServiceV2Stub(object):
 
 
 class ConfigServiceV2Servicer(object):
-    """Service for configuring sinks used to route log entries.
-  """
+    """Service for configuring sinks used to route log entries."""
 
     def ListSinks(self, request, context):
-        """Lists sinks.
-    """
+        """Lists sinks."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetSink(self, request, context):
-        """Gets a sink.
-    """
+        """Gets a sink."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def CreateSink(self, request, context):
         """Creates a sink that exports specified log entries to a destination. The
-    export of newly-ingested log entries begins immediately, unless the sink's
-    `writer_identity` is not permitted to write to the destination. A sink can
-    export log entries only from the resource owning the sink.
-    """
+        export of newly-ingested log entries begins immediately, unless the sink's
+        `writer_identity` is not permitted to write to the destination. A sink can
+        export log entries only from the resource owning the sink.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateSink(self, request, context):
         """Updates a sink. This method replaces the following fields in the existing
-    sink with values from the new sink: `destination`, and `filter`.
+        sink with values from the new sink: `destination`, and `filter`.
 
-    The updated sink might also have a new `writer_identity`; see the
-    `unique_writer_identity` field.
-    """
+        The updated sink might also have a new `writer_identity`; see the
+        `unique_writer_identity` field.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteSink(self, request, context):
         """Deletes a sink. If the sink has a unique `writer_identity`, then that
-    service account is also deleted.
-    """
+        service account is also deleted.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListExclusions(self, request, context):
-        """Lists all the exclusions in a parent resource.
-    """
+        """Lists all the exclusions in a parent resource."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def GetExclusion(self, request, context):
-        """Gets the description of an exclusion.
-    """
+        """Gets the description of an exclusion."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def CreateExclusion(self, request, context):
         """Creates a new exclusion in a specified parent resource.
-    Only log entries belonging to that resource can be excluded.
-    You can have up to 10 exclusions in a resource.
-    """
+        Only log entries belonging to that resource can be excluded.
+        You can have up to 10 exclusions in a resource.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def UpdateExclusion(self, request, context):
-        """Changes one or more properties of an existing exclusion.
-    """
+        """Changes one or more properties of an existing exclusion."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def DeleteExclusion(self, request, context):
-        """Deletes an exclusion.
-    """
+        """Deletes an exclusion."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -166,13 +158,13 @@ class ConfigServiceV2Servicer(object):
     def GetCmekSettings(self, request, context):
         """Gets the Logs Router CMEK settings for the given resource.
 
-    Note: CMEK for the Logs Router can currently only be configured for GCP
-    organizations. Once configured, it applies to all projects and folders in
-    the GCP organization.
+        Note: CMEK for the Logs Router can currently only be configured for GCP
+        organizations. Once configured, it applies to all projects and folders in
+        the GCP organization.
 
-    See [Enabling CMEK for Logs
-    Router](/logging/docs/routing/managed-encryption) for more information.
-    """
+        See [Enabling CMEK for Logs
+        Router](/logging/docs/routing/managed-encryption) for more information.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
@@ -180,19 +172,19 @@ class ConfigServiceV2Servicer(object):
     def UpdateCmekSettings(self, request, context):
         """Updates the Logs Router CMEK settings for the given resource.
 
-    Note: CMEK for the Logs Router can currently only be configured for GCP
-    organizations. Once configured, it applies to all projects and folders in
-    the GCP organization.
+        Note: CMEK for the Logs Router can currently only be configured for GCP
+        organizations. Once configured, it applies to all projects and folders in
+        the GCP organization.
 
-    [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
-    will fail if 1) `kms_key_name` is invalid, or 2) the associated service
-    account does not have the required
-    `roles/cloudkms.cryptoKeyEncrypterDecrypter` role assigned for the key, or
-    3) access to the key is disabled.
+        [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings]
+        will fail if 1) `kms_key_name` is invalid, or 2) the associated service
+        account does not have the required
+        `roles/cloudkms.cryptoKeyEncrypterDecrypter` role assigned for the key, or
+        3) access to the key is disabled.
 
-    See [Enabling CMEK for Logs
-    Router](/logging/docs/routing/managed-encryption) for more information.
-    """
+        See [Enabling CMEK for Logs
+        Router](/logging/docs/routing/managed-encryption) for more information.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

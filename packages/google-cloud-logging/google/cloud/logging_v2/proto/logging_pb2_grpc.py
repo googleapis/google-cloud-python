@@ -8,15 +8,14 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 class LoggingServiceV2Stub(object):
-    """Service for ingesting and querying logs.
-  """
+    """Service for ingesting and querying logs."""
 
     def __init__(self, channel):
         """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
+        Args:
+          channel: A grpc.Channel.
+        """
         self.DeleteLog = channel.unary_unary(
             "/google.logging.v2.LoggingServiceV2/DeleteLog",
             request_serializer=google_dot_cloud_dot_logging__v2_dot_proto_dot_logging__pb2.DeleteLogRequest.SerializeToString,
@@ -45,52 +44,50 @@ class LoggingServiceV2Stub(object):
 
 
 class LoggingServiceV2Servicer(object):
-    """Service for ingesting and querying logs.
-  """
+    """Service for ingesting and querying logs."""
 
     def DeleteLog(self, request, context):
         """Deletes all the log entries in a log. The log reappears if it receives new
-    entries. Log entries written shortly before the delete operation might not
-    be deleted. Entries received after the delete operation with a timestamp
-    before the operation will be deleted.
-    """
+        entries. Log entries written shortly before the delete operation might not
+        be deleted. Entries received after the delete operation with a timestamp
+        before the operation will be deleted.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def WriteLogEntries(self, request, context):
         """Writes log entries to Logging. This API method is the
-    only way to send log entries to Logging. This method
-    is used, directly or indirectly, by the Logging agent
-    (fluentd) and all logging libraries configured to use Logging.
-    A single request may contain log entries for a maximum of 1000
-    different resources (projects, organizations, billing accounts or
-    folders)
-    """
+        only way to send log entries to Logging. This method
+        is used, directly or indirectly, by the Logging agent
+        (fluentd) and all logging libraries configured to use Logging.
+        A single request may contain log entries for a maximum of 1000
+        different resources (projects, organizations, billing accounts or
+        folders)
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListLogEntries(self, request, context):
         """Lists log entries.  Use this method to retrieve log entries that originated
-    from a project/folder/organization/billing account.  For ways to export log
-    entries, see [Exporting Logs](/logging/docs/export).
-    """
+        from a project/folder/organization/billing account.  For ways to export log
+        entries, see [Exporting Logs](/logging/docs/export).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListMonitoredResourceDescriptors(self, request, context):
-        """Lists the descriptors for monitored resource types used by Logging.
-    """
+        """Lists the descriptors for monitored resource types used by Logging."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def ListLogs(self, request, context):
         """Lists the logs in projects, organizations, folders, or billing accounts.
-    Only logs that have entries are listed.
-    """
+        Only logs that have entries are listed.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

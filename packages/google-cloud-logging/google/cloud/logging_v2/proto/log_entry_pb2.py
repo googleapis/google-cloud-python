@@ -427,7 +427,9 @@ _LOGENTRY = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_LOGENTRY_LABELSENTRY,],
+    nested_types=[
+        _LOGENTRY_LABELSENTRY,
+    ],
     enum_types=[],
     serialized_options=_b(
         "\352A\271\001\n\032logging.googleapis.com/Log\022\035projects/{project}/logs/{log}\022'organizations/{organization}/logs/{log}\022\033folders/{folder}/logs/{log}\022,billingAccounts/{billing_account}/logs/{log}\032\010log_name"

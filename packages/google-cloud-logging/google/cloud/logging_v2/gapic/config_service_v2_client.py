@@ -40,7 +40,9 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging",).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+    "google-cloud-logging",
+).version
 
 
 class ConfigServiceV2Client(object):
@@ -77,7 +79,8 @@ class ConfigServiceV2Client(object):
     def billing_path(cls, billing_account):
         """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
-            "billingAccounts/{billing_account}", billing_account=billing_account,
+            "billingAccounts/{billing_account}",
+            billing_account=billing_account,
         )
 
     @classmethod
@@ -110,7 +113,10 @@ class ConfigServiceV2Client(object):
     @classmethod
     def folder_path(cls, folder):
         """Return a fully-qualified folder string."""
-        return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
+        return google.api_core.path_template.expand(
+            "folders/{folder}",
+            folder=folder,
+        )
 
     @classmethod
     def folder_exclusion_path(cls, folder, exclusion):
@@ -125,14 +131,17 @@ class ConfigServiceV2Client(object):
     def folder_sink_path(cls, folder, sink):
         """Return a fully-qualified folder_sink string."""
         return google.api_core.path_template.expand(
-            "folders/{folder}/sinks/{sink}", folder=folder, sink=sink,
+            "folders/{folder}/sinks/{sink}",
+            folder=folder,
+            sink=sink,
         )
 
     @classmethod
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}", organization=organization,
+            "organizations/{organization}",
+            organization=organization,
         )
 
     @classmethod
@@ -157,14 +166,17 @@ class ConfigServiceV2Client(object):
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}", project=project,
+            "projects/{project}",
+            project=project,
         )
 
     @classmethod
     def sink_path(cls, project, sink):
         """Return a fully-qualified sink string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/sinks/{sink}", project=project, sink=sink,
+            "projects/{project}/sinks/{sink}",
+            project=project,
+            sink=sink,
         )
 
     def __init__(
@@ -253,8 +265,12 @@ class ConfigServiceV2Client(object):
                     )
                 self.transport = transport
         else:
-            self.transport = config_service_v2_grpc_transport.ConfigServiceV2GrpcTransport(
-                address=api_endpoint, channel=channel, credentials=credentials,
+            self.transport = (
+                config_service_v2_grpc_transport.ConfigServiceV2GrpcTransport(
+                    address=api_endpoint,
+                    channel=channel,
+                    credentials=credentials,
+                )
             )
 
         if client_info is None:
@@ -360,7 +376,8 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.ListSinksRequest(
-            parent=parent, page_size=page_size,
+            parent=parent,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -450,7 +467,9 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.GetSinkRequest(sink_name=sink_name,)
+        request = logging_config_pb2.GetSinkRequest(
+            sink_name=sink_name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -554,7 +573,9 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.CreateSinkRequest(
-            parent=parent, sink=sink, unique_writer_identity=unique_writer_identity,
+            parent=parent,
+            sink=sink,
+            unique_writer_identity=unique_writer_identity,
         )
         if metadata is None:
             metadata = []
@@ -759,7 +780,9 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.DeleteSinkRequest(sink_name=sink_name,)
+        request = logging_config_pb2.DeleteSinkRequest(
+            sink_name=sink_name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -857,7 +880,8 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.ListExclusionsRequest(
-            parent=parent, page_size=page_size,
+            parent=parent,
+            page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -947,7 +971,9 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.GetExclusionRequest(name=name,)
+        request = logging_config_pb2.GetExclusionRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1038,7 +1064,8 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.CreateExclusionRequest(
-            parent=parent, exclusion=exclusion,
+            parent=parent,
+            exclusion=exclusion,
         )
         if metadata is None:
             metadata = []
@@ -1142,7 +1169,9 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.UpdateExclusionRequest(
-            name=name, exclusion=exclusion, update_mask=update_mask,
+            name=name,
+            exclusion=exclusion,
+            update_mask=update_mask,
         )
         if metadata is None:
             metadata = []
@@ -1218,7 +1247,9 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.DeleteExclusionRequest(name=name,)
+        request = logging_config_pb2.DeleteExclusionRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1306,7 +1337,9 @@ class ConfigServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_config_pb2.GetCmekSettingsRequest(name=name,)
+        request = logging_config_pb2.GetCmekSettingsRequest(
+            name=name,
+        )
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -1422,7 +1455,9 @@ class ConfigServiceV2Client(object):
             )
 
         request = logging_config_pb2.UpdateCmekSettingsRequest(
-            name=name, cmek_settings=cmek_settings, update_mask=update_mask,
+            name=name,
+            cmek_settings=cmek_settings,
+            update_mask=update_mask,
         )
         if metadata is None:
             metadata = []

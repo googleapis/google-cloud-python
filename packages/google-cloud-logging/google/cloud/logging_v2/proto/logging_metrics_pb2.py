@@ -318,8 +318,12 @@ _LOGMETRIC = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_LOGMETRIC_LABELEXTRACTORSENTRY,],
-    enum_types=[_LOGMETRIC_APIVERSION,],
+    nested_types=[
+        _LOGMETRIC_LABELEXTRACTORSENTRY,
+    ],
+    enum_types=[
+        _LOGMETRIC_APIVERSION,
+    ],
     serialized_options=_b(
         "\352AD\n\035logging.googleapis.com/Metric\022#projects/{project}/metrics/{metric}"
     ),

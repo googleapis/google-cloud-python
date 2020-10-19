@@ -114,8 +114,7 @@ class Logger(object):
         return Batch(self, client)
 
     def _do_log(self, client, _entry_class, payload=None, **kw):
-        """Helper for :meth:`log_empty`, :meth:`log_text`, etc.
-        """
+        """Helper for :meth:`log_empty`, :meth:`log_text`, etc."""
         client = self._require_client(client)
 
         # Apply defaults

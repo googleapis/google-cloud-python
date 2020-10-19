@@ -320,7 +320,9 @@ _LOGSINK = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_LOGSINK_VERSIONFORMAT,],
+    enum_types=[
+        _LOGSINK_VERSIONFORMAT,
+    ],
     serialized_options=_b(
         "\352A\270\001\n\033logging.googleapis.com/Sink\022\037projects/{project}/sinks/{sink}\022)organizations/{organization}/sinks/{sink}\022\035folders/{folder}/sinks/{sink}\022.billingAccounts/{billing_account}/sinks/{sink}"
     ),

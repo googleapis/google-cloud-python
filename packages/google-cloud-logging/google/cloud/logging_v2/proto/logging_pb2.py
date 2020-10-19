@@ -274,7 +274,9 @@ _WRITELOGENTRIESREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_WRITELOGENTRIESREQUEST_LABELSENTRY,],
+    nested_types=[
+        _WRITELOGENTRIESREQUEST_LABELSENTRY,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -389,7 +391,9 @@ _WRITELOGENTRIESPARTIALERRORS = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY,],
+    nested_types=[
+        _WRITELOGENTRIESPARTIALERRORS_LOGENTRYERRORSENTRY,
+    ],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
