@@ -10,6 +10,7 @@ Message and Field
     .. automethod:: deserialize
     .. automethod:: to_json
     .. automethod:: from_json
+    .. automethod:: to_dict
 
 
 .. automodule:: proto.fields

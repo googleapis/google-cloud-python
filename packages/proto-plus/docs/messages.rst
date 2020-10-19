@@ -165,3 +165,13 @@ via the :meth:`~.Message.to_json` and :meth:`~.Message.from_json` methods.
 
     new_song = Song.from_json(json)
 
+Similarly, messages can be converted into dictionaries via the
+:meth:`~.Message.to_dict` helper method.
+There is no :meth:`~.Message.from_dict` method because the Message constructor
+already allows construction from mapping types.
+
+.. code-block:: python
+
+   song_dict = Song.to_dict(song)
+
+   new_song = Song(song_dict)

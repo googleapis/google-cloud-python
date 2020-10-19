@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
 import pytest
 
 import proto
@@ -228,3 +229,69 @@ def test_setattr():
     s1._pb = s2._pb
 
     assert s1.mass_kg == 20
+
+
+def test_serialize_to_dict():
+    class Squid(proto.Message):
+        # Test primitives, enums, and repeated fields.
+        class Chromatophore(proto.Message):
+            class Color(proto.Enum):
+                UNKNOWN = 0
+                RED = 1
+                BROWN = 2
+                WHITE = 3
+                BLUE = 4
+
+            color = proto.Field(Color, number=1)
+
+        mass_kg = proto.Field(proto.INT32, number=1)
+        chromatophores = proto.RepeatedField(Chromatophore, number=2)
+
+    s = Squid(mass_kg=20)
+    colors = ["RED", "BROWN", "WHITE", "BLUE"]
+    s.chromatophores = [
+        {"color": c} for c in itertools.islice(itertools.cycle(colors), 10)
+    ]
+
+    s_dict = Squid.to_dict(s)
+    assert s_dict["chromatophores"][0]["color"] == 1
+
+    new_s = Squid(s_dict)
+    assert new_s == s
+
+    s_dict = Squid.to_dict(s, use_integers_for_enums=False)
+    assert s_dict["chromatophores"][0]["color"] == "RED"
+
+    new_s = Squid(s_dict)
+    assert new_s == s
+
+
+def test_unknown_field_deserialize():
+    # This is a somewhat common setup: a client uses an older proto definition,
+    # while the server sends the newer definition. The client still needs to be
+    # able to interact with the protos it receives from the server.
+
+    class Octopus_Old(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    class Octopus_New(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+        length_cm = proto.Field(proto.INT32, number=2)
+
+    o_new = Octopus_New(mass_kg=20, length_cm=100)
+    o_ser = Octopus_New.serialize(o_new)
+
+    o_old = Octopus_Old.deserialize(o_ser)
+    assert not hasattr(o_old, "length_cm")
+
+
+def test_unknown_field_from_dict():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    # By default we don't permit unknown fields
+    with pytest.raises(ValueError):
+        s = Squid({"mass_kg": 20, "length_cm": 100})
+
+    s = Squid({"mass_kg": 20, "length_cm": 100}, ignore_unknown_fields=True)
+    assert not hasattr(s, "length_cm")

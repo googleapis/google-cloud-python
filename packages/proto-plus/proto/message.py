@@ -20,7 +20,7 @@ from typing import List, Type
 
 from google.protobuf import descriptor_pb2
 from google.protobuf import message
-from google.protobuf.json_format import MessageToJson, Parse
+from google.protobuf.json_format import MessageToDict, MessageToJson, Parse
 
 from proto import _file_info
 from proto import _package_info
@@ -347,20 +347,44 @@ class MessageMeta(type):
             including_default_value_fields=True,
         )
 
-    def from_json(cls, payload) -> "Message":
+    def from_json(cls, payload, *, ignore_unknown_fields=False) -> "Message":
         """Given a json string representing an instance,
         parse it into a message.
 
         Args:
             paylod: A json string representing a message.
+            ignore_unknown_fields (Optional(bool)): If True, do not raise errors
+                for unknown fields.
 
         Returns:
             ~.Message: An instance of the message class against which this
             method was called.
         """
         instance = cls()
-        Parse(payload, instance._pb)
+        Parse(payload, instance._pb, ignore_unknown_fields=ignore_unknown_fields)
         return instance
+
+    def to_dict(cls, instance, *, use_integers_for_enums=True) -> "Message":
+        """Given a message instance, return its representation as a python dict.
+
+        Args:
+            instance: An instance of this message type, or something
+                      compatible (accepted by the type's constructor).
+            use_integers_for_enums (Optional(bool)): An option that determines whether enum
+                values should be represented by strings (False) or integers (True).
+                Default is True.
+
+        Returns:
+            dict: A representation of the protocol buffer using pythonic data structures.
+                  Messages and map fields are represented as dicts,
+                  repeated fields are represented as lists.
+        """
+        return MessageToDict(
+            cls.pb(instance),
+            including_default_value_fields=True,
+            preserving_proto_field_name=True,
+            use_integers_for_enums=use_integers_for_enums,
+        )
 
 
 class Message(metaclass=MessageMeta):
@@ -369,17 +393,19 @@ class Message(metaclass=MessageMeta):
     Args:
         mapping (Union[dict, ~.Message]): A dictionary or message to be
             used to determine the values for this message.
+        ignore_unknown_fields (Optional(bool)): If True, do not raise errors for
+            unknown fields. Only applied if `mapping` is a mapping type or there
+            are keyword parameters.
         kwargs (dict): Keys and values corresponding to the fields of the
             message.
     """
 
-    def __init__(self, mapping=None, **kwargs):
+    def __init__(self, mapping=None, *, ignore_unknown_fields=False, **kwargs):
         # We accept several things for `mapping`:
         #   * An instance of this class.
         #   * An instance of the underlying protobuf descriptor class.
         #   * A dict
         #   * Nothing (keyword arguments only).
-
         if mapping is None:
             if not kwargs:
                 # Special fast path for empty construction.
@@ -405,24 +431,33 @@ class Message(metaclass=MessageMeta):
             # Just use the above logic on mapping's underlying pb.
             self.__init__(mapping=mapping._pb, **kwargs)
             return
-        elif not isinstance(mapping, collections.abc.Mapping):
+        elif isinstance(mapping, collections.abc.Mapping):
+            # Can't have side effects on mapping.
+            mapping = copy.copy(mapping)
+            # kwargs entries take priority for duplicate keys.
+            mapping.update(kwargs)
+        else:
             # Sanity check: Did we get something not a map? Error if so.
             raise TypeError(
                 "Invalid constructor input for %s: %r"
                 % (self.__class__.__name__, mapping,)
             )
-        else:
-            # Can't have side effects on mapping.
-            mapping = copy.copy(mapping)
-            # kwargs entries take priority for duplicate keys.
-            mapping.update(kwargs)
 
         params = {}
         # Update the mapping to address any values that need to be
         # coerced.
         marshal = self._meta.marshal
         for key, value in mapping.items():
-            pb_type = self._meta.fields[key].pb_type
+            try:
+                pb_type = self._meta.fields[key].pb_type
+            except KeyError:
+                if ignore_unknown_fields:
+                    continue
+
+                raise ValueError(
+                    "Unknown field for {}: {}".format(self.__class__.__name__, key)
+                )
+
             pb_value = marshal.to_proto(pb_type, value)
             if pb_value is not None:
                 params[key] = pb_value

@@ -15,7 +15,7 @@
 import pytest
 
 import proto
-from google.protobuf.json_format import MessageToJson, Parse
+from google.protobuf.json_format import MessageToJson, Parse, ParseError
 
 
 def test_message_to_json():
@@ -34,7 +34,7 @@ def test_message_from_json():
 
     json = """{
     "massKg": 100
-    }    
+    }
     """
 
     s = Squid.from_json(json)
@@ -95,3 +95,21 @@ def test_json_default_enums():
         .replace("\n", "")
     )
     assert json2 == '{"zone":"EPIPELAGIC"}'
+
+
+def test_json_unknown_field():
+    # Note that 'lengthCm' is unknown in the local definition.
+    # This could happen if the client is using an older proto definition
+    # than the server.
+    json_str = '{\n  "massKg": 20,\n  "lengthCm": 100\n}'
+
+    class Octopus(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    o = Octopus.from_json(json_str, ignore_unknown_fields=True)
+    assert not hasattr(o, "length_cm")
+    assert not hasattr(o, "lengthCm")
+
+    # Don't permit unknown fields by default
+    with pytest.raises(ParseError):
+        o = Octopus.from_json(json_str)

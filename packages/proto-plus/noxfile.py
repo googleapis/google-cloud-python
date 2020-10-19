@@ -48,7 +48,7 @@ def unitcpp(session):
     return unit(session, proto="cpp")
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.7")
 def docs(session):
     """Build the docs."""
 
