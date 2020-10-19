@@ -14,8 +14,8 @@ language, computer vision, translation, and AutoML.
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-service-directory.svg
    :target: https://pypi.org/project/google-cloud-service-directory/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-directory.svg
-   :target: https://pypi.org/project/google-cloud-service-directory/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-documentai.svg
+   :target: https://pypi.org/project/google-cloud-documentai/
 .. _Cloud Document AI API: https://cloud.google.com/document-understanding/docs/
 .. _Client Library Documentation: https://googleapis.dev/python/documentai/latest
 .. _Product Documentation: https://cloud.google.com/document-understanding/docs/
