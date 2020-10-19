@@ -4425,7 +4425,7 @@ class TestClient(unittest.TestCase):
         job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
         metadata = job.to_api_repr()
         upload, transport = client._initiate_resumable_upload(
-            stream, metadata, num_retries
+            stream, metadata, num_retries, None
         )
 
         # Check the returned values.
@@ -4492,7 +4492,9 @@ class TestClient(unittest.TestCase):
         job = LoadJob(None, None, self.TABLE_REF, client, job_config=config)
         metadata = job.to_api_repr()
         size = len(data)
-        response = client._do_multipart_upload(stream, metadata, size, num_retries)
+        response = client._do_multipart_upload(
+            stream, metadata, size, num_retries, None
+        )
 
         # Check the mocks and the returned value.
         self.assertIs(response, fake_transport.request.return_value)
@@ -7251,7 +7253,7 @@ class TestClientUpload(object):
             )
 
         do_upload.assert_called_once_with(
-            file_obj, self.EXPECTED_CONFIGURATION, _DEFAULT_NUM_RETRIES
+            file_obj, self.EXPECTED_CONFIGURATION, _DEFAULT_NUM_RETRIES, None
         )
 
         # the original config object should not have been modified
@@ -7280,7 +7282,7 @@ class TestClientUpload(object):
         expected_resource["jobReference"]["location"] = self.LOCATION
         expected_resource["jobReference"]["projectId"] = "other-project"
         do_upload.assert_called_once_with(
-            file_obj, expected_resource, _DEFAULT_NUM_RETRIES
+            file_obj, expected_resource, _DEFAULT_NUM_RETRIES, None
         )
 
     def test_load_table_from_file_w_client_location(self):
@@ -7310,7 +7312,7 @@ class TestClientUpload(object):
         expected_resource["jobReference"]["location"] = self.LOCATION
         expected_resource["jobReference"]["projectId"] = "other-project"
         do_upload.assert_called_once_with(
-            file_obj, expected_resource, _DEFAULT_NUM_RETRIES
+            file_obj, expected_resource, _DEFAULT_NUM_RETRIES, None
         )
 
     def test_load_table_from_file_resumable_metadata(self):
@@ -7368,7 +7370,7 @@ class TestClientUpload(object):
             )
 
         do_upload.assert_called_once_with(
-            file_obj, expected_config, _DEFAULT_NUM_RETRIES
+            file_obj, expected_config, _DEFAULT_NUM_RETRIES, None
         )
 
     def test_load_table_from_file_multipart(self):
@@ -7392,7 +7394,11 @@ class TestClientUpload(object):
             )
 
         do_upload.assert_called_once_with(
-            file_obj, self.EXPECTED_CONFIGURATION, file_obj_size, _DEFAULT_NUM_RETRIES
+            file_obj,
+            self.EXPECTED_CONFIGURATION,
+            file_obj_size,
+            _DEFAULT_NUM_RETRIES,
+            None,
         )
 
     def test_load_table_from_file_with_retries(self):
@@ -7413,7 +7419,7 @@ class TestClientUpload(object):
             )
 
         do_upload.assert_called_once_with(
-            file_obj, self.EXPECTED_CONFIGURATION, num_retries
+            file_obj, self.EXPECTED_CONFIGURATION, num_retries, None
         )
 
     def test_load_table_from_file_with_rewind(self):
@@ -7446,7 +7452,7 @@ class TestClientUpload(object):
             )
 
         do_upload.assert_called_once_with(
-            gzip_file, self.EXPECTED_CONFIGURATION, _DEFAULT_NUM_RETRIES
+            gzip_file, self.EXPECTED_CONFIGURATION, _DEFAULT_NUM_RETRIES, None
         )
 
     def test_load_table_from_file_with_writable_gzip(self):
@@ -7539,6 +7545,7 @@ class TestClientUpload(object):
             location=None,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_file = load_table_from_file.mock_calls[0][1][1]
@@ -7583,6 +7590,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_file = load_table_from_file.mock_calls[0][1][1]
@@ -7636,6 +7644,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -7691,6 +7700,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -7784,6 +7794,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -7844,6 +7855,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -7890,6 +7902,7 @@ class TestClientUpload(object):
             location=None,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
     @unittest.skipIf(
@@ -7931,6 +7944,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -7978,6 +7992,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -8039,6 +8054,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -8113,6 +8129,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -8207,6 +8224,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         assert warned  # there should be at least one warning
@@ -8320,6 +8338,7 @@ class TestClientUpload(object):
             location=self.LOCATION,
             project=None,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -8373,6 +8392,7 @@ class TestClientUpload(object):
             location=client.location,
             project=client.project,
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -8425,6 +8445,7 @@ class TestClientUpload(object):
             location="EU",
             project="project-x",
             job_config=mock.ANY,
+            timeout=None,
         )
 
         sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
@@ -8499,7 +8520,7 @@ class TestClientUpload(object):
         client = self._make_client(transport)
 
         result = client._do_resumable_upload(
-            file_obj, self.EXPECTED_CONFIGURATION, None
+            file_obj, self.EXPECTED_CONFIGURATION, None, None
         )
 
         content = result.content.decode("utf-8")
@@ -8522,7 +8543,7 @@ class TestClientUpload(object):
         file_obj_len = len(file_obj.getvalue())
 
         client._do_multipart_upload(
-            file_obj, self.EXPECTED_CONFIGURATION, file_obj_len, None
+            file_obj, self.EXPECTED_CONFIGURATION, file_obj_len, None, None
         )
 
         # Verify that configuration data was passed in with the initial
@@ -8550,7 +8571,7 @@ class TestClientUpload(object):
         file_obj_len = len(file_obj.getvalue())
 
         with pytest.raises(ValueError):
-            client._do_multipart_upload(file_obj, {}, file_obj_len + 1, None)
+            client._do_multipart_upload(file_obj, {}, file_obj_len + 1, None, None)
 
     def test_schema_from_json_with_file_path(self):
         from google.cloud.bigquery.schema import SchemaField
