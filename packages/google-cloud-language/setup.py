@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-language"
 description = "Google Cloud Natural Language API client library"
-version = "1.3.0"
+version = "2.0.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
@@ -30,7 +30,7 @@ version = "1.3.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
-    "proto-plus >= 1.4.0",
+    "proto-plus >= 1.10.0",
     "libcst >= 0.2.5",
 ]
 extras = {}

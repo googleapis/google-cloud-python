@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-language/compare/v1.3.0...v2.0.0) (2020-10-16)
+
+
+### Features
+
+* Migrate API to use python micro-generator ([#41](https://www.github.com/googleapis/python-language/issues/41)) ([b408b14](https://www.github.com/googleapis/python-language/commit/b408b1431194d8e1373b5d986d476add639f7e87))
+
+
+### Documentation
+
+* add multiprocessing note ([#26](https://www.github.com/googleapis/python-language/issues/26)) ([a489102](https://www.github.com/googleapis/python-language/commit/a489102ca0f5ab302ec8974728a52065f2ea8857))
+* add spacing for readability ([#22](https://www.github.com/googleapis/python-language/issues/22)) ([7dff809](https://www.github.com/googleapis/python-language/commit/7dff809b94b5a1d001aeb1e7763dbbe624865600))
+* fix small typo ([#5](https://www.github.com/googleapis/python-language/issues/5)) ([7a9d4dd](https://www.github.com/googleapis/python-language/commit/7a9d4ddf676f2a77e1bd83e02b8d7987a72c6525))
+* **language:** change docstring formatting; bump copyright year to 2020 (via synth) ([#10234](https://www.github.com/googleapis/python-language/issues/10234)) ([b68b216](https://www.github.com/googleapis/python-language/commit/b68b2166d8e4d81a7e51e701f8facdfd7fb82a26))
+* **language:** edit hyphenation of "part-of-speech" (via synth) ([#9954](https://www.github.com/googleapis/python-language/issues/9954)) ([6246ef9](https://www.github.com/googleapis/python-language/commit/6246ef904871405334c0b3bd6c2490b79ffe56fa))
+* **language:** fixes typo in Natural Language samples ([#10134](https://www.github.com/googleapis/python-language/issues/10134)) ([223d614](https://www.github.com/googleapis/python-language/commit/223d6140145dcf5c48af206212db58a062a7937b))
+* add python 2 sunset banner to documentation ([#9036](https://www.github.com/googleapis/python-language/issues/9036)) ([1fe4105](https://www.github.com/googleapis/python-language/commit/1fe4105e078f84f1d4ea713550c26bdf91096d4a))
+* fix intersphinx reference to requests ([#9294](https://www.github.com/googleapis/python-language/issues/9294)) ([e97a0ae](https://www.github.com/googleapis/python-language/commit/e97a0ae6c2e3a26afc9b3af7d91118ac3c0aa1f7))
+* Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://www.github.com/googleapis/python-language/issues/9085)) ([6b15df6](https://www.github.com/googleapis/python-language/commit/6b15df6091378ed444642fc813d49d8bbbb6365d))
+
 ## 1.3.0
 
 07-24-2019 16:44 PDT
