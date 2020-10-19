@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.10.2...v1.11.0) (2020-10-19)
+
+
+### Features
+
+* provide a to_dict method ([#154](https://www.github.com/googleapis/proto-plus-python/issues/154)) ([ccf903e](https://www.github.com/googleapis/proto-plus-python/commit/ccf903e3cddfcb1ff539e853594b4342914b7d61)), closes [#153](https://www.github.com/googleapis/proto-plus-python/issues/153) [#151](https://www.github.com/googleapis/proto-plus-python/issues/151)
+
 ### [1.10.2](https://www.github.com/googleapis/proto-plus-python/compare/v1.10.1...v1.10.2) (2020-10-14)
 
 
