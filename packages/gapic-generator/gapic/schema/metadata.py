@@ -242,12 +242,15 @@ class Address:
             # It is possible that a field references a message that has
             # not yet been declared. If so, send its name enclosed in quotes
             # (a string) instead.
-            if self.module_path > address.module_path or self == address:
-                return f"'{'.'.join(self.parent + (self.name,))}'"
-
-            # This is a message in the same module, already declared.
-            # Send its name.
-            return '.'.join(self.parent + (self.name,))
+            #
+            # Note: this is a conservative construction; it generates a stringy
+            # identifier all the time when it may be possible to use a regular
+            # module lookup.
+            # On the other hand, there's no reason _not_ to use a stringy
+            # identifier. It is guaranteed to work all the time because
+            # it bumps name resolution until a time when all types in a module
+            # are guaranteed to be fully defined.
+            return f"'{'.'.join(self.parent + (self.name,))}'"
 
         # Return the usual `module.Name`.
         return str(self)

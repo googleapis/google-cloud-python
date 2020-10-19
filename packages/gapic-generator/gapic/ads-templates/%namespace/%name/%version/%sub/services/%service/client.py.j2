@@ -333,7 +333,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request = {{ method.input.ident }}(**request)
         {% if method.flattened_fields -%}{# Cross-package req and flattened fields #}
         elif not request:
-            request = {{ method.input.ident }}()
+            request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
         {% endif -%}{# Cross-package req and flattened fields #}
         {%- else %}
         # Minor optimization to avoid making a copy if the user passes
@@ -344,7 +344,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
         {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
-            {% if method.flattened_fields -%}
+            {% if method.flattened_fields and method.input.ident.package == method.ident.package -%}
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             {% endif -%}
@@ -352,8 +352,14 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             if {{ field.name }} is not None:
                 request.{{ key }} = {{ field.name }}
             {%- endfor %}
-            {# They can be _extended_, however -#}
-            {%- for key, field in method.flattened_fields.items() if (field.repeated and method.input.ident.package != method.ident.package) %}
+            {# Map-y fields can be _updated_, however #}
+            {%- for key, field in method.flattened_fields.items() if field.map and method.input.ident.package == method.ident.package %}
+
+            if {{ field.name }}:
+                request.{{ key }}.update({{ field.name }})
+            {%- endfor %}
+            {# And list-y fields can be _extended_ -#}
+            {%- for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
             if {{ field.name }}:
                 request.{{ key }}.extend({{ field.name }})
             {%- endfor %}

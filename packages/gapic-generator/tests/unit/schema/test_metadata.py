@@ -70,7 +70,7 @@ def test_address_rel():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert addr.rel(
         metadata.Address(package=('foo', 'bar'), module='baz'),
-    ) == 'Bacon'
+    ) == "'Bacon'"
 
 
 def test_address_rel_other():

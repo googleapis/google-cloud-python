@@ -19,6 +19,7 @@ import pytest
 from google.api import field_behavior_pb2
 from google.protobuf import descriptor_pb2
 
+from gapic.schema import api
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
@@ -248,6 +249,35 @@ def test_mock_value_message():
         message=message,
     )
     assert field.mock_value == 'bogus.Message(foo=324)'
+
+
+def test_mock_value_recursive():
+    # The elaborate setup is an unfortunate requirement.
+    file_pb = descriptor_pb2.FileDescriptorProto(
+        name="turtle.proto",
+        package="animalia.chordata.v2",
+        message_type=(
+            descriptor_pb2.DescriptorProto(
+                # It's turtles all the way down ;)
+                name="Turtle",
+                field=(
+                    descriptor_pb2.FieldDescriptorProto(
+                        name="turtle",
+                        type="TYPE_MESSAGE",
+                        type_name=".animalia.chordata.v2.Turtle",
+                        number=1,
+                    ),
+                ),
+            ),
+        ),
+    )
+    my_api = api.API.build([file_pb], package="animalia.chordata.v2")
+    turtle_field = my_api.messages["animalia.chordata.v2.Turtle"].fields["turtle"]
+
+    # If not handled properly, this will run forever and eventually OOM.
+    actual = turtle_field.mock_value
+    expected = "ac_turtle.Turtle(turtle=ac_turtle.Turtle(turtle=turtle.Turtle(turtle=None)))"
+    assert actual == expected
 
 
 def test_field_name_kword_disambiguation():
