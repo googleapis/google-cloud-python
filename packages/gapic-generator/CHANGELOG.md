@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.4...v0.35.5) (2020-10-19)
+
+
+### Bug Fixes
+
+* numerous small fixes to allow bigtable-admin ([#660](https://www.github.com/googleapis/gapic-generator-python/issues/660)) ([09692c4](https://www.github.com/googleapis/gapic-generator-python/commit/09692c4e889ccde3b0ca31a5e8476c1679804beb))
+
 ### [0.35.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.3...v0.35.4) (2020-10-16)
 
 
