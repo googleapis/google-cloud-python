@@ -28,6 +28,7 @@ else:
 import google.api_core.client_options
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
+from google.cloud.logging._helpers import _add_defaults_to_filter
 from google.cloud.logging._helpers import retrieve_metadata_server
 from google.cloud.logging._http import Connection
 from google.cloud.logging._http import _LoggingAPI as JSONLoggingAPI
@@ -223,6 +224,7 @@ class Client(ClientWithProject):
         :param filter_:
             a filter expression. See
             https://cloud.google.com/logging/docs/view/advanced_filters
+            By default, a 24 hour filter is applied.
 
         :type order_by: str
         :param order_by: One of :data:`~google.cloud.logging.ASCENDING`
@@ -248,6 +250,8 @@ class Client(ClientWithProject):
         """
         if projects is None:
             projects = [self.project]
+
+        filter_ = _add_defaults_to_filter(filter_)
 
         return self.logging_api.list_entries(
             projects=projects,

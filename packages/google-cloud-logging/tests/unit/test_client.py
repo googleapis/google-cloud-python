@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from copy import deepcopy
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
+
 import unittest
 
 import mock
@@ -33,6 +38,7 @@ class TestClient(unittest.TestCase):
     METRIC_NAME = "metric_name"
     FILTER = "logName:syslog AND severity>=ERROR"
     DESCRIPTION = "DESCRIPTION"
+    TIME_FORMAT = '"%Y-%m-%dT%H:%M:%S.%f%z"'
 
     @staticmethod
     def _get_target_class():
@@ -279,15 +285,27 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(token, TOKEN)
 
-        called_with = client._connection._called_with
+        # check call payload
+        call_payload_no_filter = deepcopy(client._connection._called_with)
+        call_payload_no_filter["data"]["filter"] = "removed"
         self.assertEqual(
-            called_with,
+            call_payload_no_filter,
             {
                 "path": "/entries:list",
                 "method": "POST",
-                "data": {"projectIds": [self.PROJECT]},
+                "data": {
+                    "filter": "removed",
+                    "projectIds": [self.PROJECT],
+                },
             },
         )
+        # verify that default filter is 24 hours
+        timestamp = datetime.strptime(
+            client._connection._called_with["data"]["filter"],
+            "timestamp>=" + self.TIME_FORMAT,
+        )
+        yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+        self.assertLess(yesterday - timestamp, timedelta(minutes=1))
 
     def test_list_entries_explicit(self):
         from google.cloud.logging import DESCENDING
@@ -297,7 +315,7 @@ class TestClient(unittest.TestCase):
 
         PROJECT1 = "PROJECT1"
         PROJECT2 = "PROJECT2"
-        FILTER = "logName:LOGNAME"
+        INPUT_FILTER = "logName:LOGNAME"
         IID1 = "IID1"
         IID2 = "IID2"
         PAYLOAD = {"message": "MESSAGE", "weather": "partly cloudy"}
@@ -327,7 +345,7 @@ class TestClient(unittest.TestCase):
 
         iterator = client.list_entries(
             projects=[PROJECT1, PROJECT2],
-            filter_=FILTER,
+            filter_=INPUT_FILTER,
             order_by=DESCENDING,
             page_size=PAGE_SIZE,
             page_token=TOKEN,
@@ -360,14 +378,111 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(entries[0].logger, entries[1].logger)
 
-        called_with = client._connection._called_with
+        # check call payload
+        call_payload_no_filter = deepcopy(client._connection._called_with)
+        call_payload_no_filter["data"]["filter"] = "removed"
         self.assertEqual(
-            called_with,
+            call_payload_no_filter,
             {
                 "path": "/entries:list",
                 "method": "POST",
                 "data": {
-                    "filter": FILTER,
+                    "filter": "removed",
+                    "orderBy": DESCENDING,
+                    "pageSize": PAGE_SIZE,
+                    "pageToken": TOKEN,
+                    "projectIds": [PROJECT1, PROJECT2],
+                },
+            },
+        )
+        # verify that default timestamp filter is added
+        timestamp = datetime.strptime(
+            client._connection._called_with["data"]["filter"],
+            INPUT_FILTER + " AND timestamp>=" + self.TIME_FORMAT,
+        )
+        yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+        self.assertLess(yesterday - timestamp, timedelta(minutes=1))
+
+    def test_list_entries_explicit_timestamp(self):
+        from google.cloud.logging import DESCENDING
+        from google.cloud.logging.entries import ProtobufEntry
+        from google.cloud.logging.entries import StructEntry
+        from google.cloud.logging.logger import Logger
+
+        PROJECT1 = "PROJECT1"
+        PROJECT2 = "PROJECT2"
+        INPUT_FILTER = 'logName:LOGNAME AND timestamp="2020-10-13T21"'
+        IID1 = "IID1"
+        IID2 = "IID2"
+        PAYLOAD = {"message": "MESSAGE", "weather": "partly cloudy"}
+        PROTO_PAYLOAD = PAYLOAD.copy()
+        PROTO_PAYLOAD["@type"] = "type.googleapis.com/testing.example"
+        TOKEN = "TOKEN"
+        PAGE_SIZE = 42
+        ENTRIES = [
+            {
+                "jsonPayload": PAYLOAD,
+                "insertId": IID1,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            },
+            {
+                "protoPayload": PROTO_PAYLOAD,
+                "insertId": IID2,
+                "resource": {"type": "global"},
+                "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            },
+        ]
+        client = self._make_one(
+            self.PROJECT, credentials=_make_credentials(), _use_grpc=False
+        )
+        returned = {"entries": ENTRIES}
+        client._connection = _Connection(returned)
+
+        iterator = client.list_entries(
+            projects=[PROJECT1, PROJECT2],
+            filter_=INPUT_FILTER,
+            order_by=DESCENDING,
+            page_size=PAGE_SIZE,
+            page_token=TOKEN,
+        )
+        entries = list(iterator)
+        token = iterator.next_page_token
+
+        # First, check the token.
+        self.assertIsNone(token)
+        # Then check the entries.
+        self.assertEqual(len(entries), 2)
+        entry = entries[0]
+        self.assertIsInstance(entry, StructEntry)
+        self.assertEqual(entry.insert_id, IID1)
+        self.assertEqual(entry.payload, PAYLOAD)
+        logger = entry.logger
+        self.assertIsInstance(logger, Logger)
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertIs(logger.client, client)
+        self.assertEqual(logger.project, self.PROJECT)
+
+        entry = entries[1]
+        self.assertIsInstance(entry, ProtobufEntry)
+        self.assertEqual(entry.insert_id, IID2)
+        self.assertEqual(entry.payload, PROTO_PAYLOAD)
+        logger = entry.logger
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertIs(logger.client, client)
+        self.assertEqual(logger.project, self.PROJECT)
+
+        self.assertIs(entries[0].logger, entries[1].logger)
+
+        # check call payload
+        # filter should not be changed
+        self.assertEqual(
+            client._connection._called_with,
+            {
+                "path": "/entries:list",
+                "method": "POST",
+                "data": {
+                    "filter": INPUT_FILTER,
                     "orderBy": DESCENDING,
                     "pageSize": PAGE_SIZE,
                     "pageToken": TOKEN,

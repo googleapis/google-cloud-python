@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
 import logging
 import unittest
@@ -161,6 +164,59 @@ class Test__normalize_severity(unittest.TestCase):
     def test__normalize_severity_non_standard(self):
         unknown_level = 35
         self._normalize_severity_helper(unknown_level, unknown_level)
+
+
+class Test__add_defaults_to_filter(unittest.TestCase):
+    @staticmethod
+    def _time_format():
+        return "%Y-%m-%dT%H:%M:%S.%f%z"
+
+    @staticmethod
+    def _add_defaults_to_filter(filter_):
+        from google.cloud.logging._helpers import _add_defaults_to_filter
+
+        return _add_defaults_to_filter(filter_)
+
+    def test_filter_defaults_empty_input(self):
+        """Filter should default to return logs < 24 hours old"""
+        out_filter = self._add_defaults_to_filter(None)
+        timestamp = datetime.strptime(
+            out_filter, 'timestamp>="' + self._time_format() + '"'
+        )
+        yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+        self.assertLess(yesterday - timestamp, timedelta(minutes=1))
+
+    def test_filter_defaults_no_timestamp(self):
+        """Filter should append 24 hour timestamp filter to input string"""
+        test_inputs = [
+            "",
+            "  ",
+            "logName=/projects/test/test",
+            "test1 AND test2 AND test3",
+            "time AND stamp  ",
+        ]
+        for in_filter in test_inputs:
+            out_filter = self._add_defaults_to_filter(in_filter)
+            self.assertTrue(in_filter in out_filter)
+            self.assertTrue("timestamp" in out_filter)
+
+            timestamp = datetime.strptime(
+                out_filter, in_filter + ' AND timestamp>="' + self._time_format() + '"'
+            )
+            yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+            self.assertLess(yesterday - timestamp, timedelta(minutes=1))
+
+    def test_filter_defaults_only_timestamp(self):
+        """If user inputs a timestamp filter, don't add default"""
+        in_filter = "timestamp=test"
+        out_filter = self._add_defaults_to_filter(in_filter)
+        self.assertEqual(in_filter, out_filter)
+
+    def test_filter_defaults_capitalized_timestamp(self):
+        """Should work with capitalized timestamp strings"""
+        in_filter = "TIMESTAMP=test"
+        out_filter = self._add_defaults_to_filter(in_filter)
+        self.assertEqual(in_filter, out_filter)
 
 
 class EntryMock(object):

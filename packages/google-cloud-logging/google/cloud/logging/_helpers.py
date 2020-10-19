@@ -16,6 +16,10 @@
 
 import logging
 
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
+
 import requests
 
 from google.cloud.logging.entries import LogEntry
@@ -49,6 +53,9 @@ _NORMALIZED_SEVERITIES = {
     logging.DEBUG: LogSeverity.DEBUG,
     logging.NOTSET: LogSeverity.DEFAULT,
 }
+
+_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
+"""Time format for timestamps used in API"""
 
 METADATA_URL = "http://metadata.google.internal./computeMetadata/v1/"
 METADATA_HEADERS = {"Metadata-Flavor": "Google"}
@@ -123,3 +130,23 @@ def _normalize_severity(stdlib_level):
     :returns: Corresponding Stackdriver severity.
     """
     return _NORMALIZED_SEVERITIES.get(stdlib_level, stdlib_level)
+
+
+def _add_defaults_to_filter(filter_):
+    """Modify the input filter expression to add sensible defaults.
+
+    :type filter_: str
+    :param filter_: The original filter expression
+
+    :rtype: str
+    :returns: sensible default filter string
+    """
+
+    # By default, requests should only return logs in the last 24 hours
+    yesterday = datetime.now(timezone.utc) - timedelta(days=1)
+    time_filter = 'timestamp>="%s"' % yesterday.strftime(_TIME_FORMAT)
+    if filter_ is None:
+        filter_ = time_filter
+    elif "timestamp" not in filter_.lower():
+        filter_ = "%s AND %s" % (filter_, time_filter)
+    return filter_
