@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.32.0](https://www.github.com/googleapis/python-storage/compare/v1.31.2...v1.32.0) (2020-10-16)
+
+
+### Features
+
+* retry API calls with exponential backoff ([#287](https://www.github.com/googleapis/python-storage/issues/287)) ([fbe5d9c](https://www.github.com/googleapis/python-storage/commit/fbe5d9ca8684c6a992dcdee977fc8dd012a96a5c))
+
+
+### Bug Fixes
+
+* field policy return string ([#282](https://www.github.com/googleapis/python-storage/issues/282)) ([c356b84](https://www.github.com/googleapis/python-storage/commit/c356b8484a758548d5f4823a495ab70c798cfaaf))
+* self-upload files for Unicode system test ([#296](https://www.github.com/googleapis/python-storage/issues/296)) ([6f865d9](https://www.github.com/googleapis/python-storage/commit/6f865d97a19278884356055dfeeaae92f7c63cc1))
+* use version.py for versioning, avoid issues with discovering version via get_distribution ([#288](https://www.github.com/googleapis/python-storage/issues/288)) ([fcd1c4f](https://www.github.com/googleapis/python-storage/commit/fcd1c4f7c947eb95d6937783fd69670a570f145e))
+
 ### [1.31.2](https://www.github.com/googleapis/python-storage/compare/v1.31.1...v1.31.2) (2020-09-23)
 
 
