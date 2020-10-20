@@ -48,11 +48,11 @@ import google.cloud._helpers
 from google.cloud import exceptions
 from google.cloud.client import ClientWithProject
 
+from google.cloud.bigquery._helpers import _del_sub_prop
 from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
-from google.cloud.bigquery._helpers import _del_sub_prop
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
@@ -1619,6 +1619,7 @@ class Client(ClientWithProject):
             )
             destination = _get_sub_prop(job_config, ["load", "destinationTable"])
             source_uris = _get_sub_prop(job_config, ["load", "sourceUris"])
+            destination = TableReference.from_api_repr(destination)
             return self.load_table_from_uri(
                 source_uris,
                 destination,
@@ -1631,9 +1632,9 @@ class Client(ClientWithProject):
                 job_config
             )
             destination = _get_sub_prop(job_config, ["copy", "destinationTable"])
+            destination = TableReference.from_api_repr(destination)
             sources = []
             source_configs = _get_sub_prop(job_config, ["copy", "sourceTables"])
-
             if source_configs is None:
                 source_configs = [_get_sub_prop(job_config, ["copy", "sourceTable"])]
             for source_config in source_configs:
@@ -1651,10 +1652,13 @@ class Client(ClientWithProject):
                 job_config
             )
             source = _get_sub_prop(job_config, ["extract", "sourceTable"])
-            source_type = "Table"
-            if not source:
+            if source:
+                source_type = "Table"
+                source = TableReference.from_api_repr(source)
+            else:
                 source = _get_sub_prop(job_config, ["extract", "sourceModel"])
                 source_type = "Model"
+                source = ModelReference.from_api_repr(source)
             destination_uris = _get_sub_prop(job_config, ["extract", "destinationUris"])
             return self.extract_table(
                 source,
