@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.5...v0.35.6) (2020-10-20)
+
+
+### Bug Fixes
+
+* unknown resources do not cause a generator crash ([#675](https://www.github.com/googleapis/gapic-generator-python/issues/675)) ([2d23d7d](https://www.github.com/googleapis/gapic-generator-python/commit/2d23d7d202099ccf145c01aeb9a03ae46b4e1b00))
+
 ### [0.35.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.4...v0.35.5) (2020-10-19)
 
 
