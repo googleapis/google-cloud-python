@@ -1064,11 +1064,12 @@ class Service:
                 resource = field.options.Extensions[
                     resource_pb2.resource_reference]
                 resource_type = resource.type or resource.child_type
-                # The common resources are defined (and rendered) explicitly
-                # by separate logic, and the resource definitions are never
-                # visible in any of the APIs file descriptor protos.
-                if resource_type and resource_type not in self.common_resources:
-                    yield self.visible_resources[resource_type]
+                # The resource may not be visible if the resource type is one of
+                # the common_resources (see the class var in class definition)
+                # or if it's something unhelpful like '*'.
+                resource = self.visible_resources.get(resource_type)
+                if resource:
+                    yield resource
 
         return frozenset(
             msg

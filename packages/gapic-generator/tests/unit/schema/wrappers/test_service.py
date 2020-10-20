@@ -248,6 +248,30 @@ def test_resource_messages():
     assert expected == actual
 
 
+def test_service_unknown_resource_reference():
+    # This happens occasionally.
+    opts = descriptor_pb2.FieldOptions()
+    res_ref = opts.Extensions[resource_pb2.resource_reference]
+    res_ref.type = "*"
+    squid_request = make_message(
+        "CreateSquid",
+        fields=(
+            make_field("parent", type="TYPE_STRING", options=opts,),
+        ),
+    )
+    squid_service = make_service(
+        "SquidService",
+        methods=(
+            make_method(
+                "CreateSquid",
+                input_message=squid_request,
+            ),
+        ),
+    )
+
+    assert not squid_service.resource_messages
+
+
 def test_service_any_streaming():
     for client, server in itertools.product((True, False), (True, False)):
         service = make_service(
