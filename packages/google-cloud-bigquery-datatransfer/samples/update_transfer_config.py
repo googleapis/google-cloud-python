@@ -19,7 +19,7 @@
 
 
 def sample_update_transfer_config(config_name, display_name):
-    # [START bigquerydatatransfer_update_transfer_config]
+    # [START bigquerydatatransfer_update_config]
     from google.cloud import bigquery_datatransfer
 
     client = bigquery_datatransfer.DataTransferServiceClient()
@@ -37,7 +37,7 @@ def sample_update_transfer_config(config_name, display_name):
     )
 
     print("Transfer config updated for '{}'".format(response.name))
-    # [END bigquerydatatransfer_update_transfer_config]
+    # [END bigquerydatatransfer_update_config]
     # Return the config name for testing purposes, so that it can be deleted.
     return response
 
