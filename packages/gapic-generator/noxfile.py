@@ -26,7 +26,7 @@ showcase_version = "0.11.0"
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
 
 
-@nox.session(python=["3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def unit(session):
     """Run the unit test suite."""
 
@@ -169,7 +169,7 @@ def showcase_mtls_alternative_templates(session):
     )
 
 
-@nox.session(python=["3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def showcase_unit(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
 ):
@@ -198,7 +198,7 @@ def showcase_unit(
         )
 
 
-@nox.session(python=["3.7", "3.8"])
+@nox.session(python=["3.7", "3.8", "3.9"])
 def showcase_unit_alternative_templates(session):
     showcase_unit(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
 
@@ -250,7 +250,7 @@ def docs(session):
     )
 
 
-@nox.session(python=["3.7", "3.8"])
+@nox.session(python=["3.7", "3.8", "3.9"])
 def mypy(session):
     """Perform typecheck analysis."""
 

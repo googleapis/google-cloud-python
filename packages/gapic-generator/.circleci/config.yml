@@ -20,6 +20,10 @@ workflows:
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
+      - unit-3.9:
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-3.6:
           requires:
             - unit-3.6
@@ -38,6 +42,12 @@ workflows:
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
+      - showcase-unit-3.9:
+          requires:
+            - unit-3.9
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
       - showcase-unit-alternative-templates-3.7:
           requires:
             - unit-3.7
@@ -47,6 +57,12 @@ workflows:
       - showcase-unit-alternative-templates-3.8:
           requires:
             - unit-3.8
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - showcase-unit-alternative-templates-3.9:
+          requires:
+            - unit-3.9
           filters:
             tags:
               only: /^v\d+\.\d+\.\d+$/
@@ -75,6 +91,7 @@ workflows:
             - showcase-unit-3.6
             - showcase-unit-3.7
             - showcase-unit-3.8
+            - showcase-unit-3.9
             - showcase-mypy
           filters:
             tags:
@@ -86,6 +103,7 @@ workflows:
             - showcase-unit-3.6
             - showcase-unit-3.7
             - showcase-unit-3.8
+            - showcase-unit-3.9
             - showcase-mypy
           filters:
             tags:
@@ -96,6 +114,7 @@ workflows:
             - mypy
             - showcase-unit-alternative-templates-3.7
             - showcase-unit-alternative-templates-3.8
+            - showcase-unit-alternative-templates-3.9
             - showcase-mypy-alternative-templates
           filters:
             tags:
@@ -106,6 +125,7 @@ workflows:
             - mypy
             - showcase-unit-alternative-templates-3.7
             - showcase-unit-alternative-templates-3.8
+            - showcase-unit-alternative-templates-3.9
             - showcase-mypy-alternative-templates
           filters:
             tags:
@@ -416,6 +436,30 @@ jobs:
       - run:
           name: Run unit tests.
           command: nox -s showcase_unit-3.8
+  showcase-unit-3.9:
+    docker:
+      - image: python:3.9-slim
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies.
+          command: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - run:
+          name: Install protoc 3.12.1.
+          command: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - run:
+          name: Install nox.
+          command: pip install nox
+      - run:
+          name: Run unit tests.
+          command: nox -s showcase_unit-3.9
   showcase-unit-alternative-templates-3.7:
     docker:
       - image: python:3.7-slim
@@ -464,6 +508,30 @@ jobs:
       - run:
           name: Run unit tests.
           command: nox -s showcase_unit_alternative_templates-3.8
+  showcase-unit-alternative-templates-3.9:
+    docker:
+      - image: python:3.9-slim
+    steps:
+      - checkout
+      - run:
+          name: Install system dependencies.
+          command: |
+            apt-get update
+            apt-get install -y curl pandoc unzip gcc
+      - run:
+          name: Install protoc 3.12.1.
+          command: |
+            mkdir -p /usr/src/protoc/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - run:
+          name: Install nox.
+          command: pip install nox
+      - run:
+          name: Run unit tests.
+          command: nox -s showcase_unit_alternative_templates-3.9
   showcase-unit-add-iam-methods:
     docker:
       - image: python:3.8-slim
@@ -598,6 +666,28 @@ jobs:
       - run:
           name: Run unit tests.
           command: nox -s unit-3.8
+      - run:
+          name: Submit coverage data to codecov.
+          command: codecov
+          when: always
+  unit-3.9:
+    docker:
+      - image: python:3.9-slim
+    steps:
+      - checkout
+      - run:
+          name: Install pandoc
+          command: |
+            apt-get update
+            apt-get install -y pandoc gcc git
+      - run:
+          name: Install nox and codecov.
+          command: |
+            pip install nox
+            pip install codecov
+      - run:
+          name: Run unit tests.
+          command: nox -s unit-3.9
       - run:
           name: Submit coverage data to codecov.
           command: codecov
