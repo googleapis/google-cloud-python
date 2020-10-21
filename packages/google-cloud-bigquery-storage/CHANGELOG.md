@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.0.0...v2.0.1) (2020-10-21)
+
+
+### Bug Fixes
+
+* don't fail with 429 when downloading wide tables ([#79](https://www.github.com/googleapis/python-bigquery-storage/issues/79)) ([45faf97](https://www.github.com/googleapis/python-bigquery-storage/commit/45faf9712b25bd63d962ca7e5afc8b8d3a0d8353))
+
+
+### Documentation
+
+* update to_dataframe sample to latest dependencies ([#72](https://www.github.com/googleapis/python-bigquery-storage/issues/72)) ([a7fe762](https://www.github.com/googleapis/python-bigquery-storage/commit/a7fe7626312a5b9fe1e7bd0e0fe5601ae97605c7))
+
 ## 2.0.0
 
 09-24-2020 08:21 PDT
