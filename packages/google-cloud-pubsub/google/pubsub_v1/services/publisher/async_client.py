@@ -48,11 +48,45 @@ class PublisherAsyncClient:
     DEFAULT_ENDPOINT = PublisherClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = PublisherClient.DEFAULT_MTLS_ENDPOINT
 
+    subscription_path = staticmethod(PublisherClient.subscription_path)
+    parse_subscription_path = staticmethod(PublisherClient.parse_subscription_path)
     topic_path = staticmethod(PublisherClient.topic_path)
     parse_topic_path = staticmethod(PublisherClient.parse_topic_path)
 
+    common_billing_account_path = staticmethod(
+        PublisherClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        PublisherClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(PublisherClient.common_folder_path)
+    parse_common_folder_path = staticmethod(PublisherClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(PublisherClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        PublisherClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(PublisherClient.common_project_path)
+    parse_common_project_path = staticmethod(PublisherClient.parse_common_project_path)
+
+    common_location_path = staticmethod(PublisherClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        PublisherClient.parse_common_location_path
+    )
+
     from_service_account_file = PublisherClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> PublisherTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            PublisherTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(PublisherClient).get_transport_class, type(PublisherClient)
@@ -148,7 +182,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -287,7 +322,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([topic, messages]):
+        has_flattened_params = any([topic, messages])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -300,8 +336,9 @@ class PublisherAsyncClient:
 
         if topic is not None:
             request.topic = topic
-        if messages is not None:
-            request.messages = messages
+
+        if messages:
+            request.messages.extend(messages)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -312,13 +349,13 @@ class PublisherAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.Aborted,
                     exceptions.Cancelled,
                     exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ResourceExhausted,
                     exceptions.ServiceUnavailable,
                     exceptions.Unknown,
-                    exceptions.Aborted,
                 ),
             ),
             default_timeout=60.0,
@@ -371,7 +408,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([topic]):
+        has_flattened_params = any([topic])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -395,8 +433,8 @@ class PublisherAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     exceptions.Aborted,
-                    exceptions.Unknown,
                     exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
                 ),
             ),
             default_timeout=60.0,
@@ -453,7 +491,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project]):
+        has_flattened_params = any([project])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -477,8 +516,8 @@ class PublisherAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     exceptions.Aborted,
-                    exceptions.Unknown,
                     exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
                 ),
             ),
             default_timeout=60.0,
@@ -544,7 +583,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([topic]):
+        has_flattened_params = any([topic])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -568,8 +608,8 @@ class PublisherAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     exceptions.Aborted,
-                    exceptions.Unknown,
                     exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
                 ),
             ),
             default_timeout=60.0,
@@ -639,7 +679,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([topic]):
+        has_flattened_params = any([topic])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -663,8 +704,8 @@ class PublisherAsyncClient:
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
                     exceptions.Aborted,
-                    exceptions.Unknown,
                     exceptions.ServiceUnavailable,
+                    exceptions.Unknown,
                 ),
             ),
             default_timeout=60.0,
@@ -725,7 +766,8 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([topic]):
+        has_flattened_params = any([topic])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

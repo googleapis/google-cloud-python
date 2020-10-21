@@ -126,7 +126,7 @@ class Topic(proto.Message):
     labels = proto.MapField(proto.STRING, proto.STRING, number=2)
 
     message_storage_policy = proto.Field(
-        proto.MESSAGE, number=3, message=MessageStoragePolicy,
+        proto.MESSAGE, number=3, message="MessageStoragePolicy",
     )
 
     kms_key_name = proto.Field(proto.STRING, number=5)
@@ -213,7 +213,7 @@ class UpdateTopicRequest(proto.Message):
             policy configured at the project or organization level.
     """
 
-    topic = proto.Field(proto.MESSAGE, number=1, message=Topic,)
+    topic = proto.Field(proto.MESSAGE, number=1, message="Topic",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
@@ -231,7 +231,7 @@ class PublishRequest(proto.Message):
 
     topic = proto.Field(proto.STRING, number=1)
 
-    messages = proto.RepeatedField(proto.MESSAGE, number=2, message=PubsubMessage,)
+    messages = proto.RepeatedField(proto.MESSAGE, number=2, message="PubsubMessage",)
 
 
 class PublishResponse(proto.Message):
@@ -287,7 +287,7 @@ class ListTopicsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    topics = proto.RepeatedField(proto.MESSAGE, number=1, message=Topic,)
+    topics = proto.RepeatedField(proto.MESSAGE, number=1, message="Topic",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -772,7 +772,7 @@ class ReceivedMessage(proto.Message):
 
     ack_id = proto.Field(proto.STRING, number=1)
 
-    message = proto.Field(proto.MESSAGE, number=2, message=PubsubMessage,)
+    message = proto.Field(proto.MESSAGE, number=2, message="PubsubMessage",)
 
     delivery_attempt = proto.Field(proto.INT32, number=3)
 
@@ -801,7 +801,7 @@ class UpdateSubscriptionRequest(proto.Message):
             specified and non-empty.
     """
 
-    subscription = proto.Field(proto.MESSAGE, number=1, message=Subscription,)
+    subscription = proto.Field(proto.MESSAGE, number=1, message="Subscription",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
@@ -845,7 +845,9 @@ class ListSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions = proto.RepeatedField(proto.MESSAGE, number=1, message=Subscription,)
+    subscriptions = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="Subscription",
+    )
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -881,7 +883,7 @@ class ModifyPushConfigRequest(proto.Message):
 
     subscription = proto.Field(proto.STRING, number=1)
 
-    push_config = proto.Field(proto.MESSAGE, number=2, message=PushConfig,)
+    push_config = proto.Field(proto.MESSAGE, number=2, message="PushConfig",)
 
 
 class PullRequest(proto.Message):
@@ -928,7 +930,7 @@ class PullResponse(proto.Message):
     """
 
     received_messages = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ReceivedMessage,
+        proto.MESSAGE, number=1, message="ReceivedMessage",
     )
 
 
@@ -1092,7 +1094,7 @@ class StreamingPullResponse(proto.Message):
     """
 
     received_messages = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ReceivedMessage,
+        proto.MESSAGE, number=1, message="ReceivedMessage",
     )
 
 
@@ -1240,7 +1242,7 @@ class ListSnapshotsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    snapshots = proto.RepeatedField(proto.MESSAGE, number=1, message=Snapshot,)
+    snapshots = proto.RepeatedField(proto.MESSAGE, number=1, message="Snapshot",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
