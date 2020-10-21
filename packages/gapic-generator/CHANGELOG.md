@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.7](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.6...v0.35.7) (2020-10-21)
+
+
+### Bug Fixes
+
+* expose ssl credentials from transport ([#677](https://www.github.com/googleapis/gapic-generator-python/issues/677)) ([da0ee3e](https://www.github.com/googleapis/gapic-generator-python/commit/da0ee3eab4f80bf3d70fa5e06a2dcef7e1d4d22e))
+
 ### [0.35.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.5...v0.35.6) (2020-10-20)
 
 
