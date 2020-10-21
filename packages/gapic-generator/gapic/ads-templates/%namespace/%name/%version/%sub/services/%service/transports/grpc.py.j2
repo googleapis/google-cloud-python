@@ -88,6 +88,8 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
         """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -95,6 +97,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint and client_cert_source are deprecated", DeprecationWarning)
 
@@ -122,6 +125,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
             )
+            self._ssl_channel_credentials = ssl_credentials
         else:
             host = host if ":" in host else host + ":443"
 
