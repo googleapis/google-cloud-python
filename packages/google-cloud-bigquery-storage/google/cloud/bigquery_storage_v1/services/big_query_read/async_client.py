@@ -18,7 +18,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, AsyncIterable, Sequence, Tuple, Type, Union
+from typing import Dict, AsyncIterable, Awaitable, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -53,9 +53,45 @@ class BigQueryReadAsyncClient:
     parse_read_session_path = staticmethod(BigQueryReadClient.parse_read_session_path)
     read_stream_path = staticmethod(BigQueryReadClient.read_stream_path)
     parse_read_stream_path = staticmethod(BigQueryReadClient.parse_read_stream_path)
+    table_path = staticmethod(BigQueryReadClient.table_path)
+    parse_table_path = staticmethod(BigQueryReadClient.parse_table_path)
+
+    common_billing_account_path = staticmethod(
+        BigQueryReadClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        BigQueryReadClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(BigQueryReadClient.common_folder_path)
+    parse_common_folder_path = staticmethod(BigQueryReadClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(BigQueryReadClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        BigQueryReadClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(BigQueryReadClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        BigQueryReadClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(BigQueryReadClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        BigQueryReadClient.parse_common_location_path
+    )
 
     from_service_account_file = BigQueryReadClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> BigQueryReadTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            BigQueryReadTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(BigQueryReadClient).get_transport_class, type(BigQueryReadClient)
@@ -191,7 +227,8 @@ class BigQueryReadAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, read_session, max_stream_count]):
+        has_flattened_params = any([parent, read_session, max_stream_count])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -218,7 +255,7 @@ class BigQueryReadAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -248,7 +285,7 @@ class BigQueryReadAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[storage.ReadRowsResponse]:
+    ) -> Awaitable[AsyncIterable[storage.ReadRowsResponse]]:
         r"""Reads rows from the stream in the format prescribed
         by the ReadSession. Each response contains one or more
         table rows, up to a maximum of 100 MiB per response;
@@ -291,7 +328,8 @@ class BigQueryReadAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([read_stream, offset]):
+        has_flattened_params = any([read_stream, offset])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -385,7 +423,7 @@ class BigQueryReadAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,

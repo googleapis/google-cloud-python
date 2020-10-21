@@ -166,9 +166,9 @@ class ReadRowsResponse(proto.Message):
 
     row_count = proto.Field(proto.INT64, number=6)
 
-    stats = proto.Field(proto.MESSAGE, number=2, message=StreamStats,)
+    stats = proto.Field(proto.MESSAGE, number=2, message="StreamStats",)
 
-    throttle_state = proto.Field(proto.MESSAGE, number=5, message=ThrottleState,)
+    throttle_state = proto.Field(proto.MESSAGE, number=5, message="ThrottleState",)
 
 
 class SplitReadStreamRequest(proto.Message):
