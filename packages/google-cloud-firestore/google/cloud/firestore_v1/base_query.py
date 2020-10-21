@@ -56,10 +56,12 @@ _COMPARISON_OPERATORS = {
     "<": _operator_enum.LESS_THAN,
     "<=": _operator_enum.LESS_THAN_OR_EQUAL,
     _EQ_OP: _operator_enum.EQUAL,
+    "!=": _operator_enum.NOT_EQUAL,
     ">=": _operator_enum.GREATER_THAN_OR_EQUAL,
     ">": _operator_enum.GREATER_THAN,
     "array_contains": _operator_enum.ARRAY_CONTAINS,
     "in": _operator_enum.IN,
+    "not-in": _operator_enum.NOT_IN,
     "array_contains_any": _operator_enum.ARRAY_CONTAINS_ANY,
 }
 _BAD_OP_STRING = "Operator string {!r} is invalid. Valid choices are: {}."
@@ -255,8 +257,8 @@ class BaseQuery(object):
             field_path (str): A field path (``.``-delimited list of
                 field names) for the field to filter on.
             op_string (str): A comparison operation in the form of a string.
-                Acceptable values are ``<``, ``<=``, ``==``, ``>=``, ``>``,
-                ``in``, ``array_contains`` and ``array_contains_any``.
+                Acceptable values are ``<``, ``<=``, ``==``, ``!=``, ``>=``, ``>``,
+                ``in``, ``not-in``, ``array_contains`` and ``array_contains_any``.
             value (Any): The value to compare the field against in the filter.
                 If ``value`` is :data:`None` or a NaN, then ``==`` is the only
                 allowed operation.
@@ -864,7 +866,7 @@ def _enum_from_op_string(op_string: str) -> Any:
 
     Args:
         op_string (str): A comparison operation in the form of a string.
-            Acceptable values are ``<``, ``<=``, ``==``, ``>=``
+            Acceptable values are ``<``, ``<=``, ``==``, ``!=``, ``>=``
             and ``>``.
 
     Returns:

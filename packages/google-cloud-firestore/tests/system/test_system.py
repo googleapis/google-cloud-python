@@ -582,6 +582,36 @@ def test_query_stream_w_simple_field_in_op(query_docs):
         assert value["a"] == 1
 
 
+def test_query_stream_w_not_eq_op(query_docs):
+    collection, stored, allowed_vals = query_docs
+    query = collection.where("stats.sum", "!=", 4)
+    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+    assert len(values) == 20
+    ab_pairs2 = set()
+    for key, value in values.items():
+        assert stored[key] == value
+        ab_pairs2.add((value["a"], value["b"]))
+
+    expected_ab_pairs = set(
+        [
+            (a_val, b_val)
+            for a_val in allowed_vals
+            for b_val in allowed_vals
+            if a_val + b_val != 4
+        ]
+    )
+    assert expected_ab_pairs == ab_pairs2
+
+
+def test_query_stream_w_simple_not_in_op(query_docs):
+    collection, stored, allowed_vals = query_docs
+    num_vals = len(allowed_vals)
+    query = collection.where("stats.sum", "not-in", [2, num_vals + 100])
+    values = {snapshot.id: snapshot.to_dict() for snapshot in query.stream()}
+
+    assert len(values) == 22
+
+
 def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
