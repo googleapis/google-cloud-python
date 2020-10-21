@@ -28,6 +28,7 @@ import os
 
 import google.api_core.client_options  # type: ignore
 import google.api_core.path_template  # type: ignore
+from google.api_core import retry as retries  # type: ignore
 from google.api_core.gapic_v1 import client_info  # type: ignore
 from google.cloud.client import ClientWithProject  # type: ignore
 
@@ -353,18 +354,50 @@ class BaseClient(ClientWithProject):
             extra = "{!r} was provided".format(name)
             raise TypeError(_BAD_OPTION_ERR, extra)
 
+    def _prep_get_all(
+        self,
+        references: list,
+        field_paths: Iterable[str] = None,
+        transaction: BaseTransaction = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
+    ) -> Tuple[dict, dict, dict]:
+        """Shared setup for async/sync :meth:`get_all`."""
+        document_paths, reference_map = _reference_info(references)
+        mask = _get_doc_mask(field_paths)
+        request = {
+            "database": self._database_string,
+            "documents": document_paths,
+            "mask": mask,
+            "transaction": _helpers.get_transaction_id(transaction),
+        }
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return request, reference_map, kwargs
+
     def get_all(
         self,
         references: list,
         field_paths: Iterable[str] = None,
         transaction: BaseTransaction = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Union[
         AsyncGenerator[DocumentSnapshot, Any], Generator[DocumentSnapshot, Any, Any]
     ]:
         raise NotImplementedError
 
+    def _prep_collections(
+        self, retry: retries.Retry = None, timeout: float = None,
+    ) -> Tuple[dict, dict]:
+        """Shared setup for async/sync :meth:`collections`."""
+        request = {"parent": "{}/documents".format(self._database_string)}
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return request, kwargs
+
     def collections(
-        self,
+        self, retry: retries.Retry = None, timeout: float = None,
     ) -> Union[
         AsyncGenerator[BaseCollectionReference, Any],
         Generator[BaseCollectionReference, Any, Any],

@@ -71,8 +71,9 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
             current_document=common.Precondition(exists=False),
         )
 
-    @pytest.mark.asyncio
-    async def test_create(self):
+    async def _create_helper(self, retry=None, timeout=None):
+        from google.cloud.firestore_v1 import _helpers
+
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = AsyncMock()
         firestore_api.commit.mock_add_spec(spec=["commit"])
@@ -85,7 +86,9 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         # Actually make a document and call create().
         document = self._make_one("foo", "twelve", client=client)
         document_data = {"hello": "goodbye", "count": 99}
-        write_result = await document.create(document_data)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        write_result = await document.create(document_data, **kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
@@ -97,7 +100,20 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
+
+    @pytest.mark.asyncio
+    async def test_create(self):
+        await self._create_helper()
+
+    @pytest.mark.asyncio
+    async def test_create_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._create_helper(retry=retry, timeout=timeout)
 
     @pytest.mark.asyncio
     async def test_create_empty(self):
@@ -153,7 +169,9 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         return write_pbs
 
     @pytest.mark.asyncio
-    async def _set_helper(self, merge=False, **option_kwargs):
+    async def _set_helper(self, merge=False, retry=None, timeout=None, **option_kwargs):
+        from google.cloud.firestore_v1 import _helpers
+
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = AsyncMock(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
@@ -165,7 +183,9 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         # Actually make a document and call create().
         document = self._make_one("User", "Interface", client=client)
         document_data = {"And": 500, "Now": b"\xba\xaa\xaa \xba\xaa\xaa"}
-        write_result = await document.set(document_data, merge)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        write_result = await document.set(document_data, merge, **kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
@@ -178,11 +198,20 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     @pytest.mark.asyncio
     async def test_set(self):
         await self._set_helper()
+
+    @pytest.mark.asyncio
+    async def test_set_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._set_helper(retry=retry, timeout=timeout)
 
     @pytest.mark.asyncio
     async def test_set_merge(self):
@@ -204,7 +233,8 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         )
 
     @pytest.mark.asyncio
-    async def _update_helper(self, **option_kwargs):
+    async def _update_helper(self, retry=None, timeout=None, **option_kwargs):
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.transforms import DELETE_FIELD
 
         # Create a minimal fake GAPIC with a dummy response.
@@ -221,12 +251,14 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         field_updates = collections.OrderedDict(
             (("hello", 1), ("then.do", False), ("goodbye", DELETE_FIELD))
         )
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
         if option_kwargs:
             option = client.write_option(**option_kwargs)
-            write_result = await document.update(field_updates, option=option)
+            write_result = await document.update(field_updates, option=option, **kwargs)
         else:
             option = None
-            write_result = await document.update(field_updates)
+            write_result = await document.update(field_updates, **kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
@@ -247,6 +279,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     @pytest.mark.asyncio
@@ -257,6 +290,14 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_update(self):
         await self._update_helper()
+
+    @pytest.mark.asyncio
+    async def test_update_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._update_helper(retry=retry, timeout=timeout)
 
     @pytest.mark.asyncio
     async def test_update_with_precondition(self):
@@ -283,7 +324,8 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
             await document.update(field_updates)
 
     @pytest.mark.asyncio
-    async def _delete_helper(self, **option_kwargs):
+    async def _delete_helper(self, retry=None, timeout=None, **option_kwargs):
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types import write
 
         # Create a minimal fake GAPIC with a dummy response.
@@ -293,15 +335,16 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         # Attach the fake GAPIC to a real client.
         client = _make_client("donut-base")
         client._firestore_api_internal = firestore_api
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         # Actually make a document and call delete().
         document = self._make_one("where", "we-are", client=client)
         if option_kwargs:
             option = client.write_option(**option_kwargs)
-            delete_time = await document.delete(option=option)
+            delete_time = await document.delete(option=option, **kwargs)
         else:
             option = None
-            delete_time = await document.delete()
+            delete_time = await document.delete(**kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(delete_time, mock.sentinel.commit_time)
@@ -315,6 +358,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     @pytest.mark.asyncio
@@ -329,10 +373,24 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         await self._delete_helper(last_update_time=timestamp_pb)
 
     @pytest.mark.asyncio
+    async def test_delete_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._delete_helper(retry=retry, timeout=timeout)
+
+    @pytest.mark.asyncio
     async def _get_helper(
-        self, field_paths=None, use_transaction=False, not_found=False
+        self,
+        field_paths=None,
+        use_transaction=False,
+        not_found=False,
+        retry=None,
+        timeout=None,
     ):
         from google.api_core.exceptions import NotFound
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types import common
         from google.cloud.firestore_v1.types import document
         from google.cloud.firestore_v1.transaction import Transaction
@@ -362,7 +420,11 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         else:
             transaction = None
 
-        snapshot = await document.get(field_paths=field_paths, transaction=transaction)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        snapshot = await document.get(
+            field_paths=field_paths, transaction=transaction, **kwargs,
+        )
 
         self.assertIs(snapshot.reference, document)
         if not_found:
@@ -396,6 +458,7 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
                 "transaction": expected_transaction_id,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     @pytest.mark.asyncio
@@ -405,6 +468,14 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
     @pytest.mark.asyncio
     async def test_get_default(self):
         await self._get_helper()
+
+    @pytest.mark.asyncio
+    async def test_get_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._get_helper(retry=retry, timeout=timeout)
 
     @pytest.mark.asyncio
     async def test_get_w_string_field_path(self):
@@ -424,7 +495,8 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         await self._get_helper(use_transaction=True)
 
     @pytest.mark.asyncio
-    async def _collections_helper(self, page_size=None):
+    async def _collections_helper(self, page_size=None, retry=None, timeout=None):
+        from google.cloud.firestore_v1 import _helpers
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
@@ -449,13 +521,16 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
 
         client = _make_client()
         client._firestore_api_internal = firestore_api
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         # Actually make a document and call delete().
         document = self._make_one("where", "we-are", client=client)
         if page_size is not None:
-            collections = [c async for c in document.collections(page_size=page_size)]
+            collections = [
+                c async for c in document.collections(page_size=page_size, **kwargs)
+            ]
         else:
-            collections = [c async for c in document.collections()]
+            collections = [c async for c in document.collections(**kwargs)]
 
         # Verify the response and the mocks.
         self.assertEqual(len(collections), len(collection_ids))
@@ -467,11 +542,20 @@ class TestAsyncDocumentReference(aiounittest.AsyncTestCase):
         firestore_api.list_collection_ids.assert_called_once_with(
             request={"parent": document._document_path, "page_size": page_size},
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     @pytest.mark.asyncio
-    async def test_collections_wo_page_size(self):
+    async def test_collections(self):
         await self._collections_helper()
+
+    @pytest.mark.asyncio
+    async def test_collections_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._collections_helper(retry=retry, timeout=timeout)
 
     @pytest.mark.asyncio
     async def test_collections_w_page_size(self):

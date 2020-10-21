@@ -2173,7 +2173,7 @@ class Test_pbs_for_update(unittest.TestCase):
         self._helper(current_document=precondition)
 
     def test_with_exists_option(self):
-        from google.cloud.firestore_v1.client import _helpers
+        from google.cloud.firestore_v1 import _helpers
 
         option = _helpers.ExistsOption(False)
         self._helper(option=option)
@@ -2385,6 +2385,51 @@ class TestExistsOption(unittest.TestCase):
             self.assertIsNone(ret_val)
             expected_doc = common.Precondition(exists=exists)
             self.assertEqual(write_pb.current_document, expected_doc)
+
+
+class Test_make_retry_timeout_kwargs(unittest.TestCase):
+    @staticmethod
+    def _call_fut(retry, timeout):
+        from google.cloud.firestore_v1._helpers import make_retry_timeout_kwargs
+
+        return make_retry_timeout_kwargs(retry, timeout)
+
+    def test_default(self):
+        from google.api_core.gapic_v1.method import DEFAULT
+
+        kwargs = self._call_fut(DEFAULT, None)
+        expected = {}
+        self.assertEqual(kwargs, expected)
+
+    def test_retry_None(self):
+        kwargs = self._call_fut(None, None)
+        expected = {"retry": None}
+        self.assertEqual(kwargs, expected)
+
+    def test_retry_only(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        kwargs = self._call_fut(retry, None)
+        expected = {"retry": retry}
+        self.assertEqual(kwargs, expected)
+
+    def test_timeout_only(self):
+        from google.api_core.gapic_v1.method import DEFAULT
+
+        timeout = 123.0
+        kwargs = self._call_fut(DEFAULT, timeout)
+        expected = {"timeout": timeout}
+        self.assertEqual(kwargs, expected)
+
+    def test_retry_and_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        kwargs = self._call_fut(retry, timeout)
+        expected = {"retry": retry, "timeout": timeout}
+        self.assertEqual(kwargs, expected)
 
 
 def _value_pb(**kwargs):

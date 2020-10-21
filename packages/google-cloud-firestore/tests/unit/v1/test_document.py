@@ -69,7 +69,9 @@ class TestDocumentReference(unittest.TestCase):
             current_document=common.Precondition(exists=False),
         )
 
-    def test_create(self):
+    def _create_helper(self, retry=None, timeout=None):
+        from google.cloud.firestore_v1 import _helpers
+
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock()
         firestore_api.commit.mock_add_spec(spec=["commit"])
@@ -82,7 +84,9 @@ class TestDocumentReference(unittest.TestCase):
         # Actually make a document and call create().
         document = self._make_one("foo", "twelve", client=client)
         document_data = {"hello": "goodbye", "count": 99}
-        write_result = document.create(document_data)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        write_result = document.create(document_data, **kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
@@ -94,7 +98,18 @@ class TestDocumentReference(unittest.TestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
+
+    def test_create(self):
+        self._create_helper()
+
+    def test_create_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._create_helper(retry=retry, timeout=timeout)
 
     def test_create_empty(self):
         # Create a minimal fake GAPIC with a dummy response.
@@ -148,7 +163,9 @@ class TestDocumentReference(unittest.TestCase):
             write_pbs._pb.update_mask.CopyFrom(mask._pb)
         return write_pbs
 
-    def _set_helper(self, merge=False, **option_kwargs):
+    def _set_helper(self, merge=False, retry=None, timeout=None, **option_kwargs):
+        from google.cloud.firestore_v1 import _helpers
+
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
         firestore_api.commit.return_value = self._make_commit_repsonse()
@@ -160,7 +177,9 @@ class TestDocumentReference(unittest.TestCase):
         # Actually make a document and call create().
         document = self._make_one("User", "Interface", client=client)
         document_data = {"And": 500, "Now": b"\xba\xaa\xaa \xba\xaa\xaa"}
-        write_result = document.set(document_data, merge)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        write_result = document.set(document_data, merge, **kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
@@ -173,10 +192,18 @@ class TestDocumentReference(unittest.TestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     def test_set(self):
         self._set_helper()
+
+    def test_set_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._set_helper(retry=retry, timeout=timeout)
 
     def test_set_merge(self):
         self._set_helper(merge=True)
@@ -196,7 +223,8 @@ class TestDocumentReference(unittest.TestCase):
             current_document=common.Precondition(exists=True),
         )
 
-    def _update_helper(self, **option_kwargs):
+    def _update_helper(self, retry=None, timeout=None, **option_kwargs):
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.transforms import DELETE_FIELD
 
         # Create a minimal fake GAPIC with a dummy response.
@@ -213,12 +241,14 @@ class TestDocumentReference(unittest.TestCase):
         field_updates = collections.OrderedDict(
             (("hello", 1), ("then.do", False), ("goodbye", DELETE_FIELD))
         )
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
         if option_kwargs:
             option = client.write_option(**option_kwargs)
-            write_result = document.update(field_updates, option=option)
+            write_result = document.update(field_updates, option=option, **kwargs)
         else:
             option = None
-            write_result = document.update(field_updates)
+            write_result = document.update(field_updates, **kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(write_result, mock.sentinel.write_result)
@@ -239,6 +269,7 @@ class TestDocumentReference(unittest.TestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     def test_update_with_exists(self):
@@ -247,6 +278,13 @@ class TestDocumentReference(unittest.TestCase):
 
     def test_update(self):
         self._update_helper()
+
+    def test_update_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._update_helper(retry=retry, timeout=timeout)
 
     def test_update_with_precondition(self):
         from google.protobuf import timestamp_pb2
@@ -270,7 +308,8 @@ class TestDocumentReference(unittest.TestCase):
         with self.assertRaises(ValueError):
             document.update(field_updates)
 
-    def _delete_helper(self, **option_kwargs):
+    def _delete_helper(self, retry=None, timeout=None, **option_kwargs):
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types import write
 
         # Create a minimal fake GAPIC with a dummy response.
@@ -280,15 +319,16 @@ class TestDocumentReference(unittest.TestCase):
         # Attach the fake GAPIC to a real client.
         client = _make_client("donut-base")
         client._firestore_api_internal = firestore_api
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         # Actually make a document and call delete().
         document = self._make_one("where", "we-are", client=client)
         if option_kwargs:
             option = client.write_option(**option_kwargs)
-            delete_time = document.delete(option=option)
+            delete_time = document.delete(option=option, **kwargs)
         else:
             option = None
-            delete_time = document.delete()
+            delete_time = document.delete(**kwargs)
 
         # Verify the response and the mocks.
         self.assertIs(delete_time, mock.sentinel.commit_time)
@@ -302,6 +342,7 @@ class TestDocumentReference(unittest.TestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     def test_delete(self):
@@ -313,8 +354,23 @@ class TestDocumentReference(unittest.TestCase):
         timestamp_pb = timestamp_pb2.Timestamp(seconds=1058655101, nanos=100022244)
         self._delete_helper(last_update_time=timestamp_pb)
 
-    def _get_helper(self, field_paths=None, use_transaction=False, not_found=False):
+    def test_delete_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._delete_helper(retry=retry, timeout=timeout)
+
+    def _get_helper(
+        self,
+        field_paths=None,
+        use_transaction=False,
+        not_found=False,
+        retry=None,
+        timeout=None,
+    ):
         from google.api_core.exceptions import NotFound
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types import common
         from google.cloud.firestore_v1.types import document
         from google.cloud.firestore_v1.transaction import Transaction
@@ -344,7 +400,11 @@ class TestDocumentReference(unittest.TestCase):
         else:
             transaction = None
 
-        snapshot = document.get(field_paths=field_paths, transaction=transaction)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        snapshot = document.get(
+            field_paths=field_paths, transaction=transaction, **kwargs
+        )
 
         self.assertIs(snapshot.reference, document)
         if not_found:
@@ -378,6 +438,7 @@ class TestDocumentReference(unittest.TestCase):
                 "transaction": expected_transaction_id,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     def test_get_not_found(self):
@@ -385,6 +446,13 @@ class TestDocumentReference(unittest.TestCase):
 
     def test_get_default(self):
         self._get_helper()
+
+    def test_get_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._get_helper(retry=retry, timeout=timeout)
 
     def test_get_w_string_field_path(self):
         with self.assertRaises(ValueError):
@@ -399,10 +467,11 @@ class TestDocumentReference(unittest.TestCase):
     def test_get_with_transaction(self):
         self._get_helper(use_transaction=True)
 
-    def _collections_helper(self, page_size=None):
+    def _collections_helper(self, page_size=None, retry=None, timeout=None):
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.collection import CollectionReference
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
 
         # TODO(microgen): https://github.com/googleapis/gapic-generator-python/issues/516
@@ -424,13 +493,14 @@ class TestDocumentReference(unittest.TestCase):
 
         client = _make_client()
         client._firestore_api_internal = api_client
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         # Actually make a document and call delete().
         document = self._make_one("where", "we-are", client=client)
         if page_size is not None:
-            collections = list(document.collections(page_size=page_size))
+            collections = list(document.collections(page_size=page_size, **kwargs))
         else:
-            collections = list(document.collections())
+            collections = list(document.collections(**kwargs))
 
         # Verify the response and the mocks.
         self.assertEqual(len(collections), len(collection_ids))
@@ -442,6 +512,7 @@ class TestDocumentReference(unittest.TestCase):
         api_client.list_collection_ids.assert_called_once_with(
             request={"parent": document._document_path, "page_size": page_size},
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     def test_collections_wo_page_size(self):
@@ -449,6 +520,13 @@ class TestDocumentReference(unittest.TestCase):
 
     def test_collections_w_page_size(self):
         self._collections_helper(page_size=10)
+
+    def test_collections_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._collections_helper(retry=retry, timeout=timeout)
 
     @mock.patch("google.cloud.firestore_v1.document.Watch", autospec=True)
     def test_on_snapshot(self, watch):

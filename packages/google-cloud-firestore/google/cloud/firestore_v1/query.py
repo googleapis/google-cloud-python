@@ -18,6 +18,10 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1.base_query import (
     BaseCollectionGroup,
     BaseQuery,
@@ -27,10 +31,11 @@ from google.cloud.firestore_v1.base_query import (
     _enum_from_direction,
 )
 
-from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
-from typing import Any, Callable, Generator
+from typing import Any
+from typing import Callable
+from typing import Generator
 
 
 class Query(BaseQuery):
@@ -115,7 +120,12 @@ class Query(BaseQuery):
             all_descendants=all_descendants,
         )
 
-    def get(self, transaction=None) -> list:
+    def get(
+        self,
+        transaction=None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> list:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -125,9 +135,13 @@ class Query(BaseQuery):
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
-        If a ``transaction`` is used and it already has write operations
-        added, this method cannot be used (i.e. read-after-write is not
-        allowed).
+                If a ``transaction`` is used and it already has write operations
+                added, this method cannot be used (i.e. read-after-write is not
+                allowed).
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             list: The documents in the collection that match this query.
@@ -146,14 +160,17 @@ class Query(BaseQuery):
                 )
             self._limit_to_last = False
 
-        result = self.stream(transaction=transaction)
+        result = self.stream(transaction=transaction, retry=retry, timeout=timeout)
         if is_limited_to_last:
             result = reversed(list(result))
 
         return list(result)
 
     def stream(
-        self, transaction=None
+        self,
+        transaction=None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> Generator[document.DocumentSnapshot, Any, None]:
         """Read the documents in the collection that match this query.
 
@@ -176,25 +193,21 @@ class Query(BaseQuery):
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Yields:
             :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
             The next document that fulfills the query.
         """
-        if self._limit_to_last:
-            raise ValueError(
-                "Query results for queries that include limit_to_last() "
-                "constraints cannot be streamed. Use Query.get() instead."
-            )
+        request, expected_prefix, kwargs = self._prep_stream(
+            transaction, retry, timeout,
+        )
 
-        parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = self._client._firestore_api.run_query(
-            request={
-                "parent": parent_path,
-                "structured_query": self._to_protobuf(),
-                "transaction": _helpers.get_transaction_id(transaction),
-            },
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
         for response in response_iterator:
@@ -281,7 +294,16 @@ class CollectionGroup(Query, BaseCollectionGroup):
             all_descendants=all_descendants,
         )
 
-    def get_partitions(self, partition_count) -> Generator[QueryPartition, None, None]:
+    @staticmethod
+    def _get_query_class():
+        return Query
+
+    def get_partitions(
+        self,
+        partition_count,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Generator[QueryPartition, None, None]:
         """Partition a query for parallelization.
 
         Partitions a query by returning partition cursors that can be used to run the
@@ -292,24 +314,15 @@ class CollectionGroup(Query, BaseCollectionGroup):
             partition_count (int): The desired maximum number of partition points. The
                 number must be strictly positive. The actual number of partitions
                 returned may be fewer.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
         """
-        self._validate_partition_query()
-        query = Query(
-            self._parent,
-            orders=self._PARTITION_QUERY_ORDER,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
+        request, kwargs = self._prep_get_partitions(partition_count, retry, timeout)
 
-        parent_path, expected_prefix = self._parent._parent_info()
         pager = self._client._firestore_api.partition_query(
-            request={
-                "parent": parent_path,
-                "structured_query": query._to_protobuf(),
-                "partition_count": partition_count,
-            },
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
         start_at = None

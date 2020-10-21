@@ -21,6 +21,7 @@ a more common way to create a query than direct usage of the constructor.
 import copy
 import math
 
+from google.api_core import retry as retries  # type: ignore
 from google.protobuf import wrappers_pb2
 
 from google.cloud.firestore_v1 import _helpers
@@ -802,10 +803,34 @@ class BaseQuery(object):
 
         return query.StructuredQuery(**query_kwargs)
 
-    def get(self, transaction=None) -> NoReturn:
+    def get(
+        self, transaction=None, retry: retries.Retry = None, timeout: float = None,
+    ) -> NoReturn:
         raise NotImplementedError
 
-    def stream(self, transaction=None) -> NoReturn:
+    def _prep_stream(
+        self, transaction=None, retry: retries.Retry = None, timeout: float = None,
+    ) -> Tuple[dict, str, dict]:
+        """Shared setup for async / sync :meth:`stream`"""
+        if self._limit_to_last:
+            raise ValueError(
+                "Query results for queries that include limit_to_last() "
+                "constraints cannot be streamed. Use Query.get() instead."
+            )
+
+        parent_path, expected_prefix = self._parent._parent_info()
+        request = {
+            "parent": parent_path,
+            "structured_query": self._to_protobuf(),
+            "transaction": _helpers.get_transaction_id(transaction),
+        }
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return request, expected_prefix, kwargs
+
+    def stream(
+        self, transaction=None, retry: retries.Retry = None, timeout: float = None,
+    ) -> NoReturn:
         raise NotImplementedError
 
     def on_snapshot(self, callback) -> NoReturn:
@@ -1100,6 +1125,36 @@ class BaseCollectionGroup(BaseQuery):
 
         if self._offset:
             raise ValueError("Can't partition query with offset.")
+
+    def _get_query_class(self):
+        raise NotImplementedError
+
+    def _prep_get_partitions(
+        self, partition_count, retry: retries.Retry = None, timeout: float = None,
+    ) -> Tuple[dict, dict]:
+        self._validate_partition_query()
+        parent_path, expected_prefix = self._parent._parent_info()
+        klass = self._get_query_class()
+        query = klass(
+            self._parent,
+            orders=self._PARTITION_QUERY_ORDER,
+            start_at=self._start_at,
+            end_at=self._end_at,
+            all_descendants=self._all_descendants,
+        )
+        request = {
+            "parent": parent_path,
+            "structured_query": query._to_protobuf(),
+            "partition_count": partition_count,
+        }
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return request, kwargs
+
+    def get_partitions(
+        self, partition_count, retry: retries.Retry = None, timeout: float = None,
+    ) -> NoReturn:
+        raise NotImplementedError
 
 
 class QueryPartition:

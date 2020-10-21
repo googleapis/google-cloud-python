@@ -35,8 +35,9 @@ class TestWriteBatch(unittest.TestCase):
         self.assertIsNone(batch.write_results)
         self.assertIsNone(batch.commit_time)
 
-    def test_commit(self):
+    def _commit_helper(self, retry=None, timeout=None):
         from google.protobuf import timestamp_pb2
+        from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types import firestore
         from google.cloud.firestore_v1.types import write
 
@@ -48,6 +49,7 @@ class TestWriteBatch(unittest.TestCase):
             commit_time=timestamp,
         )
         firestore_api.commit.return_value = commit_response
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         # Attach the fake GAPIC to a real client.
         client = _make_client("grand")
@@ -56,12 +58,12 @@ class TestWriteBatch(unittest.TestCase):
         # Actually make a batch with some mutations and call commit().
         batch = self._make_one(client)
         document1 = client.document("a", "b")
-        batch.create(document1, {"ten": 10, "buck": u"ets"})
+        batch.create(document1, {"ten": 10, "buck": "ets"})
         document2 = client.document("c", "d", "e", "f")
         batch.delete(document2)
         write_pbs = batch._write_pbs[::]
 
-        write_results = batch.commit()
+        write_results = batch.commit(**kwargs)
         self.assertEqual(write_results, list(commit_response.write_results))
         self.assertEqual(batch.write_results, write_results)
         self.assertEqual(batch.commit_time.timestamp_pb(), timestamp)
@@ -76,7 +78,19 @@ class TestWriteBatch(unittest.TestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
+
+    def test_commit(self):
+        self._commit_helper()
+
+    def test_commit_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+
+        self._commit_helper(retry=retry, timeout=timeout)
 
     def test_as_context_mgr_wo_error(self):
         from google.protobuf import timestamp_pb2
@@ -98,7 +112,7 @@ class TestWriteBatch(unittest.TestCase):
 
         with batch as ctx_mgr:
             self.assertIs(ctx_mgr, batch)
-            ctx_mgr.create(document1, {"ten": 10, "buck": u"ets"})
+            ctx_mgr.create(document1, {"ten": 10, "buck": "ets"})
             ctx_mgr.delete(document2)
             write_pbs = batch._write_pbs[::]
 
@@ -127,7 +141,7 @@ class TestWriteBatch(unittest.TestCase):
 
         with self.assertRaises(RuntimeError):
             with batch as ctx_mgr:
-                ctx_mgr.create(document1, {"ten": 10, "buck": u"ets"})
+                ctx_mgr.create(document1, {"ten": 10, "buck": "ets"})
                 ctx_mgr.delete(document2)
                 raise RuntimeError("testing")
 

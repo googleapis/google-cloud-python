@@ -14,6 +14,7 @@
 
 """Helpers for applying Google Cloud Firestore changes in a transaction."""
 
+from google.api_core import retry as retries  # type: ignore
 
 from google.cloud.firestore_v1 import types
 from typing import Any, Coroutine, NoReturn, Optional, Union
@@ -141,10 +142,14 @@ class BaseTransaction(object):
     def _commit(self) -> Union[list, Coroutine[Any, Any, list]]:
         raise NotImplementedError
 
-    def get_all(self, references: list) -> NoReturn:
+    def get_all(
+        self, references: list, retry: retries.Retry = None, timeout: float = None,
+    ) -> NoReturn:
         raise NotImplementedError
 
-    def get(self, ref_or_query) -> NoReturn:
+    def get(
+        self, ref_or_query, retry: retries.Retry = None, timeout: float = None,
+    ) -> NoReturn:
         raise NotImplementedError
 
 

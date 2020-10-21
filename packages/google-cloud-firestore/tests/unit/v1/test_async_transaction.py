@@ -279,37 +279,83 @@ class TestAsyncTransaction(aiounittest.AsyncTestCase):
             metadata=client._rpc_metadata,
         )
 
-    @pytest.mark.asyncio
-    async def test_get_all(self):
+    async def _get_all_helper(self, retry=None, timeout=None):
+        from google.cloud.firestore_v1 import _helpers
+
         client = AsyncMock(spec=["get_all"])
         transaction = self._make_one(client)
         ref1, ref2 = mock.Mock(), mock.Mock()
-        result = await transaction.get_all([ref1, ref2])
-        client.get_all.assert_called_once_with([ref1, ref2], transaction=transaction)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        result = await transaction.get_all([ref1, ref2], **kwargs)
+
+        client.get_all.assert_called_once_with(
+            [ref1, ref2], transaction=transaction, **kwargs,
+        )
         self.assertIs(result, client.get_all.return_value)
 
     @pytest.mark.asyncio
-    async def test_get_document_ref(self):
+    async def test_get_all(self):
+        await self._get_all_helper()
+
+    @pytest.mark.asyncio
+    async def test_get_all_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._get_all_helper(retry=retry, timeout=timeout)
+
+    async def _get_w_document_ref_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1.async_document import AsyncDocumentReference
+        from google.cloud.firestore_v1 import _helpers
 
         client = AsyncMock(spec=["get_all"])
         transaction = self._make_one(client)
         ref = AsyncDocumentReference("documents", "doc-id")
-        result = await transaction.get(ref)
-        client.get_all.assert_called_once_with([ref], transaction=transaction)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        result = await transaction.get(ref, **kwargs)
+
+        client.get_all.assert_called_once_with([ref], transaction=transaction, **kwargs)
         self.assertIs(result, client.get_all.return_value)
 
     @pytest.mark.asyncio
-    async def test_get_w_query(self):
+    async def test_get_w_document_ref(self):
+        await self._get_w_document_ref_helper()
+
+    @pytest.mark.asyncio
+    async def test_get_w_document_ref_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        await self._get_w_document_ref_helper(retry=retry, timeout=timeout)
+
+    async def _get_w_query_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1.async_query import AsyncQuery
+        from google.cloud.firestore_v1 import _helpers
 
         client = AsyncMock(spec=[])
         transaction = self._make_one(client)
         query = AsyncQuery(parent=AsyncMock(spec=[]))
         query.stream = AsyncMock()
-        result = await transaction.get(query)
-        query.stream.assert_called_once_with(transaction=transaction)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        result = await transaction.get(query, **kwargs,)
+
+        query.stream.assert_called_once_with(
+            transaction=transaction, **kwargs,
+        )
         self.assertIs(result, query.stream.return_value)
+
+    @pytest.mark.asyncio
+    async def test_get_w_query(self):
+        await self._get_w_query_helper()
+
+    @pytest.mark.asyncio
+    async def test_get_w_query_w_retry_timeout(self):
+        await self._get_w_query_helper()
 
     @pytest.mark.asyncio
     async def test_get_failure(self):

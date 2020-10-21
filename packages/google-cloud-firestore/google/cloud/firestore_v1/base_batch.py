@@ -19,6 +19,7 @@ from google.cloud.firestore_v1 import _helpers
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.document import DocumentReference
+
 from typing import Union
 
 
@@ -146,3 +147,13 @@ class BaseWriteBatch(object):
         """
         write_pb = _helpers.pb_for_delete(reference._document_path, option)
         self._add_write_pbs([write_pb])
+
+    def _prep_commit(self, retry, timeout):
+        """Shared setup for async/sync :meth:`commit`."""
+        request = {
+            "database": self._client._database_string,
+            "writes": self._write_pbs,
+            "transaction": None,
+        }
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+        return request, kwargs

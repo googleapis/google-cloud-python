@@ -16,13 +16,14 @@
 
 import datetime
 
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud import exceptions  # type: ignore
 from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
-from google.api_core.datetime_helpers import DatetimeWithNanoseconds  # type: ignore
 from google.cloud.firestore_v1.types.write import DocumentTransform
 from google.cloud.firestore_v1 import transforms
 from google.cloud.firestore_v1 import types
@@ -1042,3 +1043,16 @@ class ExistsOption(WriteOption):
         """
         current_doc = types.Precondition(exists=self._exists)
         write._pb.current_document.CopyFrom(current_doc._pb)
+
+
+def make_retry_timeout_kwargs(retry, timeout) -> dict:
+    """Helper fo API methods which take optional 'retry' / 'timeout' args."""
+    kwargs = {}
+
+    if retry is not gapic_v1.method.DEFAULT:
+        kwargs["retry"] = retry
+
+    if timeout is not None:
+        kwargs["timeout"] = timeout
+
+    return kwargs

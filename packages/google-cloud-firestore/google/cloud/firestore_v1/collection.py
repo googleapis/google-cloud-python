@@ -13,9 +13,12 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
+
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1.base_collection import (
     BaseCollectionReference,
-    _auto_id,
     _item_to_document_ref,
 )
 from google.cloud.firestore_v1 import query as query_mod
@@ -64,7 +67,13 @@ class CollectionReference(BaseCollectionReference):
         """
         return query_mod.Query(self)
 
-    def add(self, document_data: dict, document_id: str = None) -> Tuple[Any, Any]:
+    def add(
+        self,
+        document_data: dict,
+        document_id: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Tuple[Any, Any]:
         """Create a document in the Firestore database with the provided data.
 
         Args:
@@ -75,6 +84,10 @@ class CollectionReference(BaseCollectionReference):
                 automatically assigned by the server (the assigned ID will be
                 a random 20 character string composed of digits,
                 uppercase and lowercase letters).
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             Tuple[:class:`google.protobuf.timestamp_pb2.Timestamp`, \
@@ -88,20 +101,28 @@ class CollectionReference(BaseCollectionReference):
             ~google.cloud.exceptions.Conflict: If ``document_id`` is provided
                 and the document already exists.
         """
-        if document_id is None:
-            document_id = _auto_id()
-
-        document_ref = self.document(document_id)
-        write_result = document_ref.create(document_data)
+        document_ref, kwargs = self._prep_add(
+            document_data, document_id, retry, timeout,
+        )
+        write_result = document_ref.create(document_data, **kwargs)
         return write_result.update_time, document_ref
 
-    def list_documents(self, page_size: int = None) -> Generator[Any, Any, None]:
+    def list_documents(
+        self,
+        page_size: int = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Generator[Any, Any, None]:
         """List all subdocuments of the current collection.
 
         Args:
             page_size (Optional[int]]): The maximum number of documents
-            in each page of results from this request. Non-positive values
-            are ignored. Defaults to a sensible value set by the API.
+                in each page of results from this request. Non-positive values
+                are ignored. Defaults to a sensible value set by the API.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             Sequence[:class:`~google.cloud.firestore_v1.collection.DocumentReference`]:
@@ -109,20 +130,19 @@ class CollectionReference(BaseCollectionReference):
                 collection does not exist at the time of `snapshot`, the
                 iterator will be empty
         """
-        parent, _ = self._parent_info()
+        request, kwargs = self._prep_list_documents(page_size, retry, timeout)
 
         iterator = self._client._firestore_api.list_documents(
-            request={
-                "parent": parent,
-                "collection_id": self.id,
-                "page_size": page_size,
-                "show_missing": True,
-            },
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
         return (_item_to_document_ref(self, i) for i in iterator)
 
-    def get(self, transaction: Transaction = None) -> list:
+    def get(
+        self,
+        transaction: Transaction = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> list:
         """Read the documents in this collection.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -132,6 +152,10 @@ class CollectionReference(BaseCollectionReference):
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         If a ``transaction`` is used and it already has write operations
         added, this method cannot be used (i.e. read-after-write is not
@@ -140,11 +164,15 @@ class CollectionReference(BaseCollectionReference):
         Returns:
             list: The documents in this collection that match the query.
         """
-        query = query_mod.Query(self)
-        return query.get(transaction=transaction)
+        query, kwargs = self._prep_get_or_stream(retry, timeout)
+
+        return query.get(transaction=transaction, **kwargs)
 
     def stream(
-        self, transaction: Transaction = None
+        self,
+        transaction: Transaction = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> Generator[document.DocumentSnapshot, Any, None]:
         """Read the documents in this collection.
 
@@ -167,13 +195,18 @@ class CollectionReference(BaseCollectionReference):
             transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.\
                 Transaction`]):
                 An existing transaction that the query will run in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Yields:
             :class:`~google.cloud.firestore_v1.document.DocumentSnapshot`:
             The next document that fulfills the query.
         """
-        query = query_mod.Query(self)
-        return query.stream(transaction=transaction)
+        query, kwargs = self._prep_get_or_stream(retry, timeout)
+
+        return query.stream(transaction=transaction, **kwargs)
 
     def on_snapshot(self, callback: Callable) -> Watch:
         """Monitor the documents in this collection.

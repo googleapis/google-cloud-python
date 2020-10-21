@@ -99,7 +99,7 @@ class TestCollectionReference(unittest.TestCase):
         # sure transforms during adds work.
         document_data = {"been": "here", "now": SERVER_TIMESTAMP}
 
-        patch = mock.patch("google.cloud.firestore_v1.collection._auto_id")
+        patch = mock.patch("google.cloud.firestore_v1.base_collection._auto_id")
         random_doc_id = "DEADBEEF"
         with patch as patched:
             patched.return_value = random_doc_id
@@ -138,8 +138,9 @@ class TestCollectionReference(unittest.TestCase):
             current_document=common.Precondition(exists=False),
         )
 
-    def test_add_explicit_id(self):
+    def _add_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1.document import DocumentReference
+        from google.cloud.firestore_v1 import _helpers
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
@@ -161,7 +162,11 @@ class TestCollectionReference(unittest.TestCase):
         collection = self._make_one("parent", client=client)
         document_data = {"zorp": 208.75, "i-did-not": b"know that"}
         doc_id = "child"
-        update_time, document_ref = collection.add(document_data, document_id=doc_id)
+
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+        update_time, document_ref = collection.add(
+            document_data, document_id=doc_id, **kwargs
+        )
 
         # Verify the response and the mocks.
         self.assertIs(update_time, mock.sentinel.update_time)
@@ -177,9 +182,21 @@ class TestCollectionReference(unittest.TestCase):
                 "transaction": None,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
-    def _list_documents_helper(self, page_size=None):
+    def test_add_explicit_id(self):
+        self._add_helper()
+
+    def test_add_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._add_helper(retry=retry, timeout=timeout)
+
+    def _list_documents_helper(self, page_size=None, retry=None, timeout=None):
+        from google.cloud.firestore_v1 import _helpers
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.document import DocumentReference
@@ -207,11 +224,12 @@ class TestCollectionReference(unittest.TestCase):
         api_client.list_documents.return_value = iterator
         client._firestore_api_internal = api_client
         collection = self._make_one("collection", client=client)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
         if page_size is not None:
-            documents = list(collection.list_documents(page_size=page_size))
+            documents = list(collection.list_documents(page_size=page_size, **kwargs))
         else:
-            documents = list(collection.list_documents())
+            documents = list(collection.list_documents(**kwargs))
 
         # Verify the response and the mocks.
         self.assertEqual(len(documents), len(document_ids))
@@ -229,10 +247,18 @@ class TestCollectionReference(unittest.TestCase):
                 "show_missing": True,
             },
             metadata=client._rpc_metadata,
+            **kwargs,
         )
 
     def test_list_documents_wo_page_size(self):
         self._list_documents_helper()
+
+    def test_list_documents_w_retry_timeout(self):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        self._list_documents_helper(retry=retry, timeout=timeout)
 
     def test_list_documents_w_page_size(self):
         self._list_documents_helper(page_size=25)
@@ -247,6 +273,23 @@ class TestCollectionReference(unittest.TestCase):
 
         self.assertIs(get_response, query_instance.get.return_value)
         query_instance.get.assert_called_once_with(transaction=None)
+
+    @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
+    def test_get_w_retry_timeout(self, query_class):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        collection = self._make_one("collection")
+        get_response = collection.get(retry=retry, timeout=timeout)
+
+        query_class.assert_called_once_with(collection)
+        query_instance = query_class.return_value
+
+        self.assertIs(get_response, query_instance.get.return_value)
+        query_instance.get.assert_called_once_with(
+            transaction=None, retry=retry, timeout=timeout,
+        )
 
     @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
     def test_get_with_transaction(self, query_class):
@@ -270,6 +313,22 @@ class TestCollectionReference(unittest.TestCase):
         query_instance = query_class.return_value
         self.assertIs(stream_response, query_instance.stream.return_value)
         query_instance.stream.assert_called_once_with(transaction=None)
+
+    @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
+    def test_stream_w_retry_timeout(self, query_class):
+        from google.api_core.retry import Retry
+
+        retry = Retry(predicate=object())
+        timeout = 123.0
+        collection = self._make_one("collection")
+        stream_response = collection.stream(retry=retry, timeout=timeout)
+
+        query_class.assert_called_once_with(collection)
+        query_instance = query_class.return_value
+        self.assertIs(stream_response, query_instance.stream.return_value)
+        query_instance.stream.assert_called_once_with(
+            transaction=None, retry=retry, timeout=timeout,
+        )
 
     @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
     def test_stream_with_transaction(self, query_class):

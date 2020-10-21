@@ -15,6 +15,8 @@
 """Classes for representing collections for the Google Cloud Firestore API."""
 import random
 
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.document import DocumentReference
 from typing import (
@@ -146,13 +148,48 @@ class BaseCollectionReference(object):
         expected_prefix = _helpers.DOCUMENT_PATH_DELIMITER.join((parent_path, self.id))
         return parent_path, expected_prefix
 
+    def _prep_add(
+        self,
+        document_data: dict,
+        document_id: str = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
+    ) -> Tuple[DocumentReference, dict]:
+        """Shared setup for async / sync :method:`add`"""
+        if document_id is None:
+            document_id = _auto_id()
+
+        document_ref = self.document(document_id)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return document_ref, kwargs
+
     def add(
-        self, document_data: dict, document_id: str = None
+        self,
+        document_data: dict,
+        document_id: str = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Union[Tuple[Any, Any], Coroutine[Any, Any, Tuple[Any, Any]]]:
         raise NotImplementedError
 
+    def _prep_list_documents(
+        self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
+    ) -> Tuple[dict, dict]:
+        """Shared setup for async / sync :method:`list_documents`"""
+        parent, _ = self._parent_info()
+        request = {
+            "parent": parent,
+            "collection_id": self.id,
+            "page_size": page_size,
+            "show_missing": True,
+        }
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return request, kwargs
+
     def list_documents(
-        self, page_size: int = None
+        self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
     ) -> Union[
         Generator[DocumentReference, Any, Any], AsyncGenerator[DocumentReference, Any]
     ]:
@@ -373,15 +410,30 @@ class BaseCollectionReference(object):
         query = self._query()
         return query.end_at(document_fields)
 
+    def _prep_get_or_stream(
+        self, retry: retries.Retry = None, timeout: float = None,
+    ) -> Tuple[Any, dict]:
+        """Shared setup for async / sync :meth:`get` / :meth:`stream`"""
+        query = self._query()
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+
+        return query, kwargs
+
     def get(
-        self, transaction: Transaction = None
+        self,
+        transaction: Transaction = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Union[
         Generator[DocumentSnapshot, Any, Any], AsyncGenerator[DocumentSnapshot, Any]
     ]:
         raise NotImplementedError
 
     def stream(
-        self, transaction: Transaction = None
+        self,
+        transaction: Transaction = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Union[Iterator[DocumentSnapshot], AsyncIterator[DocumentSnapshot]]:
         raise NotImplementedError
 

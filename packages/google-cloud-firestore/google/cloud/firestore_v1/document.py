@@ -14,6 +14,9 @@
 
 """Classes for representing documents for the Google Cloud Firestore API."""
 
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1.base_document import (
     BaseDocumentReference,
     DocumentSnapshot,
@@ -22,7 +25,6 @@ from google.cloud.firestore_v1.base_document import (
 
 from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
-from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.watch import Watch
 from typing import Any, Callable, Generator, Iterable
 
@@ -55,12 +57,21 @@ class DocumentReference(BaseDocumentReference):
     def __init__(self, *path, **kwargs) -> None:
         super(DocumentReference, self).__init__(*path, **kwargs)
 
-    def create(self, document_data) -> Any:
+    def create(
+        self,
+        document_data: dict,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Any:
         """Create the current document in the Firestore database.
 
         Args:
             document_data (dict): Property names and values to use for
                 creating a document.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             :class:`~google.cloud.firestore_v1.types.WriteResult`:
@@ -71,12 +82,17 @@ class DocumentReference(BaseDocumentReference):
             :class:`~google.cloud.exceptions.Conflict`:
                 If the document already exists.
         """
-        batch = self._client.batch()
-        batch.create(self, document_data)
-        write_results = batch.commit()
+        batch, kwargs = self._prep_create(document_data, retry, timeout)
+        write_results = batch.commit(**kwargs)
         return _first_write_result(write_results)
 
-    def set(self, document_data: dict, merge: bool = False) -> Any:
+    def set(
+        self,
+        document_data: dict,
+        merge: bool = False,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Any:
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -96,18 +112,27 @@ class DocumentReference(BaseDocumentReference):
             merge (Optional[bool] or Optional[List<apispec>]):
                 If True, apply merging instead of overwriting the state
                 of the document.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             :class:`~google.cloud.firestore_v1.types.WriteResult`:
             The write result corresponding to the committed document. A write
             result contains an ``update_time`` field.
         """
-        batch = self._client.batch()
-        batch.set(self, document_data, merge=merge)
-        write_results = batch.commit()
+        batch, kwargs = self._prep_set(document_data, merge, retry, timeout)
+        write_results = batch.commit(**kwargs)
         return _first_write_result(write_results)
 
-    def update(self, field_updates: dict, option: _helpers.WriteOption = None) -> Any:
+    def update(
+        self,
+        field_updates: dict,
+        option: _helpers.WriteOption = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Any:
         """Update an existing document in the Firestore database.
 
         By default, this method verifies that the document exists on the
@@ -241,6 +266,10 @@ class DocumentReference(BaseDocumentReference):
             option (Optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):
                 A write option to make assertions / preconditions on the server
                 state of the document before applying changes.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             :class:`~google.cloud.firestore_v1.types.WriteResult`:
@@ -250,18 +279,26 @@ class DocumentReference(BaseDocumentReference):
         Raises:
             ~google.cloud.exceptions.NotFound: If the document does not exist.
         """
-        batch = self._client.batch()
-        batch.update(self, field_updates, option=option)
-        write_results = batch.commit()
+        batch, kwargs = self._prep_update(field_updates, option, retry, timeout)
+        write_results = batch.commit(**kwargs)
         return _first_write_result(write_results)
 
-    def delete(self, option: _helpers.WriteOption = None) -> Any:
+    def delete(
+        self,
+        option: _helpers.WriteOption = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Any:
         """Delete the current document in the Firestore database.
 
         Args:
             option (Optional[:class:`~google.cloud.firestore_v1.client.WriteOption`]):
                 A write option to make assertions / preconditions on the server
                 state of the document before applying changes.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             :class:`google.protobuf.timestamp_pb2.Timestamp`:
@@ -270,20 +307,20 @@ class DocumentReference(BaseDocumentReference):
             nothing was deleted), this method will still succeed and will
             still return the time that the request was received by the server.
         """
-        write_pb = _helpers.pb_for_delete(self._document_path, option)
+        request, kwargs = self._prep_delete(option, retry, timeout)
+
         commit_response = self._client._firestore_api.commit(
-            request={
-                "database": self._client._database_string,
-                "writes": [write_pb],
-                "transaction": None,
-            },
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
         return commit_response.commit_time
 
     def get(
-        self, field_paths: Iterable[str] = None, transaction=None
+        self,
+        field_paths: Iterable[str] = None,
+        transaction=None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> DocumentSnapshot:
         """Retrieve a snapshot of the current document.
 
@@ -302,6 +339,10 @@ class DocumentReference(BaseDocumentReference):
             transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this reference
                 will be retrieved in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             :class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot`:
@@ -311,23 +352,12 @@ class DocumentReference(BaseDocumentReference):
                 :attr:`create_time` attributes will all be ``None`` and
                 its :attr:`exists` attribute will be ``False``.
         """
-        if isinstance(field_paths, str):
-            raise ValueError("'field_paths' must be a sequence of paths, not a string.")
-
-        if field_paths is not None:
-            mask = common.DocumentMask(field_paths=sorted(field_paths))
-        else:
-            mask = None
+        request, kwargs = self._prep_get(field_paths, transaction, retry, timeout)
 
         firestore_api = self._client._firestore_api
         try:
             document_pb = firestore_api.get_document(
-                request={
-                    "name": self._document_path,
-                    "mask": mask,
-                    "transaction": _helpers.get_transaction_id(transaction),
-                },
-                metadata=self._client._rpc_metadata,
+                request=request, metadata=self._client._rpc_metadata, **kwargs,
             )
         except exceptions.NotFound:
             data = None
@@ -349,13 +379,22 @@ class DocumentReference(BaseDocumentReference):
             update_time=update_time,
         )
 
-    def collections(self, page_size: int = None) -> Generator[Any, Any, None]:
+    def collections(
+        self,
+        page_size: int = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Generator[Any, Any, None]:
         """List subcollections of the current document.
 
         Args:
             page_size (Optional[int]]): The maximum number of collections
-            in each page of results from this request. Non-positive values
-            are ignored. Defaults to a sensible value set by the API.
+                in each page of results from this request. Non-positive values
+                are ignored. Defaults to a sensible value set by the API.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             Sequence[:class:`~google.cloud.firestore_v1.collection.CollectionReference`]:
@@ -363,22 +402,20 @@ class DocumentReference(BaseDocumentReference):
                 document does not exist at the time of `snapshot`, the
                 iterator will be empty
         """
+        request, kwargs = self._prep_collections(page_size, retry, timeout)
+
         iterator = self._client._firestore_api.list_collection_ids(
-            request={"parent": self._document_path, "page_size": page_size},
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
         while True:
             for i in iterator.collection_ids:
                 yield self.collection(i)
             if iterator.next_page_token:
+                next_request = request.copy()
+                next_request["page_token"] = iterator.next_page_token
                 iterator = self._client._firestore_api.list_collection_ids(
-                    request={
-                        "parent": self._document_path,
-                        "page_size": page_size,
-                        "page_token": iterator.next_page_token,
-                    },
-                    metadata=self._client._rpc_metadata,
+                    request=request, metadata=self._client._rpc_metadata, **kwargs
                 )
             else:
                 return

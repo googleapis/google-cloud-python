@@ -18,6 +18,10 @@ A :class:`~google.cloud.firestore_v1.query.Query` can be created directly from
 a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
+
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1.base_query import (
     BaseCollectionGroup,
     BaseQuery,
@@ -27,7 +31,6 @@ from google.cloud.firestore_v1.base_query import (
     _enum_from_direction,
 )
 
-from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import async_document
 from typing import AsyncGenerator
 
@@ -117,7 +120,12 @@ class AsyncQuery(BaseQuery):
             all_descendants=all_descendants,
         )
 
-    async def get(self, transaction: Transaction = None) -> list:
+    async def get(
+        self,
+        transaction: Transaction = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> list:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and returns a list of documents
@@ -127,6 +135,10 @@ class AsyncQuery(BaseQuery):
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         If a ``transaction`` is used and it already has write operations
         added, this method cannot be used (i.e. read-after-write is not
@@ -149,7 +161,7 @@ class AsyncQuery(BaseQuery):
                 )
             self._limit_to_last = False
 
-        result = self.stream(transaction=transaction)
+        result = self.stream(transaction=transaction, retry=retry, timeout=timeout)
         result = [d async for d in result]
         if is_limited_to_last:
             result = list(reversed(result))
@@ -157,7 +169,10 @@ class AsyncQuery(BaseQuery):
         return result
 
     async def stream(
-        self, transaction: Transaction = None
+        self,
+        transaction=None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> AsyncGenerator[async_document.DocumentSnapshot, None]:
         """Read the documents in the collection that match this query.
 
@@ -180,25 +195,21 @@ class AsyncQuery(BaseQuery):
             transaction
                 (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this query will run in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Yields:
             :class:`~google.cloud.firestore_v1.async_document.DocumentSnapshot`:
             The next document that fulfills the query.
         """
-        if self._limit_to_last:
-            raise ValueError(
-                "Query results for queries that include limit_to_last() "
-                "constraints cannot be streamed. Use Query.get() instead."
-            )
+        request, expected_prefix, kwargs = self._prep_stream(
+            transaction, retry, timeout,
+        )
 
-        parent_path, expected_prefix = self._parent._parent_info()
         response_iterator = await self._client._firestore_api.run_query(
-            request={
-                "parent": parent_path,
-                "structured_query": self._to_protobuf(),
-                "transaction": _helpers.get_transaction_id(transaction),
-            },
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
         async for response in response_iterator:
@@ -252,8 +263,15 @@ class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
             all_descendants=all_descendants,
         )
 
+    @staticmethod
+    def _get_query_class():
+        return AsyncQuery
+
     async def get_partitions(
-        self, partition_count
+        self,
+        partition_count,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> AsyncGenerator[QueryPartition, None]:
         """Partition a query for parallelization.
 
@@ -265,24 +283,14 @@ class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
             partition_count (int): The desired maximum number of partition points. The
                 number must be strictly positive. The actual number of partitions
                 returned may be fewer.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
         """
-        self._validate_partition_query()
-        query = AsyncQuery(
-            self._parent,
-            orders=self._PARTITION_QUERY_ORDER,
-            start_at=self._start_at,
-            end_at=self._end_at,
-            all_descendants=self._all_descendants,
-        )
-
-        parent_path, expected_prefix = self._parent._parent_info()
+        request, kwargs = self._prep_get_partitions(partition_count, retry, timeout)
         pager = await self._client._firestore_api.partition_query(
-            request={
-                "parent": parent_path,
-                "structured_query": query._to_protobuf(),
-                "partition_count": partition_count,
-            },
-            metadata=self._client._rpc_metadata,
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
         start_at = None

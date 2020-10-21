@@ -24,17 +24,17 @@ In the hierarchy of API concepts
   :class:`~google.cloud.firestore_v1.async_document.AsyncDocumentReference`
 """
 
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1.base_client import (
     BaseClient,
     DEFAULT_DATABASE,
     _CLIENT_INFO,
-    _reference_info,  # type: ignore
     _parse_batch_get,  # type: ignore
-    _get_doc_mask,
     _path_helper,
 )
 
-from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
 from google.cloud.firestore_v1.async_batch import AsyncWriteBatch
 from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
@@ -208,7 +208,12 @@ class AsyncClient(BaseClient):
         )
 
     async def get_all(
-        self, references: list, field_paths: Iterable[str] = None, transaction=None,
+        self,
+        references: list,
+        field_paths: Iterable[str] = None,
+        transaction=None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieve a batch of documents.
 
@@ -239,48 +244,54 @@ class AsyncClient(BaseClient):
             transaction (Optional[:class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`]):
                 An existing transaction that these ``references`` will be
                 retrieved in.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Yields:
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
         """
-        document_paths, reference_map = _reference_info(references)
-        mask = _get_doc_mask(field_paths)
+        request, reference_map, kwargs = self._prep_get_all(
+            references, field_paths, transaction, retry, timeout
+        )
+
         response_iterator = await self._firestore_api.batch_get_documents(
-            request={
-                "database": self._database_string,
-                "documents": document_paths,
-                "mask": mask,
-                "transaction": _helpers.get_transaction_id(transaction),
-            },
-            metadata=self._rpc_metadata,
+            request=request, metadata=self._rpc_metadata, **kwargs,
         )
 
         async for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
-    async def collections(self) -> AsyncGenerator[AsyncCollectionReference, Any]:
+    async def collections(
+        self, retry: retries.Retry = gapic_v1.method.DEFAULT, timeout: float = None,
+    ) -> AsyncGenerator[AsyncCollectionReference, Any]:
         """List top-level collections of the client's database.
+
+        Args:
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Returns:
             Sequence[:class:`~google.cloud.firestore_v1.async_collection.AsyncCollectionReference`]:
                 iterator of subcollections of the current document.
         """
+        request, kwargs = self._prep_collections(retry, timeout)
         iterator = await self._firestore_api.list_collection_ids(
-            request={"parent": "{}/documents".format(self._database_string)},
-            metadata=self._rpc_metadata,
+            request=request, metadata=self._rpc_metadata, **kwargs,
         )
 
         while True:
             for i in iterator.collection_ids:
                 yield self.collection(i)
             if iterator.next_page_token:
+                next_request = request.copy()
+                next_request["page_token"] = iterator.next_page_token
                 iterator = await self._firestore_api.list_collection_ids(
-                    request={
-                        "parent": "{}/documents".format(self._database_string),
-                        "page_token": iterator.next_page_token,
-                    },
-                    metadata=self._rpc_metadata,
+                    request=next_request, metadata=self._rpc_metadata, **kwargs,
                 )
             else:
                 return

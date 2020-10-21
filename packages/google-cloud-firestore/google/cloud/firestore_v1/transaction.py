@@ -18,6 +18,9 @@
 import random
 import time
 
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
+
 from google.cloud.firestore_v1.base_transaction import (
     _BaseTransactional,
     BaseTransaction,
@@ -35,6 +38,7 @@ from google.cloud.firestore_v1.base_transaction import (
 from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import batch
 from google.cloud.firestore_v1.document import DocumentReference
+from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.query import Query
 from typing import Any, Callable, Optional
 
@@ -136,32 +140,53 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         self._clean_up()
         return list(commit_response.write_results)
 
-    def get_all(self, references: list) -> Any:
+    def get_all(
+        self,
+        references: list,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Any:
         """Retrieves multiple documents from Firestore.
 
         Args:
             references (List[.DocumentReference, ...]): Iterable of document
                 references to be retrieved.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
 
         Yields:
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
         """
-        return self._client.get_all(references, transaction=self)
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+        return self._client.get_all(references, transaction=self, **kwargs)
 
-    def get(self, ref_or_query) -> Any:
-        """
-        Retrieve a document or a query result from the database.
+    def get(
+        self,
+        ref_or_query,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+    ) -> Any:
+        """Retrieve a document or a query result from the database.
+
         Args:
-            ref_or_query The document references or query object to return.
+            ref_or_query: The document references or query object to return.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.  Defaults to a system-specified policy.
+            timeout (float): The timeout for this request.  Defaults to a
+                system-specified value.
+
         Yields:
             .DocumentSnapshot: The next document snapshot that fulfills the
             query, or :data:`None` if the document does not exist.
         """
+        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
         if isinstance(ref_or_query, DocumentReference):
-            return self._client.get_all([ref_or_query], transaction=self)
+            return self._client.get_all([ref_or_query], transaction=self, **kwargs)
         elif isinstance(ref_or_query, Query):
-            return ref_or_query.stream(transaction=self)
+            return ref_or_query.stream(transaction=self, **kwargs)
         else:
             raise ValueError(
                 'Value for argument "ref_or_query" must be a DocumentReference or a Query.'
