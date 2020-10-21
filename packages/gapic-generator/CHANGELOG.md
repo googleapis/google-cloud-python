@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.8](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.7...v0.35.8) (2020-10-21)
+
+
+### Documentation
+
+* generated message types reference proto-plus ([#680](https://www.github.com/googleapis/gapic-generator-python/issues/680)) ([23327b2](https://www.github.com/googleapis/gapic-generator-python/commit/23327b275fb5a3fefe6c47cb15b9d9ecb02aac1f))
+
 ### [0.35.7](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.6...v0.35.7) (2020-10-21)
 
 
