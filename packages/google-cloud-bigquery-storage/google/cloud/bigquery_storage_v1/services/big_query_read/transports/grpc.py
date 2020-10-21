@@ -145,6 +145,10 @@ class BigQueryReadGrpcTransport(BigQueryReadTransport):
                 ssl_credentials=ssl_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=(
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ),
             )
         else:
             host = host if ":" in host else host + ":443"
@@ -162,6 +166,10 @@ class BigQueryReadGrpcTransport(BigQueryReadTransport):
                 ssl_credentials=ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=(
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ),
             )
 
         self._stubs = {}  # type: Dict[str, Callable]

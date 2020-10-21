@@ -461,3 +461,31 @@ def test_resuming_read_from_offset(
     expected_len = 164656  # total rows in shakespeare table
     actual_len = remaining_rows_count + some_rows.row_count + more_rows.row_count
     assert actual_len == expected_len
+
+
+def test_read_rows_to_dataframe_with_wide_table(client, project_id):
+    # Use a wide table to boost the chance of getting a large message size.
+    # https://github.com/googleapis/python-bigquery-storage/issues/78
+    read_session = types.ReadSession()
+    read_session.table = "projects/{}/datasets/{}/tables/{}".format(
+        "bigquery-public-data", "geo_census_tracts", "us_census_tracts_national"
+    )
+    read_session.data_format = types.DataFormat.ARROW
+
+    session = client.create_read_session(
+        request={
+            "parent": "projects/{}".format(project_id),
+            "read_session": read_session,
+            "max_stream_count": 1,
+        }
+    )
+
+    stream = session.streams[0].name
+
+    read_rows_stream = client.read_rows(stream)
+
+    # fetch the first two batches of rows
+    pages_iter = iter(read_rows_stream.rows(session).pages)
+    some_rows = next(pages_iter)
+
+    assert all(len(row["tract_geom"].as_py()) > 0 for row in some_rows)
