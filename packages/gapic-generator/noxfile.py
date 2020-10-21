@@ -229,7 +229,7 @@ def showcase_mypy_alternative_templates(session):
     showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def docs(session):
     """Build the docs."""
 
