@@ -35,3 +35,5 @@ permissionRules:
     permission: admin
   - team: yoshi-python
     permission: push
+  - team: actools-python
+    permission: push
