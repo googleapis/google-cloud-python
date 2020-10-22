@@ -146,7 +146,7 @@ def lookup(key, options):
                 entity_pb.MergeFromString(result)
 
             elif use_datastore:
-                yield _cache.global_lock(cache_key)
+                yield _cache.global_lock(cache_key, read=True)
                 yield _cache.global_watch(cache_key)
 
     if entity_pb is _NOT_FOUND and use_datastore:

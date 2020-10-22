@@ -18,6 +18,8 @@ import abc
 import base64
 import collections
 import os
+import pymemcache.exceptions
+import redis.exceptions
 import threading
 import time
 import uuid
@@ -43,9 +45,32 @@ class GlobalCache(object):
     the single threaded event model used by ``NDB`` can be tricky with remote
     services, it's not recommended that casual users write asynchronous
     implementations, as some specialized knowledge is required.
+
+    Attributes:
+        strict_read (bool): If :data:`True`, transient errors that occur as part of a
+            entity lookup operation will be logged as warnings but not raised to the
+            application layer.
+        strict_write (bool): If :data:`True`, transient errors that occur as part of
+            a put or delete operation will be logged as warnings, but not raised to the
+            application layer. Setting this to :data:`True` somewhat increases the risk
+            that other clients might read stale data from the cache.
     """
 
     __metaclass__ = abc.ABCMeta
+
+    transient_errors = ()
+    """Exceptions that should be treated as transient errors in non-strict modes.
+
+    Instances of these exceptions, if raised, will be logged as warnings but will not
+    be raised to the application layer, depending on the values of the ``strict_read``
+    and ``strict_write`` attributes of the instance.
+
+    This should be overridden by subclasses.
+    """
+
+    clear_cache_soon = False
+    strict_read = True
+    strict_write = True
 
     @abc.abstractmethod
     def get(self, keys):
@@ -119,6 +144,15 @@ class GlobalCache(object):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def clear(self):
+        """Clear all keys from global cache.
+
+        Will be called if there previously was a connection error, to prevent clients
+        from reading potentially stale data from the cache.
+        """
+        raise NotImplementedError
+
 
 class _InProcessGlobalCache(GlobalCache):
     """Reference implementation of :class:`GlobalCache`.
@@ -189,6 +223,10 @@ class _InProcessGlobalCache(GlobalCache):
             if watch_value == current_value:
                 self.cache[key] = (new_value, expires)
 
+    def clear(self):
+        """Implements :meth:`GlobalCache.clear`."""
+        self.cache.clear()
+
 
 _Pipeline = collections.namedtuple("_Pipeline", ("pipe", "id"))
 
@@ -202,16 +240,53 @@ class RedisCache(GlobalCache):
 
     Args:
         redis (redis.Redis): Instance of Redis client to use.
+        strict_read (bool): If :data:`False`, connection errors during read operations
+            will be logged with a warning and treated as cache misses, but will not
+            raise an exception in the application, with connection errors during reads
+            being treated as cache misses.  If :data:`True`, connection errors will be
+            raised as exceptions in the application. Default: :data:`False`.
+        strict_write (bool): If :data:`False`, connection errors during write
+            operations will be logged with a warning, but will not raise an exception in
+            the application. If :data:`True`, connection errors during write will be
+            raised as exceptions in the application. Because write operations involve
+            cache invalidation, setting this to :data:`False` may allow other clients to
+            retrieve stale data from the cache.  If there is a connection error, an
+            internal flag will be set to clear the cache the next time any method is
+            called on this object, to try and minimize the opportunity for clients to
+            read stale data from the cache.  Default: :data:`True`.
     """
 
+    transient_errors = (
+        redis.exceptions.ConnectionError,
+        redis.exceptions.TimeoutError,
+    )
+
     @classmethod
-    def from_environment(cls):
+    def from_environment(cls, strict_read=False, strict_write=True):
         """Generate a class:`RedisCache` from an environment variable.
 
         This class method looks for the ``REDIS_CACHE_URL`` environment
         variable and, if it is set, passes its value to ``Redis.from_url`` to
         construct a ``Redis`` instance which is then used to instantiate a
         ``RedisCache`` instance.
+
+        Args:
+            strict_read (bool): If :data:`False`, connection errors during read
+                operations will be logged with a warning and treated as cache misses,
+                but will not raise an exception in the application, with connection
+                errors during reads being treated as cache misses.  If :data:`True`,
+                connection errors will be raised as exceptions in the application.
+                Default: :data:`False`.
+            strict_write (bool): If :data:`False`, connection errors during write
+                operations will be logged with a warning, but will not raise an
+                exception in the application. If :data:`True`, connection errors during
+                write will be raised as exceptions in the application. Because write
+                operations involve cache invalidation, setting this to :data:`False` may
+                allow other clients to retrieve stale data from the cache.  If there is
+                a connection error, an internal flag will be set to clear the cache the
+                next time any method is called on this object, to try and minimize the
+                opportunity for clients to read stale data from the cache.  Default:
+                :data:`True`.
 
         Returns:
             Optional[RedisCache]: A :class:`RedisCache` instance or
@@ -222,8 +297,10 @@ class RedisCache(GlobalCache):
         if url:
             return cls(redis_module.Redis.from_url(url))
 
-    def __init__(self, redis):
+    def __init__(self, redis, strict_read=False, strict_write=True):
         self.redis = redis
+        self.strict_read = strict_read
+        self.strict_write = strict_write
         self._pipes = threading.local()
 
     @property
@@ -268,7 +345,6 @@ class RedisCache(GlobalCache):
         """Implements :meth:`GlobalCache.compare_and_swap`."""
         pipes = {}
         mappings = {}
-        results = {}
         remove_keys = []
 
         # get associated pipes
@@ -304,11 +380,13 @@ class RedisCache(GlobalCache):
             if pipe.id in pipes:
                 remove_keys.append(key)
 
-        # remote keys
+        # remove keys
         for key in remove_keys:
             self.pipes.pop(key, None)
 
-        return results
+    def clear(self):
+        """Implements :meth:`GlobalCache.clear`."""
+        self.redis.flushdb()
 
 
 class MemcacheCache(GlobalCache):
@@ -320,7 +398,27 @@ class MemcacheCache(GlobalCache):
 
     Args:
         client (pymemcache.Client): Instance of Memcache client to use.
+        strict_read (bool): If :data:`False`, connection errors during read operations
+            will be logged with a warning and treated as cache misses, but will not
+            raise an exception in the application, with connection errors during reads
+            being treated as cache misses.  If :data:`True`, connection errors will be
+            raised as exceptions in the application. Default: :data:`False`.
+        strict_write (bool): If :data:`False`, connection errors during write
+            operations will be logged with a warning, but will not raise an exception in
+            the application. If :data:`True`, connection errors during write will be
+            raised as exceptions in the application. Because write operations involve
+            cache invalidation, setting this to :data:`False` may allow other clients to
+            retrieve stale data from the cache.  If there is a connection error, an
+            internal flag will be set to clear the cache the next time any method is
+            called on this object, to try and minimize the opportunity for clients to
+            read stale data from the cache.  Default: :data:`True`.
     """
+
+    transient_errors = (
+        IOError,
+        pymemcache.exceptions.MemcacheServerError,
+        pymemcache.exceptions.MemcacheUnexpectedCloseError,
+    )
 
     @staticmethod
     def _parse_host_string(host_string):
@@ -343,7 +441,7 @@ class MemcacheCache(GlobalCache):
         return base64.b64encode(key)
 
     @classmethod
-    def from_environment(cls, max_pool_size=4):
+    def from_environment(cls, max_pool_size=4, strict_read=False, strict_write=True):
         """Generate a ``pymemcache.Client`` from an environment variable.
 
         This class method looks for the ``MEMCACHED_HOSTS`` environment
@@ -353,6 +451,26 @@ class MemcacheCache(GlobalCache):
             "localhost"
             "localhost:11211"
             "1.1.1.1:11211 2.2.2.2:11211 3.3.3.3:11211"
+
+        Args:
+            max_pool_size (int): Size of connection pool to be used by client. If set to
+                ``0`` or ``1``, connection pooling will not be used. Default: ``4``
+            strict_read (bool): If :data:`False`, connection errors during read
+                operations will be logged with a warning and treated as cache misses,
+                but will not raise an exception in the application, with connection
+                errors during reads being treated as cache misses.  If :data:`True`,
+                connection errors will be raised as exceptions in the application.
+                Default: :data:`False`.
+            strict_write (bool): If :data:`False`, connection errors during write
+                operations will be logged with a warning, but will not raise an
+                exception in the application. If :data:`True`, connection errors during
+                write will be raised as exceptions in the application. Because write
+                operations involve cache invalidation, setting this to :data:`False` may
+                allow other clients to retrieve stale data from the cache.  If there is
+                a connection error, an internal flag will be set to clear the cache the
+                next time any method is called on this object, to try and minimize the
+                opportunity for clients to read stale data from the cache.  Default:
+                :data:`True`.
 
         Returns:
             Optional[MemcacheCache]: A :class:`MemcacheCache` instance or
@@ -379,10 +497,12 @@ class MemcacheCache(GlobalCache):
                 hosts, use_pooling=True, max_pool_size=max_pool_size
             )
 
-        return cls(client)
+        return cls(client, strict_read=strict_read, strict_write=strict_write)
 
-    def __init__(self, client):
+    def __init__(self, client, strict_read=False, strict_write=True):
         self.client = client
+        self.strict_read = strict_read
+        self.strict_write = strict_write
         self._cas = threading.local()
 
     @property
@@ -434,3 +554,7 @@ class MemcacheCache(GlobalCache):
 
             expires = expires if expires else 0
             self.client.cas(key, value, caskey, expire=expires)
+
+    def clear(self):
+        """Implements :meth:`GlobalCache.clear`."""
+        self.client.flush_all()

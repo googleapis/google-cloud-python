@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import itertools
+import warnings
 
 from google.cloud.ndb import _batch
 from google.cloud.ndb import context as context_module
@@ -21,6 +23,8 @@ from google.cloud.ndb import tasklets
 _LOCKED = b"0"
 _LOCK_TIME = 32
 _PREFIX = b"NDB30"
+
+warnings.filterwarnings("always", module=__name__)
 
 
 class ContextCache(dict):
@@ -57,6 +61,22 @@ def _future_result(result):
     return future
 
 
+def _future_exception(error):
+    """Returns a completed Future with the given exception.
+
+    For conforming to the asynchronous interface even if we've gotten the
+    result synchronously.
+    """
+    future = tasklets.Future()
+    future.set_exception(error)
+    return future
+
+
+def _global_cache():
+    """Returns the global cache for the current context."""
+    return context_module.get_context().global_cache
+
+
 class _GlobalCacheBatch(object):
     """Abstract base for classes used to batch operations for the global cache."""
 
@@ -73,9 +93,13 @@ class _GlobalCacheBatch(object):
 
         Also, schedule a callback for the completed operation.
         """
-        cache_call = self.make_call()
-        if not isinstance(cache_call, tasklets.Future):
-            cache_call = _future_result(cache_call)
+        try:
+            cache_call = self.make_call()
+            if not isinstance(cache_call, tasklets.Future):
+                cache_call = _future_result(cache_call)
+        except Exception as error:
+            cache_call = _future_exception(error)
+
         cache_call.add_done_callback(self.done_callback)
 
     def done_callback(self, cache_call):
@@ -102,6 +126,56 @@ class _GlobalCacheBatch(object):
         raise NotImplementedError
 
 
+def _handle_transient_errors(read=False):
+    """Decorator for global_XXX functions for handling transient errors.
+
+    Will log as warning or reraise transient errors according to `strict_read` and
+    `strict_write` attributes of the global cache and whether the operation is a read or
+    a write.
+    """
+
+    def wrap(wrapped):
+        @functools.wraps(wrapped)
+        @tasklets.tasklet
+        def wrapper(*args, **kwargs):
+            cache = _global_cache()
+            try:
+                if cache.clear_cache_soon:
+                    warnings.warn("Clearing global cache...", RuntimeWarning)
+                    cache.clear()
+                    cache.clear_cache_soon = False
+
+                result = yield wrapped(*args, **kwargs)
+                raise tasklets.Return(result)
+
+            except cache.transient_errors as error:
+                cache.clear_cache_soon = True
+
+                strict_read = read
+                if not strict_read:
+                    strict_read = kwargs.get("read", False)
+                strict = cache.strict_read if strict_read else cache.strict_write
+
+                if strict:
+                    raise
+
+                if not getattr(error, "_ndb_warning_logged", False):
+                    # Same exception will be sent to every future in the batch. Only
+                    # need to log one warning, though.
+                    warnings.warn(
+                        "Error connecting to global cache: {}".format(error),
+                        RuntimeWarning,
+                    )
+                    error._ndb_warning_logged = True
+
+                raise tasklets.Return(None)
+
+        return wrapper
+
+    return wrap
+
+
+@_handle_transient_errors(read=True)
 def global_get(key):
     """Get entity from global cache.
 
@@ -171,21 +245,22 @@ class _GlobalCacheGetBatch(_GlobalCacheBatch):
 
     def make_call(self):
         """Call :method:`GlobalCache.get`."""
-        cache = context_module.get_context().global_cache
-        return cache.get(self.keys)
+        return _global_cache().get(self.keys)
 
     def future_info(self, key):
         """Generate info string for Future."""
         return "GlobalCache.get({})".format(key)
 
 
-def global_set(key, value, expires=None):
+@_handle_transient_errors()
+def global_set(key, value, expires=None, read=False):
     """Store entity in the global cache.
 
     Args:
         key (bytes): The key to save.
         value (bytes): The entity to save.
         expires (Optional[float]): Number of seconds until value expires.
+        read (bool): Indicates if being set in a read (lookup) context.
 
     Returns:
         tasklets.Future: Eventual result will be ``None``.
@@ -223,14 +298,14 @@ class _GlobalCacheSetBatch(_GlobalCacheBatch):
 
     def make_call(self):
         """Call :method:`GlobalCache.set`."""
-        cache = context_module.get_context().global_cache
-        return cache.set(self.todo, expires=self.expires)
+        return _global_cache().set(self.todo, expires=self.expires)
 
     def future_info(self, key, value):
         """Generate info string for Future."""
         return "GlobalCache.set({}, {})".format(key, value)
 
 
+@_handle_transient_errors()
 def global_delete(key):
     """Delete an entity from the global cache.
 
@@ -267,14 +342,14 @@ class _GlobalCacheDeleteBatch(_GlobalCacheBatch):
 
     def make_call(self):
         """Call :method:`GlobalCache.delete`."""
-        cache = context_module.get_context().global_cache
-        return cache.delete(self.keys)
+        return _global_cache().delete(self.keys)
 
     def future_info(self, key):
         """Generate info string for Future."""
         return "GlobalCache.delete({})".format(key)
 
 
+@_handle_transient_errors(read=True)
 def global_watch(key):
     """Start optimistic transaction with global cache.
 
@@ -300,14 +375,14 @@ class _GlobalCacheWatchBatch(_GlobalCacheDeleteBatch):
 
     def make_call(self):
         """Call :method:`GlobalCache.watch`."""
-        cache = context_module.get_context().global_cache
-        return cache.watch(self.keys)
+        return _global_cache().watch(self.keys)
 
     def future_info(self, key):
         """Generate info string for Future."""
         return "GlobalCache.watch({})".format(key)
 
 
+@_handle_transient_errors()
 def global_unwatch(key):
     """End optimistic transaction with global cache.
 
@@ -330,14 +405,14 @@ class _GlobalCacheUnwatchBatch(_GlobalCacheWatchBatch):
 
     def make_call(self):
         """Call :method:`GlobalCache.unwatch`."""
-        cache = context_module.get_context().global_cache
-        return cache.unwatch(self.keys)
+        return _global_cache().unwatch(self.keys)
 
     def future_info(self, key):
         """Generate info string for Future."""
         return "GlobalCache.unwatch({})".format(key)
 
 
+@_handle_transient_errors(read=True)
 def global_compare_and_swap(key, value, expires=None):
     """Like :func:`global_set` but using an optimistic transaction.
 
@@ -365,24 +440,24 @@ class _GlobalCacheCompareAndSwapBatch(_GlobalCacheSetBatch):
 
     def make_call(self):
         """Call :method:`GlobalCache.compare_and_swap`."""
-        cache = context_module.get_context().global_cache
-        return cache.compare_and_swap(self.todo, expires=self.expires)
+        return _global_cache().compare_and_swap(self.todo, expires=self.expires)
 
     def future_info(self, key, value):
         """Generate info string for Future."""
         return "GlobalCache.compare_and_swap({}, {})".format(key, value)
 
 
-def global_lock(key):
+def global_lock(key, read=False):
     """Lock a key by setting a special value.
 
     Args:
         key (bytes): The key to lock.
+        read (bool): Indicates if being called as part of a read (lookup) operation.
 
     Returns:
         tasklets.Future: Eventual result will be ``None``.
     """
-    return global_set(key, _LOCKED, expires=_LOCK_TIME)
+    return global_set(key, _LOCKED, expires=_LOCK_TIME, read=read)
 
 
 def is_locked_value(value):

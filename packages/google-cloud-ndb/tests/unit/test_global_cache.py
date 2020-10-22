@@ -44,6 +44,9 @@ class TestGlobalCache:
             def compare_and_swap(self, items, expires=None):
                 return super(MockImpl, self).compare_and_swap(items, expires=expires)
 
+            def clear(self):
+                return super(MockImpl, self).clear()
+
         return MockImpl()
 
     def test_get(self):
@@ -75,6 +78,11 @@ class TestGlobalCache:
         cache = self.make_one()
         with pytest.raises(NotImplementedError):
             cache.compare_and_swap({b"foo": "bar"})
+
+    def test_clear(self):
+        cache = self.make_one()
+        with pytest.raises(NotImplementedError):
+            cache.clear()
 
 
 class TestInProcessGlobalCache:
@@ -164,6 +172,13 @@ class TestInProcessGlobalCache:
         result = cache.unwatch([b"one", b"two", b"three"])
         assert result is None
         assert cache._watch_keys == {}
+
+    @staticmethod
+    def test_clear():
+        cache = global_cache._InProcessGlobalCache()
+        cache.cache["foo"] = "bar"
+        cache.clear()
+        assert cache.cache == {}
 
 
 class TestRedisCache:
@@ -329,6 +344,13 @@ class TestRedisCache:
 
         assert cache.pipes == {"whatevs": global_cache._Pipeline(None, "himom!")}
         assert expired == {"ay": 32, "be": 32, "see": 32}
+
+    @staticmethod
+    def test_clear():
+        redis = mock.Mock(spec=("flushdb",))
+        cache = global_cache.RedisCache(redis)
+        cache.clear()
+        redis.flushdb.assert_called_once_with()
 
 
 class TestMemcacheCache:
@@ -530,3 +552,10 @@ class TestMemcacheCache:
 
         client.cas.assert_called_once_with(key2, "shoe", b"5", expire=5)
         assert cache.caskeys == {"whatevs": b"6"}
+
+    @staticmethod
+    def test_clear():
+        client = mock.Mock(spec=("flush_all",))
+        cache = global_cache.MemcacheCache(client)
+        cache.clear()
+        client.flush_all.assert_called_once_with()

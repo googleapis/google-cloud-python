@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
+
 try:
     from unittest import mock
 except ImportError:  # pragma: NO PY3 COVER
@@ -78,11 +80,107 @@ class Test_GlobalCacheBatch:
         with pytest.raises(NotImplementedError):
             batch.future_info(None)
 
+    @staticmethod
+    def test_idle_callback_exception():
+        class TransientError(Exception):
+            pass
 
+        error = TransientError("oops")
+        batch = _cache._GlobalCacheBatch()
+        batch.make_call = mock.Mock(side_effect=error)
+        future1, future2 = tasklets.Future(), tasklets.Future()
+        batch.futures = [future1, future2]
+        batch.idle_callback()
+        assert future1.exception() is error
+        assert future2.exception() is error
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
 @mock.patch("google.cloud.ndb._cache._batch")
-def test_global_get(_batch):
+def test_global_get(_batch, _global_cache):
     batch = _batch.get_batch.return_value
-    assert _cache.global_get(b"foo") is batch.add.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(),
+        clear_cache_soon=False,
+        spec=("transient_errors", "clear_cache_soon"),
+    )
+
+    assert _cache.global_get(b"foo").result() == "hi mom!"
+    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheGetBatch)
+    batch.add.assert_called_once_with(b"foo")
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
+@mock.patch("google.cloud.ndb._cache._batch")
+def test_global_get_clear_cache_soon(_batch, _global_cache):
+    batch = _batch.get_batch.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(),
+        clear_cache_soon=True,
+        spec=("transient_errors", "clear_cache_soon", "clear"),
+    )
+
+    with warnings.catch_warnings(record=True) as logged:
+        assert _cache.global_get(b"foo").result() == "hi mom!"
+        assert len(logged) == 1
+
+    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheGetBatch)
+    batch.add.assert_called_once_with(b"foo")
+    _global_cache.return_value.clear.assert_called_once_with()
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
+@mock.patch("google.cloud.ndb._cache._batch")
+def test_global_get_with_error_strict(_batch, _global_cache):
+    class TransientError(Exception):
+        pass
+
+    batch = _batch.get_batch.return_value
+    future = _future_exception(TransientError("oops"))
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(TransientError,),
+        clear_cache_soon=False,
+        strict_read=True,
+        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+    )
+
+    with pytest.raises(TransientError):
+        _cache.global_get(b"foo").result()
+
+    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheGetBatch)
+    batch.add.assert_called_once_with(b"foo")
+    assert _global_cache.return_value.clear_cache_soon is True
+
+
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
+@mock.patch("google.cloud.ndb._cache._batch")
+def test_global_get_with_error_not_strict(_batch, _global_cache):
+    class TransientError(Exception):
+        pass
+
+    batch = _batch.get_batch.return_value
+    future = _future_exception(TransientError("oops"))
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(TransientError,),
+        clear_cache_soon=False,
+        strict_read=False,
+        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+    )
+
+    with warnings.catch_warnings(record=True) as logged:
+        assert _cache.global_get(b"foo").result() is None
+        assert len(logged) == 1
+
     _batch.get_batch.assert_called_once_with(_cache._GlobalCacheGetBatch)
     batch.add.assert_called_once_with(b"foo")
 
@@ -155,21 +253,90 @@ class Test_GlobalCacheGetBatch:
         assert batch.full() is False
 
 
+@pytest.mark.usefixtures("in_context")
 class Test_global_set:
     @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
     @mock.patch("google.cloud.ndb._cache._batch")
-    def test_without_expires(_batch):
+    def test_without_expires(_batch, _global_cache):
         batch = _batch.get_batch.return_value
-        assert _cache.global_set(b"key", b"value") is batch.add.return_value
+        future = _future_result("hi mom!")
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            clear_cache_soon=False,
+            spec=("transient_errors", "clear_cache_soon"),
+        )
+
+        assert _cache.global_set(b"key", b"value").result() == "hi mom!"
         _batch.get_batch.assert_called_once_with(_cache._GlobalCacheSetBatch, {})
         batch.add.assert_called_once_with(b"key", b"value")
 
     @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
     @mock.patch("google.cloud.ndb._cache._batch")
-    def test_with_expires(_batch):
+    def test_error_strict(_batch, _global_cache):
+        class TransientError(Exception):
+            pass
+
         batch = _batch.get_batch.return_value
+        future = _future_exception(TransientError("oops"))
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(TransientError,),
+            clear_cache_soon=False,
+            spec=("transient_errors", "clear_cache_soon", "strict_write"),
+        )
+
+        with pytest.raises(TransientError):
+            _cache.global_set(b"key", b"value").result()
+
+        _batch.get_batch.assert_called_once_with(_cache._GlobalCacheSetBatch, {})
+        batch.add.assert_called_once_with(b"key", b"value")
+        assert _global_cache.return_value.clear_cache_soon is True
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    @mock.patch("google.cloud.ndb._cache._batch")
+    def test_error_not_strict_already_warned(_batch, _global_cache):
+        class TransientError(Exception):
+            pass
+
+        batch = _batch.get_batch.return_value
+        error = TransientError("oops")
+        error._ndb_warning_logged = True
+        future = _future_exception(error)
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(TransientError,),
+            clear_cache_soon=False,
+            strict_write=False,
+            spec=("transient_errors", "clear_cache_soon", "strict_write"),
+        )
+
+        with warnings.catch_warnings(record=True) as logged:
+            assert _cache.global_set(b"key", b"value").result() is None
+            assert len(logged) == 0
+
+        _batch.get_batch.assert_called_once_with(_cache._GlobalCacheSetBatch, {})
+        batch.add.assert_called_once_with(b"key", b"value")
+        assert _global_cache.return_value.clear_cache_soon is True
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
+    @mock.patch("google.cloud.ndb._cache._batch")
+    def test_with_expires(_batch, _global_cache):
+        batch = _batch.get_batch.return_value
+        future = _future_result("hi mom!")
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            clear_cache_soon=False,
+            spec=("transient_errors", "clear_cache_soon"),
+        )
+
         future = _cache.global_set(b"key", b"value", expires=5)
-        assert future is batch.add.return_value
+        assert future.result() == "hi mom!"
         _batch.get_batch.assert_called_once_with(
             _cache._GlobalCacheSetBatch, {"expires": 5}
         )
@@ -234,10 +401,20 @@ class Test_GlobalCacheSetBatch:
         assert future2.exception() is error
 
 
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
 @mock.patch("google.cloud.ndb._cache._batch")
-def test_global_delete(_batch):
+def test_global_delete(_batch, _global_cache):
     batch = _batch.get_batch.return_value
-    assert _cache.global_delete(b"key") is batch.add.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(),
+        clear_cache_soon=False,
+        spec=("transient_errors", "clear_cache_soon"),
+    )
+
+    assert _cache.global_delete(b"key").result() == "hi mom!"
     _batch.get_batch.assert_called_once_with(_cache._GlobalCacheDeleteBatch)
     batch.add.assert_called_once_with(b"key")
 
@@ -259,10 +436,20 @@ class Test_GlobalCacheDeleteBatch:
         assert future2.result() is None
 
 
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
 @mock.patch("google.cloud.ndb._cache._batch")
-def test_global_watch(_batch):
+def test_global_watch(_batch, _global_cache):
     batch = _batch.get_batch.return_value
-    assert _cache.global_watch(b"key") is batch.add.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(),
+        clear_cache_soon=False,
+        spec=("transient_errors", "clear_cache_soon"),
+    )
+
+    assert _cache.global_watch(b"key").result() == "hi mom!"
     _batch.get_batch.assert_called_once_with(_cache._GlobalCacheWatchBatch)
     batch.add.assert_called_once_with(b"key")
 
@@ -284,10 +471,20 @@ class Test_GlobalCacheWatchBatch:
         assert future2.result() is None
 
 
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
 @mock.patch("google.cloud.ndb._cache._batch")
-def test_global_unwatch(_batch):
+def test_global_unwatch(_batch, _global_cache):
     batch = _batch.get_batch.return_value
-    assert _cache.global_unwatch(b"key") is batch.add.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(),
+        clear_cache_soon=False,
+        spec=("transient_errors", "clear_cache_soon"),
+    )
+
+    assert _cache.global_unwatch(b"key").result() == "hi mom!"
     _batch.get_batch.assert_called_once_with(_cache._GlobalCacheUnwatchBatch)
     batch.add.assert_called_once_with(b"key")
 
@@ -309,25 +506,43 @@ class Test_GlobalCacheUnwatchBatch:
         assert future2.result() is None
 
 
+@pytest.mark.usefixtures("in_context")
 class Test_global_compare_and_swap:
     @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
     @mock.patch("google.cloud.ndb._cache._batch")
-    def test_without_expires(_batch):
+    def test_without_expires(_batch, _global_cache):
         batch = _batch.get_batch.return_value
-        assert (
-            _cache.global_compare_and_swap(b"key", b"value") is batch.add.return_value
+        future = _future_result("hi mom!")
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            clear_cache_soon=False,
+            spec=("transient_errors", "clear_cache_soon"),
         )
+
+        future = _cache.global_compare_and_swap(b"key", b"value")
+        assert future.result() == "hi mom!"
         _batch.get_batch.assert_called_once_with(
             _cache._GlobalCacheCompareAndSwapBatch, {}
         )
         batch.add.assert_called_once_with(b"key", b"value")
 
     @staticmethod
+    @mock.patch("google.cloud.ndb._cache._global_cache")
     @mock.patch("google.cloud.ndb._cache._batch")
-    def test_with_expires(_batch):
+    def test_with_expires(_batch, _global_cache):
         batch = _batch.get_batch.return_value
+        future = _future_result("hi mom!")
+        batch.add.return_value = future
+        _global_cache.return_value = mock.Mock(
+            transient_errors=(),
+            clear_cache_soon=False,
+            spec=("transient_errors", "clear_cache_soon"),
+        )
+
         future = _cache.global_compare_and_swap(b"key", b"value", expires=5)
-        assert future is batch.add.return_value
+        assert future.result() == "hi mom!"
         _batch.get_batch.assert_called_once_with(
             _cache._GlobalCacheCompareAndSwapBatch, {"expires": 5}
         )
@@ -374,10 +589,20 @@ class Test_GlobalCacheCompareAndSwapBatch:
         assert future2.result() is None
 
 
+@pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
 @mock.patch("google.cloud.ndb._cache._batch")
-def test_global_lock(_batch):
+def test_global_lock(_batch, _global_cache):
     batch = _batch.get_batch.return_value
-    assert _cache.global_lock(b"key") is batch.add.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(),
+        clear_cache_soon=False,
+        spec=("transient_errors", "clear_cache_soon"),
+    )
+
+    assert _cache.global_lock(b"key").result() == "hi mom!"
     _batch.get_batch.assert_called_once_with(
         _cache._GlobalCacheSetBatch, {"expires": _cache._LOCK_TIME}
     )
@@ -395,3 +620,15 @@ def test_global_cache_key():
     assert _cache.global_cache_key(key) == _cache._PREFIX + b"himom!"
     key.to_protobuf.assert_called_once_with()
     key.to_protobuf.return_value.SerializeToString.assert_called_once_with()
+
+
+def _future_result(result):
+    future = tasklets.Future()
+    future.set_result(result)
+    return future
+
+
+def _future_exception(error):
+    future = tasklets.Future()
+    future.set_exception(error)
+    return future
