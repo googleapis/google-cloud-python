@@ -16,7 +16,6 @@ from __future__ import absolute_import
 
 import os
 import pkg_resources
-import six
 
 import grpc
 
@@ -82,16 +81,19 @@ class Client(object):
                 target=os.environ.get("PUBSUB_EMULATOR_HOST")
             )
 
-        # api_endpoint wont be applied if 'transport' is passed in.
+        # The GAPIC client has mTLS logic to determine the api endpoint and the
+        # ssl credentials to use. Here we create a GAPIC client to help compute the
+        # api endpoint and ssl credentials. The api endpoint will be used to set
+        # `self._target`, and ssl credentials will be passed to
+        # `grpc_helpers.create_channel` to establish a mTLS channel (if ssl
+        # credentials is not None).
         client_options = kwargs.get("client_options", None)
-        if (
-            client_options
-            and "api_endpoint" in client_options
-            and isinstance(client_options["api_endpoint"], six.string_types)
-        ):
-            self._target = client_options["api_endpoint"]
-        else:
-            self._target = subscriber_client.SubscriberClient.SERVICE_ADDRESS
+        credentials = kwargs.get("credentials", None)
+        client_for_mtls_info = subscriber_client.SubscriberClient(
+            credentials=credentials, client_options=client_options
+        )
+
+        self._target = client_for_mtls_info._transport._host
 
         # Use a custom channel.
         # We need this in order to set appropriate default message size and
@@ -102,6 +104,7 @@ class Client(object):
                 channel = grpc_helpers.create_channel(
                     credentials=kwargs.pop("credentials", None),
                     target=self.target,
+                    ssl_credentials=client_for_mtls_info._transport._ssl_channel_credentials,
                     scopes=subscriber_client.SubscriberClient._DEFAULT_SCOPES,
                     options={
                         "grpc.max_send_message_length": -1,

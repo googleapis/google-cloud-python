@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from google.auth import credentials
+import grpc
 import mock
 
 from google.cloud.pubsub_v1 import subscriber
@@ -42,7 +43,7 @@ def test_init_w_api_endpoint():
     assert isinstance(client.api, subscriber_client.SubscriberClient)
     assert (client.api._transport.grpc_channel._channel.target()).decode(
         "utf-8"
-    ) == "testendpoint.google.com"
+    ) == "testendpoint.google.com:443"
 
 
 def test_init_w_unicode_api_endpoint():
@@ -52,7 +53,7 @@ def test_init_w_unicode_api_endpoint():
     assert isinstance(client.api, subscriber_client.SubscriberClient)
     assert (client.api._transport.grpc_channel._channel.target()).decode(
         "utf-8"
-    ) == "testendpoint.google.com"
+    ) == "testendpoint.google.com:443"
 
 
 def test_init_w_empty_client_options():
@@ -65,8 +66,13 @@ def test_init_w_empty_client_options():
 
 
 def test_init_client_options_pass_through():
+    mock_ssl_creds = grpc.ssl_channel_credentials()
+
     def init(self, *args, **kwargs):
         self.kwargs = kwargs
+        self._transport = mock.Mock()
+        self._transport._host = "testendpoint.google.com"
+        self._transport._ssl_channel_credentials = mock_ssl_creds
 
     with mock.patch.object(subscriber_client.SubscriberClient, "__init__", init):
         client = subscriber.Client(
@@ -80,6 +86,8 @@ def test_init_client_options_pass_through():
         assert client_options.get("quota_project_id") == "42"
         assert client_options.get("scopes") == []
         assert client_options.get("credentials_file") == "file.json"
+        assert client.target == "testendpoint.google.com"
+        assert client.api.transport._ssl_channel_credentials == mock_ssl_creds
 
 
 def test_init_emulator(monkeypatch):
