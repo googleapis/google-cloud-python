@@ -14,11 +14,7 @@ from google.cloud import spanner_v1
 from .cursor import Cursor
 from .exceptions import InterfaceError
 
-AUTOCOMMIT_MODE_WARNING = (
-    "This method is non-operational, as Cloud Spanner"
-    "DB API always works in `autocommit` mode."
-    "See https://github.com/googleapis/python-spanner-django#transaction-management-isnt-supported"
-)
+AUTOCOMMIT_MODE_WARNING = "This method is non-operational in autocommit mode"
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
 
@@ -37,11 +33,98 @@ class Connection:
     """
 
     def __init__(self, instance, database):
-        self.instance = instance
-        self.database = database
-        self.is_closed = False
+        self._instance = instance
+        self._database = database
 
         self._ddl_statements = []
+        self._transaction = None
+        self._session = None
+
+        self.is_closed = False
+        self._autocommit = False
+
+    @property
+    def autocommit(self):
+        """Autocommit mode flag for this connection.
+
+        :rtype: bool
+        :returns: Autocommit mode flag value.
+        """
+        return self._autocommit
+
+    @autocommit.setter
+    def autocommit(self, value):
+        """Change this connection autocommit mode.
+
+        :type value: bool
+        :param value: New autocommit mode state.
+        """
+        if value and not self._autocommit:
+            self.commit()
+
+        self._autocommit = value
+
+    @property
+    def database(self):
+        """Database to which this connection relates.
+
+        :rtype: :class:`~google.cloud.spanner_v1.database.Database`
+        :returns: The related database object.
+        """
+        return self._database
+
+    @property
+    def instance(self):
+        """Instance to which this connection relates.
+
+        :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
+        :returns: The related instance object.
+        """
+        return self._instance
+
+    def _session_checkout(self):
+        """Get a Cloud Spanner session from the pool.
+
+        If there is already a session associated with
+        this connection, it'll be used instead.
+
+        :rtype: :class:`google.cloud.spanner_v1.session.Session`
+        :returns: Cloud Spanner session object ready to use.
+        """
+        if not self._session:
+            self._session = self.database._pool.get()
+
+        return self._session
+
+    def _release_session(self):
+        """Release the currently used Spanner session.
+
+        The session will be returned into the sessions pool.
+        """
+        self.database._pool.put(self._session)
+        self._session = None
+
+    def transaction_checkout(self):
+        """Get a Cloud Spanner transaction.
+
+        Begin a new transaction, if there is no transaction in
+        this connection yet. Return the begun one otherwise.
+
+        The method is non operational in autocommit mode.
+
+        :rtype: :class:`google.cloud.spanner_v1.transaction.Transaction`
+        :returns: A Cloud Spanner transaction object, ready to use.
+        """
+        if not self.autocommit:
+            if (
+                not self._transaction
+                or self._transaction.committed
+                or self._transaction.rolled_back
+            ):
+                self._transaction = self._session_checkout().transaction()
+                self._transaction.begin()
+
+            return self._transaction
 
     def cursor(self):
         self._raise_if_closed()
@@ -142,18 +225,33 @@ class Connection:
     def close(self):
         """Close this connection.
 
-        The connection will be unusable from this point forward.
+        The connection will be unusable from this point forward. If the
+        connection has an active transaction, it will be rolled back.
         """
-        self.__dbhandle = None
+        if (
+            self._transaction
+            and not self._transaction.committed
+            and not self._transaction.rolled_back
+        ):
+            self._transaction.rollback()
+
         self.is_closed = True
 
     def commit(self):
         """Commit all the pending transactions."""
-        warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
+        if self.autocommit:
+            warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
+        elif self._transaction:
+            self._transaction.commit()
+            self._release_session()
 
     def rollback(self):
         """Rollback all the pending transactions."""
-        warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
+        if self.autocommit:
+            warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
+        elif self._transaction:
+            self._transaction.rollback()
+            self._release_session()
 
     def __enter__(self):
         return self

@@ -49,8 +49,9 @@ class TestConnection(unittest.TestCase):
             connection.cursor()
 
     @mock.patch("warnings.warn")
-    def test_transaction_management_warnings(self, warn_mock):
+    def test_transaction_autocommit_warnings(self, warn_mock):
         connection = self._make_connection()
+        connection.autocommit = True
 
         connection.commit()
         warn_mock.assert_called_with(
@@ -60,3 +61,19 @@ class TestConnection(unittest.TestCase):
         warn_mock.assert_called_with(
             AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2
         )
+
+    def test_database_property(self):
+        connection = self._make_connection()
+        self.assertIsInstance(connection.database, Database)
+        self.assertEqual(connection.database, connection._database)
+
+        with self.assertRaises(AttributeError):
+            connection.database = None
+
+    def test_instance_property(self):
+        connection = self._make_connection()
+        self.assertIsInstance(connection.instance, Instance)
+        self.assertEqual(connection.instance, connection._instance)
+
+        with self.assertRaises(AttributeError):
+            connection.instance = None

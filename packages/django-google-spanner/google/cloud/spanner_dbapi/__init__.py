@@ -49,7 +49,12 @@ threadsafety = 1
 
 
 def connect(
-    instance_id, database_id, project=None, credentials=None, user_agent=None
+    instance_id,
+    database_id,
+    project=None,
+    credentials=None,
+    pool=None,
+    user_agent=None,
 ):
     """
     Create a connection to Cloud Spanner database.
@@ -71,6 +76,13 @@ def connect(
                         If none are specified, the client will attempt to ascertain
                         the credentials from the environment.
 
+    :type pool: Concrete subclass of
+                :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`.
+    :param pool: (Optional). Session pool to be used by database.
+
+    :type user_agent: :class:`str`
+    :param user_agent: (Optional) User agent to be used with this connection requests.
+
     :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
     :returns: Connection object associated with the given Cloud Spanner resource.
 
@@ -87,9 +99,7 @@ def connect(
     if not instance.exists():
         raise ValueError("instance '%s' does not exist." % instance_id)
 
-    database = instance.database(
-        database_id, pool=spanner_v1.pool.BurstyPool()
-    )
+    database = instance.database(database_id, pool=pool)
     if not database.exists():
         raise ValueError("database '%s' does not exist." % database_id)
 

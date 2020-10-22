@@ -91,6 +91,7 @@ class Cursor:
         # Classify whether this is a read-only SQL statement.
         try:
             classification = classify_stmt(sql)
+
             if classification == STMT_DDL:
                 self._connection.append_ddl_statement(sql)
                 return
@@ -98,6 +99,17 @@ class Cursor:
             # For every other operation, we've got to ensure that
             # any prior DDL statements were run.
             self._run_prior_DDL_statements()
+
+            if not self._connection.autocommit:
+                transaction = self._connection.transaction_checkout()
+
+                sql, params = sql_pyformat_args_to_spanner(sql, args)
+
+                self._res = transaction.execute_sql(
+                    sql, params, param_types=get_param_types(params)
+                )
+                self._itr = PeekIterator(self._res)
+                return
 
             if classification == STMT_NON_UPDATING:
                 self.__handle_DQL(sql, args or None)

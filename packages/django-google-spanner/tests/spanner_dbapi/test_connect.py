@@ -12,6 +12,7 @@ from unittest import mock
 import google.auth.credentials
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud.spanner_dbapi import connect, Connection
+from google.cloud.spanner_v1.pool import FixedSizePool
 
 
 def _make_credentials():
@@ -43,7 +44,7 @@ class Test_connect(unittest.TestCase):
                     "test-database",
                     PROJECT,
                     CREDENTIALS,
-                    USER_AGENT,
+                    user_agent=USER_AGENT,
                 )
 
                 self.assertIsInstance(connection, Connection)
@@ -108,3 +109,27 @@ class Test_connect(unittest.TestCase):
                 database_mock.assert_called_once_with(DATABASE, pool=mock.ANY)
 
         self.assertIsInstance(connection, Connection)
+
+    def test_default_sessions_pool(self):
+        with mock.patch("google.cloud.spanner_v1.instance.Instance.database"):
+            with mock.patch(
+                "google.cloud.spanner_v1.instance.Instance.exists",
+                return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+                self.assertIsNotNone(connection.database._pool)
+
+    def test_sessions_pool(self):
+        database_id = "test-database"
+        pool = FixedSizePool()
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.database"
+        ) as database_mock:
+            with mock.patch(
+                "google.cloud.spanner_v1.instance.Instance.exists",
+                return_value=True,
+            ):
+                connect("test-instance", database_id, pool=pool)
+                database_mock.assert_called_once_with(database_id, pool=pool)
