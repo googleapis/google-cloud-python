@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.7.0](https://www.github.com/googleapis/python-ndb/compare/v1.6.1...v1.7.0) (2020-10-22)
+
+
+### Features
+
+* fault tolerance for global caches ([#560](https://www.github.com/googleapis/python-ndb/issues/560)) ([8ab8ee0](https://www.github.com/googleapis/python-ndb/commit/8ab8ee01f5577cfe468ed77d3cd48d6f6b816b0e)), closes [#557](https://www.github.com/googleapis/python-ndb/issues/557)
+* Transaction propagation using ndb.TransactionOptions ([#537](https://www.github.com/googleapis/python-ndb/issues/537)) ([f3aa027](https://www.github.com/googleapis/python-ndb/commit/f3aa027d7d55d9aee9a72ce23cebc26a5975bb28))
+
 ### [1.6.1](https://www.github.com/googleapis/python-ndb/compare/v1.6.0...v1.6.1) (2020-10-08)
 
 
