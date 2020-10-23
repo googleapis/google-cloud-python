@@ -323,12 +323,9 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject, credentials.Si
             ValueError: If extracting expiry from the obtained ID token fails.
         """
         try:
-            id_token = _metadata.get(
-                request,
-                "instance/service-accounts/default/identity?audience={}&format=full".format(
-                    self._target_audience
-                ),
-            )
+            path = "instance/service-accounts/default/identity"
+            params = {"audience": self._target_audience, "format": "full"}
+            id_token = _metadata.get(request, path, params=params)
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
             six.raise_from(new_exc, caught_exc)

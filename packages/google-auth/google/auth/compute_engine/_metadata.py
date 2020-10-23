@@ -108,7 +108,9 @@ def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
     return False
 
 
-def get(request, path, root=_METADATA_ROOT, recursive=False, retry_count=5):
+def get(
+    request, path, root=_METADATA_ROOT, params=None, recursive=False, retry_count=5
+):
     """Fetch a resource from the metadata server.
 
     Args:
@@ -117,6 +119,8 @@ def get(request, path, root=_METADATA_ROOT, recursive=False, retry_count=5):
         path (str): The resource to retrieve. For example,
             ``'instance/service-accounts/default'``.
         root (str): The full path to the metadata server root.
+        params (Optional[Mapping[str, str]]): A mapping of query parameter
+            keys to values.
         recursive (bool): Whether to do a recursive query of metadata. See
             https://cloud.google.com/compute/docs/metadata#aggcontents for more
             details.
@@ -133,7 +137,7 @@ def get(request, path, root=_METADATA_ROOT, recursive=False, retry_count=5):
             retrieving metadata.
     """
     base_url = urlparse.urljoin(root, path)
-    query_params = {}
+    query_params = {} if params is None else params
 
     if recursive:
         query_params["recursive"] = "true"
@@ -224,11 +228,10 @@ def get_service_account_info(request, service_account="default"):
         google.auth.exceptions.TransportError: if an error occurred while
             retrieving metadata.
     """
-    return get(
-        request,
-        "instance/service-accounts/{0}/".format(service_account),
-        recursive=True,
-    )
+    path = "instance/service-accounts/{0}/".format(service_account)
+    # See https://cloud.google.com/compute/docs/metadata#aggcontents
+    # for more on the use of 'recursive'.
+    return get(request, path, params={"recursive": "true"})
 
 
 def get_service_account_token(request, service_account="default"):

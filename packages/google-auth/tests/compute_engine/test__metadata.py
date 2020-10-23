@@ -155,6 +155,49 @@ def test_get_success_text():
     assert result == data
 
 
+def test_get_success_params():
+    data = "foobar"
+    request = make_request(data, headers={"content-type": "text/plain"})
+    params = {"recursive": "true"}
+
+    result = _metadata.get(request, PATH, params=params)
+
+    request.assert_called_once_with(
+        method="GET",
+        url=_metadata._METADATA_ROOT + PATH + "?recursive=true",
+        headers=_metadata._METADATA_HEADERS,
+    )
+    assert result == data
+
+
+def test_get_success_recursive_and_params():
+    data = "foobar"
+    request = make_request(data, headers={"content-type": "text/plain"})
+    params = {"recursive": "false"}
+    result = _metadata.get(request, PATH, recursive=True, params=params)
+
+    request.assert_called_once_with(
+        method="GET",
+        url=_metadata._METADATA_ROOT + PATH + "?recursive=true",
+        headers=_metadata._METADATA_HEADERS,
+    )
+    assert result == data
+
+
+def test_get_success_recursive():
+    data = "foobar"
+    request = make_request(data, headers={"content-type": "text/plain"})
+
+    result = _metadata.get(request, PATH, recursive=True)
+
+    request.assert_called_once_with(
+        method="GET",
+        url=_metadata._METADATA_ROOT + PATH + "?recursive=true",
+        headers=_metadata._METADATA_HEADERS,
+    )
+    assert result == data
+
+
 def test_get_success_custom_root_new_variable():
     request = make_request("{}", headers={"content-type": "application/json"})
 
