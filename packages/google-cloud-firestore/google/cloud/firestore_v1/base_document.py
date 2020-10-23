@@ -567,14 +567,3 @@ def _first_write_result(write_results: list) -> Any:
         raise ValueError("Expected at least one write result")
 
     return write_results[0]
-
-
-def _item_to_collection_ref(iterator, item: str) -> Any:
-    """Convert collection ID to collection ref.
-
-    Args:
-        iterator (google.api_core.page_iterator.GRPCIterator):
-            iterator response
-        item (str): ID of the collection
-    """
-    return iterator.document.collection(item)

@@ -536,17 +536,6 @@ def _get_doc_mask(field_paths: Iterable[str]) -> Optional[types.common.DocumentM
         return types.DocumentMask(field_paths=field_paths)
 
 
-def _item_to_collection_ref(iterator, item: str) -> Any:
-    """Convert collection ID to collection ref.
-
-    Args:
-        iterator (google.api_core.page_iterator.GRPCIterator):
-            iterator response
-        item (str): ID of the collection
-    """
-    return iterator.client.collection(item)
-
-
 def _path_helper(path: tuple) -> Any:
     """Standardize path into a tuple of path segments.
 

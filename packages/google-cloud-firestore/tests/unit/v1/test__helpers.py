@@ -1728,7 +1728,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertEqual(inst.data_merge, [])
         self.assertEqual(inst.transform_merge, [])
         self.assertEqual(inst.merge, [])
-        self.assertFalse(inst.has_updates)
 
     def test_apply_merge_all_w_delete(self):
         from google.cloud.firestore_v1.transforms import DELETE_FIELD
@@ -1745,7 +1744,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertEqual(inst.data_merge, expected_data_merge)
         self.assertEqual(inst.transform_merge, [])
         self.assertEqual(inst.merge, expected_data_merge)
-        self.assertTrue(inst.has_updates)
 
     def test_apply_merge_all_w_server_timestamp(self):
         from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
@@ -1761,7 +1759,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertEqual(inst.data_merge, expected_data_merge)
         self.assertEqual(inst.transform_merge, expected_transform_merge)
         self.assertEqual(inst.merge, expected_merge)
-        self.assertTrue(inst.has_updates)
 
     def test_apply_merge_list_fields_w_empty_document(self):
         document_data = {}
@@ -1800,7 +1797,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         expected_deleted_fields = [_make_field_path("delete_me")]
         self.assertEqual(inst.set_fields, expected_set_fields)
         self.assertEqual(inst.deleted_fields, expected_deleted_fields)
-        self.assertTrue(inst.has_updates)
 
     def test_apply_merge_list_fields_w_prefixes(self):
 
@@ -1827,7 +1823,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
 
         expected_set_fields = {"write_me": "value"}
         self.assertEqual(inst.set_fields, expected_set_fields)
-        self.assertTrue(inst.has_updates)
 
     def test_apply_merge_list_fields_w_server_timestamp(self):
         from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
@@ -1849,7 +1844,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertEqual(inst.merge, expected_merge)
         expected_server_timestamps = [_make_field_path("timestamp")]
         self.assertEqual(inst.server_timestamps, expected_server_timestamps)
-        self.assertTrue(inst.has_updates)
 
     def test_apply_merge_list_fields_w_array_remove(self):
         from google.cloud.firestore_v1.transforms import ArrayRemove
@@ -1872,7 +1866,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertEqual(inst.merge, expected_merge)
         expected_array_removes = {_make_field_path("remove_me"): values}
         self.assertEqual(inst.array_removes, expected_array_removes)
-        self.assertTrue(inst.has_updates)
 
     def test_apply_merge_list_fields_w_array_union(self):
         from google.cloud.firestore_v1.transforms import ArrayUnion
@@ -1895,7 +1888,6 @@ class TestDocumentExtractorForMerge(unittest.TestCase):
         self.assertEqual(inst.merge, expected_merge)
         expected_array_unions = {_make_field_path("union_me"): values}
         self.assertEqual(inst.array_unions, expected_array_unions)
-        self.assertTrue(inst.has_updates)
 
 
 class Test_pbs_for_set_with_merge(unittest.TestCase):

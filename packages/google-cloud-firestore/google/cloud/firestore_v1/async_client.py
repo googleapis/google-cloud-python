@@ -284,24 +284,8 @@ class AsyncClient(BaseClient):
             request=request, metadata=self._rpc_metadata, **kwargs,
         )
 
-        while True:
-            for i in iterator.collection_ids:
-                yield self.collection(i)
-            if iterator.next_page_token:
-                next_request = request.copy()
-                next_request["page_token"] = iterator.next_page_token
-                iterator = await self._firestore_api.list_collection_ids(
-                    request=next_request, metadata=self._rpc_metadata, **kwargs,
-                )
-            else:
-                return
-
-        # TODO(microgen): currently this method is rewritten to iterate/page itself.
-        # https://github.com/googleapis/gapic-generator-python/issues/516
-        # it seems the generator ought to be able to do this itself.
-        # iterator.client = self
-        # iterator.item_to_value = _item_to_collection_ref
-        # return iterator
+        async for collection_id in iterator:
+            yield self.collection(collection_id)
 
     def batch(self) -> AsyncWriteBatch:
         """Get a batch instance from this client.

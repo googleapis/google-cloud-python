@@ -207,8 +207,6 @@ def _int_value(value):
 
 
 def _string_value(s):
-    if not isinstance(s, str):
-        s = str(s)
     return encode_value(s)
 
 

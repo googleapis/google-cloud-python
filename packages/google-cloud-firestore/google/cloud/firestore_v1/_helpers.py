@@ -644,20 +644,6 @@ class DocumentExtractorForMerge(DocumentExtractor):
         self.transform_merge = []
         self.merge = []
 
-    @property
-    def has_updates(self):
-        # for whatever reason, the conformance tests want to see the parent
-        # of nested transform paths in the update mask
-        # (see set-st-merge-nonleaf-alone.textproto)
-        update_paths = set(self.data_merge)
-
-        for transform_path in self.transform_paths:
-            if len(transform_path.parts) > 1:
-                parent_fp = FieldPath(*transform_path.parts[:-1])
-                update_paths.add(parent_fp)
-
-        return bool(update_paths)
-
     def _apply_merge_all(self) -> None:
         self.data_merge = sorted(self.field_paths + self.deleted_fields)
         # TODO: other transforms
@@ -771,8 +757,7 @@ class DocumentExtractorForMerge(DocumentExtractor):
             if field_path not in self.transform_merge
         ]
 
-        if mask_paths or allow_empty_mask:
-            return common.DocumentMask(field_paths=mask_paths)
+        return common.DocumentMask(field_paths=mask_paths)
 
 
 def pbs_for_set_with_merge(
@@ -794,10 +779,8 @@ def pbs_for_set_with_merge(
     extractor = DocumentExtractorForMerge(document_data)
     extractor.apply_merge(merge)
 
-    merge_empty = not document_data
-    allow_empty_mask = merge_empty or extractor.transform_paths
+    set_pb = extractor.get_update_pb(document_path)
 
-    set_pb = extractor.get_update_pb(document_path, allow_empty_mask=allow_empty_mask)
     if extractor.transform_paths:
         field_transform_pbs = extractor.get_field_transform_pbs(document_path)
         set_pb.update_transforms.extend(field_transform_pbs)

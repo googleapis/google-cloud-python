@@ -468,28 +468,18 @@ class TestDocumentReference(unittest.TestCase):
         self._get_helper(use_transaction=True)
 
     def _collections_helper(self, page_size=None, retry=None, timeout=None):
-        from google.api_core.page_iterator import Iterator
-        from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.collection import CollectionReference
         from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
 
-        # TODO(microgen): https://github.com/googleapis/gapic-generator-python/issues/516
-        class _Iterator(Iterator):
-            def __init__(self, pages):
-                super(_Iterator, self).__init__(client=None)
-                self._pages = pages
-                self.collection_ids = pages[0]
-
-            def _next_page(self):
-                if self._pages:
-                    page, self._pages = self._pages[0], self._pages[1:]
-                    return Page(self, page, self.item_to_value)
-
         collection_ids = ["coll-1", "coll-2"]
-        iterator = _Iterator(pages=[collection_ids])
+
+        class Pager(object):
+            def __iter__(self):
+                yield from collection_ids
+
         api_client = mock.create_autospec(FirestoreClient)
-        api_client.list_collection_ids.return_value = iterator
+        api_client.list_collection_ids.return_value = Pager()
 
         client = _make_client()
         client._firestore_api_internal = api_client

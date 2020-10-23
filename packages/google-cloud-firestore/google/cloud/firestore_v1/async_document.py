@@ -407,20 +407,5 @@ class AsyncDocumentReference(BaseDocumentReference):
             request=request, metadata=self._client._rpc_metadata, **kwargs,
         )
 
-        while True:
-            for i in iterator.collection_ids:
-                yield self.collection(i)
-            if iterator.next_page_token:
-                next_request = request.copy()
-                next_request["page_token"] = iterator.next_page_token
-                iterator = await self._client._firestore_api.list_collection_ids(
-                    request=request, metadata=self._client._rpc_metadata, **kwargs
-                )
-            else:
-                return
-
-        # TODO(microgen): currently this method is rewritten to iterate/page itself.
-        # it seems the generator ought to be able to do this itself.
-        # iterator.document = self
-        # iterator.item_to_value = _item_to_collection_ref
-        # return iterator
+        async for collection_id in iterator:
+            yield self.collection(collection_id)

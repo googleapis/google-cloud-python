@@ -195,31 +195,20 @@ class TestClient(unittest.TestCase):
 
     def _collections_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1 import _helpers
-        from google.api_core.page_iterator import Iterator
-        from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.collection import CollectionReference
 
         collection_ids = ["users", "projects"]
-        client = self._make_default_one()
+
+        class Pager(object):
+            def __iter__(self):
+                yield from collection_ids
+
         firestore_api = mock.Mock(spec=["list_collection_ids"])
+        firestore_api.list_collection_ids.return_value = Pager()
+
+        client = self._make_default_one()
         client._firestore_api_internal = firestore_api
-
-        # TODO(microgen): list_collection_ids isn't a pager.
-        # https://github.com/googleapis/gapic-generator-python/issues/516
-        class _Iterator(Iterator):
-            def __init__(self, pages):
-                super(_Iterator, self).__init__(client=None)
-                self._pages = pages
-                self.collection_ids = pages[0]
-
-            def _next_page(self):
-                if self._pages:
-                    page, self._pages = self._pages[0], self._pages[1:]
-                    return Page(self, page, self.item_to_value)
-
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
-        iterator = _Iterator(pages=[collection_ids])
-        firestore_api.list_collection_ids.return_value = iterator
 
         collections = list(client.collections(**kwargs))
 
@@ -258,20 +247,6 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(snapshots, types.GeneratorType)
 
         return list(snapshots)
-
-    def _info_for_get_all(self, data1, data2):
-        client = self._make_default_one()
-        document1 = client.document("pineapple", "lamp1")
-        document2 = client.document("pineapple", "lamp2")
-
-        # Make response protobufs.
-        document_pb1, read_time = _doc_get_info(document1._document_path, data1)
-        response1 = _make_batch_response(found=document_pb1, read_time=read_time)
-
-        document, read_time = _doc_get_info(document2._document_path, data2)
-        response2 = _make_batch_response(found=document, read_time=read_time)
-
-        return client, document1, document2, response1, response2
 
     def _get_all_helper(self, num_snapshots=2, txn_id=None, retry=None, timeout=None):
         from google.cloud.firestore_v1 import _helpers
