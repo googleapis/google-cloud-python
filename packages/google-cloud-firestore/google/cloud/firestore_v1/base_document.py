@@ -22,10 +22,10 @@ from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1 import field_path as field_path_module
 from google.cloud.firestore_v1.types import common
 
-from typing import Any
-from typing import Iterable
-from typing import NoReturn
-from typing import Tuple
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.types import firestore
+from google.cloud.firestore_v1.types import write
+from typing import Any, Dict, Iterable, NoReturn, Union, Tuple
 
 
 class BaseDocumentReference(object):
@@ -475,7 +475,7 @@ class DocumentSnapshot(object):
         nested_data = field_path_module.get_nested_value(field_path, self._data)
         return copy.deepcopy(nested_data)
 
-    def to_dict(self) -> Any:
+    def to_dict(self) -> Union[Dict[str, Any], None]:
         """Retrieve the data contained in this snapshot.
 
         A copy is returned since the data may contain mutable values,
@@ -512,7 +512,7 @@ def _get_document_path(client, path: Tuple[str]) -> str:
     return _helpers.DOCUMENT_PATH_DELIMITER.join(parts)
 
 
-def _consume_single_get(response_iterator) -> Any:
+def _consume_single_get(response_iterator) -> firestore.BatchGetDocumentsResponse:
     """Consume a gRPC stream that should contain a single response.
 
     The stream will correspond to a ``BatchGetDocuments`` request made
@@ -543,7 +543,7 @@ def _consume_single_get(response_iterator) -> Any:
     return all_responses[0]
 
 
-def _first_write_result(write_results: list) -> Any:
+def _first_write_result(write_results: list) -> write.WriteResult:
     """Get first write result from list.
 
     For cases where ``len(write_results) > 1``, this assumes the writes

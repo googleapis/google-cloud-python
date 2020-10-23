@@ -46,6 +46,9 @@ from google.cloud.firestore_v1.services.firestore.transports import (
 )
 from typing import Any, Generator, Iterable, Tuple
 
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
+
 
 class Client(BaseClient):
     """Client for interacting with Google Cloud Firestore API.
@@ -209,7 +212,7 @@ class Client(BaseClient):
         transaction: Transaction = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Generator[Any, Any, None]:
+    ) -> Generator[DocumentSnapshot, Any, None]:
         """Retrieve a batch of documents.
 
         .. note::

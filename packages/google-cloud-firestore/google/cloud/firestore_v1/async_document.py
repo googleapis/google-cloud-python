@@ -25,6 +25,8 @@ from google.cloud.firestore_v1.base_document import (
 
 from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.types import write
+from google.protobuf import timestamp_pb2
 from typing import Any, AsyncGenerator, Coroutine, Iterable, Union
 
 
@@ -61,7 +63,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         document_data: dict,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Coroutine:
+    ) -> write.WriteResult:
         """Create the current document in the Firestore database.
 
         Args:
@@ -91,7 +93,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         merge: bool = False,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Coroutine:
+    ) -> write.WriteResult:
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -131,7 +133,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         option: _helpers.WriteOption = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Coroutine:
+    ) -> write.WriteResult:
         """Update an existing document in the Firestore database.
 
         By default, this method verifies that the document exists on the
@@ -287,7 +289,7 @@ class AsyncDocumentReference(BaseDocumentReference):
         option: _helpers.WriteOption = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Coroutine:
+    ) -> timestamp_pb2.Timestamp:
         """Delete the current document in the Firestore database.
 
         Args:

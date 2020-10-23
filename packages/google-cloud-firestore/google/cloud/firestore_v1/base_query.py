@@ -314,7 +314,7 @@ class BaseQuery(object):
         )
 
     @staticmethod
-    def _make_order(field_path, direction) -> Any:
+    def _make_order(field_path, direction) -> StructuredQuery.Order:
         """Helper for :meth:`order_by`."""
         return query.StructuredQuery.Order(
             field=query.StructuredQuery.FieldReference(field_path=field_path),
@@ -394,7 +394,7 @@ class BaseQuery(object):
             all_descendants=self._all_descendants,
         )
 
-    def limit_to_last(self, count: int):
+    def limit_to_last(self, count: int) -> "BaseQuery":
         """Limit a query to return the last `count` matching results.
         If the current query already has a `limit_to_last`
         set, this will override it.
@@ -651,7 +651,7 @@ class BaseQuery(object):
             document_fields_or_snapshot, before=False, start=False
         )
 
-    def _filters_pb(self) -> Any:
+    def _filters_pb(self) -> StructuredQuery.Filter:
         """Convert all the filters into a single generic Filter protobuf.
 
         This may be a lone field filter or unary filter, may be a composite
@@ -674,7 +674,7 @@ class BaseQuery(object):
             return query.StructuredQuery.Filter(composite_filter=composite_filter)
 
     @staticmethod
-    def _normalize_projection(projection) -> Any:
+    def _normalize_projection(projection) -> StructuredQuery.Projection:
         """Helper:  convert field paths to message."""
         if projection is not None:
 
@@ -836,7 +836,7 @@ class BaseQuery(object):
     def on_snapshot(self, callback) -> NoReturn:
         raise NotImplementedError
 
-    def _comparator(self, doc1, doc2) -> Any:
+    def _comparator(self, doc1, doc2) -> int:
         _orders = self._orders
 
         # Add implicit sorting by name, using the last specified direction.
@@ -883,7 +883,7 @@ class BaseQuery(object):
         return 0
 
 
-def _enum_from_op_string(op_string: str) -> Any:
+def _enum_from_op_string(op_string: str) -> int:
     """Convert a string representation of a binary operator to an enum.
 
     These enums come from the protobuf message definition
@@ -926,7 +926,7 @@ def _isnan(value) -> bool:
         return False
 
 
-def _enum_from_direction(direction: str) -> Any:
+def _enum_from_direction(direction: str) -> int:
     """Convert a string representation of a direction to an enum.
 
     Args:
@@ -954,7 +954,7 @@ def _enum_from_direction(direction: str) -> Any:
         raise ValueError(msg)
 
 
-def _filter_pb(field_or_unary) -> Any:
+def _filter_pb(field_or_unary) -> StructuredQuery.Filter:
     """Convert a specific protobuf filter to the generic filter type.
 
     Args:

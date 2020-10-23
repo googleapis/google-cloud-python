@@ -25,7 +25,9 @@ from google.cloud.firestore_v1.base_document import (
 
 from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.types import write
 from google.cloud.firestore_v1.watch import Watch
+from google.protobuf import timestamp_pb2
 from typing import Any, Callable, Generator, Iterable
 
 
@@ -62,7 +64,7 @@ class DocumentReference(BaseDocumentReference):
         document_data: dict,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Any:
+    ) -> write.WriteResult:
         """Create the current document in the Firestore database.
 
         Args:
@@ -92,7 +94,7 @@ class DocumentReference(BaseDocumentReference):
         merge: bool = False,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Any:
+    ) -> write.WriteResult:
         """Replace the current document in the Firestore database.
 
         A write ``option`` can be specified to indicate preconditions of
@@ -132,7 +134,7 @@ class DocumentReference(BaseDocumentReference):
         option: _helpers.WriteOption = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Any:
+    ) -> write.WriteResult:
         """Update an existing document in the Firestore database.
 
         By default, this method verifies that the document exists on the
@@ -288,7 +290,7 @@ class DocumentReference(BaseDocumentReference):
         option: _helpers.WriteOption = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Any:
+    ) -> timestamp_pb2.Timestamp:
         """Delete the current document in the Firestore database.
 
         Args:
@@ -339,7 +341,7 @@ class DocumentReference(BaseDocumentReference):
             transaction (Optional[:class:`~google.cloud.firestore_v1.transaction.Transaction`]):
                 An existing transaction that this reference
                 will be retrieved in.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (google.api_core.retry.Retry): Designation of what errors, if an                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      y,
                 should be retried.  Defaults to a system-specified policy.
             timeout (float): The timeout for this request.  Defaults to a
                 system-specified value.

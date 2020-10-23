@@ -153,7 +153,7 @@ class AsyncTransaction(async_batch.AsyncWriteBatch, BaseTransaction):
         references: list,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Coroutine:
+    ) -> AsyncGenerator[DocumentSnapshot, Any]:
         """Retrieves multiple documents from Firestore.
 
         Args:

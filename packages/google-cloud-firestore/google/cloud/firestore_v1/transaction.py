@@ -40,7 +40,11 @@ from google.cloud.firestore_v1 import batch
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.query import Query
-from typing import Any, Callable, Optional
+
+# Types needed only for Type Hints
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
+from google.cloud.firestore_v1.types import CommitResponse
+from typing import Any, Callable, Generator, Optional
 
 
 class Transaction(batch.WriteBatch, BaseTransaction):
@@ -145,7 +149,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         references: list,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Any:
+    ) -> Generator[DocumentSnapshot, Any, None]:
         """Retrieves multiple documents from Firestore.
 
         Args:
@@ -168,7 +172,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
         ref_or_query,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> Any:
+    ) -> Generator[DocumentSnapshot, Any, None]:
         """Retrieve a document or a query result from the database.
 
         Args:
@@ -326,7 +330,9 @@ def transactional(to_wrap: Callable) -> _Transactional:
     return _Transactional(to_wrap)
 
 
-def _commit_with_retry(client, write_pbs: list, transaction_id: bytes) -> Any:
+def _commit_with_retry(
+    client, write_pbs: list, transaction_id: bytes
+) -> CommitResponse:
     """Call ``Commit`` on the GAPIC client with retry / sleep.
 
     Retries the ``Commit`` RPC on Unavailable. Usually this RPC-level
@@ -371,7 +377,7 @@ def _commit_with_retry(client, write_pbs: list, transaction_id: bytes) -> Any:
 
 def _sleep(
     current_sleep: float, max_sleep: float = _MAX_SLEEP, multiplier: float = _MULTIPLIER
-) -> Any:
+) -> float:
     """Sleep and produce a new sleep time.
 
     .. _Exponential Backoff And Jitter: https://www.awsarchitectureblog.com/\

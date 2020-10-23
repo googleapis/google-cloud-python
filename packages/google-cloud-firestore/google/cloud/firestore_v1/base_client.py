@@ -166,7 +166,7 @@ class BaseClient(ClientWithProject):
 
         return self._firestore_api_internal
 
-    def _target_helper(self, client_class) -> Any:
+    def _target_helper(self, client_class) -> str:
         """Return the target (where the API is).
         Eg. "firestore.googleapis.com"
 
@@ -273,7 +273,7 @@ class BaseClient(ClientWithProject):
         return joined_path.split(_helpers.DOCUMENT_PATH_DELIMITER)
 
     @staticmethod
-    def field_path(*field_names: Tuple[str]) -> Any:
+    def field_path(*field_names: Tuple[str]) -> str:
         """Create a **field path** from a list of nested field names.
 
         A **field path** is a ``.``-delimited concatenation of the field
@@ -438,7 +438,7 @@ def _reference_info(references: list) -> Tuple[list, dict]:
     return document_paths, reference_map
 
 
-def _get_reference(document_path: str, reference_map: dict) -> Any:
+def _get_reference(document_path: str, reference_map: dict) -> BaseDocumentReference:
     """Get a document reference from a dictionary.
 
     This just wraps a simple dictionary look-up with a helpful error that is
@@ -536,7 +536,18 @@ def _get_doc_mask(field_paths: Iterable[str]) -> Optional[types.common.DocumentM
         return types.DocumentMask(field_paths=field_paths)
 
 
-def _path_helper(path: tuple) -> Any:
+def _item_to_collection_ref(iterator, item: str) -> BaseCollectionReference:
+    """Convert collection ID to collection ref.
+
+    Args:
+        iterator (google.api_core.page_iterator.GRPCIterator):
+            iterator response
+        item (str): ID of the collection
+    """
+    return iterator.client.collection(item)
+
+
+def _path_helper(path: tuple) -> Tuple[str]:
     """Standardize path into a tuple of path segments.
 
     Args:
