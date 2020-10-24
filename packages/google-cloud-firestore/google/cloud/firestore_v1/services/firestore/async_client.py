@@ -833,7 +833,17 @@ class FirestoreAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.partition_query,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
+                    exceptions.InternalServerError,
+                    exceptions.ServiceUnavailable,
+                ),
+            ),
+            default_timeout=300.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

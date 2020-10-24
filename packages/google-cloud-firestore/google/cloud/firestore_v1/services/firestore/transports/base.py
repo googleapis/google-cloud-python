@@ -238,7 +238,19 @@ class FirestoreTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.partition_query: gapic_v1.method.wrap_method(
-                self.partition_query, default_timeout=None, client_info=client_info,
+                self.partition_query,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded,
+                        exceptions.InternalServerError,
+                        exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.write: gapic_v1.method.wrap_method(
                 self.write, default_timeout=86400.0, client_info=client_info,
