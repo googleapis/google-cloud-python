@@ -30,6 +30,8 @@ exclude_lines =
     def __repr__
     # Ignore abstract methods
     raise NotImplementedError
+    # Ignore setuptools-less fallback
+    except pkg_resources.DistributionNotFound:
 omit =
   */gapic/*.py
   */proto/*.py
