@@ -3,22 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:danoscarmike/python-translate",
-        "sha": "2a80f87c6ff441fb81161db8cda1049aa6851cc4"
+        "remote": "https://github.com/googleapis/python-translate.git",
+        "sha": "2bc6296122e54bc93804d37411ff7554e2808626"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
+        "sha": "f68649c5f26bcff6817c6d21e90dac0fc71fef8e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
+        "sha": "f68649c5f26bcff6817c6d21e90dac0fc71fef8e"
       }
     }
   ],

@@ -15,6 +15,7 @@
 
 
 import os
+import pytest
 import unittest
 
 from google.cloud import translate_v2
@@ -32,6 +33,7 @@ class Config(object):
     CLIENT_V3 = None
     location = "global"
     project_id = os.environ["PROJECT_ID"]
+    use_mtls = os.environ.get("GOOGLE_API_USE_MTLS_ENDPOINT", "never")
 
 
 def setUpModule():
@@ -39,7 +41,15 @@ def setUpModule():
     Config.CLIENT_V3 = translate.TranslationServiceClient()
 
 
+# Only v3/v3beta1 clients have mTLS support, so we need to skip all the
+# v2 client tests for mTLS testing.
+skip_for_mtls = pytest.mark.skipif(
+    Config.use_mtls == "always", reason="Skip the v2 client test for mTLS testing"
+)
+
+
 class TestTranslate(unittest.TestCase):
+    @skip_for_mtls
     def test_get_languages(self):
         result = Config.CLIENT_V2.get_languages()
         # There are **many** more than 10 languages.
@@ -51,6 +61,7 @@ class TestTranslate(unittest.TestCase):
         self.assertEqual(lang_map["lv"], "Latvian")
         self.assertEqual(lang_map["zu"], "Zulu")
 
+    @skip_for_mtls
     def test_detect_language(self):
         values = ["takoy", "fa\xe7ade", "s'il vous plait"]
         detections = Config.CLIENT_V2.detect_language(values)
@@ -59,6 +70,7 @@ class TestTranslate(unittest.TestCase):
         self.assertEqual(detections[1]["language"], "fr")
         self.assertEqual(detections[2]["language"], "fr")
 
+    @skip_for_mtls
     def test_translate(self):
         values = ["petnaest", "dek kvin", "Me llamo Jeff", "My name is Jeff"]
         translations = Config.CLIENT_V2.translate(
