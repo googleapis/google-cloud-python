@@ -81,7 +81,7 @@ setuptools.setup(
     python_requires=">=3.6",
     scripts=[
         "scripts/fixup_firestore_v1_keywords.py",
-        "scripts/fixup_admin_v1_keywords.py",
+        "scripts/fixup_firestore_admin_v1_keywords.py",
     ],
     include_package_data=True,
     zip_safe=False,

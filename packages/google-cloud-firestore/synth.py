@@ -173,6 +173,24 @@ s.replace(
     """"mock", "pytest", "pytest-asyncio", "google-cloud-testutils",""",
 )
 
+
+# Add message for missing 'libcst' dependency
+s.replace(
+    "scripts/fixup*.py",
+    """\
+import libcst as cst
+""",
+    """\
+
+try:
+    import libcst as cst
+except ImportError:
+    raise ImportError('Run `python -m pip install "libcst >= 0.2.5"` to install libcst.')
+
+
+""",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 s.replace(
