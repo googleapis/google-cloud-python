@@ -625,7 +625,6 @@ class Client(ClientWithProject):
     def _call_api(
         self, retry, span_name=None, span_attributes=None, job_ref=None, **kwargs
     ):
-
         call = functools.partial(self._connection.api_request, **kwargs)
         if retry:
             call = retry(call)

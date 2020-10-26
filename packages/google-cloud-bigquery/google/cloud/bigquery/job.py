@@ -529,9 +529,8 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             Optional[str]:
                 the state (None until set from the server).
         """
-        status = self._properties.get("status")
-        if status is not None:
-            return status.get("state")
+        status = self._properties.get("status", {})
+        return status.get("state")
 
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
@@ -588,7 +587,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
 
     def to_api_repr(self):
         """Generate a resource for the job."""
-        raise NotImplementedError("Abstract")
+        return copy.deepcopy(self._properties)
 
     _build_resource = to_api_repr  # backward-compatibility alias
 
