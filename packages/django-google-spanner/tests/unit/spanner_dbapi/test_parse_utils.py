@@ -4,33 +4,19 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-import datetime
-import decimal
-from unittest import TestCase
+import unittest
 
 from google.cloud.spanner_v1 import param_types
-from google.cloud.spanner_dbapi.exceptions import Error, ProgrammingError
-from google.cloud.spanner_dbapi.parse_utils import (
-    STMT_DDL,
-    STMT_INSERT,
-    STMT_NON_UPDATING,
-    STMT_UPDATING,
-    DateStr,
-    TimestampStr,
-    cast_for_spanner,
-    classify_stmt,
-    ensure_where_clause,
-    escape_name,
-    get_param_types,
-    parse_insert,
-    rows_for_insert_or_update,
-    sql_pyformat_args_to_spanner,
-)
-from google.cloud.spanner_dbapi.utils import backtick_unicode
 
 
-class ParseUtilsTests(TestCase):
+class TestParseUtils(unittest.TestCase):
     def test_classify_stmt(self):
+        from google.cloud.spanner_dbapi.parse_utils import STMT_DDL
+        from google.cloud.spanner_dbapi.parse_utils import STMT_INSERT
+        from google.cloud.spanner_dbapi.parse_utils import STMT_NON_UPDATING
+        from google.cloud.spanner_dbapi.parse_utils import STMT_UPDATING
+        from google.cloud.spanner_dbapi.parse_utils import classify_stmt
+
         cases = (
             ("SELECT 1", STMT_NON_UPDATING),
             ("SELECT s.SongName FROM Songs AS s", STMT_NON_UPDATING),
@@ -61,6 +47,12 @@ class ParseUtilsTests(TestCase):
             self.assertEqual(classify_stmt(query), want_class)
 
     def test_parse_insert(self):
+        from google.cloud.spanner_dbapi.parse_utils import parse_insert
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+
+        with self.assertRaises(ProgrammingError):
+            parse_insert("bad-sql", None)
+
         cases = [
             (
                 "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)",
@@ -173,6 +165,10 @@ class ParseUtilsTests(TestCase):
             ),
         ]
 
+        sql = "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)"
+        with self.assertRaises(ProgrammingError):
+            parse_insert(sql, None)
+
         for sql, params, want in cases:
             with self.subTest(sql=sql):
                 got = parse_insert(sql, params)
@@ -181,6 +177,9 @@ class ParseUtilsTests(TestCase):
                 )
 
     def test_parse_insert_invalid(self):
+        from google.cloud.spanner_dbapi import exceptions
+        from google.cloud.spanner_dbapi.parse_utils import parse_insert
+
         cases = [
             (
                 "INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s), (%s, %s, %s)",
@@ -202,12 +201,23 @@ class ParseUtilsTests(TestCase):
         for sql, params, wantException in cases:
             with self.subTest(sql=sql):
                 self.assertRaisesRegex(
-                    ProgrammingError,
+                    exceptions.ProgrammingError,
                     wantException,
                     lambda: parse_insert(sql, params),
                 )
 
     def test_rows_for_insert_or_update(self):
+        from google.cloud.spanner_dbapi.parse_utils import (
+            rows_for_insert_or_update,
+        )
+        from google.cloud.spanner_dbapi.exceptions import Error
+
+        with self.assertRaises(Error):
+            rows_for_insert_or_update([0], [[]])
+
+        with self.assertRaises(Error):
+            rows_for_insert_or_update([0], None, ["0", "%s"])
+
         cases = [
             (
                 ["id", "app", "name"],
@@ -255,6 +265,12 @@ class ParseUtilsTests(TestCase):
                 self.assertEqual(got, want)
 
     def test_sql_pyformat_args_to_spanner(self):
+        import decimal
+
+        from google.cloud.spanner_dbapi.parse_utils import (
+            sql_pyformat_args_to_spanner,
+        )
+
         cases = [
             (
                 (
@@ -323,6 +339,11 @@ class ParseUtilsTests(TestCase):
                 )
 
     def test_sql_pyformat_args_to_spanner_invalid(self):
+        from google.cloud.spanner_dbapi import exceptions
+        from google.cloud.spanner_dbapi.parse_utils import (
+            sql_pyformat_args_to_spanner,
+        )
+
         cases = [
             (
                 "SELECT * from t WHERE f1=%s, f2 = %s, f3=%s, extra=%s",
@@ -332,12 +353,28 @@ class ParseUtilsTests(TestCase):
         for sql, params in cases:
             with self.subTest(sql=sql):
                 self.assertRaisesRegex(
-                    Error,
+                    exceptions.Error,
                     "pyformat_args mismatch",
                     lambda: sql_pyformat_args_to_spanner(sql, params),
                 )
 
+    def test_cast_for_spanner(self):
+        import decimal
+
+        from google.cloud.spanner_dbapi.parse_utils import cast_for_spanner
+
+        value = decimal.Decimal(3)
+        self.assertEqual(cast_for_spanner(value), float(3.0))
+        self.assertEqual(cast_for_spanner(5), 5)
+        self.assertEqual(cast_for_spanner("string"), "string")
+
     def test_get_param_types(self):
+        import datetime
+
+        from google.cloud.spanner_dbapi.parse_utils import DateStr
+        from google.cloud.spanner_dbapi.parse_utils import TimestampStr
+        from google.cloud.spanner_dbapi.parse_utils import get_param_types
+
         params = {
             "a1": 10,
             "b1": "string",
@@ -365,15 +402,13 @@ class ParseUtilsTests(TestCase):
         self.assertEqual(got_types, want_types)
 
     def test_get_param_types_none(self):
+        from google.cloud.spanner_dbapi.parse_utils import get_param_types
+
         self.assertEqual(get_param_types(None), None)
 
-    def test_cast_for_spanner(self):
-        value = decimal.Decimal(3)
-        self.assertEqual(cast_for_spanner(value), float(3.0))
-        self.assertEqual(cast_for_spanner(5), 5)
-        self.assertEqual(cast_for_spanner("string"), "string")
-
     def test_ensure_where_clause(self):
+        from google.cloud.spanner_dbapi.parse_utils import ensure_where_clause
+
         cases = [
             (
                 "UPDATE a SET a.b=10 FROM articles a JOIN d c ON a.ai = c.ai WHERE c.ci = 1",
@@ -404,6 +439,8 @@ class ParseUtilsTests(TestCase):
                 self.assertEqual(got, want)
 
     def test_escape_name(self):
+        from google.cloud.spanner_dbapi.parse_utils import escape_name
+
         cases = (
             ("SELECT", "`SELECT`"),
             ("dashed-value", "`dashed-value`"),
@@ -414,17 +451,4 @@ class ParseUtilsTests(TestCase):
         for name, want in cases:
             with self.subTest(name=name):
                 got = escape_name(name)
-                self.assertEqual(got, want)
-
-    def test_backtick_unicode(self):
-        cases = [
-            ("SELECT (1) as foo WHERE 1=1", "SELECT (1) as foo WHERE 1=1"),
-            ("SELECT (1) as föö", "SELECT (1) as `föö`"),
-            ("SELECT (1) as `föö`", "SELECT (1) as `föö`"),
-            ("SELECT (1) as `föö` `umläut", "SELECT (1) as `föö` `umläut"),
-            ("SELECT (1) as `föö", "SELECT (1) as `föö"),
-        ]
-        for sql, want in cases:
-            with self.subTest(sql=sql):
-                got = backtick_unicode(sql)
                 self.assertEqual(got, want)

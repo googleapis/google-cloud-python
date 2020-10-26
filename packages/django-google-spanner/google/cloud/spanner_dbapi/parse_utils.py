@@ -262,11 +262,18 @@ def parse_insert(insert_sql, params):
     if not params:
         # Case a) perhaps?
         # Check if any %s exists.
-        pyformat_str_count = after_values_sql.count("%s")
-        if pyformat_str_count > 0:
-            raise ProgrammingError(
-                'no params yet there are %d "%s" tokens' % pyformat_str_count
-            )
+
+        # pyformat_str_count = after_values_sql.count("%s")
+        # if pyformat_str_count > 0:
+        #     raise ProgrammingError(
+        #         'no params yet there are %d "%%s" tokens' % pyformat_str_count
+        #     )
+        for item in after_values_sql:
+            if item.count("%s") > 0:
+                raise ProgrammingError(
+                    'no params yet there are %d "%%s" tokens'
+                    % item.count("%s")
+                )
 
         insert_sql = sanitize_literals_for_upload(insert_sql)
         # Confirmed case of:

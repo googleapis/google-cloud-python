@@ -4,23 +4,19 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from unittest import TestCase
+import unittest
 
-from google.cloud.spanner_dbapi.exceptions import ProgrammingError
-from google.cloud.spanner_dbapi.parser import (
-    ARGS,
-    FUNC,
-    VALUES,
-    a_args,
-    expect,
-    func,
-    pyfmt_str,
-    values,
-)
+from unittest import mock
 
 
-class ParserTests(TestCase):
+class TestParser(unittest.TestCase):
     def test_func(self):
+        from google.cloud.spanner_dbapi.parser import FUNC
+        from google.cloud.spanner_dbapi.parser import a_args
+        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import func
+        from google.cloud.spanner_dbapi.parser import pyfmt_str
+
         cases = [
             ("_91())", ")", func("_91", a_args([]))),
             ("_a()", "", func("_a", a_args([]))),
@@ -61,6 +57,10 @@ class ParserTests(TestCase):
                 self.assertEqual(got_unconsumed, want_unconsumed)
 
     def test_func_fail(self):
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+        from google.cloud.spanner_dbapi.parser import FUNC
+        from google.cloud.spanner_dbapi.parser import expect
+
         cases = [
             ("", "FUNC: `` does not begin with `a-zA-z` nor a `_`"),
             ("91", "FUNC: `91` does not begin with `a-zA-z` nor a `_`"),
@@ -76,7 +76,30 @@ class ParserTests(TestCase):
                     ProgrammingError, wantException, lambda: expect(text, FUNC)
                 )
 
+    def test_func_eq(self):
+        from google.cloud.spanner_dbapi.parser import func
+
+        func1 = func("func1", None)
+        func2 = func("func2", None)
+        self.assertFalse(func1 == object)
+        self.assertFalse(func1 == func2)
+        func2.name = func1.name
+        func1.args = 0
+        func2.args = "0"
+        self.assertFalse(func1 == func2)
+        func1.args = [0]
+        func2.args = [0, 0]
+        self.assertFalse(func1 == func2)
+        func2.args = func1.args
+        self.assertTrue(func1 == func2)
+
     def test_a_args(self):
+        from google.cloud.spanner_dbapi.parser import ARGS
+        from google.cloud.spanner_dbapi.parser import a_args
+        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import func
+        from google.cloud.spanner_dbapi.parser import pyfmt_str
+
         cases = [
             ("()", "", a_args([])),
             ("(%s)", "", a_args([pyfmt_str])),
@@ -102,6 +125,10 @@ class ParserTests(TestCase):
                 self.assertEqual(got_unconsumed, want_unconsumed)
 
     def test_a_args_fail(self):
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+        from google.cloud.spanner_dbapi.parser import ARGS
+        from google.cloud.spanner_dbapi.parser import expect
+
         cases = [
             ("", "ARGS: supposed to begin with `\\(`"),
             ("(", "ARGS: supposed to end with `\\)`"),
@@ -115,7 +142,80 @@ class ParserTests(TestCase):
                     ProgrammingError, wantException, lambda: expect(text, ARGS)
                 )
 
+    def test_a_args_has_expr(self):
+        from google.cloud.spanner_dbapi.parser import a_args
+
+        self.assertFalse(a_args([]).has_expr())
+        self.assertTrue(a_args([[0]]).has_expr())
+
+    def test_a_args_eq(self):
+        from google.cloud.spanner_dbapi.parser import a_args
+
+        a1 = a_args([0])
+        self.assertFalse(a1 == object())
+        a2 = a_args([0, 0])
+        self.assertFalse(a1 == a2)
+        a1.argv = [0, 1]
+        self.assertFalse(a1 == a2)
+        a2.argv = [0, 1]
+        self.assertTrue(a1 == a2)
+
+    def test_a_args_homogeneous(self):
+        from google.cloud.spanner_dbapi.parser import a_args
+        from google.cloud.spanner_dbapi.parser import terminal
+
+        a_obj = a_args([a_args([terminal(10 ** i)]) for i in range(10)])
+        self.assertTrue(a_obj.homogenous())
+
+        a_obj = a_args([a_args([[object()]]) for _ in range(10)])
+        self.assertFalse(a_obj.homogenous())
+
+    def test_a_args__is_equal_length(self):
+        from google.cloud.spanner_dbapi.parser import a_args
+
+        a_obj = a_args([])
+        self.assertTrue(a_obj._is_equal_length())
+
+    def test_values(self):
+        from google.cloud.spanner_dbapi.parser import a_args
+        from google.cloud.spanner_dbapi.parser import terminal
+        from google.cloud.spanner_dbapi.parser import values
+
+        a_obj = a_args([a_args([terminal(10 ** i)]) for i in range(10)])
+        self.assertEqual(str(values(a_obj)), "VALUES%s" % str(a_obj))
+
+    def test_expect(self):
+        from google.cloud.spanner_dbapi.parser import ARGS
+        from google.cloud.spanner_dbapi.parser import EXPR
+        from google.cloud.spanner_dbapi.parser import FUNC
+        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import pyfmt_str
+        from google.cloud.spanner_dbapi import exceptions
+
+        with self.assertRaises(exceptions.ProgrammingError):
+            expect(word="", token=ARGS)
+        with self.assertRaises(exceptions.ProgrammingError):
+            expect(word="ABC", token=ARGS)
+        with self.assertRaises(exceptions.ProgrammingError):
+            expect(word="(", token=ARGS)
+
+        expected = "", pyfmt_str
+        self.assertEqual(expect("%s", EXPR), expected)
+
+        expected = expect("function()", FUNC)
+        self.assertEqual(expect("function()", EXPR), expected)
+
+        with self.assertRaises(exceptions.ProgrammingError):
+            expect(word="", token="ABC")
+
     def test_expect_values(self):
+        from google.cloud.spanner_dbapi.parser import VALUES
+        from google.cloud.spanner_dbapi.parser import a_args
+        from google.cloud.spanner_dbapi.parser import expect
+        from google.cloud.spanner_dbapi.parser import func
+        from google.cloud.spanner_dbapi.parser import pyfmt_str
+        from google.cloud.spanner_dbapi.parser import values
+
         cases = [
             ("VALUES ()", "", values([a_args([])])),
             ("VALUES", "", values([])),
@@ -156,6 +256,10 @@ class ParserTests(TestCase):
                 self.assertEqual(got_unconsumed, want_unconsumed)
 
     def test_expect_values_fail(self):
+        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+        from google.cloud.spanner_dbapi.parser import VALUES
+        from google.cloud.spanner_dbapi.parser import expect
+
         cases = [
             ("", "VALUES: `` does not start with VALUES"),
             (
@@ -172,3 +276,13 @@ class ParserTests(TestCase):
                     wantException,
                     lambda: expect(text, VALUES),
                 )
+
+    def test_as_values(self):
+        from google.cloud.spanner_dbapi.parser import as_values
+
+        values = (1, 2)
+        with mock.patch(
+            "google.cloud.spanner_dbapi.parser.parse_values",
+            return_value=values,
+        ):
+            self.assertEqual(as_values(None), values[1])

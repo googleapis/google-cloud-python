@@ -6,37 +6,39 @@
 
 """Connection-based DB API for Cloud Spanner."""
 
-from google.cloud import spanner_v1
+from google.cloud.spanner_dbapi.connection import Connection
+from google.cloud.spanner_dbapi.connection import connect
 
-from .connection import Connection
-from .exceptions import (
-    DatabaseError,
-    DataError,
-    Error,
-    IntegrityError,
-    InterfaceError,
-    InternalError,
-    NotSupportedError,
-    OperationalError,
-    ProgrammingError,
-    Warning,
-)
-from .parse_utils import get_param_types
-from .types import (
-    BINARY,
-    DATETIME,
-    NUMBER,
-    ROWID,
-    STRING,
-    Binary,
-    Date,
-    DateFromTicks,
-    Time,
-    TimeFromTicks,
-    Timestamp,
-    TimestampFromTicks,
-)
-from .version import google_client_info
+from google.cloud.spanner_dbapi.cursor import Cursor
+
+from google.cloud.spanner_dbapi.exceptions import DatabaseError
+from google.cloud.spanner_dbapi.exceptions import DataError
+from google.cloud.spanner_dbapi.exceptions import Error
+from google.cloud.spanner_dbapi.exceptions import IntegrityError
+from google.cloud.spanner_dbapi.exceptions import InterfaceError
+from google.cloud.spanner_dbapi.exceptions import InternalError
+from google.cloud.spanner_dbapi.exceptions import NotSupportedError
+from google.cloud.spanner_dbapi.exceptions import OperationalError
+from google.cloud.spanner_dbapi.exceptions import ProgrammingError
+from google.cloud.spanner_dbapi.exceptions import Warning
+
+from google.cloud.spanner_dbapi.parse_utils import get_param_types
+
+from google.cloud.spanner_dbapi.types import BINARY
+from google.cloud.spanner_dbapi.types import DATETIME
+from google.cloud.spanner_dbapi.types import NUMBER
+from google.cloud.spanner_dbapi.types import ROWID
+from google.cloud.spanner_dbapi.types import STRING
+from google.cloud.spanner_dbapi.types import Binary
+from google.cloud.spanner_dbapi.types import Date
+from google.cloud.spanner_dbapi.types import DateFromTicks
+from google.cloud.spanner_dbapi.types import Time
+from google.cloud.spanner_dbapi.types import TimeFromTicks
+from google.cloud.spanner_dbapi.types import Timestamp
+from google.cloud.spanner_dbapi.types import TimestampStr
+from google.cloud.spanner_dbapi.types import TimestampFromTicks
+
+from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT
 
 apilevel = "2.0"  # supports DP-API 2.0 level.
 paramstyle = "format"  # ANSI C printf format codes, e.g. ...WHERE name=%s.
@@ -48,66 +50,10 @@ paramstyle = "format"  # ANSI C printf format codes, e.g. ...WHERE name=%s.
 threadsafety = 1
 
 
-def connect(
-    instance_id,
-    database_id,
-    project=None,
-    credentials=None,
-    pool=None,
-    user_agent=None,
-):
-    """
-    Create a connection to Cloud Spanner database.
-
-    :type instance_id: :class:`str`
-    :param instance_id: ID of the instance to connect to.
-
-    :type database_id: :class:`str`
-    :param database_id: The name of the database to connect to.
-
-    :type project: :class:`str`
-    :param project: (Optional) The ID of the project which owns the
-                    instances, tables and data. If not provided, will
-                    attempt to determine from the environment.
-
-    :type credentials: :class:`google.auth.credentials.Credentials`
-    :param credentials: (Optional) The authorization credentials to attach to requests.
-                        These credentials identify this application to the service.
-                        If none are specified, the client will attempt to ascertain
-                        the credentials from the environment.
-
-    :type pool: Concrete subclass of
-                :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`.
-    :param pool: (Optional). Session pool to be used by database.
-
-    :type user_agent: :class:`str`
-    :param user_agent: (Optional) User agent to be used with this connection requests.
-
-    :rtype: :class:`google.cloud.spanner_dbapi.connection.Connection`
-    :returns: Connection object associated with the given Cloud Spanner resource.
-
-    :raises: :class:`ValueError` in case of given instance/database
-             doesn't exist.
-    """
-    client = spanner_v1.Client(
-        project=project,
-        credentials=credentials,
-        client_info=google_client_info(user_agent),
-    )
-
-    instance = client.instance(instance_id)
-    if not instance.exists():
-        raise ValueError("instance '%s' does not exist." % instance_id)
-
-    database = instance.database(database_id, pool=pool)
-    if not database.exists():
-        raise ValueError("database '%s' does not exist." % database_id)
-
-    return Connection(instance, database)
-
-
 __all__ = [
     "Connection",
+    "connect",
+    "Cursor",
     "DatabaseError",
     "DataError",
     "Error",
@@ -120,7 +66,6 @@ __all__ = [
     "Warning",
     "DEFAULT_USER_AGENT",
     "apilevel",
-    "connect",
     "paramstyle",
     "threadsafety",
     "get_param_types",
