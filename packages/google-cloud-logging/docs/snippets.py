@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Testable usage examples for Stackdriver Logging API wrapper
+"""Testable usage examples for Cloud Logging API wrapper
 
 Each example function takes a ``client`` argument (which must be an instance
 of :class:`google.cloud.logging.client.Client`) and uses it to perform a task

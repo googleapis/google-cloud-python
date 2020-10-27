@@ -336,7 +336,7 @@ logging handler can use different transports. The default is
     direct API call on each logging statement to write the entry.
 
 
-.. _Google Container Engine: https://cloud.google.com/container-engine/
+.. _Google Kubernetes Engine: https://cloud.google.com/kubernetes-engine
 
 fluentd logging handlers
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -347,7 +347,7 @@ which writes directly to the API, two other handlers are provided.
 recommended when running on the Google App Engine Flexible vanilla runtimes
 (i.e. your app.yaml contains ``runtime: python``), and
 :class:`~google.cloud.logging.handlers.container_engine.ContainerEngineHandler`
-, which is recommended when running on `Google Container Engine`_ with the
+, which is recommended when running on `Google Kubernetes Engine`_ with the
 Cloud Logging plugin enabled.
 
 :meth:`~google.cloud.logging.client.Client.get_default_handler` and
@@ -356,6 +356,6 @@ the environment to automatically detect whether the code is running in
 these platforms and use the appropriate handler.
 
 In both cases, the fluentd agent is configured to automatically parse log files
-in an expected format and forward them to Cloud logging. The handlers
+in an expected format and forward them to Cloud Logging. The handlers
 provided help set the correct metadata such as log level so that logs can be
 filtered accordingly.

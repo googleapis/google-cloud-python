@@ -3,5 +3,16 @@ v2
 .. toctree::
    :maxdepth: 2
 
-   gapic/v2/api
-   gapic/v2/types
+   usage
+   client
+   logger
+   entries
+   metric
+   sink
+   stdlib-usage
+   handlers
+   handlers-app-engine
+   handlers-container-engine
+   transports-sync
+   transports-thread
+   transports-base

@@ -1,5 +1,5 @@
-Google Container Engine Log Handler
-===================================
+Google Kubernetes Engine Log Handler
+====================================
 
 .. automodule:: google.cloud.logging.handlers.container_engine
   :members:

@@ -5,7 +5,6 @@ Documentation
 .. toctree::
    :maxdepth: 3
 
-   v1
    v2
 
 Changelog

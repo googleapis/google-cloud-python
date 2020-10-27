@@ -34,7 +34,8 @@ s.move(library / "google/cloud/logging_v2/proto", "google/cloud/logging_v2/proto
 
 s.move(library / "google/cloud/logging_v2/gapic")
 s.move(library / "tests/unit/gapic/v2")
-s.move(library / "docs/gapic/v2")
+# Don't include gapic library docs. Users should use the hand-written layer instead
+# s.move(library / "docs/gapic/v2")
 
 # ----------------------------------------------------------------------------
 # Add templated files
