@@ -12,18 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import json
 import unittest
 
 import mock
-import six
-
-try:
-    from webapp2 import RequestHandler
-except SyntaxError:
-    # webapp2 has not been ported to python3, so it will give a syntax
-    # error if we try.  We'll just skip the webapp2 tests in that case.
-    RequestHandler = object
 
 
 class Test_get_trace_id_from_flask(unittest.TestCase):
@@ -64,50 +55,6 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
 
         with context:
             trace_id = self._call_fut()
-
-        self.assertEqual(trace_id, expected_trace_id)
-
-
-class _GetTraceId(RequestHandler):
-    def get(self):
-        from google.cloud.logging.handlers import _helpers
-
-        trace_id = _helpers.get_trace_id_from_webapp2()
-        self.response.content_type = "application/json"
-        self.response.out.write(json.dumps(trace_id))
-
-
-@unittest.skipIf(not six.PY2, "webapp2 is Python 2 only")
-class Test_get_trace_id_from_webapp2(unittest.TestCase):
-    @staticmethod
-    def create_app():
-        import webapp2
-
-        app = webapp2.WSGIApplication([("/", _GetTraceId)])
-
-        return app
-
-    def test_no_context_header(self):
-        import webob
-
-        req = webob.BaseRequest.blank("/")
-        response = req.get_response(self.create_app())
-        trace_id = json.loads(response.body)
-
-        self.assertEqual(None, trace_id)
-
-    def test_valid_context_header(self):
-        import webob
-
-        webapp2_trace_header = "X-Cloud-Trace-Context"
-        expected_trace_id = "testtraceidwebapp2"
-        webapp2_trace_id = expected_trace_id + "/testspanid"
-
-        req = webob.BaseRequest.blank(
-            "/", headers={webapp2_trace_header: webapp2_trace_id}
-        )
-        response = req.get_response(self.create_app())
-        trace_id = json.loads(response.body)
 
         self.assertEqual(trace_id, expected_trace_id)
 

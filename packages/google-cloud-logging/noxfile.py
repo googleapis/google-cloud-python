@@ -26,8 +26,8 @@ UNIT_TEST_DEPS = (
     'pytest',
     'pytest-cov',
     'flask',
-    'webapp2',
     'webob',
+    'django'
 )
 
 
@@ -71,13 +71,12 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
-def default(session, django_dep=('django',)):
+def default(session):
     """Default unit test session.
     """
 
     # Install all test dependencies, then install this package in-place.
     deps = UNIT_TEST_DEPS
-    deps += django_dep
 
     session.install(*deps)
     session.install('-e', '.')
@@ -100,18 +99,7 @@ def default(session, django_dep=('django',)):
 @nox.session(python=['3.5', '3.6', '3.7'])
 def unit(session):
     """Run the unit test suite."""
-
-    # Testing multiple version of django
-    # See https://www.djangoproject.com/download/ for supported version
-    django_deps_27 = [
-        ('django==1.8.19',),
-        ('django >= 1.11.0, < 2.0.0dev',),
-    ]
-
-    if session.virtualenv.interpreter == '2.7':
-        [default(session, django_dep=django) for django in django_deps_27]
-    else:
-        default(session)
+    default(session)
 
 
 @nox.session(python=['3.6'])

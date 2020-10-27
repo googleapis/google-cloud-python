@@ -34,11 +34,8 @@ def _get_django_request():
 
 
 try:
-    # Django >= 1.10
     from django.utils.deprecation import MiddlewareMixin
-except ImportError:
-    # Not required for Django <= 1.9, see:
-    # https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-pre-django-1-10-style-middleware
+except ImportError:  # pragma: NO COVER
     MiddlewareMixin = object
 
 
