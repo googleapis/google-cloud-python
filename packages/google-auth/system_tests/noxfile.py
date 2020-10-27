@@ -168,7 +168,7 @@ def configure_cloud_sdk(session, application_default_credentials, project=False)
 
 # Test sesssions
 
-TEST_DEPENDENCIES_ASYNC = ["aiohttp", "pytest-asyncio", "nest-asyncio"]
+TEST_DEPENDENCIES_ASYNC = ["aiohttp < 3.7.0dev", "pytest-asyncio", "nest-asyncio"]
 TEST_DEPENDENCIES_SYNC = ["pytest", "requests"]
 PYTHON_VERSIONS_ASYNC = ["3.7"]
 PYTHON_VERSIONS_SYNC = ["2.7", "3.7"]

@@ -29,7 +29,7 @@ DEPENDENCIES = (
     "six>=1.9.0",
 )
 
-extras = {"aiohttp": "aiohttp >= 3.6.2, < 4.0.0dev; python_version>='3.6'"}
+extras = {"aiohttp": "aiohttp >= 3.6.2, < 3.7.0dev; python_version>='3.6'"}
 
 with io.open("README.rst", "r") as fh:
     long_description = fh.read()
