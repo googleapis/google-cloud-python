@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-automl/compare/v2.0.0...v2.1.0) (2020-10-27)
+
+
+### Features
+
+* add text extraction health care option in create model ([#86](https://www.github.com/googleapis/python-automl/issues/86)) ([0233804](https://www.github.com/googleapis/python-automl/commit/0233804885846295508a5fc98929dba598172244))
+
+### Bug Fixes
+* **v1beta1**: Rename message attributes that conflict with built-ins. `type` ->`type_`, `min` -> `min_`, `max` -> `max_`
+
+### Documentation
+
+* fix supported Python versions in README ([#70](https://www.github.com/googleapis/python-automl/issues/70)) ([fc0ca41](https://www.github.com/googleapis/python-automl/commit/fc0ca41594c6aa86ffe32dee7834d1526cad0aab))
+
 ## [2.0.0](https://www.github.com/googleapis/python-automl/compare/v1.0.1...v2.0.0) (2020-09-16)
 
 
