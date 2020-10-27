@@ -5,6 +5,45 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.0.0-dev2](https://www.github.com/googleapis/python-firestore/compare/v1.9.0...v2.0.0-dev2) (2020-10-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove v1beta1 surface for v2 (#96)
+* Begin using new microgenerator for v2 firestore (#91)
+* from `firestore-0.30.0`: revert to merge not being an option;
+
+### Features
+
+* add retry/timeout to manual surface ([#222](https://www.github.com/googleapis/python-firestore/issues/222)) ([db5f286](https://www.github.com/googleapis/python-firestore/commit/db5f286772592460b2bf02df25a121994889585d)), closes [#221](https://www.github.com/googleapis/python-firestore/issues/221)
+* add support for not-in and not-eq query operators ([#202](https://www.github.com/googleapis/python-firestore/issues/202)) ([1d09f21](https://www.github.com/googleapis/python-firestore/commit/1d09f21f6c8cb7f69f0e30a960418f0f6899aa01))
+* add type hints for method params ([#182](https://www.github.com/googleapis/python-firestore/issues/182)) ([9b6c2f3](https://www.github.com/googleapis/python-firestore/commit/9b6c2f33351c65901ea648e4407b2817e5e70957))
+* improve type information ([#176](https://www.github.com/googleapis/python-firestore/issues/176)) ([30bb3fb](https://www.github.com/googleapis/python-firestore/commit/30bb3fb5c36648d3b8acf76349a5726d7a5f135d))
+* partition queries ([#210](https://www.github.com/googleapis/python-firestore/issues/210)) ([4f75a75](https://www.github.com/googleapis/python-firestore/commit/4f75a75170be1bbb310b9e4741f4862d694b5bf5))
+* use 'update_transforms' ([#219](https://www.github.com/googleapis/python-firestore/issues/219)) ([c122e41](https://www.github.com/googleapis/python-firestore/commit/c122e4186808468a2ff82e9cc54b501809519859)), closes [#217](https://www.github.com/googleapis/python-firestore/issues/217)
+
+
+### Bug Fixes
+
+* add import message via synth ([#231](https://www.github.com/googleapis/python-firestore/issues/231)) ([5fb02e9](https://www.github.com/googleapis/python-firestore/commit/5fb02e9b9521938ec1040611cf7086077d07aac2)), closes [#227](https://www.github.com/googleapis/python-firestore/issues/227) [#228](https://www.github.com/googleapis/python-firestore/issues/228) [#229](https://www.github.com/googleapis/python-firestore/issues/229)
+* harden version data gathering against DistributionNotFound ([#212](https://www.github.com/googleapis/python-firestore/issues/212)) ([20b7260](https://www.github.com/googleapis/python-firestore/commit/20b72603eb0ae3164f68822c62378853be59d232))
+* name parameter to indicate snapshot support ([#169](https://www.github.com/googleapis/python-firestore/issues/169)) ([be98897](https://www.github.com/googleapis/python-firestore/commit/be988971cc1bbbc3616a849037dafc8cc0bb5745)), closes [#56](https://www.github.com/googleapis/python-firestore/issues/56)
+* remove unnecessary dependency on libcst ([#220](https://www.github.com/googleapis/python-firestore/issues/220)) ([cd358db](https://www.github.com/googleapis/python-firestore/commit/cd358db784c4244271f197156662e38ed21d2f45))
+
+
+### Reverts
+
+* Revert "Replace relative class refs with fully-qualifed names. (#8039)" (#8095) ([2441825](https://www.github.com/googleapis/python-firestore/commit/24418259483afab8bb9c1996d7bd5d28ab085773)), closes [#8039](https://www.github.com/googleapis/python-firestore/issues/8039) [#8095](https://www.github.com/googleapis/python-firestore/issues/8095)
+* Revert "Do not use easily-misread glyphs in Firestore auto-IDs." (#4589) ([bbfd2ff](https://www.github.com/googleapis/python-firestore/commit/bbfd2ffa614c11e294753915d967278b9e0284f0)), closes [#4589](https://www.github.com/googleapis/python-firestore/issues/4589) [#4588](https://www.github.com/googleapis/python-firestore/issues/4588) [#4583](https://www.github.com/googleapis/python-firestore/issues/4583) [#4107](https://www.github.com/googleapis/python-firestore/issues/4107)
+* Refactor conformance tests. (#6291) ([4d29c1f](https://www.github.com/googleapis/python-firestore/commit/4d29c1fa7f4a4f10fdafd7797b1f513aa24b7c3c)), closes [#6291](https://www.github.com/googleapis/python-firestore/issues/6291) [#6290](https://www.github.com/googleapis/python-firestore/issues/6290)
+
+
+### Documentation
+
+* document admin client ([#174](https://www.github.com/googleapis/python-firestore/issues/174)) ([f099736](https://www.github.com/googleapis/python-firestore/commit/f09973638e627f741ea7d1f38294c4f8e9677e53)), closes [#30](https://www.github.com/googleapis/python-firestore/issues/30)
+* re-add changelog entries lost in V2 switch ([#178](https://www.github.com/googleapis/python-firestore/issues/178)) ([d4a0f81](https://www.github.com/googleapis/python-firestore/commit/d4a0f8182930e5c74b08ca185c4d94f809b05797)), closes [#177](https://www.github.com/googleapis/python-firestore/issues/177)
+
 ## [2.0.0-dev1](https://www.github.com/googleapis/python-firestore/compare/v1.9.0...v2.0.0-dev1) (2020-08-20)
 
 
