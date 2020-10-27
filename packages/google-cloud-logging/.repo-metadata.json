@@ -1,6 +1,6 @@
 {
   "name": "logging",
-  "name_pretty": "Stackdriver Logging",
+  "name_pretty": "Cloud Logging",
   "product_documentation": "https://cloud.google.com/logging/docs",
   "client_documentation": "https://googleapis.dev/python/logging/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559764",
@@ -8,5 +8,6 @@
   "language": "python",
   "repo": "googleapis/python-logging",
   "distribution_name": "google-cloud-logging",
-  "api_id": "logging.googleapis.com"
+  "api_id": "logging.googleapis.com",
+  "codeowner_team": "@googleapis/api-logging"
 }

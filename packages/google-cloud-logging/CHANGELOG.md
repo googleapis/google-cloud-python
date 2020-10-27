@@ -62,7 +62,7 @@
 
 ### Implementation Changes
 - Remove gRPC size restrictions (4MB default) ([#8860](https://github.com/googleapis/google-cloud-python/pull/8860))
-- Map stdlib loglevels to Stackdriver severity enum values. ([#8837](https://github.com/googleapis/google-cloud-python/pull/8837))
+- Map stdlib loglevels to Cloud Logging severity enum values. ([#8837](https://github.com/googleapis/google-cloud-python/pull/8837))
 
 ### Documentation
 - Fix 'list_entries' example with projects. ([#8858](https://github.com/googleapis/google-cloud-python/pull/8858))

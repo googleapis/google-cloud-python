@@ -1,9 +1,9 @@
-Python Client for Stackdriver Logging
+Python Client for Cloud Logging
 =====================================
 
 |pypi| |versions|
 
-`Stackdriver Logging API`_: Writes log entries and manages your Stackdriver
+`Cloud Logging API`_: Writes log entries and manages your Cloud
 Logging configuration.
 
 - `Client Library Documentation`_
@@ -13,7 +13,7 @@ Logging configuration.
    :target: https://pypi.org/project/google-cloud-logging/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-logging.svg
    :target: https://pypi.org/project/google-cloud-logging/
-.. _Stackdriver Logging API: https://cloud.google.com/logging
+.. _Cloud Logging API: https://cloud.google.com/logging
 .. _Client Library Documentation: https://googleapis.dev/python/logging/latest
 .. _Product Documentation:  https://cloud.google.com/logging/docs
 
@@ -24,12 +24,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Stackdriver Logging API.`_
+3. `Enable the Cloud Logging API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Stackdriver Logging API.:  https://cloud.google.com/logging
+.. _Enable the Cloud Logging API.:  https://cloud.google.com/logging
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation

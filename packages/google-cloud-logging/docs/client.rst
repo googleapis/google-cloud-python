@@ -1,4 +1,4 @@
-Stackdriver Logging Client
+Cloud Logging Client
 ==========================
 
 .. automodule:: google.cloud.logging.client

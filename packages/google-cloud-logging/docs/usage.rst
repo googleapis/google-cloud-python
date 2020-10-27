@@ -112,7 +112,7 @@ Manage log metrics
 ------------------
 
 Metrics are counters of entries which match a given filter.  They can be
-used within Stackdriver Monitoring to create charts and alerts.
+used within Cloud Monitoring to create charts and alerts.
 
 List all metrics for a project:
 
@@ -259,7 +259,7 @@ Integration with Python logging module
 --------------------------------------
 
 It's possible to tie the Python :mod:`logging` module directly into Google
-Stackdriver Logging. There are different handler options to accomplish this.
+Cloud Logging. There are different handler options to accomplish this.
 To automatically pick the default for your current environment, use
 :meth:`~google.cloud.logging.client.Client.get_default_handler`.
 
@@ -269,7 +269,7 @@ To automatically pick the default for your current environment, use
     :dedent: 4
 
 It is also possible to attach the handler to the root Python logger, so that
-for example a plain ``logging.warn`` call would be sent to Stackdriver Logging,
+for example a plain ``logging.warn`` call would be sent to Cloud Logging,
 as well as any other loggers created. A helper method
 :meth:`~google.cloud.logging.client.Client.setup_logging` is provided
 to configure this automatically.
@@ -281,7 +281,7 @@ to configure this automatically.
 
 .. note::
 
-    To reduce cost and quota usage, do not enable Stackdriver logging
+    To reduce cost and quota usage, do not enable Cloud Logging
     handlers while testing locally.
 
 You can also exclude certain loggers:
@@ -348,7 +348,7 @@ recommended when running on the Google App Engine Flexible vanilla runtimes
 (i.e. your app.yaml contains ``runtime: python``), and
 :class:`~google.cloud.logging.handlers.container_engine.ContainerEngineHandler`
 , which is recommended when running on `Google Container Engine`_ with the
-Stackdriver Logging plugin enabled.
+Cloud Logging plugin enabled.
 
 :meth:`~google.cloud.logging.client.Client.get_default_handler` and
 :meth:`~google.cloud.logging.client.Client.setup_logging` will attempt to use
@@ -356,6 +356,6 @@ the environment to automatically detect whether the code is running in
 these platforms and use the appropriate handler.
 
 In both cases, the fluentd agent is configured to automatically parse log files
-in an expected format and forward them to Stackdriver logging. The handlers
+in an expected format and forward them to Cloud logging. The handlers
 provided help set the correct metadata such as log level so that logs can be
 filtered accordingly.
