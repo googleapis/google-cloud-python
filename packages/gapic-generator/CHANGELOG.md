@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.35.9](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.8...v0.35.9) (2020-10-27)
+
+
+### Performance Improvements
+
+* collisions don't contain reserved names by default ([#684](https://www.github.com/googleapis/gapic-generator-python/issues/684)) ([2ec6ea6](https://www.github.com/googleapis/gapic-generator-python/commit/2ec6ea6835256c0d7b252e035cf4eac1ff442647))
+
 ### [0.35.8](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.7...v0.35.8) (2020-10-21)
 
 
