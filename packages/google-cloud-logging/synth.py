@@ -40,8 +40,23 @@ s.move(library / "tests/unit/gapic/v2")
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(unit_cov_level=95, cov_level=100)
-# Don't move noxfile. logging has special testing setups for django, etc
-s.move(templated_files, excludes="noxfile.py")
+templated_files = common.py_library(
+    unit_cov_level=95,
+    cov_level=99,
+    system_test_python_versions = ['3.8'],
+    unit_test_python_versions = ['3.5', '3.6', '3.7', '3.8'],
+    system_test_external_dependencies = [
+        'google-cloud-bigquery',
+        'google-cloud-pubsub',
+        'google-cloud-storage',
+        'google-cloud-testutils'
+    ],
+    unit_test_external_dependencies = [
+       'flask',
+       'webob',
+       'django'
+    ],
+)
+s.move(templated_files, excludes=[".coveragerc"])
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

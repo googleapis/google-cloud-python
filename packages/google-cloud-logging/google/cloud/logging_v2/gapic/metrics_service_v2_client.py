@@ -46,9 +46,7 @@ from google.protobuf import empty_pb2
 from google.protobuf import field_mask_pb2
 
 
-_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
-    "google-cloud-logging",
-).version
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution("google-cloud-logging",).version
 
 
 class MetricsServiceV2Client(object):
@@ -85,41 +83,33 @@ class MetricsServiceV2Client(object):
     def billing_path(cls, billing_account):
         """Return a fully-qualified billing string."""
         return google.api_core.path_template.expand(
-            "billingAccounts/{billing_account}",
-            billing_account=billing_account,
+            "billingAccounts/{billing_account}", billing_account=billing_account,
         )
 
     @classmethod
     def folder_path(cls, folder):
         """Return a fully-qualified folder string."""
-        return google.api_core.path_template.expand(
-            "folders/{folder}",
-            folder=folder,
-        )
+        return google.api_core.path_template.expand("folders/{folder}", folder=folder,)
 
     @classmethod
     def metric_path(cls, project, metric):
         """Return a fully-qualified metric string."""
         return google.api_core.path_template.expand(
-            "projects/{project}/metrics/{metric}",
-            project=project,
-            metric=metric,
+            "projects/{project}/metrics/{metric}", project=project, metric=metric,
         )
 
     @classmethod
     def organization_path(cls, organization):
         """Return a fully-qualified organization string."""
         return google.api_core.path_template.expand(
-            "organizations/{organization}",
-            organization=organization,
+            "organizations/{organization}", organization=organization,
         )
 
     @classmethod
     def project_path(cls, project):
         """Return a fully-qualified project string."""
         return google.api_core.path_template.expand(
-            "projects/{project}",
-            project=project,
+            "projects/{project}", project=project,
         )
 
     def __init__(
@@ -208,12 +198,8 @@ class MetricsServiceV2Client(object):
                     )
                 self.transport = transport
         else:
-            self.transport = (
-                metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport(
-                    address=api_endpoint,
-                    channel=channel,
-                    credentials=credentials,
-                )
+            self.transport = metrics_service_v2_grpc_transport.MetricsServiceV2GrpcTransport(
+                address=api_endpoint, channel=channel, credentials=credentials,
             )
 
         if client_info is None:
@@ -316,8 +302,7 @@ class MetricsServiceV2Client(object):
             )
 
         request = logging_metrics_pb2.ListLogMetricsRequest(
-            parent=parent,
-            page_size=page_size,
+            parent=parent, page_size=page_size,
         )
         if metadata is None:
             metadata = []
@@ -402,9 +387,7 @@ class MetricsServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_metrics_pb2.GetLogMetricRequest(
-            metric_name=metric_name,
-        )
+        request = logging_metrics_pb2.GetLogMetricRequest(metric_name=metric_name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -490,8 +473,7 @@ class MetricsServiceV2Client(object):
             )
 
         request = logging_metrics_pb2.CreateLogMetricRequest(
-            parent=parent,
-            metric=metric,
+            parent=parent, metric=metric,
         )
         if metadata is None:
             metadata = []
@@ -578,8 +560,7 @@ class MetricsServiceV2Client(object):
             )
 
         request = logging_metrics_pb2.UpdateLogMetricRequest(
-            metric_name=metric_name,
-            metric=metric,
+            metric_name=metric_name, metric=metric,
         )
         if metadata is None:
             metadata = []
@@ -650,9 +631,7 @@ class MetricsServiceV2Client(object):
                 client_info=self._client_info,
             )
 
-        request = logging_metrics_pb2.DeleteLogMetricRequest(
-            metric_name=metric_name,
-        )
+        request = logging_metrics_pb2.DeleteLogMetricRequest(metric_name=metric_name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)

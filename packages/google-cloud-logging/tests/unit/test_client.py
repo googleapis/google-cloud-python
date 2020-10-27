@@ -293,10 +293,7 @@ class TestClient(unittest.TestCase):
             {
                 "path": "/entries:list",
                 "method": "POST",
-                "data": {
-                    "filter": "removed",
-                    "projectIds": [self.PROJECT],
-                },
+                "data": {"filter": "removed", "projectIds": [self.PROJECT]},
             },
         )
         # verify that default filter is 24 hours
