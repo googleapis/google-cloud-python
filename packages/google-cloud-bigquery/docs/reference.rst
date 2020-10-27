@@ -59,6 +59,8 @@ Job-Related Types
     job.CreateDisposition
     job.DestinationFormat
     job.Encoding
+    job.QueryPlanEntry
+    job.QueryPlanEntryStep
     job.QueryPriority
     job.SourceFormat
     job.WriteDisposition

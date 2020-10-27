@@ -2844,7 +2844,7 @@ class QueryJob(_AsyncJob):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobStatistics2.FIELDS.query_plan
 
         Returns:
-            List[QueryPlanEntry]:
+            List[google.cloud.bigquery.job.QueryPlanEntry]:
                 mappings describing the query plan, or an empty list
                 if the query has not yet completed.
         """
@@ -3418,7 +3418,6 @@ class QueryPlanEntryStep(object):
 
     Args:
         kind (str): step type.
-
         substeps (List): names of substeps.
     """
 
@@ -3434,7 +3433,8 @@ class QueryPlanEntryStep(object):
             resource (Dict): JSON representation of the entry.
 
         Returns:
-            QueryPlanEntryStep: new instance built from the resource.
+            google.cloud.bigquery.job.QueryPlanEntryStep:
+                New instance built from the resource.
         """
         return cls(kind=resource.get("kind"), substeps=resource.get("substeps", ()))
 
@@ -3464,7 +3464,7 @@ class QueryPlanEntry(object):
                 ExplainQueryStage representation returned from API.
 
         Returns:
-            google.cloud.bigquery.QueryPlanEntry:
+            google.cloud.bigquery.job.QueryPlanEntry:
                 Query plan entry parsed from ``resource``.
         """
         entry = cls()
