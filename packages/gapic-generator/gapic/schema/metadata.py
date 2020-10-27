@@ -49,9 +49,6 @@ class Address:
     )
     collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
 
-    def __post_init__(self):
-        super().__setattr__("collisions", self.collisions | RESERVED_NAMES)
-
     def __eq__(self, other) -> bool:
         return all([getattr(self, i) == getattr(other, i) for i
                     in ('name', 'module', 'module_path', 'package', 'parent')])
@@ -114,7 +111,7 @@ class Address:
         while still providing names that are fundamentally readable
         to users (albeit looking auto-generated).
         """
-        if self.module in self.collisions:
+        if self.module in self.collisions | RESERVED_NAMES:
             return '_'.join(
                 (
                     ''.join(
@@ -283,7 +280,7 @@ class Address:
         ``Address`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(self, collisions=frozenset(collisions))
+        return dataclasses.replace(self, collisions=collisions)
 
 
 @dataclasses.dataclass(frozen=True)

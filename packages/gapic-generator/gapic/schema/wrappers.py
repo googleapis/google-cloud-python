@@ -314,13 +314,19 @@ class MessageType:
         return tuple(types)
 
     @utils.cached_property
-    def recursive_fields(self) -> FrozenSet[Field]:
-        return frozenset(chain(
+    def recursive_resource_fields(self) -> FrozenSet[Field]:
+        all_fields = chain(
             self.fields.values(),
             (field
              for t in self.recursive_field_types if isinstance(t, MessageType)
              for field in t.fields.values()),
-        ))
+        )
+        return frozenset(
+            f
+            for f in all_fields
+            if (f.options.Extensions[resource_pb2.resource_reference].type or
+                f.options.Extensions[resource_pb2.resource_reference].child_type)
+        )
 
     @property
     def map(self) -> bool:
@@ -1060,7 +1066,7 @@ class Service:
                     yield type_
 
         def gen_indirect_resources_used(message):
-            for field in message.recursive_fields:
+            for field in message.recursive_resource_fields:
                 resource = field.options.Extensions[
                     resource_pb2.resource_reference]
                 resource_type = resource.type or resource.child_type
