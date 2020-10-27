@@ -115,9 +115,9 @@ class Float64Stats(proto.Message):
         r"""A bucket of a histogram.
 
         Attributes:
-            min (float):
+            min_ (float):
                 The minimum value of the bucket, inclusive.
-            max (float):
+            max_ (float):
                 The maximum value of the bucket, exclusive unless max =
                 ``"Infinity"``, in which case it's inclusive.
             count (int):
@@ -125,9 +125,9 @@ class Float64Stats(proto.Message):
                 bucket, i.e. are between min and max values.
         """
 
-        min = proto.Field(proto.DOUBLE, number=1)
+        min_ = proto.Field(proto.DOUBLE, number=1)
 
-        max = proto.Field(proto.DOUBLE, number=2)
+        max_ = proto.Field(proto.DOUBLE, number=2)
 
         count = proto.Field(proto.INT64, number=3)
 

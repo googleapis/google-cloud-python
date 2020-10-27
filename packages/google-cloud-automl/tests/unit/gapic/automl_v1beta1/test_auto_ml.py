@@ -31,7 +31,7 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.api_core import operation_async
+from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -168,15 +168,14 @@ def test_auto_ml_client_client_options(client_class, transport_class, transport_
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -185,15 +184,14 @@ def test_auto_ml_client_client_options(client_class, transport_class, transport_
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "always".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -202,78 +200,22 @@ def test_auto_ml_client_client_options(client_class, transport_class, transport_
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
-            patched.return_value = None
-            client = client_class(client_options=options)
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=client_cert_source_callback,
-                quota_project_id=None,
-                client_info=transports.base.DEFAULT_CLIENT_INFO,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_MTLS_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "Unsupported"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
             client = client_class()
 
     # Check the case quota_project_id is provided
@@ -286,11 +228,143 @@ def test_auto_ml_client_client_options(client_class, transport_class, transport_
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (AutoMlClient, transports.AutoMlGrpcTransport, "grpc", "true"),
+        (
+            AutoMlAsyncClient,
+            transports.AutoMlGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (AutoMlClient, transports.AutoMlGrpcTransport, "grpc", "false"),
+        (
+            AutoMlAsyncClient,
+            transports.AutoMlGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    AutoMlClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AutoMlClient)
+)
+@mock.patch.object(
+    AutoMlAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AutoMlAsyncClient)
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_auto_ml_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -313,8 +387,7 @@ def test_auto_ml_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -340,8 +413,7 @@ def test_auto_ml_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -358,8 +430,7 @@ def test_auto_ml_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -1079,8 +1150,8 @@ def test_list_datasets_pages():
             RuntimeError,
         )
         pages = list(client.list_datasets(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -1144,10 +1215,10 @@ async def test_list_datasets_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_datasets(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_datasets(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_update_dataset(
@@ -2711,8 +2782,8 @@ def test_list_table_specs_pages():
             RuntimeError,
         )
         pages = list(client.list_table_specs(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -2784,10 +2855,10 @@ async def test_list_table_specs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_table_specs(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_table_specs(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_update_table_spec(
@@ -3494,8 +3565,8 @@ def test_list_column_specs_pages():
             RuntimeError,
         )
         pages = list(client.list_column_specs(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -3567,10 +3638,10 @@ async def test_list_column_specs_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_column_specs(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_column_specs(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_update_column_spec(
@@ -4455,8 +4526,8 @@ def test_list_models_pages():
             RuntimeError,
         )
         pages = list(client.list_models(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -4512,10 +4583,10 @@ async def test_list_models_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_models(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_models(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_model(transport: str = "grpc", request_type=service.DeleteModelRequest):
@@ -6013,8 +6084,8 @@ def test_list_model_evaluations_pages():
             RuntimeError,
         )
         pages = list(client.list_model_evaluations(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -6098,10 +6169,10 @@ async def test_list_model_evaluations_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_model_evaluations(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_model_evaluations(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
@@ -6156,6 +6227,18 @@ def test_transport_get_channel():
     )
     channel = transport.grpc_channel
     assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.AutoMlGrpcTransport, transports.AutoMlGrpcAsyncIOTransport],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
 
 
 def test_transport_grpc_default():
@@ -6240,6 +6323,17 @@ def test_auto_ml_base_transport_with_credentials_file():
         )
 
 
+def test_auto_ml_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.automl_v1beta1.services.auto_ml.transports.AutoMlTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.AutoMlTransport()
+        adc.assert_called_once()
+
+
 def test_auto_ml_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
@@ -6288,179 +6382,102 @@ def test_auto_ml_host_with_port():
 def test_auto_ml_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.AutoMlGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
 
 
 def test_auto_ml_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.AutoMlGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_auto_ml_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.AutoMlGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_auto_ml_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.AutoMlGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [transports.AutoMlGrpcTransport, transports.AutoMlGrpcAsyncIOTransport],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_auto_ml_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_auto_ml_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.AutoMlGrpcTransport, transports.AutoMlGrpcAsyncIOTransport],
+)
+def test_auto_ml_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.AutoMlGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
 
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_auto_ml_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.AutoMlGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_auto_ml_grpc_lro_client():
@@ -6487,6 +6504,41 @@ def test_auto_ml_grpc_lro_async_client():
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
+
+
+def test_column_spec_path():
+    project = "squid"
+    location = "clam"
+    dataset = "whelk"
+    table_spec = "octopus"
+    column_spec = "oyster"
+
+    expected = "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}".format(
+        project=project,
+        location=location,
+        dataset=dataset,
+        table_spec=table_spec,
+        column_spec=column_spec,
+    )
+    actual = AutoMlClient.column_spec_path(
+        project, location, dataset, table_spec, column_spec
+    )
+    assert expected == actual
+
+
+def test_parse_column_spec_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "dataset": "mussel",
+        "table_spec": "winkle",
+        "column_spec": "nautilus",
+    }
+    path = AutoMlClient.column_spec_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AutoMlClient.parse_column_spec_path(path)
+    assert expected == actual
 
 
 def test_dataset_path():
@@ -6536,41 +6588,6 @@ def test_parse_model_path():
 
     # Check that the path construction is reversible.
     actual = AutoMlClient.parse_model_path(path)
-    assert expected == actual
-
-
-def test_column_spec_path():
-    project = "squid"
-    location = "clam"
-    dataset = "whelk"
-    table_spec = "octopus"
-    column_spec = "oyster"
-
-    expected = "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}".format(
-        project=project,
-        location=location,
-        dataset=dataset,
-        table_spec=table_spec,
-        column_spec=column_spec,
-    )
-    actual = AutoMlClient.column_spec_path(
-        project, location, dataset, table_spec, column_spec
-    )
-    assert expected == actual
-
-
-def test_parse_column_spec_path():
-    expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "dataset": "mussel",
-        "table_spec": "winkle",
-        "column_spec": "nautilus",
-    }
-    path = AutoMlClient.column_spec_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AutoMlClient.parse_column_spec_path(path)
     assert expected == actual
 
 

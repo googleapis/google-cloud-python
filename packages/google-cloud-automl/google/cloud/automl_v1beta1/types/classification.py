@@ -60,7 +60,7 @@ class VideoClassificationAnnotation(proto.Message):
     r"""Contains annotation details specific to video classification.
 
     Attributes:
-        type (str):
+        type_ (str):
             Output only. Expresses the type of video classification.
             Possible values:
 
@@ -96,7 +96,7 @@ class VideoClassificationAnnotation(proto.Message):
             to which the annotation applies.
     """
 
-    type = proto.Field(proto.STRING, number=1)
+    type_ = proto.Field(proto.STRING, number=1)
 
     classification_annotation = proto.Field(
         proto.MESSAGE, number=2, message=ClassificationAnnotation,

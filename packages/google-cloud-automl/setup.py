@@ -23,7 +23,7 @@ version = "2.0.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
-    "proto-plus >= 1.4.0",
+    "proto-plus >= 1.10.0",
     "libcst >= 0.2.5",
 ]
 extras = {

@@ -66,7 +66,20 @@ class TextExtractionDatasetMetadata(proto.Message):
 
 
 class TextExtractionModelMetadata(proto.Message):
-    r"""Model metadata that is specific to text extraction."""
+    r"""Model metadata that is specific to text extraction.
+
+    Attributes:
+        model_hint (str):
+            Indicates the scope of model use case.
+
+            -  ``default``: Use to train a general text extraction
+               model. Default value.
+
+            -  ``health_care``: Use to train a text extraction model
+               that is tuned for healthcare applications.
+    """
+
+    model_hint = proto.Field(proto.STRING, number=3)
 
 
 class TextSentimentDatasetMetadata(proto.Message):

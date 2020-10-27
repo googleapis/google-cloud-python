@@ -944,20 +944,39 @@ class ModelExportOutputConfig(proto.Message):
             -  For Image Classification mobile-core-ml-low-latency-1,
                mobile-core-ml-versatile-1,
                mobile-core-ml-high-accuracy-1: "core_ml" (default).
-               Formats description:
+
+            -  For Image Object Detection mobile-low-latency-1,
+               mobile-versatile-1, mobile-high-accuracy-1: "tflite",
+               "tf_saved_model", "tf_js".
+
+            -  For Video Classification cloud, "tf_saved_model".
+
+            -  For Video Object Tracking cloud, "tf_saved_model".
+
+            -  For Video Object Tracking mobile-versatile-1: "tflite",
+               "edgetpu_tflite", "tf_saved_model", "docker".
+
+            -  For Video Object Tracking mobile-coral-versatile-1:
+               "tflite", "edgetpu_tflite", "docker".
+
+            -  For Video Object Tracking mobile-coral-low-latency-1:
+               "tflite", "edgetpu_tflite", "docker".
+
+            -  For Video Object Tracking mobile-jetson-versatile-1:
+               "tf_saved_model", "docker".
+
+            -  For Tables: "docker".
+
+            Formats description:
 
             -  tflite - Used for Android mobile devices.
-
             -  edgetpu_tflite - Used for `Edge
                TPU <https://cloud.google.com/edge-tpu/>`__ devices.
-
             -  tf_saved_model - A tensorflow model in SavedModel format.
-
             -  tf_js - A
                `TensorFlow.js <https://www.tensorflow.org/js>`__ model
                that can be used in the browser and in Node.js using
                JavaScript.
-
             -  docker - Used for Docker containers. Use the params field
                to customize the container. The container is verified to
                work correctly on ubuntu 16.04 operating system. See more

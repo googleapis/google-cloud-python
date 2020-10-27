@@ -46,8 +46,8 @@ f"google/cloud/automl_v1beta1/__init__.py",
 from \.services\.prediction_service import PredictionServiceClient""",
 """from .services.auto_ml import AutoMlClient
 from .services.prediction_service import PredictionServiceClient
-from .tables.gcs_client import GcsClient
-from .tables.tables_client import TablesClient"""
+from .services.tables.gcs_client import GcsClient
+from .services.tables.tables_client import TablesClient"""
 )
 
 s.replace(
@@ -56,6 +56,15 @@ s.replace(
     """__all__ = ("GcsClient", "TablesClient","""
 )
 
+s.replace(
+    "docs/automl_v1beta1/services.rst",
+    """(google\.cloud\.automl_v1beta1\.services\.prediction_service
+    :members:
+    :inherited-members:)""",
+    """\g<1>\n.. automodule:: google.cloud.automl_v1beta1.services.tables	
+    :members:	
+    :inherited-members:"""
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files
