@@ -1,9 +1,9 @@
-Python Client for Stackdriver Error Reporting
+Python Client for Cloud Error Reporting
 =============================================
 
 |beta| |pypi| |versions|
 
-The Stackdriver `Error Reporting`_ API counts, analyzes and aggregates the
+The Cloud `Error Reporting`_ API counts, analyzes and aggregates the
 crashes in your running cloud services.  A centralized error management
 interface displays the results with sorting and filtering capabilities. A
 dedicated view shows the error details: time chart, occurrences, affected user

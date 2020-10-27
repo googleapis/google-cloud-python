@@ -1,6 +1,6 @@
 {
   "name": "clouderrorreporting",
-  "name_pretty": "Stackdriver Error Reporting",
+  "name_pretty": "Cloud Error Reporting",
   "product_documentation": "https://cloud.google.com/error-reporting",
   "client_documentation": "https://googleapis.dev/python/clouderrorreporting/latest",
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559780",
@@ -9,5 +9,6 @@
   "repo": "googleapis/python-error-reporting",
   "distribution_name": "google-cloud-error-reporting",
   "api_id": "clouderrorreporting.googleapis.com",
-  "requires_billing": false
+  "requires_billing": false,
+  "codeowner_team": "@googleapis/api-logging"
 }
