@@ -173,7 +173,9 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
+    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
+    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

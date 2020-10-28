@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
+        "sha": "da5c6050d13b4950c82666a81d8acd25157664ae"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5f2f711c91199ba2f609d3f06a2fe22aee4e5be3"
+        "sha": "da5c6050d13b4950c82666a81d8acd25157664ae"
       }
     }
   ],
@@ -49,6 +49,7 @@
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/release-please.yml",
+    ".github/snippet-bot.yml",
     ".gitignore",
     ".kokoro/build.sh",
     ".kokoro/continuous/common.cfg",
@@ -58,6 +59,7 @@
     ".kokoro/docs/common.cfg",
     ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
     ".kokoro/presubmit/common.cfg",
     ".kokoro/presubmit/presubmit.cfg",
     ".kokoro/publish-docs.sh",
