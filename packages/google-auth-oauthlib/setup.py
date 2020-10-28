@@ -27,9 +27,11 @@ with io.open("README.rst", "r") as fh:
     long_description = fh.read()
 
 
+version = "0.4.2"
+
 setup(
     name="google-auth-oauthlib",
-    version="0.4.1",
+    version=version,
     author="Google Cloud Platform",
     author_email="jonwayne+google-auth@google.com",
     description="Google Authentication Library",

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+### [0.4.2](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.1...v0.4.2) (2020-10-28)
+
+
+### Bug Fixes
+
+* don't open browser if port is occupied ([#92](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/92)) ([0004057](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/00040576ab096faec1f6eb54c886cb9c33be17ed)), closes [#75](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/75)
+
 ## 0.4.1
 
 08-26-2019 13:25 PDT
