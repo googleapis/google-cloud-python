@@ -25,6 +25,8 @@ from .connection import (
     Connection,
     CloudSqlProperties,
     CloudSqlCredential,
+    AwsProperties,
+    AwsCrossAccountRole,
 )
 
 
@@ -38,4 +40,6 @@ __all__ = (
     "Connection",
     "CloudSqlProperties",
     "CloudSqlCredential",
+    "AwsProperties",
+    "AwsCrossAccountRole",
 )

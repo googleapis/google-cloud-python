@@ -16,6 +16,8 @@
 #
 
 from .services.connection_service import ConnectionServiceClient
+from .types.connection import AwsCrossAccountRole
+from .types.connection import AwsProperties
 from .types.connection import CloudSqlCredential
 from .types.connection import CloudSqlProperties
 from .types.connection import Connection
@@ -28,6 +30,8 @@ from .types.connection import UpdateConnectionRequest
 
 
 __all__ = (
+    "AwsCrossAccountRole",
+    "AwsProperties",
     "CloudSqlCredential",
     "CloudSqlProperties",
     "Connection",

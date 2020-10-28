@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
         "Connection",
         "CloudSqlProperties",
         "CloudSqlCredential",
+        "AwsProperties",
+        "AwsCrossAccountRole",
     },
 )
 
@@ -163,6 +165,8 @@ class Connection(proto.Message):
             User provided description.
         cloud_sql (~.gcbc_connection.CloudSqlProperties):
             Cloud SQL properties.
+        aws (~.gcbc_connection.AwsProperties):
+            Amazon Web Services (AWS) properties.
         creation_time (int):
             Output only. The creation timestamp of the
             connection.
@@ -184,6 +188,10 @@ class Connection(proto.Message):
         proto.MESSAGE, number=4, oneof="properties", message="CloudSqlProperties",
     )
 
+    aws = proto.Field(
+        proto.MESSAGE, number=8, oneof="properties", message="AwsProperties",
+    )
+
     creation_time = proto.Field(proto.INT64, number=5)
 
     last_modified_time = proto.Field(proto.INT64, number=6)
@@ -200,7 +208,7 @@ class CloudSqlProperties(proto.Message):
             ``project:location:instance``.
         database (str):
             Database name.
-        type (~.gcbc_connection.CloudSqlProperties.DatabaseType):
+        type_ (~.gcbc_connection.CloudSqlProperties.DatabaseType):
             Type of the Cloud SQL database.
         credential (~.gcbc_connection.CloudSqlCredential):
             Input only. Cloud SQL credential.
@@ -216,7 +224,7 @@ class CloudSqlProperties(proto.Message):
 
     database = proto.Field(proto.STRING, number=2)
 
-    type = proto.Field(proto.ENUM, number=3, enum=DatabaseType,)
+    type_ = proto.Field(proto.ENUM, number=3, enum=DatabaseType,)
 
     credential = proto.Field(proto.MESSAGE, number=4, message="CloudSqlCredential",)
 
@@ -234,6 +242,50 @@ class CloudSqlCredential(proto.Message):
     username = proto.Field(proto.STRING, number=1)
 
     password = proto.Field(proto.STRING, number=2)
+
+
+class AwsProperties(proto.Message):
+    r"""Connection properties specific to Amazon Web Services (AWS).
+
+    Attributes:
+        cross_account_role (~.gcbc_connection.AwsCrossAccountRole):
+            Authentication using Google owned AWS IAM
+            user's access key to assume into customer's AWS
+            IAM Role.
+    """
+
+    cross_account_role = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="authentication_method",
+        message="AwsCrossAccountRole",
+    )
+
+
+class AwsCrossAccountRole(proto.Message):
+    r"""Authentication method for Amazon Web Services (AWS) that uses
+    Google owned AWS IAM user's access key to assume into customer's
+    AWS IAM Role.
+
+    Attributes:
+        iam_role_id (str):
+            The user’s AWS IAM Role that trusts the
+            Google-owned AWS IAM user Connection.
+        iam_user_id (str):
+            Output only. Google-owned AWS IAM User for a
+            Connection.
+        external_id (str):
+            Output only. A Google-generated id for representing
+            Connection’s identity in AWS. External Id is also used for
+            preventing the Confused Deputy Problem. See
+            https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html
+    """
+
+    iam_role_id = proto.Field(proto.STRING, number=1)
+
+    iam_user_id = proto.Field(proto.STRING, number=2)
+
+    external_id = proto.Field(proto.STRING, number=3)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
