@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v0.2.0...v0.3.0) (2020-10-28)
+
+
+### Features
+
+* add AWS connection type ([#19](https://www.github.com/googleapis/python-bigquery-connection/issues/19)) ([3d1a41a](https://www.github.com/googleapis/python-bigquery-connection/commit/3d1a41ad208274448604a0a17d072f6fcb36535a))
+
 ## [0.2.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v0.1.0...v0.2.0) (2020-08-10)
 
 
