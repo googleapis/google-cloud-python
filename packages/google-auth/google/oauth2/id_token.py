@@ -33,9 +33,6 @@ Example::
     id_info = id_token.verify_oauth2_token(
         token, request, 'my-client-id.example.com')
 
-    if id_info['iss'] != 'https://accounts.google.com':
-        raise ValueError('Wrong issuer.')
-
     userid = id_info['sub']
 
 By default, this will re-fetch certificates for each verification. Because
