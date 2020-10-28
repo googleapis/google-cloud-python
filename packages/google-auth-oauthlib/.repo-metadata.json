@@ -1,0 +1,10 @@
+{
+  "name": "google-auth-oauthlib",
+  "name_pretty": "Google Auth OAuthlib",
+  "client_documentation": "https://googleapis.dev/python/google-auth-oauthlib/latest",
+  "issue_tracker": "https://github.com/googleapis/google-auth-library-python-oauthlib/issues",
+  "release_level": "alpha",
+  "language": "python",
+  "repo": "googleapis/google-auth-library-python-oauthlib",
+  "distribution_name": "google-auth-oauthlib"
+}

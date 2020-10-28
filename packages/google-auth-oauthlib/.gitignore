@@ -1,39 +1,61 @@
-# Build artifacts
 *.py[cod]
+*.sw[op]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+.eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
 __pycache__
-*.egg-info/
-build/
-dist/
 
-# Documentation-related
-docs/_build
+# Installer logs
+pip-log.txt
 
-# Test files
-.nox/
-.tox/
-.cache/
-
-# Django test database
-db.sqlite3
-
-# Coverage files
+# Unit test / coverage reports
 .coverage
-coverage.xml
-nosetests.xml
-htmlcov/
+.nox
+.cache
+.pytest_cache
 
-# Files with private / local data
-scripts/local_test_setup
-tests/data/key.json
-tests/data/key.p12
-tests/data/user-key.json
 
-# PyCharm configuration:
+# Mac
+.DS_Store
+
+# JetBrains
 .idea
 
-# Generated files
-pylintrc
-pylintrc.test
+# VS Code
+.vscode
+
+# emacs
+*~
+
+# Built documentation
+docs/_build
+bigquery/docs/generated
+docs.metadata
 
 # Virtual environment
 env/
+coverage.xml
+sponge_log.xml
+
+# System test environment variables.
+system_tests/local_test_setup
+
+# Make sure a generated file isn't accidentally committed.
+pylintrc
+pylintrc.test

@@ -18,6 +18,8 @@ from functools import partial
 import json
 import os
 import re
+import random
+import socket
 
 import mock
 import pytest
@@ -248,6 +250,22 @@ class TestInstalledAppFlow(object):
         )
 
     @pytest.fixture
+    def port(self):
+        # Creating a new server at the same port will result in
+        # a 'Address already in use' error for a brief
+        # period of time after the socket has been closed.
+        # Work around this in the tests by choosing a random port.
+        # https://stackoverflow.com/questions/6380057/python-binding-socket-address-already-in-use
+        yield random.randrange(60400, 60900)
+
+    @pytest.fixture
+    def socket(self, port):
+        s = socket.socket()
+        s.bind(("localhost", port))
+        yield s
+        s.close()
+
+    @pytest.fixture
     def mock_fetch_token(self, instance):
         def set_token(*args, **kwargs):
             instance.oauth2session.token = {
@@ -283,13 +301,13 @@ class TestInstalledAppFlow(object):
 
     @pytest.mark.webtest
     @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
-    def test_run_local_server(self, webbrowser_mock, instance, mock_fetch_token):
+    def test_run_local_server(self, webbrowser_mock, instance, mock_fetch_token, port):
         auth_redirect_url = urllib.parse.urljoin(
-            "http://localhost:60452", self.REDIRECT_REQUEST_PATH
+            f"http://localhost:{port}", self.REDIRECT_REQUEST_PATH
         )
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            future = pool.submit(partial(instance.run_local_server, port=60452))
+            future = pool.submit(partial(instance.run_local_server, port=port))
 
             while not future.done():
                 try:
@@ -315,15 +333,15 @@ class TestInstalledAppFlow(object):
     @pytest.mark.webtest
     @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
     def test_run_local_server_code_verifier(
-        self, webbrowser_mock, instance, mock_fetch_token
+        self, webbrowser_mock, instance, mock_fetch_token, port
     ):
         auth_redirect_url = urllib.parse.urljoin(
-            "http://localhost:60452", self.REDIRECT_REQUEST_PATH
+            f"http://localhost:{port}", self.REDIRECT_REQUEST_PATH
         )
         instance.code_verifier = "amanaplanacanalpanama"
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            future = pool.submit(partial(instance.run_local_server, port=60452))
+            future = pool.submit(partial(instance.run_local_server, port=port))
 
             while not future.done():
                 try:
@@ -360,3 +378,14 @@ class TestInstalledAppFlow(object):
         instance.run_local_server(open_browser=False)
 
         assert not webbrowser_mock.open.called
+
+    @pytest.mark.webtest
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    def test_run_local_server_occupied_port(
+        self, webbrowser_mock, instance, mock_fetch_token, port, socket
+    ):
+        # socket fixture is already bound to http://localhost:port
+        instance.run_local_server
+        with pytest.raises(OSError) as exc:
+            instance.run_local_server(port=port)
+            assert "address already in use" in exc.strerror.lower()

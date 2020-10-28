@@ -167,7 +167,10 @@ class Flow(object):
         code_verifier = kwargs.pop("code_verifier", None)
         autogenerate_code_verifier = kwargs.pop("autogenerate_code_verifier", None)
 
-        session, client_config = google_auth_oauthlib.helpers.session_from_client_config(
+        (
+            session,
+            client_config,
+        ) = google_auth_oauthlib.helpers.session_from_client_config(
             client_config, scopes, **kwargs
         )
 
@@ -449,6 +452,8 @@ class InstalledAppFlow(Flow):
                 for the user.
         """
         wsgi_app = _RedirectWSGIApp(success_message)
+        # Fail fast if the address is occupied
+        wsgiref.simple_server.WSGIServer.allow_reuse_address = False
         local_server = wsgiref.simple_server.make_server(
             host, port, wsgi_app, handler_class=_WSGIRequestHandler
         )
@@ -467,6 +472,9 @@ class InstalledAppFlow(Flow):
         # OAuth 2.0 should only occur over https.
         authorization_response = wsgi_app.last_request_uri.replace("http", "https")
         self.fetch_token(authorization_response=authorization_response)
+
+        # This closes the socket
+        local_server.server_close()
 
         return self.credentials
 
