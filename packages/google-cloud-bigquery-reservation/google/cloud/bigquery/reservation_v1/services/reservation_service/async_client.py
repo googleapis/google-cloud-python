@@ -82,8 +82,46 @@ class ReservationServiceAsyncClient:
         ReservationServiceClient.parse_reservation_path
     )
 
+    common_billing_account_path = staticmethod(
+        ReservationServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ReservationServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ReservationServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ReservationServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        ReservationServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ReservationServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(ReservationServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ReservationServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(ReservationServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ReservationServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = ReservationServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ReservationServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ReservationServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ReservationServiceClient).get_transport_class,
@@ -191,7 +229,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, reservation, reservation_id]):
+        has_flattened_params = any([parent, reservation, reservation_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -270,7 +309,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -348,7 +388,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -416,7 +457,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -492,7 +534,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([reservation, update_mask]):
+        has_flattened_params = any([reservation, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -586,7 +629,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, capacity_commitment]):
+        has_flattened_params = any([parent, capacity_commitment])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -663,7 +707,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -753,7 +798,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -821,7 +867,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -917,7 +964,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([capacity_commitment, update_mask]):
+        has_flattened_params = any([capacity_commitment, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1007,7 +1055,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, slot_count]):
+        has_flattened_params = any([name, slot_count])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1113,7 +1162,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, capacity_commitment_ids]):
+        has_flattened_params = any([parent, capacity_commitment_ids])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1126,8 +1176,9 @@ class ReservationServiceAsyncClient:
 
         if parent is not None:
             request.parent = parent
-        if capacity_commitment_ids is not None:
-            request.capacity_commitment_ids = capacity_commitment_ids
+
+        if capacity_commitment_ids:
+            request.capacity_commitment_ids.extend(capacity_commitment_ids)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1227,7 +1278,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, assignment]):
+        has_flattened_params = any([parent, assignment])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1329,7 +1381,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1417,7 +1470,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1530,7 +1584,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, query]):
+        has_flattened_params = any([parent, query])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1627,7 +1682,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, destination_id]):
+        has_flattened_params = any([name, destination_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1699,7 +1755,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1781,7 +1838,8 @@ class ReservationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([bi_reservation, update_mask]):
+        has_flattened_params = any([bi_reservation, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
