@@ -320,7 +320,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.ListInsightsRequest(
-            parent=parent, page_size=page_size, filter=filter_
+            parent=parent, page_size=page_size, filter=filter_,
         )
         if metadata is None:
             metadata = []
@@ -402,7 +402,7 @@ class RecommenderClient(object):
                 client_info=self._client_info,
             )
 
-        request = recommender_service_pb2.GetInsightRequest(name=name)
+        request = recommender_service_pb2.GetInsightRequest(name=name,)
         if metadata is None:
             metadata = []
         metadata = list(metadata)
@@ -485,7 +485,7 @@ class RecommenderClient(object):
             )
 
         request = recommender_service_pb2.MarkInsightAcceptedRequest(
-            name=name, etag=etag, state_metadata=state_metadata
+            name=name, etag=etag, state_metadata=state_metadata,
         )
         if metadata is None:
             metadata = []

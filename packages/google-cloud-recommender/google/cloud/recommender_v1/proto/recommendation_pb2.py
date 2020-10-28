@@ -196,7 +196,7 @@ _RECOMMENDATION_INSIGHTREFERENCE = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -410,7 +410,7 @@ _RECOMMENDATION = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_RECOMMENDATION_INSIGHTREFERENCE],
+    nested_types=[_RECOMMENDATION_INSIGHTREFERENCE,],
     enum_types=[],
     serialized_options=b"\352A\220\001\n)recommender.googleapis.com/Recommendation\022cprojects/{project}/locations/{location}/recommenders/{recommender}/recommendations/{recommendation}",
     is_extendable=False,

@@ -241,7 +241,7 @@ _GETINSIGHTREQUEST = _descriptor.Descriptor(
             serialized_options=b'\340A\002\372A$\n"recommender.googleapis.com/Insight',
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
@@ -382,7 +382,7 @@ _MARKINSIGHTACCEPTEDREQUEST = _descriptor.Descriptor(
         ),
     ],
     extensions=[],
-    nested_types=[_MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY],
+    nested_types=[_MARKINSIGHTACCEPTEDREQUEST_STATEMETADATAENTRY,],
     enum_types=[],
     serialized_options=None,
     is_extendable=False,
@@ -1198,7 +1198,6 @@ ListRecommendationsRequest = _reflection.GeneratedProtocolMessageType(
           Filter expression to restrict the recommendations returned.
           Supported filter fields: state_info.state Eg:
           \`state_info.state:“DISMISSED” or state_info.state:“FAILED”
-          .. [1]    a-z0-9  .. [2]    a-z0-9  .. [3]    a-z0-9
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.ListRecommendationsRequest)
     },
@@ -1218,8 +1217,7 @@ ListRecommendationsResponse = _reflection.GeneratedProtocolMessageType(
           The set of recommendations for the ``parent`` resource.
       next_page_token:
           A token that can be used to request the next page of results.
-          This field is empty if there are no additional results.  ..
-          [1]    a-z0-9  .. [2]    a-z0-9  .. [3]    a-z0-9
+          This field is empty if there are no additional results.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.ListRecommendationsResponse)
     },
@@ -1266,11 +1264,12 @@ MarkRecommendationClaimedRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [1]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [3]_[a-z0-9_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
-          optimistic locking.
+          optimistic locking.  .. [1]    a-z0-9  .. [2]    a-z0-9  ..
+          [3]    a-z0-9
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.MarkRecommendationClaimedRequest)
     },
@@ -1301,12 +1300,11 @@ MarkRecommendationSucceededRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [2]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [1]_[a-z0-9_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides
-          optimistic locking.  .. [1]    a-z0-9  .. [2]    a-z0-9  ..
-          [3]    a-z0-9
+          optimistic locking.
   """,
         # @@protoc_insertion_point(class_scope:google.cloud.recommender.v1.MarkRecommendationSucceededRequest)
     },
@@ -1337,7 +1335,7 @@ MarkRecommendationFailedRequest = _reflection.GeneratedProtocolMessageType(
       state_metadata:
           State properties to include with this state. Overwrites any
           existing ``state_metadata``. Keys must match the regex ``/
-          [3]_[a-z0-9_.-]{0,62}/``. Values must match the regex
+          [2]_[a-z0-9_.-]{0,62}/``. Values must match the regex
           ``/^[a-zA-Z0-9_./-]{0,255}/``.
       etag:
           Required. Fingerprint of the Recommendation. Provides

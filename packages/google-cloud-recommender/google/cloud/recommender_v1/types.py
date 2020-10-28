@@ -42,7 +42,6 @@ _local_modules = [
     recommender_service_pb2,
 ]
 
-
 names = []
 
 for module in _shared_modules:  # pragma: NO COVER
