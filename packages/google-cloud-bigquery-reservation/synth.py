@@ -19,13 +19,17 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate access approval GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("bigquery/reservation", "v1")
+library = gapic.py_library(
+    service="bigquery/reservation",
+    version="v1",
+    bazel_target=f"//google/cloud/bigquery/reservation/v1:bigquery-reservation-v1-py"
+)
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
