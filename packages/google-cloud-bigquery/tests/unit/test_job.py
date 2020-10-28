@@ -45,6 +45,8 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
+import google.cloud.bigquery.query
+
 
 def _make_credentials():
     import google.auth.credentials
@@ -3942,10 +3944,6 @@ class TestQueryJob(unittest.TestCase, _Base):
         resource = super(TestQueryJob, self)._make_resource(started, ended)
         config = resource["configuration"]["query"]
         config["query"] = self.QUERY
-
-        if ended:
-            resource["status"] = {"state": "DONE"}
-
         return resource
 
     def _verifyBooleanResourceProperties(self, job, config):
@@ -4211,6 +4209,9 @@ class TestQueryJob(unittest.TestCase, _Base):
         client = _make_client(project=self.PROJECT)
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
+        job._query_results = google.cloud.bigquery.query._QueryResults.from_api_repr(
+            {"jobComplete": True, "jobReference": resource["jobReference"]}
+        )
         self.assertTrue(job.done())
 
     def test_done_w_timeout(self):
@@ -4668,34 +4669,109 @@ class TestQueryJob(unittest.TestCase, _Base):
         from google.cloud.bigquery.table import RowIterator
 
         query_resource = {
+            "jobComplete": False,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+        }
+        query_resource_done = {
             "jobComplete": True,
             "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
             "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
             "totalRows": "2",
         }
+        job_resource = self._make_resource(started=True)
+        job_resource_done = self._make_resource(started=True, ended=True)
+        job_resource_done["configuration"]["query"]["destinationTable"] = {
+            "projectId": "dest-project",
+            "datasetId": "dest_dataset",
+            "tableId": "dest_table",
+        }
         tabledata_resource = {
-            # Explicitly set totalRows to be different from the query response.
-            # to test update during iteration.
+            # Explicitly set totalRows to be different from the initial
+            # response to test update during iteration.
             "totalRows": "1",
             "pageToken": None,
             "rows": [{"f": [{"v": "abc"}]}],
         }
-        connection = _make_connection(query_resource, tabledata_resource)
-        client = _make_client(self.PROJECT, connection=connection)
-        resource = self._make_resource(ended=True)
-        job = self._get_target_class().from_api_repr(resource, client)
+        conn = _make_connection(
+            query_resource, query_resource_done, job_resource_done, tabledata_resource
+        )
+        client = _make_client(self.PROJECT, connection=conn)
+        job = self._get_target_class().from_api_repr(job_resource, client)
 
         result = job.result()
 
         self.assertIsInstance(result, RowIterator)
         self.assertEqual(result.total_rows, 2)
-
         rows = list(result)
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].col1, "abc")
         # Test that the total_rows property has changed during iteration, based
         # on the response from tabledata.list.
         self.assertEqual(result.total_rows, 1)
+
+        query_results_call = mock.call(
+            method="GET",
+            path=f"/projects/{self.PROJECT}/queries/{self.JOB_ID}",
+            query_params={"maxResults": 0},
+            timeout=None,
+        )
+        reload_call = mock.call(
+            method="GET",
+            path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
+            query_params={},
+            timeout=None,
+        )
+        tabledata_call = mock.call(
+            method="GET",
+            path="/projects/dest-project/datasets/dest_dataset/tables/dest_table/data",
+            query_params={},
+            timeout=None,
+        )
+        conn.api_request.assert_has_calls(
+            [query_results_call, query_results_call, reload_call, tabledata_call]
+        )
+
+    def test_result_with_done_job_calls_get_query_results(self):
+        query_resource_done = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "1",
+        }
+        job_resource = self._make_resource(started=True, ended=True)
+        job_resource["configuration"]["query"]["destinationTable"] = {
+            "projectId": "dest-project",
+            "datasetId": "dest_dataset",
+            "tableId": "dest_table",
+        }
+        tabledata_resource = {
+            "totalRows": "1",
+            "pageToken": None,
+            "rows": [{"f": [{"v": "abc"}]}],
+        }
+        conn = _make_connection(query_resource_done, tabledata_resource)
+        client = _make_client(self.PROJECT, connection=conn)
+        job = self._get_target_class().from_api_repr(job_resource, client)
+
+        result = job.result()
+
+        rows = list(result)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].col1, "abc")
+
+        query_results_call = mock.call(
+            method="GET",
+            path=f"/projects/{self.PROJECT}/queries/{self.JOB_ID}",
+            query_params={"maxResults": 0},
+            timeout=None,
+        )
+        tabledata_call = mock.call(
+            method="GET",
+            path="/projects/dest-project/datasets/dest_dataset/tables/dest_table/data",
+            query_params={},
+            timeout=None,
+        )
+        conn.api_request.assert_has_calls([query_results_call, tabledata_call])
 
     def test_result_with_max_results(self):
         from google.cloud.bigquery.table import RowIterator
@@ -4938,6 +5014,9 @@ class TestQueryJob(unittest.TestCase, _Base):
             "errors": [error_result],
             "state": "DONE",
         }
+        job._query_results = google.cloud.bigquery.query._QueryResults.from_api_repr(
+            {"jobComplete": True, "jobReference": job._properties["jobReference"]}
+        )
         job._set_future_result()
 
         with self.assertRaises(exceptions.GoogleCloudError) as exc_info:
