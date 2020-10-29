@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v0.4.0...v1.0.0) (2020-10-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* update package names to avoid conflict with google-cloud-bigquery
+
+### Bug Fixes
+
+* update package names to avoid conflict with google-cloud-bigquery ([#47](https://www.github.com/googleapis/python-bigquery-reservation/issues/47)) ([dc2172f](https://www.github.com/googleapis/python-bigquery-reservation/commit/dc2172fa8c540efca01c81fdd7f40880e087f66d))
+
 ## [0.4.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v0.3.0...v0.4.0) (2020-10-28)
 
 
