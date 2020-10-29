@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.23.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.22.1...v1.23.0) (2020-10-29)
+
+
+### Features
+
+* Add custom scopes for access tokens from the metadata service ([#633](https://www.github.com/googleapis/google-auth-library-python/issues/633)) ([0323cf3](https://www.github.com/googleapis/google-auth-library-python/commit/0323cf390b16e8483660ac88775e8ea4e7f7702d))
+
+
+### Bug Fixes
+
+* **deps:** Revert "fix: pin 'aoihttp < 3.7.0dev' ([#634](https://www.github.com/googleapis/google-auth-library-python/issues/634))" ([#632](https://www.github.com/googleapis/google-auth-library-python/issues/632)) ([#640](https://www.github.com/googleapis/google-auth-library-python/issues/640)) ([b790e65](https://www.github.com/googleapis/google-auth-library-python/commit/b790e6535cc37591b23866027a426cde312e07c1))
+* pin 'aoihttp < 3.7.0dev' ([#634](https://www.github.com/googleapis/google-auth-library-python/issues/634)) ([05f9524](https://www.github.com/googleapis/google-auth-library-python/commit/05f95246fab928fe2f445781117eeac8088497fb))
+* remove checks for ancient versions of Cryptography ([#596](https://www.github.com/googleapis/google-auth-library-python/issues/596)) ([6407258](https://www.github.com/googleapis/google-auth-library-python/commit/6407258956ec42e3b722418cb7f366e5ae9272ec)), closes [/github.com/googleapis/google-auth-library-python/issues/595#issuecomment-683903062](https://www.github.com/googleapis//github.com/googleapis/google-auth-library-python/issues/595/issues/issuecomment-683903062)
+
 ### [1.22.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.22.0...v1.22.1) (2020-10-05)
 
 
