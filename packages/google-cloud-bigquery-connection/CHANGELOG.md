@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v0.3.0...v1.0.0) (2020-10-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* update package names to avoid conflict with google-cloud-bigquery (#27)
+
+### Bug Fixes
+
+* update package names to avoid conflict with google-cloud-bigquery ([#27](https://www.github.com/googleapis/python-bigquery-connection/issues/27)) ([741121c](https://www.github.com/googleapis/python-bigquery-connection/commit/741121c44786ac78e5750aa5383b6da918c3230c))
+
 ## [0.3.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v0.2.0...v0.3.0) (2020-10-28)
 
 
