@@ -6,8 +6,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    connection_v1/services
-    connection_v1/types
+    bigquery_connection_v1/services
+    bigquery_connection_v1/types
 
 Changelog
 ---------

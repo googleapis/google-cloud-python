@@ -38,7 +38,7 @@ def partition(
     return results[1], results[0]
 
 
-class connectionCallTransformer(cst.CSTTransformer):
+class bigquery_connectionCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'create_connection': ('parent', 'connection', 'connection_id', ),
@@ -98,7 +98,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=connectionCallTransformer(),
+    transformer=bigquery_connectionCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -131,7 +131,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the connection client library.
+        description="""Fix up source that uses the bigquery_connection client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

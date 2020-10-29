@@ -17,7 +17,7 @@
 
 from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
 
-from google.cloud.bigquery.connection_v1.types import connection
+from google.cloud.bigquery_connection_v1.types import connection
 
 
 class ListConnectionsPager:

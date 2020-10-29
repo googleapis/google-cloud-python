@@ -32,16 +32,16 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigquery.connection_v1.services.connection_service import (
+from google.cloud.bigquery_connection_v1.services.connection_service import (
     ConnectionServiceAsyncClient,
 )
-from google.cloud.bigquery.connection_v1.services.connection_service import (
+from google.cloud.bigquery_connection_v1.services.connection_service import (
     ConnectionServiceClient,
 )
-from google.cloud.bigquery.connection_v1.services.connection_service import pagers
-from google.cloud.bigquery.connection_v1.services.connection_service import transports
-from google.cloud.bigquery.connection_v1.types import connection
-from google.cloud.bigquery.connection_v1.types import connection as gcbc_connection
+from google.cloud.bigquery_connection_v1.services.connection_service import pagers
+from google.cloud.bigquery_connection_v1.services.connection_service import transports
+from google.cloud.bigquery_connection_v1.types import connection
+from google.cloud.bigquery_connection_v1.types import connection as gcbc_connection
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import options_pb2 as options  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -441,7 +441,7 @@ def test_connection_service_client_client_options_credentials_file(
 
 def test_connection_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.bigquery.connection_v1.services.connection_service.transports.ConnectionServiceGrpcTransport.__init__"
+        "google.cloud.bigquery_connection_v1.services.connection_service.transports.ConnectionServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = ConnectionServiceClient(
@@ -2517,7 +2517,7 @@ def test_connection_service_base_transport_error():
 def test_connection_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.bigquery.connection_v1.services.connection_service.transports.ConnectionServiceTransport.__init__"
+        "google.cloud.bigquery_connection_v1.services.connection_service.transports.ConnectionServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.ConnectionServiceTransport(
@@ -2546,7 +2546,7 @@ def test_connection_service_base_transport_with_credentials_file():
     with mock.patch.object(
         auth, "load_credentials_from_file"
     ) as load_creds, mock.patch(
-        "google.cloud.bigquery.connection_v1.services.connection_service.transports.ConnectionServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_connection_v1.services.connection_service.transports.ConnectionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
@@ -2566,7 +2566,7 @@ def test_connection_service_base_transport_with_credentials_file():
 def test_connection_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(auth, "default") as adc, mock.patch(
-        "google.cloud.bigquery.connection_v1.services.connection_service.transports.ConnectionServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_connection_v1.services.connection_service.transports.ConnectionServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (credentials.AnonymousCredentials(), None)

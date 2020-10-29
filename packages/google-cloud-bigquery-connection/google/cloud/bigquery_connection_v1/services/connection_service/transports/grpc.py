@@ -26,8 +26,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.bigquery.connection_v1.types import connection
-from google.cloud.bigquery.connection_v1.types import connection as gcbc_connection
+from google.cloud.bigquery_connection_v1.types import connection
+from google.cloud.bigquery_connection_v1.types import connection as gcbc_connection
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
