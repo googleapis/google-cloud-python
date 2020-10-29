@@ -25,8 +25,8 @@ from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
-from google.cloud.bigquery.reservation_v1.types import reservation
-from google.cloud.bigquery.reservation_v1.types import reservation as gcbr_reservation
+from google.cloud.bigquery_reservation_v1.types import reservation
+from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
@@ -112,76 +112,170 @@ class ReservationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_reservation: gapic_v1.method.wrap_method(
-                self.create_reservation, default_timeout=None, client_info=client_info,
+                self.create_reservation, default_timeout=60.0, client_info=client_info,
             ),
             self.list_reservations: gapic_v1.method.wrap_method(
-                self.list_reservations, default_timeout=None, client_info=client_info,
+                self.list_reservations,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_reservation: gapic_v1.method.wrap_method(
-                self.get_reservation, default_timeout=None, client_info=client_info,
+                self.get_reservation,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_reservation: gapic_v1.method.wrap_method(
-                self.delete_reservation, default_timeout=None, client_info=client_info,
+                self.delete_reservation,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_reservation: gapic_v1.method.wrap_method(
-                self.update_reservation, default_timeout=None, client_info=client_info,
+                self.update_reservation, default_timeout=60.0, client_info=client_info,
             ),
             self.create_capacity_commitment: gapic_v1.method.wrap_method(
                 self.create_capacity_commitment,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_capacity_commitments: gapic_v1.method.wrap_method(
                 self.list_capacity_commitments,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_capacity_commitment: gapic_v1.method.wrap_method(
                 self.get_capacity_commitment,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_capacity_commitment: gapic_v1.method.wrap_method(
                 self.delete_capacity_commitment,
-                default_timeout=None,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_capacity_commitment: gapic_v1.method.wrap_method(
                 self.update_capacity_commitment,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.split_capacity_commitment: gapic_v1.method.wrap_method(
                 self.split_capacity_commitment,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.merge_capacity_commitments: gapic_v1.method.wrap_method(
                 self.merge_capacity_commitments,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.create_assignment: gapic_v1.method.wrap_method(
-                self.create_assignment, default_timeout=None, client_info=client_info,
+                self.create_assignment, default_timeout=60.0, client_info=client_info,
             ),
             self.list_assignments: gapic_v1.method.wrap_method(
-                self.list_assignments, default_timeout=None, client_info=client_info,
+                self.list_assignments,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_assignment: gapic_v1.method.wrap_method(
-                self.delete_assignment, default_timeout=None, client_info=client_info,
+                self.delete_assignment,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.search_assignments: gapic_v1.method.wrap_method(
-                self.search_assignments, default_timeout=None, client_info=client_info,
+                self.search_assignments,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.move_assignment: gapic_v1.method.wrap_method(
-                self.move_assignment, default_timeout=None, client_info=client_info,
+                self.move_assignment, default_timeout=60.0, client_info=client_info,
             ),
             self.get_bi_reservation: gapic_v1.method.wrap_method(
-                self.get_bi_reservation, default_timeout=None, client_info=client_info,
+                self.get_bi_reservation,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_bi_reservation: gapic_v1.method.wrap_method(
                 self.update_bi_reservation,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
         }

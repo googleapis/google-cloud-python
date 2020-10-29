@@ -17,7 +17,7 @@
 
 from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
 
-from google.cloud.bigquery.reservation_v1.types import reservation
+from google.cloud.bigquery_reservation_v1.types import reservation
 
 
 class ListReservationsPager:

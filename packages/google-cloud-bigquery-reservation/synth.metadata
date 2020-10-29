@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery-reservation.git",
-        "sha": "21bff87047519754a01983c9a4551cb534bcb88c"
+        "sha": "dcea1f2c3bed3a79be0a55218df6698cc29d3bf5"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "5ad09e867a8f1faa19fbd674e51fa9c3f5fe2770",
-        "internalRef": "326514554"
+        "sha": "ab0498dc4bd2bcfcb70ab257e8edfa00f86083a6",
+        "internalRef": "339531446"
       }
     },
     {
@@ -37,12 +37,11 @@
         "apiName": "bigquery/reservation",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     }
   ],
   "generatedFiles": [
-    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -92,30 +91,32 @@
     "MANIFEST.in",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
+    "docs/bigquery_reservation_v1/services.rst",
+    "docs/bigquery_reservation_v1/types.rst",
     "docs/conf.py",
     "docs/multiprocessing.rst",
-    "docs/reservation_v1/services.rst",
-    "docs/reservation_v1/types.rst",
-    "google/cloud/bigquery/reservation/__init__.py",
-    "google/cloud/bigquery/reservation/py.typed",
-    "google/cloud/bigquery/reservation_v1/__init__.py",
-    "google/cloud/bigquery/reservation_v1/py.typed",
-    "google/cloud/bigquery/reservation_v1/services/__init__.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/__init__.py",
     "google/cloud/bigquery/reservation_v1/services/reservation_service/async_client.py",
     "google/cloud/bigquery/reservation_v1/services/reservation_service/client.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/pagers.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/transports/__init__.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/transports/base.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/transports/grpc.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/transports/grpc_asyncio.py",
-    "google/cloud/bigquery/reservation_v1/types/__init__.py",
-    "google/cloud/bigquery/reservation_v1/types/reservation.py",
+    "google/cloud/bigquery_reservation/__init__.py",
+    "google/cloud/bigquery_reservation/py.typed",
+    "google/cloud/bigquery_reservation_v1/__init__.py",
+    "google/cloud/bigquery_reservation_v1/py.typed",
+    "google/cloud/bigquery_reservation_v1/services/__init__.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/__init__.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/async_client.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/client.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/pagers.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/transports/__init__.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/transports/base.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/transports/grpc.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/transports/grpc_asyncio.py",
+    "google/cloud/bigquery_reservation_v1/types/__init__.py",
+    "google/cloud/bigquery_reservation_v1/types/reservation.py",
     "mypy.ini",
     "noxfile.py",
     "renovate.json",
     "scripts/decrypt-secrets.sh",
-    "scripts/fixup_reservation_v1_keywords.py",
+    "scripts/fixup_bigquery_reservation_v1_keywords.py",
     "scripts/readme-gen/readme_gen.py",
     "scripts/readme-gen/templates/README.tmpl.rst",
     "scripts/readme-gen/templates/auth.tmpl.rst",
@@ -124,7 +125,7 @@
     "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
     "setup.cfg",
     "testing/.gitignore",
-    "tests/unit/gapic/reservation_v1/__init__.py",
-    "tests/unit/gapic/reservation_v1/test_reservation_service.py"
+    "tests/unit/gapic/bigquery_reservation_v1/__init__.py",
+    "tests/unit/gapic/bigquery_reservation_v1/test_reservation_service.py"
   ]
 }

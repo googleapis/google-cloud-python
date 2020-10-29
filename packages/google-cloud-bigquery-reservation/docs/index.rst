@@ -6,8 +6,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    reservation_v1/services
-    reservation_v1/types
+    bigquery_reservation_v1/services
+    bigquery_reservation_v1/types
 
 Changelog
 ---------

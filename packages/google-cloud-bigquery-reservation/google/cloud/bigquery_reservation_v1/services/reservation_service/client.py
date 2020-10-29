@@ -16,31 +16,70 @@
 #
 
 from collections import OrderedDict
-import functools
+from distutils import util
+import os
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
+from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.bigquery.reservation_v1.services.reservation_service import pagers
-from google.cloud.bigquery.reservation_v1.types import reservation
-from google.cloud.bigquery.reservation_v1.types import reservation as gcbr_reservation
+from google.cloud.bigquery_reservation_v1.services.reservation_service import pagers
+from google.cloud.bigquery_reservation_v1.types import reservation
+from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.rpc import status_pb2 as status  # type: ignore
 
 from .transports.base import ReservationServiceTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import ReservationServiceGrpcTransport
 from .transports.grpc_asyncio import ReservationServiceGrpcAsyncIOTransport
-from .client import ReservationServiceClient
 
 
-class ReservationServiceAsyncClient:
+class ReservationServiceClientMeta(type):
+    """Metaclass for the ReservationService client.
+
+    This provides class-level methods for building and retrieving
+    support objects (e.g. transport) without polluting the client instance
+    objects.
+    """
+
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[ReservationServiceTransport]]
+    _transport_registry["grpc"] = ReservationServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = ReservationServiceGrpcAsyncIOTransport
+
+    def get_transport_class(
+        cls, label: str = None,
+    ) -> Type[ReservationServiceTransport]:
+        """Return an appropriate transport class.
+
+        Args:
+            label: The name of the desired transport. If none is
+                provided, then the first transport in the registry is used.
+
+        Returns:
+            The transport class to use.
+        """
+        # If a specific transport is requested, return that one.
+        if label:
+            return cls._transport_registry[label]
+
+        # No transport is requested; return the default (that is, the first one
+        # in the dictionary).
+        return next(iter(cls._transport_registry.values()))
+
+
+class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
     """This API allows users to manage their flat-rate BigQuery
     reservations.
 
@@ -60,58 +99,58 @@ class ReservationServiceAsyncClient:
     ``projects/myproject/locations/US/capacityCommitments/id``.
     """
 
-    _client: ReservationServiceClient
+    @staticmethod
+    def _get_default_mtls_endpoint(api_endpoint):
+        """Convert api endpoint to mTLS endpoint.
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
+        Args:
+            api_endpoint (Optional[str]): the api endpoint to convert.
+        Returns:
+            str: converted mTLS api endpoint.
+        """
+        if not api_endpoint:
+            return api_endpoint
 
-    DEFAULT_ENDPOINT = ReservationServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = ReservationServiceClient.DEFAULT_MTLS_ENDPOINT
+        mtls_endpoint_re = re.compile(
+            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
+        )
 
-    assignment_path = staticmethod(ReservationServiceClient.assignment_path)
-    parse_assignment_path = staticmethod(ReservationServiceClient.parse_assignment_path)
-    bi_reservation_path = staticmethod(ReservationServiceClient.bi_reservation_path)
-    parse_bi_reservation_path = staticmethod(
-        ReservationServiceClient.parse_bi_reservation_path
-    )
-    capacity_commitment_path = staticmethod(
-        ReservationServiceClient.capacity_commitment_path
-    )
-    parse_capacity_commitment_path = staticmethod(
-        ReservationServiceClient.parse_capacity_commitment_path
-    )
-    reservation_path = staticmethod(ReservationServiceClient.reservation_path)
-    parse_reservation_path = staticmethod(
-        ReservationServiceClient.parse_reservation_path
-    )
+        m = mtls_endpoint_re.match(api_endpoint)
+        name, mtls, sandbox, googledomain = m.groups()
+        if mtls or not googledomain:
+            return api_endpoint
 
-    common_billing_account_path = staticmethod(
-        ReservationServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ReservationServiceClient.parse_common_billing_account_path
-    )
+        if sandbox:
+            return api_endpoint.replace(
+                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
+            )
 
-    common_folder_path = staticmethod(ReservationServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ReservationServiceClient.parse_common_folder_path
-    )
+        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    common_organization_path = staticmethod(
-        ReservationServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ReservationServiceClient.parse_common_organization_path
+    DEFAULT_ENDPOINT = "bigqueryreservation.googleapis.com"
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
+        DEFAULT_ENDPOINT
     )
 
-    common_project_path = staticmethod(ReservationServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ReservationServiceClient.parse_common_project_path
-    )
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
 
-    common_location_path = staticmethod(ReservationServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ReservationServiceClient.parse_common_location_path
-    )
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
 
-    from_service_account_file = ReservationServiceClient.from_service_account_file
+        Returns:
+            {@api.name}: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_file(filename)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -121,19 +160,144 @@ class ReservationServiceAsyncClient:
         Returns:
             ReservationServiceTransport: The transport used by the client instance.
         """
-        return self._client.transport
+        return self._transport
 
-    get_transport_class = functools.partial(
-        type(ReservationServiceClient).get_transport_class,
-        type(ReservationServiceClient),
-    )
+    @staticmethod
+    def assignment_path(
+        project: str, location: str, reservation: str, assignment: str,
+    ) -> str:
+        """Return a fully-qualified assignment string."""
+        return "projects/{project}/locations/{location}/reservations/{reservation}/assignments/{assignment}".format(
+            project=project,
+            location=location,
+            reservation=reservation,
+            assignment=assignment,
+        )
+
+    @staticmethod
+    def parse_assignment_path(path: str) -> Dict[str, str]:
+        """Parse a assignment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/reservations/(?P<reservation>.+?)/assignments/(?P<assignment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def bi_reservation_path(project: str, location: str,) -> str:
+        """Return a fully-qualified bi_reservation string."""
+        return "projects/{project}/locations/{location}/bireservation".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_bi_reservation_path(path: str) -> Dict[str, str]:
+        """Parse a bi_reservation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/bireservation$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def capacity_commitment_path(
+        project: str, location: str, capacity_commitment: str,
+    ) -> str:
+        """Return a fully-qualified capacity_commitment string."""
+        return "projects/{project}/locations/{location}/capacityCommitments/{capacity_commitment}".format(
+            project=project, location=location, capacity_commitment=capacity_commitment,
+        )
+
+    @staticmethod
+    def parse_capacity_commitment_path(path: str) -> Dict[str, str]:
+        """Parse a capacity_commitment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/capacityCommitments/(?P<capacity_commitment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def reservation_path(project: str, location: str, reservation: str,) -> str:
+        """Return a fully-qualified reservation string."""
+        return "projects/{project}/locations/{location}/reservations/{reservation}".format(
+            project=project, location=location, reservation=reservation,
+        )
+
+    @staticmethod
+    def parse_reservation_path(path: str) -> Dict[str, str]:
+        """Parse a reservation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/reservations/(?P<reservation>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
 
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, ReservationServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, ReservationServiceTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the reservation service client.
@@ -147,8 +311,8 @@ class ReservationServiceAsyncClient:
             transport (Union[str, ~.ReservationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -163,20 +327,89 @@ class ReservationServiceAsyncClient:
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
+        if isinstance(client_options, dict):
+            client_options = client_options_lib.from_dict(client_options)
+        if client_options is None:
+            client_options = client_options_lib.ClientOptions()
 
-        self._client = ReservationServiceClient(
-            credentials=credentials,
-            transport=transport,
-            client_options=client_options,
-            client_info=client_info,
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-    async def create_reservation(
+        ssl_credentials = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                import grpc  # type: ignore
+
+                cert, key = client_options.client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+                is_mtls = True
+            else:
+                creds = SslCredentials()
+                is_mtls = creds.is_mtls
+                ssl_credentials = creds.ssl_credentials if is_mtls else None
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
+                )
+            else:
+                raise MutualTLSChannelError(
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                )
+
+        # Save or instantiate the transport.
+        # Ordinarily, we provide the transport, but allowing a custom transport
+        # instance provides an extensibility point for unusual situations.
+        if isinstance(transport, ReservationServiceTransport):
+            # transport is a ReservationServiceTransport instance.
+            if credentials or client_options.credentials_file:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its credentials directly."
+                )
+            if client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its scopes directly."
+                )
+            self._transport = transport
+        else:
+            Transport = type(self).get_transport_class(transport)
+            self._transport = Transport(
+                credentials=credentials,
+                credentials_file=client_options.credentials_file,
+                host=api_endpoint,
+                scopes=client_options.scopes,
+                ssl_channel_credentials=ssl_credentials,
+                quota_project_id=client_options.quota_project_id,
+                client_info=client_info,
+            )
+
+    def create_reservation(
         self,
         request: gcbr_reservation.CreateReservationRequest = None,
         *,
@@ -236,25 +469,26 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcbr_reservation.CreateReservationRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcbr_reservation.CreateReservationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcbr_reservation.CreateReservationRequest):
+            request = gcbr_reservation.CreateReservationRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if reservation is not None:
-            request.reservation = reservation
-        if reservation_id is not None:
-            request.reservation_id = reservation_id
+            if parent is not None:
+                request.parent = parent
+            if reservation is not None:
+                request.reservation = reservation
+            if reservation_id is not None:
+                request.reservation_id = reservation_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_reservation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -263,12 +497,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def list_reservations(
+    def list_reservations(
         self,
         request: reservation.ListReservationsRequest = None,
         *,
@@ -276,7 +510,7 @@ class ReservationServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListReservationsAsyncPager:
+    ) -> pagers.ListReservationsPager:
         r"""Lists all the reservations for the project in the
         specified location.
 
@@ -298,7 +532,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListReservationsAsyncPager:
+            ~.pagers.ListReservationsPager:
                 The response for
                 [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
 
@@ -316,21 +550,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.ListReservationsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.ListReservationsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.ListReservationsRequest):
+            request = reservation.ListReservationsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_reservations,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_reservations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -339,18 +574,18 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListReservationsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.ListReservationsPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def get_reservation(
+    def get_reservation(
         self,
         request: reservation.GetReservationRequest = None,
         *,
@@ -395,21 +630,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.GetReservationRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.GetReservationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.GetReservationRequest):
+            request = reservation.GetReservationRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_reservation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -418,12 +654,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def delete_reservation(
+    def delete_reservation(
         self,
         request: reservation.DeleteReservationRequest = None,
         *,
@@ -464,21 +700,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.DeleteReservationRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.DeleteReservationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.DeleteReservationRequest):
+            request = reservation.DeleteReservationRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.delete_reservation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -487,11 +724,11 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        await rpc(
+        rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
-    async def update_reservation(
+    def update_reservation(
         self,
         request: gcbr_reservation.UpdateReservationRequest = None,
         *,
@@ -541,23 +778,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = gcbr_reservation.UpdateReservationRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcbr_reservation.UpdateReservationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcbr_reservation.UpdateReservationRequest):
+            request = gcbr_reservation.UpdateReservationRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if reservation is not None:
-            request.reservation = reservation
-        if update_mask is not None:
-            request.update_mask = update_mask
+            if reservation is not None:
+                request.reservation = reservation
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.update_reservation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -568,12 +806,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def create_capacity_commitment(
+    def create_capacity_commitment(
         self,
         request: reservation.CreateCapacityCommitmentRequest = None,
         *,
@@ -636,23 +874,26 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.CreateCapacityCommitmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.CreateCapacityCommitmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.CreateCapacityCommitmentRequest):
+            request = reservation.CreateCapacityCommitmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if capacity_commitment is not None:
-            request.capacity_commitment = capacity_commitment
+            if parent is not None:
+                request.parent = parent
+            if capacity_commitment is not None:
+                request.capacity_commitment = capacity_commitment
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_capacity_commitment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -661,12 +902,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def list_capacity_commitments(
+    def list_capacity_commitments(
         self,
         request: reservation.ListCapacityCommitmentsRequest = None,
         *,
@@ -674,7 +915,7 @@ class ReservationServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListCapacityCommitmentsAsyncPager:
+    ) -> pagers.ListCapacityCommitmentsPager:
         r"""Lists all the capacity commitments for the admin
         project.
 
@@ -696,7 +937,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCapacityCommitmentsAsyncPager:
+            ~.pagers.ListCapacityCommitmentsPager:
                 The response for
                 [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
 
@@ -714,21 +955,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.ListCapacityCommitmentsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.ListCapacityCommitmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.ListCapacityCommitmentsRequest):
+            request = reservation.ListCapacityCommitmentsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_capacity_commitments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_capacity_commitments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -737,18 +981,18 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListCapacityCommitmentsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.ListCapacityCommitmentsPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def get_capacity_commitment(
+    def get_capacity_commitment(
         self,
         request: reservation.GetCapacityCommitmentRequest = None,
         *,
@@ -805,21 +1049,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.GetCapacityCommitmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.GetCapacityCommitmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.GetCapacityCommitmentRequest):
+            request = reservation.GetCapacityCommitmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_capacity_commitment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_capacity_commitment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -828,12 +1073,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def delete_capacity_commitment(
+    def delete_capacity_commitment(
         self,
         request: reservation.DeleteCapacityCommitmentRequest = None,
         *,
@@ -874,21 +1119,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.DeleteCapacityCommitmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.DeleteCapacityCommitmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.DeleteCapacityCommitmentRequest):
+            request = reservation.DeleteCapacityCommitmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_capacity_commitment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -897,11 +1145,11 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        await rpc(
+        rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
-    async def update_capacity_commitment(
+    def update_capacity_commitment(
         self,
         request: reservation.UpdateCapacityCommitmentRequest = None,
         *,
@@ -971,23 +1219,26 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.UpdateCapacityCommitmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.UpdateCapacityCommitmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.UpdateCapacityCommitmentRequest):
+            request = reservation.UpdateCapacityCommitmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if capacity_commitment is not None:
-            request.capacity_commitment = capacity_commitment
-        if update_mask is not None:
-            request.update_mask = update_mask
+            if capacity_commitment is not None:
+                request.capacity_commitment = capacity_commitment
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_capacity_commitment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -998,12 +1249,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def split_capacity_commitment(
+    def split_capacity_commitment(
         self,
         request: reservation.SplitCapacityCommitmentRequest = None,
         *,
@@ -1062,23 +1313,26 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.SplitCapacityCommitmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.SplitCapacityCommitmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.SplitCapacityCommitmentRequest):
+            request = reservation.SplitCapacityCommitmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if slot_count is not None:
-            request.slot_count = slot_count
+            if name is not None:
+                request.name = name
+            if slot_count is not None:
+                request.slot_count = slot_count
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.split_capacity_commitment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.split_capacity_commitment
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1087,12 +1341,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def merge_capacity_commitments(
+    def merge_capacity_commitments(
         self,
         request: reservation.MergeCapacityCommitmentsRequest = None,
         *,
@@ -1169,24 +1423,27 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.MergeCapacityCommitmentsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.MergeCapacityCommitmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.MergeCapacityCommitmentsRequest):
+            request = reservation.MergeCapacityCommitmentsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
-        if capacity_commitment_ids:
-            request.capacity_commitment_ids.extend(capacity_commitment_ids)
+            if capacity_commitment_ids:
+                request.capacity_commitment_ids.extend(capacity_commitment_ids)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.merge_capacity_commitments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.merge_capacity_commitments
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1195,12 +1452,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def create_assignment(
+    def create_assignment(
         self,
         request: reservation.CreateAssignmentRequest = None,
         *,
@@ -1285,23 +1542,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.CreateAssignmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.CreateAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.CreateAssignmentRequest):
+            request = reservation.CreateAssignmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if assignment is not None:
-            request.assignment = assignment
+            if parent is not None:
+                request.parent = parent
+            if assignment is not None:
+                request.assignment = assignment
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_assignment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1310,12 +1568,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def list_assignments(
+    def list_assignments(
         self,
         request: reservation.ListAssignmentsRequest = None,
         *,
@@ -1323,7 +1581,7 @@ class ReservationServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListAssignmentsAsyncPager:
+    ) -> pagers.ListAssignmentsPager:
         r"""Lists assignments.
 
         Only explicitly created assignments will be returned.
@@ -1370,7 +1628,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListAssignmentsAsyncPager:
+            ~.pagers.ListAssignmentsPager:
                 The response for
                 [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
 
@@ -1388,21 +1646,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.ListAssignmentsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.ListAssignmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.ListAssignmentsRequest):
+            request = reservation.ListAssignmentsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_assignments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_assignments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1411,18 +1670,18 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListAssignmentsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.ListAssignmentsPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def delete_assignment(
+    def delete_assignment(
         self,
         request: reservation.DeleteAssignmentRequest = None,
         *,
@@ -1477,21 +1736,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.DeleteAssignmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.DeleteAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.DeleteAssignmentRequest):
+            request = reservation.DeleteAssignmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.delete_assignment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1500,11 +1760,11 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        await rpc(
+        rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
-    async def search_assignments(
+    def search_assignments(
         self,
         request: reservation.SearchAssignmentsRequest = None,
         *,
@@ -1513,7 +1773,7 @@ class ReservationServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.SearchAssignmentsAsyncPager:
+    ) -> pagers.SearchAssignmentsPager:
         r"""Looks up assignments for a specified resource for a particular
         region. If the request is about a project:
 
@@ -1562,7 +1822,6 @@ class ReservationServiceAsyncClient:
                 -  ``assignee=folders/123``
                 -  ``assignee=organizations/456``
 
-
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1574,7 +1833,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.SearchAssignmentsAsyncPager:
+            ~.pagers.SearchAssignmentsPager:
                 The response for
                 [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
 
@@ -1592,23 +1851,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.SearchAssignmentsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.SearchAssignmentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.SearchAssignmentsRequest):
+            request = reservation.SearchAssignmentsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if query is not None:
-            request.query = query
+            if parent is not None:
+                request.parent = parent
+            if query is not None:
+                request.query = query
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search_assignments,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.search_assignments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1617,18 +1877,18 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.SearchAssignmentsAsyncPager(
+        # an `__iter__` convenience method.
+        response = pagers.SearchAssignmentsPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def move_assignment(
+    def move_assignment(
         self,
         request: reservation.MoveAssignmentRequest = None,
         *,
@@ -1690,23 +1950,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.MoveAssignmentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.MoveAssignmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.MoveAssignmentRequest):
+            request = reservation.MoveAssignmentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
-        if destination_id is not None:
-            request.destination_id = destination_id
+            if name is not None:
+                request.name = name
+            if destination_id is not None:
+                request.destination_id = destination_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.move_assignment,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.move_assignment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1715,12 +1976,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def get_bi_reservation(
+    def get_bi_reservation(
         self,
         request: reservation.GetBiReservationRequest = None,
         *,
@@ -1763,21 +2024,22 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.GetBiReservationRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.GetBiReservationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.GetBiReservationRequest):
+            request = reservation.GetBiReservationRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_bi_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_bi_reservation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1786,12 +2048,12 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
 
-    async def update_bi_reservation(
+    def update_bi_reservation(
         self,
         request: reservation.UpdateBiReservationRequest = None,
         *,
@@ -1846,23 +2108,24 @@ class ReservationServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = reservation.UpdateBiReservationRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a reservation.UpdateBiReservationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, reservation.UpdateBiReservationRequest):
+            request = reservation.UpdateBiReservationRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if bi_reservation is not None:
-            request.bi_reservation = bi_reservation
-        if update_mask is not None:
-            request.update_mask = update_mask
+            if bi_reservation is not None:
+                request.bi_reservation = bi_reservation
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_bi_reservation,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.update_bi_reservation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1873,7 +2136,7 @@ class ReservationServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -1889,4 +2152,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("ReservationServiceAsyncClient",)
+__all__ = ("ReservationServiceClient",)

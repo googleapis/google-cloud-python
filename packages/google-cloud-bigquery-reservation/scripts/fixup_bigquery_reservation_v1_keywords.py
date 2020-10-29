@@ -38,7 +38,7 @@ def partition(
     return results[1], results[0]
 
 
-class reservationCallTransformer(cst.CSTTransformer):
+class bigquery_reservationCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'create_assignment': ('parent', 'assignment', ),
@@ -109,7 +109,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=reservationCallTransformer(),
+    transformer=bigquery_reservationCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -142,7 +142,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the reservation client library.
+        description="""Fix up source that uses the bigquery_reservation client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 
