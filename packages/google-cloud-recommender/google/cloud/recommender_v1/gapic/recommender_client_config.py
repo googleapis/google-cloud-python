@@ -39,17 +39,17 @@ config = {
                 "ListInsights": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "retry_policy_1_codes",
-                    "retry_params_name": "no_retry_params",
+                    "retry_params_name": "retry_policy_1_params",
                 },
                 "GetInsight": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "retry_policy_1_codes",
-                    "retry_params_name": "no_retry_params",
+                    "retry_params_name": "retry_policy_1_params",
                 },
                 "MarkInsightAccepted": {
                     "timeout_millis": 60000,
                     "retry_codes_name": "no_retry_1_codes",
-                    "retry_params_name": "no_retry_params",
+                    "retry_params_name": "no_retry_1_params",
                 },
                 "ListRecommendations": {
                     "timeout_millis": 60000,
