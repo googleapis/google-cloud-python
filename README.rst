@@ -42,7 +42,7 @@ The following client libraries have **GA** support:
 -  `Google Cloud Datastore`_ (`Datastore README`_, `Datastore Documentation`_)
 -  `Google Cloud DLP`_ (`DLP README`_, `DLP Documentation`_)
 -  `Google Cloud Firestore`_ (`Firestore README`_, `Firestore Documentation`_)
--  `Google Cloud IAM`_ (`IAM README`_, `IAM Documentation`_)
+-  `Google Cloud IAM Credentials`_ (`IAM Credentials README`_, `IAM Credentials Documentation`_)
 -  `Google Cloud IoT`_ (`IoT README`_, `IoT Documentation`_)
 -  `Google Cloud KMS`_ (`KMS README`_, `KMS Documentation`_)
 -  `Google Cloud Memorystore for Redis`_ (`Redis README`_, `Redis Documentation`_)
@@ -120,9 +120,9 @@ The following client libraries have **GA** support:
 .. _Firestore README: https://github.com/googleapis/python-firestore
 .. _Firestore Documentation: https://googleapis.dev/python/firestore/latest
 
-.. _Google Cloud IAM: https://pypi.org/project/google-cloud-iam/
-.. _IAM README: https://github.com/googleapis/python-iam
-.. _IAM Documentation: https://googleapis.dev/python/iam/latest
+.. _Google Cloud IAM Credentials: https://pypi.org/project/google-cloud-iam/
+.. _IAM Credentials README: https://github.com/googleapis/python-iam
+.. _IAM Credentials Documentation: https://googleapis.dev/python/iam/latest
 
 .. _Google Cloud IoT: https://pypi.org/project/google-cloud-iot/
 .. _IoT README: https://github.com/googleapis/python-iot/
