@@ -601,3 +601,9 @@ class TestCursor(unittest.TestCase):
             "SELECT %s, %s;",
             ("hello",),
         )
+
+    def test__format_operation_w_empty_dict(self):
+        from google.cloud.bigquery.dbapi import cursor
+
+        formatted_operation = cursor._format_operation("SELECT '%f'", {})
+        self.assertEqual(formatted_operation, "SELECT '%f'")

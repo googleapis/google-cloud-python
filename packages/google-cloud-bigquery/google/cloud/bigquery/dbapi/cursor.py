@@ -441,7 +441,7 @@ def _format_operation(operation, parameters=None):
             if a parameter used in the operation is not found in the
             ``parameters`` argument.
     """
-    if parameters is None:
+    if parameters is None or len(parameters) == 0:
         return operation
 
     if isinstance(parameters, collections_abc.Mapping):
