@@ -315,7 +315,7 @@ def default_explicit_service_account_async(session):
     session.env[EXPECT_PROJECT_ENV] = "1"
     session.install(*(TEST_DEPENDENCIES_SYNC + TEST_DEPENDENCIES_ASYNC))
     session.install(LIBRARY_DIR)
-    session.run("pytest", "system_tests_async/test_default.py", 
+    session.run("pytest", "system_tests_async/test_default.py",
     "system_tests_async/test_id_token.py")
 
 

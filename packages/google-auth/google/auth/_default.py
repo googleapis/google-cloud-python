@@ -274,10 +274,11 @@ def default(scopes=None, request=None, quota_project_id=None):
             gcloud config set project
 
     3. If the application is running in the `App Engine standard environment`_
-       then the credentials and project ID from the `App Identity Service`_
-       are used.
-    4. If the application is running in `Compute Engine`_ or the
-       `App Engine flexible environment`_ then the credentials and project ID
+       (first generation) then the credentials and project ID from the
+       `App Identity Service`_ are used.
+    4. If the application is running in `Compute Engine`_ or `Cloud Run`_ or
+       the `App Engine flexible environment`_ or the `App Engine standard
+       environment`_ (second generation) then the credentials and project ID
        are obtained from the `Metadata Service`_.
     5. If no credentials are found,
        :class:`~google.auth.exceptions.DefaultCredentialsError` will be raised.
@@ -293,6 +294,7 @@ def default(scopes=None, request=None, quota_project_id=None):
             /appengine/flexible
     .. _Metadata Service: https://cloud.google.com/compute/docs\
             /storing-retrieving-metadata
+    .. _Cloud Run: https://cloud.google.com/run
 
     Example::
 

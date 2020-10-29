@@ -32,29 +32,28 @@ from google.auth.compute_engine import _metadata
 from google.oauth2 import _client
 
 
-class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
+class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
     """Compute Engine Credentials.
 
     These credentials use the Google Compute Engine metadata server to obtain
-    OAuth 2.0 access tokens associated with the instance's service account.
+    OAuth 2.0 access tokens associated with the instance's service account,
+    and are also used for Cloud Run, Flex and App Engine (except for the Python
+    2.7 runtime).
 
     For more information about Compute Engine authentication, including how
     to configure scopes, see the `Compute Engine authentication
     documentation`_.
 
-    .. note:: Compute Engine instances can be created with scopes and therefore
-        these credentials are considered to be 'scoped'. However, you can
-        not use :meth:`~google.auth.credentials.ScopedCredentials.with_scopes`
-        because it is not possible to change the scopes that the instance
-        has. Also note that
-        :meth:`~google.auth.credentials.ScopedCredentials.has_scopes` will not
-        work until the credentials have been refreshed.
+    .. note:: On Compute Engine the metadata server ignores requested scopes.
+        On Cloud Run, Flex and App Engine the server honours requested scopes.
 
     .. _Compute Engine authentication documentation:
         https://cloud.google.com/compute/docs/authentication#using
     """
 
-    def __init__(self, service_account_email="default", quota_project_id=None):
+    def __init__(
+        self, service_account_email="default", quota_project_id=None, scopes=None
+    ):
         """
         Args:
             service_account_email (str): The service account email to use, or
@@ -66,6 +65,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         super(Credentials, self).__init__()
         self._service_account_email = service_account_email
         self._quota_project_id = quota_project_id
+        self._scopes = scopes
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -81,7 +81,10 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         )
 
         self._service_account_email = info["email"]
-        self._scopes = info["scopes"]
+
+        # Don't override scopes requested by the user.
+        if self._scopes is None:
+            self._scopes = info["scopes"]
 
     def refresh(self, request):
         """Refresh the access token and scopes.
@@ -98,7 +101,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         try:
             self._retrieve_info(request)
             self.token, self.expiry = _metadata.get_service_account_token(
-                request, service_account=self._service_account_email
+                request,
+                service_account=self._service_account_email,
+                scopes=self._scopes,
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
@@ -115,14 +120,25 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
     @property
     def requires_scopes(self):
-        """False: Compute Engine credentials can not be scoped."""
-        return False
+        return not self._scopes
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
         return self.__class__(
             service_account_email=self._service_account_email,
             quota_project_id=quota_project_id,
+            scopes=self._scopes,
+        )
+
+    @_helpers.copy_docstring(credentials.Scoped)
+    def with_scopes(self, scopes):
+        # Compute Engine credentials can not be scoped (the metadata service
+        # ignores the scopes parameter). App Engine, Cloud Run and Flex support
+        # requesting scopes.
+        return self.__class__(
+            scopes=scopes,
+            service_account_email=self._service_account_email,
+            quota_project_id=self._quota_project_id,
         )
 
 

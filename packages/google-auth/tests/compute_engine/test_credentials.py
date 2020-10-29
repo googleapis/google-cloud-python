@@ -55,8 +55,8 @@ class TestCredentials(object):
         assert not self.credentials.valid
         # Expiration hasn't been set yet
         assert not self.credentials.expired
-        # Scopes aren't needed
-        assert not self.credentials.requires_scopes
+        # Scopes are needed
+        assert self.credentials.requires_scopes
         # Service account email hasn't been populated
         assert self.credentials.service_account_email == "default"
         # No quota project
@@ -95,6 +95,45 @@ class TestCredentials(object):
         # Check that the credentials are valid (have a token and are not
         # expired)
         assert self.credentials.valid
+
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+    )
+    @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
+    def test_refresh_success_with_scopes(self, get, utcnow):
+        get.side_effect = [
+            {
+                # First request is for sevice account info.
+                "email": "service-account@example.com",
+                "scopes": ["one", "two"],
+            },
+            {
+                # Second request is for the token.
+                "access_token": "token",
+                "expires_in": 500,
+            },
+        ]
+
+        # Refresh credentials
+        scopes = ["three", "four"]
+        self.credentials = self.credentials.with_scopes(scopes)
+        self.credentials.refresh(None)
+
+        # Check that the credentials have the token and proper expiration
+        assert self.credentials.token == "token"
+        assert self.credentials.expiry == (utcnow() + datetime.timedelta(seconds=500))
+
+        # Check the credential info
+        assert self.credentials.service_account_email == "service-account@example.com"
+        assert self.credentials._scopes == scopes
+
+        # Check that the credentials are valid (have a token and are not
+        # expired)
+        assert self.credentials.valid
+
+        kwargs = get.call_args[1]
+        assert kwargs == {"params": {"scopes": "three,four"}}
 
     @mock.patch("google.auth.compute_engine._metadata.get", autospec=True)
     def test_refresh_error(self, get):
@@ -137,6 +176,14 @@ class TestCredentials(object):
         quota_project_creds = self.credentials.with_quota_project("project-foo")
 
         assert quota_project_creds._quota_project_id == "project-foo"
+
+    def test_with_scopes(self):
+        assert self.credentials._scopes is None
+
+        scopes = ["one", "two"]
+        self.credentials = self.credentials.with_scopes(scopes)
+
+        assert self.credentials._scopes == scopes
 
 
 class TestIDTokenCredentials(object):
