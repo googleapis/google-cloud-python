@@ -34,8 +34,8 @@ library = gapic.py_library(
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
 s.replace(
-    ["google/cloud/bigquery/reservation_v1/services/reservation_service/client.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/async_client.py"],
+    ["google/cloud/bigquery_reservation_v1/services/reservation_service/client.py",
+    "google/cloud/bigquery_reservation_v1/services/reservation_service/async_client.py"],
     "assignee=organizations/456``",
     "assignee=organizations/456``\n",
 )
@@ -47,6 +47,6 @@ templated_files = common.py_library(cov_level=100, microgenerator=True)
 s.move(
     templated_files,
     excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
-) 
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

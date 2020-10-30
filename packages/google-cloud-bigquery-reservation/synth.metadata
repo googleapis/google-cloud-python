@@ -96,8 +96,6 @@
     "docs/bigquery_reservation_v1/types.rst",
     "docs/conf.py",
     "docs/multiprocessing.rst",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/async_client.py",
-    "google/cloud/bigquery/reservation_v1/services/reservation_service/client.py",
     "google/cloud/bigquery_reservation/__init__.py",
     "google/cloud/bigquery_reservation/py.typed",
     "google/cloud/bigquery_reservation_v1/__init__.py",
