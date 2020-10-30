@@ -92,12 +92,12 @@ def test_datastore_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "datastore.googleapis.com:443"
+        assert client.transport._host == "datastore.googleapis.com:443"
 
 
 def test_datastore_client_get_transport_class():
@@ -437,7 +437,7 @@ def test_lookup(transport: str = "grpc", request_type=datastore.LookupRequest):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.lookup), "__call__") as call:
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.LookupResponse()
 
@@ -450,6 +450,7 @@ def test_lookup(transport: str = "grpc", request_type=datastore.LookupRequest):
         assert args[0] == datastore.LookupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.LookupResponse)
 
 
@@ -458,17 +459,19 @@ def test_lookup_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_lookup_async(transport: str = "grpc_asyncio"):
+async def test_lookup_async(
+    transport: str = "grpc_asyncio", request_type=datastore.LookupRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.LookupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._client._transport.lookup), "__call__") as call:
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.LookupResponse()
@@ -480,17 +483,22 @@ async def test_lookup_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.LookupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.LookupResponse)
+
+
+@pytest.mark.asyncio
+async def test_lookup_async_from_dict():
+    await test_lookup_async(request_type=dict)
 
 
 def test_lookup_flattened():
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.lookup), "__call__") as call:
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.LookupResponse()
 
@@ -549,7 +557,7 @@ async def test_lookup_flattened_async():
     client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._client._transport.lookup), "__call__") as call:
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.LookupResponse()
 
@@ -617,7 +625,7 @@ def test_run_query(transport: str = "grpc", request_type=datastore.RunQueryReque
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.run_query), "__call__") as call:
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RunQueryResponse()
 
@@ -630,6 +638,7 @@ def test_run_query(transport: str = "grpc", request_type=datastore.RunQueryReque
         assert args[0] == datastore.RunQueryRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.RunQueryResponse)
 
 
@@ -638,19 +647,19 @@ def test_run_query_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_run_query_async(transport: str = "grpc_asyncio"):
+async def test_run_query_async(
+    transport: str = "grpc_asyncio", request_type=datastore.RunQueryRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.RunQueryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.run_query), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.run_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.RunQueryResponse()
@@ -662,10 +671,15 @@ async def test_run_query_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.RunQueryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RunQueryResponse)
+
+
+@pytest.mark.asyncio
+async def test_run_query_async_from_dict():
+    await test_run_query_async(request_type=dict)
 
 
 def test_begin_transaction(
@@ -681,7 +695,7 @@ def test_begin_transaction(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.begin_transaction), "__call__"
+        type(client.transport.begin_transaction), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.BeginTransactionResponse(
@@ -697,6 +711,7 @@ def test_begin_transaction(
         assert args[0] == datastore.BeginTransactionRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.BeginTransactionResponse)
 
     assert response.transaction == b"transaction_blob"
@@ -707,18 +722,20 @@ def test_begin_transaction_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_begin_transaction_async(transport: str = "grpc_asyncio"):
+async def test_begin_transaction_async(
+    transport: str = "grpc_asyncio", request_type=datastore.BeginTransactionRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.BeginTransactionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.begin_transaction), "__call__"
+        type(client.transport.begin_transaction), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -731,7 +748,7 @@ async def test_begin_transaction_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.BeginTransactionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.BeginTransactionResponse)
@@ -739,12 +756,17 @@ async def test_begin_transaction_async(transport: str = "grpc_asyncio"):
     assert response.transaction == b"transaction_blob"
 
 
+@pytest.mark.asyncio
+async def test_begin_transaction_async_from_dict():
+    await test_begin_transaction_async(request_type=dict)
+
+
 def test_begin_transaction_flattened():
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.begin_transaction), "__call__"
+        type(client.transport.begin_transaction), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.BeginTransactionResponse()
@@ -778,7 +800,7 @@ async def test_begin_transaction_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.begin_transaction), "__call__"
+        type(client.transport.begin_transaction), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.BeginTransactionResponse()
@@ -820,7 +842,7 @@ def test_commit(transport: str = "grpc", request_type=datastore.CommitRequest):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.commit), "__call__") as call:
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.CommitResponse(index_updates=1389,)
 
@@ -833,6 +855,7 @@ def test_commit(transport: str = "grpc", request_type=datastore.CommitRequest):
         assert args[0] == datastore.CommitRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.CommitResponse)
 
     assert response.index_updates == 1389
@@ -843,17 +866,19 @@ def test_commit_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_commit_async(transport: str = "grpc_asyncio"):
+async def test_commit_async(
+    transport: str = "grpc_asyncio", request_type=datastore.CommitRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.CommitRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._client._transport.commit), "__call__") as call:
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.CommitResponse(index_updates=1389,)
@@ -865,7 +890,7 @@ async def test_commit_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.CommitRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.CommitResponse)
@@ -873,11 +898,16 @@ async def test_commit_async(transport: str = "grpc_asyncio"):
     assert response.index_updates == 1389
 
 
+@pytest.mark.asyncio
+async def test_commit_async_from_dict():
+    await test_commit_async(request_type=dict)
+
+
 def test_commit_flattened():
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.commit), "__call__") as call:
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.CommitResponse()
 
@@ -952,7 +982,7 @@ async def test_commit_flattened_async():
     client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._client._transport.commit), "__call__") as call:
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.CommitResponse()
 
@@ -1036,7 +1066,7 @@ def test_rollback(transport: str = "grpc", request_type=datastore.RollbackReques
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.rollback), "__call__") as call:
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RollbackResponse()
 
@@ -1049,6 +1079,7 @@ def test_rollback(transport: str = "grpc", request_type=datastore.RollbackReques
         assert args[0] == datastore.RollbackRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.RollbackResponse)
 
 
@@ -1057,19 +1088,19 @@ def test_rollback_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_rollback_async(transport: str = "grpc_asyncio"):
+async def test_rollback_async(
+    transport: str = "grpc_asyncio", request_type=datastore.RollbackRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.RollbackRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.rollback), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.RollbackResponse()
@@ -1081,17 +1112,22 @@ async def test_rollback_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.RollbackRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.RollbackResponse)
+
+
+@pytest.mark.asyncio
+async def test_rollback_async_from_dict():
+    await test_rollback_async(request_type=dict)
 
 
 def test_rollback_flattened():
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.rollback), "__call__") as call:
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RollbackResponse()
 
@@ -1129,9 +1165,7 @@ async def test_rollback_flattened_async():
     client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.rollback), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.RollbackResponse()
 
@@ -1180,7 +1214,7 @@ def test_allocate_ids(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.allocate_ids), "__call__") as call:
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.AllocateIdsResponse()
 
@@ -1193,6 +1227,7 @@ def test_allocate_ids(
         assert args[0] == datastore.AllocateIdsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.AllocateIdsResponse)
 
 
@@ -1201,19 +1236,19 @@ def test_allocate_ids_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_allocate_ids_async(transport: str = "grpc_asyncio"):
+async def test_allocate_ids_async(
+    transport: str = "grpc_asyncio", request_type=datastore.AllocateIdsRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.AllocateIdsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.allocate_ids), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.AllocateIdsResponse()
@@ -1225,17 +1260,22 @@ async def test_allocate_ids_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.AllocateIdsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.AllocateIdsResponse)
+
+
+@pytest.mark.asyncio
+async def test_allocate_ids_async_from_dict():
+    await test_allocate_ids_async(request_type=dict)
 
 
 def test_allocate_ids_flattened():
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.allocate_ids), "__call__") as call:
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.AllocateIdsResponse()
 
@@ -1284,9 +1324,7 @@ async def test_allocate_ids_flattened_async():
     client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.allocate_ids), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.allocate_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.AllocateIdsResponse()
 
@@ -1344,7 +1382,7 @@ def test_reserve_ids(transport: str = "grpc", request_type=datastore.ReserveIdsR
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.reserve_ids), "__call__") as call:
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.ReserveIdsResponse()
 
@@ -1357,6 +1395,7 @@ def test_reserve_ids(transport: str = "grpc", request_type=datastore.ReserveIdsR
         assert args[0] == datastore.ReserveIdsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datastore.ReserveIdsResponse)
 
 
@@ -1365,19 +1404,19 @@ def test_reserve_ids_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_reserve_ids_async(transport: str = "grpc_asyncio"):
+async def test_reserve_ids_async(
+    transport: str = "grpc_asyncio", request_type=datastore.ReserveIdsRequest
+):
     client = DatastoreAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datastore.ReserveIdsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.reserve_ids), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datastore.ReserveIdsResponse()
@@ -1389,17 +1428,22 @@ async def test_reserve_ids_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datastore.ReserveIdsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datastore.ReserveIdsResponse)
+
+
+@pytest.mark.asyncio
+async def test_reserve_ids_async_from_dict():
+    await test_reserve_ids_async(request_type=dict)
 
 
 def test_reserve_ids_flattened():
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.reserve_ids), "__call__") as call:
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.ReserveIdsResponse()
 
@@ -1448,9 +1492,7 @@ async def test_reserve_ids_flattened_async():
     client = DatastoreAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.reserve_ids), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.reserve_ids), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datastore.ReserveIdsResponse()
 
@@ -1534,7 +1576,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = DatastoreClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1567,7 +1609,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DatastoreClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.DatastoreGrpcTransport,)
+    assert isinstance(client.transport, transports.DatastoreGrpcTransport,)
 
 
 def test_datastore_base_transport_error():
@@ -1676,7 +1718,7 @@ def test_datastore_host_no_port():
             api_endpoint="datastore.googleapis.com"
         ),
     )
-    assert client._transport._host == "datastore.googleapis.com:443"
+    assert client.transport._host == "datastore.googleapis.com:443"
 
 
 def test_datastore_host_with_port():
@@ -1686,7 +1728,7 @@ def test_datastore_host_with_port():
             api_endpoint="datastore.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "datastore.googleapis.com:8000"
+    assert client.transport._host == "datastore.googleapis.com:8000"
 
 
 def test_datastore_grpc_transport_channel():
@@ -1698,6 +1740,7 @@ def test_datastore_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_datastore_grpc_asyncio_transport_channel():
@@ -1709,6 +1752,7 @@ def test_datastore_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -1754,6 +1798,7 @@ def test_datastore_transport_channel_mtls_with_client_cert_source(transport_clas
                 quota_project_id=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -1794,6 +1839,107 @@ def test_datastore_transport_channel_mtls_with_adc(transport_class):
                 quota_project_id=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
+
+
+def test_common_billing_account_path():
+    billing_account = "squid"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = DatastoreClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "clam",
+    }
+    path = DatastoreClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastoreClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "whelk"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = DatastoreClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "octopus",
+    }
+    path = DatastoreClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastoreClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "oyster"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = DatastoreClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nudibranch",
+    }
+    path = DatastoreClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastoreClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "cuttlefish"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = DatastoreClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "mussel",
+    }
+    path = DatastoreClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastoreClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "winkle"
+    location = "nautilus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = DatastoreClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+    }
+    path = DatastoreClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatastoreClient.parse_common_location_path(path)
+    assert expected == actual
 
 
 def test_client_withDEFAULT_CLIENT_INFO():

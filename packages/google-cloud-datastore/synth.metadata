@@ -4,14 +4,22 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:crwilcox/python-datastore.git",
-        "sha": "10442b5a6aec7a352612f02368bf1257ddbfc855"
+        "sha": "4a8ba01b9802d1284915f18fbd974aca8fef4b48"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "86e167e6be2c4300066fd8ff5db139c6b846d049",
+        "internalRef": "339897204"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "487eba79f8260e34205d8ceb1ebcc65685085e19"
+        "sha": "6542bd723403513626f61642fc02ddca528409aa"
       }
     }
   ],

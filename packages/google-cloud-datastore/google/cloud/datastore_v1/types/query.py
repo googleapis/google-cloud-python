@@ -180,7 +180,7 @@ class Projection(proto.Message):
             The property to project.
     """
 
-    property = proto.Field(proto.MESSAGE, number=1, message=PropertyReference,)
+    property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
 
 
 class PropertyOrder(proto.Message):
@@ -199,7 +199,7 @@ class PropertyOrder(proto.Message):
         ASCENDING = 1
         DESCENDING = 2
 
-    property = proto.Field(proto.MESSAGE, number=1, message=PropertyReference,)
+    property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
 
     direction = proto.Field(proto.ENUM, number=2, enum=Direction,)
 
@@ -242,7 +242,7 @@ class CompositeFilter(proto.Message):
 
     op = proto.Field(proto.ENUM, number=1, enum=Operator,)
 
-    filters = proto.RepeatedField(proto.MESSAGE, number=2, message=Filter,)
+    filters = proto.RepeatedField(proto.MESSAGE, number=2, message="Filter",)
 
 
 class PropertyFilter(proto.Message):
@@ -267,7 +267,7 @@ class PropertyFilter(proto.Message):
         EQUAL = 5
         HAS_ANCESTOR = 11
 
-    property = proto.Field(proto.MESSAGE, number=1, message=PropertyReference,)
+    property = proto.Field(proto.MESSAGE, number=1, message="PropertyReference",)
 
     op = proto.Field(proto.ENUM, number=2, enum=Operator,)
 
@@ -382,10 +382,12 @@ class QueryResultBatch(proto.Message):
     skipped_cursor = proto.Field(proto.BYTES, number=3)
 
     entity_result_type = proto.Field(
-        proto.ENUM, number=1, enum=EntityResult.ResultType,
+        proto.ENUM, number=1, enum="EntityResult.ResultType",
     )
 
-    entity_results = proto.RepeatedField(proto.MESSAGE, number=2, message=EntityResult,)
+    entity_results = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="EntityResult",
+    )
 
     end_cursor = proto.Field(proto.BYTES, number=4)
 

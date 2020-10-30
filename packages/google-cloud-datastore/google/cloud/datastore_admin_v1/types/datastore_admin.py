@@ -240,11 +240,11 @@ class ExportEntitiesMetadata(proto.Message):
             [google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url].
     """
 
-    common = proto.Field(proto.MESSAGE, number=1, message=CommonMetadata,)
+    common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
 
-    progress_entities = proto.Field(proto.MESSAGE, number=2, message=Progress,)
+    progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
 
-    progress_bytes = proto.Field(proto.MESSAGE, number=3, message=Progress,)
+    progress_bytes = proto.Field(proto.MESSAGE, number=3, message="Progress",)
 
     entity_filter = proto.Field(proto.MESSAGE, number=4, message="EntityFilter",)
 
@@ -273,11 +273,11 @@ class ImportEntitiesMetadata(proto.Message):
             field.
     """
 
-    common = proto.Field(proto.MESSAGE, number=1, message=CommonMetadata,)
+    common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
 
-    progress_entities = proto.Field(proto.MESSAGE, number=2, message=Progress,)
+    progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
 
-    progress_bytes = proto.Field(proto.MESSAGE, number=3, message=Progress,)
+    progress_bytes = proto.Field(proto.MESSAGE, number=3, message="Progress",)
 
     entity_filter = proto.Field(proto.MESSAGE, number=4, message="EntityFilter",)
 
@@ -398,9 +398,9 @@ class IndexOperationMetadata(proto.Message):
             acting on.
     """
 
-    common = proto.Field(proto.MESSAGE, number=1, message=CommonMetadata,)
+    common = proto.Field(proto.MESSAGE, number=1, message="CommonMetadata",)
 
-    progress_entities = proto.Field(proto.MESSAGE, number=2, message=Progress,)
+    progress_entities = proto.Field(proto.MESSAGE, number=2, message="Progress",)
 
     index_id = proto.Field(proto.STRING, number=3)
 

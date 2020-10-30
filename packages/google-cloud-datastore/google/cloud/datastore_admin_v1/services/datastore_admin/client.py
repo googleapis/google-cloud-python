@@ -13,15 +13,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -31,8 +32,8 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation
-from google.api_core import operation_async
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
@@ -80,7 +81,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
     """Google Cloud Datastore Admin API
     The Datastore Admin API provides several admin services for
     Cloud Datastore.
-    -----------------------------------------------------------------------------
     ## Concepts
 
     Project, namespace, kind, and entity as defined in the Google
@@ -91,7 +91,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
     EntityFilter: Allows specifying a subset of entities in a
     project. This is specified as a combination of kinds and
     namespaces (either or both of which may be all).
-
     ## Services
 
     # Export/Import
@@ -190,12 +189,80 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> DatastoreAdminTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DatastoreAdminTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, DatastoreAdminTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, DatastoreAdminTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the datastore admin client.
@@ -209,8 +276,8 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
             transport (Union[str, ~.DatastoreAdminTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -225,10 +292,10 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -236,9 +303,9 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
         use_client_cert = bool(
@@ -420,12 +487,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
             if project_id is not None:
                 request.project_id = project_id
-            if labels is not None:
-                request.labels = labels
             if entity_filter is not None:
                 request.entity_filter = entity_filter
             if output_url_prefix is not None:
                 request.output_url_prefix = output_url_prefix
+
+            if labels:
+                request.labels.update(labels)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -559,12 +627,13 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
             if project_id is not None:
                 request.project_id = project_id
-            if labels is not None:
-                request.labels = labels
             if input_url is not None:
                 request.input_url = input_url
             if entity_filter is not None:
                 request.entity_filter = entity_filter
+
+            if labels:
+                request.labels.update(labels)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

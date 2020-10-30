@@ -126,7 +126,7 @@ class Key(proto.Message):
 
         name = proto.Field(proto.STRING, number=3, oneof="id_type")
 
-    partition_id = proto.Field(proto.MESSAGE, number=1, message=PartitionId,)
+    partition_id = proto.Field(proto.MESSAGE, number=1, message="PartitionId",)
 
     path = proto.RepeatedField(proto.MESSAGE, number=2, message=PathElement,)
 
@@ -206,7 +206,7 @@ class Value(proto.Message):
         proto.MESSAGE, number=10, oneof="value_type", message=timestamp.Timestamp,
     )
 
-    key_value = proto.Field(proto.MESSAGE, number=5, oneof="value_type", message=Key,)
+    key_value = proto.Field(proto.MESSAGE, number=5, oneof="value_type", message="Key",)
 
     string_value = proto.Field(proto.STRING, number=17, oneof="value_type")
 
@@ -221,7 +221,7 @@ class Value(proto.Message):
     )
 
     array_value = proto.Field(
-        proto.MESSAGE, number=9, oneof="value_type", message=ArrayValue,
+        proto.MESSAGE, number=9, oneof="value_type", message="ArrayValue",
     )
 
     meaning = proto.Field(proto.INT32, number=14)
@@ -252,9 +252,9 @@ class Entity(proto.Message):
             characters. The name cannot be ``""``.
     """
 
-    key = proto.Field(proto.MESSAGE, number=1, message=Key,)
+    key = proto.Field(proto.MESSAGE, number=1, message="Key",)
 
-    properties = proto.MapField(proto.STRING, proto.MESSAGE, number=3, message=Value,)
+    properties = proto.MapField(proto.STRING, proto.MESSAGE, number=3, message="Value",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

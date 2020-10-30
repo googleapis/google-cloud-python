@@ -52,8 +52,40 @@ class DatastoreAsyncClient:
     DEFAULT_ENDPOINT = DatastoreClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DatastoreClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        DatastoreClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        DatastoreClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(DatastoreClient.common_folder_path)
+    parse_common_folder_path = staticmethod(DatastoreClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(DatastoreClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        DatastoreClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(DatastoreClient.common_project_path)
+    parse_common_project_path = staticmethod(DatastoreClient.parse_common_project_path)
+
+    common_location_path = staticmethod(DatastoreClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        DatastoreClient.parse_common_location_path
+    )
+
     from_service_account_file = DatastoreClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> DatastoreTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DatastoreTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(DatastoreClient).get_transport_class, type(DatastoreClient)
@@ -157,7 +189,8 @@ class DatastoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, read_options, keys]):
+        has_flattened_params = any([project_id, read_options, keys])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -172,8 +205,9 @@ class DatastoreAsyncClient:
             request.project_id = project_id
         if read_options is not None:
             request.read_options = read_options
-        if keys is not None:
-            request.keys = keys
+
+        if keys:
+            request.keys.extend(keys)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -287,7 +321,8 @@ class DatastoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id]):
+        has_flattened_params = any([project_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -388,7 +423,8 @@ class DatastoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, mode, transaction, mutations]):
+        has_flattened_params = any([project_id, mode, transaction, mutations])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -405,8 +441,9 @@ class DatastoreAsyncClient:
             request.mode = mode
         if transaction is not None:
             request.transaction = transaction
-        if mutations is not None:
-            request.mutations = mutations
+
+        if mutations:
+            request.mutations.extend(mutations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -468,7 +505,8 @@ class DatastoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, transaction]):
+        has_flattened_params = any([project_id, transaction])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -545,7 +583,8 @@ class DatastoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, keys]):
+        has_flattened_params = any([project_id, keys])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -558,8 +597,9 @@ class DatastoreAsyncClient:
 
         if project_id is not None:
             request.project_id = project_id
-        if keys is not None:
-            request.keys = keys
+
+        if keys:
+            request.keys.extend(keys)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -621,7 +661,8 @@ class DatastoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, keys]):
+        has_flattened_params = any([project_id, keys])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -634,8 +675,9 @@ class DatastoreAsyncClient:
 
         if project_id is not None:
             request.project_id = project_id
-        if keys is not None:
-            request.keys = keys
+
+        if keys:
+            request.keys.extend(keys)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

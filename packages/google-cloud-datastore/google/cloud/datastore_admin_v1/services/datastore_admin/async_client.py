@@ -28,8 +28,8 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation
-from google.api_core import operation_async
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.datastore_admin_v1.services.datastore_admin import pagers
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
@@ -106,8 +106,46 @@ class DatastoreAdminAsyncClient:
     DEFAULT_ENDPOINT = DatastoreAdminClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DatastoreAdminClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        DatastoreAdminClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        DatastoreAdminClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(DatastoreAdminClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        DatastoreAdminClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        DatastoreAdminClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        DatastoreAdminClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(DatastoreAdminClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        DatastoreAdminClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(DatastoreAdminClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        DatastoreAdminClient.parse_common_location_path
+    )
+
     from_service_account_file = DatastoreAdminClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> DatastoreAdminTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DatastoreAdminTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(DatastoreAdminClient).get_transport_class, type(DatastoreAdminClient)
@@ -253,9 +291,10 @@ class DatastoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
+        has_flattened_params = any(
             [project_id, labels, entity_filter, output_url_prefix]
-        ):
+        )
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -268,12 +307,13 @@ class DatastoreAdminAsyncClient:
 
         if project_id is not None:
             request.project_id = project_id
-        if labels is not None:
-            request.labels = labels
         if entity_filter is not None:
             request.entity_filter = entity_filter
         if output_url_prefix is not None:
             request.output_url_prefix = output_url_prefix
+
+        if labels:
+            request.labels.update(labels)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -392,7 +432,8 @@ class DatastoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, labels, input_url, entity_filter]):
+        has_flattened_params = any([project_id, labels, input_url, entity_filter])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -405,12 +446,13 @@ class DatastoreAdminAsyncClient:
 
         if project_id is not None:
             request.project_id = project_id
-        if labels is not None:
-            request.labels = labels
         if input_url is not None:
             request.input_url = input_url
         if entity_filter is not None:
             request.entity_filter = entity_filter
+
+        if labels:
+            request.labels.update(labels)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -472,7 +514,7 @@ class DatastoreAdminAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=60.0,
@@ -531,7 +573,7 @@ class DatastoreAdminAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=60.0,
