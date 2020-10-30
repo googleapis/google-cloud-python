@@ -19,19 +19,19 @@ import base64
 from google.api_core import page_iterator
 from google.cloud._helpers import _ensure_tuple_or_list
 
-from google.cloud.datastore_v1.proto import entity_pb2
-from google.cloud.datastore_v1.proto import query_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
+from google.cloud.datastore_v1.types import query as query_pb2
 from google.cloud.datastore import helpers
 from google.cloud.datastore.key import Key
 
 
-_NOT_FINISHED = query_pb2.QueryResultBatch.NOT_FINISHED
-_NO_MORE_RESULTS = query_pb2.QueryResultBatch.NO_MORE_RESULTS
+_NOT_FINISHED = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
+_NO_MORE_RESULTS = query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS
 
 _FINISHED = (
     _NO_MORE_RESULTS,
-    query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
-    query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
+    query_pb2.QueryResultBatch.MoreResultsType.MORE_RESULTS_AFTER_LIMIT,
+    query_pb2.QueryResultBatch.MoreResultsType.MORE_RESULTS_AFTER_CURSOR,
 )
 
 
@@ -81,11 +81,11 @@ class Query(object):
     """
 
     OPERATORS = {
-        "<=": query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
-        ">=": query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
-        "<": query_pb2.PropertyFilter.LESS_THAN,
-        ">": query_pb2.PropertyFilter.GREATER_THAN,
-        "=": query_pb2.PropertyFilter.EQUAL,
+        "<=": query_pb2.PropertyFilter.Operator.LESS_THAN_OR_EQUAL,
+        ">=": query_pb2.PropertyFilter.Operator.GREATER_THAN_OR_EQUAL,
+        "<": query_pb2.PropertyFilter.Operator.LESS_THAN,
+        ">": query_pb2.PropertyFilter.Operator.GREATER_THAN,
+        "=": query_pb2.PropertyFilter.Operator.EQUAL,
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
@@ -506,7 +506,7 @@ class Iterator(page_iterator.Iterator):
             pb.end_cursor = base64.urlsafe_b64decode(end_cursor)
 
         if self.max_results is not None:
-            pb.limit.value = self.max_results - self.num_results
+            pb.limit = self.max_results - self.num_results
 
         if start_cursor is None and self._offset is not None:
             # NOTE: We don't need to add an offset to the request protobuf
@@ -576,7 +576,13 @@ class Iterator(page_iterator.Iterator):
             kwargs["timeout"] = self._timeout
 
         response_pb = self.client._datastore_api.run_query(
-            self._query.project, partition_id, read_options, query=query_pb, **kwargs
+            request={
+                "project_id": self._query.project,
+                "partition_id": partition_id,
+                "read_options": read_options,
+                "query": query_pb,
+            },
+            **kwargs,
         )
 
         while (
@@ -590,13 +596,14 @@ class Iterator(page_iterator.Iterator):
             query_pb.start_cursor = response_pb.batch.skipped_cursor
             query_pb.offset -= response_pb.batch.skipped_results
             response_pb = self.client._datastore_api.run_query(
-                self._query.project,
-                partition_id,
-                read_options,
-                query=query_pb,
-                **kwargs
+                request={
+                    "project_id": self._query.project,
+                    "partition_id": partition_id,
+                    "read_options": read_options,
+                    "query": query_pb,
+                },
+                **kwargs,
             )
-
         entity_pbs = self._process_query_results(response_pb)
         return page_iterator.Page(self, entity_pbs, self.item_to_value)
 
@@ -615,53 +622,61 @@ def _pb_from_query(query):
     pb = query_pb2.Query()
 
     for projection_name in query.projection:
-        pb.projection.add().property.name = projection_name
+        projection = query_pb2.Projection()
+        projection.property.name = projection_name
+        pb.projection.append(projection)
 
     if query.kind:
-        pb.kind.add().name = query.kind
+        kind = query_pb2.KindExpression()
+        kind.name = query.kind
+        pb.kind.append(kind)
 
     composite_filter = pb.filter.composite_filter
-    composite_filter.op = query_pb2.CompositeFilter.AND
+    composite_filter.op = query_pb2.CompositeFilter.Operator.AND
 
     if query.ancestor:
         ancestor_pb = query.ancestor.to_protobuf()
 
         # Filter on __key__ HAS_ANCESTOR == ancestor.
-        ancestor_filter = composite_filter.filters.add().property_filter
+        ancestor_filter = composite_filter.filters._pb.add().property_filter
         ancestor_filter.property.name = "__key__"
-        ancestor_filter.op = query_pb2.PropertyFilter.HAS_ANCESTOR
-        ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
+        ancestor_filter.op = query_pb2.PropertyFilter.Operator.HAS_ANCESTOR
+        ancestor_filter.value.key_value.CopyFrom(ancestor_pb._pb)
 
     for property_name, operator, value in query.filters:
         pb_op_enum = query.OPERATORS.get(operator)
 
         # Add the specific filter
-        property_filter = composite_filter.filters.add().property_filter
+        property_filter = composite_filter.filters._pb.add().property_filter
         property_filter.property.name = property_name
         property_filter.op = pb_op_enum
 
         # Set the value to filter on based on the type.
         if property_name == "__key__":
             key_pb = value.to_protobuf()
-            property_filter.value.key_value.CopyFrom(key_pb)
+            property_filter.value.key_value.CopyFrom(key_pb._pb)
         else:
             helpers._set_protobuf_value(property_filter.value, value)
 
     if not composite_filter.filters:
-        pb.ClearField("filter")
+        pb._pb.ClearField("filter")
 
     for prop in query.order:
-        property_order = pb.order.add()
+        property_order = query_pb2.PropertyOrder()
 
         if prop.startswith("-"):
             property_order.property.name = prop[1:]
-            property_order.direction = property_order.DESCENDING
+            property_order.direction = property_order.Direction.DESCENDING
         else:
             property_order.property.name = prop
-            property_order.direction = property_order.ASCENDING
+            property_order.direction = property_order.Direction.ASCENDING
+
+        pb.order.append(property_order)
 
     for distinct_on_name in query.distinct_on:
-        pb.distinct_on.add().name = distinct_on_name
+        ref = query_pb2.PropertyReference()
+        ref.name = distinct_on_name
+        pb.distinct_on.append(ref)
 
     return pb
 

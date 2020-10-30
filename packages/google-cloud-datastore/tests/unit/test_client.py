@@ -24,12 +24,12 @@ def _make_credentials():
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
-    from google.cloud.datastore_v1.proto import entity_pb2
+    from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
     entity_pb.key.partition_id.project_id = project
-    path_element = entity_pb.key.path.add()
+    path_element = entity_pb._pb.key.path.add()
     path_element.kind = kind
     path_element.id = integer_id
     if name is not None and str_val is not None:
@@ -420,7 +420,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore.key import Key
 
         creds = _make_credentials()
@@ -434,12 +434,16 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT, [key.to_protobuf()], read_options=read_options
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key.to_protobuf()],
+                "read_options": read_options,
+            }
         )
 
     def test_get_multi_miss_w_missing(self):
-        from google.cloud.datastore_v1.proto import entity_pb2
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+        from google.cloud.datastore_v1.types import entity as entity_pb2
         from google.cloud.datastore.key import Key
 
         KIND = "Kind"
@@ -448,14 +452,14 @@ class TestClient(unittest.TestCase):
         # Make a missing entity pb to be returned from mock backend.
         missed = entity_pb2.Entity()
         missed.key.partition_id.project_id = self.PROJECT
-        path_element = missed.key.path.add()
+        path_element = missed._pb.key.path.add()
         path_element.kind = KIND
         path_element.id = ID
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         # Set missing entity on mock connection.
-        lookup_response = _make_lookup_response(missing=[missed])
+        lookup_response = _make_lookup_response(missing=[missed._pb])
         ds_api = _make_datastore_api(lookup_response=lookup_response)
         client._datastore_api_internal = ds_api
 
@@ -464,11 +468,15 @@ class TestClient(unittest.TestCase):
         entities = client.get_multi([key], missing=missing)
         self.assertEqual(entities, [])
         key_pb = key.to_protobuf()
-        self.assertEqual([missed.key.to_protobuf() for missed in missing], [key_pb])
+        self.assertEqual([missed.key.to_protobuf() for missed in missing], [key_pb._pb])
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT, [key_pb], read_options=read_options
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key_pb],
+                "read_options": read_options,
+            }
         )
 
     def test_get_multi_w_missing_non_empty(self):
@@ -492,7 +500,7 @@ class TestClient(unittest.TestCase):
         self.assertRaises(ValueError, client.get_multi, [key], deferred=deferred)
 
     def test_get_multi_miss_w_deferred(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore.key import Key
 
         key = Key("Kind", 1234, project=self.PROJECT)
@@ -512,12 +520,16 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT, [key_pb], read_options=read_options
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key_pb],
+                "read_options": read_options,
+            }
         )
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
-        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+        from google.cloud.datastore_v1.types import entity as entity_pb2
         from google.cloud.datastore.entity import Entity
         from google.cloud.datastore.key import Key
 
@@ -527,9 +539,9 @@ class TestClient(unittest.TestCase):
         key2_pb = key2.to_protobuf()
 
         entity1_pb = entity_pb2.Entity()
-        entity1_pb.key.CopyFrom(key1_pb)
+        entity1_pb._pb.key.CopyFrom(key1_pb._pb)
         entity2_pb = entity_pb2.Entity()
-        entity2_pb.key.CopyFrom(key2_pb)
+        entity2_pb._pb.key.CopyFrom(key2_pb._pb)
 
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
@@ -561,15 +573,25 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(ds_api.lookup.call_count, 2)
         read_options = datastore_pb2.ReadOptions()
+
         ds_api.lookup.assert_any_call(
-            self.PROJECT, [key2_pb], read_options=read_options
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key2_pb],
+                "read_options": read_options,
+            },
         )
+
         ds_api.lookup.assert_any_call(
-            self.PROJECT, [key1_pb, key2_pb], read_options=read_options
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key1_pb, key2_pb],
+                "read_options": read_options,
+            },
         )
 
     def test_get_multi_hit_w_retry_w_timeout(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore.key import Key
 
         kind = "Kind"
@@ -600,16 +622,19 @@ class TestClient(unittest.TestCase):
         self.assertEqual(result["foo"], "Foo")
 
         read_options = datastore_pb2.ReadOptions()
+
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key.to_protobuf()],
-            read_options=read_options,
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key.to_protobuf()],
+                "read_options": read_options,
+            },
             retry=retry,
             timeout=timeout,
         )
 
     def test_get_multi_hit_w_transaction(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore.key import Key
 
         txn_id = b"123"
@@ -642,11 +667,15 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions(transaction=txn_id)
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT, [key.to_protobuf()], read_options=read_options
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key.to_protobuf()],
+                "read_options": read_options,
+            }
         )
 
     def test_get_multi_hit_multiple_keys_same_project(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore.key import Key
 
         kind = "Kind"
@@ -676,9 +705,11 @@ class TestClient(unittest.TestCase):
 
         read_options = datastore_pb2.ReadOptions()
         ds_api.lookup.assert_called_once_with(
-            self.PROJECT,
-            [key1.to_protobuf(), key2.to_protobuf()],
-            read_options=read_options,
+            request={
+                "project_id": self.PROJECT,
+                "keys": [key1.to_protobuf(), key2.to_protobuf()],
+                "read_options": read_options,
+            }
         )
 
     def test_get_multi_hit_multiple_keys_different_project(self):
@@ -770,7 +801,7 @@ class TestClient(unittest.TestCase):
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key_w_retry_w_timeout(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u"bar")
@@ -789,14 +820,21 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(ds_api.commit.call_count, 1)
         _, positional, keyword = ds_api.commit.mock_calls[0]
-        expected_kw = {"transaction": None, "retry": retry, "timeout": timeout}
-        self.assertEqual(keyword, expected_kw)
 
-        self.assertEqual(len(positional), 3)
-        self.assertEqual(positional[0], self.PROJECT)
-        self.assertEqual(positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+        self.assertEqual(len(positional), 0)
 
-        mutations = positional[2]
+        self.assertEqual(len(keyword), 3)
+        self.assertEqual(keyword["retry"], retry)
+        self.assertEqual(keyword["timeout"], timeout)
+
+        self.assertEqual(len(keyword["request"]), 4)
+        self.assertEqual(keyword["request"]["project_id"], self.PROJECT)
+        self.assertEqual(
+            keyword["request"]["mode"],
+            datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
+        )
+        self.assertEqual(keyword["request"]["transaction"], None)
+        mutations = keyword["request"]["mutations"]
         mutated_entity = _mutated_pb(self, mutations, "insert")
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
@@ -859,7 +897,7 @@ class TestClient(unittest.TestCase):
         client._datastore_api_internal.commit.assert_not_called()
 
     def test_delete_multi_no_batch_w_retry_w_timeout(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         key = _Key()
         retry = mock.Mock()
@@ -875,14 +913,21 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(ds_api.commit.call_count, 1)
         _, positional, keyword = ds_api.commit.mock_calls[0]
-        expected_kw = {"transaction": None, "retry": retry, "timeout": timeout}
-        self.assertEqual(keyword, expected_kw)
 
-        self.assertEqual(len(positional), 3)
-        self.assertEqual(positional[0], self.PROJECT)
-        self.assertEqual(positional[1], datastore_pb2.CommitRequest.NON_TRANSACTIONAL)
+        self.assertEqual(len(positional), 0)
 
-        mutations = positional[2]
+        self.assertEqual(len(keyword), 3)
+        self.assertEqual(keyword["retry"], retry)
+        self.assertEqual(keyword["timeout"], timeout)
+
+        self.assertEqual(len(keyword["request"]), 4)
+        self.assertEqual(keyword["request"]["project_id"], self.PROJECT)
+        self.assertEqual(
+            keyword["request"]["mode"],
+            datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
+        )
+        self.assertEqual(keyword["request"]["transaction"], None)
+        mutations = keyword["request"]["mutations"]
         mutated_key = _mutated_pb(self, mutations, "delete")
         self.assertEqual(mutated_key, key.to_protobuf())
 
@@ -934,7 +979,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual([key.id for key in result], list(range(num_ids)))
 
         expected_keys = [incomplete_key.to_protobuf()] * num_ids
-        alloc_ids.assert_called_once_with(self.PROJECT, expected_keys)
+        alloc_ids.assert_called_once_with(
+            request={"project_id": self.PROJECT, "keys": expected_keys}
+        )
 
     def test_allocate_ids_w_partial_key_w_retry_w_timeout(self):
         num_ids = 2
@@ -959,7 +1006,9 @@ class TestClient(unittest.TestCase):
 
         expected_keys = [incomplete_key.to_protobuf()] * num_ids
         alloc_ids.assert_called_once_with(
-            self.PROJECT, expected_keys, retry=retry, timeout=timeout
+            request={"project_id": self.PROJECT, "keys": expected_keys},
+            retry=retry,
+            timeout=timeout,
         )
 
     def test_allocate_ids_w_completed_key(self):
@@ -986,7 +1035,9 @@ class TestClient(unittest.TestCase):
             for id in range(complete_key.id, complete_key.id + num_ids)
         )
         expected_keys = [key.to_protobuf() for key in reserved_keys]
-        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+        reserve_ids.assert_called_once_with(
+            request={"project_id": self.PROJECT, "keys": expected_keys}
+        )
 
     def test_reserve_ids_sequential_w_completed_key_w_retry_w_timeout(self):
         num_ids = 2
@@ -1011,7 +1062,9 @@ class TestClient(unittest.TestCase):
         )
         expected_keys = [key.to_protobuf() for key in reserved_keys]
         reserve_ids.assert_called_once_with(
-            self.PROJECT, expected_keys, retry=retry, timeout=timeout
+            request={"project_id": self.PROJECT, "keys": expected_keys},
+            retry=retry,
+            timeout=timeout,
         )
 
     def test_reserve_ids_sequential_w_completed_key_w_ancestor(self):
@@ -1031,7 +1084,9 @@ class TestClient(unittest.TestCase):
             for id in range(complete_key.id, complete_key.id + num_ids)
         )
         expected_keys = [key.to_protobuf() for key in reserved_keys]
-        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+        reserve_ids.assert_called_once_with(
+            request={"project_id": self.PROJECT, "keys": expected_keys}
+        )
 
     def test_reserve_ids_sequential_w_partial_key(self):
         num_ids = 2
@@ -1074,7 +1129,9 @@ class TestClient(unittest.TestCase):
             for id in range(complete_key.id, complete_key.id + num_ids)
         )
         expected_keys = [key.to_protobuf() for key in reserved_keys]
-        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+        reserve_ids.assert_called_once_with(
+            request={"project_id": self.PROJECT, "keys": expected_keys}
+        )
 
     def test_reserve_ids_w_completed_key_w_retry_w_timeout(self):
         num_ids = 2
@@ -1097,7 +1154,9 @@ class TestClient(unittest.TestCase):
         )
         expected_keys = [key.to_protobuf() for key in reserved_keys]
         reserve_ids.assert_called_once_with(
-            self.PROJECT, expected_keys, retry=retry, timeout=timeout
+            request={"project_id": self.PROJECT, "keys": expected_keys},
+            retry=retry,
+            timeout=timeout,
         )
 
     def test_reserve_ids_w_completed_key_w_ancestor(self):
@@ -1117,7 +1176,9 @@ class TestClient(unittest.TestCase):
             for id in range(complete_key.id, complete_key.id + num_ids)
         )
         expected_keys = [key.to_protobuf() for key in reserved_keys]
-        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+        reserve_ids.assert_called_once_with(
+            request={"project_id": self.PROJECT, "keys": expected_keys}
+        )
 
     def test_reserve_ids_w_partial_key(self):
         num_ids = 2
@@ -1155,7 +1216,9 @@ class TestClient(unittest.TestCase):
         client.reserve_ids_multi([key1, key2])
 
         expected_keys = [key1.to_protobuf(), key2.to_protobuf()]
-        reserve_ids.assert_called_once_with(self.PROJECT, expected_keys)
+        reserve_ids.assert_called_once_with(
+            request={"project_id": self.PROJECT, "keys": expected_keys}
+        )
 
     def test_reserve_ids_multi_w_partial_key(self):
         incomplete_key = _Key(_Key.kind, None)
@@ -1252,9 +1315,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             xact._options, TransactionOptions(read_only=TransactionOptions.ReadOnly())
         )
-        self.assertFalse(xact._options.HasField("read_write"))
-        self.assertTrue(xact._options.HasField("read_only"))
-        self.assertEqual(xact._options.read_only, TransactionOptions.ReadOnly())
+        self.assertFalse(xact._options._pb.HasField("read_write"))
+        self.assertTrue(xact._options._pb.HasField("read_only"))
+        self.assertEqual(xact._options._pb.read_only, TransactionOptions.ReadOnly()._pb)
 
     def test_query_w_client(self):
         KIND = "KIND"
@@ -1426,13 +1489,13 @@ class _Key(object):
         return self.id is None and self.name is None
 
     def to_protobuf(self):
-        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.types import entity as entity_pb2
 
         key = self._key = entity_pb2.Key()
 
         path = self._flat_path
         while path:
-            element = key.path.add()
+            element = key._pb.path.add()
             kind, id_or_name = path[:2]
             element.kind = kind
             if isinstance(id_or_name, int):
@@ -1476,22 +1539,22 @@ def _mutated_pb(test_case, mutation_pb_list, mutation_type):
     # We grab the only mutation.
     mutated_pb = mutation_pb_list[0]
     # Then check if it is the correct type.
-    test_case.assertEqual(mutated_pb.WhichOneof("operation"), mutation_type)
+    test_case.assertEqual(mutated_pb._pb.WhichOneof("operation"), mutation_type)
 
     return getattr(mutated_pb, mutation_type)
 
 
 def _make_key(id_):
-    from google.cloud.datastore_v1.proto import entity_pb2
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     key = entity_pb2.Key()
-    elem = key.path.add()
+    elem = key._pb.path.add()
     elem.id = id_
     return key
 
 
 def _make_commit_response(*keys):
-    from google.cloud.datastore_v1.proto import datastore_pb2
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
     mutation_results = [datastore_pb2.MutationResult(key=key) for key in keys]
     return datastore_pb2.CommitResponse(mutation_results=mutation_results)

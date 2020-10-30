@@ -27,8 +27,8 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.5", "3.6", "3.7", "3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -70,7 +70,7 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
+    session.install("mock", "pytest", "pytest-asyncio", "pytest-cov")
     session.install("-e", ".")
 
     # Run py.test against the unit tests.

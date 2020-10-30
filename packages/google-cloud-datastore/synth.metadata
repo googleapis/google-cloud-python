@@ -3,23 +3,15 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-datastore.git",
-        "sha": "8aa3eac28e0e733b61d6ab9e1d233a99467b7081"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "8d73f9486fc193a150f6c907dfb9f49431aff3ff",
-        "internalRef": "332497859"
+        "remote": "git@github.com:crwilcox/python-datastore.git",
+        "sha": "10442b5a6aec7a352612f02368bf1257ddbfc855"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f3c04883d6c43261ff13db1f52d03a283be06871"
+        "sha": "487eba79f8260e34205d8ceb1ebcc65685085e19"
       }
     }
   ],
@@ -42,93 +34,5 @@
         "generator": "bazel"
       }
     }
-  ],
-  "generatedFiles": [
-    ".coveragerc",
-    ".flake8",
-    ".github/CONTRIBUTING.md",
-    ".github/ISSUE_TEMPLATE/bug_report.md",
-    ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/ISSUE_TEMPLATE/support_request.md",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/release-please.yml",
-    ".github/snippet-bot.yml",
-    ".gitignore",
-    ".kokoro/build.sh",
-    ".kokoro/continuous/common.cfg",
-    ".kokoro/continuous/continuous.cfg",
-    ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
-    ".kokoro/docs/common.cfg",
-    ".kokoro/docs/docs-presubmit.cfg",
-    ".kokoro/docs/docs.cfg",
-    ".kokoro/populate-secrets.sh",
-    ".kokoro/presubmit/common.cfg",
-    ".kokoro/presubmit/presubmit.cfg",
-    ".kokoro/publish-docs.sh",
-    ".kokoro/release.sh",
-    ".kokoro/release/common.cfg",
-    ".kokoro/release/release.cfg",
-    ".kokoro/samples/lint/common.cfg",
-    ".kokoro/samples/lint/continuous.cfg",
-    ".kokoro/samples/lint/periodic.cfg",
-    ".kokoro/samples/lint/presubmit.cfg",
-    ".kokoro/samples/python3.6/common.cfg",
-    ".kokoro/samples/python3.6/continuous.cfg",
-    ".kokoro/samples/python3.6/periodic.cfg",
-    ".kokoro/samples/python3.6/presubmit.cfg",
-    ".kokoro/samples/python3.7/common.cfg",
-    ".kokoro/samples/python3.7/continuous.cfg",
-    ".kokoro/samples/python3.7/periodic.cfg",
-    ".kokoro/samples/python3.7/presubmit.cfg",
-    ".kokoro/samples/python3.8/common.cfg",
-    ".kokoro/samples/python3.8/continuous.cfg",
-    ".kokoro/samples/python3.8/periodic.cfg",
-    ".kokoro/samples/python3.8/presubmit.cfg",
-    ".kokoro/test-samples.sh",
-    ".kokoro/trampoline.sh",
-    ".kokoro/trampoline_v2.sh",
-    ".trampolinerc",
-    "CODE_OF_CONDUCT.md",
-    "CONTRIBUTING.rst",
-    "LICENSE",
-    "MANIFEST.in",
-    "docs/_static/custom.css",
-    "docs/_templates/layout.html",
-    "docs/conf.py",
-    "google/cloud/datastore_admin_v1/proto/__init__.py",
-    "google/cloud/datastore_admin_v1/proto/datastore_admin.proto",
-    "google/cloud/datastore_admin_v1/proto/datastore_admin_pb2.py",
-    "google/cloud/datastore_admin_v1/proto/datastore_admin_pb2_grpc.py",
-    "google/cloud/datastore_admin_v1/proto/index.proto",
-    "google/cloud/datastore_admin_v1/proto/index_pb2.py",
-    "google/cloud/datastore_admin_v1/proto/index_pb2_grpc.py",
-    "google/cloud/datastore_v1/gapic/__init__.py",
-    "google/cloud/datastore_v1/gapic/datastore_client.py",
-    "google/cloud/datastore_v1/gapic/datastore_client_config.py",
-    "google/cloud/datastore_v1/gapic/enums.py",
-    "google/cloud/datastore_v1/gapic/transports/__init__.py",
-    "google/cloud/datastore_v1/gapic/transports/datastore_grpc_transport.py",
-    "google/cloud/datastore_v1/proto/__init__.py",
-    "google/cloud/datastore_v1/proto/datastore.proto",
-    "google/cloud/datastore_v1/proto/datastore_pb2.py",
-    "google/cloud/datastore_v1/proto/datastore_pb2_grpc.py",
-    "google/cloud/datastore_v1/proto/entity.proto",
-    "google/cloud/datastore_v1/proto/entity_pb2.py",
-    "google/cloud/datastore_v1/proto/entity_pb2_grpc.py",
-    "google/cloud/datastore_v1/proto/query.proto",
-    "google/cloud/datastore_v1/proto/query_pb2.py",
-    "google/cloud/datastore_v1/proto/query_pb2_grpc.py",
-    "noxfile.py",
-    "renovate.json",
-    "scripts/decrypt-secrets.sh",
-    "scripts/readme-gen/readme_gen.py",
-    "scripts/readme-gen/templates/README.tmpl.rst",
-    "scripts/readme-gen/templates/auth.tmpl.rst",
-    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
-    "scripts/readme-gen/templates/install_deps.tmpl.rst",
-    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
-    "setup.cfg",
-    "testing/.gitignore"
   ]
 }

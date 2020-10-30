@@ -18,7 +18,7 @@ from google.rpc import status_pb2
 
 from google.cloud import _http as connection_module
 from google.cloud import exceptions
-from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.types import datastore as _datastore_pb2
 
 
 DATASTORE_API_HOST = "datastore.googleapis.com"
@@ -108,9 +108,9 @@ def _rpc(http, project, method, base_url, client_info, request_pb, response_pb_c
     :rtype: :class:`google.protobuf.message.Message`
     :returns: The RPC message parsed from the response.
     """
-    req_data = request_pb.SerializeToString()
+    req_data = request_pb._pb.SerializeToString()
     response = _request(http, project, method, req_data, base_url, client_info)
-    return response_pb_cls.FromString(response)
+    return response_pb_cls.deserialize(response)
 
 
 def build_api_url(project, method, base_url):

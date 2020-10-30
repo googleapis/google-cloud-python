@@ -47,7 +47,7 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
         id_ = 678
@@ -77,12 +77,19 @@ class TestTransaction(unittest.TestCase):
         ds_api.rollback.assert_not_called()
         commit_method = ds_api.commit
         self.assertEqual(commit_method.call_count, 2)
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
-        commit_method.assert_called_with(project, mode, [], transaction=id_)
+        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
+        commit_method.assert_called_with(
+            request={
+                "project_id": project,
+                "mode": mode,
+                "mutations": [],
+                "transaction": id_,
+            }
+        )
 
         begin_txn = ds_api.begin_transaction
         self.assertEqual(begin_txn.call_count, 2)
-        begin_txn.assert_called_with(project)
+        begin_txn.assert_called_with(request={"project_id": project})
 
     def test_begin(self):
         project = "PROJECT"
@@ -92,7 +99,9 @@ class TestTransaction(unittest.TestCase):
         xact = self._make_one(client)
         xact.begin()
         self.assertEqual(xact.id, id_)
-        ds_api.begin_transaction.assert_called_once_with(project)
+        ds_api.begin_transaction.assert_called_once_with(
+            request={"project_id": project}
+        )
 
     def test_begin_w_retry_w_timeout(self):
         project = "PROJECT"
@@ -108,7 +117,7 @@ class TestTransaction(unittest.TestCase):
 
         self.assertEqual(xact.id, id_)
         ds_api.begin_transaction.assert_called_once_with(
-            project, retry=retry, timeout=timeout
+            request={"project_id": project}, retry=retry, timeout=timeout
         )
 
     def test_begin_tombstoned(self):
@@ -119,10 +128,14 @@ class TestTransaction(unittest.TestCase):
         xact = self._make_one(client)
         xact.begin()
         self.assertEqual(xact.id, id_)
-        ds_api.begin_transaction.assert_called_once_with(project)
+        ds_api.begin_transaction.assert_called_once_with(
+            request={"project_id": project}
+        )
 
         xact.rollback()
-        client._datastore_api.rollback.assert_called_once_with(project, id_)
+        client._datastore_api.rollback.assert_called_once_with(
+            request={"project_id": project, "transaction": id_}
+        )
         self.assertIsNone(xact.id)
 
         self.assertRaises(ValueError, xact.begin)
@@ -139,7 +152,9 @@ class TestTransaction(unittest.TestCase):
             xact.begin()
 
         self.assertIsNone(xact.id)
-        ds_api.begin_transaction.assert_called_once_with(project)
+        ds_api.begin_transaction.assert_called_once_with(
+            request={"project_id": project}
+        )
 
     def test_rollback(self):
         project = "PROJECT"
@@ -152,7 +167,9 @@ class TestTransaction(unittest.TestCase):
         xact.rollback()
 
         self.assertIsNone(xact.id)
-        ds_api.rollback.assert_called_once_with(project, id_)
+        ds_api.rollback.assert_called_once_with(
+            request={"project_id": project, "transaction": id_}
+        )
 
     def test_rollback_w_retry_w_timeout(self):
         project = "PROJECT"
@@ -169,15 +186,17 @@ class TestTransaction(unittest.TestCase):
 
         self.assertIsNone(xact.id)
         ds_api.rollback.assert_called_once_with(
-            project, id_, retry=retry, timeout=timeout
+            request={"project_id": project, "transaction": id_},
+            retry=retry,
+            timeout=timeout,
         )
 
     def test_commit_no_partial_keys(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
         id_ = 1002930
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
 
         ds_api = _make_datastore_api(xact_id=id_)
         client = _Client(project, datastore_api=ds_api)
@@ -185,16 +204,23 @@ class TestTransaction(unittest.TestCase):
         xact.begin()
         xact.commit()
 
-        ds_api.commit.assert_called_once_with(project, mode, [], transaction=id_)
+        ds_api.commit.assert_called_once_with(
+            request={
+                "project_id": project,
+                "mode": mode,
+                "mutations": [],
+                "transaction": id_,
+            }
+        )
         self.assertIsNone(xact.id)
 
     def test_commit_w_partial_keys_w_retry_w_timeout(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
         kind = "KIND"
         id1 = 123
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
         key = _make_key(kind, id1, project)
         id2 = 234
         retry = mock.Mock()
@@ -210,10 +236,12 @@ class TestTransaction(unittest.TestCase):
         xact.commit(retry=retry, timeout=timeout)
 
         ds_api.commit.assert_called_once_with(
-            project,
-            mode,
-            xact.mutations,
-            transaction=id2,
+            request={
+                "project_id": project,
+                "mode": mode,
+                "mutations": xact.mutations,
+                "transaction": id2,
+            },
             retry=retry,
             timeout=timeout,
         )
@@ -221,7 +249,7 @@ class TestTransaction(unittest.TestCase):
         self.assertEqual(entity.key.path, [{"kind": kind, "id": id1}])
 
     def test_context_manager_no_raise(self):
-        from google.cloud.datastore_v1.proto import datastore_pb2
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
         id_ = 912830
@@ -230,12 +258,20 @@ class TestTransaction(unittest.TestCase):
         xact = self._make_one(client)
         with xact:
             self.assertEqual(xact.id, id_)
-            ds_api.begin_transaction.assert_called_once_with(project)
+            ds_api.begin_transaction.assert_called_once_with(
+                request={"project_id": project}
+            )
 
-        mode = datastore_pb2.CommitRequest.TRANSACTIONAL
+        mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
         client._datastore_api.commit.assert_called_once_with(
-            project, mode, [], transaction=id_
+            request={
+                "project_id": project,
+                "mode": mode,
+                "mutations": [],
+                "transaction": id_,
+            },
         )
+
         self.assertIsNone(xact.id)
         self.assertEqual(ds_api.begin_transaction.call_count, 1)
 
@@ -252,11 +288,15 @@ class TestTransaction(unittest.TestCase):
         try:
             with xact:
                 self.assertEqual(xact.id, id_)
-                ds_api.begin_transaction.assert_called_once_with(project)
+                ds_api.begin_transaction.assert_called_once_with(
+                    request={"project_id": project}
+                )
                 raise Foo()
         except Foo:
             self.assertIsNone(xact.id)
-            client._datastore_api.rollback.assert_called_once_with(project, id_)
+            client._datastore_api.rollback.assert_called_once_with(
+                request={"project_id": project, "transaction": id_}
+            )
 
         client._datastore_api.commit.assert_not_called()
         self.assertIsNone(xact.id)
@@ -286,11 +326,11 @@ class TestTransaction(unittest.TestCase):
 
 
 def _make_key(kind, id_, project):
-    from google.cloud.datastore_v1.proto import entity_pb2
+    from google.cloud.datastore_v1.types import entity as entity_pb2
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
-    elem = key.path.add()
+    elem = key._pb.path.add()
     elem.kind = kind
     elem.id = id_
     return key
@@ -340,9 +380,9 @@ class _NoCommitBatch(object):
 
 
 def _make_commit_response(*keys):
-    from google.cloud.datastore_v1.proto import datastore_pb2
+    from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
-    mutation_results = [datastore_pb2.MutationResult(key=key) for key in keys]
+    mutation_results = [datastore_pb2.MutationResult(key=key)._pb for key in keys]
     return datastore_pb2.CommitResponse(mutation_results=mutation_results)
 
 

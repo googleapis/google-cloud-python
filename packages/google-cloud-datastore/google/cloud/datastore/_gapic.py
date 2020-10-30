@@ -19,7 +19,8 @@ import six
 
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
-from google.cloud.datastore_v1.gapic import datastore_client
+from google.cloud.datastore_v1.services.datastore import client as datastore_client
+from google.cloud.datastore_v1.services.datastore.transports import grpc
 
 
 def make_datastore_api(client):
@@ -38,6 +39,7 @@ def make_datastore_api(client):
     else:
         channel = insecure_channel(host)
 
+    transport = grpc.DatastoreGrpcTransport(channel=channel)
     return datastore_client.DatastoreClient(
-        channel=channel, client_info=client._client_info
+        transport=transport, client_info=client._client_info
     )

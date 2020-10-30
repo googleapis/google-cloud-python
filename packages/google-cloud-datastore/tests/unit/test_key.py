@@ -345,7 +345,7 @@ class TestKey(unittest.TestCase):
         self.assertRaises(ValueError, key.completed_key, 5678)
 
     def test_to_protobuf_defaults(self):
-        from google.cloud.datastore_v1.proto import entity_pb2
+        from google.cloud.datastore_v1.types import entity as entity_pb2
 
         _KIND = "KIND"
         key = self._make_one(_KIND, project=self._DEFAULT_PROJECT)

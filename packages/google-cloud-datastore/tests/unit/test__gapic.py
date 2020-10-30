@@ -27,14 +27,18 @@ class Test_make_datastore_api(unittest.TestCase):
         return make_datastore_api(client)
 
     @mock.patch(
-        "google.cloud.datastore_v1.gapic.datastore_client.DatastoreClient",
+        "google.cloud.datastore_v1.services.datastore.client.DatastoreClient",
         return_value=mock.sentinel.ds_client,
+    )
+    @mock.patch(
+        "google.cloud.datastore_v1.services.datastore.transports.grpc.DatastoreGrpcTransport",
+        return_value=mock.sentinel.transport,
     )
     @mock.patch(
         "google.cloud.datastore._gapic.make_secure_channel",
         return_value=mock.sentinel.channel,
     )
-    def test_live_api(self, make_chan, mock_klass):
+    def test_live_api(self, make_chan, mock_transport, mock_klass):
         from google.cloud._http import DEFAULT_USER_AGENT
 
         base_url = "https://datastore.googleapis.com:443"
@@ -47,24 +51,31 @@ class Test_make_datastore_api(unittest.TestCase):
         ds_api = self._call_fut(client)
         self.assertIs(ds_api, mock.sentinel.ds_client)
 
+        mock_transport.assert_called_once_with(channel=mock.sentinel.channel)
+
         make_chan.assert_called_once_with(
             mock.sentinel.credentials,
             DEFAULT_USER_AGENT,
             "datastore.googleapis.com:443",
         )
+
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, client_info=mock.sentinel.client_info
+            transport=mock.sentinel.transport, client_info=mock.sentinel.client_info
         )
 
     @mock.patch(
-        "google.cloud.datastore_v1.gapic.datastore_client.DatastoreClient",
+        "google.cloud.datastore_v1.services.datastore.client.DatastoreClient",
         return_value=mock.sentinel.ds_client,
+    )
+    @mock.patch(
+        "google.cloud.datastore_v1.services.datastore.transports.grpc.DatastoreGrpcTransport",
+        return_value=mock.sentinel.transport,
     )
     @mock.patch(
         "google.cloud.datastore._gapic.insecure_channel",
         return_value=mock.sentinel.channel,
     )
-    def test_emulator(self, make_chan, mock_klass):
+    def test_emulator(self, make_chan, mock_transport, mock_klass):
 
         host = "localhost:8901"
         base_url = "http://" + host
@@ -77,7 +88,10 @@ class Test_make_datastore_api(unittest.TestCase):
         ds_api = self._call_fut(client)
         self.assertIs(ds_api, mock.sentinel.ds_client)
 
+        mock_transport.assert_called_once_with(channel=mock.sentinel.channel)
+
         make_chan.assert_called_once_with(host)
+
         mock_klass.assert_called_once_with(
-            channel=mock.sentinel.channel, client_info=mock.sentinel.client_info
+            transport=mock.sentinel.transport, client_info=mock.sentinel.client_info
         )

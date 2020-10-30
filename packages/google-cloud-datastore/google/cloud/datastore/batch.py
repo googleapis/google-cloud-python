@@ -22,7 +22,7 @@ https://cloud.google.com/datastore/docs/concepts/entities#batch_operations
 """
 
 from google.cloud.datastore import helpers
-from google.cloud.datastore_v1.proto import datastore_pb2 as _datastore_pb2
+from google.cloud.datastore_v1.types import datastore as _datastore_pb2
 
 
 class Batch(object):
@@ -219,7 +219,7 @@ class Batch(object):
             raise ValueError("Key must be from same project as batch")
 
         key_pb = key.to_protobuf()
-        self._add_delete_key_pb().CopyFrom(key_pb)
+        self._add_delete_key_pb()._pb.CopyFrom(key_pb._pb)
 
     def begin(self):
         """Begins a batch.
@@ -242,9 +242,9 @@ class Batch(object):
         This is called by :meth:`commit`.
         """
         if self._id is None:
-            mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
+            mode = _datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL
         else:
-            mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
+            mode = _datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
 
         kwargs = {}
 
@@ -255,8 +255,15 @@ class Batch(object):
             kwargs["timeout"] = timeout
 
         commit_response_pb = self._client._datastore_api.commit(
-            self.project, mode, self._mutations, transaction=self._id, **kwargs
+            request={
+                "project_id": self.project,
+                "mode": mode,
+                "transaction": self._id,
+                "mutations": self._mutations,
+            },
+            **kwargs,
         )
+
         _, updated_keys = _parse_commit_response(commit_response_pb)
         # If the back-end returns without error, we are guaranteed that
         # ``commit`` will return keys that match (length and
@@ -337,11 +344,11 @@ def _assign_entity_to_pb(entity_pb, entity):
     :param entity: The entity being updated within the batch / transaction.
     """
     bare_entity_pb = helpers.entity_to_protobuf(entity)
-    bare_entity_pb.key.CopyFrom(bare_entity_pb.key)
-    entity_pb.CopyFrom(bare_entity_pb)
+    bare_entity_pb._pb.key.CopyFrom(bare_entity_pb._pb.key)
+    entity_pb._pb.CopyFrom(bare_entity_pb._pb)
 
 
-def _parse_commit_response(commit_response_pb):
+def _parse_commit_response(commit_response):
     """Extract response data from a commit response.
 
     :type commit_response_pb: :class:`.datastore_pb2.CommitResponse`
@@ -352,6 +359,7 @@ def _parse_commit_response(commit_response_pb):
               :class:`.entity_pb2.Key` for each incomplete key
               that was completed in the commit.
     """
+    commit_response_pb = commit_response._pb
     mut_results = commit_response_pb.mutation_results
     index_updates = commit_response_pb.index_updates
     completed_keys = [

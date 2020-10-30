@@ -185,7 +185,12 @@ def _extended_lookup(
     while loop_num < _MAX_LOOPS:  # loop against possible deferred.
         loop_num += 1
         lookup_response = datastore_api.lookup(
-            project, key_pbs, read_options=read_options, **kwargs
+            request={
+                "project_id": project,
+                "keys": key_pbs,
+                "read_options": read_options,
+            },
+            **kwargs,
         )
 
         # Accumulate the new results.
@@ -535,7 +540,7 @@ class Client(ClientWithProject):
                 helpers.key_from_protobuf(deferred_pb) for deferred_pb in deferred
             ]
 
-        return [helpers.entity_from_protobuf(entity_pb) for entity_pb in entity_pbs]
+        return [helpers.entity_from_protobuf(entity_pb._pb) for entity_pb in entity_pbs]
 
     def put(self, entity, retry=None, timeout=None):
         """Save an entity in the Cloud Datastore.
@@ -702,7 +707,8 @@ class Client(ClientWithProject):
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
 
         response_pb = self._datastore_api.allocate_ids(
-            incomplete_key.project, incomplete_key_pbs, **kwargs
+            request={"project_id": incomplete_key.project, "keys": incomplete_key_pbs},
+            **kwargs,
         )
         allocated_ids = [
             allocated_key_pb.path[-1].id for allocated_key_pb in response_pb.keys
@@ -871,8 +877,9 @@ class Client(ClientWithProject):
             key_pbs.append(key.to_protobuf())
 
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
-        self._datastore_api.reserve_ids(complete_key.project, key_pbs, **kwargs)
-
+        self._datastore_api.reserve_ids(
+            request={"project_id": complete_key.project, "keys": key_pbs}, **kwargs
+        )
         return None
 
     def reserve_ids(self, complete_key, num_ids, retry=None, timeout=None):
@@ -921,6 +928,8 @@ class Client(ClientWithProject):
 
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
         key_pbs = [key.to_protobuf() for key in complete_keys]
-        self._datastore_api.reserve_ids(complete_keys[0].project, key_pbs, **kwargs)
+        self._datastore_api.reserve_ids(
+            request={"project_id": complete_keys[0].project, "keys": key_pbs}, **kwargs
+        )
 
         return None

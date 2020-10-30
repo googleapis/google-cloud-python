@@ -25,9 +25,8 @@ from google.type import latlng_pb2
 import six
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud._helpers import _pb_timestamp_to_datetime
-from google.cloud.datastore_v1.proto import datastore_pb2
-from google.cloud.datastore_v1.proto import entity_pb2
+from google.cloud.datastore_v1.types import datastore as datastore_pb2
+from google.cloud.datastore_v1.types import entity as entity_pb2
 from google.cloud.datastore.entity import Entity
 from google.cloud.datastore.key import Key
 
@@ -86,7 +85,14 @@ def _new_value_pb(entity_pb, name):
     :rtype: :class:`.entity_pb2.Value`
     :returns: The new ``Value`` protobuf that was added to the entity.
     """
-    return entity_pb.properties.get_or_create(name)
+    properties = entity_pb.properties
+    try:
+        properties = properties._pb
+    except AttributeError:
+        # TODO(microgenerator): shouldn't need this. the issue is that
+        # we have wrapped and non-wrapped protos coming here.
+        pass
+    return properties.get_or_create(name)
 
 
 def _property_tuples(entity_pb):
@@ -114,15 +120,24 @@ def entity_from_protobuf(pb):
     :rtype: :class:`google.cloud.datastore.entity.Entity`
     :returns: The entity derived from the protobuf.
     """
+
+    if not getattr(pb, "_pb", False):
+        # Coerce raw pb type into proto-plus pythonic type.
+        proto_pb = entity_pb2.Entity(pb)
+        pb = pb
+    else:
+        proto_pb = pb
+        pb = pb._pb
+
     key = None
-    if pb.HasField("key"):  # Message field (Key)
-        key = key_from_protobuf(pb.key)
+    if "key" in proto_pb:  # Message field (Key)
+        key = key_from_protobuf(proto_pb.key)
 
     entity_props = {}
     entity_meanings = {}
     exclude_from_indexes = []
 
-    for prop_name, value_pb in _property_tuples(pb):
+    for prop_name, value_pb in _property_tuples(proto_pb):
         value = _get_value_from_value_pb(value_pb)
         entity_props[prop_name] = value
 
@@ -211,7 +226,7 @@ def entity_to_protobuf(entity):
     entity_pb = entity_pb2.Entity()
     if entity.key is not None:
         key_pb = entity.key.to_protobuf()
-        entity_pb.key.CopyFrom(key_pb)
+        entity_pb._pb.key.CopyFrom(key_pb._pb)
 
     for name, value in entity.items():
         value_is_list = isinstance(value, list)
@@ -256,7 +271,7 @@ def get_read_options(eventual, transaction_id):
     if transaction_id is None:
         if eventual:
             return datastore_pb2.ReadOptions(
-                read_consistency=datastore_pb2.ReadOptions.EVENTUAL
+                read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
             )
         else:
             return datastore_pb2.ReadOptions()
@@ -368,7 +383,7 @@ def _pb_attr_value(val):
     return name + "_value", value
 
 
-def _get_value_from_value_pb(value_pb):
+def _get_value_from_value_pb(value):
     """Given a protobuf for a Value, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf which
@@ -386,40 +401,44 @@ def _get_value_from_value_pb(value_pb):
     :raises: :class:`ValueError <exceptions.ValueError>` if no value type
              has been set.
     """
-    value_type = value_pb.WhichOneof("value_type")
+    if not getattr(value, "_pb", False):
+        # Coerce raw pb type into proto-plus pythonic type.
+        value = entity_pb2.Value(value)
+
+    value_type = value._pb.WhichOneof("value_type")
 
     if value_type == "timestamp_value":
-        result = _pb_timestamp_to_datetime(value_pb.timestamp_value)
+        result = value.timestamp_value
 
     elif value_type == "key_value":
-        result = key_from_protobuf(value_pb.key_value)
+        result = key_from_protobuf(value.key_value)
 
     elif value_type == "boolean_value":
-        result = value_pb.boolean_value
+        result = value.boolean_value
 
     elif value_type == "double_value":
-        result = value_pb.double_value
+        result = value.double_value
 
     elif value_type == "integer_value":
-        result = value_pb.integer_value
+        result = value.integer_value
 
     elif value_type == "string_value":
-        result = value_pb.string_value
+        result = value.string_value
 
     elif value_type == "blob_value":
-        result = value_pb.blob_value
+        result = value.blob_value
 
     elif value_type == "entity_value":
-        result = entity_from_protobuf(value_pb.entity_value)
+        result = entity_from_protobuf(value.entity_value)
 
     elif value_type == "array_value":
         result = [
-            _get_value_from_value_pb(value) for value in value_pb.array_value.values
+            _get_value_from_value_pb(value) for value in value._pb.array_value.values
         ]
 
     elif value_type == "geo_point_value":
         result = GeoPoint(
-            value_pb.geo_point_value.latitude, value_pb.geo_point_value.longitude
+            value.geo_point_value.latitude, value.geo_point_value.longitude,
         )
 
     elif value_type == "null_value":
@@ -450,15 +469,15 @@ def _set_protobuf_value(value_pb, val):
     """
     attr, val = _pb_attr_value(val)
     if attr == "key_value":
-        value_pb.key_value.CopyFrom(val)
+        value_pb.key_value.CopyFrom(val._pb)
     elif attr == "timestamp_value":
         value_pb.timestamp_value.CopyFrom(val)
     elif attr == "entity_value":
         entity_pb = entity_to_protobuf(val)
-        value_pb.entity_value.CopyFrom(entity_pb)
+        value_pb.entity_value.CopyFrom(entity_pb._pb)
     elif attr == "array_value":
         if len(val) == 0:
-            array_value = entity_pb2.ArrayValue(values=[])
+            array_value = entity_pb2.ArrayValue(values=[])._pb
             value_pb.array_value.CopyFrom(array_value)
         else:
             l_pb = value_pb.array_value.values
