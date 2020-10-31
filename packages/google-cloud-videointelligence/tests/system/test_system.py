@@ -14,13 +14,18 @@
 
 """System tests for VideoIntelligence API."""
 
+import os
 import pytest
 
 from google.cloud import videointelligence_v1
 from test_utils.retry import RetryResult
+from test_utils.vpcsc_config import vpcsc_config
 
 
 INPUT_URI = "gs://cloud-samples-data/video/cat.mp4"
+VPCSC_INPUT_URI = "gs://{}/cat.mp4".format(
+    os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_BUCKET")
+)
 
 
 @pytest.fixture(scope="module")
@@ -28,10 +33,14 @@ def client():
     return videointelligence_v1.VideoIntelligenceServiceClient()
 
 
+def _get_video_uri():
+    return VPCSC_INPUT_URI if vpcsc_config.inside_vpcsc else INPUT_URI
+
+
 def test_annotate_video(client):
     features_element = videointelligence_v1.enums.Feature.LABEL_DETECTION
     features = [features_element]
-    response = client.annotate_video(input_uri=INPUT_URI, features=features)
+    response = client.annotate_video(input_uri=_get_video_uri(), features=features)
 
     retry = RetryResult(result_predicate=bool, max_tries=7)
     retry(response.done)()

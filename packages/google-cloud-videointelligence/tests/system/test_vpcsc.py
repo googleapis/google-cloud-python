@@ -26,6 +26,7 @@ from test_utils.vpcsc_config import vpcsc_config
 CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"
 CREDENTIALS_FILE = os.environ.get("GOOGLE_APPLICATION_CREDENTIALS")
 API_ENDPOINT_URL = "https://videointelligence.googleapis.com/v1/videos:annotate"
+BUCKET_INSIDE = os.environ.get("GOOGLE_CLOUD_TESTS_VPCSC_INSIDE_PERIMETER_BUCKET")
 
 
 @pytest.fixture(scope="module")
@@ -64,18 +65,18 @@ def test_outside_perimeter_blocked(headers):
 
     response = requests.post(url=API_ENDPOINT_URL, data=body, headers=headers)
 
-    assert response.json["error"]["code"] == 403
-    assert response.json["error"]["status"] == "PERMISSION_DENIED"
+    assert response.json()["error"]["code"] == 403
+    assert response.json()["error"]["status"] == "PERMISSION_DENIED"
 
 
 @vpcsc_config.skip_unless_inside_vpcsc
 def test_inside_perimeter_allowed(headers):
-    body = _make_body(bucket_name=vpcsc_config.inside_bucket)
+    body = _make_body(bucket_name=BUCKET_INSIDE)
 
     response = requests.post(url=API_ENDPOINT_URL, data=body, headers=headers)
 
-    operation = response.json
+    operation = response.json()
     op_url = "https://videointelligence.googleapis.com/v1/{}".format(operation["name"])
     op_response = requests.get(url=op_url, headers=headers)
     # Assert that we do not get an error.
-    assert op_response.json["name"] == operation["name"]
+    assert op_response.json()["name"] == operation["name"]
