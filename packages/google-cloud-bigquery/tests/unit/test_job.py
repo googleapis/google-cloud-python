@@ -864,7 +864,7 @@ class Test_AsyncJob(unittest.TestCase):
         job = self._set_properties_job()
 
         api_request_patcher = mock.patch.object(
-            job._client._connection, "api_request", side_effect=[ValueError, response],
+            job._client._connection, "api_request", side_effect=[ValueError, response]
         )
         retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
             lambda exc: isinstance(exc, ValueError)
@@ -885,7 +885,7 @@ class Test_AsyncJob(unittest.TestCase):
             [
                 mock.call(method="POST", path=api_path, query_params={}, timeout=7.5),
                 mock.call(
-                    method="POST", path=api_path, query_params={}, timeout=7.5,
+                    method="POST", path=api_path, query_params={}, timeout=7.5
                 ),  # was retried once
             ],
         )
@@ -1034,7 +1034,6 @@ class Test_AsyncJob(unittest.TestCase):
         custom_predicate = mock.Mock()
         custom_predicate.return_value = True
         custom_retry = google.api_core.retry.Retry(predicate=custom_predicate)
-
         self.assertIs(job.result(retry=custom_retry), job)
 
         begin_call = mock.call(
@@ -2757,7 +2756,7 @@ class TestLoadJob(unittest.TestCase, _Base):
         final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
-            method="POST", path=PATH, query_params={}, timeout=None,
+            method="POST", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -2779,7 +2778,7 @@ class TestLoadJob(unittest.TestCase, _Base):
 
         conn1.api_request.assert_not_called()
         conn2.api_request.assert_called_once_with(
-            method="POST", path=PATH, query_params={}, timeout=None,
+            method="POST", path=PATH, query_params={}, timeout=None
         )
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -3205,7 +3204,7 @@ class TestCopyJob(unittest.TestCase, _Base):
         final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None,
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_exists_hit_w_alternate_client(self):
@@ -3620,7 +3619,7 @@ class TestExtractJob(unittest.TestCase, _Base):
         final_attributes.assert_called_with({"path": PATH}, client, job)
 
         conn.api_request.assert_called_once_with(
-            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None,
+            method="GET", path=PATH, query_params={"fields": "id"}, timeout=None
         )
 
     def test_exists_hit_w_alternate_client(self):
@@ -4810,6 +4809,60 @@ class TestQueryJob(unittest.TestCase, _Base):
         tabledata_list_request = connection.api_request.call_args_list[1]
         self.assertEqual(
             tabledata_list_request[1]["query_params"]["maxResults"], max_results
+        )
+
+    def test_result_w_retry(self):
+        from google.cloud.bigquery.table import RowIterator
+
+        query_resource = {
+            "jobComplete": False,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+        }
+        query_resource_done = {
+            "jobComplete": True,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "schema": {"fields": [{"name": "col1", "type": "STRING"}]},
+            "totalRows": "2",
+        }
+        job_resource = self._make_resource(started=True)
+        job_resource_done = self._make_resource(started=True, ended=True)
+        job_resource_done["configuration"]["query"]["destinationTable"] = {
+            "projectId": "dest-project",
+            "datasetId": "dest_dataset",
+            "tableId": "dest_table",
+        }
+
+        connection = _make_connection(
+            exceptions.NotFound("not normally retriable"),
+            query_resource,
+            exceptions.NotFound("not normally retriable"),
+            query_resource_done,
+            exceptions.NotFound("not normally retriable"),
+            job_resource_done,
+        )
+        client = _make_client(self.PROJECT, connection=connection)
+        job = self._get_target_class().from_api_repr(job_resource, client)
+
+        custom_predicate = mock.Mock()
+        custom_predicate.return_value = True
+        custom_retry = google.api_core.retry.Retry(predicate=custom_predicate)
+
+        self.assertIsInstance(job.result(retry=custom_retry), RowIterator)
+        query_results_call = mock.call(
+            method="GET",
+            path=f"/projects/{self.PROJECT}/queries/{self.JOB_ID}",
+            query_params={"maxResults": 0},
+            timeout=None,
+        )
+        reload_call = mock.call(
+            method="GET",
+            path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
+            query_params={},
+            timeout=None,
+        )
+
+        connection.api_request.assert_has_calls(
+            [query_results_call, query_results_call, reload_call]
         )
 
     def test_result_w_empty_schema(self):

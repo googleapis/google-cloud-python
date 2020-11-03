@@ -819,8 +819,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """
         if self.state is None:
             self._begin(retry=retry, timeout=timeout)
-        # TODO: modify PollingFuture so it can pass a retry argument to done().
-        return super(_AsyncJob, self).result(timeout=timeout)
+
+        kwargs = {} if retry is DEFAULT_RETRY else {"retry": retry}
+        return super(_AsyncJob, self).result(timeout=timeout, **kwargs)
 
     def cancelled(self):
         """Check if the job has been cancelled.
@@ -1845,7 +1846,7 @@ class CopyJob(_AsyncJob):
         """
         return TableReference.from_api_repr(
             _helpers._get_sub_prop(
-                self._properties, ["configuration", "copy", "destinationTable"],
+                self._properties, ["configuration", "copy", "destinationTable"]
             )
         )
 
@@ -2043,10 +2044,7 @@ class ExtractJob(_AsyncJob):
         self._configuration = job_config
 
         if source:
-            source_ref = {
-                "projectId": source.project,
-                "datasetId": source.dataset_id,
-            }
+            source_ref = {"projectId": source.project, "datasetId": source.dataset_id}
 
             if isinstance(source, (Table, TableListItem, TableReference)):
                 source_ref["tableId"] = source.table_id
@@ -3138,10 +3136,10 @@ class QueryJob(_AsyncJob):
 
         return self.state == _DONE_STATE
 
-    def _blocking_poll(self, timeout=None):
+    def _blocking_poll(self, timeout=None, **kwargs):
         self._done_timeout = timeout
         self._transport_timeout = timeout
-        super(QueryJob, self)._blocking_poll(timeout=timeout)
+        super(QueryJob, self)._blocking_poll(timeout=timeout, **kwargs)
 
     @staticmethod
     def _format_for_exception(query, job_id):
