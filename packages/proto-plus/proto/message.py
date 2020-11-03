@@ -155,7 +155,6 @@ class MessageMeta(type):
 
             # Same thing, but for enums.
             elif field.enum and not isinstance(field.enum, str):
-                field_enum = field.enum
                 field_enum = (
                     field.enum._meta.pb
                     if hasattr(field.enum, "_meta")

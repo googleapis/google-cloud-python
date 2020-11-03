@@ -285,6 +285,28 @@ def test_unknown_field_deserialize():
     assert not hasattr(o_old, "length_cm")
 
 
+def test_unknown_field_deserialize_keep_fields():
+    # This is a somewhat common setup: a client uses an older proto definition,
+    # while the server sends the newer definition. The client still needs to be
+    # able to interact with the protos it receives from the server.
+
+    class Octopus_Old(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    class Octopus_New(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+        length_cm = proto.Field(proto.INT32, number=2)
+
+    o_new = Octopus_New(mass_kg=20, length_cm=100)
+    o_ser = Octopus_New.serialize(o_new)
+
+    o_old = Octopus_Old.deserialize(o_ser)
+    assert not hasattr(o_old, "length_cm")
+
+    o_new = Octopus_New.deserialize(Octopus_Old.serialize(o_old))
+    assert o_new.length_cm == 100
+
+
 def test_unknown_field_from_dict():
     class Squid(proto.Message):
         mass_kg = proto.Field(proto.INT32, number=1)
