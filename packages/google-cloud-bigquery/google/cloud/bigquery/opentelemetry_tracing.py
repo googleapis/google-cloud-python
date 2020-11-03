@@ -26,9 +26,9 @@ try:
 
 except ImportError:
     logger.info(
-        "This service is instrumented using OpenTelemetry."
-        "OpenTelemetry could not be imported; please"
-        "add opentelemetry-api and opentelemetry-instrumentation"
+        "This service is instrumented using OpenTelemetry. "
+        "OpenTelemetry could not be imported; please "
+        "add opentelemetry-api and opentelemetry-instrumentation "
         "packages in order to get BigQuery Tracing data."
     )
 
