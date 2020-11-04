@@ -1306,6 +1306,8 @@ class RowIterator(HTTPIterator):
             call the BigQuery Storage API to fetch rows.
         selected_fields (Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]):
             A subset of columns to select from this table.
+        total_rows (Optional[int]):
+            Total number of rows in the table.
 
     """
 
@@ -1321,6 +1323,7 @@ class RowIterator(HTTPIterator):
         extra_params=None,
         table=None,
         selected_fields=None,
+        total_rows=None,
     ):
         super(RowIterator, self).__init__(
             client,
@@ -1342,7 +1345,7 @@ class RowIterator(HTTPIterator):
         self._schema = schema
         self._selected_fields = selected_fields
         self._table = table
-        self._total_rows = getattr(table, "num_rows", None)
+        self._total_rows = total_rows
 
     def _get_next_page_response(self):
         """Requests the next page from the path provided.
@@ -1419,7 +1422,7 @@ class RowIterator(HTTPIterator):
             selected_fields=self._selected_fields,
         )
         tabledata_list_download = functools.partial(
-            _pandas_helpers.download_arrow_tabledata_list, iter(self.pages), self.schema
+            _pandas_helpers.download_arrow_row_iterator, iter(self.pages), self.schema
         )
         return self._to_page_iterable(
             bqstorage_download,
@@ -1496,7 +1499,7 @@ class RowIterator(HTTPIterator):
         ) and self.max_results is not None:
             warnings.warn(
                 "Cannot use bqstorage_client if max_results is set, "
-                "reverting to fetching data with the tabledata.list endpoint.",
+                "reverting to fetching data with the REST endpoint.",
                 stacklevel=2,
             )
             create_bqstorage_client = False
@@ -1582,7 +1585,7 @@ class RowIterator(HTTPIterator):
             selected_fields=self._selected_fields,
         )
         tabledata_list_download = functools.partial(
-            _pandas_helpers.download_dataframe_tabledata_list,
+            _pandas_helpers.download_dataframe_row_iterator,
             iter(self.pages),
             self.schema,
             dtypes,
@@ -1680,7 +1683,7 @@ class RowIterator(HTTPIterator):
         ) and self.max_results is not None:
             warnings.warn(
                 "Cannot use bqstorage_client if max_results is set, "
-                "reverting to fetching data with the tabledata.list endpoint.",
+                "reverting to fetching data with the REST endpoint.",
                 stacklevel=2,
             )
             create_bqstorage_client = False
@@ -2167,7 +2170,7 @@ def _item_to_row(iterator, resource):
     )
 
 
-def _tabledata_list_page_columns(schema, response):
+def _row_iterator_page_columns(schema, response):
     """Make a generator of all the columns in a page from tabledata.list.
 
     This enables creating a :class:`pandas.DataFrame` and other
@@ -2197,7 +2200,7 @@ def _rows_page_start(iterator, page, response):
     """
     # Make a (lazy) copy of the page in column-oriented format for use in data
     # science packages.
-    page._columns = _tabledata_list_page_columns(iterator._schema, response)
+    page._columns = _row_iterator_page_columns(iterator._schema, response)
 
     total_rows = response.get("totalRows")
     if total_rows is not None:

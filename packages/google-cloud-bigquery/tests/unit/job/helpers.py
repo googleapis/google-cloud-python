@@ -60,6 +60,7 @@ def _make_job_resource(
     endpoint="https://bigquery.googleapis.com",
     job_type="load",
     job_id="a-random-id",
+    location="US",
     project_id="some-project",
     user_email="bq-user@example.com",
 ):
@@ -69,7 +70,11 @@ def _make_job_resource(
         "statistics": {"creationTime": creation_time_ms, job_type: {}},
         "etag": etag,
         "id": "{}:{}".format(project_id, job_id),
-        "jobReference": {"projectId": project_id, "jobId": job_id},
+        "jobReference": {
+            "projectId": project_id,
+            "jobId": job_id,
+            "location": location,
+        },
         "selfLink": "{}/bigquery/v2/projects/{}/jobs/{}".format(
             endpoint, project_id, job_id
         ),
@@ -130,7 +135,7 @@ class _Base(unittest.TestCase):
 
         return TableReference(self.DS_REF, table_id)
 
-    def _make_resource(self, started=False, ended=False):
+    def _make_resource(self, started=False, ended=False, location="US"):
         self._setUpConstants()
         return _make_job_resource(
             creation_time_ms=int(self.WHEN_TS * 1000),
@@ -144,6 +149,7 @@ class _Base(unittest.TestCase):
             job_id=self.JOB_ID,
             project_id=self.PROJECT,
             user_email=self.USER_EMAIL,
+            location=location,
         )
 
     def _verifyInitialReadonlyProperties(self, job):

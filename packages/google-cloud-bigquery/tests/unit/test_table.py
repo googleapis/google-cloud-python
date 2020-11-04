@@ -1572,10 +1572,7 @@ class TestRowIterator(unittest.TestCase):
         from google.cloud.bigquery.table import Table
 
         table = Table("proj.dset.tbl")
-        table._properties["numRows"] = 100
-
-        iterator = self._make_one(table=table)
-
+        iterator = self._make_one(table=table, total_rows=100)
         self.assertIs(iterator._table, table)
         self.assertEqual(iterator.total_rows, 100)
 
@@ -1883,7 +1880,7 @@ class TestRowIterator(unittest.TestCase):
             for warning in warned
             if warning.category is UserWarning
             and "cannot use bqstorage_client" in str(warning).lower()
-            and "tabledata.list" in str(warning)
+            and "REST" in str(warning)
         ]
         self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
         mock_client._create_bqstorage_client.assert_not_called()
@@ -2667,7 +2664,7 @@ class TestRowIterator(unittest.TestCase):
             for warning in warned
             if warning.category is UserWarning
             and "cannot use bqstorage_client" in str(warning).lower()
-            and "tabledata.list" in str(warning)
+            and "REST" in str(warning)
         ]
         self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
 
@@ -2703,7 +2700,7 @@ class TestRowIterator(unittest.TestCase):
             for warning in warned
             if warning.category is UserWarning
             and "cannot use bqstorage_client" in str(warning).lower()
-            and "tabledata.list" in str(warning)
+            and "REST" in str(warning)
         ]
         self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
         mock_client._create_bqstorage_client.assert_not_called()

@@ -474,7 +474,7 @@ def dataframe_to_parquet(dataframe, bq_schema, filepath, parquet_compression="SN
     pyarrow.parquet.write_table(arrow_table, filepath, compression=parquet_compression)
 
 
-def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
+def _row_iterator_page_to_arrow(page, column_names, arrow_types):
     # Iterate over the page to force the API request to get the page data.
     try:
         next(iter(page))
@@ -490,8 +490,8 @@ def _tabledata_list_page_to_arrow(page, column_names, arrow_types):
     return pyarrow.RecordBatch.from_arrays(arrays, names=column_names)
 
 
-def download_arrow_tabledata_list(pages, bq_schema):
-    """Use tabledata.list to construct an iterable of RecordBatches.
+def download_arrow_row_iterator(pages, bq_schema):
+    """Use HTTP JSON RowIterator to construct an iterable of RecordBatches.
 
     Args:
         pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
@@ -510,10 +510,10 @@ def download_arrow_tabledata_list(pages, bq_schema):
     arrow_types = [bq_to_arrow_data_type(field) for field in bq_schema]
 
     for page in pages:
-        yield _tabledata_list_page_to_arrow(page, column_names, arrow_types)
+        yield _row_iterator_page_to_arrow(page, column_names, arrow_types)
 
 
-def _tabledata_list_page_to_dataframe(page, column_names, dtypes):
+def _row_iterator_page_to_dataframe(page, column_names, dtypes):
     # Iterate over the page to force the API request to get the page data.
     try:
         next(iter(page))
@@ -528,8 +528,8 @@ def _tabledata_list_page_to_dataframe(page, column_names, dtypes):
     return pandas.DataFrame(columns, columns=column_names)
 
 
-def download_dataframe_tabledata_list(pages, bq_schema, dtypes):
-    """Use (slower, but free) tabledata.list to construct a DataFrame.
+def download_dataframe_row_iterator(pages, bq_schema, dtypes):
+    """Use HTTP JSON RowIterator to construct a DataFrame.
 
     Args:
         pages (Iterator[:class:`google.api_core.page_iterator.Page`]):
@@ -549,7 +549,7 @@ def download_dataframe_tabledata_list(pages, bq_schema, dtypes):
     bq_schema = schema._to_schema_fields(bq_schema)
     column_names = [field.name for field in bq_schema]
     for page in pages:
-        yield _tabledata_list_page_to_dataframe(page, column_names, dtypes)
+        yield _row_iterator_page_to_dataframe(page, column_names, dtypes)
 
 
 def _bqstorage_page_to_arrow(page):

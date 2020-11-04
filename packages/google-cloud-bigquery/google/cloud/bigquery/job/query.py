@@ -38,7 +38,6 @@ from google.cloud.bigquery.routine import RoutineReference
 from google.cloud.bigquery.table import _EmptyRowIterator
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import _table_arg_to_table_ref
-from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import TimePartitioning
 
@@ -1159,12 +1158,13 @@ class QueryJob(_AsyncJob):
         if self._query_results.total_rows is None:
             return _EmptyRowIterator()
 
-        schema = self._query_results.schema
-        dest_table_ref = self.destination
-        dest_table = Table(dest_table_ref, schema=schema)
-        dest_table._properties["numRows"] = self._query_results.total_rows
-        rows = self._client.list_rows(
-            dest_table,
+        rows = self._client._list_rows_from_query_results(
+            self._query_results.job_id,
+            self.location,
+            self._query_results.project,
+            self._query_results.schema,
+            total_rows=self._query_results.total_rows,
+            destination=self.destination,
             page_size=page_size,
             max_results=max_results,
             start_index=start_index,

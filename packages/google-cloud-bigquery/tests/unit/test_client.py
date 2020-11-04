@@ -6786,12 +6786,17 @@ class TestClient(unittest.TestCase):
         age = SchemaField("age", "INTEGER", mode="NULLABLE")
         joined = SchemaField("joined", "TIMESTAMP", mode="NULLABLE")
         table = Table(self.TABLE_REF, schema=[full_name, age, joined])
+        table._properties["numRows"] = 7
 
         iterator = client.list_rows(table, timeout=7.5)
+
+        # Check that initial total_rows is populated from the table.
+        self.assertEqual(iterator.total_rows, 7)
         page = six.next(iterator.pages)
         rows = list(page)
-        total_rows = iterator.total_rows
-        page_token = iterator.next_page_token
+
+        # Check that total_rows is updated based on API response.
+        self.assertEqual(iterator.total_rows, ROWS)
 
         f2i = {"full_name": 0, "age": 1, "joined": 2}
         self.assertEqual(len(rows), 4)
@@ -6799,8 +6804,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(rows[1], Row(("Bharney Rhubble", 33, WHEN_1), f2i))
         self.assertEqual(rows[2], Row(("Wylma Phlyntstone", 29, WHEN_2), f2i))
         self.assertEqual(rows[3], Row(("Bhettye Rhubble", None, None), f2i))
-        self.assertEqual(total_rows, ROWS)
-        self.assertEqual(page_token, TOKEN)
+        self.assertEqual(iterator.next_page_token, TOKEN)
 
         conn.api_request.assert_called_once_with(
             method="GET", path="/%s" % PATH, query_params={}, timeout=7.5

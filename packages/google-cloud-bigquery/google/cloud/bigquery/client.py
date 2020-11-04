@@ -80,18 +80,19 @@ _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
 _DEFAULT_NUM_RETRIES = 6
 _BASE_UPLOAD_TEMPLATE = (
-    u"https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
-    u"{project}/jobs?uploadType="
+    "https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
+    "{project}/jobs?uploadType="
 )
-_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"
-_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
-_GENERIC_CONTENT_TYPE = u"*/*"
+_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
+_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
+_GENERIC_CONTENT_TYPE = "*/*"
 _READ_LESS_THAN_SIZE = (
     "Size {:d} was specified but the file-like object only had " "{:d} bytes remaining."
 )
 _NEED_TABLE_ARGUMENT = (
     "The table argument should be a table ID string, Table, or TableReference"
 )
+_LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 
 
 class Project(object):
@@ -293,7 +294,7 @@ class Client(ClientWithProject):
                 span_attributes=span_attributes,
                 *args,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
 
         return page_iterator.HTTPIterator(
@@ -371,7 +372,7 @@ class Client(ClientWithProject):
                 span_attributes=span_attributes,
                 *args,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
 
         return page_iterator.HTTPIterator(
@@ -1129,7 +1130,7 @@ class Client(ClientWithProject):
                 span_attributes=span_attributes,
                 *args,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
 
         result = page_iterator.HTTPIterator(
@@ -1207,7 +1208,7 @@ class Client(ClientWithProject):
                 span_attributes=span_attributes,
                 *args,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
 
         result = page_iterator.HTTPIterator(
@@ -1284,7 +1285,7 @@ class Client(ClientWithProject):
                 span_attributes=span_attributes,
                 *args,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
 
         result = page_iterator.HTTPIterator(
@@ -1510,7 +1511,7 @@ class Client(ClientWithProject):
                 raise
 
     def _get_query_results(
-        self, job_id, retry, project=None, timeout_ms=None, location=None, timeout=None
+        self, job_id, retry, project=None, timeout_ms=None, location=None, timeout=None,
     ):
         """Get the query results object for a query job.
 
@@ -1890,7 +1891,7 @@ class Client(ClientWithProject):
                 span_attributes=span_attributes,
                 *args,
                 timeout=timeout,
-                **kwargs
+                **kwargs,
             )
 
         return page_iterator.HTTPIterator(
@@ -2374,7 +2375,7 @@ class Client(ClientWithProject):
 
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
 
-        data_str = u"\n".join(json.dumps(item) for item in json_rows)
+        data_str = "\n".join(json.dumps(item) for item in json_rows)
         encoded_str = data_str.encode()
         data_file = io.BytesIO(encoded_str)
         return self.load_table_from_file(
@@ -3169,6 +3170,83 @@ class Client(ClientWithProject):
             # Pass in selected_fields separately from schema so that full
             # tables can be fetched without a column filter.
             selected_fields=selected_fields,
+            total_rows=getattr(table, "num_rows", None),
+        )
+        return row_iterator
+
+    def _list_rows_from_query_results(
+        self,
+        job_id,
+        location,
+        project,
+        schema,
+        total_rows=None,
+        destination=None,
+        max_results=None,
+        start_index=None,
+        page_size=None,
+        retry=DEFAULT_RETRY,
+        timeout=None,
+    ):
+        """List the rows of a completed query.
+        See
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/getQueryResults
+        Args:
+            job_id (str):
+                ID of a query job.
+            location (str): Location of the query job.
+            project (str):
+                ID of the project where the query job was run.
+            schema (Sequence[google.cloud.bigquery.schema.SchemaField]):
+                The fields expected in these query results. Used to convert
+                from JSON to expected Python types.
+            total_rows (Optional[int]):
+                Total number of rows in the query results.
+            destination (Optional[Union[ \
+                google.cloud.bigquery.table.Table, \
+                google.cloud.bigquery.table.TableListItem, \
+                google.cloud.bigquery.table.TableReference, \
+                str, \
+            ]]):
+                Destination table reference. Used to fetch the query results
+                with the BigQuery Storage API.
+            max_results (Optional[int]):
+                Maximum number of rows to return across the whole iterator.
+            start_index (Optional[int]):
+                The zero-based index of the starting row to read.
+            page_size (Optional[int]):
+                The maximum number of rows in each page of results from this request.
+                Non-positive values are ignored. Defaults to a sensible value set by the API.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+                If multiple requests are made under the hood, ``timeout``
+                applies to each individual request.
+        Returns:
+            google.cloud.bigquery.table.RowIterator:
+                Iterator of row data
+                :class:`~google.cloud.bigquery.table.Row`-s.
+        """
+        params = {
+            "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
+            "location": location,
+        }
+
+        if start_index is not None:
+            params["startIndex"] = start_index
+
+        row_iterator = RowIterator(
+            client=self,
+            api_request=functools.partial(self._call_api, retry, timeout=timeout),
+            path=f"/projects/{project}/queries/{job_id}",
+            schema=schema,
+            max_results=max_results,
+            page_size=page_size,
+            table=destination,
+            extra_params=params,
+            total_rows=total_rows,
         )
         return row_iterator
 

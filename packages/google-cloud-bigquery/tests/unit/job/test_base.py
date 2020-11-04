@@ -882,10 +882,14 @@ class Test_AsyncJob(unittest.TestCase):
 
     def test_result_default_wo_state(self):
         begun_job_resource = _make_job_resource(
-            job_id=self.JOB_ID, project_id=self.PROJECT, started=True
+            job_id=self.JOB_ID, project_id=self.PROJECT, location="US", started=True
         )
         done_job_resource = _make_job_resource(
-            job_id=self.JOB_ID, project_id=self.PROJECT, started=True, ended=True
+            job_id=self.JOB_ID,
+            project_id=self.PROJECT,
+            location="US",
+            started=True,
+            ended=True,
         )
         conn = _make_connection(
             _make_retriable_exception(),
@@ -907,7 +911,7 @@ class Test_AsyncJob(unittest.TestCase):
         reload_call = mock.call(
             method="GET",
             path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={},
+            query_params={"location": "US"},
             timeout=None,
         )
         conn.api_request.assert_has_calls(
@@ -916,38 +920,48 @@ class Test_AsyncJob(unittest.TestCase):
 
     def test_result_w_retry_wo_state(self):
         begun_job_resource = _make_job_resource(
-            job_id=self.JOB_ID, project_id=self.PROJECT, started=True
+            job_id=self.JOB_ID, project_id=self.PROJECT, location="EU", started=True
         )
         done_job_resource = _make_job_resource(
-            job_id=self.JOB_ID, project_id=self.PROJECT, started=True, ended=True
+            job_id=self.JOB_ID,
+            project_id=self.PROJECT,
+            location="EU",
+            started=True,
+            ended=True,
         )
         conn = _make_connection(
             exceptions.NotFound("not normally retriable"),
             begun_job_resource,
-            # The call to done() / reload() does not get the custom retry
-            # policy passed to it, so we don't throw a non-retriable
-            # exception here. See:
-            # https://github.com/googleapis/python-bigquery/issues/24
-            _make_retriable_exception(),
+            exceptions.NotFound("not normally retriable"),
             done_job_resource,
         )
         client = _make_client(project=self.PROJECT, connection=conn)
-        job = self._make_one(self.JOB_ID, client)
+        job = self._make_one(
+            self._job_reference(self.JOB_ID, self.PROJECT, "EU"), client
+        )
         custom_predicate = mock.Mock()
         custom_predicate.return_value = True
-        custom_retry = google.api_core.retry.Retry(predicate=custom_predicate)
+        custom_retry = google.api_core.retry.Retry(
+            predicate=custom_predicate, initial=0.001, maximum=0.001, deadline=0.001,
+        )
         self.assertIs(job.result(retry=custom_retry), job)
 
         begin_call = mock.call(
             method="POST",
             path=f"/projects/{self.PROJECT}/jobs",
-            data={"jobReference": {"jobId": self.JOB_ID, "projectId": self.PROJECT}},
+            data={
+                "jobReference": {
+                    "jobId": self.JOB_ID,
+                    "projectId": self.PROJECT,
+                    "location": "EU",
+                }
+            },
             timeout=None,
         )
         reload_call = mock.call(
             method="GET",
             path=f"/projects/{self.PROJECT}/jobs/{self.JOB_ID}",
-            query_params={},
+            query_params={"location": "EU"},
             timeout=None,
         )
         conn.api_request.assert_has_calls(

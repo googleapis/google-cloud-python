@@ -170,7 +170,7 @@ def test_context_with_default_connection():
     default_conn = make_connection(QUERY_RESOURCE, QUERY_RESULTS_RESOURCE)
     conn_patch = mock.patch("google.cloud.bigquery.client.Connection", autospec=True)
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.client.Client.list_rows",
+        "google.cloud.bigquery.client.Client._list_rows_from_query_results",
         return_value=google.cloud.bigquery.table._EmptyRowIterator(),
     )
 
@@ -235,7 +235,7 @@ def test_context_with_custom_connection():
     default_conn = make_connection()
     conn_patch = mock.patch("google.cloud.bigquery.client.Connection", autospec=True)
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.client.Client.list_rows",
+        "google.cloud.bigquery.client.Client._list_rows_from_query_results",
         return_value=google.cloud.bigquery.table._EmptyRowIterator(),
     )
 
@@ -1078,7 +1078,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_overrides_context(param_value, ex
     )
     conn = magics.context._connection = make_connection(resource, query_results, data)
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.client.Client.list_rows",
+        "google.cloud.bigquery.client.Client._list_rows_from_query_results",
         return_value=google.cloud.bigquery.table._EmptyRowIterator(),
     )
     with list_rows_patch, default_patch:
@@ -1117,7 +1117,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_inplace():
     )
     conn = magics.context._connection = make_connection(resource, query_results, data)
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.client.Client.list_rows",
+        "google.cloud.bigquery.client.Client._list_rows_from_query_results",
         return_value=google.cloud.bigquery.table._EmptyRowIterator(),
     )
     with list_rows_patch, default_patch:
@@ -1156,7 +1156,7 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
     )
     conn = magics.context._connection = make_connection(resource, query_results, data)
     list_rows_patch = mock.patch(
-        "google.cloud.bigquery.client.Client.list_rows",
+        "google.cloud.bigquery.client.Client._list_rows_from_query_results",
         return_value=google.cloud.bigquery.table._EmptyRowIterator(),
     )
     with list_rows_patch, default_patch:

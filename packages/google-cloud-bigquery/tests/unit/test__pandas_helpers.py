@@ -1202,7 +1202,7 @@ def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
-def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
+def test_download_arrow_row_iterator_unknown_field_type(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
         items=[{"page_data": "foo"}],
@@ -1216,7 +1216,7 @@ def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
         schema.SchemaField("alien_field", "ALIEN_FLOAT_TYPE"),
     ]
 
-    results_gen = module_under_test.download_arrow_tabledata_list(pages, bq_schema)
+    results_gen = module_under_test.download_arrow_row_iterator(pages, bq_schema)
 
     with warnings.catch_warnings(record=True) as warned:
         result = next(results_gen)
@@ -1238,7 +1238,7 @@ def test_download_arrow_tabledata_list_unknown_field_type(module_under_test):
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
-def test_download_arrow_tabledata_list_known_field_type(module_under_test):
+def test_download_arrow_row_iterator_known_field_type(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
         items=[{"page_data": "foo"}],
@@ -1252,7 +1252,7 @@ def test_download_arrow_tabledata_list_known_field_type(module_under_test):
         schema.SchemaField("non_alien_field", "STRING"),
     ]
 
-    results_gen = module_under_test.download_arrow_tabledata_list(pages, bq_schema)
+    results_gen = module_under_test.download_arrow_row_iterator(pages, bq_schema)
     with warnings.catch_warnings(record=True) as warned:
         result = next(results_gen)
 
@@ -1273,7 +1273,7 @@ def test_download_arrow_tabledata_list_known_field_type(module_under_test):
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
-def test_download_arrow_tabledata_list_dict_sequence_schema(module_under_test):
+def test_download_arrow_row_iterator_dict_sequence_schema(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
         items=[{"page_data": "foo"}],
@@ -1287,7 +1287,7 @@ def test_download_arrow_tabledata_list_dict_sequence_schema(module_under_test):
         {"name": "non_alien_field", "type": "STRING", "mode": "NULLABLE"},
     ]
 
-    results_gen = module_under_test.download_arrow_tabledata_list(pages, dict_schema)
+    results_gen = module_under_test.download_arrow_row_iterator(pages, dict_schema)
     result = next(results_gen)
 
     assert len(result.columns) == 2
@@ -1301,7 +1301,7 @@ def test_download_arrow_tabledata_list_dict_sequence_schema(module_under_test):
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")
-def test_download_dataframe_tabledata_list_dict_sequence_schema(module_under_test):
+def test_download_dataframe_row_iterator_dict_sequence_schema(module_under_test):
     fake_page = api_core.page_iterator.Page(
         parent=mock.Mock(),
         items=[{"page_data": "foo"}],
@@ -1315,7 +1315,7 @@ def test_download_dataframe_tabledata_list_dict_sequence_schema(module_under_tes
         {"name": "non_alien_field", "type": "STRING", "mode": "NULLABLE"},
     ]
 
-    results_gen = module_under_test.download_dataframe_tabledata_list(
+    results_gen = module_under_test.download_dataframe_row_iterator(
         pages, dict_schema, dtypes={}
     )
     result = next(results_gen)
@@ -1335,5 +1335,5 @@ def test_download_dataframe_tabledata_list_dict_sequence_schema(module_under_tes
 
 
 def test_table_data_listpage_to_dataframe_skips_stop_iteration(module_under_test):
-    dataframe = module_under_test._tabledata_list_page_to_dataframe([], [], {})
+    dataframe = module_under_test._row_iterator_page_to_dataframe([], [], {})
     assert isinstance(dataframe, pandas.DataFrame)
