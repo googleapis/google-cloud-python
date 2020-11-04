@@ -20,6 +20,124 @@ import six
 from google.cloud.bigquery_v2 import types as gapic_types
 
 
+class Compression(object):
+    """The compression type to use for exported files. The default value is
+    :attr:`NONE`.
+
+    :attr:`DEFLATE` and :attr:`SNAPPY` are
+    only supported for Avro.
+    """
+
+    GZIP = "GZIP"
+    """Specifies GZIP format."""
+
+    DEFLATE = "DEFLATE"
+    """Specifies DEFLATE format."""
+
+    SNAPPY = "SNAPPY"
+    """Specifies SNAPPY format."""
+
+    NONE = "NONE"
+    """Specifies no compression."""
+
+
+class CreateDisposition(object):
+    """Specifies whether the job is allowed to create new tables. The default
+    value is :attr:`CREATE_IF_NEEDED`.
+
+    Creation, truncation and append actions occur as one atomic update
+    upon job completion.
+    """
+
+    CREATE_IF_NEEDED = "CREATE_IF_NEEDED"
+    """If the table does not exist, BigQuery creates the table."""
+
+    CREATE_NEVER = "CREATE_NEVER"
+    """The table must already exist. If it does not, a 'notFound' error is
+    returned in the job result."""
+
+
+class DestinationFormat(object):
+    """The exported file format. The default value is :attr:`CSV`.
+
+    Tables with nested or repeated fields cannot be exported as CSV.
+    """
+
+    CSV = "CSV"
+    """Specifies CSV format."""
+
+    NEWLINE_DELIMITED_JSON = "NEWLINE_DELIMITED_JSON"
+    """Specifies newline delimited JSON format."""
+
+    AVRO = "AVRO"
+    """Specifies Avro format."""
+
+
+class Encoding(object):
+    """The character encoding of the data. The default is :attr:`UTF_8`.
+
+    BigQuery decodes the data after the raw, binary data has been
+    split using the values of the quote and fieldDelimiter properties.
+    """
+
+    UTF_8 = "UTF-8"
+    """Specifies UTF-8 encoding."""
+
+    ISO_8859_1 = "ISO-8859-1"
+    """Specifies ISO-8859-1 encoding."""
+
+
+class QueryPriority(object):
+    """Specifies a priority for the query. The default value is
+    :attr:`INTERACTIVE`.
+    """
+
+    INTERACTIVE = "INTERACTIVE"
+    """Specifies interactive priority."""
+
+    BATCH = "BATCH"
+    """Specifies batch priority."""
+
+
+class SchemaUpdateOption(object):
+    """Specifies an update to the destination table schema as a side effect of
+    a load job.
+    """
+
+    ALLOW_FIELD_ADDITION = "ALLOW_FIELD_ADDITION"
+    """Allow adding a nullable field to the schema."""
+
+    ALLOW_FIELD_RELAXATION = "ALLOW_FIELD_RELAXATION"
+    """Allow relaxing a required field in the original schema to nullable."""
+
+
+class SourceFormat(object):
+    """The format of the data files. The default value is :attr:`CSV`.
+
+    Note that the set of allowed values for loading data is different
+    than the set used for external data sources (see
+    :class:`~google.cloud.bigquery.external_config.ExternalSourceFormat`).
+    """
+
+    CSV = "CSV"
+    """Specifies CSV format."""
+
+    DATASTORE_BACKUP = "DATASTORE_BACKUP"
+    """Specifies datastore backup format"""
+
+    NEWLINE_DELIMITED_JSON = "NEWLINE_DELIMITED_JSON"
+    """Specifies newline delimited JSON format."""
+
+    AVRO = "AVRO"
+    """Specifies Avro format."""
+
+    PARQUET = "PARQUET"
+    """Specifies Parquet format."""
+
+    ORC = "ORC"
+    """Specifies Orc format."""
+
+
 _SQL_SCALAR_TYPES = frozenset(
     (
         "INT64",
@@ -92,3 +210,24 @@ class SqlTypeNames(str, enum.Enum):
     DATE = "DATE"
     TIME = "TIME"
     DATETIME = "DATETIME"
+
+
+class WriteDisposition(object):
+    """Specifies the action that occurs if destination table already exists.
+
+    The default value is :attr:`WRITE_APPEND`.
+
+    Each action is atomic and only occurs if BigQuery is able to complete
+    the job successfully. Creation, truncation and append actions occur as one
+    atomic update upon job completion.
+    """
+
+    WRITE_APPEND = "WRITE_APPEND"
+    """If the table already exists, BigQuery appends the data to the table."""
+
+    WRITE_TRUNCATE = "WRITE_TRUNCATE"
+    """If the table already exists, BigQuery overwrites the table data."""
+
+    WRITE_EMPTY = "WRITE_EMPTY"
+    """If the table already exists and contains data, a 'duplicate' error is
+    returned in the job result."""
