@@ -34,14 +34,19 @@ class TestConnection(unittest.TestCase):
 
         return ClientInfo(user_agent=self.USER_AGENT)
 
-    def _make_connection(self):
+    def _make_connection(self, pool=None):
         from google.cloud.spanner_dbapi import Connection
         from google.cloud.spanner_v1.instance import Instance
 
         # We don't need a real Client object to test the constructor
         instance = Instance(self.INSTANCE, client=None)
         database = instance.database(self.DATABASE)
-        return Connection(instance, database)
+
+        conn = Connection(instance, database)
+        if pool is not None:
+            conn._own_pool = False
+
+        return conn
 
     def test_property_autocommit_setter(self):
         from google.cloud.spanner_dbapi import Connection
@@ -239,9 +244,7 @@ class TestConnection(unittest.TestCase):
                 connection.run_prior_DDL_statements()
 
     def test_context(self):
-        from google.cloud.spanner_dbapi import Connection
-
-        connection = Connection(self.INSTANCE, self.DATABASE)
+        connection = self._make_connection()
         with connection as conn:
             self.assertEqual(conn, connection)
 
@@ -316,3 +319,19 @@ class TestConnection(unittest.TestCase):
             ):
                 connect("test-instance", database_id, pool=pool)
                 database_mock.assert_called_once_with(database_id, pool=pool)
+
+    def test_clearing_pool_on_close(self):
+        connection = self._make_connection()
+        with mock.patch.object(
+            connection.database._pool, "clear"
+        ) as pool_clear_mock:
+            connection.close()
+            pool_clear_mock.assert_called_once_with()
+
+    def test_global_pool(self):
+        connection = self._make_connection(pool=mock.Mock())
+        with mock.patch.object(
+            connection.database._pool, "clear"
+        ) as pool_clear_mock:
+            connection.close()
+            assert not pool_clear_mock.called

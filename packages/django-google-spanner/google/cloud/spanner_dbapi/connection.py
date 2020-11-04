@@ -43,6 +43,10 @@ class Connection:
 
         self.is_closed = False
         self._autocommit = False
+        # indicator to know if the session pool used by
+        # this connection should be cleared on the
+        # connection close
+        self._own_pool = True
 
     @property
     def autocommit(self):
@@ -149,6 +153,9 @@ class Connection:
             and not self._transaction.rolled_back
         ):
             self._transaction.rollback()
+
+        if self._own_pool:
+            self.database._pool.clear()
 
         self.is_closed = True
 
@@ -258,4 +265,8 @@ def connect(
     if not database.exists():
         raise ValueError("database '%s' does not exist." % database_id)
 
-    return Connection(instance, database)
+    conn = Connection(instance, database)
+    if pool is not None:
+        conn._own_pool = False
+
+    return conn
