@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-build"
 description = "Google Cloud Build API client library"
-version = "2.0.0"
+version = "3.0.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
