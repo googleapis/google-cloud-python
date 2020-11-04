@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.0.1...v2.1.0) (2020-11-04)
+
+
+### Features
+
+* add public transport property and path formatting methods to client ([#80](https://www.github.com/googleapis/python-bigquery-storage/issues/80)) ([fbbb439](https://www.github.com/googleapis/python-bigquery-storage/commit/fbbb439b8c77fa9367a4b5bea725dd0b0f26b769))
+
+
+### Documentation
+
+* add intersphinx to proto-plus library ([#86](https://www.github.com/googleapis/python-bigquery-storage/issues/86)) ([4cd35d2](https://www.github.com/googleapis/python-bigquery-storage/commit/4cd35d21de4486f659b7efc4ff4dcb9b4eee6c9e))
+* show inheritance in types reference ([#91](https://www.github.com/googleapis/python-bigquery-storage/issues/91)) ([e5fd4e6](https://www.github.com/googleapis/python-bigquery-storage/commit/e5fd4e62de2768a49d633dc3a81e03d64df9fe1f))
+
 ### [2.0.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.0.0...v2.0.1) (2020-10-21)
 
 
