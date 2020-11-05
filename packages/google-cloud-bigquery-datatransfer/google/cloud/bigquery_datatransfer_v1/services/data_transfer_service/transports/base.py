@@ -115,7 +115,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -128,7 +128,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -151,7 +151,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -164,7 +164,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -177,7 +177,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -200,7 +200,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -213,7 +213,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -226,7 +226,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -239,7 +239,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
@@ -252,7 +252,7 @@ class DataTransferServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
                 ),
                 default_timeout=20.0,
