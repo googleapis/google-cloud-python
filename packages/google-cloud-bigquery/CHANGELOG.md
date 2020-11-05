@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## 2.3.1
+
+11-05-2020 09:27 PST
+
+### Internal / Testing Changes
+
+- update `google.cloud.bigquery.__version__`
+
 ## [2.3.0](https://www.github.com/googleapis/python-bigquery/compare/v2.2.0...v2.3.0) (2020-11-04)
 
 
