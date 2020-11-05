@@ -15,35 +15,26 @@
 # limitations under the License.
 #
 
-from google.cloud.billing.budgets_v1beta1.services.budget_service.async_client import (
+from google.cloud.billing.budgets_v1.services.budget_service.async_client import (
     BudgetServiceAsyncClient,
 )
-from google.cloud.billing.budgets_v1beta1.services.budget_service.client import (
+from google.cloud.billing.budgets_v1.services.budget_service.client import (
     BudgetServiceClient,
 )
-from google.cloud.billing.budgets_v1beta1.types.budget_model import AllUpdatesRule
-from google.cloud.billing.budgets_v1beta1.types.budget_model import Budget
-from google.cloud.billing.budgets_v1beta1.types.budget_model import BudgetAmount
-from google.cloud.billing.budgets_v1beta1.types.budget_model import Filter
-from google.cloud.billing.budgets_v1beta1.types.budget_model import LastPeriodAmount
-from google.cloud.billing.budgets_v1beta1.types.budget_model import ThresholdRule
-from google.cloud.billing.budgets_v1beta1.types.budget_service import (
-    CreateBudgetRequest,
-)
-from google.cloud.billing.budgets_v1beta1.types.budget_service import (
-    DeleteBudgetRequest,
-)
-from google.cloud.billing.budgets_v1beta1.types.budget_service import GetBudgetRequest
-from google.cloud.billing.budgets_v1beta1.types.budget_service import ListBudgetsRequest
-from google.cloud.billing.budgets_v1beta1.types.budget_service import (
-    ListBudgetsResponse,
-)
-from google.cloud.billing.budgets_v1beta1.types.budget_service import (
-    UpdateBudgetRequest,
-)
+from google.cloud.billing.budgets_v1.types.budget_model import Budget
+from google.cloud.billing.budgets_v1.types.budget_model import BudgetAmount
+from google.cloud.billing.budgets_v1.types.budget_model import Filter
+from google.cloud.billing.budgets_v1.types.budget_model import LastPeriodAmount
+from google.cloud.billing.budgets_v1.types.budget_model import NotificationsRule
+from google.cloud.billing.budgets_v1.types.budget_model import ThresholdRule
+from google.cloud.billing.budgets_v1.types.budget_service import CreateBudgetRequest
+from google.cloud.billing.budgets_v1.types.budget_service import DeleteBudgetRequest
+from google.cloud.billing.budgets_v1.types.budget_service import GetBudgetRequest
+from google.cloud.billing.budgets_v1.types.budget_service import ListBudgetsRequest
+from google.cloud.billing.budgets_v1.types.budget_service import ListBudgetsResponse
+from google.cloud.billing.budgets_v1.types.budget_service import UpdateBudgetRequest
 
 __all__ = (
-    "AllUpdatesRule",
     "Budget",
     "BudgetAmount",
     "BudgetServiceAsyncClient",
@@ -55,6 +46,7 @@ __all__ = (
     "LastPeriodAmount",
     "ListBudgetsRequest",
     "ListBudgetsResponse",
+    "NotificationsRule",
     "ThresholdRule",
     "UpdateBudgetRequest",
 )

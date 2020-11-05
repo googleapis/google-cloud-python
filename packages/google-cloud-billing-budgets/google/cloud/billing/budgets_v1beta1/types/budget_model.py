@@ -63,8 +63,8 @@ class Budget(proto.Message):
             spend exceeds the specified percentages of the
             budget.
         all_updates_rule (~.budget_model.AllUpdatesRule):
-            Optional. Rules to apply to all updates to the actual spend,
-            regardless of the thresholds set in ``threshold_rules``.
+            Optional. Rules to apply to notifications
+            sent based on budget spend and thresholds.
         etag (str):
             Optional. Etag to validate that the object is
             unchanged for a read-modify-write operation.
@@ -103,10 +103,12 @@ class BudgetAmount(proto.Message):
             budget for the present period.
     """
 
-    specified_amount = proto.Field(proto.MESSAGE, number=1, message=money.Money,)
+    specified_amount = proto.Field(
+        proto.MESSAGE, number=1, oneof="budget_amount", message=money.Money,
+    )
 
     last_period_amount = proto.Field(
-        proto.MESSAGE, number=2, message="LastPeriodAmount",
+        proto.MESSAGE, number=2, oneof="budget_amount", message="LastPeriodAmount",
     )
 
 
@@ -153,14 +155,13 @@ class ThresholdRule(proto.Message):
 
 
 class AllUpdatesRule(proto.Message):
-    r"""AllUpdatesRule defines notifications that are sent on every
-    update to the billing account's spend, regardless of the
-    thresholds defined using threshold rules.
+    r"""AllUpdatesRule defines notifications that are sent based on
+    budget spend and thresholds.
 
     Attributes:
         pubsub_topic (str):
-            Required. The name of the Cloud Pub/Sub topic where budget
-            related messages will be published, in the form
+            Optional. The name of the Pub/Sub topic where budget related
+            messages will be published, in the form
             ``projects/{project_id}/topics/{topic_id}``. Updates are
             sent at regular intervals to the topic. The topic needs to
             be created before the budget is created; see
@@ -169,17 +170,38 @@ class AllUpdatesRule(proto.Message):
             ``pubsub.topics.setIamPolicy`` permission on the topic when
             it's set for a budget, otherwise, the API call will fail
             with PERMISSION_DENIED. See
-            https://cloud.google.com/pubsub/docs/access-control for more
-            details on Pub/Sub roles and permissions.
+            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+            for more details on Pub/Sub roles and permissions.
         schema_version (str):
-            Required. The schema version of the notification. Only "1.0"
-            is accepted. It represents the JSON schema as defined in
-            https://cloud.google.com/billing/docs/how-to/budgets#notification_format
+            Optional. The schema version of the notification sent to
+            ``pubsub_topic``. Only "1.0" is accepted. It represents the
+            JSON schema as defined in
+            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format
+        monitoring_notification_channels (Sequence[str]):
+            Optional. Targets to send notifications to when a threshold
+            is exceeded. This is in addition to default recipients who
+            have billing account IAM roles. The value is the full REST
+            resource name of a monitoring notification channel with the
+            form
+            ``projects/{project_id}/notificationChannels/{channel_id}``.
+            A maximum of 5 channels are allowed. See
+            https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients
+            for more details.
+        disable_default_iam_recipients (bool):
+            Optional. When set to true, disables default
+            notifications sent when a threshold is exceeded.
+            Default notifications are sent to those with
+            Billing Account Administrator and Billing
+            Account User IAM roles for the target account.
     """
 
     pubsub_topic = proto.Field(proto.STRING, number=1)
 
     schema_version = proto.Field(proto.STRING, number=2)
+
+    monitoring_notification_channels = proto.RepeatedField(proto.STRING, number=3)
+
+    disable_default_iam_recipients = proto.Field(proto.BOOL, number=4)
 
 
 class Filter(proto.Message):
@@ -194,6 +216,15 @@ class Filter(proto.Message):
             omitted, the report will include all usage for the billing
             account, regardless of which project the usage occurred on.
             Only zero or one project can be specified currently.
+        credit_types (Sequence[str]):
+            Optional. A list of credit types to be subtracted from gross
+            cost to determine the spend for threshold calculations if
+            and only if credit_types_treatment is
+            INCLUDE_SPECIFIED_CREDITS. If credit_types_treatment is not
+            INCLUDE_SPECIFIED_CREDITS, this field must be empty. See
+            credits.type at
+            https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#data-schema
+            for a list of acceptable credit type values in this field.
         credit_types_treatment (~.budget_model.Filter.CreditTypesTreatment):
             Optional. If not set, default behavior is
             ``INCLUDE_ALL_CREDITS``.
@@ -208,17 +239,18 @@ class Filter(proto.Message):
             Optional. A set of subaccounts of the form
             ``billingAccounts/{account_id}``, specifying that usage from
             only this set of subaccounts should be included in the
-            budget. If a subaccount is set to the name of the master
-            account, usage from the master account will be included. If
-            omitted, the report will include usage from the master
+            budget. If a subaccount is set to the name of the parent
+            account, usage from the parent account will be included. If
+            omitted, the report will include usage from the parent
             account and all subaccounts, if they exist.
         labels (Sequence[~.budget_model.Filter.LabelsEntry]):
             Optional. A single label and value pair
             specifying that usage from only this set of
             labeled resources should be included in the
-            budget. Multiple entries or multiple values per
-            entry are not allowed. If omitted, the report
-            will include all labeled and unlabeled usage.
+            budget. Currently, multiple entries or multiple
+            values per entry are not allowed. If omitted,
+            the report will include all labeled and
+            unlabeled usage.
     """
 
     class CreditTypesTreatment(proto.Enum):
@@ -228,8 +260,11 @@ class Filter(proto.Message):
         CREDIT_TYPES_TREATMENT_UNSPECIFIED = 0
         INCLUDE_ALL_CREDITS = 1
         EXCLUDE_ALL_CREDITS = 2
+        INCLUDE_SPECIFIED_CREDITS = 3
 
     projects = proto.RepeatedField(proto.STRING, number=1)
+
+    credit_types = proto.RepeatedField(proto.STRING, number=7)
 
     credit_types_treatment = proto.Field(
         proto.ENUM, number=4, enum=CreditTypesTreatment,

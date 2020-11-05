@@ -25,8 +25,8 @@ description = "Cloud Billing Budget API API client library"
 version = "1.0.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.21.0, < 2.0.0dev",
-    "proto-plus >= 0.4.0",
+    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "proto-plus >= 1.10.0",
     "libcst >= 0.2.5",
 ]
 
