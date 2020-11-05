@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-recommender/compare/v1.1.0...v1.1.1) (2020-10-29)
+
+
+### Bug Fixes
+
+* tweak retry params for 'ListInsights'/'GetInsight'/'MarkInsightAccepted' API calls (via synth) ([#49](https://www.github.com/googleapis/python-recommender/issues/49)) ([0d2baaf](https://www.github.com/googleapis/python-recommender/commit/0d2baaf9e0d05897b4ea380510d3d899638cb45d))
+
 ## [1.1.0](https://www.github.com/googleapis/python-recommender/compare/v1.0.0...v1.1.0) (2020-07-13)
 
 
