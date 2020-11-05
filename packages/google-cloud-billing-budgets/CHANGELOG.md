@@ -1,4 +1,11 @@
 # Changelog
+## [1.1.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.0.1...v1.1.0) (2020-11-05)
+
+
+### Features
+
+* add v1 ([#53](https://www.github.com/googleapis/python-billingbudgets/issues/53)) ([72ec268](https://www.github.com/googleapis/python-billingbudgets/commit/72ec26816d2ceb7217783f8a692b552fe5a2b28a))
+
 ### [1.0.1](https://www.github.com/googleapis/python-billingbudgets/compare/v1.0.0...v1.0.1) (2020-08-03)
 
 
