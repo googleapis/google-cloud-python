@@ -38,8 +38,7 @@ def test_encode_chunk_with_floats():
 
 
 def test_encode_chunk_with_newlines():
-    """See: https://github.com/pydata/pandas-gbq/issues/180
-    """
+    """See: https://github.com/pydata/pandas-gbq/issues/180"""
     df = pandas.DataFrame({"s": ["abcd", "ef\ngh", "ij\r\nkl"]})
     csv_buffer = load.encode_chunk(df)
     csv_bytes = csv_buffer.read()

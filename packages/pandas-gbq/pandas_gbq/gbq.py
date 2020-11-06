@@ -1238,7 +1238,7 @@ def _generate_bq_schema(df, default_type="STRING"):
     issues in the default schema generation. Now that individual columns can
     be overridden: https://github.com/pydata/pandas-gbq/issues/218, this
     method can be removed after there is time to migrate away from this
-    method. """
+    method."""
     from pandas_gbq import schema
 
     return schema.generate_bq_schema(df, default_type=default_type)
@@ -1264,7 +1264,7 @@ class _Table(GbqConnector):
         )
 
     def exists(self, table_id):
-        """ Check if a table exists in Google BigQuery
+        """Check if a table exists in Google BigQuery
 
         Parameters
         ----------
@@ -1288,7 +1288,7 @@ class _Table(GbqConnector):
             self.process_http_error(ex)
 
     def create(self, table_id, schema):
-        """ Create a table in Google BigQuery given a table and schema
+        """Create a table in Google BigQuery given a table and schema
 
         Parameters
         ----------
@@ -1330,7 +1330,7 @@ class _Table(GbqConnector):
             self.process_http_error(ex)
 
     def delete(self, table_id):
-        """ Delete a table in Google BigQuery
+        """Delete a table in Google BigQuery
 
         Parameters
         ----------
@@ -1370,7 +1370,7 @@ class _Dataset(GbqConnector):
         )
 
     def exists(self, dataset_id):
-        """ Check if a dataset exists in Google BigQuery
+        """Check if a dataset exists in Google BigQuery
 
         Parameters
         ----------
@@ -1393,7 +1393,7 @@ class _Dataset(GbqConnector):
             self.process_http_error(ex)
 
     def create(self, dataset_id):
-        """ Create a dataset in Google BigQuery
+        """Create a dataset in Google BigQuery
 
         Parameters
         ----------
