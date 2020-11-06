@@ -62,7 +62,7 @@ Deprecated Python Versions
 Python == 2.7.
 
 The last version of this library compatible with Python 2.7 is
-google-cloud-firestore==1.8.1.
+google-cloud-firestore==1.9.0.
 
 Mac/Linux
 ^^^^^^^^^
