@@ -55,6 +55,7 @@ Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 Python >= 3.6
 
+The last version of this library compatible with Python 2.7 is google-cloud-datastore==1.15.3 
 
 Mac/Linux
 ^^^^^^^^^
