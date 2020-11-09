@@ -11,22 +11,44 @@ def module_under_test():
     return pandas_gbq.schema
 
 
-def test_schema_is_subset_passes_if_subset(module_under_test):
+@pytest.mark.parametrize(
+    "original_fields,dataframe_fields",
+    [
+        (
+            [
+                {"name": "A", "type": "FLOAT"},
+                {"name": "B", "type": "FLOAT64"},
+                {"name": "C", "type": "STRING"},
+            ],
+            [
+                {"name": "A", "type": "FLOAT64"},
+                {"name": "B", "type": "FLOAT"},
+            ],
+        ),
+        # Original schema from API may contain legacy SQL datatype names.
+        # https://github.com/pydata/pandas-gbq/issues/322
+        (
+            [{"name": "A", "type": "INTEGER"}],
+            [{"name": "A", "type": "INT64"}],
+        ),
+        (
+            [{"name": "A", "type": "BOOL"}],
+            [{"name": "A", "type": "BOOLEAN"}],
+        ),
+        (
+            # TODO: include sub-fields when struct uploads are supported.
+            [{"name": "A", "type": "STRUCT"}],
+            [{"name": "A", "type": "RECORD"}],
+        ),
+    ],
+)
+def test_schema_is_subset_passes_if_subset(
+    module_under_test, original_fields, dataframe_fields
+):
     # Issue #24 schema_is_subset indicates whether the schema of the
     # dataframe is a subset of the schema of the bigquery table
-    table_schema = {
-        "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "B", "type": "FLOAT"},
-            {"name": "C", "type": "STRING"},
-        ]
-    }
-    tested_schema = {
-        "fields": [
-            {"name": "A", "type": "FLOAT"},
-            {"name": "B", "type": "FLOAT"},
-        ]
-    }
+    table_schema = {"fields": original_fields}
+    tested_schema = {"fields": dataframe_fields}
     assert module_under_test.schema_is_subset(table_schema, tested_schema)
 
 
