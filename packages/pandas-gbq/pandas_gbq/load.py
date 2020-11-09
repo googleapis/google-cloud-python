@@ -19,7 +19,7 @@ def encode_chunk(dataframe):
         index=False,
         header=False,
         encoding="utf-8",
-        float_format="%.15g",
+        float_format="%.17g",
         date_format="%Y-%m-%d %H:%M:%S.%f",
     )
 

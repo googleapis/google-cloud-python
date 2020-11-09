@@ -1,6 +1,17 @@
 Changelog
 =========
 
+.. _changelog-0.14.1:
+
+0.14.1 / TBD
+------------
+
+Bug fixes
+~~~~~~~~~
+
+- Encode floating point values with greater precision. (:issue:`326`)
+
+
 .. _changelog-0.14.0:
 
 0.14.0 / 2020-10-05

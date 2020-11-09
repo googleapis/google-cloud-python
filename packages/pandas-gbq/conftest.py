@@ -1,4 +1,4 @@
-"""Shared pytest fixtures for system tests."""
+"""Shared pytest fixtures for `tests/system` and `samples/tests` tests."""
 
 import os
 import os.path
