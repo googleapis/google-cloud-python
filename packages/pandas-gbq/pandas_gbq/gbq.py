@@ -725,7 +725,9 @@ def _bqschema_to_nullsafe_dtypes(schema_fields):
         "GEOMETRY": "object",
         "RECORD": "object",
         "STRING": "object",
-        "TIME": "datetime64[ns]",
+        # datetime.time objects cannot be case to datetime64.
+        # https://github.com/pydata/pandas-gbq/issues/328
+        "TIME": "object",
         # pandas doesn't support timezone-aware dtype in DataFrame/Series
         # constructors. It's more idiomatic to localize after construction.
         # https://github.com/pandas-dev/pandas/issues/25843

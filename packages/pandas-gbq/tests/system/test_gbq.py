@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import sys
-from datetime import datetime
 
 import numpy as np
 import pandas
@@ -39,7 +39,8 @@ def make_mixed_dataframe_v2(test_size):
     ints = np.random.randint(1, 10, size=(1, test_size))
     strs = np.random.randint(1, 10, size=(1, test_size)).astype(str)
     times = [
-        datetime.now(pytz.timezone("US/Arizona")) for t in range(test_size)
+        datetime.datetime.now(pytz.timezone("US/Arizona"))
+        for t in range(test_size)
     ]
     return DataFrame(
         {
@@ -247,6 +248,38 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         tm.assert_frame_equal(df, DataFrame({"null_float": [np.nan, 1.0]}))
+
+    def test_should_properly_handle_date(self, project_id):
+        query = "SELECT DATE(2003, 1, 4) AS date_col"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            credentials=self.credentials,
+        )
+        expected = DataFrame(
+            {
+                "date_col": pandas.Series(
+                    [datetime.date(2003, 1, 4)], dtype="datetime64[ns]"
+                )
+            },
+        )
+        tm.assert_frame_equal(df, expected)
+
+    def test_should_properly_handle_time(self, project_id):
+        query = "SELECT TIME_ADD(TIME(3, 14, 15), INTERVAL 926589 MICROSECOND) AS time_col"
+        df = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            credentials=self.credentials,
+        )
+        expected = DataFrame(
+            {
+                "time_col": pandas.Series(
+                    [datetime.time(3, 14, 15, 926589)], dtype="object"
+                )
+            },
+        )
+        tm.assert_frame_equal(df, expected)
 
     def test_should_properly_handle_timestamp_unix_epoch(self, project_id):
         query = 'SELECT TIMESTAMP("1970-01-01 00:00:00") AS unix_epoch'
@@ -1113,7 +1146,7 @@ class TestToGBQIntegration(object):
         raise pytest.skip("buggy test")
 
         test_id = "5"
-        test_timestamp = datetime.now(pytz.timezone("US/Arizona"))
+        test_timestamp = datetime.datetime.now(pytz.timezone("US/Arizona"))
         bad_df = DataFrame(
             {
                 "bools": [False, False],

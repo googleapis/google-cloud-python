@@ -9,6 +9,7 @@ Changelog
 Bug fixes
 ~~~~~~~~~
 
+- Use ``object`` dtype for ``TIME`` columns. (:issue:`328`)
 - Encode floating point values with greater precision. (:issue:`326`)
 - Support ``INT64`` and other standard SQL aliases in
   :func:`~pandas_gbq.to_gbq` ``table_schema`` argument. (:issue:`322`)
