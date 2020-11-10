@@ -537,9 +537,9 @@ class TestStorageBuckets(unittest.TestCase):
 class TestStorageFiles(unittest.TestCase):
 
     FILES = {
-        "logo": {"path": DATA_DIRNAME + "/CloudPlatform_128px_Retina.png"},
-        "big": {"path": DATA_DIRNAME + "/five-point-one-mb-file.zip"},
-        "simple": {"path": DATA_DIRNAME + "/simple.txt"},
+        "logo": {"path": os.path.join(DATA_DIRNAME, "CloudPlatform_128px_Retina.png")},
+        "big": {"path": os.path.join(DATA_DIRNAME, "five-point-one-mb-file.zip")},
+        "simple": {"path": os.path.join(DATA_DIRNAME, "simple.txt")},
     }
 
     @classmethod
