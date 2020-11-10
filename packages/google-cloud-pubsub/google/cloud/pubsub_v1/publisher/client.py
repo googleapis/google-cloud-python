@@ -291,6 +291,8 @@ class Client(object):
         Add the given message to this object; this will cause it to be
         published once the batch either has enough messages or a sufficient
         period of time has elapsed.
+        This method may block if LimitExceededBehavior.BLOCK is used in the
+        flow control settings.
 
         Example:
             >>> from google.cloud import pubsub_v1
