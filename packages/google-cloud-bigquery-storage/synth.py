@@ -74,7 +74,8 @@ optional_deps = [".[fastavro,pandas,pyarrow]"]
 templated_files = common.py_library(
     microgenerator=True,
     samples=True,
-    unit_test_dependencies=optional_deps,
+    unit_test_local_dependencies=optional_deps,
+    system_test_local_dependencies=optional_deps,
     cov_level=95,
 )
 s.move(
@@ -201,19 +202,8 @@ s.replace(
 # redundant to install the library twice.
 s.replace(
     "noxfile.py",
-    (
-        r'session\.install\("-e", "\."\)\n    '
-        r'(?=session\.install\("-e", "\.\[fastavro)'  # in unit tests session
-    ),
-    "",
-)
-s.replace(
-    "noxfile.py",
-    (
-        r'(?<=google-cloud-testutils", \)\n)'
-        r'    session\.install\("-e", "\."\)\n'  # in system tests session
-    ),
-    '    session.install("-e", ".[fastavro,pandas,pyarrow]")\n',
+    r'\)\s*session\.install\("-e", "\."\)\n',
+    ")\n",
 )
 
 # Fix test coverage plugin paths.
