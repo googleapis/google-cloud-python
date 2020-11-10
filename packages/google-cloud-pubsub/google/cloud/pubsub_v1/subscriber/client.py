@@ -157,7 +157,14 @@ class Client(object):
         """The underlying gapic API client."""
         return self._api
 
-    def subscribe(self, subscription, callback, flow_control=(), scheduler=None):
+    def subscribe(
+        self,
+        subscription,
+        callback,
+        flow_control=(),
+        scheduler=None,
+        use_legacy_flow_control=False,
+    ):
         """Asynchronously start receiving messages on a given subscription.
 
         This method starts a background thread to begin pulling messages from
@@ -178,6 +185,10 @@ class Client(object):
         leading it to "starve" other clients of messages. Increasing these
         settings may lead to faster throughput for messages that do not take
         a long time to process.
+
+        The ``use_legacy_flow_control`` argument disables enforcing flow control
+        settings at the Cloud PubSub server and uses the less accurate method of
+        only enforcing flow control at the client side.
 
         This method starts the receiver in the background and returns a
         *Future* representing its execution. Waiting on the future (calling
@@ -238,7 +249,11 @@ class Client(object):
         flow_control = types.FlowControl(*flow_control)
 
         manager = streaming_pull_manager.StreamingPullManager(
-            self, subscription, flow_control=flow_control, scheduler=scheduler
+            self,
+            subscription,
+            flow_control=flow_control,
+            scheduler=scheduler,
+            use_legacy_flow_control=use_legacy_flow_control,
         )
 
         future = futures.StreamingPullFuture(manager)

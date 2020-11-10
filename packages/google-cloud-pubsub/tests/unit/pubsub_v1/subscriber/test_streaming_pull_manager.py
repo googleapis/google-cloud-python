@@ -170,6 +170,16 @@ def test_streaming_flow_control():
     assert request.max_outstanding_bytes == 1000
 
 
+def test_streaming_flow_control_use_legacy_flow_control():
+    manager = make_manager(
+        flow_control=types.FlowControl(max_messages=10, max_bytes=1000),
+        use_legacy_flow_control=True,
+    )
+    request = manager._get_initial_request(stream_ack_deadline_seconds=10)
+    assert request.max_outstanding_messages == 0
+    assert request.max_outstanding_bytes == 0
+
+
 def test_ack_deadline_with_max_duration_per_lease_extension():
     manager = make_manager()
     manager._flow_control = types.FlowControl(max_duration_per_lease_extension=5)

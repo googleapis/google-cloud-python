@@ -105,6 +105,9 @@ class StreamingPullManager(object):
             ``projects/{project}/subscriptions/{subscription}``.
         flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow
             control settings.
+        use_legacy_flow_control (bool): Disables enforcing flow control settings
+            at the Cloud PubSub server and uses the less accurate method of only
+            enforcing flow control at the client side.
         scheduler (~google.cloud.pubsub_v1.scheduler.Scheduler): The scheduler
             to use to process messages. If not provided, a thread pool-based
             scheduler will be used.
@@ -115,11 +118,17 @@ class StreamingPullManager(object):
     RPC instead of over the streaming RPC."""
 
     def __init__(
-        self, client, subscription, flow_control=types.FlowControl(), scheduler=None
+        self,
+        client,
+        subscription,
+        flow_control=types.FlowControl(),
+        scheduler=None,
+        use_legacy_flow_control=False,
     ):
         self._client = client
         self._subscription = subscription
         self._flow_control = flow_control
+        self._use_legacy_flow_control = use_legacy_flow_control
         self._ack_histogram = histogram.Histogram()
         self._last_histogram_size = 0
         self._ack_deadline = 10
@@ -587,8 +596,12 @@ class StreamingPullManager(object):
             stream_ack_deadline_seconds=stream_ack_deadline_seconds,
             subscription=self._subscription,
             client_id=self._client_id,
-            max_outstanding_messages=self._flow_control.max_messages,
-            max_outstanding_bytes=self._flow_control.max_bytes,
+            max_outstanding_messages=(
+                0 if self._use_legacy_flow_control else self._flow_control.max_messages
+            ),
+            max_outstanding_bytes=(
+                0 if self._use_legacy_flow_control else self._flow_control.max_bytes
+            ),
         )
 
         # Return the initial request.
