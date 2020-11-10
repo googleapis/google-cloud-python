@@ -19,6 +19,7 @@ import unittest
 import warnings
 
 import mock
+import pkg_resources
 import pytest
 import six
 
@@ -41,8 +42,11 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 try:
     import pyarrow
     import pyarrow.types
+
+    PYARROW_VERSION = pkg_resources.parse_version(pyarrow.__version__)
 except ImportError:  # pragma: NO COVER
     pyarrow = None
+    PYARROW_VERSION = pkg_resources.parse_version("0.0.1")
 
 try:
     from tqdm import tqdm
@@ -50,6 +54,9 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
 from google.cloud.bigquery.dataset import DatasetReference
+
+
+PYARROW_TIMESTAMP_VERSION = pkg_resources.parse_version("2.0.0")
 
 
 def _mock_client():
@@ -2339,12 +2346,19 @@ class TestRowIterator(unittest.TestCase):
 
         df = row_iterator.to_dataframe(create_bqstorage_client=False)
 
+        tzinfo = None
+        if PYARROW_VERSION >= PYARROW_TIMESTAMP_VERSION:
+            tzinfo = dt.timezone.utc
+
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 2)  # verify the number of rows
         self.assertEqual(list(df.columns), ["some_timestamp"])
         self.assertEqual(
             list(df["some_timestamp"]),
-            [dt.datetime(4567, 1, 1), dt.datetime(9999, 12, 31)],
+            [
+                dt.datetime(4567, 1, 1, tzinfo=tzinfo),
+                dt.datetime(9999, 12, 31, tzinfo=tzinfo),
+            ],
         )
 
     @pytest.mark.xfail(
