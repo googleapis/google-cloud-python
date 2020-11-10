@@ -229,7 +229,6 @@ class Cursor(object):
             return
 
         if self._query_data is None:
-            client = self.connection._client
             bqstorage_client = self.connection._bqstorage_client
 
             if bqstorage_client is not None:
@@ -237,11 +236,7 @@ class Cursor(object):
                 self._query_data = _helpers.to_bq_table_rows(rows_iterable)
                 return
 
-            rows_iter = client.list_rows(
-                self._query_job.destination,
-                selected_fields=self._query_job._query_results.schema,
-                page_size=self.arraysize,
-            )
+            rows_iter = self._query_job.result(page_size=self.arraysize)
             self._query_data = iter(rows_iter)
 
     def _bqstorage_fetch(self, bqstorage_client):

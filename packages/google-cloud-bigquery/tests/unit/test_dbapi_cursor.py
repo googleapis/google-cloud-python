@@ -66,8 +66,8 @@ class TestCursor(unittest.TestCase):
             num_dml_affected_rows=num_dml_affected_rows,
             dry_run=dry_run_job,
             total_bytes_processed=total_bytes_processed,
+            rows=rows,
         )
-        mock_client.list_rows.return_value = rows
         mock_client._default_query_job_config = default_query_job_config
 
         # Assure that the REST client gets used, not the BQ Storage client.
@@ -102,8 +102,12 @@ class TestCursor(unittest.TestCase):
         num_dml_affected_rows=None,
         dry_run=False,
         total_bytes_processed=0,
+        rows=None,
     ):
         from google.cloud.bigquery import job
+
+        if rows is None:
+            rows = []
 
         mock_job = mock.create_autospec(job.QueryJob)
         mock_job.error_result = None
@@ -114,7 +118,7 @@ class TestCursor(unittest.TestCase):
             mock_job.result.side_effect = exceptions.NotFound
             mock_job.total_bytes_processed = total_bytes_processed
         else:
-            mock_job.result.return_value = mock_job
+            mock_job.result.return_value = rows
             mock_job._query_results = self._mock_results(
                 total_rows=total_rows,
                 schema=schema,
