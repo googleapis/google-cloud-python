@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-datastore/compare/v1.15.3...v2.0.0) (2020-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove support for Python 2.7
+* Leverage new generator, proto-plus, for google-cloud-datastore (#104)
+
+### Features
+
+* Leverage new generator, proto-plus, for google-cloud-datastore ([#104](https://www.github.com/googleapis/python-datastore/issues/104)) ([1723a26](https://www.github.com/googleapis/python-datastore/commit/1723a268a6f647d1c798deb076c038f7af9b16c9))
+
+
+### Documentation
+
+* adds UPGRADING.md, note to readme, to help inform users about migration to v2 ([#113](https://www.github.com/googleapis/python-datastore/issues/113)) ([0d496c6](https://www.github.com/googleapis/python-datastore/commit/0d496c639170d2d5e30a3b69c790b3abfb2ad170))
+
 ## [2.0.0-dev1](https://www.github.com/googleapis/python-datastore/compare/v1.15.3...v2.0.0-dev1) (2020-10-30)
 
 
