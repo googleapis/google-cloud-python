@@ -79,8 +79,9 @@ class AccessEntry(object):
     """Represents grant of an access role to an entity.
 
     An entry must have exactly one of the allowed :attr:`ENTITY_TYPES`. If
-    anything but ``view`` is set, a ``role`` is also required. ``role`` is
-    omitted for a ``view``, because ``view`` s are always read-only.
+    anything but ``view`` or ``routine`` are set, a ``role`` is also required.
+    ``role`` is omitted for ``view`` and ``routine``, because they are always
+    read-only.
 
     See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
 
@@ -88,17 +89,17 @@ class AccessEntry(object):
         role (str):
             Role granted to the entity. The following string values are
             supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be
-            :data:`None` if the ``entity_type`` is ``view``.
+            :data:`None` if the ``entity_type`` is ``view`` or ``routine``.
 
         entity_type (str):
             Type of entity being granted the role. One of :attr:`ENTITY_TYPES`.
 
         entity_id (Union[str, Dict[str, str]]):
-            If the ``entity_type`` is not 'view', the ``entity_id`` is the
-            ``str`` ID of the entity being granted the role. If the
-            ``entity_type`` is 'view', the ``entity_id`` is a ``dict``
-            representing the view from a different dataset to grant access to
-            in the following format::
+            If the ``entity_type`` is not 'view' or 'routine', the ``entity_id``
+            is the ``str`` ID of the entity being granted the role. If the
+            ``entity_type`` is 'view' or 'routine', the ``entity_id`` is a ``dict``
+            representing the view  or routine from a different dataset to grant
+            access to in the following format for views::
 
                 {
                     'projectId': string,
@@ -106,11 +107,19 @@ class AccessEntry(object):
                     'tableId': string
                 }
 
+            For routines::
+
+                {
+                    'projectId': string,
+                    'datasetId': string,
+                    'routineId': string
+                }
+
     Raises:
         ValueError:
             If the ``entity_type`` is not among :attr:`ENTITY_TYPES`, or if a
-            ``view`` has ``role`` set, or a non ``view`` **does not** have a
-            ``role`` set.
+            ``view`` or a ``routine`` has ``role`` set, or a non ``view`` and
+            non ``routine`` **does not** have a ``role`` set.
 
     Examples:
         >>> entry = AccessEntry('OWNER', 'userByEmail', 'user@example.com')
@@ -124,7 +133,15 @@ class AccessEntry(object):
     """
 
     ENTITY_TYPES = frozenset(
-        ["userByEmail", "groupByEmail", "domain", "specialGroup", "view", "iamMember"]
+        [
+            "userByEmail",
+            "groupByEmail",
+            "domain",
+            "specialGroup",
+            "view",
+            "iamMember",
+            "routine",
+        ]
     )
     """Allowed entity types."""
 
@@ -135,10 +152,11 @@ class AccessEntry(object):
                 ", ".join(self.ENTITY_TYPES),
             )
             raise ValueError(message)
-        if entity_type == "view":
+        if entity_type in ("view", "routine"):
             if role is not None:
                 raise ValueError(
-                    "Role must be None for a view. Received " "role: %r" % (role,)
+                    "Role must be None for a %r. Received "
+                    "role: %r" % (entity_type, role)
                 )
         else:
             if role is None:
@@ -409,7 +427,7 @@ class Dataset(object):
         entries.
 
         ``role`` augments the entity type and must be present **unless** the
-        entity type is ``view``.
+        entity type is ``view`` or ``routine``.
 
         Raises:
             TypeError: If 'value' is not a sequence

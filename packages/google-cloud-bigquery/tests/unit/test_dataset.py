@@ -53,6 +53,21 @@ class TestAccessEntry(unittest.TestCase):
         self.assertEqual(entry.entity_type, entity_type)
         self.assertEqual(entry.entity_id, entity_id)
 
+    def test_ctor_routine_with_role(self):
+        role = "READER"
+        entity_type = "routine"
+        with self.assertRaises(ValueError):
+            self._make_one(role, entity_type, None)
+
+    def test_ctor_routine_success(self):
+        role = None
+        entity_type = "routine"
+        entity_id = object()
+        entry = self._make_one(role, entity_type, entity_id)
+        self.assertEqual(entry.role, role)
+        self.assertEqual(entry.entity_type, entity_type)
+        self.assertEqual(entry.entity_id, entity_id)
+
     def test_ctor_nonview_without_role(self):
         role = None
         entity_type = "userByEmail"
@@ -113,6 +128,17 @@ class TestAccessEntry(unittest.TestCase):
         entry = self._make_one(None, "view", view)
         resource = entry.to_api_repr()
         exp_resource = {"view": view}
+        self.assertEqual(resource, exp_resource)
+
+    def test_to_api_repr_routine(self):
+        routine = {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "routineId": "my_routine",
+        }
+        entry = self._make_one(None, "routine", routine)
+        resource = entry.to_api_repr()
+        exp_resource = {"routine": routine}
         self.assertEqual(resource, exp_resource)
 
     def test_from_api_repr(self):
