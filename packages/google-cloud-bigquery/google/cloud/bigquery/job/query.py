@@ -990,48 +990,22 @@ class QueryJob(_AsyncJob):
         Returns:
             bool: True if the job is complete, False otherwise.
         """
-        is_done = (
-            # Only consider a QueryJob complete when we know we have the final
-            # query results available.
-            self._query_results is not None
-            and self._query_results.complete
-            and self.state == _DONE_STATE
-        )
         # Do not refresh if the state is already done, as the job will not
         # change once complete.
+        is_done = self.state == _DONE_STATE
         if not reload or is_done:
             return is_done
 
-        # Since the API to getQueryResults can hang up to the timeout value
-        # (default of 10 seconds), set the timeout parameter to ensure that
-        # the timeout from the futures API is respected. See:
-        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4135
-        timeout_ms = None
-        if self._done_timeout is not None:
-            # Subtract a buffer for context switching, network latency, etc.
-            api_timeout = self._done_timeout - _TIMEOUT_BUFFER_SECS
-            api_timeout = max(min(api_timeout, 10), 0)
-            self._done_timeout -= api_timeout
-            self._done_timeout = max(0, self._done_timeout)
-            timeout_ms = int(api_timeout * 1000)
+        self._reload_query_results(retry=retry, timeout=timeout)
 
         # If an explicit timeout is not given, fall back to the transport timeout
         # stored in _blocking_poll() in the process of polling for job completion.
         transport_timeout = timeout if timeout is not None else self._transport_timeout
 
-        self._query_results = self._client._get_query_results(
-            self.job_id,
-            retry,
-            project=self.project,
-            timeout_ms=timeout_ms,
-            location=self.location,
-            timeout=transport_timeout,
-        )
-
         # Only reload the job once we know the query is complete.
         # This will ensure that fields such as the destination table are
         # correctly populated.
-        if self._query_results.complete and self.state != _DONE_STATE:
+        if self._query_results.complete:
             self.reload(retry=retry, timeout=transport_timeout)
 
         return self.state == _DONE_STATE
@@ -1098,6 +1072,45 @@ class QueryJob(_AsyncJob):
             exc.query_job = self
             raise
 
+    def _reload_query_results(self, retry=DEFAULT_RETRY, timeout=None):
+        """Refresh the cached query results.
+
+        Args:
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the call that retrieves query results.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+        """
+        if self._query_results and self._query_results.complete:
+            return
+
+        # Since the API to getQueryResults can hang up to the timeout value
+        # (default of 10 seconds), set the timeout parameter to ensure that
+        # the timeout from the futures API is respected. See:
+        # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4135
+        timeout_ms = None
+        if self._done_timeout is not None:
+            # Subtract a buffer for context switching, network latency, etc.
+            api_timeout = self._done_timeout - _TIMEOUT_BUFFER_SECS
+            api_timeout = max(min(api_timeout, 10), 0)
+            self._done_timeout -= api_timeout
+            self._done_timeout = max(0, self._done_timeout)
+            timeout_ms = int(api_timeout * 1000)
+
+        # If an explicit timeout is not given, fall back to the transport timeout
+        # stored in _blocking_poll() in the process of polling for job completion.
+        transport_timeout = timeout if timeout is not None else self._transport_timeout
+
+        self._query_results = self._client._get_query_results(
+            self.job_id,
+            retry,
+            project=self.project,
+            timeout_ms=timeout_ms,
+            location=self.location,
+            timeout=transport_timeout,
+        )
+
     def result(
         self,
         page_size=None,
@@ -1144,6 +1157,11 @@ class QueryJob(_AsyncJob):
         """
         try:
             super(QueryJob, self).result(retry=retry, timeout=timeout)
+
+            # Since the job could already be "done" (e.g. got a finished job
+            # via client.get_job), the superclass call to done() might not
+            # set the self._query_results cache.
+            self._reload_query_results(retry=retry, timeout=timeout)
         except exceptions.GoogleAPICallError as exc:
             exc.message += self._format_for_exception(self.query, self.job_id)
             exc.query_job = self
@@ -1158,10 +1176,14 @@ class QueryJob(_AsyncJob):
         if self._query_results.total_rows is None:
             return _EmptyRowIterator()
 
+        first_page_response = None
+        if max_results is None and page_size is None and start_index is None:
+            first_page_response = self._query_results._properties
+
         rows = self._client._list_rows_from_query_results(
-            self._query_results.job_id,
+            self.job_id,
             self.location,
-            self._query_results.project,
+            self.project,
             self._query_results.schema,
             total_rows=self._query_results.total_rows,
             destination=self.destination,
@@ -1170,6 +1192,7 @@ class QueryJob(_AsyncJob):
             start_index=start_index,
             retry=retry,
             timeout=timeout,
+            first_page_response=first_page_response,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows

@@ -161,8 +161,6 @@ def test_to_arrow():
                 },
             ]
         },
-    }
-    tabledata_resource = {
         "rows": [
             {
                 "f": [
@@ -176,13 +174,11 @@ def test_to_arrow():
                     {"v": {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]}},
                 ]
             },
-        ]
+        ],
     }
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
-        begun_resource, query_resource, done_resource, tabledata_resource
-    )
+    connection = _make_connection(begun_resource, query_resource, done_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
@@ -234,20 +230,16 @@ def test_to_dataframe():
                 {"name": "age", "type": "INTEGER", "mode": "NULLABLE"},
             ]
         },
-    }
-    tabledata_resource = {
         "rows": [
             {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
             {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
             {"f": [{"v": "Wylma Phlyntstone"}, {"v": "29"}]},
             {"f": [{"v": "Bhettye Rhubble"}, {"v": "27"}]},
-        ]
+        ],
     }
     done_resource = copy.deepcopy(begun_resource)
     done_resource["status"] = {"state": "DONE"}
-    connection = _make_connection(
-        begun_resource, query_resource, done_resource, tabledata_resource
-    )
+    connection = _make_connection(begun_resource, query_resource, done_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
 
