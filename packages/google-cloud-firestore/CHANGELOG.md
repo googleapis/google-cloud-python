@@ -5,6 +5,98 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.0.0](https://www.github.com/googleapis/python-firestore/compare/v1.9.0...v2.0.0) (2020-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove support for Python 2.7
+* remove v1beta1 surface for v2 (#96)
+* Begin using new microgenerator for v2 firestore (#91)
+* from `firestore-0.30.0`: revert to merge not being an option;
+
+### Features
+
+* add client_options to base client class ([#150](https://www.github.com/googleapis/python-firestore/issues/150)) ([f3bedc1](https://www.github.com/googleapis/python-firestore/commit/f3bedc1efae4430c6853581fafef06d613548314))
+* add inline type hints and pytype ci ([#134](https://www.github.com/googleapis/python-firestore/issues/134)) ([afff842](https://www.github.com/googleapis/python-firestore/commit/afff842a3356cbe5b0342be57341c12b2d601fda))
+* add retry/timeout to manual surface ([#222](https://www.github.com/googleapis/python-firestore/issues/222)) ([db5f286](https://www.github.com/googleapis/python-firestore/commit/db5f286772592460b2bf02df25a121994889585d)), closes [#221](https://www.github.com/googleapis/python-firestore/issues/221)
+* add support for not-in and not-eq query operators ([#202](https://www.github.com/googleapis/python-firestore/issues/202)) ([1d09f21](https://www.github.com/googleapis/python-firestore/commit/1d09f21f6c8cb7f69f0e30a960418f0f6899aa01))
+* add type hints for method params ([#182](https://www.github.com/googleapis/python-firestore/issues/182)) ([9b6c2f3](https://www.github.com/googleapis/python-firestore/commit/9b6c2f33351c65901ea648e4407b2817e5e70957))
+* asyncio microgen batch ([#122](https://www.github.com/googleapis/python-firestore/issues/122)) ([a4e5b00](https://www.github.com/googleapis/python-firestore/commit/a4e5b00a4d59e3416061d5c1ed32a111097e88b3))
+* asyncio microgen client ([#118](https://www.github.com/googleapis/python-firestore/issues/118)) ([de4cc44](https://www.github.com/googleapis/python-firestore/commit/de4cc445e34e4a186ccc17bf143e04b45fb35f0b))
+* asyncio microgen collection ([#119](https://www.github.com/googleapis/python-firestore/issues/119)) ([6281a67](https://www.github.com/googleapis/python-firestore/commit/6281a67e0ead38e7b2e477b7f077da7e0457aa9b))
+* asyncio microgen document ([#121](https://www.github.com/googleapis/python-firestore/issues/121)) ([31faecb](https://www.github.com/googleapis/python-firestore/commit/31faecb2ab2956bad64b0852f1fe54a05d8907f9))
+* asyncio microgen query ([#127](https://www.github.com/googleapis/python-firestore/issues/127)) ([178fa2c](https://www.github.com/googleapis/python-firestore/commit/178fa2c2a51a6bd6ef7a3c41b8307e44b5eab062))
+* asyncio microgen transaction ([#123](https://www.github.com/googleapis/python-firestore/issues/123)) ([35185a8](https://www.github.com/googleapis/python-firestore/commit/35185a849053877c9cc561e75cdb4cd7338cc508))
+* asyncio system tests ([#132](https://www.github.com/googleapis/python-firestore/issues/132)) ([4256a85](https://www.github.com/googleapis/python-firestore/commit/4256a856e6f1531959ffc080dfc8c8b3a7263ea5))
+* Begin using new microgenerator for v2 firestore ([#91](https://www.github.com/googleapis/python-firestore/issues/91)) ([e0add08](https://www.github.com/googleapis/python-firestore/commit/e0add0860ca958d139787cdbb7fceb570fbb80ab))
+* create async interface ([#61](https://www.github.com/googleapis/python-firestore/issues/61)) ([eaba25e](https://www.github.com/googleapis/python-firestore/commit/eaba25e892fa33c20ecc7aeab1528a004cbf99f7))
+* Create CODEOWNERS ([#40](https://www.github.com/googleapis/python-firestore/issues/40)) ([a0cbf40](https://www.github.com/googleapis/python-firestore/commit/a0cbf403fe88f07c83bec81f275ac168be573e93))
+* improve type information ([#176](https://www.github.com/googleapis/python-firestore/issues/176)) ([30bb3fb](https://www.github.com/googleapis/python-firestore/commit/30bb3fb5c36648d3b8acf76349a5726d7a5f135d))
+* integrate limit to last ([#145](https://www.github.com/googleapis/python-firestore/issues/145)) ([55da695](https://www.github.com/googleapis/python-firestore/commit/55da695710d0408fc314ffe5cc6d7a48cb71bc3b)), closes [#57](https://www.github.com/googleapis/python-firestore/issues/57)
+* partition queries ([#210](https://www.github.com/googleapis/python-firestore/issues/210)) ([4f75a75](https://www.github.com/googleapis/python-firestore/commit/4f75a75170be1bbb310b9e4741f4862d694b5bf5))
+* remove v1beta1 surface for v2 ([#96](https://www.github.com/googleapis/python-firestore/issues/96)) ([b4a8eb9](https://www.github.com/googleapis/python-firestore/commit/b4a8eb97a68b4c7d1bc9faf0b113dca4476d9f1f))
+* use 'update_transforms' ([#219](https://www.github.com/googleapis/python-firestore/issues/219)) ([c122e41](https://www.github.com/googleapis/python-firestore/commit/c122e4186808468a2ff82e9cc54b501809519859)), closes [#217](https://www.github.com/googleapis/python-firestore/issues/217)
+* use `DatetimeWithNanoseconds` throughout library ([#116](https://www.github.com/googleapis/python-firestore/issues/116)) ([1801ba2](https://www.github.com/googleapis/python-firestore/commit/1801ba2a0e990c533865fef200bbcc3818b3b486))
+* **firestore:** add `IN`, `ARRAY_CONTAINS_ANY` operators; update docstrings (via synth) ([#9439](https://www.github.com/googleapis/python-firestore/issues/9439)) ([107e526](https://www.github.com/googleapis/python-firestore/commit/107e526cb1d887096e99ce86f7125760b325b2bb))
+* **firestore:** add v1beta1 deprecation annotation ([#34](https://www.github.com/googleapis/python-firestore/issues/34)) ([b9e2ab5](https://www.github.com/googleapis/python-firestore/commit/b9e2ab58a41c7bbab28028cb88f84bd6013816ed))
+* **firestore:** surface new 'IN' and 'ARRAY_CONTAINS_ANY' operators ([#9541](https://www.github.com/googleapis/python-firestore/issues/9541)) ([5e9fe4f](https://www.github.com/googleapis/python-firestore/commit/5e9fe4f9ba21b9c38ebd41eb7ed083b335472e0b))
+
+
+### Bug Fixes
+
+* add import message via synth ([#231](https://www.github.com/googleapis/python-firestore/issues/231)) ([5fb02e9](https://www.github.com/googleapis/python-firestore/commit/5fb02e9b9521938ec1040611cf7086077d07aac2)), closes [#227](https://www.github.com/googleapis/python-firestore/issues/227) [#228](https://www.github.com/googleapis/python-firestore/issues/228) [#229](https://www.github.com/googleapis/python-firestore/issues/229)
+* add mocks to query get tests ([#109](https://www.github.com/googleapis/python-firestore/issues/109)) ([c4c5bfa](https://www.github.com/googleapis/python-firestore/commit/c4c5bfab0e5942706f2b55148e5e4f9fbd2e29f3))
+* async_document docs to match expected usecase ([#129](https://www.github.com/googleapis/python-firestore/issues/129)) ([f26f222](https://www.github.com/googleapis/python-firestore/commit/f26f222a82028568c0974f379454c69a0fc549ca))
+* asyncio microgen client get_all type ([#126](https://www.github.com/googleapis/python-firestore/issues/126)) ([9095368](https://www.github.com/googleapis/python-firestore/commit/9095368eaec4271b87ad792ff9bbd065364109f6))
+* await on to_wrap in AsyncTransactional ([#147](https://www.github.com/googleapis/python-firestore/issues/147)) ([e640e66](https://www.github.com/googleapis/python-firestore/commit/e640e663f525233a8173767f6886537dfd97b121))
+* constructor invalid path tests ([#114](https://www.github.com/googleapis/python-firestore/issues/114)) ([edf7bd1](https://www.github.com/googleapis/python-firestore/commit/edf7bd1879587c05b37910b0a870ba092c6f10ef))
+* coverage to 99p ([8ddfe1d](https://www.github.com/googleapis/python-firestore/commit/8ddfe1df7df501524e4d406d9dd3b396fc2680eb))
+* harden version data gathering against DistributionNotFound ([#212](https://www.github.com/googleapis/python-firestore/issues/212)) ([20b7260](https://www.github.com/googleapis/python-firestore/commit/20b72603eb0ae3164f68822c62378853be59d232))
+* name parameter to indicate snapshot support ([#169](https://www.github.com/googleapis/python-firestore/issues/169)) ([be98897](https://www.github.com/googleapis/python-firestore/commit/be988971cc1bbbc3616a849037dafc8cc0bb5745)), closes [#56](https://www.github.com/googleapis/python-firestore/issues/56)
+* pytype client errors ([#146](https://www.github.com/googleapis/python-firestore/issues/146)) ([eb19712](https://www.github.com/googleapis/python-firestore/commit/eb1971274038a079be664004a29a40d9b151d964))
+* recover watch stream on more error types ([#9995](https://www.github.com/googleapis/python-firestore/issues/9995)) ([af5fd1d](https://www.github.com/googleapis/python-firestore/commit/af5fd1dabd411a67afa729d1954cb1b9edf4d619)), closes [#L817](https://www.github.com/googleapis/python-firestore/issues/L817)
+* remove six dependency ([#110](https://www.github.com/googleapis/python-firestore/issues/110)) ([6e597f2](https://www.github.com/googleapis/python-firestore/commit/6e597f2886ff0cd3a9027c434006af0f0895257b))
+* remove six dependency ([#120](https://www.github.com/googleapis/python-firestore/issues/120)) ([d82687d](https://www.github.com/googleapis/python-firestore/commit/d82687db3c55c478285d580547d263f1724a09b7))
+* remove six dependency ([#98](https://www.github.com/googleapis/python-firestore/issues/98)) ([b264ccb](https://www.github.com/googleapis/python-firestore/commit/b264ccb9e2618fb7b40d5b4375777363fc26a9a9)), closes [#94](https://www.github.com/googleapis/python-firestore/issues/94)
+* remove unnecessary dependency on libcst ([#220](https://www.github.com/googleapis/python-firestore/issues/220)) ([cd358db](https://www.github.com/googleapis/python-firestore/commit/cd358db784c4244271f197156662e38ed21d2f45))
+* Support more Python sequence types when encoding to Protobuf ([#21](https://www.github.com/googleapis/python-firestore/issues/21)) ([b1c5987](https://www.github.com/googleapis/python-firestore/commit/b1c5987c606a14874b412e70f93015e161e278d6))
+* type hint improvements ([#144](https://www.github.com/googleapis/python-firestore/issues/144)) ([d30fff8](https://www.github.com/googleapis/python-firestore/commit/d30fff8e42621d42d169e354948c26ee3e0d16f0))
+* **firestore:** fix get and getall method of transaction ([#16](https://www.github.com/googleapis/python-firestore/issues/16)) ([de3aca0](https://www.github.com/googleapis/python-firestore/commit/de3aca0e78b68f66eb76bc679c6e95b0746ad590))
+* **firestore:** fix lint ([#48](https://www.github.com/googleapis/python-firestore/issues/48)) ([7fa00c4](https://www.github.com/googleapis/python-firestore/commit/7fa00c49dc3fab1d687fff9246f3e5ff0682cac0))
+* respect transform values passed into collection.add ([#7072](https://www.github.com/googleapis/python-firestore/issues/7072)) ([c643d91](https://www.github.com/googleapis/python-firestore/commit/c643d914075c1bfc2549a56ec419aff90af4d8e7)), closes [#6826](https://www.github.com/googleapis/python-firestore/issues/6826)
+* update resume token for restarting BiDi streams ([#10282](https://www.github.com/googleapis/python-firestore/issues/10282)) ([61ec5a2](https://www.github.com/googleapis/python-firestore/commit/61ec5a2326aa101bbccbed229582570844e58bb7))
+* Update team to be in correct org ([#43](https://www.github.com/googleapis/python-firestore/issues/43)) ([bef5a3a](https://www.github.com/googleapis/python-firestore/commit/bef5a3af4613b5f9d753bb6f45275e480e4bb301))
+* **firestore:** simplify 'Collection.add', avoid spurious API call ([#9634](https://www.github.com/googleapis/python-firestore/issues/9634)) ([20f093e](https://www.github.com/googleapis/python-firestore/commit/20f093eb65014d307e402b774f14958a29043742)), closes [#9629](https://www.github.com/googleapis/python-firestore/issues/9629)
+
+
+### Reverts
+
+* Revert "Replace relative class refs with fully-qualifed names. (#8039)" (#8095) ([2441825](https://www.github.com/googleapis/python-firestore/commit/24418259483afab8bb9c1996d7bd5d28ab085773)), closes [#8039](https://www.github.com/googleapis/python-firestore/issues/8039) [#8095](https://www.github.com/googleapis/python-firestore/issues/8095)
+* Revert "Do not use easily-misread glyphs in Firestore auto-IDs." (#4589) ([bbfd2ff](https://www.github.com/googleapis/python-firestore/commit/bbfd2ffa614c11e294753915d967278b9e0284f0)), closes [#4589](https://www.github.com/googleapis/python-firestore/issues/4589) [#4588](https://www.github.com/googleapis/python-firestore/issues/4588) [#4583](https://www.github.com/googleapis/python-firestore/issues/4583) [#4107](https://www.github.com/googleapis/python-firestore/issues/4107)
+
+
+* Refactor conformance tests. (#6291) ([4d29c1f](https://www.github.com/googleapis/python-firestore/commit/4d29c1fa7f4a4f10fdafd7797b1f513aa24b7c3c)), closes [#6291](https://www.github.com/googleapis/python-firestore/issues/6291) [#6290](https://www.github.com/googleapis/python-firestore/issues/6290)
+
+
+### Documentation
+
+* add python 2 sunset banner to documentation ([#9036](https://www.github.com/googleapis/python-firestore/issues/9036)) ([819d154](https://www.github.com/googleapis/python-firestore/commit/819d1541bae21e4054124dd32ff38906d82caca9))
+* add upgrading section to index of documentation ([#248](https://www.github.com/googleapis/python-firestore/issues/248)) ([55d1356](https://www.github.com/googleapis/python-firestore/commit/55d1356081c2d2226d7190dac2abdffbf8a0fb2f))
+* adds UPGRADING.md, note to readme, to help inform users about migration to v2 ([#245](https://www.github.com/googleapis/python-firestore/issues/245)) ([6a8cbdd](https://www.github.com/googleapis/python-firestore/commit/6a8cbddd01771190c04a5fc065863e8def3eb44f))
+* document admin client ([#174](https://www.github.com/googleapis/python-firestore/issues/174)) ([f099736](https://www.github.com/googleapis/python-firestore/commit/f09973638e627f741ea7d1f38294c4f8e9677e53)), closes [#30](https://www.github.com/googleapis/python-firestore/issues/30)
+* fix intersphinx reference to requests ([#9294](https://www.github.com/googleapis/python-firestore/issues/9294)) ([e859f3c](https://www.github.com/googleapis/python-firestore/commit/e859f3cb40dae6d9828e01ef28fa2539b978c56f))
+* fix typo in watch documentation ([#115](https://www.github.com/googleapis/python-firestore/issues/115)) ([367ac73](https://www.github.com/googleapis/python-firestore/commit/367ac732048e1e96cacb54238f88603ed47e2833))
+* normalize use of support level badges ([#6159](https://www.github.com/googleapis/python-firestore/issues/6159)) ([6c9f1ac](https://www.github.com/googleapis/python-firestore/commit/6c9f1acd1394d86e5a632a6e2fe1452b5c5b6b87))
+* re-add changelog entries lost in V2 switch ([#178](https://www.github.com/googleapis/python-firestore/issues/178)) ([d4a0f81](https://www.github.com/googleapis/python-firestore/commit/d4a0f8182930e5c74b08ca185c4d94f809b05797)), closes [#177](https://www.github.com/googleapis/python-firestore/issues/177)
+* **firestore:** add documentation for Document,Collection .on_snapshot ([#9275](https://www.github.com/googleapis/python-firestore/issues/9275)) ([f250443](https://www.github.com/googleapis/python-firestore/commit/f250443aa292f0aad757d8fd813467159a333bbf))
+* **firestore:** add new where operators to docstring ([#9789](https://www.github.com/googleapis/python-firestore/issues/9789)) ([c3864f7](https://www.github.com/googleapis/python-firestore/commit/c3864f743f6fdfbfd2a266712c1764ba23749f8f))
+* **firestore:** clarify client threadsafety ([#9254](https://www.github.com/googleapis/python-firestore/issues/9254)) ([4963eee](https://www.github.com/googleapis/python-firestore/commit/4963eee999aa617163db089b6200bb875e5c03fb))
+* **firestore:** remove duplicated word in README ([#9297](https://www.github.com/googleapis/python-firestore/issues/9297)) ([250024c](https://www.github.com/googleapis/python-firestore/commit/250024c4e4fdc0186f52a0e224e6f4b3b7e5694e))
+* **firestore:** standardize use of 'required' and 'optional' in docstrings; add py2 deprecation warning; add 3.8 unit tests (via synth) ([#10068](https://www.github.com/googleapis/python-firestore/issues/10068)) ([0f72f2c](https://www.github.com/googleapis/python-firestore/commit/0f72f2c25bc6023155be49667cb917a1c217ecd3))
+* Remove CI for gh-pages, use googleapis.dev for api_core refs. ([#9085](https://www.github.com/googleapis/python-firestore/issues/9085)) ([c7b3de8](https://www.github.com/googleapis/python-firestore/commit/c7b3de85ecd5b91b68d4df7a260e25b450e10664))
+* Replace links to '/stable/' with '/latest/'. ([#5901](https://www.github.com/googleapis/python-firestore/issues/5901)) ([e2f606e](https://www.github.com/googleapis/python-firestore/commit/e2f606e472d29725247eeb329bd20524f2a68419)), closes [#5894](https://www.github.com/googleapis/python-firestore/issues/5894)
+
 ## [2.0.0-dev2](https://www.github.com/googleapis/python-firestore/compare/v1.9.0...v2.0.0-dev2) (2020-10-26)
 
 
