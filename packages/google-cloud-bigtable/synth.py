@@ -45,40 +45,28 @@ library = gapic.py_library(
 s.move(library / "google/cloud/bigtable_admin_v2")
 s.move(library / "tests")
 
-s.replace(
-    [
-        "google/cloud/bigtable_admin_v2/gapic/bigtable_instance_admin_client.py",
-        "google/cloud/bigtable_admin_v2/gapic/bigtable_table_admin_client.py",
-    ],
-    "'google-cloud-bigtable-admin'",
-    "'google-cloud-bigtable'",
-)
+# Work around non-standard installations
+
+admin_clients = [
+    "google/cloud/bigtable_admin_v2/gapic/bigtable_instance_admin_client.py",
+    "google/cloud/bigtable_admin_v2/gapic/bigtable_table_admin_client.py",
+]
 
 s.replace(
-    "google/**/*.py",
-    "from google\.cloud\.bigtable\.admin_v2.proto",
-    "from google.cloud.bigtable_admin_v2.proto",
-)
-
-s.replace(
-    ["google/cloud/bigtable_admin_v2/__init__.py"],
-    "    __doc__ = bigtable_instance_admin_client."
-    "BigtableInstanceAdminClient.__doc__\n",
-    "    __doc__ = (\n"
-    "        bigtable_instance_admin_client.BigtableInstanceAdminClient."
-    "__doc__)\n",
-)
-
-s.replace(
-    ["google/cloud/bigtable_v2/gapic/bigtable_client.py"],
-    "if ``true_mutations`` is empty, and at most\n\n\s*100000.",
-    "if ``true_mutations`` is empty, and at most 100000.",
-)
-
-s.replace(
-    ["google/cloud/bigtable_v2/gapic/bigtable_client.py"],
-    "if ``false_mutations`` is empty, and at most\n\n\s*100000.",
-    "if ``false_mutations`` is empty, and at most 100000.",
+    admin_clients,
+    """\
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution\(
+    'google-cloud-bigtable-admin',
+\).version
+""",
+    """\
+try:
+    _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+        "google-cloud-bigtable"
+    ).version
+except pkg_resources.DistributionNotFound:  # pragma: NO COVER
+    _GAPIC_LIBRARY_VERSION = None
+"""
 )
 
 # ----------------------------------------------------------------------------
