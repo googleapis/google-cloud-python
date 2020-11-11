@@ -886,18 +886,19 @@ class _Database(object):
         self.name = name
         self._sessions = []
 
-        def mock_batch_create_sessions(db, session_count=10, timeout=10, metadata=[]):
-            from google.cloud.spanner_v1.proto import spanner_pb2
+        def mock_batch_create_sessions(
+            database=None, session_count=10, timeout=10, metadata=[]
+        ):
+            from google.cloud.spanner_v1 import BatchCreateSessionsResponse
+            from google.cloud.spanner_v1 import Session
 
-            response = spanner_pb2.BatchCreateSessionsResponse()
             if session_count < 2:
-                response.session.add()
+                response = BatchCreateSessionsResponse(session=[Session()])
             else:
-                response.session.add()
-                response.session.add()
+                response = BatchCreateSessionsResponse(session=[Session(), Session()])
             return response
 
-        from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
+        from google.cloud.spanner_v1 import SpannerClient
 
         self.spanner_api = mock.create_autospec(SpannerClient, instance=True)
         self.spanner_api.batch_create_sessions.side_effect = mock_batch_create_sessions

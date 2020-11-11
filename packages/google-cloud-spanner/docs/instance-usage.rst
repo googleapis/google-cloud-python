@@ -1,7 +1,7 @@
 Instance Admin
 ==============
 
-After creating a :class:`~google.cloud.spanner.client.Client`, you can
+After creating a :class:`~google.cloud.spanner_v1.client.Client`, you can
 interact with individual instances for a project.
 
 Instance Configurations
@@ -12,7 +12,7 @@ specifying the location and other parameters for a set of instances.  These
 configurations are defined by the server, and cannot be changed.
 
 To iterate over all instance configurations available to your project, use the
-:meth:`~google.cloud.spanner.client.Client.list_instance_configs`
+:meth:`~google.cloud.spanner_v1.client.Client.list_instance_configs`
 method of the client:
 
 .. code:: python
@@ -22,7 +22,7 @@ method of the client:
 
 
 To fetch a single instance configuration, use the
-:meth:`~google.cloud.spanner.client.Client.get_instance_configuration`
+:meth:`~google.cloud.spanner_v1.client.Client.get_instance_configuration`
 method of the client:
 
 .. code:: python
@@ -37,7 +37,7 @@ List Instances
 --------------
 
 If you want a comprehensive list of all existing instances, iterate over the
-:meth:`~google.cloud.spanner.client.Client.list_instances` method of
+:meth:`~google.cloud.spanner_v1.client.Client.list_instances` method of
 the client:
 
 .. code:: python
@@ -52,7 +52,7 @@ objects.
 Instance Factory
 ----------------
 
-To create a :class:`~google.cloud.spanner.instance.Instance` object:
+To create a :class:`~google.cloud.spanner_v1.instance.Instance` object:
 
 .. code:: python
 
@@ -65,7 +65,7 @@ To create a :class:`~google.cloud.spanner.instance.Instance` object:
 - ``configuration_name`` is the name of the instance configuration to which the
   instance will be bound.  It must be one of the names configured for your
   project, discoverable via
-  :meth:`~google.cloud.spanner.client.Client.list_instance_configs`.
+  :meth:`~google.cloud.spanner_v1.client.Client.list_instance_configs`.
 
 - ``node_count`` is a postitive integral count of the number of nodes used
   by the instance.  More nodes allows for higher performance, but at a higher
@@ -87,7 +87,7 @@ Create a new Instance
 ---------------------
 
 After creating the instance object, use its
-:meth:`~google.cloud.spanner.instance.Instance.create` method to
+:meth:`~google.cloud.spanner_v1.instance.Instance.create` method to
 trigger its creation on the server:
 
 .. code:: python
@@ -98,7 +98,7 @@ trigger its creation on the server:
 .. note::
 
     Creating an instance triggers a "long-running operation" and
-    returns an :class:`google.cloud.spanner.instance.Operation`
+    returns an :class:`google.cloud.spanner_v1.instance.Operation`
     object.  See :ref:`check-on-current-instance-operation` for polling
     to find out if the operation is completed.
 
@@ -107,7 +107,7 @@ Refresh metadata for an existing Instance
 -----------------------------------------
 
 After creating the instance object, reload its server-side configuration
-using its :meth:`~google.cloud.spanner.instance.Instance.reload` method:
+using its :meth:`~google.cloud.spanner_v1.instance.Instance.reload` method:
 
 .. code:: python
 
@@ -121,7 +121,7 @@ Update an existing Instance
 ---------------------------
 
 After creating the instance object, you can update its metadata via
-its :meth:`~google.cloud.spanner.instance.Instance.update` method:
+its :meth:`~google.cloud.spanner_v1.instance.Instance.update` method:
 
 .. code:: python
 
@@ -131,7 +131,7 @@ its :meth:`~google.cloud.spanner.instance.Instance.update` method:
 .. note::
 
     Update an instance triggers a "long-running operation" and
-    returns a :class:`google.cloud.spanner.instance.Operation`
+    returns a :class:`google.cloud.spanner_v1.instance.Operation`
     object.  See :ref:`check-on-current-instance-operation` for polling
     to find out if the operation is completed.
 
@@ -140,7 +140,7 @@ Delete an existing Instance
 ---------------------------
 
 Delete an instance using its
-:meth:`~google.cloud.spanner.instance.Instance.delete` method:
+:meth:`~google.cloud.spanner_v1.instance.Instance.delete` method:
 
 .. code:: python
 
@@ -152,10 +152,10 @@ Delete an instance using its
 Resolve Current Instance Operation
 ----------------------------------
 
-The :meth:`~google.cloud.spanner.instance.Instance.create` and
-:meth:`~google.cloud.spanner.instance.Instance.update` methods of instance
+The :meth:`~google.cloud.spanner_v1.instance.Instance.create` and
+:meth:`~google.cloud.spanner_v1.instance.Instance.update` methods of instance
 object trigger long-running operations on the server, and return instances
-of the :class:`~google.cloud.spanner.instance.Operation` class.
+of the :class:`~google.cloud.spanner_v1.instance.Operation` class.
 
 If you want to block on the completion of those operations, use the
 ``result`` method on the returned objects:
@@ -172,8 +172,8 @@ Next Step
 ---------
 
 Now we go down the hierarchy from
-:class:`~google.cloud.spanner.instance.Instance` to a
-:class:`~google.cloud.spanner.database.Database`.
+:class:`~google.cloud.spanner_v1.instance.Instance` to a
+:class:`~google.cloud.spanner_v1.database.Database`.
 
 Next, learn about the :doc:`database-usage`.
 

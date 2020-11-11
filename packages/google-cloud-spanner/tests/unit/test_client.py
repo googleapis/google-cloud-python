@@ -38,7 +38,6 @@ class TestClient(unittest.TestCase):
     DISPLAY_NAME = "display-name"
     NODE_COUNT = 5
     TIMEOUT_SECONDS = 80
-    USER_AGENT = "you-sir-age-int"
 
     def _get_target_class(self):
         from google.cloud import spanner
@@ -54,7 +53,6 @@ class TestClient(unittest.TestCase):
         creds,
         expected_creds=None,
         client_info=None,
-        user_agent=None,
         client_options=None,
         query_options=None,
         expected_query_options=None,
@@ -80,7 +78,6 @@ class TestClient(unittest.TestCase):
         client = self._make_one(
             project=self.PROJECT,
             credentials=creds,
-            user_agent=user_agent,
             query_options=query_options,
             **kwargs
         )
@@ -94,7 +91,6 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(client.project, self.PROJECT)
         self.assertIs(client._client_info, expected_client_info)
-        self.assertEqual(client.user_agent, user_agent)
         if expected_client_options is not None:
             self.assertIsInstance(
                 client._client_options, google.api_core.client_options.ClientOptions
@@ -126,20 +122,6 @@ class TestClient(unittest.TestCase):
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
         creds = _make_credentials()
         self._constructor_test_helper(expected_scopes, creds)
-
-    @mock.patch("warnings.warn")
-    def test_constructor_custom_user_agent_and_timeout(self, mock_warn):
-        from google.cloud.spanner_v1 import client as MUT
-
-        CUSTOM_USER_AGENT = "custom-application"
-        expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
-        creds = _make_credentials()
-        self._constructor_test_helper(
-            expected_scopes, creds, user_agent=CUSTOM_USER_AGENT
-        )
-        mock_warn.assert_called_once_with(
-            MUT._USER_AGENT_DEPRECATED, DeprecationWarning, stacklevel=2
-        )
 
     def test_constructor_custom_client_info(self):
         from google.cloud.spanner_v1 import client as MUT
@@ -189,7 +171,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_constructor_custom_query_options_client_config(self):
-        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
@@ -205,7 +187,7 @@ class TestClient(unittest.TestCase):
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_optimizer_version")
     def test_constructor_custom_query_options_env_config(self, mock_ver):
-        from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+        from google.cloud.spanner_v1 import ExecuteSqlRequest
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
@@ -440,83 +422,83 @@ class TestClient(unittest.TestCase):
         self.assertEqual(client.project_name, project_name)
 
     def test_list_instance_configs(self):
-        from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client
-        from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2,
+        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
+        from google.cloud.spanner_admin_instance_v1 import (
+            InstanceConfig as InstanceConfigPB,
         )
-        from google.cloud.spanner_v1.client import InstanceConfig
+        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
+        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        api = instance_admin_client.InstanceAdminClient(mock.Mock())
+        api = InstanceAdminClient(credentials=mock.Mock())
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
-        instance_config_pbs = spanner_instance_admin_pb2.ListInstanceConfigsResponse(
+        instance_config_pbs = ListInstanceConfigsResponse(
             instance_configs=[
-                spanner_instance_admin_pb2.InstanceConfig(
+                InstanceConfigPB(
                     name=self.CONFIGURATION_NAME, display_name=self.DISPLAY_NAME
                 )
             ]
         )
 
-        lic_api = api._inner_api_calls["list_instance_configs"] = mock.Mock(
-            return_value=instance_config_pbs
-        )
+        lic_api = api._transport._wrapped_methods[
+            api._transport.list_instance_configs
+        ] = mock.Mock(return_value=instance_config_pbs)
 
         response = client.list_instance_configs()
         instance_configs = list(response)
 
         instance_config = instance_configs[0]
-        self.assertIsInstance(instance_config, InstanceConfig)
+        self.assertIsInstance(instance_config, InstanceConfigPB)
         self.assertEqual(instance_config.name, self.CONFIGURATION_NAME)
         self.assertEqual(instance_config.display_name, self.DISPLAY_NAME)
 
-        expected_metadata = [
+        expected_metadata = (
             ("google-cloud-resource-prefix", client.project_name),
             ("x-goog-request-params", "parent={}".format(client.project_name)),
-        ]
+        )
         lic_api.assert_called_once_with(
-            spanner_instance_admin_pb2.ListInstanceConfigsRequest(parent=self.PATH),
+            ListInstanceConfigsRequest(parent=self.PATH),
             metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
 
     def test_list_instance_configs_w_options(self):
-        from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client
-        from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2,
+        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
+        from google.cloud.spanner_admin_instance_v1 import (
+            InstanceConfig as InstanceConfigPB,
         )
+        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
+        from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsResponse
 
-        api = instance_admin_client.InstanceAdminClient(mock.Mock())
+        api = InstanceAdminClient(credentials=mock.Mock())
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
-        instance_config_pbs = spanner_instance_admin_pb2.ListInstanceConfigsResponse(
+        instance_config_pbs = ListInstanceConfigsResponse(
             instance_configs=[
-                spanner_instance_admin_pb2.InstanceConfig(
+                InstanceConfigPB(
                     name=self.CONFIGURATION_NAME, display_name=self.DISPLAY_NAME
                 )
             ]
         )
 
-        lic_api = api._inner_api_calls["list_instance_configs"] = mock.Mock(
-            return_value=instance_config_pbs
-        )
+        lic_api = api._transport._wrapped_methods[
+            api._transport.list_instance_configs
+        ] = mock.Mock(return_value=instance_config_pbs)
 
-        token = "token"
         page_size = 42
-        list(client.list_instance_configs(page_token=token, page_size=42))
+        list(client.list_instance_configs(page_size=42))
 
-        expected_metadata = [
+        expected_metadata = (
             ("google-cloud-resource-prefix", client.project_name),
             ("x-goog-request-params", "parent={}".format(client.project_name)),
-        ]
+        )
         lic_api.assert_called_once_with(
-            spanner_instance_admin_pb2.ListInstanceConfigsRequest(
-                parent=self.PATH, page_size=page_size, page_token=token
-            ),
+            ListInstanceConfigsRequest(parent=self.PATH, page_size=page_size),
             metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
@@ -559,20 +541,19 @@ class TestClient(unittest.TestCase):
         self.assertIs(instance._client, client)
 
     def test_list_instances(self):
-        from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client
-        from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2,
-        )
-        from google.cloud.spanner_v1.client import Instance
+        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
+        from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
+        from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
+        from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        api = instance_admin_client.InstanceAdminClient(mock.Mock())
+        api = InstanceAdminClient(credentials=mock.Mock())
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
-        instance_pbs = spanner_instance_admin_pb2.ListInstancesResponse(
+        instance_pbs = ListInstancesResponse(
             instances=[
-                spanner_instance_admin_pb2.Instance(
+                InstancePB(
                     name=self.INSTANCE_NAME,
                     config=self.CONFIGURATION_NAME,
                     display_name=self.DISPLAY_NAME,
@@ -581,61 +562,57 @@ class TestClient(unittest.TestCase):
             ]
         )
 
-        li_api = api._inner_api_calls["list_instances"] = mock.Mock(
-            return_value=instance_pbs
-        )
+        li_api = api._transport._wrapped_methods[
+            api._transport.list_instances
+        ] = mock.Mock(return_value=instance_pbs)
 
         response = client.list_instances()
         instances = list(response)
 
         instance = instances[0]
-        self.assertIsInstance(instance, Instance)
+        self.assertIsInstance(instance, InstancePB)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
-        self.assertEqual(instance.configuration_name, self.CONFIGURATION_NAME)
+        self.assertEqual(instance.config, self.CONFIGURATION_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
 
-        expected_metadata = [
+        expected_metadata = (
             ("google-cloud-resource-prefix", client.project_name),
             ("x-goog-request-params", "parent={}".format(client.project_name)),
-        ]
+        )
         li_api.assert_called_once_with(
-            spanner_instance_admin_pb2.ListInstancesRequest(parent=self.PATH),
+            ListInstancesRequest(parent=self.PATH),
             metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,
         )
 
     def test_list_instances_w_options(self):
-        from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client
-        from google.cloud.spanner_admin_instance_v1.proto import (
-            spanner_instance_admin_pb2,
-        )
+        from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
+        from google.cloud.spanner_admin_instance_v1 import ListInstancesRequest
+        from google.cloud.spanner_admin_instance_v1 import ListInstancesResponse
 
-        api = instance_admin_client.InstanceAdminClient(mock.Mock())
+        api = InstanceAdminClient(credentials=mock.Mock())
         credentials = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=credentials)
         client._instance_admin_api = api
 
-        instance_pbs = spanner_instance_admin_pb2.ListInstancesResponse(instances=[])
+        instance_pbs = ListInstancesResponse(instances=[])
 
-        li_api = api._inner_api_calls["list_instances"] = mock.Mock(
-            return_value=instance_pbs
-        )
+        li_api = api._transport._wrapped_methods[
+            api._transport.list_instances
+        ] = mock.Mock(return_value=instance_pbs)
 
-        token = "token"
-        filter = "name:instance"
         page_size = 42
-        list(client.list_instances(filter_=filter, page_token=token, page_size=42))
+        filter_ = "name:instance"
+        list(client.list_instances(filter_=filter_, page_size=42))
 
-        expected_metadata = [
+        expected_metadata = (
             ("google-cloud-resource-prefix", client.project_name),
             ("x-goog-request-params", "parent={}".format(client.project_name)),
-        ]
+        )
         li_api.assert_called_once_with(
-            spanner_instance_admin_pb2.ListInstancesRequest(
-                parent=self.PATH, filter=filter, page_size=page_size, page_token=token
-            ),
+            ListInstancesRequest(parent=self.PATH, filter=filter_, page_size=page_size),
             metadata=expected_metadata,
             retry=mock.ANY,
             timeout=mock.ANY,

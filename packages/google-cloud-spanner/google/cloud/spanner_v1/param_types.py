@@ -14,30 +14,32 @@
 
 """Types exported from this package."""
 
-from google.cloud.spanner_v1.proto import type_pb2
+from google.cloud.spanner_v1 import Type
+from google.cloud.spanner_v1 import TypeCode
+from google.cloud.spanner_v1 import StructType
 
 
 # Scalar parameter types
-STRING = type_pb2.Type(code=type_pb2.STRING)
-BYTES = type_pb2.Type(code=type_pb2.BYTES)
-BOOL = type_pb2.Type(code=type_pb2.BOOL)
-INT64 = type_pb2.Type(code=type_pb2.INT64)
-FLOAT64 = type_pb2.Type(code=type_pb2.FLOAT64)
-DATE = type_pb2.Type(code=type_pb2.DATE)
-TIMESTAMP = type_pb2.Type(code=type_pb2.TIMESTAMP)
-NUMERIC = type_pb2.Type(code=type_pb2.NUMERIC)
+STRING = Type(code=TypeCode.STRING)
+BYTES = Type(code=TypeCode.BYTES)
+BOOL = Type(code=TypeCode.BOOL)
+INT64 = Type(code=TypeCode.INT64)
+FLOAT64 = Type(code=TypeCode.FLOAT64)
+DATE = Type(code=TypeCode.DATE)
+TIMESTAMP = Type(code=TypeCode.TIMESTAMP)
+NUMERIC = Type(code=TypeCode.NUMERIC)
 
 
 def Array(element_type):  # pylint: disable=invalid-name
     """Construct an array parameter type description protobuf.
 
-    :type element_type: :class:`type_pb2.Type`
+    :type element_type: :class:`~google.cloud.spanner_v1.Type`
     :param element_type: the type of elements of the array
 
-    :rtype: :class:`type_pb2.Type`
+    :rtype: :class:`google.cloud.spanner_v1.Type`
     :returns: the appropriate array-type protobuf
     """
-    return type_pb2.Type(code=type_pb2.ARRAY, array_element_type=element_type)
+    return Type(code=TypeCode.ARRAY, array_element_type=element_type)
 
 
 def StructField(name, field_type):  # pylint: disable=invalid-name
@@ -46,24 +48,22 @@ def StructField(name, field_type):  # pylint: disable=invalid-name
     :type name: str
     :param name: the name of the field
 
-    :type field_type: :class:`type_pb2.Type`
+    :type field_type: :class:`google.cloud.spanner_v1.Type`
     :param field_type: the type of the field
 
-    :rtype: :class:`type_pb2.StructType.Field`
+    :rtype: :class:`google.cloud.spanner_v1.StructType.Field`
     :returns: the appropriate struct-field-type protobuf
     """
-    return type_pb2.StructType.Field(name=name, type=field_type)
+    return StructType.Field(name=name, type_=field_type)
 
 
 def Struct(fields):  # pylint: disable=invalid-name
     """Construct a struct parameter type description protobuf.
 
-    :type fields: list of :class:`type_pb2.StructType.Field`
+    :type fields: list of :class:`google.cloud.spanner_v1.StructType.Field`
     :param fields: the fields of the struct
 
     :rtype: :class:`type_pb2.Type`
     :returns: the appropriate struct-type protobuf
     """
-    return type_pb2.Type(
-        code=type_pb2.STRUCT, struct_type=type_pb2.StructType(fields=fields)
-    )
+    return Type(code=TypeCode.STRUCT, struct_type=StructType(fields=fields))

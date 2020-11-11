@@ -216,9 +216,10 @@ def list_backups(instance_id, database_id, backup_id):
         print(backup.name)
 
     print("All backups with pagination")
-    for page in instance.list_backups(page_size=2).pages:
-        for backup in page:
-            print(backup.name)
+    # If there are multiple pages, additional ``ListBackup``
+    # requests will be made as needed while iterating.
+    for backup in instance.list_backups(page_size=2):
+        print(backup.name)
 
 
 # [END spanner_list_backups]

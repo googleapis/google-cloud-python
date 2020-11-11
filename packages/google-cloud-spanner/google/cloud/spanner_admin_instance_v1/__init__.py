@@ -1,29 +1,51 @@
 # -*- coding: utf-8 -*-
-#
-# Copyright 2018 Google LLC
+
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-from __future__ import absolute_import
+from .services.instance_admin import InstanceAdminClient
+from .types.spanner_instance_admin import CreateInstanceMetadata
+from .types.spanner_instance_admin import CreateInstanceRequest
+from .types.spanner_instance_admin import DeleteInstanceRequest
+from .types.spanner_instance_admin import GetInstanceConfigRequest
+from .types.spanner_instance_admin import GetInstanceRequest
+from .types.spanner_instance_admin import Instance
+from .types.spanner_instance_admin import InstanceConfig
+from .types.spanner_instance_admin import ListInstanceConfigsRequest
+from .types.spanner_instance_admin import ListInstanceConfigsResponse
+from .types.spanner_instance_admin import ListInstancesRequest
+from .types.spanner_instance_admin import ListInstancesResponse
+from .types.spanner_instance_admin import ReplicaInfo
+from .types.spanner_instance_admin import UpdateInstanceMetadata
+from .types.spanner_instance_admin import UpdateInstanceRequest
 
-from google.cloud.spanner_admin_instance_v1 import types
-from google.cloud.spanner_admin_instance_v1.gapic import enums
-from google.cloud.spanner_admin_instance_v1.gapic import instance_admin_client
 
-
-class InstanceAdminClient(instance_admin_client.InstanceAdminClient):
-    __doc__ = instance_admin_client.InstanceAdminClient.__doc__
-    enums = enums
-
-
-__all__ = ("enums", "types", "InstanceAdminClient")
+__all__ = (
+    "CreateInstanceMetadata",
+    "CreateInstanceRequest",
+    "DeleteInstanceRequest",
+    "GetInstanceConfigRequest",
+    "GetInstanceRequest",
+    "Instance",
+    "InstanceConfig",
+    "ListInstanceConfigsRequest",
+    "ListInstanceConfigsResponse",
+    "ListInstancesRequest",
+    "ListInstancesResponse",
+    "ReplicaInfo",
+    "UpdateInstanceMetadata",
+    "UpdateInstanceRequest",
+    "InstanceAdminClient",
+)

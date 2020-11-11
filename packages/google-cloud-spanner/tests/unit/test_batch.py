@@ -24,9 +24,9 @@ VALUES = [
 ]
 BASE_ATTRIBUTES = {
     "db.type": "spanner",
-    "db.url": "spanner.googleapis.com:443",
+    "db.url": "spanner.googleapis.com",
     "db.instance": "testing",
-    "net.host.name": "spanner.googleapis.com:443",
+    "net.host.name": "spanner.googleapis.com",
 }
 
 
@@ -51,18 +51,13 @@ class Test_BatchBase(_BaseTest):
         return _BatchBase
 
     def _compare_values(self, result, source):
-        from google.protobuf.struct_pb2 import ListValue
-        from google.protobuf.struct_pb2 import Value
-
         for found, expected in zip(result, source):
-            self.assertIsInstance(found, ListValue)
-            self.assertEqual(len(found.values), len(expected))
-            for found_cell, expected_cell in zip(found.values, expected):
-                self.assertIsInstance(found_cell, Value)
+            self.assertEqual(len(found), len(expected))
+            for found_cell, expected_cell in zip(found, expected):
                 if isinstance(expected_cell, int):
-                    self.assertEqual(int(found_cell.string_value), expected_cell)
+                    self.assertEqual(int(found_cell), expected_cell)
                 else:
-                    self.assertEqual(found_cell.string_value, expected_cell)
+                    self.assertEqual(found_cell, expected_cell)
 
     def test_ctor(self):
         session = _Session()
@@ -77,7 +72,7 @@ class Test_BatchBase(_BaseTest):
             base._check_state()
 
     def test_insert(self):
-        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -94,7 +89,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_update(self):
-        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -111,7 +106,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_insert_or_update(self):
-        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -128,7 +123,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_replace(self):
-        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1 import Mutation
 
         session = _Session()
         base = self._make_one(session)
@@ -145,7 +140,7 @@ class Test_BatchBase(_BaseTest):
         self._compare_values(write.values, VALUES)
 
     def test_delete(self):
-        from google.cloud.spanner_v1.proto.mutation_pb2 import Mutation
+        from google.cloud.spanner_v1 import Mutation
         from google.cloud.spanner_v1.keyset import KeySet
 
         keys = [[0], [1], [2]]
@@ -165,9 +160,7 @@ class Test_BatchBase(_BaseTest):
         self.assertEqual(len(key_set_pb.ranges), 0)
         self.assertEqual(len(key_set_pb.keys), len(keys))
         for found, expected in zip(key_set_pb.keys, keys):
-            self.assertEqual(
-                [int(value.string_value) for value in found.values], expected
-            )
+            self.assertEqual([int(value) for value in found], expected)
 
 
 class TestBatch(_BaseTest, OpenTelemetryBase):
@@ -220,8 +213,8 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
     def test_commit_ok(self):
         import datetime
-        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
-        from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
+        from google.cloud.spanner_v1 import CommitResponse
+        from google.cloud.spanner_v1 import TransactionOptions
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -243,7 +236,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
-        self.assertTrue(single_use_txn.HasField("read_write"))
+        self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
 
         self.assertSpanAttributes(
@@ -269,8 +262,8 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
     def test_context_mgr_success(self):
         import datetime
-        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
-        from google.cloud.spanner_v1.proto.transaction_pb2 import TransactionOptions
+        from google.cloud.spanner_v1 import CommitResponse
+        from google.cloud.spanner_v1 import TransactionOptions
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -291,7 +284,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
-        self.assertTrue(single_use_txn.HasField("read_write"))
+        self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
 
         self.assertSpanAttributes(
@@ -300,7 +293,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
     def test_context_mgr_failure(self):
         import datetime
-        from google.cloud.spanner_v1.proto.spanner_pb2 import CommitResponse
+        from google.cloud.spanner_v1 import CommitResponse
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_pb_timestamp
 

@@ -115,47 +115,32 @@ class TestKeyRange(unittest.TestCase):
         self.assertNotEqual(krange, other)
 
     def test_to_pb_w_start_closed_and_end_open(self):
-        from google.protobuf.struct_pb2 import ListValue
-        from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+        from google.cloud.spanner_v1.types.keys import KeyRange as KeyRangePB
 
         key1 = u"key_1"
         key2 = u"key_2"
         key_range = self._make_one(start_closed=[key1], end_open=[key2])
         key_range_pb = key_range._to_pb()
-        expected = KeyRange(
-            start_closed=ListValue(values=[Value(string_value=key1)]),
-            end_open=ListValue(values=[Value(string_value=key2)]),
-        )
+        expected = KeyRangePB(start_closed=[key1], end_open=[key2],)
         self.assertEqual(key_range_pb, expected)
 
     def test_to_pb_w_start_open_and_end_closed(self):
-        from google.protobuf.struct_pb2 import ListValue
-        from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+        from google.cloud.spanner_v1.types.keys import KeyRange as KeyRangePB
 
         key1 = u"key_1"
         key2 = u"key_2"
         key_range = self._make_one(start_open=[key1], end_closed=[key2])
         key_range_pb = key_range._to_pb()
-        expected = KeyRange(
-            start_open=ListValue(values=[Value(string_value=key1)]),
-            end_closed=ListValue(values=[Value(string_value=key2)]),
-        )
+        expected = KeyRangePB(start_open=[key1], end_closed=[key2])
         self.assertEqual(key_range_pb, expected)
 
     def test_to_pb_w_empty_list(self):
-        from google.protobuf.struct_pb2 import ListValue
-        from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1.proto.keys_pb2 import KeyRange
+        from google.cloud.spanner_v1.types.keys import KeyRange as KeyRangePB
 
         key = u"key"
         key_range = self._make_one(start_closed=[], end_closed=[key])
         key_range_pb = key_range._to_pb()
-        expected = KeyRange(
-            start_closed=ListValue(values=[]),
-            end_closed=ListValue(values=[Value(string_value=key)]),
-        )
+        expected = KeyRangePB(start_closed=[], end_closed=[key])
         self.assertEqual(key_range_pb, expected)
 
     def test_to_dict_w_start_closed_and_end_open(self):
@@ -288,37 +273,38 @@ class TestKeySet(unittest.TestCase):
         self.assertNotEqual(keyset, other)
 
     def test_to_pb_w_all(self):
-        from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
+        from google.cloud.spanner_v1 import KeySetPB
 
         keyset = self._make_one(all_=True)
 
         result = keyset._to_pb()
 
-        self.assertIsInstance(result, KeySet)
-        self.assertTrue(result.all)
+        self.assertIsInstance(result, KeySetPB)
+        self.assertTrue(result.all_)
         self.assertEqual(len(result.keys), 0)
         self.assertEqual(len(result.ranges), 0)
 
     def test_to_pb_w_only_keys(self):
-        from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
+        from google.cloud.spanner_v1 import KeySetPB
 
         KEYS = [[u"key1"], [u"key2"]]
         keyset = self._make_one(keys=KEYS)
 
         result = keyset._to_pb()
 
-        self.assertIsInstance(result, KeySet)
-        self.assertFalse(result.all)
+        self.assertIsInstance(result, KeySetPB)
+        self.assertFalse(result.all_)
         self.assertEqual(len(result.keys), len(KEYS))
 
         for found, expected in zip(result.keys, KEYS):
             self.assertEqual(len(found), len(expected))
-            self.assertEqual(found.values[0].string_value, expected[0])
+            self.assertEqual(found[0], expected[0])
 
         self.assertEqual(len(result.ranges), 0)
 
     def test_to_pb_w_only_ranges(self):
-        from google.cloud.spanner_v1.proto.keys_pb2 import KeySet
+        from google.cloud.spanner_v1 import KeyRangePB
+        from google.cloud.spanner_v1 import KeySetPB
         from google.cloud.spanner_v1.keyset import KeyRange
 
         KEY_1 = u"KEY_1"
@@ -333,13 +319,17 @@ class TestKeySet(unittest.TestCase):
 
         result = keyset._to_pb()
 
-        self.assertIsInstance(result, KeySet)
-        self.assertFalse(result.all)
+        self.assertIsInstance(result, KeySetPB)
+        self.assertFalse(result.all_)
         self.assertEqual(len(result.keys), 0)
         self.assertEqual(len(result.ranges), len(RANGES))
 
-        for found, expected in zip(result.ranges, RANGES):
-            self.assertEqual(found, expected._to_pb())
+        expected_ranges = [
+            KeyRangePB(start_open=KEY_1, end_closed=KEY_2),
+            KeyRangePB(start_closed=KEY_3, end_open=KEY_4),
+        ]
+        for found, expected in zip(result.ranges, expected_ranges):
+            self.assertEqual(found, expected)
 
     def test_to_dict_w_all(self):
         keyset = self._make_one(all_=True)

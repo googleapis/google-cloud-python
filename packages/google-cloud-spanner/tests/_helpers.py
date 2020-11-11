@@ -47,4 +47,4 @@ class OpenTelemetryBase(unittest.TestCase):
 
             self.assertEqual(span.name, name)
             self.assertEqual(span.status.canonical_code, status)
-            self.assertEqual(span.attributes, attributes)
+            self.assertEqual(dict(span.attributes), attributes)

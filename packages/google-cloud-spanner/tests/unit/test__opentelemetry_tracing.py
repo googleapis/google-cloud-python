@@ -57,8 +57,8 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
             expected_attributes = {
                 "db.type": "spanner",
-                "db.url": "spanner.googleapis.com:443",
-                "net.host.name": "spanner.googleapis.com:443",
+                "db.url": "spanner.googleapis.com",
+                "net.host.name": "spanner.googleapis.com",
             }
             expected_attributes.update(extra_attributes)
 
@@ -82,8 +82,8 @@ if HAS_OPENTELEMETRY_INSTALLED:
 
             expected_attributes = {
                 "db.type": "spanner",
-                "db.url": "spanner.googleapis.com:443",
-                "net.host.name": "spanner.googleapis.com:443",
+                "db.url": "spanner.googleapis.com",
+                "net.host.name": "spanner.googleapis.com",
             }
             expected_attributes.update(extra_attributes)
 
@@ -99,7 +99,7 @@ if HAS_OPENTELEMETRY_INSTALLED:
             self.assertEqual(len(span_list), 1)
             span = span_list[0]
             self.assertEqual(span.kind, trace_api.SpanKind.CLIENT)
-            self.assertEqual(span.attributes, expected_attributes)
+            self.assertEqual(dict(span.attributes), expected_attributes)
             self.assertEqual(span.name, "CloudSpanner.Test")
             self.assertEqual(
                 span.status.canonical_code, StatusCanonicalCode.INVALID_ARGUMENT
@@ -121,9 +121,30 @@ if HAS_OPENTELEMETRY_INSTALLED:
                 ) as span:
                     from google.api_core.exceptions import DataLoss
 
-                    raise _make_rpc_error(DataLoss)
+                    raise DataLoss("error")
 
             span_list = self.memory_exporter.get_finished_spans()
             self.assertEqual(len(span_list), 1)
             span = span_list[0]
             self.assertEqual(span.status.canonical_code, StatusCanonicalCode.DATA_LOSS)
+
+        def test_trace_codeless_error(self):
+            extra_attributes = {"db.instance": "database_name"}
+
+            expected_attributes = {
+                "db.type": "spanner",
+                "db.url": "spanner.googleapis.com:443",
+                "net.host.name": "spanner.googleapis.com:443",
+            }
+            expected_attributes.update(extra_attributes)
+
+            with self.assertRaises(GoogleAPICallError):
+                with _opentelemetry_tracing.trace_call(
+                    "CloudSpanner.Test", _make_session(), extra_attributes
+                ) as span:
+                    raise GoogleAPICallError("error")
+
+            span_list = self.memory_exporter.get_finished_spans()
+            self.assertEqual(len(span_list), 1)
+            span = span_list[0]
+            self.assertEqual(span.status.canonical_code, StatusCanonicalCode.UNKNOWN)

@@ -31,7 +31,7 @@ def patch_instance():
         return original_instance(self, SPANNER_INSTANCE)
 
     instance_patch = mock.patch(
-        "google.cloud.spanner.Client.instance", side_effect=new_instance, autospec=True
+        "google.cloud.spanner_v1.Client.instance", side_effect=new_instance, autospec=True
     )
 
     with instance_patch:

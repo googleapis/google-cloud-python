@@ -17,7 +17,7 @@
 from contextlib import contextmanager
 
 from google.api_core.exceptions import GoogleAPICallError
-from google.cloud.spanner_v1.gapic import spanner_client
+from google.cloud.spanner_v1 import SpannerClient
 
 try:
     from opentelemetry import trace
@@ -41,9 +41,9 @@ def trace_call(name, session, extra_attributes=None):
     # Set base attributes that we know for every trace created
     attributes = {
         "db.type": "spanner",
-        "db.url": spanner_client.SpannerClient.SERVICE_ADDRESS,
+        "db.url": SpannerClient.DEFAULT_ENDPOINT,
         "db.instance": session._database.name,
-        "net.host.name": spanner_client.SpannerClient.SERVICE_ADDRESS,
+        "net.host.name": SpannerClient.DEFAULT_ENDPOINT,
     }
 
     if extra_attributes:

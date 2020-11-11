@@ -47,7 +47,7 @@ class TestBackup(_BaseTest):
 
     @staticmethod
     def _make_database_admin_api():
-        from google.cloud.spanner_v1.client import DatabaseAdminClient
+        from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
 
         return mock.create_autospec(DatabaseAdminClient, instance=True)
 
@@ -76,46 +76,46 @@ class TestBackup(_BaseTest):
         self.assertIs(backup._expire_time, timestamp)
 
     def test_from_pb_project_mismatch(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         ALT_PROJECT = "ALT_PROJECT"
         client = _Client(project=ALT_PROJECT)
         instance = _Instance(self.INSTANCE_NAME, client)
-        backup_pb = backup_pb2.Backup(name=self.BACKUP_NAME)
+        backup_pb = Backup(name=self.BACKUP_NAME)
         backup_class = self._get_target_class()
 
         with self.assertRaises(ValueError):
             backup_class.from_pb(backup_pb, instance)
 
     def test_from_pb_instance_mismatch(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         ALT_INSTANCE = "/projects/%s/instances/ALT-INSTANCE" % (self.PROJECT_ID,)
         client = _Client()
         instance = _Instance(ALT_INSTANCE, client)
-        backup_pb = backup_pb2.Backup(name=self.BACKUP_NAME)
+        backup_pb = Backup(name=self.BACKUP_NAME)
         backup_class = self._get_target_class()
 
         with self.assertRaises(ValueError):
             backup_class.from_pb(backup_pb, instance)
 
     def test_from_pb_invalid_name(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client)
-        backup_pb = backup_pb2.Backup(name="invalid_format")
+        backup_pb = Backup(name="invalid_format")
         backup_class = self._get_target_class()
 
         with self.assertRaises(ValueError):
             backup_class.from_pb(backup_pb, instance)
 
     def test_from_pb_success(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client)
-        backup_pb = backup_pb2.Backup(name=self.BACKUP_NAME)
+        backup_pb = Backup(name=self.BACKUP_NAME)
         backup_class = self._get_target_class()
 
         backup = backup_class.from_pb(backup_pb, instance)
@@ -157,11 +157,11 @@ class TestBackup(_BaseTest):
         self.assertEqual(backup.size_bytes, expected)
 
     def test_state_property(self):
-        from google.cloud.spanner_admin_database_v1.gapic import enums
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         instance = _Instance(self.INSTANCE_NAME)
         backup = self._make_one(self.BACKUP_ID, instance)
-        expected = backup._state = enums.Backup.State.READY
+        expected = backup._state = Backup.State.READY
         self.assertEqual(backup.state, expected)
 
     def test_referencing_databases_property(self):
@@ -173,6 +173,7 @@ class TestBackup(_BaseTest):
     def test_create_grpc_error(self):
         from google.api_core.exceptions import GoogleAPICallError
         from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -184,12 +185,7 @@ class TestBackup(_BaseTest):
             self.BACKUP_ID, instance, database=self.DATABASE_NAME, expire_time=timestamp
         )
 
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-
-        backup_pb = {
-            "database": self.DATABASE_NAME,
-            "expire_time": _datetime_to_pb_timestamp(timestamp),
-        }
+        backup_pb = Backup(database=self.DATABASE_NAME, expire_time=timestamp,)
 
         with self.assertRaises(GoogleAPICallError):
             backup.create()
@@ -203,6 +199,7 @@ class TestBackup(_BaseTest):
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -214,12 +211,7 @@ class TestBackup(_BaseTest):
             self.BACKUP_ID, instance, database=self.DATABASE_NAME, expire_time=timestamp
         )
 
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-
-        backup_pb = {
-            "database": self.DATABASE_NAME,
-            "expire_time": _datetime_to_pb_timestamp(timestamp),
-        }
+        backup_pb = Backup(database=self.DATABASE_NAME, expire_time=timestamp,)
 
         with self.assertRaises(Conflict):
             backup.create()
@@ -233,6 +225,7 @@ class TestBackup(_BaseTest):
 
     def test_create_instance_not_found(self):
         from google.cloud.exceptions import NotFound
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -244,12 +237,7 @@ class TestBackup(_BaseTest):
             self.BACKUP_ID, instance, database=self.DATABASE_NAME, expire_time=timestamp
         )
 
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-
-        backup_pb = {
-            "database": self.DATABASE_NAME,
-            "expire_time": _datetime_to_pb_timestamp(timestamp),
-        }
+        backup_pb = Backup(database=self.DATABASE_NAME, expire_time=timestamp,)
 
         with self.assertRaises(NotFound):
             backup.create()
@@ -277,6 +265,8 @@ class TestBackup(_BaseTest):
             backup.create()
 
     def test_create_success(self):
+        from google.cloud.spanner_admin_database_v1 import Backup
+
         op_future = object()
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -288,12 +278,7 @@ class TestBackup(_BaseTest):
             self.BACKUP_ID, instance, database=self.DATABASE_NAME, expire_time=timestamp
         )
 
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-
-        backup_pb = {
-            "database": self.DATABASE_NAME,
-            "expire_time": _datetime_to_pb_timestamp(timestamp),
-        }
+        backup_pb = Backup(database=self.DATABASE_NAME, expire_time=timestamp,)
 
         future = backup.create()
         self.assertIs(future, op_future)
@@ -319,7 +304,8 @@ class TestBackup(_BaseTest):
             backup.exists()
 
         api.get_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_exists_not_found(self):
@@ -335,14 +321,15 @@ class TestBackup(_BaseTest):
         self.assertFalse(backup.exists())
 
         api.get_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_exists_success(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
-        backup_pb = backup_pb2.Backup(name=self.BACKUP_NAME)
+        backup_pb = Backup(name=self.BACKUP_NAME)
         api = client.database_admin_api = self._make_database_admin_api()
         api.get_backup.return_value = backup_pb
 
@@ -352,7 +339,8 @@ class TestBackup(_BaseTest):
         self.assertTrue(backup.exists())
 
         api.get_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_delete_grpc_error(self):
@@ -368,7 +356,8 @@ class TestBackup(_BaseTest):
             backup.delete()
 
         api.delete_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_delete_not_found(self):
@@ -384,7 +373,8 @@ class TestBackup(_BaseTest):
             backup.delete()
 
         api.delete_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_delete_success(self):
@@ -399,7 +389,8 @@ class TestBackup(_BaseTest):
         backup.delete()
 
         api.delete_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_reload_grpc_error(self):
@@ -415,7 +406,8 @@ class TestBackup(_BaseTest):
             backup.reload()
 
         api.get_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_reload_not_found(self):
@@ -431,22 +423,21 @@ class TestBackup(_BaseTest):
             backup.reload()
 
         api.get_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_reload_success(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
-        from google.cloud.spanner_admin_database_v1.gapic import enums
-        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         timestamp = self._make_timestamp()
 
         client = _Client()
-        backup_pb = backup_pb2.Backup(
+        backup_pb = Backup(
             name=self.BACKUP_NAME,
             database=self.DATABASE_NAME,
-            expire_time=_datetime_to_pb_timestamp(timestamp),
-            create_time=_datetime_to_pb_timestamp(timestamp),
+            expire_time=timestamp,
+            create_time=timestamp,
             size_bytes=10,
             state=1,
             referencing_databases=[],
@@ -462,16 +453,17 @@ class TestBackup(_BaseTest):
         self.assertEqual(backup.expire_time, timestamp)
         self.assertEqual(backup.create_time, timestamp)
         self.assertEqual(backup.size_bytes, 10)
-        self.assertEqual(backup.state, enums.Backup.State.CREATING)
+        self.assertEqual(backup.state, Backup.State.CREATING)
         self.assertEqual(backup.referencing_databases, [])
 
         api.get_backup.assert_called_once_with(
-            self.BACKUP_NAME, metadata=[("google-cloud-resource-prefix", backup.name)]
+            name=self.BACKUP_NAME,
+            metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_update_expire_time_grpc_error(self):
         from google.api_core.exceptions import Unknown
-        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -483,20 +475,17 @@ class TestBackup(_BaseTest):
         with self.assertRaises(Unknown):
             backup.update_expire_time(expire_time)
 
-        backup_update = {
-            "name": self.BACKUP_NAME,
-            "expire_time": _datetime_to_pb_timestamp(expire_time),
-        }
+        backup_update = Backup(name=self.BACKUP_NAME, expire_time=expire_time,)
         update_mask = {"paths": ["expire_time"]}
         api.update_backup.assert_called_once_with(
-            backup_update,
-            update_mask,
+            backup=backup_update,
+            update_mask=update_mask,
             metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_update_expire_time_not_found(self):
         from google.api_core.exceptions import NotFound
-        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -508,73 +497,44 @@ class TestBackup(_BaseTest):
         with self.assertRaises(NotFound):
             backup.update_expire_time(expire_time)
 
-        backup_update = {
-            "name": self.BACKUP_NAME,
-            "expire_time": _datetime_to_pb_timestamp(expire_time),
-        }
+        backup_update = Backup(name=self.BACKUP_NAME, expire_time=expire_time,)
         update_mask = {"paths": ["expire_time"]}
         api.update_backup.assert_called_once_with(
-            backup_update,
-            update_mask,
+            backup=backup_update,
+            update_mask=update_mask,
             metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_update_expire_time_success(self):
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
-        api.update_backup.return_type = backup_pb2.Backup(name=self.BACKUP_NAME)
+        api.update_backup.return_type = Backup(name=self.BACKUP_NAME)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance)
         expire_time = self._make_timestamp()
 
         backup.update_expire_time(expire_time)
 
-        backup_update = {
-            "name": self.BACKUP_NAME,
-            "expire_time": _datetime_to_pb_timestamp(expire_time),
-        }
+        backup_update = Backup(name=self.BACKUP_NAME, expire_time=expire_time,)
         update_mask = {"paths": ["expire_time"]}
         api.update_backup.assert_called_once_with(
-            backup_update,
-            update_mask,
+            backup=backup_update,
+            update_mask=update_mask,
             metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_is_ready(self):
-        from google.cloud.spanner_admin_database_v1.gapic import enums
+        from google.cloud.spanner_admin_database_v1 import Backup
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance)
-        backup._state = enums.Backup.State.READY
+        backup._state = Backup.State.READY
         self.assertTrue(backup.is_ready())
-        backup._state = enums.Backup.State.CREATING
+        backup._state = Backup.State.CREATING
         self.assertFalse(backup.is_ready())
-
-
-class TestBackupInfo(_BaseTest):
-    def test_from_pb(self):
-        from google.cloud.spanner_admin_database_v1.proto import backup_pb2
-        from google.cloud.spanner_v1.backup import BackupInfo
-        from google.cloud._helpers import _datetime_to_pb_timestamp
-
-        backup_name = "backup_name"
-        timestamp = self._make_timestamp()
-        database_name = "database_name"
-
-        pb = backup_pb2.BackupInfo(
-            backup=backup_name,
-            create_time=_datetime_to_pb_timestamp(timestamp),
-            source_database=database_name,
-        )
-        backup_info = BackupInfo.from_pb(pb)
-
-        self.assertEqual(backup_info.backup, backup_name)
-        self.assertEqual(backup_info.create_time, timestamp)
-        self.assertEqual(backup_info.source_database, database_name)
 
 
 class _Client(object):

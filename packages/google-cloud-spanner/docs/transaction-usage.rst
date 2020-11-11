@@ -1,11 +1,11 @@
 Read-write Transactions
 #######################
 
-A :class:`~google.cloud.spanner.transaction.Transaction` represents a
+A :class:`~google.cloud.spanner_v1.transaction.Transaction` represents a
 transaction:  when the transaction commits, it will send any accumulated
 mutations to the server.
 
-To understand more about how transactions work, visit :ref:`spanner-txn`.
+To understand more about how transactions work, visit [Transaction](https://cloud.google.com/spanner/docs/reference/rest/v1/Transaction).
 To learn more about how to use them in the Python client, continue reading.
 
 

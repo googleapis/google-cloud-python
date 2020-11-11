@@ -23,14 +23,15 @@ import shutil
 import nox
 
 
-BLACK_VERSION = "black==19.3b0"
+BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-if os.path.exists("samples"):
-    BLACK_PATHS.append("samples")
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
 
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run linters.
 
@@ -38,7 +39,9 @@ def lint(session):
     serious code quality issues.
     """
     session.install("flake8", BLACK_VERSION)
-    session.run("black", "--check", *BLACK_PATHS)
+    session.run(
+        "black", "--check", *BLACK_PATHS,
+    )
     session.run("flake8", "google", "tests")
 
 
@@ -53,10 +56,12 @@ def blacken(session):
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
     session.install(BLACK_VERSION)
-    session.run("black", *BLACK_PATHS)
+    session.run(
+        "black", *BLACK_PATHS,
+    )
 
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
@@ -65,17 +70,33 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
+    session.install("asyncmock", "pytest-asyncio")
 
-    if session.python != "2.7":
-        session.install("-e", ".[tracing]")
-    else:
-        session.install("-e", ".")
+    session.install("mock", "pytest", "pytest-cov")
+    session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
         "py.test",
         "--quiet",
+        "--cov=google.cloud.spanner",
+        "--cov=google.cloud",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=0",
+        os.path.join("tests", "unit"),
+        *session.posargs,
+    )
+
+    session.install("-e", ".[tracing]")
+
+    # Run py.test against the unit tests with OpenTelemetry.
+    session.run(
+        "py.test",
+        "--quiet",
+        "--cov=google.cloud.spanner",
         "--cov=google.cloud",
         "--cov=tests.unit",
         "--cov-append",
@@ -87,18 +108,22 @@ def default(session):
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["2.7", "3.7"])
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
-    # Sanity check: Only run tests if either credentials or emulator host is set.
+
+    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
+    # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "") and not os.environ.get(
         "SPANNER_EMULATOR_HOST", ""
     ):
@@ -117,13 +142,10 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
-
-    if session.python != "2.7":
-        session.install("-e", ".[tracing]")
-    else:
-        session.install("-e", ".")
-    session.install("-e", "test_utils/")
+    session.install(
+        "mock", "pytest", "google-cloud-testutils",
+    )
+    session.install("-e", ".[tracing]")
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -132,7 +154,7 @@ def system(session):
         session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
 
@@ -145,12 +167,12 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
-    session.install("-e", ".")
-    session.install("sphinx<3.0.0", "alabaster", "recommonmark")
+    session.install("-e", ".[tracing]")
+    session.install("sphinx", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -167,12 +189,14 @@ def docs(session):
     )
 
 
-@nox.session(python="3.7")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
-    session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+    session.install("-e", ".[tracing]")
+    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
+    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
+    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

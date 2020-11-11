@@ -3,30 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-spanner.git",
-        "sha": "891077105d5093a73caf96683d10afef2cd17823"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6fd07563a2f1a6785066f5955ad9659a315e4492",
-        "internalRef": "324941614"
+        "remote": "git@github.com:larkee/python-spanner.git",
+        "sha": "1d3e65af688c31937b0110223679607c19c328e9"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4f8f5dc24af79694887385015294e4dbb214c352"
+        "sha": "a783321fd55f010709294455584a553f4b24b944"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4f8f5dc24af79694887385015294e4dbb214c352"
+        "sha": "a783321fd55f010709294455584a553f4b24b944"
       }
     }
   ],

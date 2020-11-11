@@ -21,23 +21,19 @@ import re
 import threading
 
 import google.auth.credentials
+from google.api_core.retry import Retry
 from google.api_core.retry import if_exception_type
-from google.protobuf.struct_pb2 import Struct
 from google.cloud.exceptions import NotFound
 from google.api_core.exceptions import Aborted
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.spanner_admin_database_v1.gapic import enums
+from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
 from google.cloud.spanner_v1._helpers import (
-    _make_value_pb,
     _merge_query_options,
     _metadata_with_prefix,
 )
-from google.cloud.spanner_v1.backup import BackupInfo
 from google.cloud.spanner_v1.batch import Batch
-from google.cloud.spanner_v1.gapic.spanner_client import SpannerClient
-from google.cloud.spanner_v1.gapic.transports import spanner_grpc_transport
 from google.cloud.spanner_v1.keyset import KeySet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
@@ -45,11 +41,17 @@ from google.cloud.spanner_v1.session import Session
 from google.cloud.spanner_v1.snapshot import _restart_on_unavailable
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.streamed import StreamedResultSet
-from google.cloud.spanner_v1.proto.transaction_pb2 import (
+from google.cloud.spanner_v1 import SpannerClient
+from google.cloud.spanner_v1.services.spanner.transports.grpc import (
+    SpannerGrpcTransport,
+)
+from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
+from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import (
     TransactionSelector,
     TransactionOptions,
 )
-from google.cloud._helpers import _pb_timestamp_to_datetime
 
 # pylint: enable=ungrouped-imports
 
@@ -64,6 +66,8 @@ _DATABASE_NAME_RE = re.compile(
 )
 
 _DATABASE_METADATA_FILTER = "name:{0}/operations/"
+
+DEFAULT_RETRY_BACKOFF = Retry(initial=0.02, maximum=32, multiplier=1.3)
 
 
 class Database(object):
@@ -115,7 +119,7 @@ class Database(object):
         """Creates an instance of this class from a protobuf.
 
         :type database_pb:
-            :class:`~google.spanner.v2.spanner_instance_admin_pb2.Instance`
+            :class:`~google.cloud.spanner_admin_instance_v1.Instance`
         :param database_pb: A instance protobuf object.
 
         :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`
@@ -176,7 +180,7 @@ class Database(object):
     def state(self):
         """State of this database.
 
-        :rtype: :class:`~google.cloud.spanner_admin_database_v1.gapic.enums.Database.State`
+        :rtype: :class:`~google.cloud.spanner_admin_database_v1.Database.State`
         :returns: an enum describing the state of the database
         """
         return self._state
@@ -219,7 +223,7 @@ class Database(object):
             client_info = self._instance._client._client_info
             client_options = self._instance._client._client_options
             if self._instance.emulator_host is not None:
-                transport = spanner_grpc_transport.SpannerGrpcTransport(
+                transport = SpannerGrpcTransport(
                     channel=grpc.insecure_channel(self._instance.emulator_host)
                 )
                 self._spanner_api = SpannerClient(
@@ -265,12 +269,12 @@ class Database(object):
         if "-" in db_name:
             db_name = "`%s`" % (db_name,)
 
-        future = api.create_database(
+        request = CreateDatabaseRequest(
             parent=self._instance.name,
             create_statement="CREATE DATABASE %s" % (db_name,),
             extra_statements=list(self._ddl_statements),
-            metadata=metadata,
         )
+        future = api.create_database(request=request, metadata=metadata)
         return future
 
     def exists(self):
@@ -286,7 +290,7 @@ class Database(object):
         metadata = _metadata_with_prefix(self.name)
 
         try:
-            api.get_database_ddl(self.name, metadata=metadata)
+            api.get_database_ddl(database=self.name, metadata=metadata)
         except NotFound:
             return False
         return True
@@ -303,11 +307,11 @@ class Database(object):
         """
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        response = api.get_database_ddl(self.name, metadata=metadata)
+        response = api.get_database_ddl(database=self.name, metadata=metadata)
         self._ddl_statements = tuple(response.statements)
-        response = api.get_database(self.name, metadata=metadata)
-        self._state = enums.Database.State(response.state)
-        self._create_time = _pb_timestamp_to_datetime(response.create_time)
+        response = api.get_database(name=self.name, metadata=metadata)
+        self._state = DatabasePB.State(response.state)
+        self._create_time = response.create_time
         self._restore_info = response.restore_info
 
     def update_ddl(self, ddl_statements, operation_id=""):
@@ -331,9 +335,11 @@ class Database(object):
         api = client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
 
-        future = api.update_database_ddl(
-            self.name, ddl_statements, operation_id=operation_id, metadata=metadata
+        request = UpdateDatabaseDdlRequest(
+            database=self.name, statements=ddl_statements, operation_id=operation_id,
         )
+
+        future = api.update_database_ddl(request=request, metadata=metadata)
         return future
 
     def drop(self):
@@ -344,7 +350,7 @@ class Database(object):
         """
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        api.drop_database(self.name, metadata=metadata)
+        api.drop_database(database=self.name, metadata=metadata)
 
     def execute_partitioned_dml(
         self, dml, params=None, param_types=None, query_options=None
@@ -364,12 +370,12 @@ class Database(object):
             required if parameters are passed.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+                message :class:`~google.cloud.spanner_v1.QueryOptions`
 
         :rtype: int
         :returns: Count of rows affected by the DML statement.
@@ -378,13 +384,13 @@ class Database(object):
             self._instance._client._query_options, query_options
         )
         if params is not None:
+            from google.cloud.spanner_v1.transaction import Transaction
+
             if param_types is None:
                 raise ValueError("Specify 'param_types' when passing 'params'.")
-            params_pb = Struct(
-                fields={key: _make_value_pb(value) for key, value in params.items()}
-            )
+            params_pb = Transaction._make_params_pb(params, param_types)
         else:
-            params_pb = None
+            params_pb = {}
 
         api = self.spanner_api
 
@@ -398,20 +404,21 @@ class Database(object):
             with SessionCheckout(self._pool) as session:
 
                 txn = api.begin_transaction(
-                    session.name, txn_options, metadata=metadata
+                    session=session.name, options=txn_options, metadata=metadata
                 )
 
                 txn_selector = TransactionSelector(id=txn.id)
 
-                restart = functools.partial(
-                    api.execute_streaming_sql,
-                    session.name,
-                    dml,
+                request = ExecuteSqlRequest(
+                    session=session.name,
+                    sql=dml,
                     transaction=txn_selector,
                     params=params_pb,
                     param_types=param_types,
                     query_options=query_options,
-                    metadata=metadata,
+                )
+                restart = functools.partial(
+                    api.execute_streaming_sql, request=request, metadata=metadata,
                 )
 
                 iterator = _restart_on_unavailable(restart)
@@ -421,9 +428,7 @@ class Database(object):
 
                 return result_set.stats.row_count_lower_bound
 
-        retry_config = api._method_configs["ExecuteStreamingSql"].retry
-
-        return _retry_on_aborted(execute_pdml, retry_config)()
+        return _retry_on_aborted(execute_pdml, DEFAULT_RETRY_BACKOFF)()
 
     def session(self, labels=None):
         """Factory to create a session for this database.
@@ -540,7 +545,10 @@ class Database(object):
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
         future = api.restore_database(
-            self._instance.name, self.database_id, backup=source.name, metadata=metadata
+            parent=self._instance.name,
+            database_id=self.database_id,
+            backup=source.name,
+            metadata=metadata,
         )
         return future
 
@@ -551,8 +559,8 @@ class Database(object):
         :returns: True if the database state is READY_OPTIMIZING or READY, else False.
         """
         return (
-            self.state == enums.Database.State.READY_OPTIMIZING
-            or self.state == enums.Database.State.READY
+            self.state == DatabasePB.State.READY_OPTIMIZING
+            or self.state == DatabasePB.State.READY
         )
 
     def is_optimized(self):
@@ -561,7 +569,7 @@ class Database(object):
         :rtype: bool
         :returns: True if the database state is READY, else False.
         """
-        return self.state == enums.Database.State.READY
+        return self.state == DatabasePB.State.READY
 
     def list_database_operations(self, filter_="", page_size=None):
         """List database operations for the database.
@@ -598,7 +606,7 @@ class BatchCheckout(object):
     Caller must *not* use the batch to perform API requests outside the scope
     of the context manager.
 
-    :type database: :class:`~google.cloud.spanner.database.Database`
+    :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: database to use
     """
 
@@ -630,7 +638,7 @@ class SnapshotCheckout(object):
     Caller must *not* use the snapshot to perform API requests outside the
     scope of the context manager.
 
-    :type database: :class:`~google.cloud.spanner.database.Database`
+    :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: database to use
 
     :type kw: dict
@@ -657,7 +665,7 @@ class SnapshotCheckout(object):
 class BatchSnapshot(object):
     """Wrapper for generating and processing read / query batches.
 
-    :type database: :class:`~google.cloud.spanner.database.Database`
+    :type database: :class:`~google.cloud.spanner_v1.database.Database`
     :param database: database to use
 
     :type read_timestamp: :class:`datetime.datetime`
@@ -679,7 +687,7 @@ class BatchSnapshot(object):
     def from_dict(cls, database, mapping):
         """Reconstruct an instance from a mapping.
 
-        :type database: :class:`~google.cloud.spanner.database.Database`
+        :type database: :class:`~google.cloud.spanner_v1.database.Database`
         :param database: database to use
 
         :type mapping: mapping
@@ -869,12 +877,12 @@ class BatchSnapshot(object):
             differ.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+                message :class:`~google.cloud.spanner_v1.QueryOptions`
 
         :rtype: iterable of dict
         :returns:
@@ -973,16 +981,6 @@ def _check_ddl_statements(value):
         raise ValueError("Do not pass a 'CREATE DATABASE' statement")
 
     return tuple(value)
-
-
-class RestoreInfo(object):
-    def __init__(self, source_type, backup_info):
-        self.source_type = enums.RestoreSourceType(source_type)
-        self.backup_info = BackupInfo.from_pb(backup_info)
-
-    @classmethod
-    def from_pb(cls, pb):
-        return cls(pb.source_type, pb.backup_info)
 
 
 def _retry_on_aborted(func, retry_config):

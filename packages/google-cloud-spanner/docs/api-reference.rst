@@ -25,9 +25,9 @@ and some advanced use cases may wish to interact with these directly:
 .. toctree::
     :maxdepth: 1
 
-    gapic/v1/api
-    gapic/v1/types
-    gapic/v1/admin_database_api
-    gapic/v1/admin_database_types
-    gapic/v1/admin_instance_api
-    gapic/v1/admin_instance_types
+    spanner_v1/services
+    spanner_v1/types
+    spanner_admin_database_v1/services
+    spanner_admin_database_v1/types
+    spanner_admin_instance_v1/services
+    spanner_admin_instance_v1/types

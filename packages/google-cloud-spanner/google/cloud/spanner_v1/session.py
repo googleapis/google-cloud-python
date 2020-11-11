@@ -15,19 +15,23 @@
 """Wrapper for Cloud Spanner Session objects."""
 
 from functools import total_ordering
+import random
 import time
 
 from google.rpc.error_details_pb2 import RetryInfo
 
 # pylint: disable=ungrouped-imports
-from google.api_core.exceptions import Aborted, GoogleAPICallError, NotFound
+from google.api_core.exceptions import Aborted
+from google.api_core.exceptions import GoogleAPICallError
+from google.api_core.exceptions import NotFound
 import google.api_core.gapic_v1.method
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
+from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.snapshot import Snapshot
 from google.cloud.spanner_v1.transaction import Transaction
-from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
-import random
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import CreateSessionRequest
 
 # pylint: enable=ungrouped-imports
 
@@ -112,14 +116,14 @@ class Session(object):
             raise ValueError("Session ID already set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-        kw = {}
+
+        request = CreateSessionRequest(database=self._database.name)
+
         if self._labels:
-            kw = {"session": {"labels": self._labels}}
+            request.session.labels = self._labels
 
         with trace_call("CloudSpanner.CreateSession", self, self._labels):
-            session_pb = api.create_session(
-                self._database.name, metadata=metadata, **kw
-            )
+            session_pb = api.create_session(request=request, metadata=metadata,)
         self._session_id = session_pb.name.split("/")[-1]
 
     def exists(self):
@@ -138,7 +142,7 @@ class Session(object):
 
         with trace_call("CloudSpanner.GetSession", self) as span:
             try:
-                api.get_session(self.name, metadata=metadata)
+                api.get_session(name=self.name, metadata=metadata)
                 if span:
                     span.set_attribute("session_found", True)
             except NotFound:
@@ -162,7 +166,7 @@ class Session(object):
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
         with trace_call("CloudSpanner.DeleteSession", self):
-            api.delete_session(self.name, metadata=metadata)
+            api.delete_session(name=self.name, metadata=metadata)
 
     def ping(self):
         """Ping the session to keep it alive by executing "SELECT 1".
@@ -173,7 +177,8 @@ class Session(object):
             raise ValueError("Session ID not set by back-end")
         api = self._database.spanner_api
         metadata = _metadata_with_prefix(self._database.name)
-        api.execute_sql(self.name, "SELECT 1", metadata=metadata)
+        request = ExecuteSqlRequest(session=self.name, sql="SELECT 1")
+        api.execute_sql(request=request, metadata=metadata)
 
     def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
@@ -249,7 +254,7 @@ class Session(object):
             `QueryMode <https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode>`_.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
 

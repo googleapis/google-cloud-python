@@ -54,32 +54,34 @@ class TestStreamedResultSet(unittest.TestCase):
 
     @staticmethod
     def _make_scalar_field(name, type_):
-        from google.cloud.spanner_v1.proto.type_pb2 import StructType
-        from google.cloud.spanner_v1.proto.type_pb2 import Type
+        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import Type
 
-        return StructType.Field(name=name, type=Type(code=type_))
+        return StructType.Field(name=name, type_=Type(code=type_))
 
     @staticmethod
     def _make_array_field(name, element_type_code=None, element_type=None):
-        from google.cloud.spanner_v1.proto.type_pb2 import StructType
-        from google.cloud.spanner_v1.proto.type_pb2 import Type
+        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
 
         if element_type is None:
             element_type = Type(code=element_type_code)
-        array_type = Type(code="ARRAY", array_element_type=element_type)
-        return StructType.Field(name=name, type=array_type)
+        array_type = Type(code=TypeCode.ARRAY, array_element_type=element_type)
+        return StructType.Field(name=name, type_=array_type)
 
     @staticmethod
     def _make_struct_type(struct_type_fields):
-        from google.cloud.spanner_v1.proto.type_pb2 import StructType
-        from google.cloud.spanner_v1.proto.type_pb2 import Type
+        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
 
         fields = [
-            StructType.Field(name=key, type=Type(code=value))
+            StructType.Field(name=key, type_=Type(code=value))
             for key, value in struct_type_fields
         ]
         struct_type = StructType(fields=fields)
-        return Type(code="STRUCT", struct_type=struct_type)
+        return Type(code=TypeCode.STRUCT, struct_type=struct_type)
 
     @staticmethod
     def _make_value(value):
@@ -88,29 +90,20 @@ class TestStreamedResultSet(unittest.TestCase):
         return _make_value_pb(value)
 
     @staticmethod
-    def _make_list_value(values=(), value_pbs=None):
-        from google.protobuf.struct_pb2 import ListValue
-        from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1._helpers import _make_list_value_pb
-
-        if value_pbs is not None:
-            return Value(list_value=ListValue(values=value_pbs))
-        return Value(list_value=_make_list_value_pb(values))
-
-    @staticmethod
     def _make_result_set_metadata(fields=(), transaction_id=None):
-        from google.cloud.spanner_v1.proto.result_set_pb2 import ResultSetMetadata
+        from google.cloud.spanner_v1 import ResultSetMetadata
+        from google.cloud.spanner_v1 import StructType
 
-        metadata = ResultSetMetadata()
+        metadata = ResultSetMetadata(row_type=StructType(fields=[]))
         for field in fields:
-            metadata.row_type.fields.add().CopyFrom(field)
+            metadata.row_type.fields.append(field)
         if transaction_id is not None:
             metadata.transaction.id = transaction_id
         return metadata
 
     @staticmethod
     def _make_result_set_stats(query_plan=None, **kw):
-        from google.cloud.spanner_v1.proto.result_set_pb2 import ResultSetStats
+        from google.cloud.spanner_v1 import ResultSetStats
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
@@ -123,18 +116,23 @@ class TestStreamedResultSet(unittest.TestCase):
     def _make_partial_result_set(
         values, metadata=None, stats=None, chunked_value=False
     ):
-        from google.cloud.spanner_v1.proto.result_set_pb2 import PartialResultSet
+        from google.cloud.spanner_v1 import PartialResultSet
 
-        return PartialResultSet(
-            values=values, metadata=metadata, stats=stats, chunked_value=chunked_value
+        results = PartialResultSet(
+            metadata=metadata, stats=stats, chunked_value=chunked_value
         )
+        for v in values:
+            results.values.append(v)
+        return results
 
     def test_properties_set(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
         ]
         metadata = streamed._metadata = self._make_result_set_metadata(FIELDS)
         stats = streamed._stats = self._make_result_set_stats()
@@ -144,87 +142,100 @@ class TestStreamedResultSet(unittest.TestCase):
 
     def test__merge_chunk_bool(self):
         from google.cloud.spanner_v1.streamed import Unmergeable
+        from google.cloud.spanner_v1 import TypeCode
 
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("registered_voter", "BOOL")]
+        FIELDS = [self._make_scalar_field("registered_voter", TypeCode.BOOL)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(True)
-        chunk = self._make_value(False)
+        streamed._pending_chunk = True
+        chunk = False
 
         with self.assertRaises(Unmergeable):
             streamed._merge_chunk(chunk)
 
     def test__merge_chunk_int64(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("age", "INT64")]
+        FIELDS = [self._make_scalar_field("age", TypeCode.INT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(42)
-        chunk = self._make_value(13)
+        streamed._pending_chunk = 42
+        chunk = 13
 
         merged = streamed._merge_chunk(chunk)
-        self.assertEqual(merged.string_value, "4213")
+        self.assertEqual(merged, 4213)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_float64_nan_string(self):
+        from google.cloud.spanner_v1 import TypeCode
+        from math import isnan
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("weight", "FLOAT64")]
+        FIELDS = [self._make_scalar_field("weight", TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(u"Na")
-        chunk = self._make_value(u"N")
+        streamed._pending_chunk = u"Na"
+        chunk = u"N"
 
         merged = streamed._merge_chunk(chunk)
-        self.assertEqual(merged.string_value, u"NaN")
+        self.assertTrue(isnan(merged))
 
     def test__merge_chunk_float64_w_empty(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("weight", "FLOAT64")]
+        FIELDS = [self._make_scalar_field("weight", TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(3.14159)
-        chunk = self._make_value("")
+        streamed._pending_chunk = 3.14159
+        chunk = ""
 
         merged = streamed._merge_chunk(chunk)
-        self.assertEqual(merged.number_value, 3.14159)
+        self.assertEqual(merged, 3.14159)
 
     def test__merge_chunk_float64_w_float64(self):
         from google.cloud.spanner_v1.streamed import Unmergeable
+        from google.cloud.spanner_v1 import TypeCode
 
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("weight", "FLOAT64")]
+        FIELDS = [self._make_scalar_field("weight", TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(3.14159)
-        chunk = self._make_value(2.71828)
+        streamed._pending_chunk = 3.14159
+        chunk = 2.71828
 
         with self.assertRaises(Unmergeable):
             streamed._merge_chunk(chunk)
 
     def test__merge_chunk_string(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("name", "STRING")]
+        FIELDS = [self._make_scalar_field("name", TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(u"phred")
-        chunk = self._make_value(u"wylma")
+        streamed._pending_chunk = u"phred"
+        chunk = u"wylma"
 
         merged = streamed._merge_chunk(chunk)
 
-        self.assertEqual(merged.string_value, u"phredwylma")
+        self.assertEqual(merged, u"phredwylma")
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_string_w_bytes(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_scalar_field("image", "BYTES")]
+        FIELDS = [self._make_scalar_field("image", TypeCode.BYTES)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(
+        streamed._pending_chunk = (
             u"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA"
             u"6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n"
         )
-        chunk = self._make_value(
+        chunk = (
             u"B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExF"
             u"MG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n"
         )
@@ -232,42 +243,47 @@ class TestStreamedResultSet(unittest.TestCase):
         merged = streamed._merge_chunk(chunk)
 
         self.assertEqual(
-            merged.string_value,
-            u"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAAL"
-            u"EwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0"
-            u"FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n",
+            merged,
+            b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAAL"
+            b"EwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0"
+            b"FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n",
         )
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_bool(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_array_field("name", element_type_code="BOOL")]
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.BOOL)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value([True, True])
-        chunk = self._make_list_value([False, False, False])
+        streamed._pending_chunk = [True, True]
+        chunk = [False, False, False]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([True, True, False, False, False])
+        expected = [True, True, False, False, False]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_int(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_array_field("name", element_type_code="INT64")]
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.INT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value([0, 1, 2])
-        chunk = self._make_list_value([3, 4, 5])
+        streamed._pending_chunk = [0, 1, 2]
+        chunk = [3, 4, 5]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([0, 1, 23, 4, 5])
+        expected = [0, 1, 23, 4, 5]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_float(self):
+        from google.cloud.spanner_v1 import TypeCode
         import math
 
         PI = math.pi
@@ -276,175 +292,191 @@ class TestStreamedResultSet(unittest.TestCase):
         LOG_10 = math.log(10)
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_array_field("name", element_type_code="FLOAT64")]
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value([PI, SQRT_2])
-        chunk = self._make_list_value(["", EULER, LOG_10])
+        streamed._pending_chunk = [PI, SQRT_2]
+        chunk = ["", EULER, LOG_10]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([PI, SQRT_2, EULER, LOG_10])
+        expected = [PI, SQRT_2, EULER, LOG_10]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_string_with_empty(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_array_field("name", element_type_code="STRING")]
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
-        chunk = self._make_list_value([])
+        streamed._pending_chunk = [u"A", u"B", u"C"]
+        chunk = []
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([u"A", u"B", u"C"])
+        expected = [u"A", u"B", u"C"]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_string(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_array_field("name", element_type_code="STRING")]
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
-        chunk = self._make_list_value([None, u"D", u"E"])
+        streamed._pending_chunk = [u"A", u"B", u"C"]
+        chunk = [None, u"D", u"E"]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([u"A", u"B", u"C", None, u"D", u"E"])
+        expected = [u"A", u"B", u"C", None, u"D", u"E"]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_string_with_null(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [self._make_array_field("name", element_type_code="STRING")]
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
-        chunk = self._make_list_value([u"D", u"E"])
+        streamed._pending_chunk = [u"A", u"B", u"C"]
+        chunk = [u"D", u"E"]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([u"A", u"B", u"CD", u"E"])
+        expected = [u"A", u"B", u"CD", u"E"]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_array_of_int(self):
-        from google.cloud.spanner_v1.proto.type_pb2 import StructType
-        from google.cloud.spanner_v1.proto.type_pb2 import Type
+        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
 
-        subarray_type = Type(code="ARRAY", array_element_type=Type(code="INT64"))
-        array_type = Type(code="ARRAY", array_element_type=subarray_type)
+        subarray_type = Type(
+            code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.INT64)
+        )
+        array_type = Type(code=TypeCode.ARRAY, array_element_type=subarray_type)
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [StructType.Field(name="loloi", type=array_type)]
+        FIELDS = [StructType.Field(name="loloi", type_=array_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value(
-            value_pbs=[self._make_list_value([0, 1]), self._make_list_value([2])]
-        )
-        chunk = self._make_list_value(
-            value_pbs=[self._make_list_value([3]), self._make_list_value([4, 5])]
-        )
+        streamed._pending_chunk = [[0, 1], [2]]
+        chunk = [[3], [4, 5]]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value(
-            value_pbs=[
-                self._make_list_value([0, 1]),
-                self._make_list_value([23]),
-                self._make_list_value([4, 5]),
-            ]
-        )
+        expected = [
+            [0, 1],
+            [23],
+            [4, 5],
+        ]
+
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_array_of_string(self):
-        from google.cloud.spanner_v1.proto.type_pb2 import StructType
-        from google.cloud.spanner_v1.proto.type_pb2 import Type
+        from google.cloud.spanner_v1 import StructType
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
 
-        subarray_type = Type(code="ARRAY", array_element_type=Type(code="STRING"))
-        array_type = Type(code="ARRAY", array_element_type=subarray_type)
+        subarray_type = Type(
+            code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.STRING)
+        )
+        array_type = Type(code=TypeCode.ARRAY, array_element_type=subarray_type)
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        FIELDS = [StructType.Field(name="lolos", type=array_type)]
+        FIELDS = [StructType.Field(name="lolos", type_=array_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_list_value(
-            value_pbs=[
-                self._make_list_value([u"A", u"B"]),
-                self._make_list_value([u"C"]),
-            ]
-        )
-        chunk = self._make_list_value(
-            value_pbs=[
-                self._make_list_value([u"D"]),
-                self._make_list_value([u"E", u"F"]),
-            ]
-        )
+        streamed._pending_chunk = [
+            [u"A", u"B"],
+            [u"C"],
+        ]
+        chunk = [
+            [u"D"],
+            [u"E", u"F"],
+        ]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value(
-            value_pbs=[
-                self._make_list_value([u"A", u"B"]),
-                self._make_list_value([u"CD"]),
-                self._make_list_value([u"E", u"F"]),
-            ]
-        )
+        expected = [
+            [u"A", u"B"],
+            [u"CD"],
+            [u"E", u"F"],
+        ]
+
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_struct(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        struct_type = self._make_struct_type([("name", "STRING"), ("age", "INT64")])
+        struct_type = self._make_struct_type(
+            [("name", TypeCode.STRING), ("age", TypeCode.INT64)]
+        )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = self._make_list_value([u"Phred "])
-        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
-        rest = self._make_list_value([u"Phlyntstone", 31])
-        chunk = self._make_list_value(value_pbs=[rest])
+        partial = [u"Phred "]
+        streamed._pending_chunk = [partial]
+        rest = [u"Phlyntstone", 31]
+        chunk = [rest]
 
         merged = streamed._merge_chunk(chunk)
 
-        struct = self._make_list_value([u"Phred Phlyntstone", 31])
-        expected = self._make_list_value(value_pbs=[struct])
+        struct = [u"Phred Phlyntstone", 31]
+        expected = [struct]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_struct_with_empty(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
-        struct_type = self._make_struct_type([("name", "STRING"), ("age", "INT64")])
+        struct_type = self._make_struct_type(
+            [("name", TypeCode.STRING), ("age", TypeCode.INT64)]
+        )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = self._make_list_value([u"Phred "])
-        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
-        rest = self._make_list_value([])
-        chunk = self._make_list_value(value_pbs=[rest])
+        partial = [u"Phred "]
+        streamed._pending_chunk = [partial]
+        rest = []
+        chunk = [rest]
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value(value_pbs=[partial])
+        expected = [partial]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_array_of_struct_unmergeable(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         struct_type = self._make_struct_type(
-            [("name", "STRING"), ("registered", "BOOL"), ("voted", "BOOL")]
+            [
+                ("name", TypeCode.STRING),
+                ("registered", TypeCode.BOOL),
+                ("voted", TypeCode.BOOL),
+            ]
         )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = self._make_list_value([u"Phred Phlyntstone", True])
-        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
-        rest = self._make_list_value([True])
-        chunk = self._make_list_value(value_pbs=[rest])
+        partial = [u"Phred Phlyntstone", True]
+        streamed._pending_chunk = [partial]
+        rest = [True]
+        chunk = [rest]
 
         merged = streamed._merge_chunk(chunk)
 
-        struct = self._make_list_value([u"Phred Phlyntstone", True, True])
-        expected = self._make_list_value(value_pbs=[struct])
+        struct = [u"Phred Phlyntstone", True, True]
+        expected = [struct]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -456,25 +488,27 @@ class TestStreamedResultSet(unittest.TestCase):
         )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = self._make_list_value([u"Phred Phlyntstone", 1.65])
-        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
-        rest = self._make_list_value(["brown"])
-        chunk = self._make_list_value(value_pbs=[rest])
+        partial = [u"Phred Phlyntstone", 1.65]
+        streamed._pending_chunk = [partial]
+        rest = ["brown"]
+        chunk = [rest]
 
         merged = streamed._merge_chunk(chunk)
 
-        struct = self._make_list_value([u"Phred Phlyntstone", 1.65, "brown"])
-        expected = self._make_list_value(value_pbs=[struct])
+        struct = [u"Phred Phlyntstone", 1.65, "brown"]
+        expected = [struct]
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
     def test_merge_values_empty_and_empty(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._current_row = []
@@ -483,46 +517,61 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_empty_and_partial(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
+        VALUES = [u"Phred Phlyntstone", "42"]
         BARE = [u"Phred Phlyntstone", 42]
-        VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
         self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BARE)
 
     def test_merge_values_empty_and_filled(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
+        VALUES = [u"Phred Phlyntstone", "42", True]
         BARE = [u"Phred Phlyntstone", 42, True]
-        VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
         self.assertEqual(list(streamed), [BARE])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_empty_and_filled_plus(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
+        VALUES = [
+            u"Phred Phlyntstone",
+            "42",
+            True,
+            u"Bharney Rhubble",
+            "39",
+            True,
+            u"Wylma Phlyntstone",
+        ]
         BARE = [
             u"Phred Phlyntstone",
             42,
@@ -532,19 +581,20 @@ class TestStreamedResultSet(unittest.TestCase):
             True,
             u"Wylma Phlyntstone",
         ]
-        VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
         self.assertEqual(list(streamed), [BARE[0:3], BARE[3:6]])
         self.assertEqual(streamed._current_row, BARE[6:])
 
     def test_merge_values_partial_and_empty(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [u"Phred Phlyntstone"]
@@ -554,52 +604,58 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed._current_row, BEFORE)
 
     def test_merge_values_partial_and_partial(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [u"Phred Phlyntstone"]
         streamed._current_row[:] = BEFORE
+        TO_MERGE = ["42"]
         MERGED = [42]
-        TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
         self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BEFORE + MERGED)
 
     def test_merge_values_partial_and_filled(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [u"Phred Phlyntstone"]
         streamed._current_row[:] = BEFORE
+        TO_MERGE = ["42", True]
         MERGED = [42, True]
-        TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
         self.assertEqual(list(streamed), [BEFORE + MERGED])
         self.assertEqual(streamed._current_row, [])
 
     def test_merge_values_partial_and_filled_plus(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [self._make_value(u"Phred Phlyntstone")]
         streamed._current_row[:] = BEFORE
+        TO_MERGE = ["42", True, u"Bharney Rhubble", "39", True, u"Wylma Phlyntstone"]
         MERGED = [42, True, u"Bharney Rhubble", 39, True, u"Wylma Phlyntstone"]
-        TO_MERGE = [self._make_value(item) for item in MERGED]
         VALUES = BEFORE + MERGED
         streamed._merge_values(TO_MERGE)
         self.assertEqual(list(streamed), [VALUES[0:3], VALUES[3:6]])
@@ -654,16 +710,17 @@ class TestStreamedResultSet(unittest.TestCase):
             streamed._consume_next()
 
     def test_consume_next_first_set_partial(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         TXN_ID = b"DEADBEEF"
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         metadata = self._make_result_set_metadata(FIELDS, transaction_id=TXN_ID)
         BARE = [u"Phred Phlyntstone", 42]
-        VALUES = [self._make_value(bare) for bare in BARE]
-        result_set = self._make_partial_result_set(VALUES, metadata=metadata)
+        result_set = self._make_partial_result_set(BARE, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         source = mock.Mock(_transaction_id=None, spec=["_transaction_id"])
         streamed = self._make_one(iterator, source=source)
@@ -674,11 +731,13 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_first_set_partial_existing_txn_id(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         TXN_ID = b"DEADBEEF"
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         metadata = self._make_result_set_metadata(FIELDS, transaction_id=b"")
         BARE = [u"Phred Phlyntstone", 42]
@@ -694,10 +753,12 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(source._transaction_id, TXN_ID)
 
     def test_consume_next_w_partial_result(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         VALUES = [self._make_value(u"Phred ")]
         result_set = self._make_partial_result_set(VALUES, chunked_value=True)
@@ -707,13 +768,15 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._consume_next()
         self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, [])
-        self.assertEqual(streamed._pending_chunk, VALUES[0])
+        self.assertEqual(streamed._pending_chunk, VALUES[0].string_value)
 
     def test_consume_next_w_pending_chunk(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         BARE = [
             u"Phlyntstone",
@@ -729,7 +792,7 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = self._make_value(u"Phred ")
+        streamed._pending_chunk = u"Phred "
         streamed._consume_next()
         self.assertEqual(
             list(streamed),
@@ -739,10 +802,12 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test_consume_next_last_set(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         metadata = self._make_result_set_metadata(FIELDS)
         stats = self._make_result_set_stats(
@@ -766,14 +831,19 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(found, [])
 
     def test___iter___one_result_set_partial(self):
+        from google.cloud.spanner_v1 import TypeCode
+        from google.protobuf.struct_pb2 import Value
+
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         metadata = self._make_result_set_metadata(FIELDS)
         BARE = [u"Phred Phlyntstone", 42]
         VALUES = [self._make_value(bare) for bare in BARE]
+        for val in VALUES:
+            self.assertIsInstance(val, Value)
         result_set = self._make_partial_result_set(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
@@ -784,10 +854,12 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertEqual(streamed.metadata, metadata)
 
     def test___iter___multiple_result_sets_filled(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         metadata = self._make_result_set_metadata(FIELDS)
         BARE = [
@@ -820,10 +892,12 @@ class TestStreamedResultSet(unittest.TestCase):
         self.assertIsNone(streamed._pending_chunk)
 
     def test___iter___w_existing_rows_read(self):
+        from google.cloud.spanner_v1 import TypeCode
+
         FIELDS = [
-            self._make_scalar_field("full_name", "STRING"),
-            self._make_scalar_field("age", "INT64"),
-            self._make_scalar_field("married", "BOOL"),
+            self._make_scalar_field("full_name", TypeCode.STRING),
+            self._make_scalar_field("age", TypeCode.INT64),
+            self._make_scalar_field("married", TypeCode.BOOL),
         ]
         metadata = self._make_result_set_metadata(FIELDS)
         ALREADY = [[u"Pebbylz Phlyntstone", 4, False], [u"Dino Rhubble", 4, False]]
@@ -979,14 +1053,13 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
 
 
 def _generate_partial_result_sets(prs_text_pbs):
-    from google.protobuf.json_format import Parse
-    from google.cloud.spanner_v1.proto.result_set_pb2 import PartialResultSet
+    from google.cloud.spanner_v1 import PartialResultSet
 
     partial_result_sets = []
 
     for prs_text_pb in prs_text_pbs:
-        prs = PartialResultSet()
-        partial_result_sets.append(Parse(prs_text_pb, prs))
+        prs = PartialResultSet.from_json(prs_text_pb)
+        partial_result_sets.append(prs)
 
     return partial_result_sets
 
@@ -1013,23 +1086,23 @@ def _normalize_float(cell):
 
 def _normalize_results(rows_data, fields):
     """Helper for _parse_streaming_read_acceptance_tests"""
-    from google.cloud.spanner_v1.proto import type_pb2
+    from google.cloud.spanner_v1 import TypeCode
 
     normalized = []
     for row_data in rows_data:
         row = []
         assert len(row_data) == len(fields)
         for cell, field in zip(row_data, fields):
-            if field.type.code == type_pb2.INT64:
+            if field.type_.code == TypeCode.INT64:
                 cell = int(cell)
-            if field.type.code == type_pb2.FLOAT64:
+            if field.type_.code == TypeCode.FLOAT64:
                 cell = _normalize_float(cell)
-            elif field.type.code == type_pb2.BYTES:
+            elif field.type_.code == TypeCode.BYTES:
                 cell = cell.encode("utf8")
-            elif field.type.code == type_pb2.ARRAY:
-                if field.type.array_element_type.code == type_pb2.INT64:
+            elif field.type_.code == TypeCode.ARRAY:
+                if field.type_.array_element_type.code == TypeCode.INT64:
                     cell = _normalize_int_array(cell)
-                elif field.type.array_element_type.code == type_pb2.FLOAT64:
+                elif field.type_.array_element_type.code == TypeCode.FLOAT64:
                     cell = [_normalize_float(subcell) for subcell in cell]
             row.append(cell)
         normalized.append(row)

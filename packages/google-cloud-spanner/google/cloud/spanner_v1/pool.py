@@ -171,7 +171,9 @@ class FixedSizePool(AbstractSessionPool):
 
         while not self._sessions.full():
             resp = api.batch_create_sessions(
-                database.name, self.size - self._sessions.qsize(), metadata=metadata
+                database=database.name,
+                session_count=self.size - self._sessions.qsize(),
+                metadata=metadata,
             )
             for session_pb in resp.session:
                 session = self._new_session()
@@ -362,7 +364,9 @@ class PingingPool(AbstractSessionPool):
 
         while created_session_count < self.size:
             resp = api.batch_create_sessions(
-                database.name, self.size - created_session_count, metadata=metadata
+                database=database.name,
+                session_count=self.size - created_session_count,
+                metadata=metadata,
             )
             for session_pb in resp.session:
                 session = self._new_session()
@@ -520,7 +524,7 @@ class SessionCheckout(object):
     """Context manager: hold session checked out from a pool.
 
     :type pool: concrete subclass of
-        :class:`~google.cloud.spanner_v1.session.AbstractSessionPool`
+        :class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`
     :param pool: Pool from which to check out a session.
 
     :param kwargs: extra keyword arguments to be passed to :meth:`pool.get`.

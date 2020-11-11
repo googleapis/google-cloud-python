@@ -6,7 +6,7 @@ Custom Session Pool Implementations
 
 You can supply your own pool implementation, which must satisfy the
 contract laid out in
-:class:`~google.cloud.spanner.pool.AbstractSessionPool`:
+:class:`~google.cloud.spanner_v1.pool.AbstractSessionPool`:
 
 .. code-block:: python
 
@@ -35,11 +35,11 @@ Lowering latency for read / query operations
 
 Some applications may need to minimize latency for read operations, including
 particularly the overhead of making an API request to create or refresh a
-session.  :class:`~google.cloud.spanner.pool.PingingPool` is designed for such
+session.  :class:`~google.cloud.spanner_v1.pool.PingingPool` is designed for such
 applications, which need to configure a background thread to do the work of
 keeping the sessions fresh.
 
-Create an instance of :class:`~google.cloud.spanner.pool.PingingPool`:
+Create an instance of :class:`~google.cloud.spanner_v1.pool.PingingPool`:
 
 .. code-block:: python
 
@@ -74,12 +74,12 @@ Lowering latency for mixed read-write operations
 Some applications may need to minimize latency for read write operations,
 including particularly the overhead of making an API request to create or
 refresh a session or to begin a session's transaction.
-:class:`~google.cloud.spanner.pool.TransactionPingingPool` is designed for
+:class:`~google.cloud.spanner_v1.pool.TransactionPingingPool` is designed for
 such applications, which need to configure a background thread to do the work
 of keeping the sessions fresh and starting their transactions after use.
 
 Create an instance of
-:class:`~google.cloud.spanner.pool.TransactionPingingPool`:
+:class:`~google.cloud.spanner_v1.pool.TransactionPingingPool`:
 
 .. code-block:: python
 

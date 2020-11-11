@@ -14,14 +14,12 @@
 
 """Wrapper for streaming results."""
 
-from google.protobuf.struct_pb2 import ListValue
-from google.protobuf.struct_pb2 import Value
 from google.cloud import exceptions
-from google.cloud.spanner_v1.proto import type_pb2
+from google.cloud.spanner_v1 import TypeCode
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.spanner_v1._helpers import _parse_value_pb
+from google.cloud.spanner_v1._helpers import _parse_value
 
 # pylint: enable=ungrouped-imports
 
@@ -32,7 +30,7 @@ class StreamedResultSet(object):
     :type response_iterator:
     :param response_iterator:
         Iterator yielding
-        :class:`~google.cloud.spanner_v1.proto.result_set_pb2.PartialResultSet`
+        :class:`~google.cloud.spanner_v1.PartialResultSet`
         instances.
 
     :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
@@ -52,7 +50,7 @@ class StreamedResultSet(object):
     def fields(self):
         """Field descriptors for result set columns.
 
-        :rtype: list of :class:`~google.cloud.spanner_v1.proto.type_pb2.Field`
+        :rtype: list of :class:`~google.cloud.spanner_v1.StructType.Field`
         :returns: list of fields describing column names / types.
         """
         return self._metadata.row_type.fields
@@ -61,7 +59,7 @@ class StreamedResultSet(object):
     def metadata(self):
         """Result set metadata
 
-        :rtype: :class:`~.result_set_pb2.ResultSetMetadata`
+        :rtype: :class:`~google.cloud.spanner_v1.ResultSetMetadata`
         :returns: structure describing the results
         """
         return self._metadata
@@ -71,7 +69,7 @@ class StreamedResultSet(object):
         """Result set statistics
 
         :rtype:
-           :class:`~google.cloud.spanner_v1.proto.result_set_pb2.ResultSetStats`
+           :class:`~google.cloud.spanner_v1.ResultSetStats`
         :returns: structure describing status about the response
         """
         return self._stats
@@ -88,9 +86,9 @@ class StreamedResultSet(object):
         """
         current_column = len(self._current_row)
         field = self.fields[current_column]
-        merged = _merge_by_type(self._pending_chunk, value, field.type)
+        merged = _merge_by_type(self._pending_chunk, value, field.type_)
         self._pending_chunk = None
-        return merged
+        return _parse_value(merged, field.type_)
 
     def _merge_values(self, values):
         """Merge values into rows.
@@ -102,7 +100,7 @@ class StreamedResultSet(object):
         for value in values:
             index = len(self._current_row)
             field = self.fields[index]
-            self._current_row.append(_parse_value_pb(value, field.type))
+            self._current_row.append(_parse_value(value, field.type_))
             if len(self._current_row) == width:
                 self._rows.append(self._current_row)
                 self._current_row = []
@@ -121,7 +119,7 @@ class StreamedResultSet(object):
             if source is not None and source._transaction_id is None:
                 source._transaction_id = metadata.transaction.id
 
-        if response.HasField("stats"):  # last response
+        if "stats" in response:  # last response
             self._stats = response.stats
 
         values = list(response.values)
@@ -199,16 +197,12 @@ class Unmergeable(ValueError):
     :type rhs: :class:`~google.protobuf.struct_pb2.Value`
     :param rhs: remaining value to be merged
 
-    :type type_: :class:`~google.cloud.spanner_v1.proto.type_pb2.Type`
+    :type type_: :class:`~google.cloud.spanner_v1.Type`
     :param type_: field type of values being merged
     """
 
     def __init__(self, lhs, rhs, type_):
-        message = "Cannot merge %s values: %s %s" % (
-            type_pb2.TypeCode.Name(type_.code),
-            lhs,
-            rhs,
-        )
+        message = "Cannot merge %s values: %s %s" % (TypeCode(type_.code), lhs, rhs,)
         super(Unmergeable, self).__init__(message)
 
 
@@ -219,15 +213,9 @@ def _unmergeable(lhs, rhs, type_):
 
 def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
     """Helper for '_merge_by_type'."""
-    lhs_kind = lhs.WhichOneof("kind")
-    if lhs_kind == "string_value":
-        return Value(string_value=lhs.string_value + rhs.string_value)
-    rhs_kind = rhs.WhichOneof("kind")
-    array_continuation = (
-        lhs_kind == "number_value"
-        and rhs_kind == "string_value"
-        and rhs.string_value == ""
-    )
+    if type(lhs) == str:
+        return float(lhs + rhs)
+    array_continuation = type(lhs) == float and type(rhs) == str and rhs == ""
     if array_continuation:
         return lhs
     raise Unmergeable(lhs, rhs, type_)
@@ -235,10 +223,10 @@ def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
 
 def _merge_string(lhs, rhs, type_):  # pylint: disable=unused-argument
     """Helper for '_merge_by_type'."""
-    return Value(string_value=lhs.string_value + rhs.string_value)
+    return str(lhs) + str(rhs)
 
 
-_UNMERGEABLE_TYPES = (type_pb2.BOOL,)
+_UNMERGEABLE_TYPES = (TypeCode.BOOL,)
 
 
 def _merge_array(lhs, rhs, type_):
@@ -246,17 +234,17 @@ def _merge_array(lhs, rhs, type_):
     element_type = type_.array_element_type
     if element_type.code in _UNMERGEABLE_TYPES:
         # Individual values cannot be merged, just concatenate
-        lhs.list_value.values.extend(rhs.list_value.values)
+        lhs.extend(rhs)
         return lhs
-    lhs, rhs = list(lhs.list_value.values), list(rhs.list_value.values)
 
     # Sanity check: If either list is empty, short-circuit.
     # This is effectively a no-op.
     if not len(lhs) or not len(rhs):
-        return Value(list_value=ListValue(values=(lhs + rhs)))
+        lhs.extend(rhs)
+        return lhs
 
     first = rhs.pop(0)
-    if first.HasField("null_value"):  # can't merge
+    if first is None:  # can't merge
         lhs.append(first)
     else:
         last = lhs.pop()
@@ -267,22 +255,23 @@ def _merge_array(lhs, rhs, type_):
             lhs.append(first)
         else:
             lhs.append(merged)
-    return Value(list_value=ListValue(values=(lhs + rhs)))
+    lhs.extend(rhs)
+    return lhs
 
 
 def _merge_struct(lhs, rhs, type_):
     """Helper for '_merge_by_type'."""
     fields = type_.struct_type.fields
-    lhs, rhs = list(lhs.list_value.values), list(rhs.list_value.values)
 
     # Sanity check: If either list is empty, short-circuit.
     # This is effectively a no-op.
     if not len(lhs) or not len(rhs):
-        return Value(list_value=ListValue(values=(lhs + rhs)))
+        lhs.extend(rhs)
+        return lhs
 
-    candidate_type = fields[len(lhs) - 1].type
+    candidate_type = fields[len(lhs) - 1].type_
     first = rhs.pop(0)
-    if first.HasField("null_value") or candidate_type.code in _UNMERGEABLE_TYPES:
+    if first is None or candidate_type.code in _UNMERGEABLE_TYPES:
         lhs.append(first)
     else:
         last = lhs.pop()
@@ -293,19 +282,20 @@ def _merge_struct(lhs, rhs, type_):
             lhs.append(first)
         else:
             lhs.append(merged)
-    return Value(list_value=ListValue(values=lhs + rhs))
+    lhs.extend(rhs)
+    return lhs
 
 
 _MERGE_BY_TYPE = {
-    type_pb2.ARRAY: _merge_array,
-    type_pb2.BOOL: _unmergeable,
-    type_pb2.BYTES: _merge_string,
-    type_pb2.DATE: _merge_string,
-    type_pb2.FLOAT64: _merge_float64,
-    type_pb2.INT64: _merge_string,
-    type_pb2.STRING: _merge_string,
-    type_pb2.STRUCT: _merge_struct,
-    type_pb2.TIMESTAMP: _merge_string,
+    TypeCode.ARRAY: _merge_array,
+    TypeCode.BOOL: _unmergeable,
+    TypeCode.BYTES: _merge_string,
+    TypeCode.DATE: _merge_string,
+    TypeCode.FLOAT64: _merge_float64,
+    TypeCode.INT64: _merge_string,
+    TypeCode.STRING: _merge_string,
+    TypeCode.STRUCT: _merge_struct,
+    TypeCode.TIMESTAMP: _merge_string,
 }
 
 

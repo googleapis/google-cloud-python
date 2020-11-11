@@ -296,16 +296,14 @@ def query_data_with_index(
         ALTER TABLE Albums ADD COLUMN MarketingBudget INT64
 
     """
-    from google.cloud.spanner_v1.proto import type_pb2
-
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
     params = {"start_title": start_title, "end_title": end_title}
     param_types = {
-        "start_title": type_pb2.Type(code=type_pb2.STRING),
-        "end_title": type_pb2.Type(code=type_pb2.STRING),
+        "start_title": spanner.param_types.STRING,
+        "end_title": spanner.param_types.STRING,
     }
 
     with database.snapshot() as snapshot:

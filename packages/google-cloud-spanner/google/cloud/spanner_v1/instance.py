@@ -14,16 +14,15 @@
 
 """User friendly container for Cloud Spanner Instance."""
 
-import google.api_core.operation
 import re
 
-from google.cloud.spanner_admin_instance_v1.proto import (
-    spanner_instance_admin_pb2 as admin_v1_pb2,
-)
-from google.cloud.spanner_admin_database_v1.proto import (
-    backup_pb2,
-    spanner_database_admin_pb2,
-)
+from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
+from google.cloud.spanner_admin_database_v1.types import backup
+from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
+from google.cloud.spanner_admin_database_v1 import ListBackupsRequest
+from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
+from google.cloud.spanner_admin_database_v1 import ListDatabasesRequest
+from google.cloud.spanner_admin_database_v1 import ListDatabaseOperationsRequest
 from google.protobuf.empty_pb2 import Empty
 from google.protobuf.field_mask_pb2 import FieldMask
 
@@ -32,7 +31,6 @@ from google.cloud.exceptions import NotFound
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1.backup import Backup
 from google.cloud.spanner_v1.database import Database
-from google.cloud.spanner_v1.pool import BurstyPool
 
 # pylint: enable=ungrouped-imports
 
@@ -44,26 +42,26 @@ _INSTANCE_NAME_RE = re.compile(
 DEFAULT_NODE_COUNT = 1
 
 _OPERATION_METADATA_MESSAGES = (
-    backup_pb2.Backup,
-    backup_pb2.CreateBackupMetadata,
-    spanner_database_admin_pb2.CreateDatabaseMetadata,
-    spanner_database_admin_pb2.Database,
-    spanner_database_admin_pb2.OptimizeRestoredDatabaseMetadata,
-    spanner_database_admin_pb2.RestoreDatabaseMetadata,
-    spanner_database_admin_pb2.UpdateDatabaseDdlMetadata,
+    backup.Backup,
+    backup.CreateBackupMetadata,
+    spanner_database_admin.CreateDatabaseMetadata,
+    spanner_database_admin.Database,
+    spanner_database_admin.OptimizeRestoredDatabaseMetadata,
+    spanner_database_admin.RestoreDatabaseMetadata,
+    spanner_database_admin.UpdateDatabaseDdlMetadata,
 )
 
 _OPERATION_METADATA_TYPES = {
-    "type.googleapis.com/{}".format(message.DESCRIPTOR.full_name): message
+    "type.googleapis.com/{}".format(message._meta.full_name): message
     for message in _OPERATION_METADATA_MESSAGES
 }
 
 _OPERATION_RESPONSE_TYPES = {
-    backup_pb2.CreateBackupMetadata: backup_pb2.Backup,
-    spanner_database_admin_pb2.CreateDatabaseMetadata: spanner_database_admin_pb2.Database,
-    spanner_database_admin_pb2.OptimizeRestoredDatabaseMetadata: spanner_database_admin_pb2.Database,
-    spanner_database_admin_pb2.RestoreDatabaseMetadata: spanner_database_admin_pb2.Database,
-    spanner_database_admin_pb2.UpdateDatabaseDdlMetadata: Empty,
+    backup.CreateBackupMetadata: backup.Backup,
+    spanner_database_admin.CreateDatabaseMetadata: spanner_database_admin.Database,
+    spanner_database_admin.OptimizeRestoredDatabaseMetadata: spanner_database_admin.Database,
+    spanner_database_admin.RestoreDatabaseMetadata: spanner_database_admin.Database,
+    spanner_database_admin.UpdateDatabaseDdlMetadata: Empty,
 }
 
 
@@ -239,7 +237,7 @@ class Instance(object):
         :raises Conflict: if the instance already exists
         """
         api = self._client.instance_admin_api
-        instance_pb = admin_v1_pb2.Instance(
+        instance_pb = InstancePB(
             name=self.name,
             config=self.configuration_name,
             display_name=self.display_name,
@@ -269,7 +267,7 @@ class Instance(object):
         metadata = _metadata_with_prefix(self.name)
 
         try:
-            api.get_instance(self.name, metadata=metadata)
+            api.get_instance(name=self.name, metadata=metadata)
         except NotFound:
             return False
 
@@ -286,7 +284,7 @@ class Instance(object):
         api = self._client.instance_admin_api
         metadata = _metadata_with_prefix(self.name)
 
-        instance_pb = api.get_instance(self.name, metadata=metadata)
+        instance_pb = api.get_instance(name=self.name, metadata=metadata)
 
         self._update_from_pb(instance_pb)
 
@@ -313,7 +311,7 @@ class Instance(object):
         :raises NotFound: if the instance does not exist
         """
         api = self._client.instance_admin_api
-        instance_pb = admin_v1_pb2.Instance(
+        instance_pb = InstancePB(
             name=self.name,
             config=self.configuration_name,
             display_name=self.display_name,
@@ -346,7 +344,7 @@ class Instance(object):
         api = self._client.instance_admin_api
         metadata = _metadata_with_prefix(self.name)
 
-        api.delete_instance(self.name, metadata=metadata)
+        api.delete_instance(name=self.name, metadata=metadata)
 
     def database(self, database_id, ddl_statements=(), pool=None):
         """Factory to create a database within this instance.
@@ -367,7 +365,7 @@ class Instance(object):
         """
         return Database(database_id, self, ddl_statements=ddl_statements, pool=pool)
 
-    def list_databases(self, page_size=None, page_token=None):
+    def list_databases(self, page_size=None):
         """List databases for the instance.
 
         See
@@ -379,40 +377,17 @@ class Instance(object):
             from this request. Non-positive values are ignored. Defaults
             to a sensible value set by the API.
 
-        :type page_token: str
-        :param page_token:
-            Optional. If present, return the next batch of databases, using
-            the value, which must correspond to the ``nextPageToken`` value
-            returned in the previous response.  Deprecated: use the ``pages``
-            property of the returned iterator instead of manually passing
-            the token.
-
         :rtype: :class:`~google.api._ore.page_iterator.Iterator`
         :returns:
             Iterator of :class:`~google.cloud.spanner_v1.database.Database`
             resources within the current instance.
         """
         metadata = _metadata_with_prefix(self.name)
+        request = ListDatabasesRequest(parent=self.name, page_size=page_size)
         page_iter = self._client.database_admin_api.list_databases(
-            self.name, page_size=page_size, metadata=metadata
+            request=request, metadata=metadata
         )
-        page_iter.next_page_token = page_token
-        page_iter.item_to_value = self._item_to_database
         return page_iter
-
-    def _item_to_database(self, iterator, database_pb):
-        """Convert a database protobuf to the native object.
-
-        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-        :param iterator: The iterator that is currently in use.
-
-        :type database_pb: :class:`~google.spanner.admin.database.v1.Database`
-        :param database_pb: A database returned from the API.
-
-        :rtype: :class:`~google.cloud.spanner_v1.database.Database`
-        :returns: The next database in the page.
-        """
-        return Database.from_pb(database_pb, self, pool=BurstyPool())
 
     def backup(self, backup_id, database="", expire_time=None):
         """Factory to create a backup within this instance.
@@ -456,25 +431,13 @@ class Instance(object):
             resources within the current instance.
         """
         metadata = _metadata_with_prefix(self.name)
-        page_iter = self._client.database_admin_api.list_backups(
-            self.name, filter_, page_size=page_size, metadata=metadata
+        request = ListBackupsRequest(
+            parent=self.name, filter=filter_, page_size=page_size,
         )
-        page_iter.item_to_value = self._item_to_backup
+        page_iter = self._client.database_admin_api.list_backups(
+            request=request, metadata=metadata
+        )
         return page_iter
-
-    def _item_to_backup(self, iterator, backup_pb):
-        """Convert a backup protobuf to the native object.
-
-        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-        :param iterator: The iterator that is currently in use.
-
-        :type backup_pb: :class:`~google.spanner.admin.database.v1.Backup`
-        :param backup_pb: A backup returned from the API.
-
-        :rtype: :class:`~google.cloud.spanner_v1.backup.Backup`
-        :returns: The next backup in the page.
-        """
-        return Backup.from_pb(backup_pb, self)
 
     def list_backup_operations(self, filter_="", page_size=None):
         """List backup operations for the instance.
@@ -496,10 +459,12 @@ class Instance(object):
             resources within the current instance.
         """
         metadata = _metadata_with_prefix(self.name)
-        page_iter = self._client.database_admin_api.list_backup_operations(
-            self.name, filter_, page_size=page_size, metadata=metadata
+        request = ListBackupOperationsRequest(
+            parent=self.name, filter=filter_, page_size=page_size,
         )
-        page_iter.item_to_value = self._item_to_operation
+        page_iter = self._client.database_admin_api.list_backup_operations(
+            request=request, metadata=metadata
+        )
         return page_iter
 
     def list_database_operations(self, filter_="", page_size=None):
@@ -522,27 +487,10 @@ class Instance(object):
             resources within the current instance.
         """
         metadata = _metadata_with_prefix(self.name)
+        request = ListDatabaseOperationsRequest(
+            parent=self.name, filter=filter_, page_size=page_size,
+        )
         page_iter = self._client.database_admin_api.list_database_operations(
-            self.name, filter_, page_size=page_size, metadata=metadata
+            request=request, metadata=metadata
         )
-        page_iter.item_to_value = self._item_to_operation
         return page_iter
-
-    def _item_to_operation(self, iterator, operation_pb):
-        """Convert an operation protobuf to the native object.
-
-        :type iterator: :class:`~google.api_core.page_iterator.Iterator`
-        :param iterator: The iterator that is currently in use.
-
-        :type operation_pb: :class:`~google.longrunning.operations.Operation`
-        :param operation_pb: An operation returned from the API.
-
-        :rtype: :class:`~google.api_core.operation.Operation`
-        :returns: The next operation in the page.
-        """
-        operations_client = self._client.database_admin_api.transport._operations_client
-        metadata_type = _type_string_to_type_pb(operation_pb.metadata.type_url)
-        response_type = _OPERATION_RESPONSE_TYPES[metadata_type]
-        return google.api_core.operation.from_gapic(
-            operation_pb, operations_client, response_type, metadata_type=metadata_type
-        )

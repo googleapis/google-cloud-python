@@ -16,10 +16,9 @@
 
 import re
 
-from google.cloud._helpers import _datetime_to_pb_timestamp, _pb_timestamp_to_datetime
 from google.cloud.exceptions import NotFound
 
-from google.cloud.spanner_admin_database_v1.gapic import enums
+from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
 _BACKUP_NAME_RE = re.compile(
@@ -123,7 +122,7 @@ class Backup(object):
     def state(self):
         """State of this backup.
 
-        :rtype: :class:`~google.cloud.spanner_admin_database_v1.gapic.enums.Backup.State`
+        :rtype: :class:`~google.cloud.spanner_admin_database_v1.Backup.State`
         :returns: an enum describing the state of the backup
         """
         return self._state
@@ -191,13 +190,13 @@ class Backup(object):
             raise ValueError("database not set")
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        backup = {
-            "database": self._database,
-            "expire_time": _datetime_to_pb_timestamp(self.expire_time),
-        }
+        backup = BackupPB(database=self._database, expire_time=self.expire_time,)
 
         future = api.create_backup(
-            self._instance.name, self.backup_id, backup, metadata=metadata
+            parent=self._instance.name,
+            backup_id=self.backup_id,
+            backup=backup,
+            metadata=metadata,
         )
         return future
 
@@ -211,7 +210,7 @@ class Backup(object):
         metadata = _metadata_with_prefix(self.name)
 
         try:
-            api.get_backup(self.name, metadata=metadata)
+            api.get_backup(name=self.name, metadata=metadata)
         except NotFound:
             return False
         return True
@@ -225,12 +224,12 @@ class Backup(object):
         """
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        pb = api.get_backup(self.name, metadata=metadata)
+        pb = api.get_backup(name=self.name, metadata=metadata)
         self._database = pb.database
-        self._expire_time = _pb_timestamp_to_datetime(pb.expire_time)
-        self._create_time = _pb_timestamp_to_datetime(pb.create_time)
+        self._expire_time = pb.expire_time
+        self._create_time = pb.create_time
         self._size_bytes = pb.size_bytes
-        self._state = enums.Backup.State(pb.state)
+        self._state = BackupPB.State(pb.state)
         self._referencing_databases = pb.referencing_databases
 
     def update_expire_time(self, new_expire_time):
@@ -241,12 +240,11 @@ class Backup(object):
         """
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        backup_update = {
-            "name": self.name,
-            "expire_time": _datetime_to_pb_timestamp(new_expire_time),
-        }
+        backup_update = BackupPB(name=self.name, expire_time=new_expire_time,)
         update_mask = {"paths": ["expire_time"]}
-        api.update_backup(backup_update, update_mask, metadata=metadata)
+        api.update_backup(
+            backup=backup_update, update_mask=update_mask, metadata=metadata
+        )
         self._expire_time = new_expire_time
 
     def is_ready(self):
@@ -255,21 +253,10 @@ class Backup(object):
         :rtype: bool
         :returns: True if the backup state is READY, else False.
         """
-        return self.state == enums.Backup.State.READY
+        return self.state == BackupPB.State.READY
 
     def delete(self):
         """Delete this backup."""
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        api.delete_backup(self.name, metadata=metadata)
-
-
-class BackupInfo(object):
-    def __init__(self, backup, create_time, source_database):
-        self.backup = backup
-        self.create_time = _pb_timestamp_to_datetime(create_time)
-        self.source_database = source_database
-
-    @classmethod
-    def from_pb(cls, pb):
-        return cls(pb.backup, pb.create_time, pb.source_database)
+        api.delete_backup(name=self.name, metadata=metadata)

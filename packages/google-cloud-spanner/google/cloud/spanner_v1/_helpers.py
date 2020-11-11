@@ -26,8 +26,8 @@ from google.protobuf.struct_pb2 import Value
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud.spanner_v1.proto import type_pb2
-from google.cloud.spanner_v1.proto.spanner_pb2 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import TypeCode
+from google.cloud.spanner_v1 import ExecuteSqlRequest
 
 
 def _try_to_coerce_bytes(bytestring):
@@ -53,19 +53,19 @@ def _merge_query_options(base, merge):
     """Merge higher precedence QueryOptions with current QueryOptions.
 
     :type base:
-        :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
         or :class:`dict` or None
     :param base: The current QueryOptions that is intended for use.
 
     :type merge:
-        :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
         or :class:`dict` or None
     :param merge:
         The QueryOptions that have a higher priority than base. These options
         should overwrite the fields in base.
 
     :rtype:
-        :class:`google.cloud.spanner_v1.proto.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
         or None
     :returns:
         QueryOptions object formed by merging the two given QueryOptions.
@@ -81,7 +81,7 @@ def _merge_query_options(base, merge):
         merge = ExecuteSqlRequest.QueryOptions(
             optimizer_version=merge.get("optimizer_version", "")
         )
-    combined.MergeFrom(merge)
+    type(combined).pb(combined).MergeFrom(type(merge).pb(merge))
     if not combined.optimizer_version:
         return None
     return combined
@@ -161,13 +161,48 @@ def _make_list_value_pbs(values):
 
 
 # pylint: disable=too-many-branches
+def _parse_value(value, field_type):
+    if value is None:
+        return None
+    if field_type.code == TypeCode.STRING:
+        result = value
+    elif field_type.code == TypeCode.BYTES:
+        result = value.encode("utf8")
+    elif field_type.code == TypeCode.BOOL:
+        result = value
+    elif field_type.code == TypeCode.INT64:
+        result = int(value)
+    elif field_type.code == TypeCode.FLOAT64:
+        if isinstance(value, str):
+            result = float(value)
+        else:
+            result = value
+    elif field_type.code == TypeCode.DATE:
+        result = _date_from_iso8601_date(value)
+    elif field_type.code == TypeCode.TIMESTAMP:
+        DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
+        result = DatetimeWithNanoseconds.from_rfc3339(value)
+    elif field_type.code == TypeCode.ARRAY:
+        result = [_parse_value(item, field_type.array_element_type) for item in value]
+    elif field_type.code == TypeCode.STRUCT:
+        result = [
+            _parse_value(item, field_type.struct_type.fields[i].type_)
+            for (i, item) in enumerate(value)
+        ]
+    elif field_type.code == TypeCode.NUMERIC:
+        result = decimal.Decimal(value)
+    else:
+        raise ValueError("Unknown type: %s" % (field_type,))
+    return result
+
+
 def _parse_value_pb(value_pb, field_type):
     """Convert a Value protobuf to cell data.
 
     :type value_pb: :class:`~google.protobuf.struct_pb2.Value`
     :param value_pb: protobuf to convert
 
-    :type field_type: :class:`~google.cloud.spanner_v1.proto.type_pb2.Type`
+    :type field_type: :class:`~google.cloud.spanner_v1.Type`
     :param field_type: type code for the value
 
     :rtype: varies on field_type
@@ -176,39 +211,15 @@ def _parse_value_pb(value_pb, field_type):
     """
     if value_pb.HasField("null_value"):
         return None
-    if field_type.code == type_pb2.STRING:
-        result = value_pb.string_value
-    elif field_type.code == type_pb2.BYTES:
-        result = value_pb.string_value.encode("utf8")
-    elif field_type.code == type_pb2.BOOL:
-        result = value_pb.bool_value
-    elif field_type.code == type_pb2.INT64:
-        result = int(value_pb.string_value)
-    elif field_type.code == type_pb2.FLOAT64:
-        if value_pb.HasField("string_value"):
-            result = float(value_pb.string_value)
-        else:
-            result = value_pb.number_value
-    elif field_type.code == type_pb2.DATE:
-        result = _date_from_iso8601_date(value_pb.string_value)
-    elif field_type.code == type_pb2.TIMESTAMP:
-        DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
-        result = DatetimeWithNanoseconds.from_rfc3339(value_pb.string_value)
-    elif field_type.code == type_pb2.ARRAY:
-        result = [
-            _parse_value_pb(item_pb, field_type.array_element_type)
-            for item_pb in value_pb.list_value.values
-        ]
-    elif field_type.code == type_pb2.STRUCT:
-        result = [
-            _parse_value_pb(item_pb, field_type.struct_type.fields[i].type)
-            for (i, item_pb) in enumerate(value_pb.list_value.values)
-        ]
-    elif field_type.code == type_pb2.NUMERIC:
-        result = decimal.Decimal(value_pb.string_value)
-    else:
-        raise ValueError("Unknown type: %s" % (field_type,))
-    return result
+    if value_pb.HasField("string_value"):
+        return _parse_value(value_pb.string_value, field_type)
+    if value_pb.HasField("bool_value"):
+        return _parse_value(value_pb.bool_value, field_type)
+    if value_pb.HasField("number_value"):
+        return _parse_value(value_pb.number_value, field_type)
+    if value_pb.HasField("list_value"):
+        return _parse_value(value_pb.list_value, field_type)
+    raise ValueError("No value set in Value: %s" % (value_pb,))
 
 
 # pylint: enable=too-many-branches
@@ -220,7 +231,7 @@ def _parse_list_value_pbs(rows, row_type):
     :type rows: list of :class:`~google.protobuf.struct_pb2.ListValue`
     :param rows: row data returned from a read/query
 
-    :type row_type: :class:`~google.cloud.spanner_v1.proto.type_pb2.StructType`
+    :type row_type: :class:`~google.cloud.spanner_v1.StructType`
     :param row_type: row schema specification
 
     :rtype: list of list of cell data
@@ -230,7 +241,7 @@ def _parse_list_value_pbs(rows, row_type):
     for row in rows:
         row_data = []
         for value_pb, field in zip(row.values, row_type.fields):
-            row_data.append(_parse_value_pb(value_pb, field.type))
+            row_data.append(_parse_value_pb(value_pb, field.type_))
         result.append(row_data)
     return result
 
