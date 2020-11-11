@@ -60,6 +60,10 @@ DATASTORE_DATASET = "DATASTORE_DATASET"
 DISABLE_GRPC = "GOOGLE_CLOUD_DISABLE_GRPC"
 """Environment variable acting as flag to disable gRPC."""
 
+_RESERVE_IDS_DEPRECATED_MESSAGE = """\
+Client.reserve_ids is deprecated. Please use \
+Client.reserve_ids_multi or Client.reserve_ids_sequential"""
+
 
 _USE_GRPC = _HAVE_GRPC and not os.getenv(DISABLE_GRPC, False)
 
@@ -890,11 +894,7 @@ class Client(ClientWithProject):
         Please use either :meth:`reserve_ids_multi` (recommended) or
         :meth:`reserve_ids_sequential`.
         """
-        message = (
-            "Client.reserve_ids is deprecated. Please use "
-            "Client.reserve_ids_multi or Client.reserve_ids_sequential",
-        )
-        warnings.warn(message, DeprecationWarning)
+        warnings.warn(_RESERVE_IDS_DEPRECATED_MESSAGE, DeprecationWarning)
         return self.reserve_ids_sequential(
             complete_key, num_ids, retry=retry, timeout=timeout
         )
