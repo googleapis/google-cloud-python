@@ -1567,6 +1567,25 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.md5_hash, md5_hash)
         self.assertEqual(blob.crc32c, crc32c)
 
+    def test_download_as_string_w_response_headers_not_match(self):
+        blob_name = "blob-name"
+        client = mock.Mock(spec=["_http"])
+        bucket = _Bucket(client)
+        media_link = "http://example.com/media/"
+        properties = {"mediaLink": media_link}
+        blob = self._make_one(blob_name, bucket=bucket, properties=properties)
+
+        response = self._mock_requests_response(
+            http_client.OK,
+            headers={"X-Goog-Hash": "bogus=4gcgLQ==,"},
+            # { "x": 5 } gzipped
+            content=b"",
+        )
+        blob._extract_headers_from_download(response)
+
+        self.assertIsNone(blob.md5_hash)
+        self.assertIsNone(blob.crc32c)
+
     def test_download_as_bytes_w_generation_match(self):
         GENERATION_NUMBER = 6
         MEDIA_LINK = "http://example.com/media/"
