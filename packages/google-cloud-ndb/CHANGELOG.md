@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.7.1](https://www.github.com/googleapis/python-ndb/compare/v1.7.0...v1.7.1) (2020-11-11)
+
+
+### Bug Fixes
+
+* **dependencies:** Pin to less than 2.0.0 for google-cloud-datastore ([#569](https://www.github.com/googleapis/python-ndb/issues/569)) ([c8860a6](https://www.github.com/googleapis/python-ndb/commit/c8860a6541f638fb458b74cfdffc1ddb7b035549)), closes [#568](https://www.github.com/googleapis/python-ndb/issues/568)
+
 ## [1.7.0](https://www.github.com/googleapis/python-ndb/compare/v1.6.1...v1.7.0) (2020-10-22)
 
 
