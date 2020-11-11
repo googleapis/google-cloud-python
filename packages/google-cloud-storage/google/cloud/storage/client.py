@@ -581,7 +581,7 @@ class Client(ClientWithProject):
         try:
             blob_or_uri.download_to_file(file_obj, client=self, start=start, end=end)
         except AttributeError:
-            blob = Blob.from_string(blob_or_uri)
+            blob = Blob.from_string(blob_or_uri, self)
             blob.download_to_file(file_obj, client=self, start=start, end=end)
 
     def list_blobs(
