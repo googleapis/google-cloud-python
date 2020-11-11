@@ -32,7 +32,7 @@ dependencies = [
     "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
-    "proto-plus == 1.10.0-dev2",
+    "proto-plus==1.11.0",
     "libcst >= 0.2.5",
 ]
 extras = {
