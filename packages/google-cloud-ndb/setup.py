@@ -25,7 +25,7 @@ def main():
     with io.open(readme_filename, encoding="utf-8") as readme_file:
         readme = readme_file.read()
     dependencies = [
-        "google-cloud-datastore >= 1.7.0",
+        "google-cloud-datastore >= 1.7.0, < 2.0.0dev",
         "pymemcache",
         "redis",
     ]
