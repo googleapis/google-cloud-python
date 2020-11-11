@@ -1608,6 +1608,8 @@ class Blob(_PropertyMixin):
                 raise ValueError(msg)
 
         transport = self._get_transport(client)
+        if "metadata" in self._properties and "metadata" not in self._changes:
+            self._changes.add("metadata")
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
@@ -1775,6 +1777,8 @@ class Blob(_PropertyMixin):
                 chunk_size = _DEFAULT_CHUNKSIZE
 
         transport = self._get_transport(client)
+        if "metadata" in self._properties and "metadata" not in self._changes:
+            self._changes.add("metadata")
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
         if extra_headers is not None:
