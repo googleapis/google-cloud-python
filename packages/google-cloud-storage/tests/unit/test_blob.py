@@ -1932,19 +1932,15 @@ class Test_Blob(unittest.TestCase):
 
         upload_url += "?" + urlencode(qs_params)
 
-        blob_data = b'{"name": "blob-name"}\r\n'
+        blob_data = {"name": "blob-name"}
         if metadata:
-            blob_data = (
-                b'{"name": "blob-name", "metadata": '
-                + json.dumps(metadata).encode("utf-8")
-                + b"}\r\n"
-            )
+            blob_data["metadata"] = metadata
             self.assertEqual(blob._changes, set(["metadata"]))
         payload = (
             b"--==0==\r\n"
             + b"content-type: application/json; charset=UTF-8\r\n\r\n"
-            + blob_data
-            + b"--==0==\r\n"
+            + json.dumps(blob_data).encode("utf-8")
+            + b"\r\n--==0==\r\n"
             + b"content-type: application/xml\r\n\r\n"
             + data_read
             + b"\r\n--==0==--"
