@@ -220,14 +220,6 @@ class Cursor(object):
             self._query_data = iter([])
             return
 
-        is_dml = (
-            self._query_job.statement_type
-            and self._query_job.statement_type.upper() != "SELECT"
-        )
-        if is_dml:
-            self._query_data = iter([])
-            return
-
         if self._query_data is None:
             bqstorage_client = self.connection._bqstorage_client
 

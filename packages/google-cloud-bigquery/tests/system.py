@@ -180,6 +180,7 @@ class Config(object):
 
     CLIENT = None
     CURSOR = None
+    DATASET = None
 
 
 def setUpModule():
@@ -189,7 +190,9 @@ def setUpModule():
 
 class TestBigQuery(unittest.TestCase):
     def setUp(self):
-        self.to_delete = []
+        Config.DATASET = _make_dataset_id("bq_system_tests")
+        dataset = Config.CLIENT.create_dataset(Config.DATASET)
+        self.to_delete = [dataset]
 
     def tearDown(self):
         def _still_in_use(bad_request):
@@ -1789,6 +1792,44 @@ class TestBigQuery(unittest.TestCase):
             rows = Config.CURSOR.fetchall()
             row_tuples = [r.values() for r in rows]
             self.assertEqual(row_tuples, [(1, 2), (3, 4), (5, 6)])
+
+    def test_dbapi_fetchall_from_script(self):
+        query = """
+        CREATE TEMP TABLE Example
+        (
+          x INT64,
+          y STRING
+        );
+
+        INSERT INTO Example
+        VALUES (5, 'foo'),
+        (6, 'bar'),
+        (7, 'baz');
+
+        SELECT *
+        FROM Example
+        ORDER BY x ASC;
+        """
+
+        Config.CURSOR.execute(query)
+        self.assertEqual(Config.CURSOR.rowcount, 3, "expected 3 rows")
+        rows = Config.CURSOR.fetchall()
+        row_tuples = [r.values() for r in rows]
+        self.assertEqual(row_tuples, [(5, "foo"), (6, "bar"), (7, "baz")])
+
+    def test_dbapi_create_view(self):
+
+        query = """
+        CREATE VIEW {}.dbapi_create_view
+        AS SELECT name, SUM(number) AS total
+        FROM `bigquery-public-data.usa_names.usa_1910_2013`
+        GROUP BY name;
+        """.format(
+            Config.DATASET
+        )
+
+        Config.CURSOR.execute(query)
+        self.assertEqual(Config.CURSOR.rowcount, 0, "expected 0 rows")
 
     @unittest.skipIf(
         bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
