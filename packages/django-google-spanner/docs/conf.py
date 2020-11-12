@@ -239,6 +239,10 @@ html_theme_options = {
 # Output file base name for HTML help builder.
 htmlhelp_basename = "google-cloud-spanner-django-doc"
 
+# Use more convenient default role, affects text in single-backticks
+# https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#cross-referencing-anything
+default_role = "any"
+
 # -- Options for warnings ------------------------------------------------------
 
 
