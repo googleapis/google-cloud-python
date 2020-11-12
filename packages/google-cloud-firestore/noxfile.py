@@ -27,9 +27,10 @@ PYTYPE_VERSION = "pytype==2020.7.24"
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.9"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9"]
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
@@ -97,6 +98,7 @@ def default(session):
         os.path.join("tests", "unit"),
         *session.posargs,
     )
+
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):

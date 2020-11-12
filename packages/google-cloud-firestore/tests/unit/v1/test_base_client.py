@@ -67,8 +67,7 @@ class TestBaseClient(unittest.TestCase):
         return_value=mock.sentinel.firestore_api,
     )
     @mock.patch(
-        "google.cloud.firestore_v1.services.firestore.transports.grpc.FirestoreGrpcTransport.create_channel",
-        autospec=True,
+        "grpc.insecure_channel", autospec=True,
     )
     def test__firestore_api_property_with_emulator(
         self, mock_insecure_channel, mock_client
@@ -83,7 +82,7 @@ class TestBaseClient(unittest.TestCase):
         self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
 
-        mock_insecure_channel.assert_called_once_with(host=emulator_host)
+        mock_insecure_channel.assert_called_once_with(emulator_host)
 
         # Call again to show that it is cached, but call count is still 1.
         self.assertIs(client._firestore_api, mock_client.return_value)

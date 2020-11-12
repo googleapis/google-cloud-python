@@ -25,6 +25,7 @@ In the hierarchy of API concepts
 """
 
 import os
+import grpc  # type: ignore
 
 import google.api_core.client_options  # type: ignore
 import google.api_core.path_template  # type: ignore
@@ -147,9 +148,7 @@ class BaseClient(ClientWithProject):
             # We need this in order to set appropriate keepalive options.
 
             if self._emulator_host is not None:
-                # TODO(microgen): this likely needs to be adapted to use insecure_channel
-                # on new generated surface.
-                channel = transport.create_channel(host=self._emulator_host)
+                channel = grpc.insecure_channel(self._emulator_host)
             else:
                 channel = transport.create_channel(
                     self._target,
