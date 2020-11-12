@@ -1,13 +1,22 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
-{% for p in api.protos.values() if p.file_to_generate and p.messages -%}
-from .{{p.module_name }} import ({% for m in p.messages.values() %}{{ m.name }}, {% endfor %})
-{% endfor %}
+{%- for proto in api.protos.values() if proto.file_to_generate and proto.messages %}
+from .{{proto.module_name }} import (
+  {%- for message in proto.messages.values() %}
+    {{message.name }}, {% endfor %}
+  {%- for enum in proto.enums.values() %}
+    {{ enum.name }}, {% endfor %}
+){% endfor %}
 
 __all__ = (
-  {%- for p in api.protos.values() if p.file_to_generate %}{% for m in p.messages.values() %}
-    '{{ m.name }}',
-  {%- endfor %}{% endfor %}
+  {%- for proto in api.protos.values() if proto.file_to_generate %}
+  {%- for message in proto.messages.values() %}
+    '{{ message.name }}',
+  {%- endfor -%}
+  {%- for enum in proto.enums.values() %}
+    '{{ enum.name }}',
+  {%- endfor -%}
+  {%- endfor %}
 )
 {% endblock %}
