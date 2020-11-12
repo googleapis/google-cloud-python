@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.35.11](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.10...v0.35.11) (2020-11-12)
+
+
+### Bug Fixes
+
+* add enums to types/__init__.py ([#695](https://www.github.com/googleapis/gapic-generator-python/issues/695)) ([e1d4a4a](https://www.github.com/googleapis/gapic-generator-python/commit/e1d4a4ae768a631f6e6dc28f2acfde8be8dc4a8f))
+* update protobuf version [gapic-generator-python] ([#696](https://www.github.com/googleapis/gapic-generator-python/issues/696)) ([ea3e519](https://www.github.com/googleapis/gapic-generator-python/commit/ea3e5198862881f5b142638df6ea604654f81f82))
+
 ### [0.35.10](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.9...v0.35.10) (2020-11-09)
 
 
