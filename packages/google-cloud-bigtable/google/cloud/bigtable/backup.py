@@ -21,6 +21,7 @@ from google.cloud.bigtable_admin_v2.gapic.bigtable_table_admin_client import (
     BigtableTableAdminClient,
 )
 from google.cloud.bigtable_admin_v2.types import table_pb2
+from google.cloud.bigtable.policy import Policy
 from google.cloud.exceptions import NotFound
 from google.protobuf import field_mask_pb2
 
@@ -392,3 +393,54 @@ class Backup(object):
         """
         api = self._instance._client.table_admin_client
         return api.restore_table(self._instance.name, table_id, self.name)
+
+    def get_iam_policy(self):
+        """Gets the IAM access control policy for this backup.
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this backup.
+        """
+        table_api = self._instance._client.table_admin_client
+        args = {"resource": self.name}
+        response = table_api.get_iam_policy(**args)
+        return Policy.from_pb(response)
+
+    def set_iam_policy(self, policy):
+        """Sets the IAM access control policy for this backup. Replaces any
+        existing policy.
+
+        For more information about policy, please see documentation of
+        class `google.cloud.bigtable.policy.Policy`
+
+        :type policy: :class:`google.cloud.bigtable.policy.Policy`
+        :param policy: A new IAM policy to replace the current IAM policy
+                       of this backup.
+
+        :rtype: :class:`google.cloud.bigtable.policy.Policy`
+        :returns: The current IAM policy of this backup.
+        """
+        table_api = self._instance._client.table_admin_client
+        response = table_api.set_iam_policy(resource=self.name, policy=policy.to_pb())
+        return Policy.from_pb(response)
+
+    def test_iam_permissions(self, permissions):
+        """Tests whether the caller has the given permissions for this backup.
+        Returns the permissions that the caller has.
+
+        :type permissions: list
+        :param permissions: The set of permissions to check for
+               the ``resource``. Permissions with wildcards (such as '*'
+               or 'storage.*') are not allowed. For more information see
+               `IAM Overview
+               <https://cloud.google.com/iam/docs/overview#permissions>`_.
+               `Bigtable Permissions
+               <https://cloud.google.com/bigtable/docs/access-control>`_.
+
+        :rtype: list
+        :returns: A List(string) of permissions allowed on the backup.
+        """
+        table_api = self._instance._client.table_admin_client
+        response = table_api.test_iam_permissions(
+            resource=self.name, permissions=permissions
+        )
+        return list(response.permissions)

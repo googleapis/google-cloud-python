@@ -734,6 +734,113 @@ class TestBackup(unittest.TestCase):
             backup=self.BACKUP_NAME,
         )
 
+    def test_get_iam_policy(self):
+        from google.cloud.bigtable.client import Client
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        credentials = _make_credentials()
+        client = Client(project=self.PROJECT_ID, credentials=credentials, admin=True)
+
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
+
+        version = 1
+        etag = b"etag_v1"
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
+        iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
+
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient
+        )
+        client._table_admin_client = table_api
+        table_api.get_iam_policy.return_value = iam_policy
+
+        result = backup.get_iam_policy()
+
+        table_api.get_iam_policy.assert_called_once_with(resource=backup.name)
+        self.assertEqual(result.version, version)
+        self.assertEqual(result.etag, etag)
+
+        admins = result.bigtable_admins
+        self.assertEqual(len(admins), len(members))
+        for found, expected in zip(sorted(admins), sorted(members)):
+            self.assertEqual(found, expected)
+
+    def test_set_iam_policy(self):
+        from google.cloud.bigtable.client import Client
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.iam.v1 import policy_pb2
+        from google.cloud.bigtable.policy import Policy
+        from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
+
+        credentials = _make_credentials()
+        client = Client(project=self.PROJECT_ID, credentials=credentials, admin=True)
+
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
+
+        version = 1
+        etag = b"etag_v1"
+        members = ["serviceAccount:service_acc1@test.com", "user:user1@test.com"]
+        bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": sorted(members)}]
+        iam_policy_pb = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
+
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient
+        )
+        client._table_admin_client = table_api
+        table_api.set_iam_policy.return_value = iam_policy_pb
+
+        iam_policy = Policy(etag=etag, version=version)
+        iam_policy[BIGTABLE_ADMIN_ROLE] = [
+            Policy.user("user1@test.com"),
+            Policy.service_account("service_acc1@test.com"),
+        ]
+
+        result = backup.set_iam_policy(iam_policy)
+
+        table_api.set_iam_policy.assert_called_once_with(
+            resource=backup.name, policy=iam_policy_pb
+        )
+        self.assertEqual(result.version, version)
+        self.assertEqual(result.etag, etag)
+
+        admins = result.bigtable_admins
+        self.assertEqual(len(admins), len(members))
+        for found, expected in zip(sorted(admins), sorted(members)):
+            self.assertEqual(found, expected)
+
+    def test_test_iam_permissions(self):
+        from google.cloud.bigtable.client import Client
+        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.iam.v1 import iam_policy_pb2
+
+        credentials = _make_credentials()
+        client = Client(project=self.PROJECT_ID, credentials=credentials, admin=True)
+
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
+
+        permissions = ["bigtable.backups.create", "bigtable.backups.list"]
+
+        response = iam_policy_pb2.TestIamPermissionsResponse(permissions=permissions)
+
+        table_api = mock.create_autospec(
+            bigtable_table_admin_client.BigtableTableAdminClient
+        )
+        table_api.test_iam_permissions.return_value = response
+        client._table_admin_client = table_api
+
+        result = backup.test_iam_permissions(permissions)
+
+        self.assertEqual(result, permissions)
+        table_api.test_iam_permissions.assert_called_once_with(
+            resource=backup.name, permissions=permissions
+        )
+
 
 class _Client(object):
     def __init__(self, project=TestBackup.PROJECT_ID):
