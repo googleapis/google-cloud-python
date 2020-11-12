@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.0.1](https://www.github.com/googleapis/python-firestore/compare/v2.0.0...v2.0.1) (2020-11-12)
+
+
+### Bug Fixes
+
+* use an insecure channel under emulation ([#254](https://www.github.com/googleapis/python-firestore/issues/254)) ([801f827](https://www.github.com/googleapis/python-firestore/commit/801f8275899ea53c34f725f8a7629699f8b8ecbb)), closes [#250](https://www.github.com/googleapis/python-firestore/issues/250)
+
+
+### Documentation
+
+* update code of conduct ([#253](https://www.github.com/googleapis/python-firestore/issues/253)) ([3702dc8](https://www.github.com/googleapis/python-firestore/commit/3702dc8eede408aa326ddca9173cde572671c785))
+
 ## [2.0.0](https://www.github.com/googleapis/python-firestore/compare/v1.9.0...v2.0.0) (2020-11-06)
 
 
