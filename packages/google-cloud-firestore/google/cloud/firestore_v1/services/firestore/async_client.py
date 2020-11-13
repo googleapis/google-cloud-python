@@ -18,7 +18,16 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, AsyncIterable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    AsyncIterable,
+    Awaitable,
+    AsyncIterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -59,8 +68,40 @@ class FirestoreAsyncClient:
     DEFAULT_ENDPOINT = FirestoreClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = FirestoreClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        FirestoreClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        FirestoreClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(FirestoreClient.common_folder_path)
+    parse_common_folder_path = staticmethod(FirestoreClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(FirestoreClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        FirestoreClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(FirestoreClient.common_project_path)
+    parse_common_project_path = staticmethod(FirestoreClient.parse_common_project_path)
+
+    common_location_path = staticmethod(FirestoreClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        FirestoreClient.parse_common_location_path
+    )
+
     from_service_account_file = FirestoreClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> FirestoreTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            FirestoreTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(FirestoreClient).get_transport_class, type(FirestoreClient)
@@ -154,9 +195,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=60.0,
@@ -218,9 +259,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=60.0,
@@ -297,7 +338,8 @@ class FirestoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document, update_mask]):
+        has_flattened_params = any([document, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -373,7 +415,8 @@ class FirestoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -396,9 +439,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=60.0,
@@ -423,7 +466,7 @@ class FirestoreAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[firestore.BatchGetDocumentsResponse]:
+    ) -> Awaitable[AsyncIterable[firestore.BatchGetDocumentsResponse]]:
         r"""Gets multiple documents.
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
@@ -458,9 +501,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=300.0,
@@ -516,7 +559,8 @@ class FirestoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([database]):
+        has_flattened_params = any([database])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -539,9 +583,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=60.0,
@@ -605,7 +649,8 @@ class FirestoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([database, writes]):
+        has_flattened_params = any([database, writes])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -618,8 +663,9 @@ class FirestoreAsyncClient:
 
         if database is not None:
             request.database = database
-        if writes is not None:
-            request.writes = writes
+
+        if writes:
+            request.writes.extend(writes)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -685,7 +731,8 @@ class FirestoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([database, transaction]):
+        has_flattened_params = any([database, transaction])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -710,9 +757,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=60.0,
@@ -737,7 +784,7 @@ class FirestoreAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[firestore.RunQueryResponse]:
+    ) -> Awaitable[AsyncIterable[firestore.RunQueryResponse]]:
         r"""Runs a query.
 
         Args:
@@ -770,9 +817,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=300.0,
@@ -838,9 +885,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=300.0,
@@ -872,7 +919,7 @@ class FirestoreAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[firestore.WriteResponse]:
+    ) -> Awaitable[AsyncIterable[firestore.WriteResponse]]:
         r"""Streams batches of document updates and deletes, in
         order.
 
@@ -928,7 +975,7 @@ class FirestoreAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[firestore.ListenResponse]:
+    ) -> Awaitable[AsyncIterable[firestore.ListenResponse]]:
         r"""Listens to changes.
 
         Args:
@@ -957,9 +1004,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=86400.0,
@@ -1018,7 +1065,8 @@ class FirestoreAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1041,9 +1089,9 @@ class FirestoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded,
                     exceptions.InternalServerError,
                     exceptions.ServiceUnavailable,
-                    exceptions.DeadlineExceeded,
                 ),
             ),
             default_timeout=60.0,

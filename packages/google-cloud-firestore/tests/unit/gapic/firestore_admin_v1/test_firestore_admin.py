@@ -108,12 +108,12 @@ def test_firestore_admin_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "firestore.googleapis.com:443"
+        assert client.transport._host == "firestore.googleapis.com:443"
 
 
 def test_firestore_admin_client_get_transport_class():
@@ -463,7 +463,7 @@ def test_create_index(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -484,19 +484,19 @@ def test_create_index_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_index_async(transport: str = "grpc_asyncio"):
+async def test_create_index_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.CreateIndexRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.CreateIndexRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -508,10 +508,15 @@ async def test_create_index_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.CreateIndexRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_index_async_from_dict():
+    await test_create_index_async(request_type=dict)
 
 
 def test_create_index_field_headers():
@@ -523,7 +528,7 @@ def test_create_index_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.create_index(request)
@@ -548,9 +553,7 @@ async def test_create_index_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -571,7 +574,7 @@ def test_create_index_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -609,9 +612,7 @@ async def test_create_index_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -660,7 +661,7 @@ def test_list_indexes(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_indexes), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = firestore_admin.ListIndexesResponse(
             next_page_token="next_page_token_value",
@@ -675,6 +676,7 @@ def test_list_indexes(
         assert args[0] == firestore_admin.ListIndexesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListIndexesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -685,19 +687,19 @@ def test_list_indexes_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_indexes_async(transport: str = "grpc_asyncio"):
+async def test_list_indexes_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.ListIndexesRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.ListIndexesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_indexes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             firestore_admin.ListIndexesResponse(
@@ -711,12 +713,17 @@ async def test_list_indexes_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.ListIndexesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIndexesAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_indexes_async_from_dict():
+    await test_list_indexes_async(request_type=dict)
 
 
 def test_list_indexes_field_headers():
@@ -728,7 +735,7 @@ def test_list_indexes_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_indexes), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         call.return_value = firestore_admin.ListIndexesResponse()
 
         client.list_indexes(request)
@@ -753,9 +760,7 @@ async def test_list_indexes_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_indexes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             firestore_admin.ListIndexesResponse()
         )
@@ -776,7 +781,7 @@ def test_list_indexes_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_indexes), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = firestore_admin.ListIndexesResponse()
 
@@ -808,9 +813,7 @@ async def test_list_indexes_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_indexes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = firestore_admin.ListIndexesResponse()
 
@@ -845,7 +848,7 @@ def test_list_indexes_pager():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_indexes), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListIndexesResponse(
@@ -879,7 +882,7 @@ def test_list_indexes_pages():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_indexes), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListIndexesResponse(
@@ -906,9 +909,7 @@ async def test_list_indexes_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_indexes),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_indexes), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -941,9 +942,7 @@ async def test_list_indexes_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_indexes),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_indexes), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -979,7 +978,7 @@ def test_get_index(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = index.Index(
             name="name_value",
@@ -996,6 +995,7 @@ def test_get_index(
         assert args[0] == firestore_admin.GetIndexRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, index.Index)
 
     assert response.name == "name_value"
@@ -1010,19 +1010,19 @@ def test_get_index_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_index_async(transport: str = "grpc_asyncio"):
+async def test_get_index_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.GetIndexRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.GetIndexRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             index.Index(
@@ -1038,7 +1038,7 @@ async def test_get_index_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.GetIndexRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, index.Index)
@@ -1050,6 +1050,11 @@ async def test_get_index_async(transport: str = "grpc_asyncio"):
     assert response.state == index.Index.State.CREATING
 
 
+@pytest.mark.asyncio
+async def test_get_index_async_from_dict():
+    await test_get_index_async(request_type=dict)
+
+
 def test_get_index_field_headers():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1059,7 +1064,7 @@ def test_get_index_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         call.return_value = index.Index()
 
         client.get_index(request)
@@ -1084,9 +1089,7 @@ async def test_get_index_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(index.Index())
 
         await client.get_index(request)
@@ -1105,7 +1108,7 @@ def test_get_index_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = index.Index()
 
@@ -1137,9 +1140,7 @@ async def test_get_index_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = index.Index()
 
@@ -1180,7 +1181,7 @@ def test_delete_index(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1201,19 +1202,19 @@ def test_delete_index_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_index_async(transport: str = "grpc_asyncio"):
+async def test_delete_index_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.DeleteIndexRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.DeleteIndexRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1223,10 +1224,15 @@ async def test_delete_index_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.DeleteIndexRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_index_async_from_dict():
+    await test_delete_index_async(request_type=dict)
 
 
 def test_delete_index_field_headers():
@@ -1238,7 +1244,7 @@ def test_delete_index_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         call.return_value = None
 
         client.delete_index(request)
@@ -1263,9 +1269,7 @@ async def test_delete_index_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_index(request)
@@ -1284,7 +1288,7 @@ def test_delete_index_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_index), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1316,9 +1320,7 @@ async def test_delete_index_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_index), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1359,7 +1361,7 @@ def test_get_field(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_field), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = field.Field(name="name_value",)
 
@@ -1372,6 +1374,7 @@ def test_get_field(
         assert args[0] == firestore_admin.GetFieldRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, field.Field)
 
     assert response.name == "name_value"
@@ -1382,19 +1385,19 @@ def test_get_field_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_field_async(transport: str = "grpc_asyncio"):
+async def test_get_field_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.GetFieldRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.GetFieldRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_field), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             field.Field(name="name_value",)
@@ -1406,12 +1409,17 @@ async def test_get_field_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.GetFieldRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, field.Field)
 
     assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_field_async_from_dict():
+    await test_get_field_async(request_type=dict)
 
 
 def test_get_field_field_headers():
@@ -1423,7 +1431,7 @@ def test_get_field_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_field), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         call.return_value = field.Field()
 
         client.get_field(request)
@@ -1448,9 +1456,7 @@ async def test_get_field_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_field), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(field.Field())
 
         await client.get_field(request)
@@ -1469,7 +1475,7 @@ def test_get_field_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_field), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = field.Field()
 
@@ -1501,9 +1507,7 @@ async def test_get_field_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_field), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = field.Field()
 
@@ -1544,7 +1548,7 @@ def test_update_field(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_field), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1565,19 +1569,19 @@ def test_update_field_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_field_async(transport: str = "grpc_asyncio"):
+async def test_update_field_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.UpdateFieldRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.UpdateFieldRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_field), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1589,10 +1593,15 @@ async def test_update_field_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.UpdateFieldRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_field_async_from_dict():
+    await test_update_field_async(request_type=dict)
 
 
 def test_update_field_field_headers():
@@ -1604,7 +1613,7 @@ def test_update_field_field_headers():
     request.field.name = "field.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_field), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.update_field(request)
@@ -1629,9 +1638,7 @@ async def test_update_field_field_headers_async():
     request.field.name = "field.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_field), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1652,7 +1659,7 @@ def test_update_field_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_field), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1685,9 +1692,7 @@ async def test_update_field_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_field), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1731,7 +1736,7 @@ def test_list_fields(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_fields), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = firestore_admin.ListFieldsResponse(
             next_page_token="next_page_token_value",
@@ -1746,6 +1751,7 @@ def test_list_fields(
         assert args[0] == firestore_admin.ListFieldsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListFieldsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -1756,19 +1762,19 @@ def test_list_fields_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_fields_async(transport: str = "grpc_asyncio"):
+async def test_list_fields_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.ListFieldsRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.ListFieldsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_fields), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             firestore_admin.ListFieldsResponse(next_page_token="next_page_token_value",)
@@ -1780,12 +1786,17 @@ async def test_list_fields_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.ListFieldsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFieldsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_fields_async_from_dict():
+    await test_list_fields_async(request_type=dict)
 
 
 def test_list_fields_field_headers():
@@ -1797,7 +1808,7 @@ def test_list_fields_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_fields), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         call.return_value = firestore_admin.ListFieldsResponse()
 
         client.list_fields(request)
@@ -1822,9 +1833,7 @@ async def test_list_fields_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_fields), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             firestore_admin.ListFieldsResponse()
         )
@@ -1845,7 +1854,7 @@ def test_list_fields_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_fields), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = firestore_admin.ListFieldsResponse()
 
@@ -1877,9 +1886,7 @@ async def test_list_fields_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_fields), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = firestore_admin.ListFieldsResponse()
 
@@ -1914,7 +1921,7 @@ def test_list_fields_pager():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_fields), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListFieldsResponse(
@@ -1946,7 +1953,7 @@ def test_list_fields_pages():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_fields), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListFieldsResponse(
@@ -1971,9 +1978,7 @@ async def test_list_fields_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_fields),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_fields), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -2004,9 +2009,7 @@ async def test_list_fields_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_fields),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_fields), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -2040,9 +2043,7 @@ def test_export_documents(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.export_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -2063,19 +2064,19 @@ def test_export_documents_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_export_documents_async(transport: str = "grpc_asyncio"):
+async def test_export_documents_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.ExportDocumentsRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.ExportDocumentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.export_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -2087,10 +2088,15 @@ async def test_export_documents_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.ExportDocumentsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_export_documents_async_from_dict():
+    await test_export_documents_async(request_type=dict)
 
 
 def test_export_documents_field_headers():
@@ -2102,9 +2108,7 @@ def test_export_documents_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.export_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.export_documents(request)
@@ -2129,9 +2133,7 @@ async def test_export_documents_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.export_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -2152,9 +2154,7 @@ def test_export_documents_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.export_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2186,9 +2186,7 @@ async def test_export_documents_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.export_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2231,9 +2229,7 @@ def test_import_documents(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.import_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -2254,19 +2250,19 @@ def test_import_documents_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_import_documents_async(transport: str = "grpc_asyncio"):
+async def test_import_documents_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.ImportDocumentsRequest
+):
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = firestore_admin.ImportDocumentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.import_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -2278,10 +2274,15 @@ async def test_import_documents_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == firestore_admin.ImportDocumentsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_documents_async_from_dict():
+    await test_import_documents_async(request_type=dict)
 
 
 def test_import_documents_field_headers():
@@ -2293,9 +2294,7 @@ def test_import_documents_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.import_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.import_documents(request)
@@ -2320,9 +2319,7 @@ async def test_import_documents_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.import_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -2343,9 +2340,7 @@ def test_import_documents_flattened():
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.import_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2377,9 +2372,7 @@ async def test_import_documents_flattened_async():
     client = FirestoreAdminAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.import_documents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2446,7 +2439,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = FirestoreAdminClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -2482,7 +2475,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = FirestoreAdminClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.FirestoreAdminGrpcTransport,)
+    assert isinstance(client.transport, transports.FirestoreAdminGrpcTransport,)
 
 
 def test_firestore_admin_base_transport_error():
@@ -2598,7 +2591,7 @@ def test_firestore_admin_host_no_port():
             api_endpoint="firestore.googleapis.com"
         ),
     )
-    assert client._transport._host == "firestore.googleapis.com:443"
+    assert client.transport._host == "firestore.googleapis.com:443"
 
 
 def test_firestore_admin_host_with_port():
@@ -2608,7 +2601,7 @@ def test_firestore_admin_host_with_port():
             api_endpoint="firestore.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "firestore.googleapis.com:8000"
+    assert client.transport._host == "firestore.googleapis.com:8000"
 
 
 def test_firestore_admin_grpc_transport_channel():
@@ -2620,6 +2613,7 @@ def test_firestore_admin_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_firestore_admin_grpc_asyncio_transport_channel():
@@ -2631,6 +2625,7 @@ def test_firestore_admin_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -2681,6 +2676,7 @@ def test_firestore_admin_transport_channel_mtls_with_client_cert_source(
                 quota_project_id=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2730,7 +2726,7 @@ def test_firestore_admin_grpc_lro_client():
     client = FirestoreAdminClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc",
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
@@ -2743,7 +2739,7 @@ def test_firestore_admin_grpc_lro_async_client():
     client = FirestoreAdminAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
-    transport = client._client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
@@ -2752,11 +2748,59 @@ def test_firestore_admin_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_field_path():
+def test_collection_group_path():
     project = "squid"
     database = "clam"
     collection = "whelk"
-    field = "octopus"
+
+    expected = "projects/{project}/databases/{database}/collectionGroups/{collection}".format(
+        project=project, database=database, collection=collection,
+    )
+    actual = FirestoreAdminClient.collection_group_path(project, database, collection)
+    assert expected == actual
+
+
+def test_parse_collection_group_path():
+    expected = {
+        "project": "octopus",
+        "database": "oyster",
+        "collection": "nudibranch",
+    }
+    path = FirestoreAdminClient.collection_group_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_collection_group_path(path)
+    assert expected == actual
+
+
+def test_database_path():
+    project = "cuttlefish"
+    database = "mussel"
+
+    expected = "projects/{project}/databases/{database}".format(
+        project=project, database=database,
+    )
+    actual = FirestoreAdminClient.database_path(project, database)
+    assert expected == actual
+
+
+def test_parse_database_path():
+    expected = {
+        "project": "winkle",
+        "database": "nautilus",
+    }
+    path = FirestoreAdminClient.database_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_database_path(path)
+    assert expected == actual
+
+
+def test_field_path():
+    project = "scallop"
+    database = "abalone"
+    collection = "squid"
+    field = "clam"
 
     expected = "projects/{project}/databases/{database}/collectionGroups/{collection}/fields/{field}".format(
         project=project, database=database, collection=collection, field=field,
@@ -2767,10 +2811,10 @@ def test_field_path():
 
 def test_parse_field_path():
     expected = {
-        "project": "oyster",
-        "database": "nudibranch",
-        "collection": "cuttlefish",
-        "field": "mussel",
+        "project": "whelk",
+        "database": "octopus",
+        "collection": "oyster",
+        "field": "nudibranch",
     }
     path = FirestoreAdminClient.field_path(**expected)
 
@@ -2780,10 +2824,10 @@ def test_parse_field_path():
 
 
 def test_index_path():
-    project = "squid"
-    database = "clam"
-    collection = "whelk"
-    index = "octopus"
+    project = "cuttlefish"
+    database = "mussel"
+    collection = "winkle"
+    index = "nautilus"
 
     expected = "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}".format(
         project=project, database=database, collection=collection, index=index,
@@ -2794,15 +2838,116 @@ def test_index_path():
 
 def test_parse_index_path():
     expected = {
-        "project": "oyster",
-        "database": "nudibranch",
-        "collection": "cuttlefish",
-        "index": "mussel",
+        "project": "scallop",
+        "database": "abalone",
+        "collection": "squid",
+        "index": "clam",
     }
     path = FirestoreAdminClient.index_path(**expected)
 
     # Check that the path construction is reversible.
     actual = FirestoreAdminClient.parse_index_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "whelk"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = FirestoreAdminClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "octopus",
+    }
+    path = FirestoreAdminClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "oyster"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = FirestoreAdminClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nudibranch",
+    }
+    path = FirestoreAdminClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "cuttlefish"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = FirestoreAdminClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "mussel",
+    }
+    path = FirestoreAdminClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "winkle"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = FirestoreAdminClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nautilus",
+    }
+    path = FirestoreAdminClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "scallop"
+    location = "abalone"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = FirestoreAdminClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+    }
+    path = FirestoreAdminClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FirestoreAdminClient.parse_common_location_path(path)
     assert expected == actual
 
 

@@ -172,7 +172,7 @@ class ArrayValue(proto.Message):
             Values in the array.
     """
 
-    values = proto.RepeatedField(proto.MESSAGE, number=1, message=Value,)
+    values = proto.RepeatedField(proto.MESSAGE, number=1, message="Value",)
 
 
 class MapValue(proto.Message):
@@ -189,7 +189,7 @@ class MapValue(proto.Message):
             bytes and cannot be empty.
     """
 
-    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=Value,)
+    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message="Value",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

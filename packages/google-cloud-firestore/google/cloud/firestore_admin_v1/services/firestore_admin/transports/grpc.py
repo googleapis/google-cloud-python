@@ -95,10 +95,10 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 for grpc channel. It is ignored if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -107,6 +107,8 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -114,6 +116,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
             warnings.warn(
                 "api_mtls_endpoint and client_cert_source are deprecated",
@@ -150,6 +153,7 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
             )
+            self._ssl_channel_credentials = ssl_credentials
         else:
             host = host if ":" in host else host + ":443"
 
@@ -227,12 +231,8 @@ class FirestoreAdminGrpcTransport(FirestoreAdminTransport):
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+        """Return the channel designed to connect to this service.
         """
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property

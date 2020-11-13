@@ -54,13 +54,57 @@ class FirestoreAdminAsyncClient:
     DEFAULT_ENDPOINT = FirestoreAdminClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = FirestoreAdminClient.DEFAULT_MTLS_ENDPOINT
 
+    collection_group_path = staticmethod(FirestoreAdminClient.collection_group_path)
+    parse_collection_group_path = staticmethod(
+        FirestoreAdminClient.parse_collection_group_path
+    )
+    database_path = staticmethod(FirestoreAdminClient.database_path)
+    parse_database_path = staticmethod(FirestoreAdminClient.parse_database_path)
     field_path = staticmethod(FirestoreAdminClient.field_path)
     parse_field_path = staticmethod(FirestoreAdminClient.parse_field_path)
     index_path = staticmethod(FirestoreAdminClient.index_path)
     parse_index_path = staticmethod(FirestoreAdminClient.parse_index_path)
 
+    common_billing_account_path = staticmethod(
+        FirestoreAdminClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        FirestoreAdminClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(FirestoreAdminClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        FirestoreAdminClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        FirestoreAdminClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        FirestoreAdminClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(FirestoreAdminClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        FirestoreAdminClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(FirestoreAdminClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        FirestoreAdminClient.parse_common_location_path
+    )
+
     from_service_account_file = FirestoreAdminClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> FirestoreAdminTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            FirestoreAdminTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(FirestoreAdminClient).get_transport_class, type(FirestoreAdminClient)
@@ -166,7 +210,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, index]):
+        has_flattened_params = any([parent, index])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -250,7 +295,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -338,7 +384,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -413,7 +460,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -496,7 +544,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -598,7 +647,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([field]):
+        has_flattened_params = any([field])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -689,7 +739,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -790,7 +841,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -890,7 +942,8 @@ class FirestoreAdminAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

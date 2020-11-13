@@ -3,23 +3,23 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-firestore.git",
-        "sha": "75d0a4821b09c3bed710353cf86082e41c28191f"
+        "remote": "git@github.com:googleapis/python-firestore",
+        "sha": "ab19546ee96c69f46519764a3fb0eb4bea4fc6f8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2131e2f755b3c2604e2d08de81a299fd7e377dcd",
-        "internalRef": "338527875"
+        "sha": "0c9e3f8cb3a0c75983fe9a7897f0ef048d81e999",
+        "internalRef": "342123525"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6542bd723403513626f61642fc02ddca528409aa"
+        "sha": "e89175cf074dccc4babb4eca66ae913696e47a71"
       }
     }
   ],
