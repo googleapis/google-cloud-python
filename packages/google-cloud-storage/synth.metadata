@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-storage.git",
-        "sha": "50b43d95863a0c3ede1feeff3e09346b495a539c"
+        "sha": "59d859f2a80860d66135f656c4660b95937fce64"
       }
     },
     {
