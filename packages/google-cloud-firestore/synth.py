@@ -74,7 +74,7 @@ templated_files = common.py_library(
     unit_test_python_versions=["3.6", "3.7", "3.8"],
     system_test_python_versions=["3.7"],
     microgenerator=True,
-    cov_level=97,  # https://github.com/googleapis/python-firestore/issues/190
+    cov_level=100,
 )
 
 s.move(
