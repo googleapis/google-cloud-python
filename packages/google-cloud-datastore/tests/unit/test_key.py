@@ -488,6 +488,11 @@ class TestKey(unittest.TestCase):
         key = self._make_one("KIND", _NAME, project=self._DEFAULT_PROJECT)
         self.assertEqual(key.id_or_name, _NAME)
 
+    def test_id_or_name_w_id_zero(self):
+        _ID = 0
+        key = self._make_one("KIND", _ID, project=self._DEFAULT_PROJECT)
+        self.assertEqual(key.id_or_name, _ID)
+
     def test_parent_default(self):
         key = self._make_one("KIND", project=self._DEFAULT_PROJECT)
         self.assertIsNone(key.parent)

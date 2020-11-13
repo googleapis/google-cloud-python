@@ -441,7 +441,9 @@ class Key(object):
         :returns: The last element of the key's path if it is either an ``id``
                   or a ``name``.
         """
-        return self.id or self.name
+        if self.id is None:
+            return self.name
+        return self.id
 
     @property
     def project(self):
