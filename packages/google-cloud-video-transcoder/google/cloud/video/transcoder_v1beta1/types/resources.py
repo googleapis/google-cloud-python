@@ -19,6 +19,7 @@ import proto  # type: ignore
 
 
 from google.protobuf import duration_pb2 as duration  # type: ignore
+from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -99,6 +100,14 @@ class Job(proto.Message):
             Output only. List of failure details. This property may
             contain additional information about the failure when
             ``failure_reason`` is present.
+        create_time (~.timestamp.Timestamp):
+            Output only. The time the job was created.
+        start_time (~.timestamp.Timestamp):
+            Output only. The time the transcoding
+            started.
+        end_time (~.timestamp.Timestamp):
+            Output only. The time the transcoding
+            finished.
     """
 
     class ProcessingState(proto.Enum):
@@ -151,6 +160,12 @@ class Job(proto.Message):
     failure_details = proto.RepeatedField(
         proto.MESSAGE, number=11, message="FailureDetail",
     )
+
+    create_time = proto.Field(proto.MESSAGE, number=12, message=timestamp.Timestamp,)
+
+    start_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
+
+    end_time = proto.Field(proto.MESSAGE, number=14, message=timestamp.Timestamp,)
 
 
 class JobTemplate(proto.Message):
@@ -387,10 +402,10 @@ class Manifest(proto.Message):
 
     Attributes:
         file_name (str):
-            The name of the generated file. The default is ``"master"``
-            with the extension suffix corresponding to the
-            ``Manifest.type``.
-        type (~.resources.Manifest.ManifestType):
+            The name of the generated file. The default is
+            ``"manifest"`` with the extension suffix corresponding to
+            the ``Manifest.type``.
+        type_ (~.resources.Manifest.ManifestType):
             Required. Type of the manifest, can be "HLS"
             or "DASH".
         mux_streams (Sequence[str]):
@@ -410,7 +425,7 @@ class Manifest(proto.Message):
 
     file_name = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(proto.ENUM, number=2, enum=ManifestType,)
+    type_ = proto.Field(proto.ENUM, number=2, enum=ManifestType,)
 
     mux_streams = proto.RepeatedField(proto.STRING, number=3)
 
@@ -432,7 +447,7 @@ class SpriteSheet(proto.Message):
     r"""Sprite sheet configuration.
 
     Attributes:
-        format (str):
+        format_ (str):
             Format type. The default is ``"jpeg"``.
 
             Supported formats:
@@ -476,7 +491,7 @@ class SpriteSheet(proto.Message):
             Specify the interval value in seconds.
     """
 
-    format = proto.Field(proto.STRING, number=1)
+    format_ = proto.Field(proto.STRING, number=1)
 
     file_prefix = proto.Field(proto.STRING, number=2)
 
@@ -811,11 +826,17 @@ class VideoStream(proto.Message):
             Enforce specified codec preset. The default is
             ``"veryfast"``.
         height_pixels (int):
-            Required. The height of video in pixels. Must
-            be an even integer.
+            The height of the video in pixels. Must be an
+            even integer. When not specified, the height is
+            adjusted to match the specified width and input
+            aspect ratio. If both are omitted, the input
+            height is used.
         width_pixels (int):
-            Required. The width of video in pixels. Must
-            be an even integer.
+            The width of the video in pixels. Must be an
+            even integer. When not specified, the width is
+            adjusted to match the specified height and input
+            aspect ratio. If both are omitted, the input
+            width is used.
         pixel_format (str):
             Pixel format to use. The default is ``"yuv420p"``.
 
@@ -880,10 +901,34 @@ class VideoStream(proto.Message):
             equal to zero. Must be less than
             ``VideoStream.gop_frame_count`` if set. The default is 0.
         frame_rate (float):
-            Required. The video frame rate in frames per
-            second. Must be less than or equal to 120. Will
-            default to the input frame rate if larger than
-            the input frame rate.
+            Required. The target video frame rate in frames per second
+            (FPS). Must be less than or equal to 120. Will default to
+            the input frame rate if larger than the input frame rate.
+            The API will generate an output FPS that is divisible by the
+            input FPS, and smaller or equal to the target FPS.
+
+            The following table shows the computed video FPS given the
+            target FPS (in parenthesis) and input FPS (in the first
+            column):
+
+            ::
+
+               |        | (30)   | (60)   | (25) | (50) |
+               |--------|--------|--------|------|------|
+               | 240    | Fail   | Fail   | Fail | Fail |
+               | 120    | 30     | 60     | 20   | 30   |
+               | 100    | 25     | 50     | 20   | 30   |
+               | 50     | 25     | 50     | 20   | 30   |
+               | 60     | 30     | 60     | 20   | 30   |
+               | 59.94  | 29.97  | 59.94  | 20   | 30   |
+               | 48     | 24     | 48     | 20   | 30   |
+               | 30     | 30     | 30     | 20   | 30   |
+               | 25     | 25     | 25     | 20   | 30   |
+               | 24     | 24     | 24     | 20   | 30   |
+               | 23.976 | 23.976 | 23.976 | 20   | 30   |
+               | 15     | 15     | 15     | 20   | 30   |
+               | 12     | 12     | 12     | 20   | 30   |
+               | 10     | 10     | 10     | 20   | 30   |
         aq_strength (float):
             Specify the intensity of the adaptive
             quantizer (AQ). Must be between 0 and 1, where 0

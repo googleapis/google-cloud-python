@@ -136,7 +136,8 @@ class CreateJobTemplateRequest(proto.Message):
             name.
 
             This value should be 4-63 characters, and valid characters
-            are ``/[a-zA-Z0-9_-_]/``.
+            must match the regular expression
+            ``[a-zA-Z][a-zA-Z0-9_-]*``.
     """
 
     parent = proto.Field(proto.STRING, number=1)

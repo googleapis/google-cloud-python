@@ -25,21 +25,23 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate transcoder GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="transcoder",
-    version="v1beta1",
-    bazel_target="//google/cloud/video/transcoder/v1beta1:video-transcoder-v1beta1-py",
-)
+versions = ["v1beta1"]
+for version in versions:
+    library = gapic.py_library(
+        service="transcoder",
+        version=version,
+        bazel_target=f"//google/cloud/video/transcoder/{version}:video-transcoder-{version}-py",
+    )
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "docs/index.rst",
-        "noxfile.py",
-        "scripts/fixup_transcoder_v1beta1_keywords.py",
-    ],
-)
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "docs/index.rst",
+            "noxfile.py",
+            f"scripts/fixup_transcoder_{version}_keywords.py",
+        ],
+    )
 
 # ----------------------------------------------------------------------------
 # Add templated files
