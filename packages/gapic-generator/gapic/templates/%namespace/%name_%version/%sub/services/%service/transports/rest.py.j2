@@ -1,0 +1,175 @@
+{% extends '_base.py.j2' %}
+
+{% block content %}
+import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple
+
+{% if service.has_lro %}
+from google.api_core import operations_v1
+{%- endif %}
+from google.api_core import gapic_v1       # type: ignore
+from google import auth                    # type: ignore
+from google.auth import credentials        # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+
+import grpc  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession
+
+{# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
+{% filter sort_lines -%}
+{% for method in service.methods.values() -%}
+{{ method.input.ident.python_import }}
+{{ method.output.ident.python_import }}
+{% endfor -%}
+{% if opts.add_iam_methods %}
+from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
+from google.iam.v1 import policy_pb2 as policy  # type: ignore
+{% endif %}
+{% endfilter %}
+
+from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
+
+
+class {{ service.name }}RestTransport({{ service.name }}Transport):
+    """REST backend transport for {{ service.name }}.
+
+    {{ service.meta.doc|rst(width=72, indent=4) }}
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends JSON representations of protocol buffers over HTTP/1.1
+    """
+    {# TODO(yon-mg): handle mtls stuff if that's relevant for rest transport #}
+    def __init__(self, *,
+            host: str{% if service.host %} = '{{ service.host }}'{% endif %},
+            credentials: credentials.Credentials = None,
+            credentials_file: str = None,
+            scopes: Sequence[str] = None,
+            ssl_channel_credentials: grpc.ChannelCredentials = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
+                {{- ' ' }}The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+            
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
+        """
+        super().__init__(host=host, credentials=credentials)
+        self._session = AuthorizedSession(self._credentials)
+        {%- if service.has_lro %}
+        self._operations_client = None
+        {%- endif %}
+
+    {%- if service.has_lro %}
+    
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            from google.api_core import grpc_helpers
+            self._operations_client = operations_v1.OperationsClient(
+                grpc_helpers.create_channel(
+                    self._host,
+                    credentials=self._credentials,
+                    scopes=self.AUTH_SCOPES,
+                )
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+    {%- endif %}
+    {%- for method in service.methods.values() %}
+    {%- if method.http_opt %}
+
+    def {{ method.name|snake_case }}(self,
+            request: {{ method.input.ident }}, *,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> {{ method.output.ident }}:
+        r"""Call the {{- ' ' -}}
+        {{ (method.name|snake_case).replace('_',' ')|wrap(
+                width=70, offset=45, indent=8) }}
+        {{- ' ' -}} method over HTTP.
+
+        Args:
+            request (~.{{ method.input.ident }}):
+                The request object.
+                {{ method.input.meta.doc|rst(width=72, indent=16) }}
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        {%- if not method.void %}
+
+        Returns:
+            ~.{{ method.output.ident }}:
+                {{ method.output.meta.doc|rst(width=72, indent=16) }}
+        {%- endif %}
+        """
+
+        {%- if 'body' in method.http_opt.keys() %}
+        # Jsonify the input
+        data = {{ method.output.ident }}.to_json(
+            {%- if method.http_opt['body'] == '*' %}
+            request
+            {%- else %}
+            request.body
+            {%- endif %}
+        )
+        {%- endif %}
+
+        {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
+        # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
+        #              current impl assumes simpler version of grpc transcoding
+        # Send the request
+        url = 'https://{host}{{ method.http_opt['url'] }}'.format(
+            host=self._host,
+            {%- for field in method.input.fields.keys() %}
+            {{ field }}=request.{{ field }},
+            {%- endfor %}
+        )
+        {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
+            url,
+            {%- if 'body' in method.http_opt.keys() %}
+            json=data,
+            {%- endif %}
+        )
+        {%- if not method.void %}
+
+        # Return the response
+        return {{ method.output.ident }}.from_json(response.content)
+        {%- endif %}
+    {%- endif %}
+    {%- endfor %}
+
+
+__all__ = (
+    '{{ service.name }}RestTransport',
+)
+{% endblock %}

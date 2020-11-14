@@ -30,6 +30,7 @@ from .transports.grpc_asyncio import {{ service.grpc_asyncio_transport_name }}
 from .client import {{ service.client_name }}
 
 
+{# TODO(yon-mg): handle rest transport async client interaction #}
 class {{ service.async_client_name }}:
     """{{ service.meta.doc|rst(width=72, indent=4) }}"""
 

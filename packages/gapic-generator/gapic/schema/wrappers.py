@@ -719,6 +719,8 @@ class Method:
         # Return the usual output.
         return self.output
 
+    # TODO(yon-mg): remove or rewrite: don't think it performs as intended
+    #               e.g. doesn't work with basic case of gRPC transcoding
     @property
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
@@ -737,6 +739,35 @@ class Method:
 
         return next((tuple(pattern.findall(verb)) for verb in potential_verbs if verb), ())
 
+    @property
+    def http_opt(self) -> Optional[Dict[str, str]]:
+        """Return the http option for this method.
+
+        e.g. {'verb': 'post'
+              'url': '/some/path'
+              'body': '*'}
+
+        """
+        http: List[Tuple[descriptor_pb2.FieldDescriptorProto, str]]
+        http = self.options.Extensions[annotations_pb2.http].ListFields()
+
+        if len(http) < 1:
+            return None
+
+        http_method = http[0]
+        answer: Dict[str, str] = {
+            'verb': http_method[0].name,
+            'url': http_method[1],
+        }
+        if len(http) > 1:
+            body_spec = http[1]
+            answer[body_spec[0].name] = body_spec[1]
+
+        # TODO(yon-mg): handle nested fields & fields past body i.e. 'additional bindings'
+        # TODO(yon-mg): enums for http verbs?
+        return answer
+
+    # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:
         """Return the signature defined for this method."""
@@ -786,6 +817,7 @@ class Method:
             server='stream' if self.server_streaming else 'unary',
         )
 
+    # TODO(yon-mg): figure out why idempotent is reliant on http annotation
     @utils.cached_property
     def idempotent(self) -> bool:
         """Return True if we know this method is idempotent, False otherwise.
@@ -979,6 +1011,10 @@ class Service:
     @property
     def grpc_asyncio_transport_name(self):
         return self.name + "GrpcAsyncIOTransport"
+
+    @property
+    def rest_transport_name(self):
+        return self.name + "RestTransport"
 
     @property
     def has_lro(self) -> bool:

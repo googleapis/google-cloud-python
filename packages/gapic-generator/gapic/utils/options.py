@@ -40,6 +40,8 @@ class Options:
     lazy_import: bool = False
     old_naming: bool = False
     add_iam_methods: bool = False
+    # TODO(yon-mg): should there be an enum for transport type?
+    transport: List[str] = dataclasses.field(default_factory=lambda: [])
 
     # Class constants
     PYTHON_GAPIC_PREFIX: str = 'python-gapic-'
@@ -49,6 +51,8 @@ class Options:
         'samples',              # output dir
         'lazy-import',          # requires >= 3.7
         'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
+        # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
+        'transport',
     ))
 
     @classmethod
@@ -121,6 +125,7 @@ class Options:
 
         # Build the options instance.
         sample_paths = opts.pop('samples', [])
+
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
@@ -134,6 +139,8 @@ class Options:
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),
             add_iam_methods=bool(opts.pop('add-iam-methods', False)),
+            # transport should include desired transports delimited by '+', e.g. transport='grpc+rest'
+            transport=opts.pop('transport', ['grpc'])[0].split('+')
         )
 
         # Note: if we ever need to recursively check directories for sample

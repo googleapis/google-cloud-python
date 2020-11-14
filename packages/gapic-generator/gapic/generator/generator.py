@@ -272,8 +272,11 @@ class Generator:
         if "%service" in template_name:
             for service in api_schema.services.values():
                 if (
-                        skip_subpackages
-                        and service.meta.address.subpackage != api_schema.subpackage_view
+                        (skip_subpackages
+                        and service.meta.address.subpackage != api_schema.subpackage_view)
+                        or
+                        ('transport' in template_name
+                        and not self._is_desired_transport(template_name, opts))
                 ):
                     continue
 
@@ -292,6 +295,11 @@ class Generator:
         answer.update(self._get_file(
             template_name, api_schema=api_schema, opts=opts))
         return answer
+
+    def _is_desired_transport(self, template_name: str, opts: Options) -> bool:
+        """Returns true if template name contains a desired transport"""
+        desired_transports = ['__init__', 'base'] + opts.transport
+        return any(transport in template_name for transport in desired_transports)
 
     def _get_file(
         self,

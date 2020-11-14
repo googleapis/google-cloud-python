@@ -205,6 +205,9 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         )
 
         self._stubs = {}
+        {%- if service.has_lro %}
+        self._operations_client = None
+        {%- endif %}
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -225,13 +228,13 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         client.
         """
         # Sanity check: Only create a new client if we do not already have one.
-        if 'operations_client' not in self.__dict__:
-            self.__dict__['operations_client'] = operations_v1.OperationsAsyncClient(
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
                 self.grpc_channel
             )
 
         # Return the client from cache.
-        return self.__dict__['operations_client']
+        return self._operations_client
     {%- endif %}
     {%- for method in service.methods.values() %}
 

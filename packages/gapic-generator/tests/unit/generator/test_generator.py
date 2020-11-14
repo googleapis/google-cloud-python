@@ -116,6 +116,43 @@ def test_get_response_fails_invalid_file_paths():
         assert "%proto" in ex_str and "%service" in ex_str
 
 
+def test_get_response_ignores_unwanted_transports():
+    g = make_generator()
+    with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
+        lt.return_value = [
+            "foo/%service/transports/river.py.j2",
+            "foo/%service/transports/car.py.j2",
+            "foo/%service/transports/grpc.py.j2",
+            "foo/%service/transports/__init__.py.j2",
+            "foo/%service/transports/base.py.j2",
+            "mollusks/squid/sample.py.j2",
+        ]
+
+        with mock.patch.object(jinja2.Environment, "get_template") as gt:
+            gt.return_value = jinja2.Template("Service: {{ service.name }}")
+            cgr = g.get_response(
+                api_schema=make_api(
+                    make_proto(
+                        descriptor_pb2.FileDescriptorProto(
+                            service=[
+                                descriptor_pb2.ServiceDescriptorProto(
+                                    name="SomeService"),
+                            ]
+                        ),
+                    )
+                ),
+                opts=Options.build("transport=river+car")
+            )
+
+            assert len(cgr.file) == 4
+            assert {i.name for i in cgr.file} == {
+                "foo/some_service/transports/river.py",
+                "foo/some_service/transports/car.py",
+                "foo/some_service/transports/__init__.py",
+                "foo/some_service/transports/base.py",
+            }
+
+
 def test_get_response_enumerates_services():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:

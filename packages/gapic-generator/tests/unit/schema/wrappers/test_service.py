@@ -59,6 +59,7 @@ def test_service_properties():
     assert service.transport_name == 'ThingDoerTransport'
     assert service.grpc_transport_name == 'ThingDoerGrpcTransport'
     assert service.grpc_asyncio_transport_name == 'ThingDoerGrpcAsyncIOTransport'
+    assert service.rest_transport_name == 'ThingDoerRestTransport'
 
 
 def test_service_host():
