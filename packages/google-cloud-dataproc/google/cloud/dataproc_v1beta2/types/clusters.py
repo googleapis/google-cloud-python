@@ -916,7 +916,7 @@ class CreateClusterRequest(proto.Message):
 
     region = proto.Field(proto.STRING, number=3)
 
-    cluster = proto.Field(proto.MESSAGE, number=2, message=Cluster,)
+    cluster = proto.Field(proto.MESSAGE, number=2, message="Cluster",)
 
     request_id = proto.Field(proto.STRING, number=4)
 
@@ -1039,7 +1039,7 @@ class UpdateClusterRequest(proto.Message):
 
     cluster_name = proto.Field(proto.STRING, number=2)
 
-    cluster = proto.Field(proto.MESSAGE, number=3, message=Cluster,)
+    cluster = proto.Field(proto.MESSAGE, number=3, message="Cluster",)
 
     graceful_decommission_timeout = proto.Field(
         proto.MESSAGE, number=6, message=duration.Duration,
@@ -1182,7 +1182,7 @@ class ListClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    clusters = proto.RepeatedField(proto.MESSAGE, number=1, message=Cluster,)
+    clusters = proto.RepeatedField(proto.MESSAGE, number=1, message="Cluster",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

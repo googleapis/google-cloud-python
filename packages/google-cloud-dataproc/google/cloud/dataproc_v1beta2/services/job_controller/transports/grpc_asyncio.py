@@ -15,10 +15,13 @@
 # limitations under the License.
 #
 
+import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
+from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
+from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -29,7 +32,7 @@ from google.cloud.dataproc_v1beta2.types import jobs
 from google.longrunning import operations_pb2 as operations  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
-from .base import JobControllerTransport
+from .base import JobControllerTransport, DEFAULT_CLIENT_INFO
 from .grpc import JobControllerGrpcTransport
 
 
@@ -100,7 +103,9 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
         channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
         quota_project_id=None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
 
@@ -120,16 +125,23 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
                 are passed to :func:`google.auth.default`.
             channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
-            api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
-                provided, it overrides the ``host`` argument and tries to create
+            api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
+                If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
                 ``client_cert_source`` or applicatin default SSL credentials.
-            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]): A
-                callback to provide client SSL certificate bytes and private key
-                bytes, both in PEM format. It is ignored if ``api_mtls_endpoint``
-                is None.
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                Deprecated. A callback to provide client SSL certificate bytes and
+                private key bytes, both in PEM format. It is ignored if
+                ``api_mtls_endpoint`` is None.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -137,6 +149,8 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -144,12 +158,23 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
+            warnings.warn(
+                "api_mtls_endpoint and client_cert_source are deprecated",
+                DeprecationWarning,
+            )
+
             host = (
                 api_mtls_endpoint
                 if ":" in api_mtls_endpoint
                 else api_mtls_endpoint + ":443"
             )
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -170,6 +195,24 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
             )
+            self._ssl_channel_credentials = ssl_credentials
+        else:
+            host = host if ":" in host else host + ":443"
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=ssl_channel_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+            )
 
         # Run the base constructor.
         super().__init__(
@@ -178,6 +221,7 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
             credentials_file=credentials_file,
             scopes=scopes or self.AUTH_SCOPES,
             quota_project_id=quota_project_id,
+            client_info=client_info,
         )
 
         self._stubs = {}
@@ -189,13 +233,6 @@ class JobControllerGrpcAsyncIOTransport(JobControllerTransport):
         This property caches on the instance; repeated calls return
         the same channel.
         """
-        # Sanity check: Only create a new channel if we do not already
-        # have one.
-        if not hasattr(self, "_grpc_channel"):
-            self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials,
-            )
-
         # Return the channel from cache.
         return self._grpc_channel
 

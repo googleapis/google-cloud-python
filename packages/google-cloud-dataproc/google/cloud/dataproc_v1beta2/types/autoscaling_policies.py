@@ -245,7 +245,7 @@ class CreateAutoscalingPolicyRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    policy = proto.Field(proto.MESSAGE, number=2, message=AutoscalingPolicy,)
+    policy = proto.Field(proto.MESSAGE, number=2, message="AutoscalingPolicy",)
 
 
 class GetAutoscalingPolicyRequest(proto.Message):
@@ -277,7 +277,7 @@ class UpdateAutoscalingPolicyRequest(proto.Message):
             Required. The updated autoscaling policy.
     """
 
-    policy = proto.Field(proto.MESSAGE, number=1, message=AutoscalingPolicy,)
+    policy = proto.Field(proto.MESSAGE, number=1, message="AutoscalingPolicy",)
 
 
 class DeleteAutoscalingPolicyRequest(proto.Message):
@@ -352,7 +352,9 @@ class ListAutoscalingPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policies = proto.RepeatedField(proto.MESSAGE, number=1, message=AutoscalingPolicy,)
+    policies = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="AutoscalingPolicy",
+    )
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

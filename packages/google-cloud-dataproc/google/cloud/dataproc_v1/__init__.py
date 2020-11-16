@@ -147,7 +147,6 @@ __all__ = (
     "InstantiateInlineWorkflowTemplateRequest",
     "InstantiateWorkflowTemplateRequest",
     "Job",
-    "JobControllerClient",
     "JobMetadata",
     "JobPlacement",
     "JobReference",
@@ -192,6 +191,7 @@ __all__ = (
     "WorkflowNode",
     "WorkflowTemplate",
     "WorkflowTemplatePlacement",
-    "YarnApplication",
     "WorkflowTemplateServiceClient",
+    "YarnApplication",
+    "JobControllerClient",
 )

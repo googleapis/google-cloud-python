@@ -145,7 +145,7 @@ class HadoopJob(proto.Message):
 
     properties = proto.MapField(proto.STRING, proto.STRING, number=7)
 
-    logging_config = proto.Field(proto.MESSAGE, number=8, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=8, message="LoggingConfig",)
 
 
 class SparkJob(proto.Message):
@@ -203,7 +203,7 @@ class SparkJob(proto.Message):
 
     properties = proto.MapField(proto.STRING, proto.STRING, number=7)
 
-    logging_config = proto.Field(proto.MESSAGE, number=8, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=8, message="LoggingConfig",)
 
 
 class PySparkJob(proto.Message):
@@ -263,7 +263,7 @@ class PySparkJob(proto.Message):
 
     properties = proto.MapField(proto.STRING, proto.STRING, number=7)
 
-    logging_config = proto.Field(proto.MESSAGE, number=8, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=8, message="LoggingConfig",)
 
 
 class QueryList(proto.Message):
@@ -326,7 +326,7 @@ class HiveJob(proto.Message):
     query_file_uri = proto.Field(proto.STRING, number=1, oneof="queries")
 
     query_list = proto.Field(
-        proto.MESSAGE, number=2, oneof="queries", message=QueryList,
+        proto.MESSAGE, number=2, oneof="queries", message="QueryList",
     )
 
     continue_on_failure = proto.Field(proto.BOOL, number=3)
@@ -368,7 +368,7 @@ class SparkSqlJob(proto.Message):
     query_file_uri = proto.Field(proto.STRING, number=1, oneof="queries")
 
     query_list = proto.Field(
-        proto.MESSAGE, number=2, oneof="queries", message=QueryList,
+        proto.MESSAGE, number=2, oneof="queries", message="QueryList",
     )
 
     script_variables = proto.MapField(proto.STRING, proto.STRING, number=3)
@@ -377,7 +377,7 @@ class SparkSqlJob(proto.Message):
 
     jar_file_uris = proto.RepeatedField(proto.STRING, number=56)
 
-    logging_config = proto.Field(proto.MESSAGE, number=6, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=6, message="LoggingConfig",)
 
 
 class PigJob(proto.Message):
@@ -415,7 +415,7 @@ class PigJob(proto.Message):
     query_file_uri = proto.Field(proto.STRING, number=1, oneof="queries")
 
     query_list = proto.Field(
-        proto.MESSAGE, number=2, oneof="queries", message=QueryList,
+        proto.MESSAGE, number=2, oneof="queries", message="QueryList",
     )
 
     continue_on_failure = proto.Field(proto.BOOL, number=3)
@@ -426,7 +426,7 @@ class PigJob(proto.Message):
 
     jar_file_uris = proto.RepeatedField(proto.STRING, number=6)
 
-    logging_config = proto.Field(proto.MESSAGE, number=7, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=7, message="LoggingConfig",)
 
 
 class SparkRJob(proto.Message):
@@ -475,7 +475,7 @@ class SparkRJob(proto.Message):
 
     properties = proto.MapField(proto.STRING, proto.STRING, number=5)
 
-    logging_config = proto.Field(proto.MESSAGE, number=6, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=6, message="LoggingConfig",)
 
 
 class PrestoJob(proto.Message):
@@ -515,7 +515,7 @@ class PrestoJob(proto.Message):
     query_file_uri = proto.Field(proto.STRING, number=1, oneof="queries")
 
     query_list = proto.Field(
-        proto.MESSAGE, number=2, oneof="queries", message=QueryList,
+        proto.MESSAGE, number=2, oneof="queries", message="QueryList",
     )
 
     continue_on_failure = proto.Field(proto.BOOL, number=3)
@@ -526,7 +526,7 @@ class PrestoJob(proto.Message):
 
     properties = proto.MapField(proto.STRING, proto.STRING, number=6)
 
-    logging_config = proto.Field(proto.MESSAGE, number=7, message=LoggingConfig,)
+    logging_config = proto.Field(proto.MESSAGE, number=7, message="LoggingConfig",)
 
 
 class JobPlacement(proto.Message):
@@ -738,44 +738,46 @@ class Job(proto.Message):
             will indicate if it was successful, failed, or cancelled.
     """
 
-    reference = proto.Field(proto.MESSAGE, number=1, message=JobReference,)
+    reference = proto.Field(proto.MESSAGE, number=1, message="JobReference",)
 
-    placement = proto.Field(proto.MESSAGE, number=2, message=JobPlacement,)
+    placement = proto.Field(proto.MESSAGE, number=2, message="JobPlacement",)
 
     hadoop_job = proto.Field(
-        proto.MESSAGE, number=3, oneof="type_job", message=HadoopJob,
+        proto.MESSAGE, number=3, oneof="type_job", message="HadoopJob",
     )
 
     spark_job = proto.Field(
-        proto.MESSAGE, number=4, oneof="type_job", message=SparkJob,
+        proto.MESSAGE, number=4, oneof="type_job", message="SparkJob",
     )
 
     pyspark_job = proto.Field(
-        proto.MESSAGE, number=5, oneof="type_job", message=PySparkJob,
+        proto.MESSAGE, number=5, oneof="type_job", message="PySparkJob",
     )
 
-    hive_job = proto.Field(proto.MESSAGE, number=6, oneof="type_job", message=HiveJob,)
+    hive_job = proto.Field(
+        proto.MESSAGE, number=6, oneof="type_job", message="HiveJob",
+    )
 
-    pig_job = proto.Field(proto.MESSAGE, number=7, oneof="type_job", message=PigJob,)
+    pig_job = proto.Field(proto.MESSAGE, number=7, oneof="type_job", message="PigJob",)
 
     spark_r_job = proto.Field(
-        proto.MESSAGE, number=21, oneof="type_job", message=SparkRJob,
+        proto.MESSAGE, number=21, oneof="type_job", message="SparkRJob",
     )
 
     spark_sql_job = proto.Field(
-        proto.MESSAGE, number=12, oneof="type_job", message=SparkSqlJob,
+        proto.MESSAGE, number=12, oneof="type_job", message="SparkSqlJob",
     )
 
     presto_job = proto.Field(
-        proto.MESSAGE, number=23, oneof="type_job", message=PrestoJob,
+        proto.MESSAGE, number=23, oneof="type_job", message="PrestoJob",
     )
 
-    status = proto.Field(proto.MESSAGE, number=8, message=JobStatus,)
+    status = proto.Field(proto.MESSAGE, number=8, message="JobStatus",)
 
-    status_history = proto.RepeatedField(proto.MESSAGE, number=13, message=JobStatus,)
+    status_history = proto.RepeatedField(proto.MESSAGE, number=13, message="JobStatus",)
 
     yarn_applications = proto.RepeatedField(
-        proto.MESSAGE, number=9, message=YarnApplication,
+        proto.MESSAGE, number=9, message="YarnApplication",
     )
 
     driver_output_resource_uri = proto.Field(proto.STRING, number=17)
@@ -843,7 +845,7 @@ class SubmitJobRequest(proto.Message):
 
     region = proto.Field(proto.STRING, number=3)
 
-    job = proto.Field(proto.MESSAGE, number=2, message=Job,)
+    job = proto.Field(proto.MESSAGE, number=2, message="Job",)
 
     request_id = proto.Field(proto.STRING, number=4)
 
@@ -864,7 +866,7 @@ class JobMetadata(proto.Message):
 
     job_id = proto.Field(proto.STRING, number=1)
 
-    status = proto.Field(proto.MESSAGE, number=2, message=JobStatus,)
+    status = proto.Field(proto.MESSAGE, number=2, message="JobStatus",)
 
     operation_type = proto.Field(proto.STRING, number=3)
 
@@ -988,7 +990,7 @@ class UpdateJobRequest(proto.Message):
 
     job_id = proto.Field(proto.STRING, number=3)
 
-    job = proto.Field(proto.MESSAGE, number=4, message=Job,)
+    job = proto.Field(proto.MESSAGE, number=4, message="Job",)
 
     update_mask = proto.Field(proto.MESSAGE, number=5, message=field_mask.FieldMask,)
 
@@ -1010,7 +1012,7 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=Job,)
+    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message="Job",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

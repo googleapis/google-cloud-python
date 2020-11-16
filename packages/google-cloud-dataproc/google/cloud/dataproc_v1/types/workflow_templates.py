@@ -608,7 +608,7 @@ class CreateWorkflowTemplateRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    template = proto.Field(proto.MESSAGE, number=2, message=WorkflowTemplate,)
+    template = proto.Field(proto.MESSAGE, number=2, message="WorkflowTemplate",)
 
 
 class GetWorkflowTemplateRequest(proto.Message):
@@ -726,7 +726,7 @@ class InstantiateInlineWorkflowTemplateRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    template = proto.Field(proto.MESSAGE, number=2, message=WorkflowTemplate,)
+    template = proto.Field(proto.MESSAGE, number=2, message="WorkflowTemplate",)
 
     request_id = proto.Field(proto.STRING, number=3)
 
@@ -742,7 +742,7 @@ class UpdateWorkflowTemplateRequest(proto.Message):
             version.
     """
 
-    template = proto.Field(proto.MESSAGE, number=1, message=WorkflowTemplate,)
+    template = proto.Field(proto.MESSAGE, number=1, message="WorkflowTemplate",)
 
 
 class ListWorkflowTemplatesRequest(proto.Message):
@@ -795,7 +795,9 @@ class ListWorkflowTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    templates = proto.RepeatedField(proto.MESSAGE, number=1, message=WorkflowTemplate,)
+    templates = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="WorkflowTemplate",
+    )
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

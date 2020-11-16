@@ -91,10 +91,10 @@ class ClusterOperationMetadata(proto.Message):
 
     cluster_uuid = proto.Field(proto.STRING, number=8)
 
-    status = proto.Field(proto.MESSAGE, number=9, message=ClusterOperationStatus,)
+    status = proto.Field(proto.MESSAGE, number=9, message="ClusterOperationStatus",)
 
     status_history = proto.RepeatedField(
-        proto.MESSAGE, number=10, message=ClusterOperationStatus,
+        proto.MESSAGE, number=10, message="ClusterOperationStatus",
     )
 
     operation_type = proto.Field(proto.STRING, number=11)
