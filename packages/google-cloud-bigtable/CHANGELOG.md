@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [1.6.0](https://www.github.com/googleapis/python-bigtable/compare/v1.5.1...v1.6.0) (2020-11-16)
+
+
+### Features
+
+* add 'timeout' arg to 'Table.mutate_rows' ([#157](https://www.github.com/googleapis/python-bigtable/issues/157)) ([6d597a1](https://www.github.com/googleapis/python-bigtable/commit/6d597a1e5be05c993c9f86beca4c1486342caf94)), closes [/github.com/googleapis/python-bigtable/issues/7#issuecomment-715538708](https://www.github.com/googleapis//github.com/googleapis/python-bigtable/issues/7/issues/issuecomment-715538708) [#7](https://www.github.com/googleapis/python-bigtable/issues/7)
+* Backup Level IAM ([#160](https://www.github.com/googleapis/python-bigtable/issues/160)) ([44932cb](https://www.github.com/googleapis/python-bigtable/commit/44932cb8710e12279dbd4e9271577f8bee238980))
+
 ### [1.5.1](https://www.github.com/googleapis/python-bigtable/compare/v1.5.0...v1.5.1) (2020-10-06)
 
 
