@@ -1,0 +1,7 @@
+# https://github.com/googleapis/repo-automation-bots/tree/master/packages/sync-repo-settings
+
+permissionRules:
+    # Team slug to add to repository permissions
+  - team: area120-tables
+    # Access level required, one of push|pull|admin
+    permission: push
