@@ -29,7 +29,7 @@ __version__ = ""
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = "1.6.3"
+needs_sphinx = "1.5.5"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -39,6 +39,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
@@ -348,6 +349,7 @@ intersphinx_mapping = {
     "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
     "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None,),
     "grpc": ("https://grpc.io/grpc/python/", None),
+    "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
 }
 
 

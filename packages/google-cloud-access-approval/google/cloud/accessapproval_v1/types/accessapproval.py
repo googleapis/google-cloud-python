@@ -103,7 +103,7 @@ class AccessReason(proto.Message):
     r"""
 
     Attributes:
-        type (~.accessapproval.AccessReason.Type):
+        type_ (~.accessapproval.AccessReason.Type):
             Type of access justification.
         detail (str):
             More detail about certain reason types. See
@@ -117,7 +117,7 @@ class AccessReason(proto.Message):
         GOOGLE_INITIATED_SERVICE = 2
         GOOGLE_INITIATED_REVIEW = 3
 
-    type = proto.Field(proto.ENUM, number=1, enum=Type,)
+    type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
 
     detail = proto.Field(proto.STRING, number=2)
 
@@ -205,12 +205,14 @@ class ApprovalRequest(proto.Message):
     requested_resource_name = proto.Field(proto.STRING, number=2)
 
     requested_resource_properties = proto.Field(
-        proto.MESSAGE, number=9, message=ResourceProperties,
+        proto.MESSAGE, number=9, message="ResourceProperties",
     )
 
-    requested_reason = proto.Field(proto.MESSAGE, number=3, message=AccessReason,)
+    requested_reason = proto.Field(proto.MESSAGE, number=3, message="AccessReason",)
 
-    requested_locations = proto.Field(proto.MESSAGE, number=4, message=AccessLocations,)
+    requested_locations = proto.Field(
+        proto.MESSAGE, number=4, message="AccessLocations",
+    )
 
     request_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
 
@@ -219,11 +221,11 @@ class ApprovalRequest(proto.Message):
     )
 
     approve = proto.Field(
-        proto.MESSAGE, number=7, oneof="decision", message=ApproveDecision,
+        proto.MESSAGE, number=7, oneof="decision", message="ApproveDecision",
     )
 
     dismiss = proto.Field(
-        proto.MESSAGE, number=8, oneof="decision", message=DismissDecision,
+        proto.MESSAGE, number=8, oneof="decision", message="DismissDecision",
     )
 
 
@@ -303,7 +305,7 @@ class AccessApprovalSettings(proto.Message):
     notification_emails = proto.RepeatedField(proto.STRING, number=2)
 
     enrolled_services = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=EnrolledService,
+        proto.MESSAGE, number=3, message="EnrolledService",
     )
 
     enrolled_ancestor = proto.Field(proto.BOOL, number=4)
@@ -358,7 +360,7 @@ class ListApprovalRequestsResponse(proto.Message):
         return self
 
     approval_requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ApprovalRequest,
+        proto.MESSAGE, number=1, message="ApprovalRequest",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -433,7 +435,7 @@ class UpdateAccessApprovalSettingsMessage(proto.Message):
             field will be updated.
     """
 
-    settings = proto.Field(proto.MESSAGE, number=1, message=AccessApprovalSettings,)
+    settings = proto.Field(proto.MESSAGE, number=1, message="AccessApprovalSettings",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
