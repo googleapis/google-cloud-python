@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-dns.git",
-        "sha": "796b08948b2988efcfd6e12a3e8395a214658dd3"
+        "sha": "51d4d10884d3e13bb9051114537a1a6eddab0086"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "71b8a272549c06b5768d00fa48d3ae990e871bec"
+        "sha": "39b527a39f5cd56d4882b3874fc08eed4756cebe"
       }
     }
   ]
