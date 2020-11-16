@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-access-approval/compare/v1.0.0...v1.1.0) (2020-11-16)
+
+
+### Features
+
+* add common resource helpers, expose client transport ([#33](https://www.github.com/googleapis/python-access-approval/issues/33)) ([2c07916](https://www.github.com/googleapis/python-access-approval/commit/2c0791682d0ca4f62f3649c5e408176346adc7a1))
+
 ## [1.0.0](https://www.github.com/googleapis/python-access-approval/compare/v0.2.0...v1.0.0) (2020-08-05)
 
 
