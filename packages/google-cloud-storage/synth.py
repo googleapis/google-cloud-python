@@ -25,7 +25,7 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=99,
+    cov_level=100,
     system_test_external_dependencies=[
         "google-cloud-iam",
         "google-cloud-pubsub < 2.0.0",
