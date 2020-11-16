@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-bigquery/compare/v2.3.1...v2.4.0) (2020-11-16)
+
+
+### Features
+
+* add progress bar to `QueryJob.to_dataframe` and `to_arrow` ([#352](https://www.github.com/googleapis/python-bigquery/issues/352)) ([dc78edd](https://www.github.com/googleapis/python-bigquery/commit/dc78eddde7a6a312c8fed7bace7d64036837ab1a))
+* allow routine references ([#378](https://www.github.com/googleapis/python-bigquery/issues/378)) ([f9480dc](https://www.github.com/googleapis/python-bigquery/commit/f9480dc2a1bc58367083176bd74725aa8b903301))
+
+
+### Bug Fixes
+
+* **dbapi:** allow rows to be fetched from scripts ([#387](https://www.github.com/googleapis/python-bigquery/issues/387)) ([b899ad1](https://www.github.com/googleapis/python-bigquery/commit/b899ad12e17cb87c58d3ae46b4388d917c5743f2)), closes [#377](https://www.github.com/googleapis/python-bigquery/issues/377)
+
+
+### Performance Improvements
+
+* avoid extra API calls from `to_dataframe` if all rows are cached ([#384](https://www.github.com/googleapis/python-bigquery/issues/384)) ([c52b317](https://www.github.com/googleapis/python-bigquery/commit/c52b31789998fc0dfde07c3296650c85104d719d))
+* cache first page of `jobs.getQueryResults` rows ([#374](https://www.github.com/googleapis/python-bigquery/issues/374)) ([86f6a51](https://www.github.com/googleapis/python-bigquery/commit/86f6a516d1c7c5dc204ab085ea2578793e6561ff))
+* use `getQueryResults` from DB-API ([#375](https://www.github.com/googleapis/python-bigquery/issues/375)) ([30de15f](https://www.github.com/googleapis/python-bigquery/commit/30de15f7255de5ea221df4e8db7991d279e0ea28))
+
+
+### Dependencies
+
+* expand pyarrow dependencies to include version 2 ([#368](https://www.github.com/googleapis/python-bigquery/issues/368)) ([cd9febd](https://www.github.com/googleapis/python-bigquery/commit/cd9febd20c34983781386c3bf603e5fca7135695))
+
 ## 2.3.1
 
 11-05-2020 09:27 PST
