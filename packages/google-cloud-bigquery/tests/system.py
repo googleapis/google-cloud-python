@@ -249,7 +249,7 @@ class TestBigQuery(unittest.TestCase):
         client.close()
 
         conn_count_end = len(current_process.connections())
-        self.assertEqual(conn_count_end, conn_count_start)
+        self.assertLessEqual(conn_count_end, conn_count_start)
 
     def test_create_dataset(self):
         DATASET_ID = _make_dataset_id("create_dataset")
@@ -1972,7 +1972,9 @@ class TestBigQuery(unittest.TestCase):
     def test_dbapi_w_dml(self):
         dataset_name = _make_dataset_id("dml_dbapi")
         table_name = "test_table"
-        self._load_table_for_dml([("Hello World",)], dataset_name, table_name)
+        self._load_table_for_dml(
+            [("こんにちは",), ("Hello World",), ("Howdy!",)], dataset_name, table_name
+        )
         query_template = """UPDATE {}.{}
             SET greeting = 'Guten Tag'
             WHERE greeting = 'Hello World'
@@ -1983,7 +1985,6 @@ class TestBigQuery(unittest.TestCase):
             job_id="test_dbapi_w_dml_{}".format(str(uuid.uuid4())),
         )
         self.assertEqual(Config.CURSOR.rowcount, 1)
-        self.assertIsNone(Config.CURSOR.fetchone())
 
     def test_query_w_query_params(self):
         from google.cloud.bigquery.job import QueryJobConfig
