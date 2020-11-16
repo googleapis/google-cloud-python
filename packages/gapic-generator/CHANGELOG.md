@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.36.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.11...v0.36.0) (2020-11-14)
+
+
+### Features
+
+* add rest transport generation for clients with optional transport flag ([#688](https://www.github.com/googleapis/gapic-generator-python/issues/688)) ([af59c2c](https://www.github.com/googleapis/gapic-generator-python/commit/af59c2c3c3d6b7e1f626c3fbc2c03f99ca31b4a4))
+
 ### [0.35.11](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.10...v0.35.11) (2020-11-12)
 
 
