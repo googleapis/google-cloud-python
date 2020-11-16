@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.33.0](https://www.github.com/googleapis/python-storage/compare/v1.32.0...v1.33.0) (2020-11-16)
+
+
+### Features
+
+* add classifiers for python3.9 and remove for python3.5 ([#295](https://www.github.com/googleapis/python-storage/issues/295)) ([f072825](https://www.github.com/googleapis/python-storage/commit/f072825ce03d774fd95d9fe3db95a8c7130b0e8a))
+* add testing support for Python 3.9, drop Python 3.5 ([#313](https://www.github.com/googleapis/python-storage/issues/313)) ([fa14009](https://www.github.com/googleapis/python-storage/commit/fa140092877a277abbb23785657590a274a86d61))
+
+
+### Bug Fixes
+
+* use passed-in `client` within `Blob.from_string` and helpers ([#290](https://www.github.com/googleapis/python-storage/issues/290)) ([d457ce3](https://www.github.com/googleapis/python-storage/commit/d457ce3e161555c9117ae288ec0c9cd5f8d5fe3a)), closes [#286](https://www.github.com/googleapis/python-storage/issues/286)
+* preserve `metadata` value when uploading new file content ([#298](https://www.github.com/googleapis/python-storage/issues/298)) ([5ab6b0d](https://www.github.com/googleapis/python-storage/commit/5ab6b0d9a2b27ae830740a7a0226fc1e241e9ec4)), closes [#293](https://www.github.com/googleapis/python-storage/issues/293)
+
 ## [1.32.0](https://www.github.com/googleapis/python-storage/compare/v1.31.2...v1.32.0) (2020-10-16)
 
 
