@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-speech/compare/v2.0.0...v2.0.1) (2020-11-16)
+
+
+### Bug Fixes
+
+* deleted a line duplicating the call to the recognizer  ([#83](https://www.github.com/googleapis/python-speech/issues/83)) ([3ef6ce5](https://www.github.com/googleapis/python-speech/commit/3ef6ce5796126847acf231f67e2a2c9b52e27f5a))
+* migrated samples to speech 2.0.0 ([#78](https://www.github.com/googleapis/python-speech/issues/78)) ([47dd992](https://www.github.com/googleapis/python-speech/commit/47dd99237d79f7e7b991f6a15733c6e04b00f563))
+
 ## [2.0.0](https://www.github.com/googleapis/python-speech/compare/v1.3.2...v2.0.0) (2020-09-24)
 
 
