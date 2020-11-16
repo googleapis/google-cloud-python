@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-dataproc/compare/v2.1.0...v2.2.0) (2020-11-16)
+
+
+### Features
+
+* add common resource paths, expose client transport ([#87](https://www.github.com/googleapis/python-dataproc/issues/87)) ([7ec92b7](https://www.github.com/googleapis/python-dataproc/commit/7ec92b71be9c1d0d305421bb1b1dce5d92377bba)), closes [/github.com/googleapis/python-talent/blob/ef045e8eb348db36d7a2a611e6f26b11530d273b/samples/snippets/noxfile_config.py#L27-L32](https://www.github.com/googleapis//github.com/googleapis/python-talent/blob/ef045e8eb348db36d7a2a611e6f26b11530d273b/samples/snippets/noxfile_config.py/issues/L27-L32) [#792](https://www.github.com/googleapis/python-dataproc/issues/792)
+
 ## [2.0.2](https://www.github.com/googleapis/python-dataproc/compare/v2.0.1...v2.0.2) (2020-09-16)
 
 
