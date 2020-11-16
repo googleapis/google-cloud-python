@@ -2433,7 +2433,7 @@ class TestRowIterator(unittest.TestCase):
             self.assertEqual(len(df), 4)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
+    @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm", new=None)
     def test_to_dataframe_no_tqdm_no_progress_bar(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2461,7 +2461,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(df), 4)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @mock.patch("google.cloud.bigquery.table.tqdm", new=None)
+    @mock.patch("google.cloud.bigquery._tqdm_helpers.tqdm", new=None)
     def test_to_dataframe_no_tqdm(self):
         from google.cloud.bigquery.schema import SchemaField
 

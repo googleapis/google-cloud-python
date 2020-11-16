@@ -36,11 +36,6 @@ try:
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 
-try:
-    import tqdm
-except ImportError:  # pragma: NO COVER
-    tqdm = None
-
 import google.api_core.exceptions
 from google.api_core.page_iterator import HTTPIterator
 
@@ -50,6 +45,7 @@ from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
+from google.cloud.bigquery._tqdm_helpers import get_progress_bar
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
@@ -68,10 +64,7 @@ _NO_PYARROW_ERROR = (
     "The pyarrow library is not installed, please install "
     "pyarrow to use the to_arrow() function."
 )
-_NO_TQDM_ERROR = (
-    "A progress bar was requested, but there was an error loading the tqdm "
-    "library. Please install tqdm to use the progress bar functionality."
-)
+
 _TABLE_HAS_NO_SCHEMA = 'Table has no schema:  call "client.get_table()"'
 
 
@@ -1418,32 +1411,6 @@ class RowIterator(HTTPIterator):
         """int: The total number of rows in the table."""
         return self._total_rows
 
-    def _get_progress_bar(self, progress_bar_type):
-        """Construct a tqdm progress bar object, if tqdm is installed."""
-        if tqdm is None:
-            if progress_bar_type is not None:
-                warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
-            return None
-
-        description = "Downloading"
-        unit = "rows"
-
-        try:
-            if progress_bar_type == "tqdm":
-                return tqdm.tqdm(desc=description, total=self.total_rows, unit=unit)
-            elif progress_bar_type == "tqdm_notebook":
-                return tqdm.tqdm_notebook(
-                    desc=description, total=self.total_rows, unit=unit
-                )
-            elif progress_bar_type == "tqdm_gui":
-                return tqdm.tqdm_gui(desc=description, total=self.total_rows, unit=unit)
-        except (KeyError, TypeError):
-            # Protect ourselves from any tqdm errors. In case of
-            # unexpected tqdm behavior, just fall back to showing
-            # no progress bar.
-            warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
-        return None
-
     def _to_page_iterable(
         self, bqstorage_download, tabledata_list_download, bqstorage_client=None
     ):
@@ -1551,7 +1518,9 @@ class RowIterator(HTTPIterator):
             owns_bqstorage_client = bqstorage_client is not None
 
         try:
-            progress_bar = self._get_progress_bar(progress_bar_type)
+            progress_bar = get_progress_bar(
+                progress_bar_type, "Downloading", self.total_rows, "rows"
+            )
 
             record_batches = []
             for record_batch in self._to_arrow_iterable(
