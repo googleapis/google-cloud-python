@@ -69,13 +69,20 @@ class MetricType(proto.Enum):
     TYPE_INTEGER = 1
     TYPE_FLOAT = 2
     TYPE_SECONDS = 4
+    TYPE_MILLISECONDS = 5
+    TYPE_MINUTES = 6
+    TYPE_HOURS = 7
+    TYPE_STANDARD = 8
     TYPE_CURRENCY = 9
+    TYPE_FEET = 10
+    TYPE_MILES = 11
+    TYPE_METERS = 12
+    TYPE_KILOMETERS = 13
 
 
 class DateRange(proto.Message):
     r"""A contiguous set of days: startDate, startDate + 1, ...,
-    endDate. Requests are allowed up to 4 date ranges, and the union
-    of the ranges can cover up to 1 year.
+    endDate. Requests are allowed up to 4 date ranges.
 
     Attributes:
         start_date (str):
@@ -111,7 +118,9 @@ class Entity(proto.Message):
 
     Attributes:
         property_id (str):
-            A Google Analytics App + Web property id.
+            A Google Analytics GA4 property id. To learn more, see
+            `where to find your Property
+            ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
     """
 
     property_id = proto.Field(proto.STRING, number=1)
@@ -119,13 +128,25 @@ class Entity(proto.Message):
 
 class Dimension(proto.Message):
     r"""Dimensions are attributes of your data. For example, the
-    dimension City indicates the city, for example, "Paris" or "New
-    York", from which an event originates. Requests are allowed up
-    to 8 dimensions.
+    dimension city indicates the city from which an event
+    originates. Dimension values in report responses are strings;
+    for example, city could be "Paris" or "New York". Requests are
+    allowed up to 8 dimensions.
 
     Attributes:
         name (str):
-            The name of the dimension.
+            The name of the dimension. See the `API
+            Dimensions <https://developers.google.com/analytics/trusted-testing/analytics-data/api-schema#dimensions>`__
+            for the list of dimension names.
+
+            If ``dimensionExpression`` is specified, ``name`` can be any
+            string that you would like. For example if a
+            ``dimensionExpression`` concatenates ``country`` and
+            ``city``, you could call that dimension ``countryAndCity``.
+
+            Dimensions are referenced by ``name`` in
+            ``dimensionFilter``, ``orderBys``, ``dimensionExpression``,
+            and ``pivots``.
         dimension_expression (~.data.DimensionExpression):
             One dimension can be the result of an
             expression of multiple dimensions. For example,
@@ -208,22 +229,32 @@ class DimensionExpression(proto.Message):
 
 
 class Metric(proto.Message):
-    r"""The quantitative measurements of a report. For example, the
-    metric eventCount is the total number of events. Requests are
-    allowed up to 10 metrics.
+    r"""The quantitative measurements of a report. For example, the metric
+    ``eventCount`` is the total number of events. Requests are allowed
+    up to 10 metrics.
 
     Attributes:
         name (str):
-            The name of the metric.
+            The name of the metric. See the `API
+            Metrics <https://developers.google.com/analytics/trusted-testing/analytics-data/api-schema#metrics>`__
+            for the list of metric names.
+
+            If ``expression`` is specified, ``name`` can be any string
+            that you would like. For example if ``expression`` is
+            ``screenPageViews/sessions``, you could call that metric's
+            name = ``viewsPerSession``.
+
+            Metrics are referenced by ``name`` in ``metricFilter``,
+            ``orderBys``, and metric ``expression``.
         expression (str):
-            A mathematical expression for derived
-            metrics. For example, the metric Event count per
-            user is eventCount/totalUsers.
+            A mathematical expression for derived metrics. For example,
+            the metric Event count per user is
+            ``eventCount/totalUsers``.
         invisible (bool):
-            Indicates if a metric is invisible. If a metric is
-            invisible, the metric is not in the response, but can be
-            used in filters, order_bys or being referred to in a metric
-            expression.
+            Indicates if a metric is invisible in the report response.
+            If a metric is invisible, the metric will not produce a
+            column in the response, but can be used in ``metricFilter``,
+            ``orderBys``, or a metric ``expression``.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -275,7 +306,7 @@ class FilterExpressionList(proto.Message):
     """
 
     expressions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=FilterExpression,
+        proto.MESSAGE, number=1, message="FilterExpression",
     )
 
 
@@ -287,7 +318,12 @@ class Filter(proto.Message):
             The dimension name or metric name. Must be a
             name defined in dimensions or metrics.
         null_filter (bool):
-            A filter for null values.
+            A filter for null values. If True, a null
+            dimension value is matched by this filter. Null
+            filter is commonly used inside a NOT filter
+            expression. For example, a NOT expression of a
+            null filter removes rows when a dimension is
+            null.
         string_filter (~.data.Filter.StringFilter):
             Strings related filter.
         in_list_filter (~.data.Filter.InListFilter):
@@ -555,7 +591,7 @@ class Pivot(proto.Message):
 
     field_names = proto.RepeatedField(proto.STRING, number=1)
 
-    order_bys = proto.RepeatedField(proto.MESSAGE, number=2, message=OrderBy,)
+    order_bys = proto.RepeatedField(proto.MESSAGE, number=2, message="OrderBy",)
 
     offset = proto.Field(proto.INT64, number=3)
 
@@ -623,7 +659,7 @@ class Cohort(proto.Message):
 
     dimension = proto.Field(proto.STRING, number=2)
 
-    date_range = proto.Field(proto.MESSAGE, number=3, message=DateRange,)
+    date_range = proto.Field(proto.MESSAGE, number=3, message="DateRange",)
 
 
 class CohortReportSettings(proto.Message):
@@ -708,13 +744,13 @@ class MetricHeader(proto.Message):
     Attributes:
         name (str):
             The metric's name.
-        type (~.data.MetricType):
+        type_ (~.data.MetricType):
             The metric's data type.
     """
 
     name = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(proto.ENUM, number=2, enum="MetricType",)
+    type_ = proto.Field(proto.ENUM, number=2, enum="MetricType",)
 
 
 class PivotHeader(proto.Message):
@@ -726,7 +762,10 @@ class PivotHeader(proto.Message):
             the corresponding dimension combinations.
         row_count (int):
             The cardinality of the pivot as if offset = 0
-            and limit = -1.
+            and limit = -1. The total number of rows for
+            this pivot's fields regardless of how the
+            parameters offset and limit are specified in the
+            request.
     """
 
     pivot_dimension_headers = proto.RepeatedField(
@@ -754,28 +793,38 @@ class Row(proto.Message):
 
     .. code:: none
 
-       dimensions {
-         name: "eventName"
-       }
-       dimensions {
-         name: "countryId"
-       }
-       metrics {
-         name: "eventCount"
-       }
+       "dimensions": [
+         {
+           "name": "eventName"
+         },
+         {
+           "name": "countryId"
+         }
+       ],
+       "metrics": [
+         {
+           "name": "eventCount"
+         }
+       ]
 
-    One row with 'in_app_purchase' as the eventName, 'us' as the
+    One row with 'in_app_purchase' as the eventName, 'JP' as the
     countryId, and 15 as the eventCount, would be:
 
     .. code:: none
 
-       dimension_values {
-         name: 'in_app_purchase'
-         name: 'us'
-       }
-       metric_values {
-         int64_value: 15
-       }
+       "dimensionValues": [
+         {
+           "value": "in_app_purchase"
+         },
+         {
+           "value": "JP"
+         }
+       ],
+       "metricValues": [
+         {
+           "value": "15"
+         }
+       ]
 
     Attributes:
         dimension_values (Sequence[~.data.DimensionValue]):
@@ -838,20 +887,27 @@ class PropertyQuota(proto.Message):
 
     Attributes:
         tokens_per_day (~.data.QuotaStatus):
-            Analytics Properties can use up to 25,000
-            tokens per day. Most requests consume fewer than
-            10 tokens.
+            Standard Analytics Properties can use up to
+            25,000 tokens per day; Analytics 360 Properties
+            can use 250,000 tokens per day. Most requests
+            consume fewer than 10 tokens.
         tokens_per_hour (~.data.QuotaStatus):
-            Analytics Properties can use up to 5,000
-            tokens per day. An API request consumes a single
-            number of tokens, and that number is deducted
-            from both the hourly and daily quotas.
+            Standard Analytics Properties can use up to
+            5,000 tokens per day; Analytics 360 Properties
+            can use 50,000 tokens per day. An API request
+            consumes a single number of tokens, and that
+            number is deducted from both the hourly and
+            daily quotas.
         concurrent_requests (~.data.QuotaStatus):
-            Analytics Properties can send up to 10
-            concurrent requests.
+            Standard Analytics Properties can send up to
+            10 concurrent requests; Analytics 360 Properties
+            can use up to 50 concurrent requests.
         server_errors_per_project_per_hour (~.data.QuotaStatus):
-            Analytics Properties and cloud project pairs
-            can have up to 10 server errors per hour.
+            Standard Analytics Properties and cloud
+            project pairs can have up to 10 server errors
+            per hour; Analytics 360 Properties and cloud
+            project pairs can have up to 50 server errors
+            per hour.
     """
 
     tokens_per_day = proto.Field(proto.MESSAGE, number=1, message="QuotaStatus",)
@@ -930,7 +986,7 @@ class MetricMetadata(proto.Message):
             one of ``deprecatedApiNames`` for a period of time. After
             the deprecation period, the metric will be available only by
             ``apiName``.
-        type (~.data.MetricType):
+        type_ (~.data.MetricType):
             The type of this metric.
         expression (str):
             The mathematical expression for this derived metric. Can be
@@ -947,7 +1003,7 @@ class MetricMetadata(proto.Message):
 
     deprecated_api_names = proto.RepeatedField(proto.STRING, number=4)
 
-    type = proto.Field(proto.ENUM, number=5, enum="MetricType",)
+    type_ = proto.Field(proto.ENUM, number=5, enum="MetricType",)
 
     expression = proto.Field(proto.STRING, number=6)
 

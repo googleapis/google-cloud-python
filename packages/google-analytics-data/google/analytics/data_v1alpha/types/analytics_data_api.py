@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "BatchRunPivotReportsRequest",
         "BatchRunPivotReportsResponse",
         "GetMetadataRequest",
+        "RunRealtimeReportRequest",
+        "RunRealtimeReportResponse",
     },
 )
 
@@ -46,7 +48,7 @@ class Metadata(proto.Message):
         name (str):
             Resource name of this metadata.
         dimensions (Sequence[~.data.DimensionMetadata]):
-            The dimensions descriptions.
+            The dimension descriptions.
         metrics (Sequence[~.data.MetricMetadata]):
             The metric descriptions.
     """
@@ -81,12 +83,17 @@ class RunReportRequest(proto.Message):
             both date ranges. In a cohort request, this ``dateRanges``
             must be unspecified.
         offset (int):
-            The row count of the start row. The first row
-            is counted as row 0.
+            The row count of the start row. The first row is counted as
+            row 0.
+
+            To learn more about this pagination parameter, see
+            `Pagination <basics#pagination>`__.
         limit (int):
-            The number of rows to return. If unspecified,
-            10 rows are returned. If -1, all rows are
-            returned.
+            The number of rows to return. If unspecified, 10 rows are
+            returned. If -1, all rows are returned.
+
+            To learn more about this pagination parameter, see
+            `Pagination <basics#pagination>`__.
         metric_aggregations (Sequence[~.data.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
@@ -178,6 +185,15 @@ class RunReportResponse(proto.Message):
             If requested, the maximum values of metrics.
         minimums (Sequence[~.data.Row]):
             If requested, the minimum values of metrics.
+        row_count (int):
+            The total number of rows in the query result, regardless of
+            the number of rows returned in the response. For example if
+            a query returns 175 rows and includes limit = 50 in the API
+            request, the response will contain row_count = 175 but only
+            50 rows.
+
+            To learn more about this pagination parameter, see
+            `Pagination <basics#pagination>`__.
         metadata (~.data.ResponseMetaData):
             Metadata for the report.
         property_quota (~.data.PropertyQuota):
@@ -200,6 +216,8 @@ class RunReportResponse(proto.Message):
     maximums = proto.RepeatedField(proto.MESSAGE, number=9, message=data.Row,)
 
     minimums = proto.RepeatedField(proto.MESSAGE, number=10, message=data.Row,)
+
+    row_count = proto.Field(proto.INT32, number=12)
 
     metadata = proto.Field(proto.MESSAGE, number=6, message=data.ResponseMetaData,)
 
@@ -402,7 +420,7 @@ class BatchRunReportsRequest(proto.Message):
 
     entity = proto.Field(proto.MESSAGE, number=1, message=data.Entity,)
 
-    requests = proto.RepeatedField(proto.MESSAGE, number=2, message=RunReportRequest,)
+    requests = proto.RepeatedField(proto.MESSAGE, number=2, message="RunReportRequest",)
 
 
 class BatchRunReportsResponse(proto.Message):
@@ -414,7 +432,7 @@ class BatchRunReportsResponse(proto.Message):
             separate report request.
     """
 
-    reports = proto.RepeatedField(proto.MESSAGE, number=1, message=RunReportResponse,)
+    reports = proto.RepeatedField(proto.MESSAGE, number=1, message="RunReportResponse",)
 
 
 class BatchRunPivotReportsRequest(proto.Message):
@@ -435,7 +453,7 @@ class BatchRunPivotReportsRequest(proto.Message):
     entity = proto.Field(proto.MESSAGE, number=1, message=data.Entity,)
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=RunPivotReportRequest,
+        proto.MESSAGE, number=2, message="RunPivotReportRequest",
     )
 
 
@@ -449,24 +467,150 @@ class BatchRunPivotReportsResponse(proto.Message):
     """
 
     pivot_reports = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=RunPivotReportResponse,
+        proto.MESSAGE, number=1, message="RunPivotReportResponse",
     )
 
 
 class GetMetadataRequest(proto.Message):
-    r"""Request for dimension and metric metadata.
+    r"""Request for a property's dimension and metric metadata.
 
     Attributes:
         name (str):
-            Required. The name of the metadata to
-            retrieve. Either has the form 'metadata' or
-            'properties/{property}/metadata'. This name
-            field is specified in the URL path and not URL
-            parameters. Property is a numeric Google
-            Analytics App + Web Property Id.
+            Required. The resource name of the metadata to retrieve.
+            This name field is specified in the URL path and not URL
+            parameters. Property is a numeric Google Analytics GA4
+            Property identifier. To learn more, see `where to find your
+            Property
+            ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+
+            Example: properties/1234/metadata
+
+            Set the Property ID to 0 for dimensions and metrics common
+            to all properties. In this special mode, this method will
+            not return custom dimensions and metrics.
     """
 
     name = proto.Field(proto.STRING, number=1)
+
+
+class RunRealtimeReportRequest(proto.Message):
+    r"""The request to generate a realtime report.
+
+    Attributes:
+        property (str):
+            A Google Analytics GA4 property identifier whose events are
+            tracked. Specified in the URL path and not the body. To
+            learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+
+            Example: properties/1234
+        dimensions (Sequence[~.data.Dimension]):
+            The dimensions requested and displayed.
+        metrics (Sequence[~.data.Metric]):
+            The metrics requested and displayed.
+        limit (int):
+            The number of rows to return. If unspecified,
+            10 rows are returned. If -1, all rows are
+            returned.
+        dimension_filter (~.data.FilterExpression):
+            The filter clause of dimensions. Dimensions
+            must be requested to be used in this filter.
+            Metrics cannot be used in this filter.
+        metric_filter (~.data.FilterExpression):
+            The filter clause of metrics. Applied at post
+            aggregation phase, similar to SQL having-clause.
+            Metrics must be requested to be used in this
+            filter. Dimensions cannot be used in this
+            filter.
+        metric_aggregations (Sequence[~.data.MetricAggregation]):
+            Aggregation of metrics. Aggregated metric values will be
+            shown in rows where the dimension_values are set to
+            "RESERVED_(MetricAggregation)".
+        order_bys (Sequence[~.data.OrderBy]):
+            Specifies how rows are ordered in the
+            response.
+        return_property_quota (bool):
+            Toggles whether to return the current state of this
+            Analytics Property's Realtime quota. Quota is returned in
+            `PropertyQuota <#PropertyQuota>`__.
+    """
+
+    property = proto.Field(proto.STRING, number=1)
+
+    dimensions = proto.RepeatedField(proto.MESSAGE, number=2, message=data.Dimension,)
+
+    metrics = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Metric,)
+
+    limit = proto.Field(proto.INT64, number=4)
+
+    dimension_filter = proto.Field(
+        proto.MESSAGE, number=5, message=data.FilterExpression,
+    )
+
+    metric_filter = proto.Field(proto.MESSAGE, number=6, message=data.FilterExpression,)
+
+    metric_aggregations = proto.RepeatedField(
+        proto.ENUM, number=7, enum=data.MetricAggregation,
+    )
+
+    order_bys = proto.RepeatedField(proto.MESSAGE, number=8, message=data.OrderBy,)
+
+    return_property_quota = proto.Field(proto.BOOL, number=9)
+
+
+class RunRealtimeReportResponse(proto.Message):
+    r"""The response realtime report table corresponding to a
+    request.
+
+    Attributes:
+        dimension_headers (Sequence[~.data.DimensionHeader]):
+            Describes dimension columns. The number of
+            DimensionHeaders and ordering of
+            DimensionHeaders matches the dimensions present
+            in rows.
+        metric_headers (Sequence[~.data.MetricHeader]):
+            Describes metric columns. The number of
+            MetricHeaders and ordering of MetricHeaders
+            matches the metrics present in rows.
+        rows (Sequence[~.data.Row]):
+            Rows of dimension value combinations and
+            metric values in the report.
+        totals (Sequence[~.data.Row]):
+            If requested, the totaled values of metrics.
+        maximums (Sequence[~.data.Row]):
+            If requested, the maximum values of metrics.
+        minimums (Sequence[~.data.Row]):
+            If requested, the minimum values of metrics.
+        row_count (int):
+            The total number of rows in the query result, regardless of
+            the number of rows returned in the response. For example if
+            a query returns 175 rows and includes limit = 50 in the API
+            request, the response will contain row_count = 175 but only
+            50 rows.
+        property_quota (~.data.PropertyQuota):
+            This Analytics Property's Realtime quota
+            state including this request.
+    """
+
+    dimension_headers = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=data.DimensionHeader,
+    )
+
+    metric_headers = proto.RepeatedField(
+        proto.MESSAGE, number=2, message=data.MetricHeader,
+    )
+
+    rows = proto.RepeatedField(proto.MESSAGE, number=3, message=data.Row,)
+
+    totals = proto.RepeatedField(proto.MESSAGE, number=4, message=data.Row,)
+
+    maximums = proto.RepeatedField(proto.MESSAGE, number=5, message=data.Row,)
+
+    minimums = proto.RepeatedField(proto.MESSAGE, number=6, message=data.Row,)
+
+    row_count = proto.Field(proto.INT32, number=7)
+
+    property_quota = proto.Field(proto.MESSAGE, number=8, message=data.PropertyQuota,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

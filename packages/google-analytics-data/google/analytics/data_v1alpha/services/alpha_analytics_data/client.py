@@ -16,17 +16,19 @@
 #
 
 from collections import OrderedDict
+from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -130,12 +132,91 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> AlphaAnalyticsDataTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            AlphaAnalyticsDataTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def metadata_path(property: str,) -> str:
+        """Return a fully-qualified metadata string."""
+        return "properties/{property}/metadata".format(property=property,)
+
+    @staticmethod
+    def parse_metadata_path(path: str) -> Dict[str, str]:
+        """Parse a metadata path into its component segments."""
+        m = re.match(r"^properties/(?P<property>.+?)/metadata$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, AlphaAnalyticsDataTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, AlphaAnalyticsDataTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the alpha analytics data client.
@@ -149,23 +230,26 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             transport (Union[str, ~.AlphaAnalyticsDataTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -173,29 +257,47 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        )
+
+        ssl_credentials = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                import grpc  # type: ignore
+
+                cert, key = client_options.client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
                 )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
+                is_mtls = True
+            else:
+                creds = SslCredentials()
+                is_mtls = creds.is_mtls
+                ssl_credentials = creds.ssl_credentials if is_mtls else None
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -219,10 +321,9 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
-                host=client_options.api_endpoint,
+                host=api_endpoint,
                 scopes=client_options.scopes,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
+                ssl_channel_credentials=ssl_credentials,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -434,23 +535,35 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.Metadata:
-        r"""Returns metadata for dimensions and metrics available
-        in reporting methods. Used to explore the dimensions and
-        metrics. Dimensions and metrics will be mostly added
-        over time, but renames and deletions may occur.
+        r"""Returns metadata for dimensions and metrics available in
+        reporting methods. Used to explore the dimensions and metrics.
+        In this method, a Google Analytics GA4 Property Identifier is
+        specified in the request, and the metadata response includes
+        Custom dimensions and metrics as well as Universal metadata.
+
+        For example if a custom metric with parameter name
+        ``levels_unlocked`` is registered to a property, the Metadata
+        response will contain ``customEvent:levels_unlocked``. Universal
+        metadata are dimensions and metrics applicable to any property
+        such as ``country`` and ``totalUsers``.
 
         Args:
             request (:class:`~.analytics_data_api.GetMetadataRequest`):
-                The request object. Request for dimension and metric
-                metadata.
+                The request object. Request for a property's dimension
+                and metric metadata.
             name (:class:`str`):
-                Required. The name of the metadata to
-                retrieve. Either has the form 'metadata'
-                or 'properties/{property}/metadata'.
-                This name field is specified in the URL
-                path and not URL parameters. Property is
-                a numeric Google Analytics App + Web
-                Property Id.
+                Required. The resource name of the metadata to retrieve.
+                This name field is specified in the URL path and not URL
+                parameters. Property is a numeric Google Analytics GA4
+                Property identifier. To learn more, see `where to find
+                your Property
+                ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+
+                Example: properties/1234/metadata
+
+                Set the Property ID to 0 for dimensions and metrics
+                common to all properties. In this special mode, this
+                method will not return custom dimensions and metrics.
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -498,6 +611,61 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def run_realtime_report(
+        self,
+        request: analytics_data_api.RunRealtimeReportRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.RunRealtimeReportResponse:
+        r"""The Google Analytics Realtime API returns a
+        customized report of realtime event data for your
+        property. These reports show events and usage from the
+        last 30 minutes.
+
+        Args:
+            request (:class:`~.analytics_data_api.RunRealtimeReportRequest`):
+                The request object. The request to generate a realtime
+                report.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.analytics_data_api.RunRealtimeReportResponse:
+                The response realtime report table
+                corresponding to a request.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_data_api.RunRealtimeReportRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_data_api.RunRealtimeReportRequest):
+            request = analytics_data_api.RunRealtimeReportRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.run_realtime_report]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
         )
 
         # Send the request.

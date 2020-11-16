@@ -44,8 +44,49 @@ class AlphaAnalyticsDataAsyncClient:
     DEFAULT_ENDPOINT = AlphaAnalyticsDataClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AlphaAnalyticsDataClient.DEFAULT_MTLS_ENDPOINT
 
+    metadata_path = staticmethod(AlphaAnalyticsDataClient.metadata_path)
+    parse_metadata_path = staticmethod(AlphaAnalyticsDataClient.parse_metadata_path)
+
+    common_billing_account_path = staticmethod(
+        AlphaAnalyticsDataClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        AlphaAnalyticsDataClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(AlphaAnalyticsDataClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        AlphaAnalyticsDataClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        AlphaAnalyticsDataClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        AlphaAnalyticsDataClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(AlphaAnalyticsDataClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        AlphaAnalyticsDataClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(AlphaAnalyticsDataClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        AlphaAnalyticsDataClient.parse_common_location_path
+    )
+
     from_service_account_file = AlphaAnalyticsDataClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> AlphaAnalyticsDataTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            AlphaAnalyticsDataTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(AlphaAnalyticsDataClient).get_transport_class,
@@ -74,16 +115,19 @@ class AlphaAnalyticsDataAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -300,23 +344,35 @@ class AlphaAnalyticsDataAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.Metadata:
-        r"""Returns metadata for dimensions and metrics available
-        in reporting methods. Used to explore the dimensions and
-        metrics. Dimensions and metrics will be mostly added
-        over time, but renames and deletions may occur.
+        r"""Returns metadata for dimensions and metrics available in
+        reporting methods. Used to explore the dimensions and metrics.
+        In this method, a Google Analytics GA4 Property Identifier is
+        specified in the request, and the metadata response includes
+        Custom dimensions and metrics as well as Universal metadata.
+
+        For example if a custom metric with parameter name
+        ``levels_unlocked`` is registered to a property, the Metadata
+        response will contain ``customEvent:levels_unlocked``. Universal
+        metadata are dimensions and metrics applicable to any property
+        such as ``country`` and ``totalUsers``.
 
         Args:
             request (:class:`~.analytics_data_api.GetMetadataRequest`):
-                The request object. Request for dimension and metric
-                metadata.
+                The request object. Request for a property's dimension
+                and metric metadata.
             name (:class:`str`):
-                Required. The name of the metadata to
-                retrieve. Either has the form 'metadata'
-                or 'properties/{property}/metadata'.
-                This name field is specified in the URL
-                path and not URL parameters. Property is
-                a numeric Google Analytics App + Web
-                Property Id.
+                Required. The resource name of the metadata to retrieve.
+                This name field is specified in the URL path and not URL
+                parameters. Property is a numeric Google Analytics GA4
+                Property identifier. To learn more, see `where to find
+                your Property
+                ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+
+                Example: properties/1234/metadata
+
+                Set the Property ID to 0 for dimensions and metrics
+                common to all properties. In this special mode, this
+                method will not return custom dimensions and metrics.
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -336,7 +392,8 @@ class AlphaAnalyticsDataAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -362,6 +419,60 @@ class AlphaAnalyticsDataAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def run_realtime_report(
+        self,
+        request: analytics_data_api.RunRealtimeReportRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analytics_data_api.RunRealtimeReportResponse:
+        r"""The Google Analytics Realtime API returns a
+        customized report of realtime event data for your
+        property. These reports show events and usage from the
+        last 30 minutes.
+
+        Args:
+            request (:class:`~.analytics_data_api.RunRealtimeReportRequest`):
+                The request object. The request to generate a realtime
+                report.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.analytics_data_api.RunRealtimeReportResponse:
+                The response realtime report table
+                corresponding to a request.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = analytics_data_api.RunRealtimeReportRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.run_realtime_report,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
         )
 
         # Send the request.

@@ -39,6 +39,12 @@ from google.analytics.data_v1alpha.types.analytics_data_api import RunPivotRepor
 from google.analytics.data_v1alpha.types.analytics_data_api import (
     RunPivotReportResponse,
 )
+from google.analytics.data_v1alpha.types.analytics_data_api import (
+    RunRealtimeReportRequest,
+)
+from google.analytics.data_v1alpha.types.analytics_data_api import (
+    RunRealtimeReportResponse,
+)
 from google.analytics.data_v1alpha.types.analytics_data_api import RunReportRequest
 from google.analytics.data_v1alpha.types.analytics_data_api import RunReportResponse
 from google.analytics.data_v1alpha.types.data import Cohort
@@ -111,6 +117,8 @@ __all__ = (
     "Row",
     "RunPivotReportRequest",
     "RunPivotReportResponse",
+    "RunRealtimeReportRequest",
+    "RunRealtimeReportResponse",
     "RunReportRequest",
     "RunReportResponse",
 )

@@ -28,7 +28,7 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -72,7 +72,9 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
-    session.install("mock", "pytest", "pytest-cov")
+    session.install(
+        "mock", "pytest", "pytest-cov",
+    )
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -173,7 +175,9 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
+    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
+    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

@@ -24,6 +24,8 @@ from .types.analytics_data_api import GetMetadataRequest
 from .types.analytics_data_api import Metadata
 from .types.analytics_data_api import RunPivotReportRequest
 from .types.analytics_data_api import RunPivotReportResponse
+from .types.analytics_data_api import RunRealtimeReportRequest
+from .types.analytics_data_api import RunRealtimeReportResponse
 from .types.analytics_data_api import RunReportRequest
 from .types.analytics_data_api import RunReportResponse
 from .types.data import Cohort
@@ -95,6 +97,8 @@ __all__ = (
     "Row",
     "RunPivotReportRequest",
     "RunPivotReportResponse",
+    "RunRealtimeReportRequest",
+    "RunRealtimeReportResponse",
     "RunReportRequest",
     "RunReportResponse",
     "AlphaAnalyticsDataClient",

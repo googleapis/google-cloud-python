@@ -3,21 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-analytics-data"
+        "remote": "git@github.com:googleapis/python-analytics-data",
+        "sha": "18c45b829791509a8ae08a14089803718fa7b388"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "6a69c750c3f01a69017662395f90515bbf1fe1ff",
+        "internalRef": "342721036"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
+        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
+        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
       }
     }
   ],
