@@ -3,23 +3,23 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-cloudbuild.git",
-        "sha": "ef8725c273c132097a5b91590fc0c6ec5d172641"
+        "remote": "https://github.com/googleapis/python-cloudbuild.git",
+        "sha": "3a04161417c2c28d8a5b38fad8502c919315ff77"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "705962b5a317e083fdbb2311d4baa72df5816686",
-        "internalRef": "340463146"
+        "sha": "1f22d1e9654a2588aa32f3802156d965d8d1f10f",
+        "internalRef": "340738401"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "ba9918cd22874245b55734f57470c719b577e591"
+        "sha": "3d3e94c4e02370f307a9a200b0c743c3d8d19f29"
       }
     }
   ],
@@ -33,5 +33,93 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/cloudbuild_v1/services.rst",
+    "docs/cloudbuild_v1/types.rst",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "google/cloud/devtools/cloudbuild/__init__.py",
+    "google/cloud/devtools/cloudbuild/py.typed",
+    "google/cloud/devtools/cloudbuild_v1/__init__.py",
+    "google/cloud/devtools/cloudbuild_v1/proto/cloudbuild.proto",
+    "google/cloud/devtools/cloudbuild_v1/py.typed",
+    "google/cloud/devtools/cloudbuild_v1/services/__init__.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/__init__.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/async_client.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/client.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/pagers.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/transports/__init__.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/transports/base.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/transports/grpc.py",
+    "google/cloud/devtools/cloudbuild_v1/services/cloud_build/transports/grpc_asyncio.py",
+    "google/cloud/devtools/cloudbuild_v1/types/__init__.py",
+    "google/cloud/devtools/cloudbuild_v1/types/cloudbuild.py",
+    "noxfile.py",
+    "renovate.json",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_cloudbuild_v1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/cloudbuild_v1/__init__.py",
+    "tests/unit/gapic/cloudbuild_v1/test_cloud_build.py"
   ]
 }
