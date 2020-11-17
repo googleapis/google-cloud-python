@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-container/compare/v2.1.0...v2.2.0) (2020-11-17)
+
+All changes are from [#51](https://www.github.com/googleapis/python-container/issues/51) / [d3f5465](https://www.github.com/googleapis/python-container/commit/d3f546574300cd18bb0cb1627f226cfe34ee8098)
+
+### Features
+
+* support for GetJSONWebKeys
+* support for Workload Identity
+* support for Gvisor in nodes
+* support for node reservation affinity
+* support for Customer Managed Encryption in nodes
+* support for NodeLocalDNS
+* support for ConfigConnector
+* support for private cluster VPC peering
+* support for CloudRun load balancers
+* support using routes for pod IPs
+* support for Shielded Nodes
+* support for release channels
+* support for disabling default sNAT
+* operations now store more granular progress
+* support for node Surge Upgrades
+* support for updating node pool locations.
+* support for Node Auto Provisioning
+* support for specifying node disk size and type
+
+ 
+  
+### Bug Fixes
+* deprecate SetLocations; use UpdateCluster
+* provide name alias for GetOperation (as method signature annotation)
+* deprecate basic auth fields (removed in 1.19 clusters)
+* deprecate Cluster/NodePool.status_message; use conditions
+
 ## [2.1.0](https://www.github.com/googleapis/python-container/compare/v2.0.1...v2.1.0) (2020-09-16)
 
 
