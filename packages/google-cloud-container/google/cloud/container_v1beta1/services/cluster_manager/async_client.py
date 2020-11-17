@@ -44,8 +44,46 @@ class ClusterManagerAsyncClient:
     DEFAULT_ENDPOINT = ClusterManagerClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ClusterManagerClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        ClusterManagerClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ClusterManagerClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ClusterManagerClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ClusterManagerClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        ClusterManagerClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ClusterManagerClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(ClusterManagerClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ClusterManagerClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(ClusterManagerClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ClusterManagerClient.parse_common_location_path
+    )
+
     from_service_account_file = ClusterManagerClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ClusterManagerTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ClusterManagerTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ClusterManagerClient).get_transport_class, type(ClusterManagerClient)
@@ -150,7 +188,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone]):
+        has_flattened_params = any([project_id, zone])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -175,7 +214,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -251,7 +290,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id]):
+        has_flattened_params = any([project_id, zone, cluster_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -278,7 +318,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -368,7 +408,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster]):
+        has_flattened_params = any([project_id, zone, cluster])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -474,7 +515,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, update]):
+        has_flattened_params = any([project_id, zone, cluster_id, update])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -694,7 +736,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, logging_service]):
+        has_flattened_params = any([project_id, zone, cluster_id, logging_service])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -806,9 +849,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, monitoring_service]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, monitoring_service])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -917,7 +959,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, addons_config]):
+        has_flattened_params = any([project_id, zone, cluster_id, addons_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1032,7 +1075,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, locations]):
+        has_flattened_params = any([project_id, zone, cluster_id, locations])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1049,8 +1093,9 @@ class ClusterManagerAsyncClient:
             request.zone = zone
         if cluster_id is not None:
             request.cluster_id = cluster_id
-        if locations is not None:
-            request.locations = locations
+
+        if locations:
+            request.locations.extend(locations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1152,7 +1197,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, master_version]):
+        has_flattened_params = any([project_id, zone, cluster_id, master_version])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1318,7 +1364,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id]):
+        has_flattened_params = any([project_id, zone, cluster_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1345,7 +1392,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -1416,7 +1463,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone]):
+        has_flattened_params = any([project_id, zone])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1441,7 +1489,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -1520,7 +1568,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, operation_id]):
+        has_flattened_params = any([project_id, zone, operation_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1547,7 +1596,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -1618,7 +1667,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, operation_id]):
+        has_flattened_params = any([project_id, zone, operation_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1706,7 +1756,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone]):
+        has_flattened_params = any([project_id, zone])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1731,7 +1782,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -1808,7 +1859,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id]):
+        has_flattened_params = any([project_id, zone, cluster_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1835,7 +1887,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -1929,7 +1981,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, node_pool_id]):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1958,7 +2011,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -2043,7 +2096,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, node_pool]):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2152,7 +2206,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, node_pool_id]):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2181,7 +2236,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -2274,7 +2329,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, node_pool_id]):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2391,9 +2447,10 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
+        has_flattened_params = any(
             [project_id, zone, cluster_id, node_pool_id, management]
-        ):
+        )
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2522,9 +2579,10 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
+        has_flattened_params = any(
             [project_id, zone, cluster_id, resource_labels, label_fingerprint]
-        ):
+        )
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2541,10 +2599,11 @@ class ClusterManagerAsyncClient:
             request.zone = zone
         if cluster_id is not None:
             request.cluster_id = cluster_id
-        if resource_labels is not None:
-            request.resource_labels = resource_labels
         if label_fingerprint is not None:
             request.label_fingerprint = label_fingerprint
+
+        if resource_labels:
+            request.resource_labels.update(resource_labels)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2635,7 +2694,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, enabled]):
+        has_flattened_params = any([project_id, zone, cluster_id, enabled])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2736,7 +2796,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id]):
+        has_flattened_params = any([project_id, zone, cluster_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2834,7 +2895,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id]):
+        has_flattened_params = any([project_id, zone, cluster_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2992,7 +3054,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, network_policy]):
+        has_flattened_params = any([project_id, zone, cluster_id, network_policy])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3095,9 +3158,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, maintenance_policy]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, maintenance_policy])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3181,7 +3243,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3204,7 +3267,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,
@@ -3268,7 +3331,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3291,7 +3355,7 @@ class ClusterManagerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=20.0,

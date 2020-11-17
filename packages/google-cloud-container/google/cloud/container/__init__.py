@@ -36,20 +36,28 @@ from google.cloud.container_v1.types.cluster_service import Cluster
 from google.cloud.container_v1.types.cluster_service import ClusterAutoscaling
 from google.cloud.container_v1.types.cluster_service import ClusterUpdate
 from google.cloud.container_v1.types.cluster_service import CompleteIPRotationRequest
+from google.cloud.container_v1.types.cluster_service import ConfigConnectorConfig
 from google.cloud.container_v1.types.cluster_service import CreateClusterRequest
 from google.cloud.container_v1.types.cluster_service import CreateNodePoolRequest
 from google.cloud.container_v1.types.cluster_service import DailyMaintenanceWindow
 from google.cloud.container_v1.types.cluster_service import DatabaseEncryption
+from google.cloud.container_v1.types.cluster_service import DefaultSnatStatus
 from google.cloud.container_v1.types.cluster_service import DeleteClusterRequest
 from google.cloud.container_v1.types.cluster_service import DeleteNodePoolRequest
+from google.cloud.container_v1.types.cluster_service import DnsCacheConfig
 from google.cloud.container_v1.types.cluster_service import GetClusterRequest
+from google.cloud.container_v1.types.cluster_service import GetJSONWebKeysRequest
+from google.cloud.container_v1.types.cluster_service import GetJSONWebKeysResponse
 from google.cloud.container_v1.types.cluster_service import GetNodePoolRequest
+from google.cloud.container_v1.types.cluster_service import GetOpenIDConfigRequest
+from google.cloud.container_v1.types.cluster_service import GetOpenIDConfigResponse
 from google.cloud.container_v1.types.cluster_service import GetOperationRequest
 from google.cloud.container_v1.types.cluster_service import GetServerConfigRequest
 from google.cloud.container_v1.types.cluster_service import HorizontalPodAutoscaling
 from google.cloud.container_v1.types.cluster_service import HttpLoadBalancing
 from google.cloud.container_v1.types.cluster_service import IPAllocationPolicy
 from google.cloud.container_v1.types.cluster_service import IntraNodeVisibilityConfig
+from google.cloud.container_v1.types.cluster_service import Jwk
 from google.cloud.container_v1.types.cluster_service import KubernetesDashboard
 from google.cloud.container_v1.types.cluster_service import LegacyAbac
 from google.cloud.container_v1.types.cluster_service import ListClustersRequest
@@ -78,13 +86,20 @@ from google.cloud.container_v1.types.cluster_service import NodePool
 from google.cloud.container_v1.types.cluster_service import NodePoolAutoscaling
 from google.cloud.container_v1.types.cluster_service import NodeTaint
 from google.cloud.container_v1.types.cluster_service import Operation
+from google.cloud.container_v1.types.cluster_service import OperationProgress
 from google.cloud.container_v1.types.cluster_service import PrivateClusterConfig
+from google.cloud.container_v1.types.cluster_service import (
+    PrivateClusterMasterGlobalAccessConfig,
+)
 from google.cloud.container_v1.types.cluster_service import RecurringTimeWindow
+from google.cloud.container_v1.types.cluster_service import ReleaseChannel
+from google.cloud.container_v1.types.cluster_service import ReservationAffinity
 from google.cloud.container_v1.types.cluster_service import ResourceLimit
 from google.cloud.container_v1.types.cluster_service import ResourceUsageExportConfig
 from google.cloud.container_v1.types.cluster_service import (
     RollbackNodePoolUpgradeRequest,
 )
+from google.cloud.container_v1.types.cluster_service import SandboxConfig
 from google.cloud.container_v1.types.cluster_service import ServerConfig
 from google.cloud.container_v1.types.cluster_service import SetAddonsConfigRequest
 from google.cloud.container_v1.types.cluster_service import SetLabelsRequest
@@ -101,6 +116,7 @@ from google.cloud.container_v1.types.cluster_service import (
 from google.cloud.container_v1.types.cluster_service import SetNodePoolManagementRequest
 from google.cloud.container_v1.types.cluster_service import SetNodePoolSizeRequest
 from google.cloud.container_v1.types.cluster_service import ShieldedInstanceConfig
+from google.cloud.container_v1.types.cluster_service import ShieldedNodes
 from google.cloud.container_v1.types.cluster_service import StartIPRotationRequest
 from google.cloud.container_v1.types.cluster_service import StatusCondition
 from google.cloud.container_v1.types.cluster_service import TimeWindow
@@ -112,6 +128,8 @@ from google.cloud.container_v1.types.cluster_service import (
     UsableSubnetworkSecondaryRange,
 )
 from google.cloud.container_v1.types.cluster_service import VerticalPodAutoscaling
+from google.cloud.container_v1.types.cluster_service import WorkloadIdentityConfig
+from google.cloud.container_v1.types.cluster_service import WorkloadMetadataConfig
 
 __all__ = (
     "AcceleratorConfig",
@@ -129,20 +147,28 @@ __all__ = (
     "ClusterManagerClient",
     "ClusterUpdate",
     "CompleteIPRotationRequest",
+    "ConfigConnectorConfig",
     "CreateClusterRequest",
     "CreateNodePoolRequest",
     "DailyMaintenanceWindow",
     "DatabaseEncryption",
+    "DefaultSnatStatus",
     "DeleteClusterRequest",
     "DeleteNodePoolRequest",
+    "DnsCacheConfig",
     "GetClusterRequest",
+    "GetJSONWebKeysRequest",
+    "GetJSONWebKeysResponse",
     "GetNodePoolRequest",
+    "GetOpenIDConfigRequest",
+    "GetOpenIDConfigResponse",
     "GetOperationRequest",
     "GetServerConfigRequest",
     "HorizontalPodAutoscaling",
     "HttpLoadBalancing",
     "IPAllocationPolicy",
     "IntraNodeVisibilityConfig",
+    "Jwk",
     "KubernetesDashboard",
     "LegacyAbac",
     "ListClustersRequest",
@@ -167,11 +193,16 @@ __all__ = (
     "NodePoolAutoscaling",
     "NodeTaint",
     "Operation",
+    "OperationProgress",
     "PrivateClusterConfig",
+    "PrivateClusterMasterGlobalAccessConfig",
     "RecurringTimeWindow",
+    "ReleaseChannel",
+    "ReservationAffinity",
     "ResourceLimit",
     "ResourceUsageExportConfig",
     "RollbackNodePoolUpgradeRequest",
+    "SandboxConfig",
     "ServerConfig",
     "SetAddonsConfigRequest",
     "SetLabelsRequest",
@@ -186,6 +217,7 @@ __all__ = (
     "SetNodePoolManagementRequest",
     "SetNodePoolSizeRequest",
     "ShieldedInstanceConfig",
+    "ShieldedNodes",
     "StartIPRotationRequest",
     "StatusCondition",
     "TimeWindow",
@@ -195,4 +227,6 @@ __all__ = (
     "UsableSubnetwork",
     "UsableSubnetworkSecondaryRange",
     "VerticalPodAutoscaling",
+    "WorkloadIdentityConfig",
+    "WorkloadMetadataConfig",
 )

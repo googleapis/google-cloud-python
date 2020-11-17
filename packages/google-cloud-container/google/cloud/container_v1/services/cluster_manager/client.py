@@ -19,10 +19,10 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -130,12 +130,80 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> ClusterManagerTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ClusterManagerTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, ClusterManagerTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, ClusterManagerTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the cluster manager client.
@@ -149,8 +217,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             transport (Union[str, ~.ClusterManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -165,10 +233,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -176,9 +244,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
         use_client_cert = bool(
@@ -501,7 +569,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 should not be set.
             cluster (:class:`~.cluster_service.Cluster`):
                 Required. A `cluster
-                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters>`__
+                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.locations.clusters>`__
                 This corresponds to the ``cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -849,11 +917,19 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 should not be set.
             logging_service (:class:`str`):
                 Required. The logging service the cluster should use to
-                write metrics. Currently available options:
+                write logs. Currently available options:
 
-                -  "logging.googleapis.com" - the Google Cloud Logging
-                   service
-                -  "none" - no metrics will be exported from the cluster
+                -  ``logging.googleapis.com/kubernetes`` - The Cloud
+                   Logging service with a Kubernetes-native resource
+                   model
+                -  ``logging.googleapis.com`` - The legacy Cloud Logging
+                   service (no longer available as of GKE 1.15).
+                -  ``none`` - no logs will be exported from the cluster.
+
+                If left as an empty
+                string,\ ``logging.googleapis.com/kubernetes`` will be
+                used for GKE 1.14+ or ``logging.googleapis.com`` for
+                earlier versions.
                 This corresponds to the ``logging_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -976,12 +1052,19 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 Required. The monitoring service the cluster should use
                 to write metrics. Currently available options:
 
-                -  "monitoring.googleapis.com/kubernetes" - the Google
-                   Cloud Monitoring service with Kubernetes-native
-                   resource model
-                -  "monitoring.googleapis.com" - the Google Cloud
-                   Monitoring service
-                -  "none" - no metrics will be exported from the cluster
+                -  "monitoring.googleapis.com/kubernetes" - The Cloud
+                   Monitoring service with a Kubernetes-native resource
+                   model
+                -  ``monitoring.googleapis.com`` - The legacy Cloud
+                   Monitoring service (no longer available as of GKE
+                   1.15).
+                -  ``none`` - No metrics will be exported from the
+                   cluster.
+
+                If left as an empty
+                string,\ ``monitoring.googleapis.com/kubernetes`` will
+                be used for GKE 1.14+ or ``monitoring.googleapis.com``
+                for earlier versions.
                 This corresponds to the ``monitoring_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1189,7 +1272,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
-        r"""Sets the locations for a specific cluster.
+        r"""Sets the locations for a specific cluster. Deprecated. Use
+        `projects.locations.clusters.update <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters/update>`__
+        instead.
 
         Args:
             request (:class:`~.cluster_service.SetLocationsRequest`):
@@ -1281,10 +1366,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 request.zone = zone
             if cluster_id is not None:
                 request.cluster_id = cluster_id
-            if locations is not None:
-                request.locations = locations
             if name is not None:
                 request.name = name
+
+            if locations:
+                request.locations.extend(locations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1705,6 +1791,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         project_id: str = None,
         zone: str = None,
         operation_id: str = None,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1739,6 +1826,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 This corresponds to the ``operation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            name (:class:`str`):
+                The name (project, location, operation id) of the
+                operation to get. Specified in the format
+                ``projects/*/locations/*/operations/*``.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1757,7 +1851,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project_id, zone, operation_id])
+        has_flattened_params = any([project_id, zone, operation_id, name])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -1780,6 +1874,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 request.zone = zone
             if operation_id is not None:
                 request.operation_id = operation_id
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1986,6 +2082,65 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def get_json_web_keys(
+        self,
+        request: cluster_service.GetJSONWebKeysRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cluster_service.GetJSONWebKeysResponse:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+        This API is not yet intended for general use, and is not
+        available for all clusters.
+
+        Args:
+            request (:class:`~.cluster_service.GetJSONWebKeysRequest`):
+                The request object. GetJSONWebKeysRequest gets the
+                public component of the keys used by the cluster to sign
+                token requests. This will be the jwks_uri for the
+                discover document returned by getOpenIDConfig. See the
+                OpenID Connect Discovery 1.0 specification for details.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.cluster_service.GetJSONWebKeysResponse:
+                GetJSONWebKeysResponse is a valid
+                JSON Web Key Set as specififed in rfc
+                7517
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cluster_service.GetJSONWebKeysRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cluster_service.GetJSONWebKeysRequest):
+            request = cluster_service.GetJSONWebKeysRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_json_web_keys]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.

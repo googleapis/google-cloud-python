@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -47,6 +48,7 @@ class containerCallTransformer(cst.CSTTransformer):
     'delete_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
     'delete_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
     'get_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
+    'get_json_web_keys': ('parent', ),
     'get_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
     'get_operation': ('project_id', 'zone', 'operation_id', 'name', ),
     'get_server_config': ('project_id', 'zone', 'name', ),
@@ -70,7 +72,7 @@ class containerCallTransformer(cst.CSTTransformer):
     'start_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', 'rotate_credentials', ),
     'update_cluster': ('update', 'project_id', 'zone', 'cluster_id', 'name', ),
     'update_master': ('master_version', 'project_id', 'zone', 'cluster_id', 'name', ),
-    'update_node_pool': ('node_version', 'image_type', 'project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
+    'update_node_pool': ('node_version', 'image_type', 'project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', 'locations', 'workload_metadata_config', 'upgrade_settings', ),
 
     }
 

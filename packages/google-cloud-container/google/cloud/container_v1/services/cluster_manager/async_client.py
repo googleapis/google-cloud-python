@@ -44,8 +44,46 @@ class ClusterManagerAsyncClient:
     DEFAULT_ENDPOINT = ClusterManagerClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ClusterManagerClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        ClusterManagerClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ClusterManagerClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ClusterManagerClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ClusterManagerClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        ClusterManagerClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ClusterManagerClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(ClusterManagerClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ClusterManagerClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(ClusterManagerClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ClusterManagerClient.parse_common_location_path
+    )
+
     from_service_account_file = ClusterManagerClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ClusterManagerTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ClusterManagerTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ClusterManagerClient).get_transport_class, type(ClusterManagerClient)
@@ -158,7 +196,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, parent]):
+        has_flattened_params = any([project_id, zone, parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -268,7 +307,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -365,7 +405,7 @@ class ClusterManagerAsyncClient:
                 should not be set.
             cluster (:class:`~.cluster_service.Cluster`):
                 Required. A `cluster
-                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters>`__
+                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.locations.clusters>`__
                 This corresponds to the ``cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -394,7 +434,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster, parent]):
+        has_flattened_params = any([project_id, zone, cluster, parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -509,7 +550,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, update, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, update, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -705,11 +747,19 @@ class ClusterManagerAsyncClient:
                 should not be set.
             logging_service (:class:`str`):
                 Required. The logging service the cluster should use to
-                write metrics. Currently available options:
+                write logs. Currently available options:
 
-                -  "logging.googleapis.com" - the Google Cloud Logging
-                   service
-                -  "none" - no metrics will be exported from the cluster
+                -  ``logging.googleapis.com/kubernetes`` - The Cloud
+                   Logging service with a Kubernetes-native resource
+                   model
+                -  ``logging.googleapis.com`` - The legacy Cloud Logging
+                   service (no longer available as of GKE 1.15).
+                -  ``none`` - no logs will be exported from the cluster.
+
+                If left as an empty
+                string,\ ``logging.googleapis.com/kubernetes`` will be
+                used for GKE 1.14+ or ``logging.googleapis.com`` for
+                earlier versions.
                 This corresponds to the ``logging_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -738,9 +788,10 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
+        has_flattened_params = any(
             [project_id, zone, cluster_id, logging_service, name]
-        ):
+        )
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -830,12 +881,19 @@ class ClusterManagerAsyncClient:
                 Required. The monitoring service the cluster should use
                 to write metrics. Currently available options:
 
-                -  "monitoring.googleapis.com/kubernetes" - the Google
-                   Cloud Monitoring service with Kubernetes-native
-                   resource model
-                -  "monitoring.googleapis.com" - the Google Cloud
-                   Monitoring service
-                -  "none" - no metrics will be exported from the cluster
+                -  "monitoring.googleapis.com/kubernetes" - The Cloud
+                   Monitoring service with a Kubernetes-native resource
+                   model
+                -  ``monitoring.googleapis.com`` - The legacy Cloud
+                   Monitoring service (no longer available as of GKE
+                   1.15).
+                -  ``none`` - No metrics will be exported from the
+                   cluster.
+
+                If left as an empty
+                string,\ ``monitoring.googleapis.com/kubernetes`` will
+                be used for GKE 1.14+ or ``monitoring.googleapis.com``
+                for earlier versions.
                 This corresponds to the ``monitoring_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -864,9 +922,10 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
+        has_flattened_params = any(
             [project_id, zone, cluster_id, monitoring_service, name]
-        ):
+        )
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -984,9 +1043,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, addons_config, name]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, addons_config, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1041,7 +1099,9 @@ class ClusterManagerAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
-        r"""Sets the locations for a specific cluster.
+        r"""Sets the locations for a specific cluster. Deprecated. Use
+        `projects.locations.clusters.update <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters/update>`__
+        instead.
 
         Args:
             request (:class:`~.cluster_service.SetLocationsRequest`):
@@ -1110,7 +1170,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, locations, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, locations, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1127,10 +1188,11 @@ class ClusterManagerAsyncClient:
             request.zone = zone
         if cluster_id is not None:
             request.cluster_id = cluster_id
-        if locations is not None:
-            request.locations = locations
         if name is not None:
             request.name = name
+
+        if locations:
+            request.locations.extend(locations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1239,9 +1301,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, master_version, name]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, master_version, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1416,7 +1477,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1515,7 +1577,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone]):
+        has_flattened_params = any([project_id, zone])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1566,6 +1629,7 @@ class ClusterManagerAsyncClient:
         project_id: str = None,
         zone: str = None,
         operation_id: str = None,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1600,6 +1664,13 @@ class ClusterManagerAsyncClient:
                 This corresponds to the ``operation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+            name (:class:`str`):
+                The name (project, location, operation id) of the
+                operation to get. Specified in the format
+                ``projects/*/locations/*/operations/*``.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1618,7 +1689,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, operation_id]):
+        has_flattened_params = any([project_id, zone, operation_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1635,6 +1707,8 @@ class ClusterManagerAsyncClient:
             request.zone = zone
         if operation_id is not None:
             request.operation_id = operation_id
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1723,7 +1797,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, operation_id, name]):
+        has_flattened_params = any([project_id, zone, operation_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1819,7 +1894,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, name]):
+        has_flattened_params = any([project_id, zone, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1857,6 +1933,64 @@ class ClusterManagerAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_json_web_keys(
+        self,
+        request: cluster_service.GetJSONWebKeysRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cluster_service.GetJSONWebKeysResponse:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+        This API is not yet intended for general use, and is not
+        available for all clusters.
+
+        Args:
+            request (:class:`~.cluster_service.GetJSONWebKeysRequest`):
+                The request object. GetJSONWebKeysRequest gets the
+                public component of the keys used by the cluster to sign
+                token requests. This will be the jwks_uri for the
+                discover document returned by getOpenIDConfig. See the
+                OpenID Connect Discovery 1.0 specification for details.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.cluster_service.GetJSONWebKeysResponse:
+                GetJSONWebKeysResponse is a valid
+                JSON Web Key Set as specififed in rfc
+                7517
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = cluster_service.GetJSONWebKeysRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_json_web_keys,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -1930,7 +2064,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, parent]):
+        has_flattened_params = any([project_id, zone, cluster_id, parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2059,9 +2194,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, node_pool_id, name]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2184,9 +2318,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, node_pool, parent]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool, parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2304,9 +2437,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, node_pool_id, name]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2438,9 +2570,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, node_pool_id, name]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, node_pool_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2666,7 +2797,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, enabled, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, enabled, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2776,7 +2908,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2883,7 +3016,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([project_id, zone, cluster_id, name]):
+        has_flattened_params = any([project_id, zone, cluster_id, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3050,9 +3184,8 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
-            [project_id, zone, cluster_id, network_policy, name]
-        ):
+        has_flattened_params = any([project_id, zone, cluster_id, network_policy, name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3165,9 +3298,10 @@ class ClusterManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any(
+        has_flattened_params = any(
             [project_id, zone, cluster_id, maintenance_policy, name]
-        ):
+        )
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
