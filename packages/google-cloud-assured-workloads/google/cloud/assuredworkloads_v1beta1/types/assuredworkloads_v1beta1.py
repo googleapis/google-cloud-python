@@ -180,8 +180,8 @@ class Workload(proto.Message):
             the Workload. When present it must be between 4
             to 30 characters. Allowed characters are:
             lowercase and uppercase letters, numbers,
-            hyphen, single-quote, double-quote, space, and
-            exclamation point.
+            hyphen, and spaces.
+
             Example: My Workload
         resources (Sequence[~.assuredworkloads_v1beta1.Workload.ResourceInfo]):
             Output only. The resources associated with
@@ -224,6 +224,18 @@ class Workload(proto.Message):
             operations.
         labels (Sequence[~.assuredworkloads_v1beta1.Workload.LabelsEntry]):
             Optional. Labels applied to the workload.
+        provisioned_resources_parent (str):
+            Input only. The parent resource for the resources managed by
+            this Assured Workload. May be either an organization or a
+            folder. Must be the same or a child of the Workload parent.
+            If not specified all resources are created under the
+            Workload parent. Formats: folders/{folder_id}
+            organizations/{organization_id}
+        kms_settings (~.assuredworkloads_v1beta1.Workload.KMSSettings):
+            Input only. Settings used to create a CMEK
+            crypto key. When set a project with a KMS CMEK
+            key is provisioned. This field is mandatory for
+            a subset of Compliance Regimes.
     """
 
     class ComplianceRegime(proto.Enum):
@@ -377,6 +389,10 @@ class Workload(proto.Message):
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=10)
 
+    provisioned_resources_parent = proto.Field(proto.STRING, number=13)
+
+    kms_settings = proto.Field(proto.MESSAGE, number=14, message=KMSSettings,)
+
 
 class CreateWorkloadOperationMetadata(proto.Message):
     r"""Operation metadata to give request details of CreateWorkload.
@@ -402,7 +418,7 @@ class CreateWorkloadOperationMetadata(proto.Message):
     parent = proto.Field(proto.STRING, number=3)
 
     compliance_regime = proto.Field(
-        proto.ENUM, number=4, enum=Workload.ComplianceRegime,
+        proto.ENUM, number=4, enum="Workload.ComplianceRegime",
     )
 
 

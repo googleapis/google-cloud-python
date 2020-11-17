@@ -28,8 +28,8 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation
-from google.api_core import operation_async
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service import (
     pagers,
 )
@@ -55,8 +55,50 @@ class AssuredWorkloadsServiceAsyncClient:
         AssuredWorkloadsServiceClient.parse_workload_path
     )
 
+    common_billing_account_path = staticmethod(
+        AssuredWorkloadsServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        AssuredWorkloadsServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(AssuredWorkloadsServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        AssuredWorkloadsServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        AssuredWorkloadsServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        AssuredWorkloadsServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(
+        AssuredWorkloadsServiceClient.common_project_path
+    )
+    parse_common_project_path = staticmethod(
+        AssuredWorkloadsServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(
+        AssuredWorkloadsServiceClient.common_location_path
+    )
+    parse_common_location_path = staticmethod(
+        AssuredWorkloadsServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = AssuredWorkloadsServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> AssuredWorkloadsServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            AssuredWorkloadsServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(AssuredWorkloadsServiceClient).get_transport_class,
@@ -158,7 +200,8 @@ class AssuredWorkloadsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, workload]):
+        has_flattened_params = any([parent, workload])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -251,7 +294,8 @@ class AssuredWorkloadsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([workload, update_mask]):
+        has_flattened_params = any([workload, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -322,7 +366,8 @@ class AssuredWorkloadsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -402,7 +447,8 @@ class AssuredWorkloadsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -482,7 +528,8 @@ class AssuredWorkloadsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

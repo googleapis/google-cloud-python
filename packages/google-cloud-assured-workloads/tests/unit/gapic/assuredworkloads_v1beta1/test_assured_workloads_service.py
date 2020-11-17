@@ -31,7 +31,7 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.api_core import operation_async
+from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -110,12 +110,12 @@ def test_assured_workloads_service_client_from_service_account_file(client_class
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "assuredworkloads.googleapis.com:443"
+        assert client.transport._host == "assuredworkloads.googleapis.com:443"
 
 
 def test_assured_workloads_service_client_get_transport_class():
@@ -487,7 +487,7 @@ def test_create_workload(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -508,19 +508,20 @@ def test_create_workload_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_workload_async(transport: str = "grpc_asyncio"):
+async def test_create_workload_async(
+    transport: str = "grpc_asyncio",
+    request_type=assuredworkloads_v1beta1.CreateWorkloadRequest,
+):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = assuredworkloads_v1beta1.CreateWorkloadRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -532,10 +533,15 @@ async def test_create_workload_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == assuredworkloads_v1beta1.CreateWorkloadRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_workload_async_from_dict():
+    await test_create_workload_async(request_type=dict)
 
 
 def test_create_workload_field_headers():
@@ -549,7 +555,7 @@ def test_create_workload_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.create_workload(request)
@@ -576,9 +582,7 @@ async def test_create_workload_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -601,7 +605,7 @@ def test_create_workload_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -644,9 +648,7 @@ async def test_create_workload_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -698,7 +700,7 @@ def test_update_workload(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.Workload(
             name="name_value",
@@ -706,6 +708,7 @@ def test_update_workload(
             compliance_regime=assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4,
             billing_account="billing_account_value",
             etag="etag_value",
+            provisioned_resources_parent="provisioned_resources_parent_value",
             il4_settings=assuredworkloads_v1beta1.Workload.IL4Settings(
                 kms_settings=assuredworkloads_v1beta1.Workload.KMSSettings(
                     next_rotation_time=timestamp.Timestamp(seconds=751)
@@ -717,6 +720,65 @@ def test_update_workload(
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == assuredworkloads_v1beta1.UpdateWorkloadRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, assuredworkloads_v1beta1.Workload)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+    assert (
+        response.compliance_regime
+        == assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4
+    )
+
+    assert response.billing_account == "billing_account_value"
+
+    assert response.etag == "etag_value"
+
+    assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
+
+
+def test_update_workload_from_dict():
+    test_update_workload(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_update_workload_async(
+    transport: str = "grpc_asyncio",
+    request_type=assuredworkloads_v1beta1.UpdateWorkloadRequest,
+):
+    client = AssuredWorkloadsServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            assuredworkloads_v1beta1.Workload(
+                name="name_value",
+                display_name="display_name_value",
+                compliance_regime=assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4,
+                billing_account="billing_account_value",
+                etag="etag_value",
+                provisioned_resources_parent="provisioned_resources_parent_value",
+            )
+        )
+
+        response = await client.update_workload(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
         assert args[0] == assuredworkloads_v1beta1.UpdateWorkloadRequest()
@@ -737,59 +799,12 @@ def test_update_workload(
 
     assert response.etag == "etag_value"
 
-
-def test_update_workload_from_dict():
-    test_update_workload(request_type=dict)
+    assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
 
 
 @pytest.mark.asyncio
-async def test_update_workload_async(transport: str = "grpc_asyncio"):
-    client = AssuredWorkloadsServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = assuredworkloads_v1beta1.UpdateWorkloadRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_workload), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            assuredworkloads_v1beta1.Workload(
-                name="name_value",
-                display_name="display_name_value",
-                compliance_regime=assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4,
-                billing_account="billing_account_value",
-                etag="etag_value",
-            )
-        )
-
-        response = await client.update_workload(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, assuredworkloads_v1beta1.Workload)
-
-    assert response.name == "name_value"
-
-    assert response.display_name == "display_name_value"
-
-    assert (
-        response.compliance_regime
-        == assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4
-    )
-
-    assert response.billing_account == "billing_account_value"
-
-    assert response.etag == "etag_value"
+async def test_update_workload_async_from_dict():
+    await test_update_workload_async(request_type=dict)
 
 
 def test_update_workload_field_headers():
@@ -803,7 +818,7 @@ def test_update_workload_field_headers():
     request.workload.name = "workload.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
         call.return_value = assuredworkloads_v1beta1.Workload()
 
         client.update_workload(request)
@@ -832,9 +847,7 @@ async def test_update_workload_field_headers_async():
     request.workload.name = "workload.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             assuredworkloads_v1beta1.Workload()
         )
@@ -859,7 +872,7 @@ def test_update_workload_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.Workload()
 
@@ -902,9 +915,7 @@ async def test_update_workload_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.Workload()
 
@@ -956,7 +967,7 @@ def test_delete_workload(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -977,19 +988,20 @@ def test_delete_workload_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_workload_async(transport: str = "grpc_asyncio"):
+async def test_delete_workload_async(
+    transport: str = "grpc_asyncio",
+    request_type=assuredworkloads_v1beta1.DeleteWorkloadRequest,
+):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = assuredworkloads_v1beta1.DeleteWorkloadRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -999,10 +1011,15 @@ async def test_delete_workload_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == assuredworkloads_v1beta1.DeleteWorkloadRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_workload_async_from_dict():
+    await test_delete_workload_async(request_type=dict)
 
 
 def test_delete_workload_field_headers():
@@ -1016,7 +1033,7 @@ def test_delete_workload_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         call.return_value = None
 
         client.delete_workload(request)
@@ -1043,9 +1060,7 @@ async def test_delete_workload_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_workload(request)
@@ -1066,7 +1081,7 @@ def test_delete_workload_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1102,9 +1117,7 @@ async def test_delete_workload_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1147,7 +1160,7 @@ def test_get_workload(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.Workload(
             name="name_value",
@@ -1155,6 +1168,7 @@ def test_get_workload(
             compliance_regime=assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4,
             billing_account="billing_account_value",
             etag="etag_value",
+            provisioned_resources_parent="provisioned_resources_parent_value",
             il4_settings=assuredworkloads_v1beta1.Workload.IL4Settings(
                 kms_settings=assuredworkloads_v1beta1.Workload.KMSSettings(
                     next_rotation_time=timestamp.Timestamp(seconds=751)
@@ -1166,6 +1180,65 @@ def test_get_workload(
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == assuredworkloads_v1beta1.GetWorkloadRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, assuredworkloads_v1beta1.Workload)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+    assert (
+        response.compliance_regime
+        == assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4
+    )
+
+    assert response.billing_account == "billing_account_value"
+
+    assert response.etag == "etag_value"
+
+    assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
+
+
+def test_get_workload_from_dict():
+    test_get_workload(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_get_workload_async(
+    transport: str = "grpc_asyncio",
+    request_type=assuredworkloads_v1beta1.GetWorkloadRequest,
+):
+    client = AssuredWorkloadsServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            assuredworkloads_v1beta1.Workload(
+                name="name_value",
+                display_name="display_name_value",
+                compliance_regime=assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4,
+                billing_account="billing_account_value",
+                etag="etag_value",
+                provisioned_resources_parent="provisioned_resources_parent_value",
+            )
+        )
+
+        response = await client.get_workload(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
         assert args[0] == assuredworkloads_v1beta1.GetWorkloadRequest()
@@ -1186,59 +1259,12 @@ def test_get_workload(
 
     assert response.etag == "etag_value"
 
-
-def test_get_workload_from_dict():
-    test_get_workload(request_type=dict)
+    assert response.provisioned_resources_parent == "provisioned_resources_parent_value"
 
 
 @pytest.mark.asyncio
-async def test_get_workload_async(transport: str = "grpc_asyncio"):
-    client = AssuredWorkloadsServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = assuredworkloads_v1beta1.GetWorkloadRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_workload), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            assuredworkloads_v1beta1.Workload(
-                name="name_value",
-                display_name="display_name_value",
-                compliance_regime=assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4,
-                billing_account="billing_account_value",
-                etag="etag_value",
-            )
-        )
-
-        response = await client.get_workload(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, assuredworkloads_v1beta1.Workload)
-
-    assert response.name == "name_value"
-
-    assert response.display_name == "display_name_value"
-
-    assert (
-        response.compliance_regime
-        == assuredworkloads_v1beta1.Workload.ComplianceRegime.IL4
-    )
-
-    assert response.billing_account == "billing_account_value"
-
-    assert response.etag == "etag_value"
+async def test_get_workload_async_from_dict():
+    await test_get_workload_async(request_type=dict)
 
 
 def test_get_workload_field_headers():
@@ -1252,7 +1278,7 @@ def test_get_workload_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
         call.return_value = assuredworkloads_v1beta1.Workload()
 
         client.get_workload(request)
@@ -1279,9 +1305,7 @@ async def test_get_workload_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             assuredworkloads_v1beta1.Workload()
         )
@@ -1304,7 +1328,7 @@ def test_get_workload_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_workload), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.Workload()
 
@@ -1340,9 +1364,7 @@ async def test_get_workload_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_workload), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.Workload()
 
@@ -1387,7 +1409,7 @@ def test_list_workloads(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_workloads), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.ListWorkloadsResponse(
             next_page_token="next_page_token_value",
@@ -1402,6 +1424,7 @@ def test_list_workloads(
         assert args[0] == assuredworkloads_v1beta1.ListWorkloadsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListWorkloadsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -1412,19 +1435,20 @@ def test_list_workloads_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_workloads_async(transport: str = "grpc_asyncio"):
+async def test_list_workloads_async(
+    transport: str = "grpc_asyncio",
+    request_type=assuredworkloads_v1beta1.ListWorkloadsRequest,
+):
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = assuredworkloads_v1beta1.ListWorkloadsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_workloads), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             assuredworkloads_v1beta1.ListWorkloadsResponse(
@@ -1438,12 +1462,17 @@ async def test_list_workloads_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == assuredworkloads_v1beta1.ListWorkloadsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkloadsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_workloads_async_from_dict():
+    await test_list_workloads_async(request_type=dict)
 
 
 def test_list_workloads_field_headers():
@@ -1457,7 +1486,7 @@ def test_list_workloads_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_workloads), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         call.return_value = assuredworkloads_v1beta1.ListWorkloadsResponse()
 
         client.list_workloads(request)
@@ -1484,9 +1513,7 @@ async def test_list_workloads_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_workloads), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             assuredworkloads_v1beta1.ListWorkloadsResponse()
         )
@@ -1509,7 +1536,7 @@ def test_list_workloads_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_workloads), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.ListWorkloadsResponse()
 
@@ -1545,9 +1572,7 @@ async def test_list_workloads_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_workloads), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = assuredworkloads_v1beta1.ListWorkloadsResponse()
 
@@ -1586,7 +1611,7 @@ def test_list_workloads_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_workloads), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             assuredworkloads_v1beta1.ListWorkloadsResponse(
@@ -1631,7 +1656,7 @@ def test_list_workloads_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_workloads), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             assuredworkloads_v1beta1.ListWorkloadsResponse(
@@ -1669,9 +1694,7 @@ async def test_list_workloads_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_workloads),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_workloads), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1715,9 +1738,7 @@ async def test_list_workloads_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_workloads),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_workloads), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1786,7 +1807,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = AssuredWorkloadsServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1825,7 +1846,7 @@ def test_transport_grpc_default():
         credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client._transport, transports.AssuredWorkloadsServiceGrpcTransport,
+        client.transport, transports.AssuredWorkloadsServiceGrpcTransport,
     )
 
 
@@ -1929,7 +1950,7 @@ def test_assured_workloads_service_host_no_port():
             api_endpoint="assuredworkloads.googleapis.com"
         ),
     )
-    assert client._transport._host == "assuredworkloads.googleapis.com:443"
+    assert client.transport._host == "assuredworkloads.googleapis.com:443"
 
 
 def test_assured_workloads_service_host_with_port():
@@ -1939,7 +1960,7 @@ def test_assured_workloads_service_host_with_port():
             api_endpoint="assuredworkloads.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "assuredworkloads.googleapis.com:8000"
+    assert client.transport._host == "assuredworkloads.googleapis.com:8000"
 
 
 def test_assured_workloads_service_grpc_transport_channel():
@@ -1951,6 +1972,7 @@ def test_assured_workloads_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_assured_workloads_service_grpc_asyncio_transport_channel():
@@ -1962,6 +1984,7 @@ def test_assured_workloads_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -2009,6 +2032,7 @@ def test_assured_workloads_service_transport_channel_mtls_with_client_cert_sourc
                 quota_project_id=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2055,7 +2079,7 @@ def test_assured_workloads_service_grpc_lro_client():
     client = AssuredWorkloadsServiceClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc",
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
@@ -2068,7 +2092,7 @@ def test_assured_workloads_service_grpc_lro_async_client():
     client = AssuredWorkloadsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
-    transport = client._client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
@@ -2101,6 +2125,107 @@ def test_parse_workload_path():
 
     # Check that the path construction is reversible.
     actual = AssuredWorkloadsServiceClient.parse_workload_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "cuttlefish"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = AssuredWorkloadsServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "mussel",
+    }
+    path = AssuredWorkloadsServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssuredWorkloadsServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "winkle"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = AssuredWorkloadsServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nautilus",
+    }
+    path = AssuredWorkloadsServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssuredWorkloadsServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "scallop"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = AssuredWorkloadsServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "abalone",
+    }
+    path = AssuredWorkloadsServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssuredWorkloadsServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "squid"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = AssuredWorkloadsServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "clam",
+    }
+    path = AssuredWorkloadsServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssuredWorkloadsServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "whelk"
+    location = "octopus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = AssuredWorkloadsServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+    }
+    path = AssuredWorkloadsServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssuredWorkloadsServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 
