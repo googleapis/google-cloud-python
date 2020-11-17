@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-billing/compare/v1.0.0...v1.1.0) (2020-11-17)
+
+
+### Features
+
+* add async client, support credentials_file and scopes client options ([#29](https://www.github.com/googleapis/python-billing/issues/29)) ([4177eb5](https://www.github.com/googleapis/python-billing/commit/4177eb53544392931a17a6fc8e51b24c69698969))
+* add mtls support ([#19](https://www.github.com/googleapis/python-billing/issues/19)) ([fef622a](https://www.github.com/googleapis/python-billing/commit/fef622a0dddf005d8af329ee001ec41f03850427))
+
 ## [1.0.0](https://www.github.com/googleapis/python-billing/compare/v0.1.0...v1.0.0) (2020-05-18)
 
 
