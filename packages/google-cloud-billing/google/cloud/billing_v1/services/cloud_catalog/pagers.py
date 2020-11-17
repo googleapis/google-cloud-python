@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-from typing import Any, Callable, Iterable
+from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
 
 from google.cloud.billing_v1.types import cloud_catalog
 
@@ -40,11 +40,11 @@ class ListServicesPager:
 
     def __init__(
         self,
-        method: Callable[
-            [cloud_catalog.ListServicesRequest], cloud_catalog.ListServicesResponse
-        ],
+        method: Callable[..., cloud_catalog.ListServicesResponse],
         request: cloud_catalog.ListServicesRequest,
         response: cloud_catalog.ListServicesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -55,10 +55,13 @@ class ListServicesPager:
                 The initial request object.
             response (:class:`~.cloud_catalog.ListServicesResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = cloud_catalog.ListServicesRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -68,12 +71,78 @@ class ListServicesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterable[cloud_catalog.Service]:
         for page in self.pages:
             yield from page.services
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListServicesAsyncPager:
+    """A pager for iterating through ``list_services`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.cloud_catalog.ListServicesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``services`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListServices`` requests and continue to iterate
+    through the ``services`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.cloud_catalog.ListServicesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[cloud_catalog.ListServicesResponse]],
+        request: cloud_catalog.ListServicesRequest,
+        response: cloud_catalog.ListServicesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.cloud_catalog.ListServicesRequest`):
+                The initial request object.
+            response (:class:`~.cloud_catalog.ListServicesResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = cloud_catalog.ListServicesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[cloud_catalog.ListServicesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[cloud_catalog.Service]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.services:
+                    yield response
+
+        return async_generator()
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
@@ -99,11 +168,11 @@ class ListSkusPager:
 
     def __init__(
         self,
-        method: Callable[
-            [cloud_catalog.ListSkusRequest], cloud_catalog.ListSkusResponse
-        ],
+        method: Callable[..., cloud_catalog.ListSkusResponse],
         request: cloud_catalog.ListSkusRequest,
         response: cloud_catalog.ListSkusResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -114,10 +183,13 @@ class ListSkusPager:
                 The initial request object.
             response (:class:`~.cloud_catalog.ListSkusResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = cloud_catalog.ListSkusRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -127,12 +199,78 @@ class ListSkusPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterable[cloud_catalog.Sku]:
         for page in self.pages:
             yield from page.skus
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSkusAsyncPager:
+    """A pager for iterating through ``list_skus`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.cloud_catalog.ListSkusResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``skus`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListSkus`` requests and continue to iterate
+    through the ``skus`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.cloud_catalog.ListSkusResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[cloud_catalog.ListSkusResponse]],
+        request: cloud_catalog.ListSkusRequest,
+        response: cloud_catalog.ListSkusResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.cloud_catalog.ListSkusRequest`):
+                The initial request object.
+            response (:class:`~.cloud_catalog.ListSkusResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = cloud_catalog.ListSkusRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[cloud_catalog.ListSkusResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[cloud_catalog.Sku]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.skus:
+                    yield response
+
+        return async_generator()
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

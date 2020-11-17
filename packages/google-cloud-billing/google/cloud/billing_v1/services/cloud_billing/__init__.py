@@ -16,5 +16,9 @@
 #
 
 from .client import CloudBillingClient
+from .async_client import CloudBillingAsyncClient
 
-__all__ = ("CloudBillingClient",)
+__all__ = (
+    "CloudBillingClient",
+    "CloudBillingAsyncClient",
+)

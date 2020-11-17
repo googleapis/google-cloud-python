@@ -1,0 +1,594 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
+from google import auth  # type: ignore
+from google.auth import credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.billing_v1.types import cloud_billing
+from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
+from google.iam.v1 import policy_pb2 as policy  # type: ignore
+
+from .base import CloudBillingTransport, DEFAULT_CLIENT_INFO
+from .grpc import CloudBillingGrpcTransport
+
+
+class CloudBillingGrpcAsyncIOTransport(CloudBillingTransport):
+    """gRPC AsyncIO backend transport for CloudBilling.
+
+    Retrieves GCP Console billing accounts and associates them
+    with projects.
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends protocol buffers over the wire using gRPC (which is built on
+    top of HTTP/2); the ``grpcio`` package must be installed.
+    """
+
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
+
+    def __init__(
+        self,
+        *,
+        host: str = "cloudbilling.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        quota_project_id=None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            host (Optional[str]): The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is ignored if ``channel`` is provided.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
+                which to make calls.
+            api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
+                If provided, it overrides the ``host`` argument and tries to create
+                a mutual TLS channel with client SSL credentials from
+                ``client_cert_source`` or applicatin default SSL credentials.
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                Deprecated. A callback to provide client SSL certificate bytes and
+                private key bytes, both in PEM format. It is ignored if
+                ``api_mtls_endpoint`` is None.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
+
+        Raises:
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+              creation failed for any reason.
+          google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
+        """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
+        if channel:
+            # Sanity check: Ensure that channel and credentials are not both
+            # provided.
+            credentials = False
+
+            # If a channel was explicitly provided, set it.
+            self._grpc_channel = channel
+            self._ssl_channel_credentials = None
+        elif api_mtls_endpoint:
+            warnings.warn(
+                "api_mtls_endpoint and client_cert_source are deprecated",
+                DeprecationWarning,
+            )
+
+            host = (
+                api_mtls_endpoint
+                if ":" in api_mtls_endpoint
+                else api_mtls_endpoint + ":443"
+            )
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            # Create SSL credentials with client_cert_source or application
+            # default SSL credentials.
+            if client_cert_source:
+                cert, key = client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+            else:
+                ssl_credentials = SslCredentials().ssl_credentials
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=ssl_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+            )
+            self._ssl_channel_credentials = ssl_credentials
+        else:
+            host = host if ":" in host else host + ":443"
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=ssl_channel_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+            )
+
+        # Run the base constructor.
+        super().__init__(
+            host=host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes or self.AUTH_SCOPES,
+            quota_project_id=quota_project_id,
+            client_info=client_info,
+        )
+
+        self._stubs = {}
+
+    @property
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
+        return self._grpc_channel
+
+    @property
+    def get_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.GetBillingAccountRequest],
+        Awaitable[cloud_billing.BillingAccount],
+    ]:
+        r"""Return a callable for the get billing account method over gRPC.
+
+        Gets information about a billing account. The current
+        authenticated user must be a `viewer of the billing
+        account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+        Returns:
+            Callable[[~.GetBillingAccountRequest],
+                    Awaitable[~.BillingAccount]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_billing_account" not in self._stubs:
+            self._stubs["get_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/GetBillingAccount",
+                request_serializer=cloud_billing.GetBillingAccountRequest.serialize,
+                response_deserializer=cloud_billing.BillingAccount.deserialize,
+            )
+        return self._stubs["get_billing_account"]
+
+    @property
+    def list_billing_accounts(
+        self,
+    ) -> Callable[
+        [cloud_billing.ListBillingAccountsRequest],
+        Awaitable[cloud_billing.ListBillingAccountsResponse],
+    ]:
+        r"""Return a callable for the list billing accounts method over gRPC.
+
+        Lists the billing accounts that the current authenticated user
+        has permission to
+        `view <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+        Returns:
+            Callable[[~.ListBillingAccountsRequest],
+                    Awaitable[~.ListBillingAccountsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_billing_accounts" not in self._stubs:
+            self._stubs["list_billing_accounts"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/ListBillingAccounts",
+                request_serializer=cloud_billing.ListBillingAccountsRequest.serialize,
+                response_deserializer=cloud_billing.ListBillingAccountsResponse.deserialize,
+            )
+        return self._stubs["list_billing_accounts"]
+
+    @property
+    def update_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.UpdateBillingAccountRequest],
+        Awaitable[cloud_billing.BillingAccount],
+    ]:
+        r"""Return a callable for the update billing account method over gRPC.
+
+        Updates a billing account's fields. Currently the only field
+        that can be edited is ``display_name``. The current
+        authenticated user must have the ``billing.accounts.update`` IAM
+        permission, which is typically given to the
+        `administrator <https://cloud.google.com/billing/docs/how-to/billing-access>`__
+        of the billing account.
+
+        Returns:
+            Callable[[~.UpdateBillingAccountRequest],
+                    Awaitable[~.BillingAccount]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_billing_account" not in self._stubs:
+            self._stubs["update_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/UpdateBillingAccount",
+                request_serializer=cloud_billing.UpdateBillingAccountRequest.serialize,
+                response_deserializer=cloud_billing.BillingAccount.deserialize,
+            )
+        return self._stubs["update_billing_account"]
+
+    @property
+    def create_billing_account(
+        self,
+    ) -> Callable[
+        [cloud_billing.CreateBillingAccountRequest],
+        Awaitable[cloud_billing.BillingAccount],
+    ]:
+        r"""Return a callable for the create billing account method over gRPC.
+
+        Creates a billing account. This method can only be used to
+        create `billing
+        subaccounts <https://cloud.google.com/billing/docs/concepts>`__
+        by GCP resellers. When creating a subaccount, the current
+        authenticated user must have the ``billing.accounts.update`` IAM
+        permission on the master account, which is typically given to
+        billing account
+        `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+        This method will return an error if the master account has not
+        been provisioned as a reseller account.
+
+        Returns:
+            Callable[[~.CreateBillingAccountRequest],
+                    Awaitable[~.BillingAccount]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_billing_account" not in self._stubs:
+            self._stubs["create_billing_account"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/CreateBillingAccount",
+                request_serializer=cloud_billing.CreateBillingAccountRequest.serialize,
+                response_deserializer=cloud_billing.BillingAccount.deserialize,
+            )
+        return self._stubs["create_billing_account"]
+
+    @property
+    def list_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.ListProjectBillingInfoRequest],
+        Awaitable[cloud_billing.ListProjectBillingInfoResponse],
+    ]:
+        r"""Return a callable for the list project billing info method over gRPC.
+
+        Lists the projects associated with a billing account. The
+        current authenticated user must have the
+        ``billing.resourceAssociations.list`` IAM permission, which is
+        often given to billing account
+        `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+        Returns:
+            Callable[[~.ListProjectBillingInfoRequest],
+                    Awaitable[~.ListProjectBillingInfoResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_project_billing_info" not in self._stubs:
+            self._stubs["list_project_billing_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/ListProjectBillingInfo",
+                request_serializer=cloud_billing.ListProjectBillingInfoRequest.serialize,
+                response_deserializer=cloud_billing.ListProjectBillingInfoResponse.deserialize,
+            )
+        return self._stubs["list_project_billing_info"]
+
+    @property
+    def get_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.GetProjectBillingInfoRequest],
+        Awaitable[cloud_billing.ProjectBillingInfo],
+    ]:
+        r"""Return a callable for the get project billing info method over gRPC.
+
+        Gets the billing information for a project. The current
+        authenticated user must have `permission to view the
+        project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__.
+
+        Returns:
+            Callable[[~.GetProjectBillingInfoRequest],
+                    Awaitable[~.ProjectBillingInfo]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_project_billing_info" not in self._stubs:
+            self._stubs["get_project_billing_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/GetProjectBillingInfo",
+                request_serializer=cloud_billing.GetProjectBillingInfoRequest.serialize,
+                response_deserializer=cloud_billing.ProjectBillingInfo.deserialize,
+            )
+        return self._stubs["get_project_billing_info"]
+
+    @property
+    def update_project_billing_info(
+        self,
+    ) -> Callable[
+        [cloud_billing.UpdateProjectBillingInfoRequest],
+        Awaitable[cloud_billing.ProjectBillingInfo],
+    ]:
+        r"""Return a callable for the update project billing info method over gRPC.
+
+        Sets or updates the billing account associated with a project.
+        You specify the new billing account by setting the
+        ``billing_account_name`` in the ``ProjectBillingInfo`` resource
+        to the resource name of a billing account. Associating a project
+        with an open billing account enables billing on the project and
+        allows charges for resource usage. If the project already had a
+        billing account, this method changes the billing account used
+        for resource usage charges.
+
+        *Note:* Incurred charges that have not yet been reported in the
+        transaction history of the GCP Console might be billed to the
+        new billing account, even if the charge occurred before the new
+        billing account was assigned to the project.
+
+        The current authenticated user must have ownership privileges
+        for both the
+        `project <https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo>`__
+        and the `billing
+        account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+        You can disable billing on the project by setting the
+        ``billing_account_name`` field to empty. This action
+        disassociates the current billing account from the project. Any
+        billable activity of your in-use services will stop, and your
+        application could stop functioning as expected. Any unbilled
+        charges to date will be billed to the previously associated
+        account. The current authenticated user must be either an owner
+        of the project or an owner of the billing account for the
+        project.
+
+        Note that associating a project with a *closed* billing account
+        will have much the same effect as disabling billing on the
+        project: any paid resources used by the project will be shut
+        down. Thus, unless you wish to disable billing, you should
+        always call this method with the name of an *open* billing
+        account.
+
+        Returns:
+            Callable[[~.UpdateProjectBillingInfoRequest],
+                    Awaitable[~.ProjectBillingInfo]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_project_billing_info" not in self._stubs:
+            self._stubs["update_project_billing_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/UpdateProjectBillingInfo",
+                request_serializer=cloud_billing.UpdateProjectBillingInfoRequest.serialize,
+                response_deserializer=cloud_billing.ProjectBillingInfo.deserialize,
+            )
+        return self._stubs["update_project_billing_info"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy.GetIamPolicyRequest], Awaitable[policy.Policy]]:
+        r"""Return a callable for the get iam policy method over gRPC.
+
+        Gets the access control policy for a billing account. The caller
+        must have the ``billing.accounts.getIamPolicy`` permission on
+        the account, which is often given to billing account
+        `viewers <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    Awaitable[~.Policy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/GetIamPolicy",
+                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy.SetIamPolicyRequest], Awaitable[policy.Policy]]:
+        r"""Return a callable for the set iam policy method over gRPC.
+
+        Sets the access control policy for a billing account. Replaces
+        any existing policy. The caller must have the
+        ``billing.accounts.setIamPolicy`` permission on the account,
+        which is often given to billing account
+        `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    Awaitable[~.Policy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/SetIamPolicy",
+                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy.TestIamPermissionsRequest],
+        Awaitable[iam_policy.TestIamPermissionsResponse],
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+
+        Tests the access control policy for a billing
+        account. This method takes the resource and a set of
+        permissions as input and returns the subset of the input
+        permissions that the caller is allowed for that
+        resource.
+
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    Awaitable[~.TestIamPermissionsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.billing.v1.CloudBilling/TestIamPermissions",
+                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
+
+
+__all__ = ("CloudBillingGrpcAsyncIOTransport",)

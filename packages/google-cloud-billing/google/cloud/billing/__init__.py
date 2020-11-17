@@ -15,8 +15,13 @@
 # limitations under the License.
 #
 
-
+from google.cloud.billing_v1.services.cloud_billing.async_client import (
+    CloudBillingAsyncClient,
+)
 from google.cloud.billing_v1.services.cloud_billing.client import CloudBillingClient
+from google.cloud.billing_v1.services.cloud_catalog.async_client import (
+    CloudCatalogAsyncClient,
+)
 from google.cloud.billing_v1.services.cloud_catalog.client import CloudCatalogClient
 from google.cloud.billing_v1.types.cloud_billing import BillingAccount
 from google.cloud.billing_v1.types.cloud_billing import CreateBillingAccountRequest
@@ -44,7 +49,9 @@ __all__ = (
     "AggregationInfo",
     "BillingAccount",
     "Category",
+    "CloudBillingAsyncClient",
     "CloudBillingClient",
+    "CloudCatalogAsyncClient",
     "CloudCatalogClient",
     "CreateBillingAccountRequest",
     "GetBillingAccountRequest",

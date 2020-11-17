@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.cloud_billing import CloudBillingClient
 from .services.cloud_catalog import CloudCatalogClient
 from .types.cloud_billing import BillingAccount

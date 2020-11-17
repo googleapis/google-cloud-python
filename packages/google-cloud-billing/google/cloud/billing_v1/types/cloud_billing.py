@@ -51,7 +51,7 @@ class BillingAccount(proto.Message):
             example, ``billingAccounts/012345-567890-ABCDEF`` would be
             the resource name for billing account
             ``012345-567890-ABCDEF``.
-        open (bool):
+        open_ (bool):
             Output only. True if the billing account is
             open, and will therefore be charged for any
             usage on associated projects. False if the
@@ -71,8 +71,11 @@ class BillingAccount(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
-    open = proto.Field(proto.BOOL, number=2)
+
+    open_ = proto.Field(proto.BOOL, number=2)
+
     display_name = proto.Field(proto.STRING, number=3)
+
     master_billing_account = proto.Field(proto.STRING, number=4)
 
 
@@ -110,8 +113,11 @@ class ProjectBillingInfo(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     project_id = proto.Field(proto.STRING, number=2)
+
     billing_account_name = proto.Field(proto.STRING, number=3)
+
     billing_enabled = proto.Field(proto.BOOL, number=4)
 
 
@@ -151,7 +157,9 @@ class ListBillingAccountsRequest(proto.Message):
     """
 
     page_size = proto.Field(proto.INT32, number=1)
+
     page_token = proto.Field(proto.STRING, number=2)
+
     filter = proto.Field(proto.STRING, number=3)
 
 
@@ -173,8 +181,9 @@ class ListBillingAccountsResponse(proto.Message):
         return self
 
     billing_accounts = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=BillingAccount
+        proto.MESSAGE, number=1, message="BillingAccount",
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -190,7 +199,7 @@ class CreateBillingAccountRequest(proto.Message):
             billing account.
     """
 
-    billing_account = proto.Field(proto.MESSAGE, number=1, message=BillingAccount)
+    billing_account = proto.Field(proto.MESSAGE, number=1, message="BillingAccount",)
 
 
 class UpdateBillingAccountRequest(proto.Message):
@@ -209,8 +218,10 @@ class UpdateBillingAccountRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
-    account = proto.Field(proto.MESSAGE, number=2, message=BillingAccount)
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask)
+
+    account = proto.Field(proto.MESSAGE, number=2, message="BillingAccount",)
+
+    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
 
 
 class ListProjectBillingInfoRequest(proto.Message):
@@ -232,7 +243,9 @@ class ListProjectBillingInfoRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
 
 
@@ -255,8 +268,9 @@ class ListProjectBillingInfoResponse(proto.Message):
         return self
 
     project_billing_info = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ProjectBillingInfo
+        proto.MESSAGE, number=1, message="ProjectBillingInfo",
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -288,8 +302,9 @@ class UpdateProjectBillingInfoRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     project_billing_info = proto.Field(
-        proto.MESSAGE, number=2, message=ProjectBillingInfo
+        proto.MESSAGE, number=2, message="ProjectBillingInfo",
     )
 
 

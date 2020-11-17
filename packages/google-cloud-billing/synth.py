@@ -19,38 +19,28 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate budgets GAPIC layer
 # ----------------------------------------------------------------------------
 library = gapic.py_library(
-    "billing", "v1"
+    service="billing",
+    version="v1",
+    bazel_target="//google/cloud/billing/v1:billing-v1-py",
 )
 
-excludes = ["setup.py", "docs/index.rst"] 
+excludes = ["setup.py", "docs/index.rst", "scripts/fixup_biling_v1_keywords.py"] 
 s.move(library, excludes=excludes)
-
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(cov_level=99, microgenerator=True)
 s.move(templated_files, excludes=[".coveragerc"])  # the microgenerator has a good coveragerc file
 s.replace(".gitignore", "bigquery/docs/generated", "htmlcov")  # temporary hack to ignore htmlcov
 
-# Remove 2.7 and 3.5 tests from noxfile.py
-s.replace("noxfile.py", '''\["2\.7", ''', '[')
-s.replace("noxfile.py", '''"3.5", ''', '')
-
-# Expand flake errors permitted to accomodate the Microgenerator
-# TODO: remove extra error codes once issues below are resolved
-# https://github.com/googleapis/gapic-generator-python/issues/425
-s.replace(".flake8", "(ignore = .*)", "\g<1>, F401, F841")
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

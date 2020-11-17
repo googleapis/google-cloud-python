@@ -41,7 +41,6 @@ from .cloud_billing import (
     UpdateProjectBillingInfoRequest,
 )
 
-
 __all__ = (
     "Service",
     "Sku",

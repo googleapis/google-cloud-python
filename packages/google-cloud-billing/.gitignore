@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -45,10 +46,12 @@ pip-log.txt
 # Built documentation
 docs/_build
 htmlcov
+docs.metadata
 
 # Virtual environment
 env/
 coverage.xml
+sponge_log.xml
 
 # System test environment variables.
 system_tests/local_test_setup
