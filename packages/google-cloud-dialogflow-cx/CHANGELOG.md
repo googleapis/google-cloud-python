@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.1.0...v0.1.1) (2020-11-17)
+
+
+### Bug Fixes
+
+* corrects the repo/homepage link ([#15](https://www.github.com/googleapis/python-dialogflow-cx/issues/15)) ([c26852d](https://www.github.com/googleapis/python-dialogflow-cx/commit/c26852d8a3738eb4d67222c555d0197a854e68a9))
+
+
+### Documentation
+
+* **samples:** add initial sample codes ([#13](https://www.github.com/googleapis/python-dialogflow-cx/issues/13)) ([b590308](https://www.github.com/googleapis/python-dialogflow-cx/commit/b590308b79a230561aed776f55260a73668c8efc)), closes [#12](https://www.github.com/googleapis/python-dialogflow-cx/issues/12)
+
 ## 0.1.0 (2020-08-24)
 
 
