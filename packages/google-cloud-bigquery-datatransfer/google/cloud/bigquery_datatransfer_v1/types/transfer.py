@@ -192,7 +192,7 @@ class TransferConfig(proto.Message):
 
     schedule = proto.Field(proto.STRING, number=7)
 
-    schedule_options = proto.Field(proto.MESSAGE, number=24, message=ScheduleOptions,)
+    schedule_options = proto.Field(proto.MESSAGE, number=24, message="ScheduleOptions",)
 
     data_refresh_window_days = proto.Field(proto.INT32, number=12)
 
@@ -210,7 +210,9 @@ class TransferConfig(proto.Message):
 
     notification_pubsub_topic = proto.Field(proto.STRING, number=15)
 
-    email_preferences = proto.Field(proto.MESSAGE, number=18, message=EmailPreferences,)
+    email_preferences = proto.Field(
+        proto.MESSAGE, number=18, message="EmailPreferences",
+    )
 
 
 class TransferRun(proto.Message):
@@ -299,7 +301,9 @@ class TransferRun(proto.Message):
 
     notification_pubsub_topic = proto.Field(proto.STRING, number=23)
 
-    email_preferences = proto.Field(proto.MESSAGE, number=25, message=EmailPreferences,)
+    email_preferences = proto.Field(
+        proto.MESSAGE, number=25, message="EmailPreferences",
+    )
 
 
 class TransferMessage(proto.Message):

@@ -142,6 +142,46 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> DataTransferServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DataTransferServiceTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def data_source_path(project: str, data_source: str,) -> str:
+        """Return a fully-qualified data_source string."""
+        return "projects/{project}/dataSources/{data_source}".format(
+            project=project, data_source=data_source,
+        )
+
+    @staticmethod
+    def parse_data_source_path(path: str) -> Dict[str, str]:
+        """Parse a data_source path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/dataSources/(?P<data_source>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def run_path(project: str, transfer_config: str, run: str,) -> str:
+        """Return a fully-qualified run string."""
+        return "projects/{project}/transferConfigs/{transfer_config}/runs/{run}".format(
+            project=project, transfer_config=transfer_config, run=run,
+        )
+
+    @staticmethod
+    def parse_run_path(path: str) -> Dict[str, str]:
+        """Parse a run path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/transferConfigs/(?P<transfer_config>.+?)/runs/(?P<run>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
     @staticmethod
     def transfer_config_path(project: str, transfer_config: str,) -> str:
         """Return a fully-qualified transfer_config string."""
@@ -156,6 +196,65 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
             r"^projects/(?P<project>.+?)/transferConfigs/(?P<transfer_config>.+?)$",
             path,
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     def __init__(
@@ -193,10 +292,10 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:

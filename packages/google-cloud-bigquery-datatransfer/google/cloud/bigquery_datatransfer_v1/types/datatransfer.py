@@ -251,7 +251,7 @@ class DataSource(proto.Message):
     supports_custom_schedule = proto.Field(proto.BOOL, number=11)
 
     parameters = proto.RepeatedField(
-        proto.MESSAGE, number=12, message=DataSourceParameter,
+        proto.MESSAGE, number=12, message="DataSourceParameter",
     )
 
     help_url = proto.Field(proto.STRING, number=13)
@@ -329,7 +329,7 @@ class ListDataSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_sources = proto.RepeatedField(proto.MESSAGE, number=1, message=DataSource,)
+    data_sources = proto.RepeatedField(proto.MESSAGE, number=1, message="DataSource",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
