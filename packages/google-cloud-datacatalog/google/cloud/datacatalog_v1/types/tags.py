@@ -202,7 +202,7 @@ class TagTemplateField(proto.Message):
         display_name (str):
             The display name for this field. Defaults to
             an empty string.
-        type (~.tags.FieldType):
+        type_ (~.tags.FieldType):
             Required. The type of value this tag field
             can contain.
         is_required (bool):
@@ -221,7 +221,7 @@ class TagTemplateField(proto.Message):
 
     display_name = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(proto.MESSAGE, number=2, message="FieldType",)
+    type_ = proto.Field(proto.MESSAGE, number=2, message="FieldType",)
 
     is_required = proto.Field(proto.BOOL, number=3)
 

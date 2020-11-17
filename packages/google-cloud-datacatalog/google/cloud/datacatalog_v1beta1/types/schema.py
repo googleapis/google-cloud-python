@@ -42,7 +42,7 @@ class ColumnSchema(proto.Message):
     Attributes:
         column (str):
             Required. Name of the column.
-        type (str):
+        type_ (str):
             Required. Type of the column.
         description (str):
             Optional. Description of the column. Default
@@ -59,7 +59,7 @@ class ColumnSchema(proto.Message):
 
     column = proto.Field(proto.STRING, number=6)
 
-    type = proto.Field(proto.STRING, number=1)
+    type_ = proto.Field(proto.STRING, number=1)
 
     description = proto.Field(proto.STRING, number=2)
 

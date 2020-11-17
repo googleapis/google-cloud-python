@@ -33,7 +33,7 @@ from google.cloud.datacatalog_v1beta1.types import policytagmanager
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 
-from .transports.base import PolicyTagManagerTransport
+from .transports.base import PolicyTagManagerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import PolicyTagManagerGrpcAsyncIOTransport
 from .client import PolicyTagManagerClient
 
@@ -48,12 +48,51 @@ class PolicyTagManagerAsyncClient:
     DEFAULT_ENDPOINT = PolicyTagManagerClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = PolicyTagManagerClient.DEFAULT_MTLS_ENDPOINT
 
-    taxonomy_path = staticmethod(PolicyTagManagerClient.taxonomy_path)
-
     policy_tag_path = staticmethod(PolicyTagManagerClient.policy_tag_path)
+    parse_policy_tag_path = staticmethod(PolicyTagManagerClient.parse_policy_tag_path)
+    taxonomy_path = staticmethod(PolicyTagManagerClient.taxonomy_path)
+    parse_taxonomy_path = staticmethod(PolicyTagManagerClient.parse_taxonomy_path)
+
+    common_billing_account_path = staticmethod(
+        PolicyTagManagerClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        PolicyTagManagerClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(PolicyTagManagerClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        PolicyTagManagerClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        PolicyTagManagerClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        PolicyTagManagerClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(PolicyTagManagerClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        PolicyTagManagerClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(PolicyTagManagerClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        PolicyTagManagerClient.parse_common_location_path
+    )
 
     from_service_account_file = PolicyTagManagerClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> PolicyTagManagerTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            PolicyTagManagerTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(PolicyTagManagerClient).get_transport_class, type(PolicyTagManagerClient)
@@ -65,6 +104,7 @@ class PolicyTagManagerAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, PolicyTagManagerTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the policy tag manager client.
 
@@ -80,16 +120,19 @@ class PolicyTagManagerAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -97,7 +140,10 @@ class PolicyTagManagerAsyncClient:
         """
 
         self._client = PolicyTagManagerClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def create_taxonomy(
@@ -149,7 +195,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, taxonomy]):
+        has_flattened_params = any([parent, taxonomy])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -170,7 +217,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_taxonomy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -219,7 +266,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -238,7 +286,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_taxonomy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -294,7 +342,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([taxonomy]):
+        has_flattened_params = any([taxonomy])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -313,7 +362,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_taxonomy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -371,7 +420,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -390,7 +440,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_taxonomies,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -453,7 +503,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -472,7 +523,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_taxonomy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -537,7 +588,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, policy_tag]):
+        has_flattened_params = any([parent, policy_tag])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -558,7 +610,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_policy_tag,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -606,7 +658,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -625,7 +678,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_policy_tag,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -683,7 +736,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([policy_tag]):
+        has_flattened_params = any([policy_tag])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -702,7 +756,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_policy_tag,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -759,7 +813,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -778,7 +833,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_policy_tags,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -842,7 +897,8 @@ class PolicyTagManagerAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -861,7 +917,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_policy_tag,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -978,7 +1034,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_iam_policy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1095,7 +1151,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_iam_policy,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1148,7 +1204,7 @@ class PolicyTagManagerAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.test_iam_permissions,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1165,13 +1221,13 @@ class PolicyTagManagerAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-datacatalog",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("PolicyTagManagerAsyncClient",)

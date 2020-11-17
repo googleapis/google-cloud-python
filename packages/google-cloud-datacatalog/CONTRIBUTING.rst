@@ -80,25 +80,6 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 .. nox: https://pypi.org/project/nox/
 
-Note on Editable Installs / Develop Mode
-========================================
-
-- As mentioned previously, using ``setuptools`` in `develop mode`_
-  or a ``pip`` `editable install`_ is not possible with this
-  library. This is because this library uses `namespace packages`_.
-  For context see `Issue #2316`_ and the relevant `PyPA issue`_.
-
-  Since ``editable`` / ``develop`` mode can't be used, packages
-  need to be installed directly. Hence your changes to the source
-  tree don't get incorporated into the **already installed**
-  package.
-
-.. _namespace packages: https://www.python.org/dev/peps/pep-0420/
-.. _Issue #2316: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2316
-.. _PyPA issue: https://github.com/pypa/packaging-problems/issues/12
-.. _develop mode: https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
-.. _editable install: https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
-
 *****************************************
 I'm getting weird errors... Can you help?
 *****************************************

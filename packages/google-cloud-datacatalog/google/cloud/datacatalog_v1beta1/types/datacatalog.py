@@ -490,7 +490,7 @@ class Entry(proto.Message):
             Output only when Entry is of type in the EntryType enum. For
             entries with user_specified_type, this field is optional and
             defaults to an empty string.
-        type (~.datacatalog.EntryType):
+        type_ (~.datacatalog.EntryType):
             The type of the entry.
             Only used for Entries with types in the
             EntryType enum.
@@ -555,7 +555,7 @@ class Entry(proto.Message):
 
     linked_resource = proto.Field(proto.STRING, number=9)
 
-    type = proto.Field(proto.ENUM, number=2, oneof="entry_type", enum="EntryType",)
+    type_ = proto.Field(proto.ENUM, number=2, oneof="entry_type", enum="EntryType",)
 
     user_specified_type = proto.Field(proto.STRING, number=16, oneof="entry_type")
 
@@ -988,7 +988,7 @@ class ListEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries = proto.RepeatedField(proto.MESSAGE, number=1, message=Entry,)
+    entries = proto.RepeatedField(proto.MESSAGE, number=1, message="Entry",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

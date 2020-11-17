@@ -116,7 +116,7 @@ class InlineSource(proto.Message):
     """
 
     taxonomies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=SerializedTaxonomy,
+        proto.MESSAGE, number=1, message="SerializedTaxonomy",
     )
 
 
@@ -167,7 +167,7 @@ class ExportTaxonomiesResponse(proto.Message):
     """
 
     taxonomies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=SerializedTaxonomy,
+        proto.MESSAGE, number=1, message="SerializedTaxonomy",
     )
 
 

@@ -19,7 +19,7 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -33,13 +33,13 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-datacatalog",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class DataCatalogTransport(abc.ABC):
@@ -55,6 +55,7 @@ class DataCatalogTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -72,6 +73,11 @@ class DataCatalogTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -99,9 +105,9 @@ class DataCatalogTransport(abc.ABC):
         self._credentials = credentials
 
         # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages()
+        self._prep_wrapped_messages(client_info)
 
-    def _prep_wrapped_messages(self):
+    def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.search_catalog: gapic_v1.method.wrap_method(
@@ -113,10 +119,10 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_entry_group: gapic_v1.method.wrap_method(
-                self.create_entry_group, default_timeout=None, client_info=_client_info,
+                self.create_entry_group, default_timeout=None, client_info=client_info,
             ),
             self.get_entry_group: gapic_v1.method.wrap_method(
                 self.get_entry_group,
@@ -127,13 +133,13 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_entry_group: gapic_v1.method.wrap_method(
-                self.update_entry_group, default_timeout=None, client_info=_client_info,
+                self.update_entry_group, default_timeout=None, client_info=client_info,
             ),
             self.delete_entry_group: gapic_v1.method.wrap_method(
-                self.delete_entry_group, default_timeout=None, client_info=_client_info,
+                self.delete_entry_group, default_timeout=None, client_info=client_info,
             ),
             self.list_entry_groups: gapic_v1.method.wrap_method(
                 self.list_entry_groups,
@@ -144,16 +150,16 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_entry: gapic_v1.method.wrap_method(
-                self.create_entry, default_timeout=None, client_info=_client_info,
+                self.create_entry, default_timeout=None, client_info=client_info,
             ),
             self.update_entry: gapic_v1.method.wrap_method(
-                self.update_entry, default_timeout=None, client_info=_client_info,
+                self.update_entry, default_timeout=None, client_info=client_info,
             ),
             self.delete_entry: gapic_v1.method.wrap_method(
-                self.delete_entry, default_timeout=None, client_info=_client_info,
+                self.delete_entry, default_timeout=None, client_info=client_info,
             ),
             self.get_entry: gapic_v1.method.wrap_method(
                 self.get_entry,
@@ -164,7 +170,7 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.lookup_entry: gapic_v1.method.wrap_method(
                 self.lookup_entry,
@@ -175,7 +181,7 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_entries: gapic_v1.method.wrap_method(
                 self.list_entries,
@@ -186,54 +192,48 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_tag_template: gapic_v1.method.wrap_method(
-                self.create_tag_template,
-                default_timeout=None,
-                client_info=_client_info,
+                self.create_tag_template, default_timeout=None, client_info=client_info,
             ),
             self.get_tag_template: gapic_v1.method.wrap_method(
-                self.get_tag_template, default_timeout=None, client_info=_client_info,
+                self.get_tag_template, default_timeout=None, client_info=client_info,
             ),
             self.update_tag_template: gapic_v1.method.wrap_method(
-                self.update_tag_template,
-                default_timeout=None,
-                client_info=_client_info,
+                self.update_tag_template, default_timeout=None, client_info=client_info,
             ),
             self.delete_tag_template: gapic_v1.method.wrap_method(
-                self.delete_tag_template,
-                default_timeout=None,
-                client_info=_client_info,
+                self.delete_tag_template, default_timeout=None, client_info=client_info,
             ),
             self.create_tag_template_field: gapic_v1.method.wrap_method(
                 self.create_tag_template_field,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_tag_template_field: gapic_v1.method.wrap_method(
                 self.update_tag_template_field,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.rename_tag_template_field: gapic_v1.method.wrap_method(
                 self.rename_tag_template_field,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_tag_template_field: gapic_v1.method.wrap_method(
                 self.delete_tag_template_field,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_tag: gapic_v1.method.wrap_method(
-                self.create_tag, default_timeout=None, client_info=_client_info,
+                self.create_tag, default_timeout=None, client_info=client_info,
             ),
             self.update_tag: gapic_v1.method.wrap_method(
-                self.update_tag, default_timeout=None, client_info=_client_info,
+                self.update_tag, default_timeout=None, client_info=client_info,
             ),
             self.delete_tag: gapic_v1.method.wrap_method(
-                self.delete_tag, default_timeout=None, client_info=_client_info,
+                self.delete_tag, default_timeout=None, client_info=client_info,
             ),
             self.list_tags: gapic_v1.method.wrap_method(
                 self.list_tags,
@@ -244,10 +244,10 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=_client_info,
+                self.set_iam_policy, default_timeout=None, client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -258,12 +258,12 @@ class DataCatalogTransport(abc.ABC):
                     predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
                 ),
                 default_timeout=60.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
         }
 

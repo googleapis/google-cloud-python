@@ -41,14 +41,9 @@ from google.cloud.datacatalog_v1beta1.services.data_catalog import transports
 from google.cloud.datacatalog_v1beta1.types import common
 from google.cloud.datacatalog_v1beta1.types import datacatalog
 from google.cloud.datacatalog_v1beta1.types import gcs_fileset_spec
-from google.cloud.datacatalog_v1beta1.types import (
-    gcs_fileset_spec as gcd_gcs_fileset_spec,
-)
 from google.cloud.datacatalog_v1beta1.types import schema
-from google.cloud.datacatalog_v1beta1.types import schema as gcd_schema
 from google.cloud.datacatalog_v1beta1.types import search
 from google.cloud.datacatalog_v1beta1.types import table_spec
-from google.cloud.datacatalog_v1beta1.types import table_spec as gcd_table_spec
 from google.cloud.datacatalog_v1beta1.types import tags
 from google.cloud.datacatalog_v1beta1.types import timestamps
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
@@ -109,12 +104,12 @@ def test_data_catalog_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "datacatalog.googleapis.com:443"
+        assert client.transport._host == "datacatalog.googleapis.com:443"
 
 
 def test_data_catalog_client_get_transport_class():
@@ -168,14 +163,14 @@ def test_data_catalog_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -184,14 +179,14 @@ def test_data_catalog_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "always".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -200,74 +195,22 @@ def test_data_catalog_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
-            patched.return_value = None
-            client = client_class(client_options=options)
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=client_cert_source_callback,
-                quota_project_id=None,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_MTLS_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "Unsupported"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
             client = client_class()
 
     # Check the case quota_project_id is provided
@@ -280,10 +223,145 @@ def test_data_catalog_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (DataCatalogClient, transports.DataCatalogGrpcTransport, "grpc", "true"),
+        (
+            DataCatalogAsyncClient,
+            transports.DataCatalogGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (DataCatalogClient, transports.DataCatalogGrpcTransport, "grpc", "false"),
+        (
+            DataCatalogAsyncClient,
+            transports.DataCatalogGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    DataCatalogClient, "DEFAULT_ENDPOINT", modify_default_endpoint(DataCatalogClient)
+)
+@mock.patch.object(
+    DataCatalogAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(DataCatalogAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_data_catalog_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -310,9 +388,9 @@ def test_data_catalog_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -340,9 +418,9 @@ def test_data_catalog_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -357,9 +435,9 @@ def test_data_catalog_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -375,7 +453,7 @@ def test_search_catalog(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_catalog), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.SearchCatalogResponse(
             next_page_token="next_page_token_value",
@@ -390,6 +468,7 @@ def test_search_catalog(
         assert args[0] == datacatalog.SearchCatalogRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.SearchCatalogPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -400,19 +479,19 @@ def test_search_catalog_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_search_catalog_async(transport: str = "grpc_asyncio"):
+async def test_search_catalog_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.SearchCatalogRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.SearchCatalogRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.search_catalog), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.SearchCatalogResponse(next_page_token="next_page_token_value",)
@@ -424,7 +503,7 @@ async def test_search_catalog_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.SearchCatalogRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCatalogAsyncPager)
@@ -432,11 +511,16 @@ async def test_search_catalog_async(transport: str = "grpc_asyncio"):
     assert response.next_page_token == "next_page_token_value"
 
 
+@pytest.mark.asyncio
+async def test_search_catalog_async_from_dict():
+    await test_search_catalog_async(request_type=dict)
+
+
 def test_search_catalog_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_catalog), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.SearchCatalogResponse()
 
@@ -481,9 +565,7 @@ async def test_search_catalog_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.search_catalog), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.SearchCatalogResponse()
 
@@ -531,7 +613,7 @@ def test_search_catalog_pager():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_catalog), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             datacatalog.SearchCatalogResponse(
@@ -566,7 +648,7 @@ def test_search_catalog_pages():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_catalog), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             datacatalog.SearchCatalogResponse(
@@ -587,8 +669,8 @@ def test_search_catalog_pages():
             RuntimeError,
         )
         pages = list(client.search_catalog(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -597,9 +679,7 @@ async def test_search_catalog_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.search_catalog),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.search_catalog), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -636,9 +716,7 @@ async def test_search_catalog_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.search_catalog),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.search_catalog), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -660,10 +738,10 @@ async def test_search_catalog_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.search_catalog(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.search_catalog(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_create_entry_group(
@@ -679,7 +757,7 @@ def test_create_entry_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_entry_group), "__call__"
+        type(client.transport.create_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup(
@@ -697,6 +775,7 @@ def test_create_entry_group(
         assert args[0] == datacatalog.CreateEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.EntryGroup)
 
     assert response.name == "name_value"
@@ -711,18 +790,20 @@ def test_create_entry_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_entry_group_async(transport: str = "grpc_asyncio"):
+async def test_create_entry_group_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.CreateEntryGroupRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.CreateEntryGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_entry_group), "__call__"
+        type(client.transport.create_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -739,7 +820,7 @@ async def test_create_entry_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.CreateEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -749,6 +830,11 @@ async def test_create_entry_group_async(transport: str = "grpc_asyncio"):
     assert response.display_name == "display_name_value"
 
     assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_create_entry_group_async_from_dict():
+    await test_create_entry_group_async(request_type=dict)
 
 
 def test_create_entry_group_field_headers():
@@ -761,7 +847,7 @@ def test_create_entry_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_entry_group), "__call__"
+        type(client.transport.create_entry_group), "__call__"
     ) as call:
         call.return_value = datacatalog.EntryGroup()
 
@@ -788,7 +874,7 @@ async def test_create_entry_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_entry_group), "__call__"
+        type(client.transport.create_entry_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.EntryGroup()
@@ -811,7 +897,7 @@ def test_create_entry_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_entry_group), "__call__"
+        type(client.transport.create_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup()
@@ -856,7 +942,7 @@ async def test_create_entry_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_entry_group), "__call__"
+        type(client.transport.create_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup()
@@ -912,7 +998,7 @@ def test_update_entry_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_entry_group), "__call__"
+        type(client.transport.update_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup(
@@ -930,6 +1016,7 @@ def test_update_entry_group(
         assert args[0] == datacatalog.UpdateEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.EntryGroup)
 
     assert response.name == "name_value"
@@ -944,18 +1031,20 @@ def test_update_entry_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_entry_group_async(transport: str = "grpc_asyncio"):
+async def test_update_entry_group_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.UpdateEntryGroupRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.UpdateEntryGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_entry_group), "__call__"
+        type(client.transport.update_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -972,7 +1061,7 @@ async def test_update_entry_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.UpdateEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -982,6 +1071,11 @@ async def test_update_entry_group_async(transport: str = "grpc_asyncio"):
     assert response.display_name == "display_name_value"
 
     assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_update_entry_group_async_from_dict():
+    await test_update_entry_group_async(request_type=dict)
 
 
 def test_update_entry_group_field_headers():
@@ -994,7 +1088,7 @@ def test_update_entry_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_entry_group), "__call__"
+        type(client.transport.update_entry_group), "__call__"
     ) as call:
         call.return_value = datacatalog.EntryGroup()
 
@@ -1023,7 +1117,7 @@ async def test_update_entry_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_entry_group), "__call__"
+        type(client.transport.update_entry_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.EntryGroup()
@@ -1048,7 +1142,7 @@ def test_update_entry_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_entry_group), "__call__"
+        type(client.transport.update_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup()
@@ -1089,7 +1183,7 @@ async def test_update_entry_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_entry_group), "__call__"
+        type(client.transport.update_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup()
@@ -1140,7 +1234,7 @@ def test_get_entry_group(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_entry_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup(
             name="name_value",
@@ -1157,6 +1251,7 @@ def test_get_entry_group(
         assert args[0] == datacatalog.GetEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.EntryGroup)
 
     assert response.name == "name_value"
@@ -1171,19 +1266,19 @@ def test_get_entry_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_entry_group_async(transport: str = "grpc_asyncio"):
+async def test_get_entry_group_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.GetEntryGroupRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.GetEntryGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_entry_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.EntryGroup(
@@ -1199,7 +1294,7 @@ async def test_get_entry_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.GetEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.EntryGroup)
@@ -1211,6 +1306,11 @@ async def test_get_entry_group_async(transport: str = "grpc_asyncio"):
     assert response.description == "description_value"
 
 
+@pytest.mark.asyncio
+async def test_get_entry_group_async_from_dict():
+    await test_get_entry_group_async(request_type=dict)
+
+
 def test_get_entry_group_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1220,7 +1320,7 @@ def test_get_entry_group_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_entry_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         call.return_value = datacatalog.EntryGroup()
 
         client.get_entry_group(request)
@@ -1245,9 +1345,7 @@ async def test_get_entry_group_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_entry_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.EntryGroup()
         )
@@ -1268,7 +1366,7 @@ def test_get_entry_group_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_entry_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup()
 
@@ -1306,9 +1404,7 @@ async def test_get_entry_group_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_entry_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.EntryGroup()
 
@@ -1358,7 +1454,7 @@ def test_delete_entry_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_entry_group), "__call__"
+        type(client.transport.delete_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1380,18 +1476,20 @@ def test_delete_entry_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_group_async(transport: str = "grpc_asyncio"):
+async def test_delete_entry_group_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.DeleteEntryGroupRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.DeleteEntryGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_entry_group), "__call__"
+        type(client.transport.delete_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -1402,10 +1500,15 @@ async def test_delete_entry_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.DeleteEntryGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_group_async_from_dict():
+    await test_delete_entry_group_async(request_type=dict)
 
 
 def test_delete_entry_group_field_headers():
@@ -1418,7 +1521,7 @@ def test_delete_entry_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_entry_group), "__call__"
+        type(client.transport.delete_entry_group), "__call__"
     ) as call:
         call.return_value = None
 
@@ -1445,7 +1548,7 @@ async def test_delete_entry_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_entry_group), "__call__"
+        type(client.transport.delete_entry_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1466,7 +1569,7 @@ def test_delete_entry_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_entry_group), "__call__"
+        type(client.transport.delete_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1500,7 +1603,7 @@ async def test_delete_entry_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_entry_group), "__call__"
+        type(client.transport.delete_entry_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1543,7 +1646,7 @@ def test_list_entry_groups(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListEntryGroupsResponse(
@@ -1559,6 +1662,7 @@ def test_list_entry_groups(
         assert args[0] == datacatalog.ListEntryGroupsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListEntryGroupsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -1569,18 +1673,20 @@ def test_list_entry_groups_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_entry_groups_async(transport: str = "grpc_asyncio"):
+async def test_list_entry_groups_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.ListEntryGroupsRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.ListEntryGroupsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1595,12 +1701,17 @@ async def test_list_entry_groups_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.ListEntryGroupsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntryGroupsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_entry_groups_async_from_dict():
+    await test_list_entry_groups_async(request_type=dict)
 
 
 def test_list_entry_groups_field_headers():
@@ -1613,7 +1724,7 @@ def test_list_entry_groups_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         call.return_value = datacatalog.ListEntryGroupsResponse()
 
@@ -1640,7 +1751,7 @@ async def test_list_entry_groups_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.ListEntryGroupsResponse()
@@ -1663,7 +1774,7 @@ def test_list_entry_groups_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListEntryGroupsResponse()
@@ -1697,7 +1808,7 @@ async def test_list_entry_groups_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListEntryGroupsResponse()
@@ -1734,7 +1845,7 @@ def test_list_entry_groups_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1776,7 +1887,7 @@ def test_list_entry_groups_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_entry_groups), "__call__"
+        type(client.transport.list_entry_groups), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1800,8 +1911,8 @@ def test_list_entry_groups_pages():
             RuntimeError,
         )
         pages = list(client.list_entry_groups(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -1810,7 +1921,7 @@ async def test_list_entry_groups_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entry_groups),
+        type(client.transport.list_entry_groups),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1851,7 +1962,7 @@ async def test_list_entry_groups_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entry_groups),
+        type(client.transport.list_entry_groups),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1877,10 +1988,10 @@ async def test_list_entry_groups_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_entry_groups(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_entry_groups(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_create_entry(
@@ -1895,14 +2006,14 @@ def test_create_entry(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry(
             name="name_value",
             linked_resource="linked_resource_value",
             display_name="display_name_value",
             description="description_value",
-            type=datacatalog.EntryType.TABLE,
+            type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
             gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
                 file_patterns=["file_patterns_value"]
@@ -1918,6 +2029,7 @@ def test_create_entry(
         assert args[0] == datacatalog.CreateEntryRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.Entry)
 
     assert response.name == "name_value"
@@ -1934,19 +2046,19 @@ def test_create_entry_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_entry_async(transport: str = "grpc_asyncio"):
+async def test_create_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.CreateEntryRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.CreateEntryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.Entry(
@@ -1963,7 +2075,7 @@ async def test_create_entry_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.CreateEntryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -1977,6 +2089,11 @@ async def test_create_entry_async(transport: str = "grpc_asyncio"):
     assert response.description == "description_value"
 
 
+@pytest.mark.asyncio
+async def test_create_entry_async_from_dict():
+    await test_create_entry_async(request_type=dict)
+
+
 def test_create_entry_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1986,7 +2103,7 @@ def test_create_entry_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         call.return_value = datacatalog.Entry()
 
         client.create_entry(request)
@@ -2011,9 +2128,7 @@ async def test_create_entry_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(datacatalog.Entry())
 
         await client.create_entry(request)
@@ -2032,7 +2147,7 @@ def test_create_entry_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry()
 
@@ -2075,9 +2190,7 @@ async def test_create_entry_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry()
 
@@ -2129,14 +2242,14 @@ def test_update_entry(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry(
             name="name_value",
             linked_resource="linked_resource_value",
             display_name="display_name_value",
             description="description_value",
-            type=datacatalog.EntryType.TABLE,
+            type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
             gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
                 file_patterns=["file_patterns_value"]
@@ -2152,6 +2265,7 @@ def test_update_entry(
         assert args[0] == datacatalog.UpdateEntryRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.Entry)
 
     assert response.name == "name_value"
@@ -2168,19 +2282,19 @@ def test_update_entry_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_entry_async(transport: str = "grpc_asyncio"):
+async def test_update_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.UpdateEntryRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.UpdateEntryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.Entry(
@@ -2197,7 +2311,7 @@ async def test_update_entry_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.UpdateEntryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -2211,6 +2325,11 @@ async def test_update_entry_async(transport: str = "grpc_asyncio"):
     assert response.description == "description_value"
 
 
+@pytest.mark.asyncio
+async def test_update_entry_async_from_dict():
+    await test_update_entry_async(request_type=dict)
+
+
 def test_update_entry_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -2220,7 +2339,7 @@ def test_update_entry_field_headers():
     request.entry.name = "entry.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         call.return_value = datacatalog.Entry()
 
         client.update_entry(request)
@@ -2245,9 +2364,7 @@ async def test_update_entry_field_headers_async():
     request.entry.name = "entry.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(datacatalog.Entry())
 
         await client.update_entry(request)
@@ -2266,7 +2383,7 @@ def test_update_entry_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry()
 
@@ -2305,9 +2422,7 @@ async def test_update_entry_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry()
 
@@ -2355,7 +2470,7 @@ def test_delete_entry(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -2376,19 +2491,19 @@ def test_delete_entry_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_entry_async(transport: str = "grpc_asyncio"):
+async def test_delete_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.DeleteEntryRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.DeleteEntryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -2398,10 +2513,15 @@ async def test_delete_entry_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.DeleteEntryRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_entry_async_from_dict():
+    await test_delete_entry_async(request_type=dict)
 
 
 def test_delete_entry_field_headers():
@@ -2413,7 +2533,7 @@ def test_delete_entry_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         call.return_value = None
 
         client.delete_entry(request)
@@ -2438,9 +2558,7 @@ async def test_delete_entry_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_entry(request)
@@ -2459,7 +2577,7 @@ def test_delete_entry_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -2491,9 +2609,7 @@ async def test_delete_entry_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -2532,14 +2648,14 @@ def test_get_entry(transport: str = "grpc", request_type=datacatalog.GetEntryReq
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry(
             name="name_value",
             linked_resource="linked_resource_value",
             display_name="display_name_value",
             description="description_value",
-            type=datacatalog.EntryType.TABLE,
+            type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
             gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
                 file_patterns=["file_patterns_value"]
@@ -2555,6 +2671,7 @@ def test_get_entry(transport: str = "grpc", request_type=datacatalog.GetEntryReq
         assert args[0] == datacatalog.GetEntryRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.Entry)
 
     assert response.name == "name_value"
@@ -2571,19 +2688,19 @@ def test_get_entry_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_entry_async(transport: str = "grpc_asyncio"):
+async def test_get_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.GetEntryRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.GetEntryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.Entry(
@@ -2600,7 +2717,7 @@ async def test_get_entry_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.GetEntryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -2614,6 +2731,11 @@ async def test_get_entry_async(transport: str = "grpc_asyncio"):
     assert response.description == "description_value"
 
 
+@pytest.mark.asyncio
+async def test_get_entry_async_from_dict():
+    await test_get_entry_async(request_type=dict)
+
+
 def test_get_entry_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -2623,7 +2745,7 @@ def test_get_entry_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         call.return_value = datacatalog.Entry()
 
         client.get_entry(request)
@@ -2648,9 +2770,7 @@ async def test_get_entry_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(datacatalog.Entry())
 
         await client.get_entry(request)
@@ -2669,7 +2789,7 @@ def test_get_entry_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry()
 
@@ -2701,9 +2821,7 @@ async def test_get_entry_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry()
 
@@ -2744,14 +2862,14 @@ def test_lookup_entry(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.lookup_entry), "__call__") as call:
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.Entry(
             name="name_value",
             linked_resource="linked_resource_value",
             display_name="display_name_value",
             description="description_value",
-            type=datacatalog.EntryType.TABLE,
+            type_=datacatalog.EntryType.TABLE,
             integrated_system=common.IntegratedSystem.BIGQUERY,
             gcs_fileset_spec=gcs_fileset_spec.GcsFilesetSpec(
                 file_patterns=["file_patterns_value"]
@@ -2767,6 +2885,7 @@ def test_lookup_entry(
         assert args[0] == datacatalog.LookupEntryRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, datacatalog.Entry)
 
     assert response.name == "name_value"
@@ -2783,19 +2902,19 @@ def test_lookup_entry_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_lookup_entry_async(transport: str = "grpc_asyncio"):
+async def test_lookup_entry_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.LookupEntryRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.LookupEntryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.lookup_entry), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.Entry(
@@ -2812,7 +2931,7 @@ async def test_lookup_entry_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.LookupEntryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, datacatalog.Entry)
@@ -2824,6 +2943,11 @@ async def test_lookup_entry_async(transport: str = "grpc_asyncio"):
     assert response.display_name == "display_name_value"
 
     assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_lookup_entry_async_from_dict():
+    await test_lookup_entry_async(request_type=dict)
 
 
 def test_list_entries(
@@ -2838,7 +2962,7 @@ def test_list_entries(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_entries), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListEntriesResponse(
             next_page_token="next_page_token_value",
@@ -2853,6 +2977,7 @@ def test_list_entries(
         assert args[0] == datacatalog.ListEntriesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListEntriesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -2863,19 +2988,19 @@ def test_list_entries_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_entries_async(transport: str = "grpc_asyncio"):
+async def test_list_entries_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.ListEntriesRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.ListEntriesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_entries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.ListEntriesResponse(next_page_token="next_page_token_value",)
@@ -2887,12 +3012,17 @@ async def test_list_entries_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.ListEntriesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntriesAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_entries_async_from_dict():
+    await test_list_entries_async(request_type=dict)
 
 
 def test_list_entries_field_headers():
@@ -2904,7 +3034,7 @@ def test_list_entries_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_entries), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         call.return_value = datacatalog.ListEntriesResponse()
 
         client.list_entries(request)
@@ -2929,9 +3059,7 @@ async def test_list_entries_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_entries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.ListEntriesResponse()
         )
@@ -2952,7 +3080,7 @@ def test_list_entries_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_entries), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListEntriesResponse()
 
@@ -2984,9 +3112,7 @@ async def test_list_entries_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_entries), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListEntriesResponse()
 
@@ -3021,7 +3147,7 @@ def test_list_entries_pager():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_entries), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             datacatalog.ListEntriesResponse(
@@ -3059,7 +3185,7 @@ def test_list_entries_pages():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_entries), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             datacatalog.ListEntriesResponse(
@@ -3080,8 +3206,8 @@ def test_list_entries_pages():
             RuntimeError,
         )
         pages = list(client.list_entries(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -3090,9 +3216,7 @@ async def test_list_entries_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entries),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_entries), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -3129,9 +3253,7 @@ async def test_list_entries_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_entries),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_entries), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -3153,10 +3275,10 @@ async def test_list_entries_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_entries(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_entries(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_create_tag_template(
@@ -3172,7 +3294,7 @@ def test_create_tag_template(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_tag_template), "__call__"
+        type(client.transport.create_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate(
@@ -3188,6 +3310,7 @@ def test_create_tag_template(
         assert args[0] == datacatalog.CreateTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.TagTemplate)
 
     assert response.name == "name_value"
@@ -3200,18 +3323,20 @@ def test_create_tag_template_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_tag_template_async(transport: str = "grpc_asyncio"):
+async def test_create_tag_template_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.CreateTagTemplateRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.CreateTagTemplateRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_tag_template), "__call__"
+        type(client.transport.create_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -3224,7 +3349,7 @@ async def test_create_tag_template_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.CreateTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -3232,6 +3357,11 @@ async def test_create_tag_template_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_tag_template_async_from_dict():
+    await test_create_tag_template_async(request_type=dict)
 
 
 def test_create_tag_template_field_headers():
@@ -3244,7 +3374,7 @@ def test_create_tag_template_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_tag_template), "__call__"
+        type(client.transport.create_tag_template), "__call__"
     ) as call:
         call.return_value = tags.TagTemplate()
 
@@ -3271,7 +3401,7 @@ async def test_create_tag_template_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_tag_template), "__call__"
+        type(client.transport.create_tag_template), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tags.TagTemplate())
 
@@ -3292,7 +3422,7 @@ def test_create_tag_template_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_tag_template), "__call__"
+        type(client.transport.create_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate()
@@ -3337,7 +3467,7 @@ async def test_create_tag_template_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_tag_template), "__call__"
+        type(client.transport.create_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate()
@@ -3390,9 +3520,7 @@ def test_get_tag_template(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.get_tag_template), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate(
             name="name_value", display_name="display_name_value",
@@ -3407,6 +3535,7 @@ def test_get_tag_template(
         assert args[0] == datacatalog.GetTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.TagTemplate)
 
     assert response.name == "name_value"
@@ -3419,19 +3548,19 @@ def test_get_tag_template_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_tag_template_async(transport: str = "grpc_asyncio"):
+async def test_get_tag_template_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.GetTagTemplateRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.GetTagTemplateRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_tag_template), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tags.TagTemplate(name="name_value", display_name="display_name_value",)
@@ -3443,7 +3572,7 @@ async def test_get_tag_template_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.GetTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -3451,6 +3580,11 @@ async def test_get_tag_template_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_tag_template_async_from_dict():
+    await test_get_tag_template_async(request_type=dict)
 
 
 def test_get_tag_template_field_headers():
@@ -3462,9 +3596,7 @@ def test_get_tag_template_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.get_tag_template), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         call.return_value = tags.TagTemplate()
 
         client.get_tag_template(request)
@@ -3489,9 +3621,7 @@ async def test_get_tag_template_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_tag_template), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tags.TagTemplate())
 
         await client.get_tag_template(request)
@@ -3510,9 +3640,7 @@ def test_get_tag_template_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.get_tag_template), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate()
 
@@ -3544,9 +3672,7 @@ async def test_get_tag_template_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_tag_template), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate()
 
@@ -3588,7 +3714,7 @@ def test_update_tag_template(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_tag_template), "__call__"
+        type(client.transport.update_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate(
@@ -3604,6 +3730,7 @@ def test_update_tag_template(
         assert args[0] == datacatalog.UpdateTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.TagTemplate)
 
     assert response.name == "name_value"
@@ -3616,18 +3743,20 @@ def test_update_tag_template_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_tag_template_async(transport: str = "grpc_asyncio"):
+async def test_update_tag_template_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.UpdateTagTemplateRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.UpdateTagTemplateRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_tag_template), "__call__"
+        type(client.transport.update_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -3640,7 +3769,7 @@ async def test_update_tag_template_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.UpdateTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplate)
@@ -3648,6 +3777,11 @@ async def test_update_tag_template_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_tag_template_async_from_dict():
+    await test_update_tag_template_async(request_type=dict)
 
 
 def test_update_tag_template_field_headers():
@@ -3660,7 +3794,7 @@ def test_update_tag_template_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_tag_template), "__call__"
+        type(client.transport.update_tag_template), "__call__"
     ) as call:
         call.return_value = tags.TagTemplate()
 
@@ -3690,7 +3824,7 @@ async def test_update_tag_template_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_tag_template), "__call__"
+        type(client.transport.update_tag_template), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tags.TagTemplate())
 
@@ -3714,7 +3848,7 @@ def test_update_tag_template_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_tag_template), "__call__"
+        type(client.transport.update_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate()
@@ -3755,7 +3889,7 @@ async def test_update_tag_template_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_tag_template), "__call__"
+        type(client.transport.update_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplate()
@@ -3805,7 +3939,7 @@ def test_delete_tag_template(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_tag_template), "__call__"
+        type(client.transport.delete_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -3827,18 +3961,20 @@ def test_delete_tag_template_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_tag_template_async(transport: str = "grpc_asyncio"):
+async def test_delete_tag_template_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.DeleteTagTemplateRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.DeleteTagTemplateRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_tag_template), "__call__"
+        type(client.transport.delete_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -3849,10 +3985,15 @@ async def test_delete_tag_template_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.DeleteTagTemplateRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_template_async_from_dict():
+    await test_delete_tag_template_async(request_type=dict)
 
 
 def test_delete_tag_template_field_headers():
@@ -3865,7 +4006,7 @@ def test_delete_tag_template_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_tag_template), "__call__"
+        type(client.transport.delete_tag_template), "__call__"
     ) as call:
         call.return_value = None
 
@@ -3892,7 +4033,7 @@ async def test_delete_tag_template_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_tag_template), "__call__"
+        type(client.transport.delete_tag_template), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -3913,7 +4054,7 @@ def test_delete_tag_template_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_tag_template), "__call__"
+        type(client.transport.delete_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -3951,7 +4092,7 @@ async def test_delete_tag_template_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_tag_template), "__call__"
+        type(client.transport.delete_tag_template), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -3996,7 +4137,7 @@ def test_create_tag_template_field(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_tag_template_field), "__call__"
+        type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField(
@@ -4015,6 +4156,7 @@ def test_create_tag_template_field(
         assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.TagTemplateField)
 
     assert response.name == "name_value"
@@ -4031,18 +4173,21 @@ def test_create_tag_template_field_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_tag_template_field_async(transport: str = "grpc_asyncio"):
+async def test_create_tag_template_field_async(
+    transport: str = "grpc_asyncio",
+    request_type=datacatalog.CreateTagTemplateFieldRequest,
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.CreateTagTemplateFieldRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_tag_template_field), "__call__"
+        type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -4060,7 +4205,7 @@ async def test_create_tag_template_field_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -4074,6 +4219,11 @@ async def test_create_tag_template_field_async(transport: str = "grpc_asyncio"):
     assert response.order == 540
 
 
+@pytest.mark.asyncio
+async def test_create_tag_template_field_async_from_dict():
+    await test_create_tag_template_field_async(request_type=dict)
+
+
 def test_create_tag_template_field_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -4084,7 +4234,7 @@ def test_create_tag_template_field_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_tag_template_field), "__call__"
+        type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         call.return_value = tags.TagTemplateField()
 
@@ -4111,7 +4261,7 @@ async def test_create_tag_template_field_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_tag_template_field), "__call__"
+        type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tags.TagTemplateField()
@@ -4134,7 +4284,7 @@ def test_create_tag_template_field_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_tag_template_field), "__call__"
+        type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField()
@@ -4179,7 +4329,7 @@ async def test_create_tag_template_field_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_tag_template_field), "__call__"
+        type(client.transport.create_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField()
@@ -4235,7 +4385,7 @@ def test_update_tag_template_field(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_tag_template_field), "__call__"
+        type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField(
@@ -4254,6 +4404,7 @@ def test_update_tag_template_field(
         assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.TagTemplateField)
 
     assert response.name == "name_value"
@@ -4270,18 +4421,21 @@ def test_update_tag_template_field_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_tag_template_field_async(transport: str = "grpc_asyncio"):
+async def test_update_tag_template_field_async(
+    transport: str = "grpc_asyncio",
+    request_type=datacatalog.UpdateTagTemplateFieldRequest,
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.UpdateTagTemplateFieldRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_tag_template_field), "__call__"
+        type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -4299,7 +4453,7 @@ async def test_update_tag_template_field_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -4313,6 +4467,11 @@ async def test_update_tag_template_field_async(transport: str = "grpc_asyncio"):
     assert response.order == 540
 
 
+@pytest.mark.asyncio
+async def test_update_tag_template_field_async_from_dict():
+    await test_update_tag_template_field_async(request_type=dict)
+
+
 def test_update_tag_template_field_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -4323,7 +4482,7 @@ def test_update_tag_template_field_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_tag_template_field), "__call__"
+        type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         call.return_value = tags.TagTemplateField()
 
@@ -4350,7 +4509,7 @@ async def test_update_tag_template_field_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_tag_template_field), "__call__"
+        type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tags.TagTemplateField()
@@ -4373,7 +4532,7 @@ def test_update_tag_template_field_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_tag_template_field), "__call__"
+        type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField()
@@ -4418,7 +4577,7 @@ async def test_update_tag_template_field_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_tag_template_field), "__call__"
+        type(client.transport.update_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField()
@@ -4474,7 +4633,7 @@ def test_rename_tag_template_field(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.rename_tag_template_field), "__call__"
+        type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField(
@@ -4493,6 +4652,7 @@ def test_rename_tag_template_field(
         assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.TagTemplateField)
 
     assert response.name == "name_value"
@@ -4509,18 +4669,21 @@ def test_rename_tag_template_field_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_rename_tag_template_field_async(transport: str = "grpc_asyncio"):
+async def test_rename_tag_template_field_async(
+    transport: str = "grpc_asyncio",
+    request_type=datacatalog.RenameTagTemplateFieldRequest,
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.RenameTagTemplateFieldRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.rename_tag_template_field), "__call__"
+        type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -4538,7 +4701,7 @@ async def test_rename_tag_template_field_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.TagTemplateField)
@@ -4552,6 +4715,11 @@ async def test_rename_tag_template_field_async(transport: str = "grpc_asyncio"):
     assert response.order == 540
 
 
+@pytest.mark.asyncio
+async def test_rename_tag_template_field_async_from_dict():
+    await test_rename_tag_template_field_async(request_type=dict)
+
+
 def test_rename_tag_template_field_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -4562,7 +4730,7 @@ def test_rename_tag_template_field_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.rename_tag_template_field), "__call__"
+        type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         call.return_value = tags.TagTemplateField()
 
@@ -4589,7 +4757,7 @@ async def test_rename_tag_template_field_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.rename_tag_template_field), "__call__"
+        type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tags.TagTemplateField()
@@ -4612,7 +4780,7 @@ def test_rename_tag_template_field_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.rename_tag_template_field), "__call__"
+        type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField()
@@ -4653,7 +4821,7 @@ async def test_rename_tag_template_field_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.rename_tag_template_field), "__call__"
+        type(client.transport.rename_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.TagTemplateField()
@@ -4705,7 +4873,7 @@ def test_delete_tag_template_field(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_tag_template_field), "__call__"
+        type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -4727,18 +4895,21 @@ def test_delete_tag_template_field_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_tag_template_field_async(transport: str = "grpc_asyncio"):
+async def test_delete_tag_template_field_async(
+    transport: str = "grpc_asyncio",
+    request_type=datacatalog.DeleteTagTemplateFieldRequest,
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.DeleteTagTemplateFieldRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_tag_template_field), "__call__"
+        type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -4749,10 +4920,15 @@ async def test_delete_tag_template_field_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.DeleteTagTemplateFieldRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_template_field_async_from_dict():
+    await test_delete_tag_template_field_async(request_type=dict)
 
 
 def test_delete_tag_template_field_field_headers():
@@ -4765,7 +4941,7 @@ def test_delete_tag_template_field_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_tag_template_field), "__call__"
+        type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         call.return_value = None
 
@@ -4792,7 +4968,7 @@ async def test_delete_tag_template_field_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_tag_template_field), "__call__"
+        type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -4813,7 +4989,7 @@ def test_delete_tag_template_field_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_tag_template_field), "__call__"
+        type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -4851,7 +5027,7 @@ async def test_delete_tag_template_field_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_tag_template_field), "__call__"
+        type(client.transport.delete_tag_template_field), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -4895,7 +5071,7 @@ def test_create_tag(transport: str = "grpc", request_type=datacatalog.CreateTagR
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.Tag(
             name="name_value",
@@ -4913,6 +5089,7 @@ def test_create_tag(transport: str = "grpc", request_type=datacatalog.CreateTagR
         assert args[0] == datacatalog.CreateTagRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.Tag)
 
     assert response.name == "name_value"
@@ -4927,19 +5104,19 @@ def test_create_tag_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_tag_async(transport: str = "grpc_asyncio"):
+async def test_create_tag_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.CreateTagRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.CreateTagRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tags.Tag(
@@ -4955,7 +5132,7 @@ async def test_create_tag_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.CreateTagRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.Tag)
@@ -4967,6 +5144,11 @@ async def test_create_tag_async(transport: str = "grpc_asyncio"):
     assert response.template_display_name == "template_display_name_value"
 
 
+@pytest.mark.asyncio
+async def test_create_tag_async_from_dict():
+    await test_create_tag_async(request_type=dict)
+
+
 def test_create_tag_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -4976,7 +5158,7 @@ def test_create_tag_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         call.return_value = tags.Tag()
 
         client.create_tag(request)
@@ -5001,9 +5183,7 @@ async def test_create_tag_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tags.Tag())
 
         await client.create_tag(request)
@@ -5022,7 +5202,7 @@ def test_create_tag_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.Tag()
 
@@ -5060,9 +5240,7 @@ async def test_create_tag_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.Tag()
 
@@ -5107,7 +5285,7 @@ def test_update_tag(transport: str = "grpc", request_type=datacatalog.UpdateTagR
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.Tag(
             name="name_value",
@@ -5125,6 +5303,7 @@ def test_update_tag(transport: str = "grpc", request_type=datacatalog.UpdateTagR
         assert args[0] == datacatalog.UpdateTagRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, tags.Tag)
 
     assert response.name == "name_value"
@@ -5139,19 +5318,19 @@ def test_update_tag_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_tag_async(transport: str = "grpc_asyncio"):
+async def test_update_tag_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.UpdateTagRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.UpdateTagRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tags.Tag(
@@ -5167,7 +5346,7 @@ async def test_update_tag_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.UpdateTagRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tags.Tag)
@@ -5179,6 +5358,11 @@ async def test_update_tag_async(transport: str = "grpc_asyncio"):
     assert response.template_display_name == "template_display_name_value"
 
 
+@pytest.mark.asyncio
+async def test_update_tag_async_from_dict():
+    await test_update_tag_async(request_type=dict)
+
+
 def test_update_tag_field_headers():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -5188,7 +5372,7 @@ def test_update_tag_field_headers():
     request.tag.name = "tag.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         call.return_value = tags.Tag()
 
         client.update_tag(request)
@@ -5213,9 +5397,7 @@ async def test_update_tag_field_headers_async():
     request.tag.name = "tag.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tags.Tag())
 
         await client.update_tag(request)
@@ -5234,7 +5416,7 @@ def test_update_tag_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.Tag()
 
@@ -5273,9 +5455,7 @@ async def test_update_tag_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tags.Tag()
 
@@ -5321,7 +5501,7 @@ def test_delete_tag(transport: str = "grpc", request_type=datacatalog.DeleteTagR
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -5342,19 +5522,19 @@ def test_delete_tag_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_tag_async(transport: str = "grpc_asyncio"):
+async def test_delete_tag_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.DeleteTagRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.DeleteTagRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -5364,10 +5544,15 @@ async def test_delete_tag_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.DeleteTagRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_tag_async_from_dict():
+    await test_delete_tag_async(request_type=dict)
 
 
 def test_delete_tag_field_headers():
@@ -5379,7 +5564,7 @@ def test_delete_tag_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         call.return_value = None
 
         client.delete_tag(request)
@@ -5404,9 +5589,7 @@ async def test_delete_tag_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_tag(request)
@@ -5425,7 +5608,7 @@ def test_delete_tag_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_tag), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -5457,9 +5640,7 @@ async def test_delete_tag_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_tag), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -5498,7 +5679,7 @@ def test_list_tags(transport: str = "grpc", request_type=datacatalog.ListTagsReq
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_tags), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListTagsResponse(
             next_page_token="next_page_token_value",
@@ -5513,6 +5694,7 @@ def test_list_tags(transport: str = "grpc", request_type=datacatalog.ListTagsReq
         assert args[0] == datacatalog.ListTagsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListTagsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -5523,19 +5705,19 @@ def test_list_tags_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_tags_async(transport: str = "grpc_asyncio"):
+async def test_list_tags_async(
+    transport: str = "grpc_asyncio", request_type=datacatalog.ListTagsRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = datacatalog.ListTagsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_tags), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.ListTagsResponse(next_page_token="next_page_token_value",)
@@ -5547,12 +5729,17 @@ async def test_list_tags_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == datacatalog.ListTagsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTagsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_tags_async_from_dict():
+    await test_list_tags_async(request_type=dict)
 
 
 def test_list_tags_field_headers():
@@ -5564,7 +5751,7 @@ def test_list_tags_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_tags), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         call.return_value = datacatalog.ListTagsResponse()
 
         client.list_tags(request)
@@ -5589,9 +5776,7 @@ async def test_list_tags_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_tags), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             datacatalog.ListTagsResponse()
         )
@@ -5612,7 +5797,7 @@ def test_list_tags_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_tags), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListTagsResponse()
 
@@ -5644,9 +5829,7 @@ async def test_list_tags_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_tags), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = datacatalog.ListTagsResponse()
 
@@ -5681,7 +5864,7 @@ def test_list_tags_pager():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_tags), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             datacatalog.ListTagsResponse(
@@ -5710,7 +5893,7 @@ def test_list_tags_pages():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_tags), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             datacatalog.ListTagsResponse(
@@ -5722,8 +5905,8 @@ def test_list_tags_pages():
             RuntimeError,
         )
         pages = list(client.list_tags(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -5732,9 +5915,7 @@ async def test_list_tags_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_tags),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_tags), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -5762,9 +5943,7 @@ async def test_list_tags_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_tags),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_tags), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -5777,10 +5956,10 @@ async def test_list_tags_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_tags(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_tags(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_set_iam_policy(
@@ -5795,7 +5974,7 @@ def test_set_iam_policy(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
 
@@ -5808,6 +5987,7 @@ def test_set_iam_policy(
         assert args[0] == iam_policy.SetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, policy.Policy)
 
     assert response.version == 774
@@ -5820,19 +6000,19 @@ def test_set_iam_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
+async def test_set_iam_policy_async(
+    transport: str = "grpc_asyncio", request_type=iam_policy.SetIamPolicyRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.SetIamPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.set_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             policy.Policy(version=774, etag=b"etag_blob",)
@@ -5844,7 +6024,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == iam_policy.SetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy.Policy)
@@ -5852,6 +6032,11 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_async_from_dict():
+    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -5863,7 +6048,7 @@ def test_set_iam_policy_field_headers():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         call.return_value = policy.Policy()
 
         client.set_iam_policy(request)
@@ -5888,9 +6073,7 @@ async def test_set_iam_policy_field_headers_async():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.set_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
 
         await client.set_iam_policy(request)
@@ -5905,10 +6088,10 @@ async def test_set_iam_policy_field_headers_async():
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
-def test_set_iam_policy_from_dict():
+def test_set_iam_policy_from_dict_foreign():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -5925,7 +6108,7 @@ def test_set_iam_policy_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -5957,9 +6140,7 @@ async def test_set_iam_policy_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.set_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -6000,7 +6181,7 @@ def test_get_iam_policy(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
 
@@ -6013,6 +6194,7 @@ def test_get_iam_policy(
         assert args[0] == iam_policy.GetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, policy.Policy)
 
     assert response.version == 774
@@ -6025,19 +6207,19 @@ def test_get_iam_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
+async def test_get_iam_policy_async(
+    transport: str = "grpc_asyncio", request_type=iam_policy.GetIamPolicyRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.GetIamPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             policy.Policy(version=774, etag=b"etag_blob",)
@@ -6049,7 +6231,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == iam_policy.GetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy.Policy)
@@ -6057,6 +6239,11 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_async_from_dict():
+    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -6068,7 +6255,7 @@ def test_get_iam_policy_field_headers():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         call.return_value = policy.Policy()
 
         client.get_iam_policy(request)
@@ -6093,9 +6280,7 @@ async def test_get_iam_policy_field_headers_async():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
 
         await client.get_iam_policy(request)
@@ -6110,10 +6295,10 @@ async def test_get_iam_policy_field_headers_async():
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
-def test_get_iam_policy_from_dict():
+def test_get_iam_policy_from_dict_foreign():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -6130,7 +6315,7 @@ def test_get_iam_policy_flattened():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -6162,9 +6347,7 @@ async def test_get_iam_policy_flattened_async():
     client = DataCatalogAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -6206,7 +6389,7 @@ def test_test_iam_permissions(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy.TestIamPermissionsResponse(
@@ -6222,6 +6405,7 @@ def test_test_iam_permissions(
         assert args[0] == iam_policy.TestIamPermissionsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, iam_policy.TestIamPermissionsResponse)
 
     assert response.permissions == ["permissions_value"]
@@ -6232,18 +6416,20 @@ def test_test_iam_permissions_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
+async def test_test_iam_permissions_async(
+    transport: str = "grpc_asyncio", request_type=iam_policy.TestIamPermissionsRequest
+):
     client = DataCatalogAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.TestIamPermissionsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -6256,12 +6442,17 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == iam_policy.TestIamPermissionsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy.TestIamPermissionsResponse)
 
     assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_async_from_dict():
+    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -6274,7 +6465,7 @@ def test_test_iam_permissions_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         call.return_value = iam_policy.TestIamPermissionsResponse()
 
@@ -6301,7 +6492,7 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy.TestIamPermissionsResponse()
@@ -6319,11 +6510,11 @@ async def test_test_iam_permissions_field_headers_async():
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
-def test_test_iam_permissions_from_dict():
+def test_test_iam_permissions_from_dict_foreign():
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy.TestIamPermissionsResponse()
@@ -6373,7 +6564,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = DataCatalogClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -6391,10 +6582,22 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.DataCatalogGrpcTransport, transports.DataCatalogGrpcAsyncIOTransport],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DataCatalogClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.DataCatalogGrpcTransport,)
+    assert isinstance(client.transport, transports.DataCatalogGrpcTransport,)
 
 
 def test_data_catalog_base_transport_error():
@@ -6471,6 +6674,17 @@ def test_data_catalog_base_transport_with_credentials_file():
         )
 
 
+def test_data_catalog_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.datacatalog_v1beta1.services.data_catalog.transports.DataCatalogTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.DataCatalogTransport()
+        adc.assert_called_once()
+
+
 def test_data_catalog_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
@@ -6503,7 +6717,7 @@ def test_data_catalog_host_no_port():
             api_endpoint="datacatalog.googleapis.com"
         ),
     )
-    assert client._transport._host == "datacatalog.googleapis.com:443"
+    assert client.transport._host == "datacatalog.googleapis.com:443"
 
 
 def test_data_catalog_host_with_port():
@@ -6513,210 +6727,111 @@ def test_data_catalog_host_with_port():
             api_endpoint="datacatalog.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "datacatalog.googleapis.com:8000"
+    assert client.transport._host == "datacatalog.googleapis.com:8000"
 
 
 def test_data_catalog_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.DataCatalogGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
 def test_data_catalog_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.DataCatalogGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_data_catalog_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.DataCatalogGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_data_catalog_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.DataCatalogGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [transports.DataCatalogGrpcTransport, transports.DataCatalogGrpcAsyncIOTransport],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_data_catalog_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_data_catalog_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.DataCatalogGrpcTransport, transports.DataCatalogGrpcAsyncIOTransport],
+)
+def test_data_catalog_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.DataCatalogGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
 
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_data_catalog_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.DataCatalogGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
-
-
-def test_tag_template_path():
-    project = "squid"
-    location = "clam"
-    tag_template = "whelk"
-
-    expected = "projects/{project}/locations/{location}/tagTemplates/{tag_template}".format(
-        project=project, location=location, tag_template=tag_template,
-    )
-    actual = DataCatalogClient.tag_template_path(project, location, tag_template)
-    assert expected == actual
-
-
-def test_parse_tag_template_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "tag_template": "nudibranch",
-    }
-    path = DataCatalogClient.tag_template_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = DataCatalogClient.parse_tag_template_path(path)
-    assert expected == actual
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_entry_path():
@@ -6747,9 +6862,9 @@ def test_parse_entry_path():
 
 
 def test_entry_group_path():
-    project = "squid"
-    location = "clam"
-    entry_group = "whelk"
+    project = "winkle"
+    location = "nautilus"
+    entry_group = "scallop"
 
     expected = "projects/{project}/locations/{location}/entryGroups/{entry_group}".format(
         project=project, location=location, entry_group=entry_group,
@@ -6760,9 +6875,9 @@ def test_entry_group_path():
 
 def test_parse_entry_group_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "entry_group": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "entry_group": "clam",
     }
     path = DataCatalogClient.entry_group_path(**expected)
 
@@ -6771,41 +6886,12 @@ def test_parse_entry_group_path():
     assert expected == actual
 
 
-def test_tag_template_field_path():
-    project = "squid"
-    location = "clam"
-    tag_template = "whelk"
-    field = "octopus"
-
-    expected = "projects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}".format(
-        project=project, location=location, tag_template=tag_template, field=field,
-    )
-    actual = DataCatalogClient.tag_template_field_path(
-        project, location, tag_template, field
-    )
-    assert expected == actual
-
-
-def test_parse_tag_template_field_path():
-    expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "tag_template": "cuttlefish",
-        "field": "mussel",
-    }
-    path = DataCatalogClient.tag_template_field_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = DataCatalogClient.parse_tag_template_field_path(path)
-    assert expected == actual
-
-
 def test_tag_path():
-    project = "squid"
-    location = "clam"
-    entry_group = "whelk"
-    entry = "octopus"
-    tag = "oyster"
+    project = "whelk"
+    location = "octopus"
+    entry_group = "oyster"
+    entry = "nudibranch"
+    tag = "cuttlefish"
 
     expected = "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}/tags/{tag}".format(
         project=project,
@@ -6820,14 +6906,190 @@ def test_tag_path():
 
 def test_parse_tag_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "entry_group": "mussel",
-        "entry": "winkle",
-        "tag": "nautilus",
+        "project": "mussel",
+        "location": "winkle",
+        "entry_group": "nautilus",
+        "entry": "scallop",
+        "tag": "abalone",
     }
     path = DataCatalogClient.tag_path(**expected)
 
     # Check that the path construction is reversible.
     actual = DataCatalogClient.parse_tag_path(path)
     assert expected == actual
+
+
+def test_tag_template_path():
+    project = "squid"
+    location = "clam"
+    tag_template = "whelk"
+
+    expected = "projects/{project}/locations/{location}/tagTemplates/{tag_template}".format(
+        project=project, location=location, tag_template=tag_template,
+    )
+    actual = DataCatalogClient.tag_template_path(project, location, tag_template)
+    assert expected == actual
+
+
+def test_parse_tag_template_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "tag_template": "nudibranch",
+    }
+    path = DataCatalogClient.tag_template_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_tag_template_path(path)
+    assert expected == actual
+
+
+def test_tag_template_field_path():
+    project = "cuttlefish"
+    location = "mussel"
+    tag_template = "winkle"
+    field = "nautilus"
+
+    expected = "projects/{project}/locations/{location}/tagTemplates/{tag_template}/fields/{field}".format(
+        project=project, location=location, tag_template=tag_template, field=field,
+    )
+    actual = DataCatalogClient.tag_template_field_path(
+        project, location, tag_template, field
+    )
+    assert expected == actual
+
+
+def test_parse_tag_template_field_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "tag_template": "squid",
+        "field": "clam",
+    }
+    path = DataCatalogClient.tag_template_field_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_tag_template_field_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "whelk"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = DataCatalogClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "octopus",
+    }
+    path = DataCatalogClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "oyster"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = DataCatalogClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nudibranch",
+    }
+    path = DataCatalogClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "cuttlefish"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = DataCatalogClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "mussel",
+    }
+    path = DataCatalogClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "winkle"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = DataCatalogClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nautilus",
+    }
+    path = DataCatalogClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "scallop"
+    location = "abalone"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = DataCatalogClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+    }
+    path = DataCatalogClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataCatalogClient.parse_common_location_path(path)
+    assert expected == actual
+
+
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(
+        transports.DataCatalogTransport, "_prep_wrapped_messages"
+    ) as prep:
+        client = DataCatalogClient(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.DataCatalogTransport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = DataCatalogClient.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
