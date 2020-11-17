@@ -45,7 +45,12 @@ library = gapic.py_library(
 s.move(library / "google/cloud/bigtable_admin_v2")
 s.move(library / "tests")
 
-# Work around non-standard installations
+# ----------------------------------------------------------------------------
+# Work around non-standard installations (missing setuptools).
+#
+# These replacements can be removed after migrating to the microgenerator,
+# which will generate them directly.
+# ----------------------------------------------------------------------------
 
 admin_clients = [
     "google/cloud/bigtable_admin_v2/gapic/bigtable_instance_admin_client.py",
@@ -57,6 +62,23 @@ s.replace(
     """\
 _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution\(
     'google-cloud-bigtable-admin',
+\).version
+""",
+    """\
+try:
+    _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
+        "google-cloud-bigtable"
+    ).version
+except pkg_resources.DistributionNotFound:  # pragma: NO COVER
+    _GAPIC_LIBRARY_VERSION = None
+"""
+)
+
+s.replace(
+    "google/cloud/bigtable_v2/gapic/bigtable_client.py",
+    """\
+_GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution\(
+    'google-cloud-bigtable',
 \).version
 """,
     """\
