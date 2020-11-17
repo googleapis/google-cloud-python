@@ -37,6 +37,7 @@ from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import enums
+from google.cloud.bigquery.enums import SqlTypeNames
 from google.cloud.bigquery.enums import StandardSqlDataTypes
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery.external_config import BigtableOptions
@@ -137,8 +138,9 @@ __all__ = [
     "Encoding",
     "QueryPriority",
     "SchemaUpdateOption",
-    "StandardSqlDataTypes",
     "SourceFormat",
+    "SqlTypeNames",
+    "StandardSqlDataTypes",
     "WriteDisposition",
     # EncryptionConfiguration
     "EncryptionConfiguration",
