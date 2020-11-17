@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.0.0](https://www.github.com/googleapis/python-datacatalog/compare/v2.0.0...v3.0.0) (2020-11-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* add common resource paths; expose client transport; rename ``type`` attributes to ``type_`` to avoid name collisions. (#64)
+
+  Renamed attributes:
+    * `TagTemplateField.type` -> `TagTemplatedField.type_`
+    * `ColumnSchema.type` -> `ColumnSchema.type_`
+    * `Entry.type` -> `Entry.type_`
+
+
+### Features
+
+* add common resource paths; expose client transport; rename ``type`` attributes to ``type_`` to avoid name collisions ([#64](https://www.github.com/googleapis/python-datacatalog/issues/64)) ([f8f797a](https://www.github.com/googleapis/python-datacatalog/commit/f8f797af757f643c4414e3c7a58b3423b3d80d6f))
+
 ## [2.0.0](https://www.github.com/googleapis/python-datacatalog/compare/v1.0.0...v2.0.0) (2020-08-20)
 
 
