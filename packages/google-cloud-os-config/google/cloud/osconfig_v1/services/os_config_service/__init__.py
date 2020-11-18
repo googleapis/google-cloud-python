@@ -18,4 +18,7 @@
 from .client import OsConfigServiceClient
 from .async_client import OsConfigServiceAsyncClient
 
-__all__ = ("OsConfigServiceClient", "OsConfigServiceAsyncClient")
+__all__ = (
+    "OsConfigServiceClient",
+    "OsConfigServiceAsyncClient",
+)

@@ -16,17 +16,19 @@
 #
 
 from collections import OrderedDict
+from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -36,7 +38,7 @@ from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import OsConfigServiceTransport
+from .transports.base import OsConfigServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import OsConfigServiceGrpcTransport
 from .transports.grpc_asyncio import OsConfigServiceGrpcAsyncIOTransport
 
@@ -55,7 +57,7 @@ class OsConfigServiceClientMeta(type):
     _transport_registry["grpc"] = OsConfigServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = OsConfigServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None) -> Type[OsConfigServiceTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[OsConfigServiceTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -135,11 +137,36 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> OsConfigServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            OsConfigServiceTransport: The transport used by the client instance.
+        """
+        return self._transport
+
     @staticmethod
-    def patch_deployment_path(project: str, patch_deployment: str) -> str:
+    def instance_path(project: str, zone: str, instance: str,) -> str:
+        """Return a fully-qualified instance string."""
+        return "projects/{project}/zones/{zone}/instances/{instance}".format(
+            project=project, zone=zone, instance=instance,
+        )
+
+    @staticmethod
+    def parse_instance_path(path: str) -> Dict[str, str]:
+        """Parse a instance path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/zones/(?P<zone>.+?)/instances/(?P<instance>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def patch_deployment_path(project: str, patch_deployment: str,) -> str:
         """Return a fully-qualified patch_deployment string."""
         return "projects/{project}/patchDeployments/{patch_deployment}".format(
-            project=project, patch_deployment=patch_deployment
+            project=project, patch_deployment=patch_deployment,
         )
 
     @staticmethod
@@ -151,12 +178,85 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def patch_job_path(project: str, patch_job: str,) -> str:
+        """Return a fully-qualified patch_job string."""
+        return "projects/{project}/patchJobs/{patch_job}".format(
+            project=project, patch_job=patch_job,
+        )
+
+    @staticmethod
+    def parse_patch_job_path(path: str) -> Dict[str, str]:
+        """Parse a patch_job path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/patchJobs/(?P<patch_job>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, OsConfigServiceTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, OsConfigServiceTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the os config service client.
 
@@ -169,48 +269,74 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
             transport (Union[str, ~.OsConfigServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        )
+
+        ssl_credentials = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                import grpc  # type: ignore
+
+                cert, key = client_options.client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
                 )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
+                is_mtls = True
+            else:
+                creds = SslCredentials()
+                is_mtls = creds.is_mtls
+                ssl_credentials = creds.ssl_credentials if is_mtls else None
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -218,19 +344,27 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # instance provides an extensibility point for unusual situations.
         if isinstance(transport, OsConfigServiceTransport):
             # transport is a OsConfigServiceTransport instance.
-            if credentials:
+            if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
                     "provide its credentials directly."
+                )
+            if client_options.scopes:
+                raise ValueError(
+                    "When providing a transport instance, "
+                    "provide its scopes directly."
                 )
             self._transport = transport
         else:
             Transport = type(self).get_transport_class(transport)
             self._transport = Transport(
                 credentials=credentials,
-                host=client_options.api_endpoint,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
+                credentials_file=client_options.credentials_file,
+                host=api_endpoint,
+                scopes=client_options.scopes,
+                ssl_channel_credentials=ssl_credentials,
+                quota_project_id=client_options.quota_project_id,
+                client_info=client_info,
             )
 
     def execute_patch_job(
@@ -260,7 +394,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 A high level representation of a patch job that is
                 either in progress or has completed.
 
-                Instances details are not included in the job. To
+                Instance details are not included in the job. To
                 paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
@@ -271,15 +405,16 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
 
-        request = patch_jobs.ExecutePatchJobRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_jobs.ExecutePatchJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_jobs.ExecutePatchJobRequest):
+            request = patch_jobs.ExecutePatchJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.execute_patch_job,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.execute_patch_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -288,7 +423,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -328,7 +463,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 A high level representation of a patch job that is
                 either in progress or has completed.
 
-                Instances details are not included in the job. To
+                Instance details are not included in the job. To
                 paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
@@ -340,27 +475,29 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_jobs.GetPatchJobRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_jobs.GetPatchJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_jobs.GetPatchJobRequest):
+            request = patch_jobs.GetPatchJobRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_patch_job,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_patch_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -369,7 +506,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -400,7 +537,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
                 A high level representation of a patch job that is
                 either in progress or has completed.
 
-                Instances details are not included in the job. To
+                Instance details are not included in the job. To
                 paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
@@ -411,15 +548,16 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         """
         # Create or coerce a protobuf request object.
 
-        request = patch_jobs.CancelPatchJobRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_jobs.CancelPatchJobRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_jobs.CancelPatchJobRequest):
+            request = patch_jobs.CancelPatchJobRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.cancel_patch_job,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.cancel_patch_job]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -428,7 +566,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -472,27 +610,29 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_jobs.ListPatchJobsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_jobs.ListPatchJobsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_jobs.ListPatchJobsRequest):
+            request = patch_jobs.ListPatchJobsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_patch_jobs,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_patch_jobs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -501,12 +641,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPatchJobsPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
@@ -552,27 +692,31 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_jobs.ListPatchJobInstanceDetailsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_jobs.ListPatchJobInstanceDetailsRequest):
+            request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_patch_job_instance_details,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_patch_job_instance_details
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -581,12 +725,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPatchJobInstanceDetailsPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
@@ -655,31 +799,33 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, patch_deployment, patch_deployment_id]):
+        has_flattened_params = any([parent, patch_deployment, patch_deployment_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.CreatePatchDeploymentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_deployments.CreatePatchDeploymentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_deployments.CreatePatchDeploymentRequest):
+            request = patch_deployments.CreatePatchDeploymentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if patch_deployment is not None:
-            request.patch_deployment = patch_deployment
-        if patch_deployment_id is not None:
-            request.patch_deployment_id = patch_deployment_id
+            if parent is not None:
+                request.parent = parent
+            if patch_deployment is not None:
+                request.patch_deployment = patch_deployment
+            if patch_deployment_id is not None:
+                request.patch_deployment_id = patch_deployment_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.create_patch_deployment,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -688,7 +834,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -734,27 +880,29 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.GetPatchDeploymentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_deployments.GetPatchDeploymentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_deployments.GetPatchDeploymentRequest):
+            request = patch_deployments.GetPatchDeploymentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_patch_deployment,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -763,7 +911,7 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -808,27 +956,29 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.ListPatchDeploymentsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_deployments.ListPatchDeploymentsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_deployments.ListPatchDeploymentsRequest):
+            request = patch_deployments.ListPatchDeploymentsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_patch_deployments,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_patch_deployments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -837,12 +987,12 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPatchDeploymentsPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
@@ -879,27 +1029,29 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = patch_deployments.DeletePatchDeploymentRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a patch_deployments.DeletePatchDeploymentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, patch_deployments.DeletePatchDeploymentRequest):
+            request = patch_deployments.DeletePatchDeploymentRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.delete_patch_deployment,
-            default_timeout=None,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.delete_patch_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -908,15 +1060,17 @@ class OsConfigServiceClient(metaclass=OsConfigServiceClientMeta):
         )
 
         # Send the request.
-        rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-os-config").version
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution("google-cloud-os-config",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("OsConfigServiceClient",)

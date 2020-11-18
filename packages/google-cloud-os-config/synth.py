@@ -31,25 +31,14 @@ library = gapic.py_library(
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
-
 # rename to google-cloud-os-config
 s.replace(["google/**/*.py", "tests/**/*.py"], "google-cloud-osconfig", "google-cloud-os-config")
 
 # Add newline after last item in list
-s.replace("google/cloud/**/*_client.py",
+s.replace("google/cloud/**/*client.py",
 "(-  Must be unique within the project\.)",
 "\g<1>\n")
 
-# Add missing blank line before Attributes: in generated docstrings
-# https://github.com/googleapis/protoc-docs-plugin/pull/31
-s.replace(
-    "google/cloud/pubsub_v1/proto/pubsub_pb2.py",
-    "(\s+)Attributes:",
-    "\n\g<1>Attributes:"
-)
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -57,8 +46,6 @@ s.replace(
 templated_files = common.py_library(
     samples=False,
     microgenerator=True,
-    unit_test_python_versions=["3.6", "3.7", "3.8"],
-    system_test_python_versions=["3.7"],
 )
 s.move(
     templated_files, excludes=[".coveragerc"]

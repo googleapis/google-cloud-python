@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 
+from .osconfig_common import FixedOrPercent
 from .patch_jobs import (
     ExecutePatchJobRequest,
     GetPatchJobRequest,
@@ -36,6 +37,7 @@ from .patch_jobs import (
     ExecStepConfig,
     GcsObject,
     PatchInstanceFilter,
+    PatchRollout,
 )
 from .patch_deployments import (
     PatchDeployment,
@@ -50,9 +52,10 @@ from .patch_deployments import (
     ListPatchDeploymentsResponse,
     DeletePatchDeploymentRequest,
 )
-
+from .inventory import Inventory
 
 __all__ = (
+    "FixedOrPercent",
     "ExecutePatchJobRequest",
     "GetPatchJobRequest",
     "ListPatchJobInstanceDetailsRequest",
@@ -73,6 +76,7 @@ __all__ = (
     "ExecStepConfig",
     "GcsObject",
     "PatchInstanceFilter",
+    "PatchRollout",
     "PatchDeployment",
     "OneTimeSchedule",
     "RecurringSchedule",
@@ -84,4 +88,5 @@ __all__ = (
     "ListPatchDeploymentsRequest",
     "ListPatchDeploymentsResponse",
     "DeletePatchDeploymentRequest",
+    "Inventory",
 )

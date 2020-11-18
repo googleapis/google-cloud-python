@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable
+from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
 
 from google.cloud.osconfig_v1.types import patch_deployments
 from google.cloud.osconfig_v1.types import patch_jobs
@@ -41,11 +41,11 @@ class ListPatchJobsPager:
 
     def __init__(
         self,
-        method: Callable[
-            [patch_jobs.ListPatchJobsRequest], patch_jobs.ListPatchJobsResponse
-        ],
+        method: Callable[..., patch_jobs.ListPatchJobsResponse],
         request: patch_jobs.ListPatchJobsRequest,
         response: patch_jobs.ListPatchJobsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -56,10 +56,13 @@ class ListPatchJobsPager:
                 The initial request object.
             response (:class:`~.patch_jobs.ListPatchJobsResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = patch_jobs.ListPatchJobsRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -69,7 +72,7 @@ class ListPatchJobsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterable[patch_jobs.PatchJob]:
@@ -100,12 +103,11 @@ class ListPatchJobsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            [patch_jobs.ListPatchJobsRequest],
-            Awaitable[patch_jobs.ListPatchJobsResponse],
-        ],
+        method: Callable[..., Awaitable[patch_jobs.ListPatchJobsResponse]],
         request: patch_jobs.ListPatchJobsRequest,
         response: patch_jobs.ListPatchJobsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -116,10 +118,13 @@ class ListPatchJobsAsyncPager:
                 The initial request object.
             response (:class:`~.patch_jobs.ListPatchJobsResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = patch_jobs.ListPatchJobsRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -129,7 +134,7 @@ class ListPatchJobsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request)
+            self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterable[patch_jobs.PatchJob]:
@@ -164,12 +169,11 @@ class ListPatchJobInstanceDetailsPager:
 
     def __init__(
         self,
-        method: Callable[
-            [patch_jobs.ListPatchJobInstanceDetailsRequest],
-            patch_jobs.ListPatchJobInstanceDetailsResponse,
-        ],
+        method: Callable[..., patch_jobs.ListPatchJobInstanceDetailsResponse],
         request: patch_jobs.ListPatchJobInstanceDetailsRequest,
         response: patch_jobs.ListPatchJobInstanceDetailsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -180,10 +184,13 @@ class ListPatchJobInstanceDetailsPager:
                 The initial request object.
             response (:class:`~.patch_jobs.ListPatchJobInstanceDetailsResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -193,7 +200,7 @@ class ListPatchJobInstanceDetailsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterable[patch_jobs.PatchJobInstanceDetails]:
@@ -225,11 +232,12 @@ class ListPatchJobInstanceDetailsAsyncPager:
     def __init__(
         self,
         method: Callable[
-            [patch_jobs.ListPatchJobInstanceDetailsRequest],
-            Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse],
+            ..., Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse]
         ],
         request: patch_jobs.ListPatchJobInstanceDetailsRequest,
         response: patch_jobs.ListPatchJobInstanceDetailsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -240,22 +248,25 @@ class ListPatchJobInstanceDetailsAsyncPager:
                 The initial request object.
             response (:class:`~.patch_jobs.ListPatchJobInstanceDetailsResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = patch_jobs.ListPatchJobInstanceDetailsRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
 
     @property
     async def pages(
-        self
+        self,
     ) -> AsyncIterable[patch_jobs.ListPatchJobInstanceDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request)
+            self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterable[patch_jobs.PatchJobInstanceDetails]:
@@ -290,12 +301,11 @@ class ListPatchDeploymentsPager:
 
     def __init__(
         self,
-        method: Callable[
-            [patch_deployments.ListPatchDeploymentsRequest],
-            patch_deployments.ListPatchDeploymentsResponse,
-        ],
+        method: Callable[..., patch_deployments.ListPatchDeploymentsResponse],
         request: patch_deployments.ListPatchDeploymentsRequest,
         response: patch_deployments.ListPatchDeploymentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -306,10 +316,13 @@ class ListPatchDeploymentsPager:
                 The initial request object.
             response (:class:`~.patch_deployments.ListPatchDeploymentsResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = patch_deployments.ListPatchDeploymentsRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
@@ -319,7 +332,7 @@ class ListPatchDeploymentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request)
+            self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterable[patch_deployments.PatchDeployment]:
@@ -351,11 +364,12 @@ class ListPatchDeploymentsAsyncPager:
     def __init__(
         self,
         method: Callable[
-            [patch_deployments.ListPatchDeploymentsRequest],
-            Awaitable[patch_deployments.ListPatchDeploymentsResponse],
+            ..., Awaitable[patch_deployments.ListPatchDeploymentsResponse]
         ],
         request: patch_deployments.ListPatchDeploymentsRequest,
         response: patch_deployments.ListPatchDeploymentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
     ):
         """Instantiate the pager.
 
@@ -366,22 +380,25 @@ class ListPatchDeploymentsAsyncPager:
                 The initial request object.
             response (:class:`~.patch_deployments.ListPatchDeploymentsResponse`):
                 The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
         """
         self._method = method
         self._request = patch_deployments.ListPatchDeploymentsRequest(request)
         self._response = response
+        self._metadata = metadata
 
     def __getattr__(self, name: str) -> Any:
         return getattr(self._response, name)
 
     @property
     async def pages(
-        self
+        self,
     ) -> AsyncIterable[patch_deployments.ListPatchDeploymentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request)
+            self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterable[patch_deployments.PatchDeployment]:

@@ -17,13 +17,25 @@
 
 import abc
 import typing
+import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
+from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
 from google.cloud.osconfig_v1.types import patch_deployments
 from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import empty_pb2 as empty  # type: ignore
+
+
+try:
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution("google-cloud-os-config",).version,
+    )
+except pkg_resources.DistributionNotFound:
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class OsConfigServiceTransport(abc.ABC):
@@ -36,6 +48,10 @@ class OsConfigServiceTransport(abc.ABC):
         *,
         host: str = "osconfig.googleapis.com",
         credentials: credentials.Credentials = None,
+        credentials_file: typing.Optional[str] = None,
+        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+        quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -47,6 +63,17 @@ class OsConfigServiceTransport(abc.ABC):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scope (Optional[Sequence[str]]): A list of scopes.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -55,15 +82,72 @@ class OsConfigServiceTransport(abc.ABC):
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
-        if credentials is None:
-            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+        if credentials and credentials_file:
+            raise exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
+
+        if credentials_file is not None:
+            credentials, _ = auth.load_credentials_from_file(
+                credentials_file, scopes=scopes, quota_project_id=quota_project_id
+            )
+
+        elif credentials is None:
+            credentials, _ = auth.default(
+                scopes=scopes, quota_project_id=quota_project_id
+            )
 
         # Save the credentials.
         self._credentials = credentials
 
+        # Lifted into its own function so it can be stubbed out during tests.
+        self._prep_wrapped_messages(client_info)
+
+    def _prep_wrapped_messages(self, client_info):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.execute_patch_job: gapic_v1.method.wrap_method(
+                self.execute_patch_job, default_timeout=None, client_info=client_info,
+            ),
+            self.get_patch_job: gapic_v1.method.wrap_method(
+                self.get_patch_job, default_timeout=None, client_info=client_info,
+            ),
+            self.cancel_patch_job: gapic_v1.method.wrap_method(
+                self.cancel_patch_job, default_timeout=None, client_info=client_info,
+            ),
+            self.list_patch_jobs: gapic_v1.method.wrap_method(
+                self.list_patch_jobs, default_timeout=None, client_info=client_info,
+            ),
+            self.list_patch_job_instance_details: gapic_v1.method.wrap_method(
+                self.list_patch_job_instance_details,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_patch_deployment: gapic_v1.method.wrap_method(
+                self.create_patch_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_patch_deployment: gapic_v1.method.wrap_method(
+                self.get_patch_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_patch_deployments: gapic_v1.method.wrap_method(
+                self.list_patch_deployments,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_patch_deployment: gapic_v1.method.wrap_method(
+                self.delete_patch_deployment,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+        }
+
     @property
     def execute_patch_job(
-        self
+        self,
     ) -> typing.Callable[
         [patch_jobs.ExecutePatchJobRequest],
         typing.Union[patch_jobs.PatchJob, typing.Awaitable[patch_jobs.PatchJob]],
@@ -72,7 +156,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def get_patch_job(
-        self
+        self,
     ) -> typing.Callable[
         [patch_jobs.GetPatchJobRequest],
         typing.Union[patch_jobs.PatchJob, typing.Awaitable[patch_jobs.PatchJob]],
@@ -81,7 +165,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def cancel_patch_job(
-        self
+        self,
     ) -> typing.Callable[
         [patch_jobs.CancelPatchJobRequest],
         typing.Union[patch_jobs.PatchJob, typing.Awaitable[patch_jobs.PatchJob]],
@@ -90,7 +174,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def list_patch_jobs(
-        self
+        self,
     ) -> typing.Callable[
         [patch_jobs.ListPatchJobsRequest],
         typing.Union[
@@ -102,7 +186,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def list_patch_job_instance_details(
-        self
+        self,
     ) -> typing.Callable[
         [patch_jobs.ListPatchJobInstanceDetailsRequest],
         typing.Union[
@@ -114,7 +198,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def create_patch_deployment(
-        self
+        self,
     ) -> typing.Callable[
         [patch_deployments.CreatePatchDeploymentRequest],
         typing.Union[
@@ -126,7 +210,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def get_patch_deployment(
-        self
+        self,
     ) -> typing.Callable[
         [patch_deployments.GetPatchDeploymentRequest],
         typing.Union[
@@ -138,7 +222,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def list_patch_deployments(
-        self
+        self,
     ) -> typing.Callable[
         [patch_deployments.ListPatchDeploymentsRequest],
         typing.Union[
@@ -150,7 +234,7 @@ class OsConfigServiceTransport(abc.ABC):
 
     @property
     def delete_patch_deployment(
-        self
+        self,
     ) -> typing.Callable[
         [patch_deployments.DeletePatchDeploymentRequest],
         typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],

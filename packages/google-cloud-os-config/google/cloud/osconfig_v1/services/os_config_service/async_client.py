@@ -34,7 +34,7 @@ from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import OsConfigServiceTransport
+from .transports.base import OsConfigServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import OsConfigServiceGrpcAsyncIOTransport
 from .client import OsConfigServiceClient
 
@@ -51,10 +51,55 @@ class OsConfigServiceAsyncClient:
     DEFAULT_ENDPOINT = OsConfigServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = OsConfigServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    instance_path = staticmethod(OsConfigServiceClient.instance_path)
+    parse_instance_path = staticmethod(OsConfigServiceClient.parse_instance_path)
     patch_deployment_path = staticmethod(OsConfigServiceClient.patch_deployment_path)
+    parse_patch_deployment_path = staticmethod(
+        OsConfigServiceClient.parse_patch_deployment_path
+    )
+    patch_job_path = staticmethod(OsConfigServiceClient.patch_job_path)
+    parse_patch_job_path = staticmethod(OsConfigServiceClient.parse_patch_job_path)
+
+    common_billing_account_path = staticmethod(
+        OsConfigServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        OsConfigServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(OsConfigServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        OsConfigServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        OsConfigServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        OsConfigServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(OsConfigServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        OsConfigServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(OsConfigServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        OsConfigServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = OsConfigServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> OsConfigServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            OsConfigServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(OsConfigServiceClient).get_transport_class, type(OsConfigServiceClient)
@@ -66,6 +111,7 @@ class OsConfigServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, OsConfigServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the os config service client.
 
@@ -81,16 +127,19 @@ class OsConfigServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -98,7 +147,10 @@ class OsConfigServiceAsyncClient:
         """
 
         self._client = OsConfigServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def execute_patch_job(
@@ -128,7 +180,7 @@ class OsConfigServiceAsyncClient:
                 A high level representation of a patch job that is
                 either in progress or has completed.
 
-                Instances details are not included in the job. To
+                Instance details are not included in the job. To
                 paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
@@ -146,7 +198,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.execute_patch_job,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -156,7 +208,7 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -196,7 +248,7 @@ class OsConfigServiceAsyncClient:
                 A high level representation of a patch job that is
                 either in progress or has completed.
 
-                Instances details are not included in the job. To
+                Instance details are not included in the job. To
                 paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
@@ -208,7 +260,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -227,7 +280,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_patch_job,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -237,7 +290,7 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -268,7 +321,7 @@ class OsConfigServiceAsyncClient:
                 A high level representation of a patch job that is
                 either in progress or has completed.
 
-                Instances details are not included in the job. To
+                Instance details are not included in the job. To
                 paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
@@ -286,7 +339,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.cancel_patch_job,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -296,7 +349,7 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -340,7 +393,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -359,7 +413,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_patch_jobs,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -369,12 +423,12 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListPatchJobsAsyncPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
@@ -420,7 +474,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -439,7 +494,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_patch_job_instance_details,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -449,12 +504,12 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListPatchJobInstanceDetailsAsyncPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
@@ -523,7 +578,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, patch_deployment, patch_deployment_id]):
+        has_flattened_params = any([parent, patch_deployment, patch_deployment_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -546,7 +602,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_patch_deployment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -556,7 +612,7 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -602,7 +658,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -621,7 +678,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_patch_deployment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -631,7 +688,7 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -676,7 +733,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -695,7 +753,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_patch_deployments,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -705,12 +763,12 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListPatchDeploymentsAsyncPager(
-            method=rpc, request=request, response=response
+            method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
@@ -747,7 +805,8 @@ class OsConfigServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -766,7 +825,7 @@ class OsConfigServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_patch_deployment,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -776,15 +835,17 @@ class OsConfigServiceAsyncClient:
         )
 
         # Send the request.
-        await rpc(request, retry=retry, timeout=timeout, metadata=metadata)
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-os-config").version
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution("google-cloud-os-config",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("OsConfigServiceAsyncClient",)

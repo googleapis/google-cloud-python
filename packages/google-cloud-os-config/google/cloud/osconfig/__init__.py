@@ -21,6 +21,8 @@ from google.cloud.osconfig_v1.services.os_config_service.async_client import (
 from google.cloud.osconfig_v1.services.os_config_service.client import (
     OsConfigServiceClient,
 )
+from google.cloud.osconfig_v1.types.inventory import Inventory
+from google.cloud.osconfig_v1.types.osconfig_common import FixedOrPercent
 from google.cloud.osconfig_v1.types.patch_deployments import (
     CreatePatchDeploymentRequest,
 )
@@ -57,6 +59,7 @@ from google.cloud.osconfig_v1.types.patch_jobs import PatchConfig
 from google.cloud.osconfig_v1.types.patch_jobs import PatchInstanceFilter
 from google.cloud.osconfig_v1.types.patch_jobs import PatchJob
 from google.cloud.osconfig_v1.types.patch_jobs import PatchJobInstanceDetails
+from google.cloud.osconfig_v1.types.patch_jobs import PatchRollout
 from google.cloud.osconfig_v1.types.patch_jobs import WindowsUpdateSettings
 from google.cloud.osconfig_v1.types.patch_jobs import YumSettings
 from google.cloud.osconfig_v1.types.patch_jobs import ZypperSettings
@@ -69,11 +72,13 @@ __all__ = (
     "ExecStep",
     "ExecStepConfig",
     "ExecutePatchJobRequest",
+    "FixedOrPercent",
     "GcsObject",
     "GetPatchDeploymentRequest",
     "GetPatchJobRequest",
     "GooSettings",
     "Instance",
+    "Inventory",
     "ListPatchDeploymentsRequest",
     "ListPatchDeploymentsResponse",
     "ListPatchJobInstanceDetailsRequest",
@@ -89,6 +94,7 @@ __all__ = (
     "PatchInstanceFilter",
     "PatchJob",
     "PatchJobInstanceDetails",
+    "PatchRollout",
     "RecurringSchedule",
     "WeekDayOfMonth",
     "WeeklySchedule",

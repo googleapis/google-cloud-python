@@ -16,6 +16,8 @@
 #
 
 from .services.os_config_service import OsConfigServiceClient
+from .types.inventory import Inventory
+from .types.osconfig_common import FixedOrPercent
 from .types.patch_deployments import CreatePatchDeploymentRequest
 from .types.patch_deployments import DeletePatchDeploymentRequest
 from .types.patch_deployments import GetPatchDeploymentRequest
@@ -44,6 +46,7 @@ from .types.patch_jobs import PatchConfig
 from .types.patch_jobs import PatchInstanceFilter
 from .types.patch_jobs import PatchJob
 from .types.patch_jobs import PatchJobInstanceDetails
+from .types.patch_jobs import PatchRollout
 from .types.patch_jobs import WindowsUpdateSettings
 from .types.patch_jobs import YumSettings
 from .types.patch_jobs import ZypperSettings
@@ -57,11 +60,13 @@ __all__ = (
     "ExecStep",
     "ExecStepConfig",
     "ExecutePatchJobRequest",
+    "FixedOrPercent",
     "GcsObject",
     "GetPatchDeploymentRequest",
     "GetPatchJobRequest",
     "GooSettings",
     "Instance",
+    "Inventory",
     "ListPatchDeploymentsRequest",
     "ListPatchDeploymentsResponse",
     "ListPatchJobInstanceDetailsRequest",
@@ -75,6 +80,7 @@ __all__ = (
     "PatchInstanceFilter",
     "PatchJob",
     "PatchJobInstanceDetails",
+    "PatchRollout",
     "RecurringSchedule",
     "WeekDayOfMonth",
     "WeeklySchedule",
