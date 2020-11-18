@@ -7,9 +7,9 @@ import operator
 
 from google import auth
 from google.cloud import bigquery
-from google.cloud.bigquery import dbapi, QueryJobConfig
+from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.table import EncryptionConfiguration, TableReference
+from google.cloud.bigquery.table import TableReference
 from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
@@ -91,6 +91,7 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
         result = self.quote(name)
         return result
+
 
 _type_map = {
     'STRING': types.String,
@@ -310,7 +311,6 @@ class BigQueryDialect(DefaultDialect):
 
             job_config.default_dataset = '{}.{}'.format(project_id, dataset_id)
 
-
     def _create_client_from_credentials(self, credentials, default_query_job_config, project_id):
         if project_id is None:
             project_id = credentials.project_id
@@ -426,10 +426,20 @@ class BigQueryDialect(DefaultDialect):
                 raise ValueError("Did not understand schema: {}".format(provided_schema_name))
         if (dataset_id_from_schema and dataset_id_from_table and
            dataset_id_from_schema != dataset_id_from_table):
-            raise ValueError("dataset_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(dataset_id_from_schema, dataset_id_from_table))
+            raise ValueError(
+                "dataset_id specified in schema and table_name disagree: "
+                "got {} in schema, and {} in table_name".format(
+                    dataset_id_from_schema, dataset_id_from_table
+                )
+            )
         if (project_id_from_schema and project_id_from_table and
            project_id_from_schema != project_id_from_table):
-            raise ValueError("project_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(project_id_from_schema, project_id_from_table))
+            raise ValueError(
+                "project_id specified in schema and table_name disagree: "
+                "got {} in schema, and {} in table_name".format(
+                    project_id_from_schema, project_id_from_table
+                )
+            )
         project_id = project_id_from_schema or project_id_from_table or client_project
         dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
 

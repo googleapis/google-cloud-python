@@ -55,13 +55,15 @@ def test_basic(url_with_everything):
     assert credentials_path == '/some/path/to.json'
     assert isinstance(job_config, QueryJobConfig)
 
+
 @pytest.mark.parametrize('param, value', [
     ('clustering_fields', ['a', 'b', 'c']),
     ('create_disposition', 'CREATE_IF_NEEDED'),
     ('destination', TableReference(DatasetReference('different-project', 'different-dataset'), 'table')),
-    ('destination_encryption_configuration', lambda enc: enc.kms_key_name == EncryptionConfiguration('some-configuration').kms_key_name),
+    ('destination_encryption_configuration',
+     lambda enc: enc.kms_key_name == EncryptionConfiguration('some-configuration').kms_key_name),
     ('dry_run', True),
-    ('labels', { 'a': 'b', 'c': 'd' }),
+    ('labels', {'a': 'b', 'c': 'd'}),
     ('maximum_bytes_billed', 1000),
     ('priority', 'INTERACTIVE'),
     ('schema_update_options', ['ALLOW_FIELD_ADDITION', 'ALLOW_FIELD_RELAXATION']),
@@ -77,11 +79,6 @@ def test_all_values(url_with_everything, param, value):
     else:
         assert config_value == value
 
-# def test_malformed():
-#     location, dataset_id, arraysize, credentials_path, job_config = parse_url(make_url('bigquery:///?credentials_path=a'))
-
-#     print(credentials_path)
-#     assert False
 
 @pytest.mark.parametrize("param, value", [
     ('arraysize', 'not-int'),
@@ -100,12 +97,14 @@ def test_bad_values(param, value):
     with pytest.raises(ValueError):
         parse_url(url)
 
+
 def test_empty_url():
     for value in parse_url(make_url('bigquery://')):
         assert value is None
 
     for value in parse_url(make_url('bigquery:///')):
         assert value is None
+
 
 def test_empty_with_non_config():
     url = parse_url(make_url('bigquery:///?location=some-location&arraysize=1000&credentials_path=/some/path/to.json'))
@@ -117,6 +116,7 @@ def test_empty_with_non_config():
     assert arraysize == 1000
     assert credentials_path == '/some/path/to.json'
     assert job_config is None
+
 
 def test_only_dataset():
     url = parse_url(make_url('bigquery:///some-dataset'))
@@ -131,6 +131,7 @@ def test_only_dataset():
     # we can't actually test that the dataset is on the job_config,
     # since we take care of that afterwards, when we have a client to fill in the project
 
+
 @pytest.mark.parametrize('disallowed_arg', [
     'use_legacy_sql',
     'allow_large_results',
@@ -144,6 +145,7 @@ def test_disallowed(disallowed_arg):
     url = make_url('bigquery://some-project/some-dataset/?' + disallowed_arg + '=' + 'whatever')
     with pytest.raises(ValueError):
         parse_url(url)
+
 
 @pytest.mark.parametrize('not_implemented_arg', [
     'query_parameters',

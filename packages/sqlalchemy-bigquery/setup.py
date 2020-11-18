@@ -7,6 +7,7 @@ def readme():
     with io.open("README.rst", "r", encoding="utf8") as f:
         return f.read()
 
+
 setup(
     name="pybigquery",
     version='0.4.15',

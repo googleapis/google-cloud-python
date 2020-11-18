@@ -158,6 +158,7 @@ def session_using_test_dataset(engine_using_test_dataset):
 def inspector(engine):
     return inspect(engine)
 
+
 @pytest.fixture(scope='session')
 def inspector_using_test_dataset(engine_using_test_dataset):
     return inspect(engine_using_test_dataset)
@@ -197,8 +198,8 @@ def test_dry_run(engine, api_client):
     sql = 'SELECT * FROM sample_one_row'
     with pytest.raises(BadRequest) as excinfo:
         api_client.dry_run_query(sql)
-
-    assert 'Table name "sample_one_row" missing dataset while no default dataset is set in the request.' in str(excinfo.value.message)
+    expected_message = 'Table name "sample_one_row" missing dataset while no default dataset is set in the request.'
+    assert expected_message in str(excinfo.value.message)
 
 
 def test_engine_with_dataset(engine_using_test_dataset):
@@ -278,7 +279,7 @@ def test_reflect_select_shared_table(engine):
 
 def test_reflect_table_does_not_exist(engine):
     with pytest.raises(NoSuchTableError):
-        table = Table('test_pybigquery.table_does_not_exist', MetaData(bind=engine), autoload=True)
+        Table('test_pybigquery.table_does_not_exist', MetaData(bind=engine), autoload=True)
 
     assert Table('test_pybigquery.table_does_not_exist', MetaData(bind=engine)).exists() is False
 
@@ -313,8 +314,8 @@ def test_nested_labels(engine, table):
     col = table.c.integer
     exprs = [
         sqlalchemy.func.sum(
-            sqlalchemy.func.sum(col.label("inner")
-        ).label("outer")).over(),
+            sqlalchemy.func.sum(col.label("inner")).label("outer")
+        ).over(),
         sqlalchemy.func.sum(
             sqlalchemy.case([[
                 sqlalchemy.literal(True),
@@ -345,7 +346,10 @@ def test_session_query(session, table, session_using_test_dataset, table_using_t
                 table.c.string,
                 col_concat,
                 func.avg(table.c.integer),
-                func.sum(case([(table.c.boolean == True, 1)], else_=0))
+                func.sum(case(
+                    [(table.c.boolean == sqlalchemy.literal(True), 1)],
+                    else_=0
+                ))
             )
             .group_by(table.c.string, col_concat)
             .having(func.avg(table.c.integer) > 10)
@@ -442,7 +446,7 @@ def test_dml(engine, session, table_dml):
 
 def test_create_table(engine):
     meta = MetaData()
-    table = Table(
+    Table(
         'test_pybigquery.test_table_create', meta,
         Column('integer_c', sqlalchemy.Integer, doc="column description"),
         Column('float_c', sqlalchemy.Float),
@@ -471,6 +475,7 @@ def test_create_table(engine):
 
     Base.metadata.create_all(engine)
     Base.metadata.drop_all(engine)
+
 
 def test_schemas_names(inspector, inspector_using_test_dataset):
     datasets = inspector.get_schema_names()
@@ -507,10 +512,10 @@ def test_view_names(inspector, inspector_using_test_dataset):
 
 
 def test_get_indexes(inspector, inspector_using_test_dataset):
-    for table in ['test_pybigquery.sample', 'test_pybigquery.sample_one_row']:
+    for _ in ['test_pybigquery.sample', 'test_pybigquery.sample_one_row']:
         indexes = inspector.get_indexes('test_pybigquery.sample')
         assert len(indexes) == 2
-        assert indexes[0] == {'name':'partition', 'column_names': ['timestamp'], 'unique': False}
+        assert indexes[0] == {'name': 'partition', 'column_names': ['timestamp'], 'unique': False}
         assert indexes[1] == {'name': 'clustering', 'column_names': ['integer', 'string'], 'unique': False}
 
 
@@ -554,6 +559,7 @@ def test_table_reference(dialect, provided_schema_name,
     assert ref.table_id == 'table'
     assert ref.dataset_id == 'dataset'
     assert ref.project == 'project'
+
 
 @pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
                          [
