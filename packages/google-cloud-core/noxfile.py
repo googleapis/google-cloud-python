@@ -20,6 +20,7 @@ import nox
 
 
 DEFAULT_PYTHON_VERSION = "3.7"
+CURRENT_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
 
 
 def default(session):
@@ -29,10 +30,22 @@ def default(session):
     Python corresponding to the ``nox`` binary the ``PATH`` can
     run the tests.
     """
+    constraints_path = os.path.join(
+        CURRENT_DIRECTORY,
+        "testing",
+        "constraints-{}.txt".format(session.python)
+    )
 
     # Install all test dependencies, then install local packages in-place.
-    session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
-    session.install("-e", ".")
+    session.install(
+        "mock",
+        "pytest",
+        "pytest-cov",
+        "grpcio >= 1.0.2",
+        "-c",
+        constraints_path
+    )
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(

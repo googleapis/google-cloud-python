@@ -15,11 +15,14 @@
 """Shared implementation of connections to API servers."""
 
 import collections
+try:
+    import collections.abc as collections_abc
+except ImportError:
+    import collections as collections_abc
 import json
 import platform
 import warnings
 
-from six.moves import collections_abc
 from six.moves.urllib.parse import urlencode
 
 from google.api_core.client_info import ClientInfo

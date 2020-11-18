@@ -1,0 +1,2 @@
+google-api-core==1.21.0
+six==1.12.0
