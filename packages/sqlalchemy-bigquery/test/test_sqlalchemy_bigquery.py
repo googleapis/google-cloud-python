@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from google.api_core.exceptions import BadRequest
 from pybigquery.api import ApiClient
+from pybigquery.sqlalchemy_bigquery import BigQueryDialect
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy.ext.declarative import declarative_base
@@ -100,6 +101,11 @@ SAMPLE_COLUMNS = [
 def engine():
     engine = create_engine('bigquery://', echo=True)
     return engine
+
+
+@pytest.fixture(scope='session')
+def dialect():
+    return BigQueryDialect()
 
 
 @pytest.fixture(scope='session')
@@ -530,6 +536,38 @@ def test_get_columns(inspector, inspector_using_test_dataset):
             assert col['nullable'] == sample_col['nullable']
             assert col['default'] == sample_col['default']
             assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
+
+
+@pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
+                         [
+                             ('dataset', 'table', 'project'),
+                             (None, 'dataset.table', 'project'),
+                             (None, 'project.dataset.table', 'other_project'),
+                             ('project', 'dataset.table', 'other_project'),
+                             ('project.dataset', 'table', 'other_project'),
+                         ])
+def test_table_reference(dialect, provided_schema_name,
+                         provided_table_name, client_project):
+    ref = dialect._table_reference(provided_schema_name,
+                                   provided_table_name,
+                                   client_project)
+    assert ref.table_id == 'table'
+    assert ref.dataset_id == 'dataset'
+    assert ref.project == 'project'
+
+@pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
+                         [
+                             ('project.dataset', 'other_dataset.table', 'project'),
+                             ('project.dataset', 'other_project.dataset.table', 'project'),
+                             ('project.dataset.something_else', 'table', 'project'),
+                             (None, 'project.dataset.table.something_else', 'project'),
+                         ])
+def test_invalid_table_reference(dialect, provided_schema_name,
+                                 provided_table_name, client_project):
+    with pytest.raises(ValueError):
+        dialect._table_reference(provided_schema_name,
+                                 provided_table_name,
+                                 client_project)
 
 
 def test_has_table(engine, engine_using_test_dataset):

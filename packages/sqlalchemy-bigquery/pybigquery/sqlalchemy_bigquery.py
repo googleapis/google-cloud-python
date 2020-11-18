@@ -400,8 +400,43 @@ class BigQueryDialect(DefaultDialect):
             dataset, table_name = table_name_split
         elif len(table_name_split) == 3:
             project, dataset, table_name = table_name_split
+        else:
+            raise ValueError("Did not understand table_name: {}".format(full_table_name))
 
         return (project, dataset, table_name)
+
+    def _table_reference(self, provided_schema_name, provided_table_name,
+                         client_project):
+        project_id_from_table, dataset_id_from_table, table_id = self._split_table_name(provided_table_name)
+        project_id_from_schema = None
+        dataset_id_from_schema = None
+        if provided_schema_name is not None:
+            provided_schema_name_split = provided_schema_name.split('.')
+            if len(provided_schema_name_split) == 0:
+                pass
+            elif len(provided_schema_name_split) == 1:
+                if dataset_id_from_table:
+                    project_id_from_schema = provided_schema_name_split[0]
+                else:
+                    dataset_id_from_schema = provided_schema_name_split[0]
+            elif len(provided_schema_name_split) == 2:
+                project_id_from_schema = provided_schema_name_split[0]
+                dataset_id_from_schema = provided_schema_name_split[1]
+            else:
+                raise ValueError("Did not understand schema: {}".format(provided_schema_name))
+        if (dataset_id_from_schema and dataset_id_from_table and
+           dataset_id_from_schema != dataset_id_from_table):
+            raise ValueError("dataset_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(dataset_id_from_schema, dataset_id_from_table))
+        if (project_id_from_schema and project_id_from_table and
+           project_id_from_schema != project_id_from_table):
+            raise ValueError("project_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(project_id_from_schema, project_id_from_table))
+        project_id = project_id_from_schema or project_id_from_table or client_project
+        dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
+
+        table_ref = TableReference.from_string("{}.{}.{}".format(
+            project_id, dataset_id, table_id
+        ))
+        return table_ref
 
     def _get_table(self, connection, table_name, schema=None):
         if isinstance(connection, Engine):
@@ -409,13 +444,7 @@ class BigQueryDialect(DefaultDialect):
 
         client = connection.connection._client
 
-        project_id, dataset_id, table_id = self._split_table_name(table_name)
-        project_id = project_id or client.project
-        dataset_id = dataset_id or schema or self.dataset_id
-
-        table_ref = TableReference.from_string("{}.{}.{}".format(
-            project_id, dataset_id, table_id
-        ))
+        table_ref = self._table_reference(schema, table_name, client.project)
         try:
             table = client.get_table(table_ref)
         except NotFound:
