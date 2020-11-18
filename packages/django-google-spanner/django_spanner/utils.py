@@ -1,4 +1,11 @@
+# Copyright 2020 Google LLC
+#
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file or at
+# https://developers.google.com/open-source/licenses/bsd
+
 import django
+import sqlparse
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.version import get_version_tuple
 
@@ -18,3 +25,17 @@ def check_django_compatability():
                 A=django.VERSION[0], B=django.VERSION[1], C=__version__
             )
         )
+
+
+def add_dummy_where(sql):
+    """
+    Cloud Spanner requires a WHERE clause on UPDATE and DELETE statements.
+    Add a dummy WHERE clause if necessary.
+    """
+    if any(
+        isinstance(token, sqlparse.sql.Where)
+        for token in sqlparse.parse(sql)[0]
+    ):
+        return sql
+
+    return sql + " WHERE 1=1"

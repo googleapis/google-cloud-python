@@ -117,7 +117,7 @@ class Cursor(object):
         self._is_closed = True
 
     def _do_execute_update(self, transaction, sql, params, param_types=None):
-        sql = parse_utils.ensure_where_clause(sql)
+        parse_utils.ensure_where_clause(sql)
         sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
 
         result = transaction.execute_update(

@@ -515,15 +515,18 @@ def get_param_types(params):
 
 def ensure_where_clause(sql):
     """
-    Cloud Spanner requires a WHERE clause on UPDATE and DELETE statements.
-    Add a dummy WHERE clause if necessary.
+    Raise unless `sql` includes a WHERE clause.
+
+    :type sql: str
+    :param sql: SQL statement to check.
     """
-    if any(
+    if not any(
         isinstance(token, sqlparse.sql.Where)
         for token in sqlparse.parse(sql)[0]
     ):
-        return sql
-    return sql + " WHERE 1=1"
+        raise ProgrammingError(
+            "Cloud Spanner requires a WHERE clause in UPDATE and DELETE statements"
+        )
 
 
 def escape_name(name):
