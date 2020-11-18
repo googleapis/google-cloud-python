@@ -426,10 +426,20 @@ class BigQueryDialect(DefaultDialect):
                 raise ValueError("Did not understand schema: {}".format(provided_schema_name))
         if (dataset_id_from_schema and dataset_id_from_table and
            dataset_id_from_schema != dataset_id_from_table):
-            raise ValueError("dataset_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(dataset_id_from_schema, dataset_id_from_table))
+            raise ValueError(
+                "dataset_id specified in schema and table_name disagree: "
+                "got {} in schema, and {} in table_name".format(
+                    dataset_id_from_schema, dataset_id_from_table
+                )
+            )
         if (project_id_from_schema and project_id_from_table and
            project_id_from_schema != project_id_from_table):
-            raise ValueError("project_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(project_id_from_schema, project_id_from_table))
+            raise ValueError(
+                "project_id specified in schema and table_name disagree: "
+                "got {} in schema, and {} in table_name".format(
+                    project_id_from_schema, project_id_from_table
+                )
+            )
         project_id = project_id_from_schema or project_id_from_table or client_project
         dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
 

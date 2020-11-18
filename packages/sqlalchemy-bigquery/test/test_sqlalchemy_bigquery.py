@@ -314,8 +314,8 @@ def test_nested_labels(engine, table):
     col = table.c.integer
     exprs = [
         sqlalchemy.func.sum(
-            sqlalchemy.func.sum(col.label("inner")
-        ).label("outer")).over(),
+            sqlalchemy.func.sum(col.label("inner")).label("outer")
+        ).over(),
         sqlalchemy.func.sum(
             sqlalchemy.case([[
                 sqlalchemy.literal(True),
@@ -346,7 +346,10 @@ def test_session_query(session, table, session_using_test_dataset, table_using_t
                 table.c.string,
                 col_concat,
                 func.avg(table.c.integer),
-                func.sum(case([(table.c.boolean is True, 1)], else_=0))
+                func.sum(case(
+                    [(table.c.boolean == sqlalchemy.literal(True), 1)],
+                    else_=0
+                ))
             )
             .group_by(table.c.string, col_concat)
             .having(func.avg(table.c.integer) > 10)
@@ -556,6 +559,7 @@ def test_table_reference(dialect, provided_schema_name,
     assert ref.table_id == 'table'
     assert ref.dataset_id == 'dataset'
     assert ref.project == 'project'
+
 
 @pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
                          [
