@@ -21,8 +21,16 @@ from google.cloud.devtools.containeranalysis_v1.services.container_analysis.asyn
 from google.cloud.devtools.containeranalysis_v1.services.container_analysis.client import (
     ContainerAnalysisClient,
 )
+from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
+    GetVulnerabilityOccurrencesSummaryRequest,
+)
+from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
+    VulnerabilityOccurrencesSummary,
+)
 
 __all__ = (
     "ContainerAnalysisAsyncClient",
     "ContainerAnalysisClient",
+    "GetVulnerabilityOccurrencesSummaryRequest",
+    "VulnerabilityOccurrencesSummary",
 )

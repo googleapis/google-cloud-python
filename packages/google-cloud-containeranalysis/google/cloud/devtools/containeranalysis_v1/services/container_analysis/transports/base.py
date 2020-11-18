@@ -19,24 +19,25 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
+from google.cloud.devtools.containeranalysis_v1.types import containeranalysis
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-devtools-containeranalysis",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class ContainerAnalysisTransport(abc.ABC):
@@ -52,6 +53,7 @@ class ContainerAnalysisTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -69,6 +71,11 @@ class ContainerAnalysisTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -96,21 +103,26 @@ class ContainerAnalysisTransport(abc.ABC):
         self._credentials = credentials
 
         # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages()
+        self._prep_wrapped_messages(client_info)
 
-    def _prep_wrapped_messages(self):
+    def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=30.0, client_info=_client_info,
+                self.set_iam_policy, default_timeout=30.0, client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=30.0, client_info=_client_info,
+                self.get_iam_policy, default_timeout=30.0, client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
+            ),
+            self.get_vulnerability_occurrences_summary: gapic_v1.method.wrap_method(
+                self.get_vulnerability_occurrences_summary,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
@@ -140,6 +152,18 @@ class ContainerAnalysisTransport(abc.ABC):
         typing.Union[
             iam_policy.TestIamPermissionsResponse,
             typing.Awaitable[iam_policy.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_vulnerability_occurrences_summary(
+        self,
+    ) -> typing.Callable[
+        [containeranalysis.GetVulnerabilityOccurrencesSummaryRequest],
+        typing.Union[
+            containeranalysis.VulnerabilityOccurrencesSummary,
+            typing.Awaitable[containeranalysis.VulnerabilityOccurrencesSummary],
         ],
     ]:
         raise NotImplementedError()

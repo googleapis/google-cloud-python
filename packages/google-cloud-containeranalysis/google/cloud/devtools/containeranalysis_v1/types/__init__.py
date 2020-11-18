@@ -15,5 +15,13 @@
 # limitations under the License.
 #
 
+from .containeranalysis import (
+    GetVulnerabilityOccurrencesSummaryRequest,
+    VulnerabilityOccurrencesSummary,
+)
 
-__all__ = ()
+
+__all__ = (
+    "GetVulnerabilityOccurrencesSummaryRequest",
+    "VulnerabilityOccurrencesSummary",
+)

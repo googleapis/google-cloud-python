@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -41,6 +42,7 @@ class containeranalysisCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'get_iam_policy': ('resource', 'options', ),
+    'get_vulnerability_occurrences_summary': ('parent', 'filter', ),
     'set_iam_policy': ('resource', 'policy', ),
     'test_iam_permissions': ('resource', 'permissions', ),
 
