@@ -287,11 +287,13 @@ def test_tables_list(engine, engine_using_test_dataset):
     assert 'test_pybigquery.sample' in tables
     assert 'test_pybigquery.sample_one_row' in tables
     assert 'test_pybigquery.sample_dml' in tables
+    assert 'test_pybigquery.sample_view' not in tables
 
     tables = engine_using_test_dataset.table_names()
     assert 'sample' in tables
     assert 'sample_one_row' in tables
     assert 'sample_dml' in tables
+    assert 'sample_view' not in tables
 
 
 def test_group_by(session, table, session_using_test_dataset, table_using_test_dataset):
@@ -477,13 +479,25 @@ def test_table_names_in_schema(inspector, inspector_using_test_dataset):
     assert 'test_pybigquery.sample' in tables
     assert 'test_pybigquery.sample_one_row' in tables
     assert 'test_pybigquery.sample_dml' in tables
+    assert 'test_pybigquery.sample_view' not in tables
     assert len(tables) == 3
 
     tables = inspector_using_test_dataset.get_table_names()
     assert 'sample' in tables
     assert 'sample_one_row' in tables
     assert 'sample_dml' in tables
+    assert 'sample_view' not in tables
     assert len(tables) == 3
+
+
+def test_view_names(inspector, inspector_using_test_dataset):
+    view_names = inspector.get_view_names()
+    assert "test_pybigquery.sample_view" in view_names
+    assert "test_pybigquery.sample" not in view_names
+
+    view_names = inspector_using_test_dataset.get_view_names()
+    assert "sample_view" in view_names
+    assert "sample" not in view_names
 
 
 def test_get_indexes(inspector, inspector_using_test_dataset):

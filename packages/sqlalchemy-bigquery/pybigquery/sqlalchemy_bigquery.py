@@ -3,6 +3,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import operator
+
 from google import auth
 from google.cloud import bigquery
 from google.cloud.bigquery import dbapi, QueryJobConfig
@@ -294,6 +296,11 @@ class BigQueryDialect(DefaultDialect):
         return dbapi
 
     @staticmethod
+    def _build_formatted_table_id(table):
+        """Build '<dataset_id>.<table_id>' string using given table."""
+        return "{}.{}".format(table.reference.dataset_id, table.table_id)
+
+    @staticmethod
     def _add_default_dataset_to_job_config(job_config, project_id, dataset_id):
         # If dataset_id is set, then we know the job_config isn't None
         if dataset_id:
@@ -358,6 +365,26 @@ class BigQueryDialect(DefaultDialect):
         just returns the input.
         """
         return row
+
+    def _get_table_or_view_names(self, connection, table_type, schema=None):
+        current_schema = schema or self.dataset_id
+        get_table_name = self._build_formatted_table_id \
+            if self.dataset_id is None else \
+            operator.attrgetter("table_id")
+
+        client = connection.connection._client
+        datasets = client.list_datasets()
+
+        result = []
+        for dataset in datasets:
+            if current_schema is not None and current_schema != dataset.dataset_id:
+                continue
+
+            tables = client.list_tables(dataset.reference)
+            for table in tables:
+                if table_type == table.table_type:
+                    result.append(get_table_name(table))
+        return result
 
     @staticmethod
     def _split_table_name(full_table_name):
@@ -474,23 +501,13 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        datasets = connection.connection._client.list_datasets()
-        result = []
-        for d in datasets:
-            if schema is not None and d.dataset_id != schema:
-                continue
+        return self._get_table_or_view_names(connection, "TABLE", schema)
 
-            if self.dataset_id is not None and d.dataset_id != self.dataset_id:
-                continue
+    def get_view_names(self, connection, schema=None, **kw):
+        if isinstance(connection, Engine):
+            connection = connection.connect()
 
-            tables = connection.connection._client.list_tables(d.reference)
-            for t in tables:
-                if self.dataset_id is None:
-                    table_name = d.dataset_id + '.' + t.table_id
-                else:
-                    table_name = t.table_id
-                result.append(table_name)
-        return result
+        return self._get_table_or_view_names(connection, "VIEW", schema)
 
     def do_rollback(self, dbapi_connection):
         # BigQuery has no support for transactions.
