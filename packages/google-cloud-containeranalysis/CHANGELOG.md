@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.0.0...v2.1.0) (2020-11-18)
+
+
+### Features
+
+* add GetVulnerabilityOccurrencesSummary ([#42](https://www.github.com/googleapis/python-containeranalysis/issues/42)) ([7f3e8b3](https://www.github.com/googleapis/python-containeranalysis/commit/7f3e8b3357bdce56aa1cf362b60f02717365c421))
+
 ## [2.0.0](https://www.github.com/googleapis/python-containeranalysis/compare/v1.0.3...v2.0.0) (2020-08-12)
 
 
