@@ -273,7 +273,7 @@ class BoundingPoly(proto.Message):
             The bounding polygon vertices.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message=Vertex,)
+    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="Vertex",)
 
 
 class NormalizedBoundingPoly(proto.Message):
@@ -285,7 +285,7 @@ class NormalizedBoundingPoly(proto.Message):
     """
 
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=NormalizedVertex,
+        proto.MESSAGE, number=1, message="NormalizedVertex",
     )
 
 
@@ -303,11 +303,11 @@ class ImageBoundingPolyAnnotation(proto.Message):
     """
 
     bounding_poly = proto.Field(
-        proto.MESSAGE, number=2, oneof="bounded_area", message=BoundingPoly,
+        proto.MESSAGE, number=2, oneof="bounded_area", message="BoundingPoly",
     )
 
     normalized_bounding_poly = proto.Field(
-        proto.MESSAGE, number=3, oneof="bounded_area", message=NormalizedBoundingPoly,
+        proto.MESSAGE, number=3, oneof="bounded_area", message="NormalizedBoundingPoly",
     )
 
     annotation_spec = proto.Field(
@@ -323,7 +323,7 @@ class Polyline(proto.Message):
             The polyline vertices.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message=Vertex,)
+    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="Vertex",)
 
 
 class NormalizedPolyline(proto.Message):
@@ -335,7 +335,7 @@ class NormalizedPolyline(proto.Message):
     """
 
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=NormalizedVertex,
+        proto.MESSAGE, number=1, message="NormalizedVertex",
     )
 
 
@@ -351,10 +351,10 @@ class ImagePolylineAnnotation(proto.Message):
             Label of this polyline.
     """
 
-    polyline = proto.Field(proto.MESSAGE, number=2, oneof="poly", message=Polyline,)
+    polyline = proto.Field(proto.MESSAGE, number=2, oneof="poly", message="Polyline",)
 
     normalized_polyline = proto.Field(
-        proto.MESSAGE, number=3, oneof="poly", message=NormalizedPolyline,
+        proto.MESSAGE, number=3, oneof="poly", message="NormalizedPolyline",
     )
 
     annotation_spec = proto.Field(
@@ -467,7 +467,7 @@ class VideoClassificationAnnotation(proto.Message):
             Label of the segment specified by time_segment.
     """
 
-    time_segment = proto.Field(proto.MESSAGE, number=1, message=TimeSegment,)
+    time_segment = proto.Field(proto.MESSAGE, number=1, message="TimeSegment",)
 
     annotation_spec = proto.Field(
         proto.MESSAGE, number=2, message=annotation_spec_set.AnnotationSpec,
@@ -489,11 +489,11 @@ class ObjectTrackingFrame(proto.Message):
     """
 
     bounding_poly = proto.Field(
-        proto.MESSAGE, number=1, oneof="bounded_area", message=BoundingPoly,
+        proto.MESSAGE, number=1, oneof="bounded_area", message="BoundingPoly",
     )
 
     normalized_bounding_poly = proto.Field(
-        proto.MESSAGE, number=2, oneof="bounded_area", message=NormalizedBoundingPoly,
+        proto.MESSAGE, number=2, oneof="bounded_area", message="NormalizedBoundingPoly",
     )
 
     time_offset = proto.Field(proto.MESSAGE, number=3, message=duration.Duration,)
@@ -518,10 +518,10 @@ class VideoObjectTrackingAnnotation(proto.Message):
         proto.MESSAGE, number=1, message=annotation_spec_set.AnnotationSpec,
     )
 
-    time_segment = proto.Field(proto.MESSAGE, number=2, message=TimeSegment,)
+    time_segment = proto.Field(proto.MESSAGE, number=2, message="TimeSegment",)
 
     object_tracking_frames = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=ObjectTrackingFrame,
+        proto.MESSAGE, number=3, message="ObjectTrackingFrame",
     )
 
 
@@ -540,7 +540,7 @@ class VideoEventAnnotation(proto.Message):
         proto.MESSAGE, number=1, message=annotation_spec_set.AnnotationSpec,
     )
 
-    time_segment = proto.Field(proto.MESSAGE, number=2, message=TimeSegment,)
+    time_segment = proto.Field(proto.MESSAGE, number=2, message="TimeSegment",)
 
 
 class AnnotationMetadata(proto.Message):

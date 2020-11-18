@@ -19,7 +19,7 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -42,13 +42,13 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-datalabeling",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class DataLabelingServiceTransport(abc.ABC):
@@ -64,6 +64,7 @@ class DataLabelingServiceTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -81,6 +82,11 @@ class DataLabelingServiceTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -108,13 +114,13 @@ class DataLabelingServiceTransport(abc.ABC):
         self._credentials = credentials
 
         # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages()
+        self._prep_wrapped_messages(client_info)
 
-    def _prep_wrapped_messages(self):
+    def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_dataset: gapic_v1.method.wrap_method(
-                self.create_dataset, default_timeout=30.0, client_info=_client_info,
+                self.create_dataset, default_timeout=30.0, client_info=client_info,
             ),
             self.get_dataset: gapic_v1.method.wrap_method(
                 self.get_dataset,
@@ -127,7 +133,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_datasets: gapic_v1.method.wrap_method(
                 self.list_datasets,
@@ -140,7 +146,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_dataset: gapic_v1.method.wrap_method(
                 self.delete_dataset,
@@ -153,10 +159,10 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.import_data: gapic_v1.method.wrap_method(
-                self.import_data, default_timeout=30.0, client_info=_client_info,
+                self.import_data, default_timeout=30.0, client_info=client_info,
             ),
             self.export_data: gapic_v1.method.wrap_method(
                 self.export_data,
@@ -169,7 +175,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_data_item: gapic_v1.method.wrap_method(
                 self.get_data_item,
@@ -182,7 +188,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_data_items: gapic_v1.method.wrap_method(
                 self.list_data_items,
@@ -195,7 +201,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_annotated_dataset: gapic_v1.method.wrap_method(
                 self.get_annotated_dataset,
@@ -208,7 +214,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_annotated_datasets: gapic_v1.method.wrap_method(
                 self.list_annotated_datasets,
@@ -221,21 +227,21 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_annotated_dataset: gapic_v1.method.wrap_method(
                 self.delete_annotated_dataset,
                 default_timeout=None,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.label_image: gapic_v1.method.wrap_method(
-                self.label_image, default_timeout=30.0, client_info=_client_info,
+                self.label_image, default_timeout=30.0, client_info=client_info,
             ),
             self.label_video: gapic_v1.method.wrap_method(
-                self.label_video, default_timeout=30.0, client_info=_client_info,
+                self.label_video, default_timeout=30.0, client_info=client_info,
             ),
             self.label_text: gapic_v1.method.wrap_method(
-                self.label_text, default_timeout=30.0, client_info=_client_info,
+                self.label_text, default_timeout=30.0, client_info=client_info,
             ),
             self.get_example: gapic_v1.method.wrap_method(
                 self.get_example,
@@ -248,7 +254,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_examples: gapic_v1.method.wrap_method(
                 self.list_examples,
@@ -261,12 +267,12 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_annotation_spec_set: gapic_v1.method.wrap_method(
                 self.create_annotation_spec_set,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_annotation_spec_set: gapic_v1.method.wrap_method(
                 self.get_annotation_spec_set,
@@ -279,7 +285,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_annotation_spec_sets: gapic_v1.method.wrap_method(
                 self.list_annotation_spec_sets,
@@ -292,7 +298,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_annotation_spec_set: gapic_v1.method.wrap_method(
                 self.delete_annotation_spec_set,
@@ -305,10 +311,10 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_instruction: gapic_v1.method.wrap_method(
-                self.create_instruction, default_timeout=30.0, client_info=_client_info,
+                self.create_instruction, default_timeout=30.0, client_info=client_info,
             ),
             self.get_instruction: gapic_v1.method.wrap_method(
                 self.get_instruction,
@@ -321,7 +327,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_instructions: gapic_v1.method.wrap_method(
                 self.list_instructions,
@@ -334,7 +340,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_instruction: gapic_v1.method.wrap_method(
                 self.delete_instruction,
@@ -347,7 +353,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_evaluation: gapic_v1.method.wrap_method(
                 self.get_evaluation,
@@ -360,7 +366,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.search_evaluations: gapic_v1.method.wrap_method(
                 self.search_evaluations,
@@ -373,22 +379,22 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.search_example_comparisons: gapic_v1.method.wrap_method(
                 self.search_example_comparisons,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_evaluation_job: gapic_v1.method.wrap_method(
                 self.create_evaluation_job,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_evaluation_job: gapic_v1.method.wrap_method(
                 self.update_evaluation_job,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_evaluation_job: gapic_v1.method.wrap_method(
                 self.get_evaluation_job,
@@ -401,17 +407,17 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.pause_evaluation_job: gapic_v1.method.wrap_method(
                 self.pause_evaluation_job,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.resume_evaluation_job: gapic_v1.method.wrap_method(
                 self.resume_evaluation_job,
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_evaluation_job: gapic_v1.method.wrap_method(
                 self.delete_evaluation_job,
@@ -424,7 +430,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_evaluation_jobs: gapic_v1.method.wrap_method(
                 self.list_evaluation_jobs,
@@ -437,7 +443,7 @@ class DataLabelingServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=30.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
         }
 

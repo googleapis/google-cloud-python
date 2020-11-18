@@ -101,7 +101,7 @@ class VideoPayload(proto.Message):
     video_uri = proto.Field(proto.STRING, number=2)
 
     video_thumbnails = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=VideoThumbnail,
+        proto.MESSAGE, number=3, message="VideoThumbnail",
     )
 
     frame_rate = proto.Field(proto.FLOAT, number=4)
