@@ -54,6 +54,6 @@ s.move(
     excludes=[".coveragerc"],  # microgenerator has a good .coveragerc file
 ) 
 
-python.py_samples()
+python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -117,12 +117,12 @@ def test_document_processor_service_client_from_service_account_file(client_clas
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "us-documentai.googleapis.com:443"
+        assert client.transport._host == "us-documentai.googleapis.com:443"
 
 
 def test_document_processor_service_client_get_transport_class():
@@ -498,9 +498,7 @@ def test_process_document(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.process_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = document_processor_service.ProcessResponse(
             human_review_operation="human_review_operation_value",
@@ -515,6 +513,7 @@ def test_process_document(
         assert args[0] == document_processor_service.ProcessRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, document_processor_service.ProcessResponse)
 
     assert response.human_review_operation == "human_review_operation_value"
@@ -525,19 +524,20 @@ def test_process_document_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_process_document_async(transport: str = "grpc_asyncio"):
+async def test_process_document_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.ProcessRequest,
+):
     client = DocumentProcessorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = document_processor_service.ProcessRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.process_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             document_processor_service.ProcessResponse(
@@ -551,12 +551,17 @@ async def test_process_document_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == document_processor_service.ProcessRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.ProcessResponse)
 
     assert response.human_review_operation == "human_review_operation_value"
+
+
+@pytest.mark.asyncio
+async def test_process_document_async_from_dict():
+    await test_process_document_async(request_type=dict)
 
 
 def test_process_document_field_headers():
@@ -570,9 +575,7 @@ def test_process_document_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.process_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         call.return_value = document_processor_service.ProcessResponse()
 
         client.process_document(request)
@@ -599,9 +602,7 @@ async def test_process_document_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.process_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             document_processor_service.ProcessResponse()
         )
@@ -624,9 +625,7 @@ def test_process_document_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.process_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = document_processor_service.ProcessResponse()
 
@@ -662,9 +661,7 @@ async def test_process_document_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.process_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = document_processor_service.ProcessResponse()
 
@@ -710,7 +707,7 @@ def test_batch_process_documents(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.batch_process_documents), "__call__"
+        type(client.transport.batch_process_documents), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -732,18 +729,21 @@ def test_batch_process_documents_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_batch_process_documents_async(transport: str = "grpc_asyncio"):
+async def test_batch_process_documents_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.BatchProcessRequest,
+):
     client = DocumentProcessorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = document_processor_service.BatchProcessRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.batch_process_documents), "__call__"
+        type(client.transport.batch_process_documents), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -756,10 +756,15 @@ async def test_batch_process_documents_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == document_processor_service.BatchProcessRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_batch_process_documents_async_from_dict():
+    await test_batch_process_documents_async(request_type=dict)
 
 
 def test_batch_process_documents_field_headers():
@@ -774,7 +779,7 @@ def test_batch_process_documents_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.batch_process_documents), "__call__"
+        type(client.transport.batch_process_documents), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -803,7 +808,7 @@ async def test_batch_process_documents_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.batch_process_documents), "__call__"
+        type(client.transport.batch_process_documents), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -828,7 +833,7 @@ def test_batch_process_documents_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.batch_process_documents), "__call__"
+        type(client.transport.batch_process_documents), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -866,7 +871,7 @@ async def test_batch_process_documents_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.batch_process_documents), "__call__"
+        type(client.transport.batch_process_documents), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -913,7 +918,7 @@ def test_review_document(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.review_document), "__call__") as call:
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -934,19 +939,20 @@ def test_review_document_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_review_document_async(transport: str = "grpc_asyncio"):
+async def test_review_document_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.ReviewDocumentRequest,
+):
     client = DocumentProcessorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = document_processor_service.ReviewDocumentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.review_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -958,10 +964,15 @@ async def test_review_document_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == document_processor_service.ReviewDocumentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_review_document_async_from_dict():
+    await test_review_document_async(request_type=dict)
 
 
 def test_review_document_field_headers():
@@ -975,7 +986,7 @@ def test_review_document_field_headers():
     request.human_review_config = "human_review_config/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.review_document), "__call__") as call:
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.review_document(request)
@@ -1005,9 +1016,7 @@ async def test_review_document_field_headers_async():
     request.human_review_config = "human_review_config/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.review_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1033,7 +1042,7 @@ def test_review_document_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.review_document), "__call__") as call:
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1070,9 +1079,7 @@ async def test_review_document_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.review_document), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.review_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1144,7 +1151,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = DocumentProcessorServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1183,7 +1190,7 @@ def test_transport_grpc_default():
         credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client._transport, transports.DocumentProcessorServiceGrpcTransport,
+        client.transport, transports.DocumentProcessorServiceGrpcTransport,
     )
 
 
@@ -1285,7 +1292,7 @@ def test_document_processor_service_host_no_port():
             api_endpoint="us-documentai.googleapis.com"
         ),
     )
-    assert client._transport._host == "us-documentai.googleapis.com:443"
+    assert client.transport._host == "us-documentai.googleapis.com:443"
 
 
 def test_document_processor_service_host_with_port():
@@ -1295,7 +1302,7 @@ def test_document_processor_service_host_with_port():
             api_endpoint="us-documentai.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "us-documentai.googleapis.com:8000"
+    assert client.transport._host == "us-documentai.googleapis.com:8000"
 
 
 def test_document_processor_service_grpc_transport_channel():
@@ -1307,6 +1314,7 @@ def test_document_processor_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_document_processor_service_grpc_asyncio_transport_channel():
@@ -1318,6 +1326,7 @@ def test_document_processor_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -1365,6 +1374,7 @@ def test_document_processor_service_transport_channel_mtls_with_client_cert_sour
                 quota_project_id=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -1411,7 +1421,7 @@ def test_document_processor_service_grpc_lro_client():
     client = DocumentProcessorServiceClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc",
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
@@ -1424,13 +1434,166 @@ def test_document_processor_service_grpc_lro_async_client():
     client = DocumentProcessorServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
-    transport = client._client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
+
+
+def test_human_review_config_path():
+    project = "squid"
+    location = "clam"
+    processor = "whelk"
+
+    expected = "projects/{project}/locations/{location}/processors/{processor}/humanReviewConfig".format(
+        project=project, location=location, processor=processor,
+    )
+    actual = DocumentProcessorServiceClient.human_review_config_path(
+        project, location, processor
+    )
+    assert expected == actual
+
+
+def test_parse_human_review_config_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "processor": "nudibranch",
+    }
+    path = DocumentProcessorServiceClient.human_review_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_human_review_config_path(path)
+    assert expected == actual
+
+
+def test_processor_path():
+    project = "cuttlefish"
+    location = "mussel"
+    processor = "winkle"
+
+    expected = "projects/{project}/locations/{location}/processors/{processor}".format(
+        project=project, location=location, processor=processor,
+    )
+    actual = DocumentProcessorServiceClient.processor_path(project, location, processor)
+    assert expected == actual
+
+
+def test_parse_processor_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "processor": "abalone",
+    }
+    path = DocumentProcessorServiceClient.processor_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_processor_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "squid"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = DocumentProcessorServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "clam",
+    }
+    path = DocumentProcessorServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "whelk"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = DocumentProcessorServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "octopus",
+    }
+    path = DocumentProcessorServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "oyster"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = DocumentProcessorServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nudibranch",
+    }
+    path = DocumentProcessorServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "cuttlefish"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = DocumentProcessorServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "mussel",
+    }
+    path = DocumentProcessorServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "winkle"
+    location = "nautilus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = DocumentProcessorServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+    }
+    path = DocumentProcessorServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_common_location_path(path)
+    assert expected == actual
 
 
 def test_client_withDEFAULT_CLIENT_INFO():

@@ -51,8 +51,61 @@ class DocumentProcessorServiceAsyncClient:
     DEFAULT_ENDPOINT = DocumentProcessorServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DocumentProcessorServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    human_review_config_path = staticmethod(
+        DocumentProcessorServiceClient.human_review_config_path
+    )
+    parse_human_review_config_path = staticmethod(
+        DocumentProcessorServiceClient.parse_human_review_config_path
+    )
+    processor_path = staticmethod(DocumentProcessorServiceClient.processor_path)
+    parse_processor_path = staticmethod(
+        DocumentProcessorServiceClient.parse_processor_path
+    )
+
+    common_billing_account_path = staticmethod(
+        DocumentProcessorServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        DocumentProcessorServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(DocumentProcessorServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        DocumentProcessorServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        DocumentProcessorServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        DocumentProcessorServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(
+        DocumentProcessorServiceClient.common_project_path
+    )
+    parse_common_project_path = staticmethod(
+        DocumentProcessorServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(
+        DocumentProcessorServiceClient.common_location_path
+    )
+    parse_common_location_path = staticmethod(
+        DocumentProcessorServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = DocumentProcessorServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> DocumentProcessorServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DocumentProcessorServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(DocumentProcessorServiceClient).get_transport_class,
@@ -144,7 +197,8 @@ class DocumentProcessorServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -167,7 +221,7 @@ class DocumentProcessorServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=120.0,
@@ -227,7 +281,8 @@ class DocumentProcessorServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -250,7 +305,7 @@ class DocumentProcessorServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=120.0,
@@ -319,7 +374,8 @@ class DocumentProcessorServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([human_review_config]):
+        has_flattened_params = any([human_review_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -342,7 +398,7 @@ class DocumentProcessorServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=120.0,

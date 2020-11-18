@@ -50,10 +50,54 @@ class DocumentUnderstandingServiceAsyncClient:
     DEFAULT_ENDPOINT = DocumentUnderstandingServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DocumentUnderstandingServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        DocumentUnderstandingServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        DocumentUnderstandingServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(
+        DocumentUnderstandingServiceClient.common_folder_path
+    )
+    parse_common_folder_path = staticmethod(
+        DocumentUnderstandingServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        DocumentUnderstandingServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        DocumentUnderstandingServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(
+        DocumentUnderstandingServiceClient.common_project_path
+    )
+    parse_common_project_path = staticmethod(
+        DocumentUnderstandingServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(
+        DocumentUnderstandingServiceClient.common_location_path
+    )
+    parse_common_location_path = staticmethod(
+        DocumentUnderstandingServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = (
         DocumentUnderstandingServiceClient.from_service_account_file
     )
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> DocumentUnderstandingServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DocumentUnderstandingServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(DocumentUnderstandingServiceClient).get_transport_class,
@@ -152,7 +196,8 @@ class DocumentUnderstandingServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([requests]):
+        has_flattened_params = any([requests])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -163,8 +208,8 @@ class DocumentUnderstandingServiceAsyncClient:
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if requests is not None:
-            request.requests = requests
+        if requests:
+            request.requests.extend(requests)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -175,7 +220,7 @@ class DocumentUnderstandingServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=120.0,
@@ -246,7 +291,7 @@ class DocumentUnderstandingServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=120.0,

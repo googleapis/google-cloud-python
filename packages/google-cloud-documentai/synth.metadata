@@ -4,21 +4,29 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-documentai",
-        "sha": "ec70a8cec0f1fbd0f8ec18189139e632ec28b025"
+        "sha": "c6186ea7a58f83bc2e49d9df2a48fce3f78f0143"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "e3e7e7ddb0fecd7bc61ca03b5a9ddb29cc9b48d8",
+        "internalRef": "342967619"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "e6168630be3e31eede633ba2c6f1cd64248dec1c"
+        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "e6168630be3e31eede633ba2c6f1cd64248dec1c"
+        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
       }
     }
   ],
