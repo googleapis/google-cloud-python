@@ -362,6 +362,16 @@ def test_compiled_query_literal_binds(engine, engine_using_test_dataset, table, 
     assert len(result) > 0
 
 
+@pytest.mark.parametrize(["column", "processed"], [
+    (types.String(), "STRING"),
+    (types.NUMERIC(), "NUMERIC"),
+    (types.ARRAY(types.String), "ARRAY<STRING>"),
+])
+def test_compile_types(engine, column, processed):
+    result = engine.dialect.type_compiler.process(column)
+    assert result == processed
+
+
 def test_joins(session, table, table_one_row):
     result = (session.query(table.c.string, func.count(table_one_row.c.integer))
                      .join(table_one_row, table_one_row.c.string == table.c.string)
