@@ -162,10 +162,14 @@ def query():
     def query(table):
         col1 = literal_column("TIMESTAMP_TRUNC(timestamp, DAY)").label("timestamp_label")
         col2 = func.sum(table.c.integer)
+        # Test rendering of nested labels. Full expression should render in SELECT, but
+        # ORDER/GROUP BY should use label only.
+        col3 = func.sum(func.sum(table.c.integer.label("inner")).label("outer")).over().label('outer')
         query = (
             select([
                 col1,
                 col2,
+                col3,
             ])
             .where(col1 < '2017-01-01 00:00:00')
             .group_by(col1)
@@ -299,6 +303,33 @@ def test_group_by(session, table, session_using_test_dataset, table_using_test_d
     assert len(result) > 0
 
 
+def test_nested_labels(engine, table):
+    col = table.c.integer
+    exprs = [
+        sqlalchemy.func.sum(
+            sqlalchemy.func.sum(col.label("inner")
+        ).label("outer")).over(),
+        sqlalchemy.func.sum(
+            sqlalchemy.case([[
+                sqlalchemy.literal(True),
+                col.label("inner"),
+            ]]).label("outer")
+        ),
+        sqlalchemy.func.sum(
+            sqlalchemy.func.sum(
+                sqlalchemy.case([[
+                    sqlalchemy.literal(True), col.label("inner")
+                ]]).label("middle")
+            ).label("outer")
+        ).over(),
+    ]
+    for expr in exprs:
+        sql = str(expr.compile(engine))
+        assert "inner" not in sql
+        assert "middle" not in sql
+        assert "outer" not in sql
+
+
 def test_session_query(session, table, session_using_test_dataset, table_using_test_dataset):
     for session, table in [(session, table), (session_using_test_dataset, table_using_test_dataset)]:
         col_concat = func.concat(table.c.string).label('concat')
@@ -358,6 +389,16 @@ def test_compiled_query_literal_binds(engine, engine_using_test_dataset, table, 
     compiled = q.compile(engine_using_test_dataset, compile_kwargs={"literal_binds": True})
     result = engine_using_test_dataset.execute(compiled).fetchall()
     assert len(result) > 0
+
+
+@pytest.mark.parametrize(["column", "processed"], [
+    (types.String(), "STRING"),
+    (types.NUMERIC(), "NUMERIC"),
+    (types.ARRAY(types.String), "ARRAY<STRING>"),
+])
+def test_compile_types(engine, column, processed):
+    result = engine.dialect.type_compiler.process(column)
+    assert result == processed
 
 
 def test_joins(session, table, table_one_row):
