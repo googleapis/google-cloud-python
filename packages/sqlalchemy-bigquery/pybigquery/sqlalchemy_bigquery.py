@@ -3,6 +3,8 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import operator
+
 from google import auth
 from google.cloud import bigquery
 from google.cloud.bigquery import dbapi
@@ -184,12 +186,19 @@ class BigQueryCompiler(SQLCompiler):
                 self.preparer.quote(tablename) + \
                 "." + name
 
-    def visit_label(self, *args, **kwargs):
-        # Use labels in GROUP BY clause
-        if len(kwargs) == 0 or len(kwargs) == 1:
+    def visit_label(self, *args, within_group_by=False, **kwargs):
+        # Use labels in GROUP BY clause.
+        #
+        # Flag set in the group_by_clause method. Works around missing
+        # equivalent to supports_simple_order_by_label for group by.
+        if within_group_by:
             kwargs['render_label_as_label'] = args[0]
-        result = super(BigQueryCompiler, self).visit_label(*args, **kwargs)
-        return result
+        return super(BigQueryCompiler, self).visit_label(*args, **kwargs)
+
+    def group_by_clause(self, select, **kw):
+        return super(BigQueryCompiler, self).group_by_clause(
+            select, **kw, within_group_by=True
+        )
 
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
@@ -205,6 +214,9 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
 
     def visit_string(self, type_, **kw):
         return 'STRING'
+
+    def visit_ARRAY(self, type_, **kw):
+        return "ARRAY<{}>".format(self.process(type_.item_type, **kw))
 
     def visit_BINARY(self, type_, **kw):
         return 'BYTES'
@@ -285,6 +297,11 @@ class BigQueryDialect(DefaultDialect):
         return dbapi
 
     @staticmethod
+    def _build_formatted_table_id(table):
+        """Build '<dataset_id>.<table_id>' string using given table."""
+        return "{}.{}".format(table.reference.dataset_id, table.table_id)
+
+    @staticmethod
     def _add_default_dataset_to_job_config(job_config, project_id, dataset_id):
         # If dataset_id is set, then we know the job_config isn't None
         if dataset_id:
@@ -349,6 +366,26 @@ class BigQueryDialect(DefaultDialect):
         """
         return row
 
+    def _get_table_or_view_names(self, connection, table_type, schema=None):
+        current_schema = schema or self.dataset_id
+        get_table_name = self._build_formatted_table_id \
+            if self.dataset_id is None else \
+            operator.attrgetter("table_id")
+
+        client = connection.connection._client
+        datasets = client.list_datasets()
+
+        result = []
+        for dataset in datasets:
+            if current_schema is not None and current_schema != dataset.dataset_id:
+                continue
+
+            tables = client.list_tables(dataset.reference)
+            for table in tables:
+                if table_type == table.table_type:
+                    result.append(get_table_name(table))
+        return result
+
     @staticmethod
     def _split_table_name(full_table_name):
         # Split full_table_name to get project, dataset and table name
@@ -363,8 +400,43 @@ class BigQueryDialect(DefaultDialect):
             dataset, table_name = table_name_split
         elif len(table_name_split) == 3:
             project, dataset, table_name = table_name_split
+        else:
+            raise ValueError("Did not understand table_name: {}".format(full_table_name))
 
         return (project, dataset, table_name)
+
+    def _table_reference(self, provided_schema_name, provided_table_name,
+                         client_project):
+        project_id_from_table, dataset_id_from_table, table_id = self._split_table_name(provided_table_name)
+        project_id_from_schema = None
+        dataset_id_from_schema = None
+        if provided_schema_name is not None:
+            provided_schema_name_split = provided_schema_name.split('.')
+            if len(provided_schema_name_split) == 0:
+                pass
+            elif len(provided_schema_name_split) == 1:
+                if dataset_id_from_table:
+                    project_id_from_schema = provided_schema_name_split[0]
+                else:
+                    dataset_id_from_schema = provided_schema_name_split[0]
+            elif len(provided_schema_name_split) == 2:
+                project_id_from_schema = provided_schema_name_split[0]
+                dataset_id_from_schema = provided_schema_name_split[1]
+            else:
+                raise ValueError("Did not understand schema: {}".format(provided_schema_name))
+        if (dataset_id_from_schema and dataset_id_from_table and
+           dataset_id_from_schema != dataset_id_from_table):
+            raise ValueError("dataset_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(dataset_id_from_schema, dataset_id_from_table))
+        if (project_id_from_schema and project_id_from_table and
+           project_id_from_schema != project_id_from_table):
+            raise ValueError("project_id specified in schema and table_name disagree: got {} in schema, and {} in table_name".format(project_id_from_schema, project_id_from_table))
+        project_id = project_id_from_schema or project_id_from_table or client_project
+        dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
+
+        table_ref = TableReference.from_string("{}.{}.{}".format(
+            project_id, dataset_id, table_id
+        ))
+        return table_ref
 
     def _get_table(self, connection, table_name, schema=None):
         if isinstance(connection, Engine):
@@ -372,13 +444,7 @@ class BigQueryDialect(DefaultDialect):
 
         client = connection.connection._client
 
-        project_id, dataset_id, table_id = self._split_table_name(table_name)
-        project_id = project_id or client.project
-        dataset_id = dataset_id or schema or self.dataset_id
-
-        table_ref = TableReference.from_string("{}.{}.{}".format(
-            project_id, dataset_id, table_id
-        ))
+        table_ref = self._table_reference(schema, table_name, client.project)
         try:
             table = client.get_table(table_ref)
         except NotFound:
@@ -464,23 +530,13 @@ class BigQueryDialect(DefaultDialect):
         if isinstance(connection, Engine):
             connection = connection.connect()
 
-        datasets = connection.connection._client.list_datasets()
-        result = []
-        for d in datasets:
-            if schema is not None and d.dataset_id != schema:
-                continue
+        return self._get_table_or_view_names(connection, "TABLE", schema)
 
-            if self.dataset_id is not None and d.dataset_id != self.dataset_id:
-                continue
+    def get_view_names(self, connection, schema=None, **kw):
+        if isinstance(connection, Engine):
+            connection = connection.connect()
 
-            tables = connection.connection._client.list_tables(d.reference)
-            for t in tables:
-                if self.dataset_id is None:
-                    table_name = d.dataset_id + '.' + t.table_id
-                else:
-                    table_name = t.table_id
-                result.append(table_name)
-        return result
+        return self._get_table_or_view_names(connection, "VIEW", schema)
 
     def do_rollback(self, dbapi_connection):
         # BigQuery has no support for transactions.

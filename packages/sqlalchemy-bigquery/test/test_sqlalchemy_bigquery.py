@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from google.api_core.exceptions import BadRequest
 from pybigquery.api import ApiClient
+from pybigquery.sqlalchemy_bigquery import BigQueryDialect
 from sqlalchemy.engine import create_engine
 from sqlalchemy.schema import Table, MetaData, Column
 from sqlalchemy.ext.declarative import declarative_base
@@ -103,6 +104,11 @@ def engine():
 
 
 @pytest.fixture(scope='session')
+def dialect():
+    return BigQueryDialect()
+
+
+@pytest.fixture(scope='session')
 def engine_using_test_dataset():
     engine = create_engine('bigquery:///test_pybigquery', echo=True)
     return engine
@@ -163,10 +169,14 @@ def query():
     def query(table):
         col1 = literal_column("TIMESTAMP_TRUNC(timestamp, DAY)").label("timestamp_label")
         col2 = func.sum(table.c.integer)
+        # Test rendering of nested labels. Full expression should render in SELECT, but
+        # ORDER/GROUP BY should use label only.
+        col3 = func.sum(func.sum(table.c.integer.label("inner")).label("outer")).over().label('outer')
         query = (
             select([
                 col1,
                 col2,
+                col3,
             ])
             .where(col1 < '2017-01-01 00:00:00')
             .group_by(col1)
@@ -284,11 +294,13 @@ def test_tables_list(engine, engine_using_test_dataset):
     assert 'test_pybigquery.sample' in tables
     assert 'test_pybigquery.sample_one_row' in tables
     assert 'test_pybigquery.sample_dml' in tables
+    assert 'test_pybigquery.sample_view' not in tables
 
     tables = engine_using_test_dataset.table_names()
     assert 'sample' in tables
     assert 'sample_one_row' in tables
     assert 'sample_dml' in tables
+    assert 'sample_view' not in tables
 
 
 def test_group_by(session, table, session_using_test_dataset, table_using_test_dataset):
@@ -296,6 +308,33 @@ def test_group_by(session, table, session_using_test_dataset, table_using_test_d
     for session, table in [(session, table), (session_using_test_dataset, table_using_test_dataset)]:
         result = session.query(table.c.string, func.count(table.c.integer)).group_by(table.c.string).all()
     assert len(result) > 0
+
+
+def test_nested_labels(engine, table):
+    col = table.c.integer
+    exprs = [
+        sqlalchemy.func.sum(
+            sqlalchemy.func.sum(col.label("inner")
+        ).label("outer")).over(),
+        sqlalchemy.func.sum(
+            sqlalchemy.case([[
+                sqlalchemy.literal(True),
+                col.label("inner"),
+            ]]).label("outer")
+        ),
+        sqlalchemy.func.sum(
+            sqlalchemy.func.sum(
+                sqlalchemy.case([[
+                    sqlalchemy.literal(True), col.label("inner")
+                ]]).label("middle")
+            ).label("outer")
+        ).over(),
+    ]
+    for expr in exprs:
+        sql = str(expr.compile(engine))
+        assert "inner" not in sql
+        assert "middle" not in sql
+        assert "outer" not in sql
 
 
 def test_session_query(session, table, session_using_test_dataset, table_using_test_dataset):
@@ -357,6 +396,16 @@ def test_compiled_query_literal_binds(engine, engine_using_test_dataset, table, 
     compiled = q.compile(engine_using_test_dataset, compile_kwargs={"literal_binds": True})
     result = engine_using_test_dataset.execute(compiled).fetchall()
     assert len(result) > 0
+
+
+@pytest.mark.parametrize(["column", "processed"], [
+    (types.String(), "STRING"),
+    (types.NUMERIC(), "NUMERIC"),
+    (types.ARRAY(types.String), "ARRAY<STRING>"),
+])
+def test_compile_types(engine, column, processed):
+    result = engine.dialect.type_compiler.process(column)
+    assert result == processed
 
 
 def test_joins(session, table, table_one_row):
@@ -438,13 +487,25 @@ def test_table_names_in_schema(inspector, inspector_using_test_dataset):
     assert 'test_pybigquery.sample' in tables
     assert 'test_pybigquery.sample_one_row' in tables
     assert 'test_pybigquery.sample_dml' in tables
+    assert 'test_pybigquery.sample_view' not in tables
     assert len(tables) == 3
 
     tables = inspector_using_test_dataset.get_table_names()
     assert 'sample' in tables
     assert 'sample_one_row' in tables
     assert 'sample_dml' in tables
+    assert 'sample_view' not in tables
     assert len(tables) == 3
+
+
+def test_view_names(inspector, inspector_using_test_dataset):
+    view_names = inspector.get_view_names()
+    assert "test_pybigquery.sample_view" in view_names
+    assert "test_pybigquery.sample" not in view_names
+
+    view_names = inspector_using_test_dataset.get_view_names()
+    assert "sample_view" in view_names
+    assert "sample" not in view_names
 
 
 def test_get_indexes(inspector, inspector_using_test_dataset):
@@ -477,6 +538,38 @@ def test_get_columns(inspector, inspector_using_test_dataset):
             assert col['nullable'] == sample_col['nullable']
             assert col['default'] == sample_col['default']
             assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
+
+
+@pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
+                         [
+                             ('dataset', 'table', 'project'),
+                             (None, 'dataset.table', 'project'),
+                             (None, 'project.dataset.table', 'other_project'),
+                             ('project', 'dataset.table', 'other_project'),
+                             ('project.dataset', 'table', 'other_project'),
+                         ])
+def test_table_reference(dialect, provided_schema_name,
+                         provided_table_name, client_project):
+    ref = dialect._table_reference(provided_schema_name,
+                                   provided_table_name,
+                                   client_project)
+    assert ref.table_id == 'table'
+    assert ref.dataset_id == 'dataset'
+    assert ref.project == 'project'
+
+@pytest.mark.parametrize('provided_schema_name,provided_table_name,client_project',
+                         [
+                             ('project.dataset', 'other_dataset.table', 'project'),
+                             ('project.dataset', 'other_project.dataset.table', 'project'),
+                             ('project.dataset.something_else', 'table', 'project'),
+                             (None, 'project.dataset.table.something_else', 'project'),
+                         ])
+def test_invalid_table_reference(dialect, provided_schema_name,
+                                 provided_table_name, client_project):
+    with pytest.raises(ValueError):
+        dialect._table_reference(provided_schema_name,
+                                 provided_table_name,
+                                 client_project)
 
 
 def test_has_table(engine, engine_using_test_dataset):
