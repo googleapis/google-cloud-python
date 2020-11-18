@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-functions.git",
-        "sha": "94917c52dd83d18b8a3fd61e7f5d5c870c5a874c"
+        "remote": "git@github.com:googleapis/python-functions",
+        "sha": "8588ecb9705d7c345067e09b51798168012341f1"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "4f2a18a10e89afa485f4023bf31f2bb120a2d54d",
-        "internalRef": "335029068"
+        "sha": "e3e7e7ddb0fecd7bc61ca03b5a9ddb29cc9b48d8",
+        "internalRef": "342967619"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0762e8ee2ec21cdfc4d82020b985a104feb0453b"
+        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0762e8ee2ec21cdfc4d82020b985a104feb0453b"
+        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
       }
     }
   ],
@@ -40,93 +40,5 @@
         "generator": "bazel"
       }
     }
-  ],
-  "generatedFiles": [
-    ".flake8",
-    ".github/CONTRIBUTING.md",
-    ".github/ISSUE_TEMPLATE/bug_report.md",
-    ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/ISSUE_TEMPLATE/support_request.md",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/release-please.yml",
-    ".github/snippet-bot.yml",
-    ".gitignore",
-    ".kokoro/build.sh",
-    ".kokoro/continuous/common.cfg",
-    ".kokoro/continuous/continuous.cfg",
-    ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
-    ".kokoro/docs/common.cfg",
-    ".kokoro/docs/docs-presubmit.cfg",
-    ".kokoro/docs/docs.cfg",
-    ".kokoro/populate-secrets.sh",
-    ".kokoro/presubmit/common.cfg",
-    ".kokoro/presubmit/presubmit.cfg",
-    ".kokoro/publish-docs.sh",
-    ".kokoro/release.sh",
-    ".kokoro/release/common.cfg",
-    ".kokoro/release/release.cfg",
-    ".kokoro/samples/lint/common.cfg",
-    ".kokoro/samples/lint/continuous.cfg",
-    ".kokoro/samples/lint/periodic.cfg",
-    ".kokoro/samples/lint/presubmit.cfg",
-    ".kokoro/samples/python3.6/common.cfg",
-    ".kokoro/samples/python3.6/continuous.cfg",
-    ".kokoro/samples/python3.6/periodic.cfg",
-    ".kokoro/samples/python3.6/presubmit.cfg",
-    ".kokoro/samples/python3.7/common.cfg",
-    ".kokoro/samples/python3.7/continuous.cfg",
-    ".kokoro/samples/python3.7/periodic.cfg",
-    ".kokoro/samples/python3.7/presubmit.cfg",
-    ".kokoro/samples/python3.8/common.cfg",
-    ".kokoro/samples/python3.8/continuous.cfg",
-    ".kokoro/samples/python3.8/periodic.cfg",
-    ".kokoro/samples/python3.8/presubmit.cfg",
-    ".kokoro/test-samples.sh",
-    ".kokoro/trampoline.sh",
-    ".kokoro/trampoline_v2.sh",
-    ".trampolinerc",
-    "CODE_OF_CONDUCT.md",
-    "CONTRIBUTING.rst",
-    "LICENSE",
-    "MANIFEST.in",
-    "docs/_static/custom.css",
-    "docs/_templates/layout.html",
-    "docs/conf.py",
-    "docs/functions_v1/services.rst",
-    "docs/functions_v1/types.rst",
-    "docs/multiprocessing.rst",
-    "functions-v1-py.tar.gz",
-    "google/cloud/functions/__init__.py",
-    "google/cloud/functions/py.typed",
-    "google/cloud/functions_v1/__init__.py",
-    "google/cloud/functions_v1/py.typed",
-    "google/cloud/functions_v1/services/__init__.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/__init__.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/async_client.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/client.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/pagers.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/transports/__init__.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/transports/base.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/transports/grpc.py",
-    "google/cloud/functions_v1/services/cloud_functions_service/transports/grpc_asyncio.py",
-    "google/cloud/functions_v1/types/__init__.py",
-    "google/cloud/functions_v1/types/functions.py",
-    "google/cloud/functions_v1/types/operations.py",
-    "mypy.ini",
-    "noxfile.py",
-    "renovate.json",
-    "scripts/decrypt-secrets.sh",
-    "scripts/fixup_functions_v1_keywords.py",
-    "scripts/readme-gen/readme_gen.py",
-    "scripts/readme-gen/templates/README.tmpl.rst",
-    "scripts/readme-gen/templates/auth.tmpl.rst",
-    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
-    "scripts/readme-gen/templates/install_deps.tmpl.rst",
-    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
-    "setup.cfg",
-    "testing/.gitignore",
-    "tests/unit/gapic/functions_v1/__init__.py",
-    "tests/unit/gapic/functions_v1/test_cloud_functions_service.py"
   ]
 }

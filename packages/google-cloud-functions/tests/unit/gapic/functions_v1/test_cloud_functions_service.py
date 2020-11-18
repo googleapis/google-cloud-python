@@ -44,7 +44,6 @@ from google.cloud.functions_v1.services.cloud_functions_service import (
 from google.cloud.functions_v1.services.cloud_functions_service import pagers
 from google.cloud.functions_v1.services.cloud_functions_service import transports
 from google.cloud.functions_v1.types import functions
-from google.cloud.functions_v1.types import functions as gcf_functions
 from google.cloud.functions_v1.types import operations
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import options_pb2 as options  # type: ignore
@@ -112,12 +111,12 @@ def test_cloud_functions_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "cloudfunctions.googleapis.com:443"
+        assert client.transport._host == "cloudfunctions.googleapis.com:443"
 
 
 def test_cloud_functions_service_client_get_transport_class():
@@ -489,7 +488,7 @@ def test_list_functions(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_functions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.ListFunctionsResponse(
             next_page_token="next_page_token_value", unreachable=["unreachable_value"],
@@ -504,6 +503,7 @@ def test_list_functions(
         assert args[0] == functions.ListFunctionsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListFunctionsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -516,19 +516,19 @@ def test_list_functions_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_functions_async(transport: str = "grpc_asyncio"):
+async def test_list_functions_async(
+    transport: str = "grpc_asyncio", request_type=functions.ListFunctionsRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.ListFunctionsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_functions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.ListFunctionsResponse(
@@ -543,7 +543,7 @@ async def test_list_functions_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.ListFunctionsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFunctionsAsyncPager)
@@ -551,6 +551,11 @@ async def test_list_functions_async(transport: str = "grpc_asyncio"):
     assert response.next_page_token == "next_page_token_value"
 
     assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_functions_async_from_dict():
+    await test_list_functions_async(request_type=dict)
 
 
 def test_list_functions_field_headers():
@@ -564,7 +569,7 @@ def test_list_functions_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_functions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
         call.return_value = functions.ListFunctionsResponse()
 
         client.list_functions(request)
@@ -591,9 +596,7 @@ async def test_list_functions_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_functions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.ListFunctionsResponse()
         )
@@ -614,7 +617,7 @@ def test_list_functions_pager():
     client = CloudFunctionsServiceClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_functions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             functions.ListFunctionsResponse(
@@ -652,7 +655,7 @@ def test_list_functions_pages():
     client = CloudFunctionsServiceClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_functions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_functions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             functions.ListFunctionsResponse(
@@ -685,9 +688,7 @@ async def test_list_functions_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_functions),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_functions), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -726,9 +727,7 @@ async def test_list_functions_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_functions),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_functions), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -768,7 +767,7 @@ def test_get_function(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.CloudFunction(
             name="name_value",
@@ -798,6 +797,7 @@ def test_get_function(
         assert args[0] == functions.GetFunctionRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, functions.CloudFunction)
 
     assert response.name == "name_value"
@@ -839,19 +839,19 @@ def test_get_function_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_function_async(transport: str = "grpc_asyncio"):
+async def test_get_function_async(
+    transport: str = "grpc_asyncio", request_type=functions.GetFunctionRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.GetFunctionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.CloudFunction(
@@ -878,7 +878,7 @@ async def test_get_function_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.GetFunctionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.CloudFunction)
@@ -917,6 +917,11 @@ async def test_get_function_async(transport: str = "grpc_asyncio"):
     assert response.build_id == "build_id_value"
 
 
+@pytest.mark.asyncio
+async def test_get_function_async_from_dict():
+    await test_get_function_async(request_type=dict)
+
+
 def test_get_function_field_headers():
     client = CloudFunctionsServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -928,7 +933,7 @@ def test_get_function_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_function), "__call__") as call:
         call.return_value = functions.CloudFunction()
 
         client.get_function(request)
@@ -955,9 +960,7 @@ async def test_get_function_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_function), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.CloudFunction()
         )
@@ -980,7 +983,7 @@ def test_get_function_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.CloudFunction()
 
@@ -1016,9 +1019,7 @@ async def test_get_function_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.CloudFunction()
 
@@ -1063,7 +1064,7 @@ def test_create_function(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1084,19 +1085,19 @@ def test_create_function_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_function_async(transport: str = "grpc_asyncio"):
+async def test_create_function_async(
+    transport: str = "grpc_asyncio", request_type=functions.CreateFunctionRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.CreateFunctionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1108,10 +1109,15 @@ async def test_create_function_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.CreateFunctionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_function_async_from_dict():
+    await test_create_function_async(request_type=dict)
 
 
 def test_create_function_field_headers():
@@ -1125,7 +1131,7 @@ def test_create_function_field_headers():
     request.location = "location/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.create_function(request)
@@ -1152,9 +1158,7 @@ async def test_create_function_field_headers_async():
     request.location = "location/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1177,7 +1181,7 @@ def test_create_function_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1220,9 +1224,7 @@ async def test_create_function_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1274,7 +1276,7 @@ def test_update_function(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1295,19 +1297,19 @@ def test_update_function_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_function_async(transport: str = "grpc_asyncio"):
+async def test_update_function_async(
+    transport: str = "grpc_asyncio", request_type=functions.UpdateFunctionRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.UpdateFunctionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1319,10 +1321,15 @@ async def test_update_function_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.UpdateFunctionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_function_async_from_dict():
+    await test_update_function_async(request_type=dict)
 
 
 def test_update_function_field_headers():
@@ -1336,7 +1343,7 @@ def test_update_function_field_headers():
     request.function.name = "function.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.update_function(request)
@@ -1365,9 +1372,7 @@ async def test_update_function_field_headers_async():
     request.function.name = "function.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1392,7 +1397,7 @@ def test_update_function_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1429,9 +1434,7 @@ async def test_update_function_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1479,7 +1482,7 @@ def test_delete_function(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1500,19 +1503,19 @@ def test_delete_function_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_function_async(transport: str = "grpc_asyncio"):
+async def test_delete_function_async(
+    transport: str = "grpc_asyncio", request_type=functions.DeleteFunctionRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.DeleteFunctionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1524,10 +1527,15 @@ async def test_delete_function_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.DeleteFunctionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_function_async_from_dict():
+    await test_delete_function_async(request_type=dict)
 
 
 def test_delete_function_field_headers():
@@ -1541,7 +1549,7 @@ def test_delete_function_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.delete_function(request)
@@ -1568,9 +1576,7 @@ async def test_delete_function_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1593,7 +1599,7 @@ def test_delete_function_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1629,9 +1635,7 @@ async def test_delete_function_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1676,7 +1680,7 @@ def test_call_function(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.call_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.call_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.CallFunctionResponse(
             execution_id="execution_id_value",
@@ -1693,6 +1697,7 @@ def test_call_function(
         assert args[0] == functions.CallFunctionRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, functions.CallFunctionResponse)
 
     assert response.execution_id == "execution_id_value"
@@ -1707,19 +1712,19 @@ def test_call_function_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_call_function_async(transport: str = "grpc_asyncio"):
+async def test_call_function_async(
+    transport: str = "grpc_asyncio", request_type=functions.CallFunctionRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.CallFunctionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.call_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.call_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.CallFunctionResponse(
@@ -1735,7 +1740,7 @@ async def test_call_function_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.CallFunctionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.CallFunctionResponse)
@@ -1745,6 +1750,11 @@ async def test_call_function_async(transport: str = "grpc_asyncio"):
     assert response.result == "result_value"
 
     assert response.error == "error_value"
+
+
+@pytest.mark.asyncio
+async def test_call_function_async_from_dict():
+    await test_call_function_async(request_type=dict)
 
 
 def test_call_function_field_headers():
@@ -1758,7 +1768,7 @@ def test_call_function_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.call_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.call_function), "__call__") as call:
         call.return_value = functions.CallFunctionResponse()
 
         client.call_function(request)
@@ -1785,9 +1795,7 @@ async def test_call_function_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.call_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.call_function), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.CallFunctionResponse()
         )
@@ -1810,7 +1818,7 @@ def test_call_function_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.call_function), "__call__") as call:
+    with mock.patch.object(type(client.transport.call_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.CallFunctionResponse()
 
@@ -1850,9 +1858,7 @@ async def test_call_function_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.call_function), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.call_function), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.CallFunctionResponse()
 
@@ -1900,7 +1906,7 @@ def test_generate_upload_url(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.generate_upload_url), "__call__"
+        type(client.transport.generate_upload_url), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.GenerateUploadUrlResponse(
@@ -1916,6 +1922,7 @@ def test_generate_upload_url(
         assert args[0] == functions.GenerateUploadUrlRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, functions.GenerateUploadUrlResponse)
 
     assert response.upload_url == "upload_url_value"
@@ -1926,18 +1933,20 @@ def test_generate_upload_url_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_generate_upload_url_async(transport: str = "grpc_asyncio"):
+async def test_generate_upload_url_async(
+    transport: str = "grpc_asyncio", request_type=functions.GenerateUploadUrlRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.GenerateUploadUrlRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.generate_upload_url), "__call__"
+        type(client.transport.generate_upload_url), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1950,12 +1959,17 @@ async def test_generate_upload_url_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.GenerateUploadUrlRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.GenerateUploadUrlResponse)
 
     assert response.upload_url == "upload_url_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_upload_url_async_from_dict():
+    await test_generate_upload_url_async(request_type=dict)
 
 
 def test_generate_upload_url_field_headers():
@@ -1970,7 +1984,7 @@ def test_generate_upload_url_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.generate_upload_url), "__call__"
+        type(client.transport.generate_upload_url), "__call__"
     ) as call:
         call.return_value = functions.GenerateUploadUrlResponse()
 
@@ -1999,7 +2013,7 @@ async def test_generate_upload_url_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.generate_upload_url), "__call__"
+        type(client.transport.generate_upload_url), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.GenerateUploadUrlResponse()
@@ -2030,7 +2044,7 @@ def test_generate_download_url(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.generate_download_url), "__call__"
+        type(client.transport.generate_download_url), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = functions.GenerateDownloadUrlResponse(
@@ -2046,6 +2060,7 @@ def test_generate_download_url(
         assert args[0] == functions.GenerateDownloadUrlRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, functions.GenerateDownloadUrlResponse)
 
     assert response.download_url == "download_url_value"
@@ -2056,18 +2071,20 @@ def test_generate_download_url_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_generate_download_url_async(transport: str = "grpc_asyncio"):
+async def test_generate_download_url_async(
+    transport: str = "grpc_asyncio", request_type=functions.GenerateDownloadUrlRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = functions.GenerateDownloadUrlRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.generate_download_url), "__call__"
+        type(client.transport.generate_download_url), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2080,12 +2097,17 @@ async def test_generate_download_url_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == functions.GenerateDownloadUrlRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, functions.GenerateDownloadUrlResponse)
 
     assert response.download_url == "download_url_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_download_url_async_from_dict():
+    await test_generate_download_url_async(request_type=dict)
 
 
 def test_generate_download_url_field_headers():
@@ -2100,7 +2122,7 @@ def test_generate_download_url_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.generate_download_url), "__call__"
+        type(client.transport.generate_download_url), "__call__"
     ) as call:
         call.return_value = functions.GenerateDownloadUrlResponse()
 
@@ -2129,7 +2151,7 @@ async def test_generate_download_url_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.generate_download_url), "__call__"
+        type(client.transport.generate_download_url), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             functions.GenerateDownloadUrlResponse()
@@ -2159,7 +2181,7 @@ def test_set_iam_policy(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
 
@@ -2172,6 +2194,7 @@ def test_set_iam_policy(
         assert args[0] == iam_policy.SetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, policy.Policy)
 
     assert response.version == 774
@@ -2184,19 +2207,19 @@ def test_set_iam_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
+async def test_set_iam_policy_async(
+    transport: str = "grpc_asyncio", request_type=iam_policy.SetIamPolicyRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.SetIamPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.set_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             policy.Policy(version=774, etag=b"etag_blob",)
@@ -2208,7 +2231,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == iam_policy.SetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy.Policy)
@@ -2216,6 +2239,11 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_async_from_dict():
+    await test_set_iam_policy_async(request_type=dict)
 
 
 def test_set_iam_policy_field_headers():
@@ -2229,7 +2257,7 @@ def test_set_iam_policy_field_headers():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         call.return_value = policy.Policy()
 
         client.set_iam_policy(request)
@@ -2256,9 +2284,7 @@ async def test_set_iam_policy_field_headers_async():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.set_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
 
         await client.set_iam_policy(request)
@@ -2273,12 +2299,12 @@ async def test_set_iam_policy_field_headers_async():
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
-def test_set_iam_policy_from_dict():
+def test_set_iam_policy_from_dict_foreign():
     client = CloudFunctionsServiceClient(
         credentials=credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.set_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -2303,7 +2329,7 @@ def test_get_iam_policy(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy(version=774, etag=b"etag_blob",)
 
@@ -2316,6 +2342,7 @@ def test_get_iam_policy(
         assert args[0] == iam_policy.GetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, policy.Policy)
 
     assert response.version == 774
@@ -2328,19 +2355,19 @@ def test_get_iam_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
+async def test_get_iam_policy_async(
+    transport: str = "grpc_asyncio", request_type=iam_policy.GetIamPolicyRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.GetIamPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             policy.Policy(version=774, etag=b"etag_blob",)
@@ -2352,7 +2379,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == iam_policy.GetIamPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy.Policy)
@@ -2360,6 +2387,11 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     assert response.version == 774
 
     assert response.etag == b"etag_blob"
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_async_from_dict():
+    await test_get_iam_policy_async(request_type=dict)
 
 
 def test_get_iam_policy_field_headers():
@@ -2373,7 +2405,7 @@ def test_get_iam_policy_field_headers():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         call.return_value = policy.Policy()
 
         client.get_iam_policy(request)
@@ -2400,9 +2432,7 @@ async def test_get_iam_policy_field_headers_async():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_iam_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(policy.Policy())
 
         await client.get_iam_policy(request)
@@ -2417,12 +2447,12 @@ async def test_get_iam_policy_field_headers_async():
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
-def test_get_iam_policy_from_dict():
+def test_get_iam_policy_from_dict_foreign():
     client = CloudFunctionsServiceClient(
         credentials=credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_iam_policy), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = policy.Policy()
 
@@ -2448,7 +2478,7 @@ def test_test_iam_permissions(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy.TestIamPermissionsResponse(
@@ -2464,6 +2494,7 @@ def test_test_iam_permissions(
         assert args[0] == iam_policy.TestIamPermissionsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, iam_policy.TestIamPermissionsResponse)
 
     assert response.permissions == ["permissions_value"]
@@ -2474,18 +2505,20 @@ def test_test_iam_permissions_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
+async def test_test_iam_permissions_async(
+    transport: str = "grpc_asyncio", request_type=iam_policy.TestIamPermissionsRequest
+):
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy.TestIamPermissionsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2498,12 +2531,17 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == iam_policy.TestIamPermissionsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy.TestIamPermissionsResponse)
 
     assert response.permissions == ["permissions_value"]
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_async_from_dict():
+    await test_test_iam_permissions_async(request_type=dict)
 
 
 def test_test_iam_permissions_field_headers():
@@ -2518,7 +2556,7 @@ def test_test_iam_permissions_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         call.return_value = iam_policy.TestIamPermissionsResponse()
 
@@ -2547,7 +2585,7 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy.TestIamPermissionsResponse()
@@ -2565,13 +2603,13 @@ async def test_test_iam_permissions_field_headers_async():
     assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
 
 
-def test_test_iam_permissions_from_dict():
+def test_test_iam_permissions_from_dict_foreign():
     client = CloudFunctionsServiceClient(
         credentials=credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.test_iam_permissions), "__call__"
+        type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy.TestIamPermissionsResponse()
@@ -2621,7 +2659,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = CloudFunctionsServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -2659,7 +2697,7 @@ def test_transport_grpc_default():
     client = CloudFunctionsServiceClient(
         credentials=credentials.AnonymousCredentials(),
     )
-    assert isinstance(client._transport, transports.CloudFunctionsServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.CloudFunctionsServiceGrpcTransport,)
 
 
 def test_cloud_functions_service_base_transport_error():
@@ -2768,7 +2806,7 @@ def test_cloud_functions_service_host_no_port():
             api_endpoint="cloudfunctions.googleapis.com"
         ),
     )
-    assert client._transport._host == "cloudfunctions.googleapis.com:443"
+    assert client.transport._host == "cloudfunctions.googleapis.com:443"
 
 
 def test_cloud_functions_service_host_with_port():
@@ -2778,7 +2816,7 @@ def test_cloud_functions_service_host_with_port():
             api_endpoint="cloudfunctions.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "cloudfunctions.googleapis.com:8000"
+    assert client.transport._host == "cloudfunctions.googleapis.com:8000"
 
 
 def test_cloud_functions_service_grpc_transport_channel():
@@ -2790,6 +2828,7 @@ def test_cloud_functions_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_cloud_functions_service_grpc_asyncio_transport_channel():
@@ -2801,6 +2840,7 @@ def test_cloud_functions_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -2848,6 +2888,7 @@ def test_cloud_functions_service_transport_channel_mtls_with_client_cert_source(
                 quota_project_id=None,
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2894,7 +2935,7 @@ def test_cloud_functions_service_grpc_lro_client():
     client = CloudFunctionsServiceClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc",
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
@@ -2907,7 +2948,7 @@ def test_cloud_functions_service_grpc_lro_async_client():
     client = CloudFunctionsServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
-    transport = client._client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
@@ -2940,6 +2981,107 @@ def test_parse_cloud_function_path():
 
     # Check that the path construction is reversible.
     actual = CloudFunctionsServiceClient.parse_cloud_function_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "cuttlefish"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = CloudFunctionsServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "mussel",
+    }
+    path = CloudFunctionsServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "winkle"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = CloudFunctionsServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nautilus",
+    }
+    path = CloudFunctionsServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "scallop"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = CloudFunctionsServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "abalone",
+    }
+    path = CloudFunctionsServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "squid"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = CloudFunctionsServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "clam",
+    }
+    path = CloudFunctionsServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "whelk"
+    location = "octopus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = CloudFunctionsServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+    }
+    path = CloudFunctionsServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudFunctionsServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 

@@ -59,8 +59,48 @@ class CloudFunctionsServiceAsyncClient:
         CloudFunctionsServiceClient.parse_cloud_function_path
     )
 
+    common_billing_account_path = staticmethod(
+        CloudFunctionsServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        CloudFunctionsServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(CloudFunctionsServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        CloudFunctionsServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        CloudFunctionsServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        CloudFunctionsServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(CloudFunctionsServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        CloudFunctionsServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(
+        CloudFunctionsServiceClient.common_location_path
+    )
+    parse_common_location_path = staticmethod(
+        CloudFunctionsServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = CloudFunctionsServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> CloudFunctionsServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            CloudFunctionsServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(CloudFunctionsServiceClient).get_transport_class,
@@ -215,7 +255,8 @@ class CloudFunctionsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -300,7 +341,8 @@ class CloudFunctionsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([location, function]):
+        has_flattened_params = any([location, function])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -386,7 +428,8 @@ class CloudFunctionsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([function]):
+        has_flattened_params = any([function])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -485,7 +528,8 @@ class CloudFunctionsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -572,7 +616,8 @@ class CloudFunctionsServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, data]):
+        has_flattened_params = any([name, data])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

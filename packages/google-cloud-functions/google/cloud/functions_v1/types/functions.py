@@ -392,7 +392,7 @@ class CreateFunctionRequest(proto.Message):
 
     location = proto.Field(proto.STRING, number=1)
 
-    function = proto.Field(proto.MESSAGE, number=2, message=CloudFunction,)
+    function = proto.Field(proto.MESSAGE, number=2, message="CloudFunction",)
 
 
 class UpdateFunctionRequest(proto.Message):
@@ -406,7 +406,7 @@ class UpdateFunctionRequest(proto.Message):
             request.
     """
 
-    function = proto.Field(proto.MESSAGE, number=1, message=CloudFunction,)
+    function = proto.Field(proto.MESSAGE, number=1, message="CloudFunction",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
@@ -473,7 +473,7 @@ class ListFunctionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    functions = proto.RepeatedField(proto.MESSAGE, number=1, message=CloudFunction,)
+    functions = proto.RepeatedField(proto.MESSAGE, number=1, message="CloudFunction",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
