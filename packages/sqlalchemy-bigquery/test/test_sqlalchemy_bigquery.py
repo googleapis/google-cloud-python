@@ -301,6 +301,33 @@ def test_group_by(session, table, session_using_test_dataset, table_using_test_d
     assert len(result) > 0
 
 
+def test_nested_labels(engine, table):
+    col = table.c.integer
+    exprs = [
+        sqlalchemy.func.sum(
+            sqlalchemy.func.sum(col.label("inner")
+        ).label("outer")).over(),
+        sqlalchemy.func.sum(
+            sqlalchemy.case([[
+                sqlalchemy.literal(True),
+                col.label("inner"),
+            ]]).label("outer")
+        ),
+        sqlalchemy.func.sum(
+            sqlalchemy.func.sum(
+                sqlalchemy.case([[
+                    sqlalchemy.literal(True), col.label("inner")
+                ]]).label("middle")
+            ).label("outer")
+        ).over(),
+    ]
+    for expr in exprs:
+        sql = str(expr.compile(engine))
+        assert "inner" not in sql
+        assert "middle" not in sql
+        assert "outer" not in sql
+
+
 def test_session_query(session, table, session_using_test_dataset, table_using_test_dataset):
     for session, table in [(session, table), (session_using_test_dataset, table_using_test_dataset)]:
         col_concat = func.concat(table.c.string).label('concat')
