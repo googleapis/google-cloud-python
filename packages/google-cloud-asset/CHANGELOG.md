@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-asset/compare/v2.1.0...v2.2.0) (2020-11-19)
+
+
+### Features
+
+* add AnalyzeIamPolicy and ExportIamPolicyAnalysis; support OSInventory; add common resource helper methods; expose client transport ([#113](https://www.github.com/googleapis/python-asset/issues/113)) ([3bf4c0a](https://www.github.com/googleapis/python-asset/commit/3bf4c0ab20346e3a12af168e20139f2cc067540a))
+
+
+### Documentation
+
+* remove note on editable installs ([#99](https://www.github.com/googleapis/python-asset/issues/99)) ([cf6072a](https://www.github.com/googleapis/python-asset/commit/cf6072a09b76dce78bd4c0c471c8c2d81186e0c6))
+
 ## [2.1.0](https://www.github.com/googleapis/python-asset/compare/v2.0.0...v2.1.0) (2020-09-25)
 
 
