@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-logging/compare/v1.15.1...v2.0.0) (2020-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use microgenerator for GAPIC layer. See [UPGRADING.md](https://github.com/googleapis/python-logging/blob/master/UPGRADING.md) for details. (#94)
+* removes support for webapp2 and other Python2 specific code
+
+### Features
+
+* pass 'client_options' to super ctor ([#61](https://www.github.com/googleapis/python-logging/issues/61)) ([c4387b3](https://www.github.com/googleapis/python-logging/commit/c4387b307f8f3502fb53ae1f7e1144f6284280a4)), closes [#55](https://www.github.com/googleapis/python-logging/issues/55)
+* use microgenerator ([#94](https://www.github.com/googleapis/python-logging/issues/94)) ([ff90fd2](https://www.github.com/googleapis/python-logging/commit/ff90fd2fb54c612fe6ab29708a2d5d984f60dea7))
+
+
+### Bug Fixes
+
+* add default filter settings to list_entries ([#73](https://www.github.com/googleapis/python-logging/issues/73)) ([0a1dd94](https://www.github.com/googleapis/python-logging/commit/0a1dd94811232634fdb849cb2c85bd44e870642f))
+* failing CI tests ([#70](https://www.github.com/googleapis/python-logging/issues/70)) ([96adeed](https://www.github.com/googleapis/python-logging/commit/96adeedbda16a5c21651c356261442478aaa867a))
+
+
+### Code Refactoring
+
+* remove python2 ([#78](https://www.github.com/googleapis/python-logging/issues/78)) ([bf579e4](https://www.github.com/googleapis/python-logging/commit/bf579e4f871c92391a9f6f87eca931744158e31a))
+
+
+### Documentation
+
+* update docs ([#77](https://www.github.com/googleapis/python-logging/issues/77)) ([bdd9c44](https://www.github.com/googleapis/python-logging/commit/bdd9c440f29d1fcd6fb9545d8465c63efa6c0cea))
+
 ### [1.15.1](https://www.github.com/googleapis/python-logging/compare/v1.15.0...v1.15.1) (2020-07-01)
 
 
