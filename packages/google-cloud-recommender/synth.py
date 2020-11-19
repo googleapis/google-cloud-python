@@ -33,44 +33,37 @@ for version in versions:
         version=version,
         bazel_target=f"//google/cloud/recommender/{version}:recommender-{version}-py",
     )
-    s.move(library, excludes=["nox.py", "docs/index.rst", "README.rst", "setup.py"])
+    s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])
 
 # Fix docstring with regex pattern that breaks docgen
-s.replace("google/**/recommender_client.py", "(/\^.*\$/)", "``\g<1>``")
+s.replace("google/**/*client.py", "(/\^.*\$/)", "``\g<1>``")
 
 # Fix more regex in docstrings
-s.replace("google/**/*_pb2.py", ":math:`(/)", "\g<1>")
-s.replace("google/**/*_pb2.py", "`/\.", "/.")
-s.replace("google/**/*_pb2.py", "(regex\s+)(/.*?/)\.", "\g<1>``\g<2>``.", flags=re.MULTILINE | re.DOTALL,)
+s.replace(
+    "google/**/types/*.py",
+    "(regex\s+)(/.*?/)\.",
+    "\g<1>``\g<2>``.",
+    flags=re.MULTILINE | re.DOTALL,
+)
 
 # Fix docstring with JSON example by wrapping with backticks
 s.replace(
-    "google/**/recommendation_pb2.py",
+    "google/**/types/recommendation.py",
     "( -  Example: )(\{.*?\})",
     "\g<1>``\g<2>``",
     flags=re.MULTILINE | re.DOTALL,
 )
 
-# Fix multiline path
-s.replace(
-    "google/**/recommendation_pb2.py",
-    """projects/\[PROJECT_NUMBER\]/location
-            s/\[LOCATION\]/insightTypes/\[INSIGHT\_TYPE\_ID\]/insights/\[INSIGHT_
-            ID\]""",
-    """``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID]``"""
-)
-
-
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(microgenerator=True, cov_level=80)
-s.move(templated_files)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
+templated_files = common.py_library(
+    samples=False,  # set to True only if there are samples
+    microgenerator=True,
+)
+s.move(
+    templated_files, excludes=[".coveragerc"]
+)  # microgenerator has a good .coveragerc file
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

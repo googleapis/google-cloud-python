@@ -72,7 +72,9 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
-    session.install("mock", "pytest", "pytest-cov")
+    session.install(
+        "mock", "pytest", "pytest-cov",
+    )
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
@@ -141,7 +143,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=80")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
 
@@ -151,7 +153,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx<3.0.0", "alabaster", "recommonmark")
+    session.install("sphinx", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
