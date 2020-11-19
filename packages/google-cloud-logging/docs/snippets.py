@@ -107,8 +107,8 @@ def client_list_entries_multi_project(
     """List entries via client across multiple projects."""
 
     # [START client_list_entries_multi_project]
-    PROJECT_IDS = ["one-project", "another-project"]
-    for entry in client.list_entries(projects=PROJECT_IDS):  # API call(s)
+    resource_names = ["projects/one-project", "projects/another-project"]
+    for entry in client.list_entries(resource_names=resource_names):  # API call(s)
         do_something_with(entry)
     # [END client_list_entries_multi_project]
 

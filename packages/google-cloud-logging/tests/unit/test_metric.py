@@ -19,12 +19,13 @@ class TestMetric(unittest.TestCase):
 
     PROJECT = "test-project"
     METRIC_NAME = "metric-name"
+    FULL_METRIC_NAME = f"projects/{PROJECT}/metrics/{METRIC_NAME}"
     FILTER = "logName:syslog AND severity>=ERROR"
     DESCRIPTION = "DESCRIPTION"
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.metric import Metric
+        from google.cloud.logging_v2.metric import Metric
 
         return Metric
 
@@ -32,7 +33,6 @@ class TestMetric(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
         client = _Client(self.PROJECT)
         metric = self._make_one(self.METRIC_NAME, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
@@ -40,26 +40,27 @@ class TestMetric(unittest.TestCase):
         self.assertEqual(metric.description, "")
         self.assertIs(metric.client, client)
         self.assertEqual(metric.project, self.PROJECT)
-        self.assertEqual(metric.full_name, FULL)
-        self.assertEqual(metric.path, "/%s" % (FULL,))
+        self.assertEqual(metric.full_name, self.FULL_METRIC_NAME)
+        self.assertEqual(metric.path, f"/{self.FULL_METRIC_NAME}")
 
     def test_ctor_explicit(self):
-        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
         client = _Client(self.PROJECT)
         metric = self._make_one(
-            self.METRIC_NAME, self.FILTER, client=client, description=self.DESCRIPTION
+            self.METRIC_NAME,
+            filter_=self.FILTER,
+            client=client,
+            description=self.DESCRIPTION,
         )
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
         self.assertIs(metric.client, client)
         self.assertEqual(metric.project, self.PROJECT)
-        self.assertEqual(metric.full_name, FULL)
-        self.assertEqual(metric.path, "/%s" % (FULL,))
+        self.assertEqual(metric.full_name, self.FULL_METRIC_NAME)
+        self.assertEqual(metric.path, f"/{self.FULL_METRIC_NAME}")
 
     def test_from_api_repr_minimal(self):
         client = _Client(project=self.PROJECT)
-        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
         RESOURCE = {"name": self.METRIC_NAME, "filter": self.FILTER}
         klass = self._get_target_class()
         metric = klass.from_api_repr(RESOURCE, client=client)
@@ -68,11 +69,10 @@ class TestMetric(unittest.TestCase):
         self.assertEqual(metric.description, "")
         self.assertIs(metric._client, client)
         self.assertEqual(metric.project, self.PROJECT)
-        self.assertEqual(metric.full_name, FULL)
+        self.assertEqual(metric.full_name, self.FULL_METRIC_NAME)
 
     def test_from_api_repr_w_description(self):
         client = _Client(project=self.PROJECT)
-        FULL = "projects/%s/metrics/%s" % (self.PROJECT, self.METRIC_NAME)
         DESCRIPTION = "DESCRIPTION"
         RESOURCE = {
             "name": self.METRIC_NAME,
@@ -86,12 +86,12 @@ class TestMetric(unittest.TestCase):
         self.assertEqual(metric.description, DESCRIPTION)
         self.assertIs(metric._client, client)
         self.assertEqual(metric.project, self.PROJECT)
-        self.assertEqual(metric.full_name, FULL)
+        self.assertEqual(metric.full_name, self.FULL_METRIC_NAME)
 
     def test_create_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client)
 
         metric.create()
 
@@ -105,7 +105,10 @@ class TestMetric(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
         metric = self._make_one(
-            self.METRIC_NAME, self.FILTER, client=client1, description=self.DESCRIPTION
+            self.METRIC_NAME,
+            filter_=self.FILTER,
+            client=client1,
+            description=self.DESCRIPTION,
         )
 
         metric.create(client=client2)
@@ -118,7 +121,7 @@ class TestMetric(unittest.TestCase):
     def test_exists_miss_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client)
 
         self.assertFalse(metric.exists())
 
@@ -130,7 +133,7 @@ class TestMetric(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
         api._metric_get_response = RESOURCE
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client1)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client1)
 
         self.assertTrue(metric.exists(client=client2))
 
@@ -143,7 +146,10 @@ class TestMetric(unittest.TestCase):
         api = client.metrics_api = _DummyMetricsAPI()
         api._metric_get_response = RESOURCE
         metric = self._make_one(
-            self.METRIC_NAME, self.FILTER, client=client, description=self.DESCRIPTION
+            self.METRIC_NAME,
+            filter_=self.FILTER,
+            client=client,
+            description=self.DESCRIPTION,
         )
 
         metric.reload()
@@ -163,7 +169,7 @@ class TestMetric(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
         api._metric_get_response = RESOURCE
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client1)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client1)
 
         metric.reload(client=client2)
 
@@ -174,7 +180,7 @@ class TestMetric(unittest.TestCase):
     def test_update_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client)
 
         metric.update()
 
@@ -188,7 +194,10 @@ class TestMetric(unittest.TestCase):
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
         metric = self._make_one(
-            self.METRIC_NAME, self.FILTER, client=client1, description=self.DESCRIPTION
+            self.METRIC_NAME,
+            filter_=self.FILTER,
+            client=client1,
+            description=self.DESCRIPTION,
         )
 
         metric.update(client=client2)
@@ -201,7 +210,7 @@ class TestMetric(unittest.TestCase):
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client)
 
         metric.delete()
 
@@ -213,7 +222,7 @@ class TestMetric(unittest.TestCase):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.metrics_api = _DummyMetricsAPI()
-        metric = self._make_one(self.METRIC_NAME, self.FILTER, client=client1)
+        metric = self._make_one(self.METRIC_NAME, filter_=self.FILTER, client=client1)
 
         metric.delete(client=client2)
 

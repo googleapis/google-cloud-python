@@ -19,7 +19,7 @@ class TestContainerEngineHandler(unittest.TestCase):
     PROJECT = "PROJECT"
 
     def _get_target_class(self):
-        from google.cloud.logging.handlers.container_engine import (
+        from google.cloud.logging_v2.handlers.container_engine import (
             ContainerEngineHandler,
         )
 

@@ -21,7 +21,7 @@ class TestBaseHandler(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.handlers.transports import Transport
+        from google.cloud.logging_v2.handlers.transports import Transport
 
         return Transport
 
@@ -31,7 +31,7 @@ class TestBaseHandler(unittest.TestCase):
     def test_send_is_abstract(self):
         target = self._make_one()
         with self.assertRaises(NotImplementedError):
-            target.send(None, None, None)
+            target.send(None, None, resource=None)
 
     def test_flush_is_abstract_and_optional(self):
         target = self._make_one()

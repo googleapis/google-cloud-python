@@ -8,6 +8,7 @@ v2
    logger
    entries
    metric
+   resource
    sink
    stdlib-usage
    handlers

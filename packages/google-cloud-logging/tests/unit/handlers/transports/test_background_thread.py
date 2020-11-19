@@ -25,13 +25,15 @@ class TestBackgroundThreadHandler(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.handlers.transports import BackgroundThreadTransport
+        from google.cloud.logging_v2.handlers.transports import (
+            BackgroundThreadTransport,
+        )
 
         return BackgroundThreadTransport
 
     def _make_one(self, *args, **kw):
         worker_patch = mock.patch(
-            "google.cloud.logging.handlers.transports." "background_thread._Worker",
+            "google.cloud.logging_v2.handlers.transports." "background_thread._Worker",
             autospec=True,
         )
         with worker_patch as worker_mock:
@@ -47,7 +49,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         self.assertEqual(logger.name, name)
 
     def test_send(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
         name = "python_logger"
@@ -61,14 +63,19 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO, None, None, message, None, None
         )
 
-        transport.send(record, message, _GLOBAL_RESOURCE)
+        transport.send(record, message, resource=_GLOBAL_RESOURCE)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None, trace=None, span_id=None
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
+            labels=None,
+            trace=None,
+            span_id=None,
         )
 
     def test_trace_send(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
         name = "python_logger"
@@ -83,14 +90,19 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO, None, None, message, None, None
         )
 
-        transport.send(record, message, _GLOBAL_RESOURCE, trace=trace)
+        transport.send(record, message, resource=_GLOBAL_RESOURCE, trace=trace)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None, trace=trace, span_id=None
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
+            labels=None,
+            trace=trace,
+            span_id=None,
         )
 
     def test_span_send(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         client = _Client(self.PROJECT)
         name = "python_logger"
@@ -105,10 +117,15 @@ class TestBackgroundThreadHandler(unittest.TestCase):
             python_logger_name, logging.INFO, None, None, message, None, None
         )
 
-        transport.send(record, message, _GLOBAL_RESOURCE, span_id=span_id)
+        transport.send(record, message, resource=_GLOBAL_RESOURCE, span_id=span_id)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, _GLOBAL_RESOURCE, None, trace=None, span_id=span_id
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
+            labels=None,
+            trace=None,
+            span_id=span_id,
         )
 
     def test_flush(self):
@@ -147,7 +164,7 @@ class Test_Worker(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         return background_thread._Worker
 
@@ -181,7 +198,7 @@ class Test_Worker(unittest.TestCase):
         self.assertIsNone(worker._thread)
 
     def test_start(self):
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         worker = self._make_one(_Logger(self.NAME))
 
@@ -200,7 +217,7 @@ class Test_Worker(unittest.TestCase):
         self.assertIs(current_thread, worker._thread)
 
     def test_stop(self):
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         grace_period = 5.0
         worker = self._make_one(_Logger(self.NAME))
@@ -208,7 +225,7 @@ class Test_Worker(unittest.TestCase):
         self._start_with_thread_patch(worker)
         thread = worker._thread
 
-        worker.stop(grace_period)
+        worker.stop(grace_period=grace_period)
 
         self.assertEqual(worker._queue.qsize(), 1)
         self.assertEqual(worker._queue.get(), background_thread._WORKER_TERMINATOR)
@@ -270,7 +287,7 @@ class Test_Worker(unittest.TestCase):
 
     def test_enqueue_defaults(self):
         import datetime
-        from google.cloud.logging._helpers import LogSeverity
+        from google.cloud.logging_v2._helpers import LogSeverity
 
         worker = self._make_one(_Logger(self.NAME))
         self.assertTrue(worker._queue.empty())
@@ -290,7 +307,7 @@ class Test_Worker(unittest.TestCase):
 
     def test_enqueue_explicit(self):
         import datetime
-        from google.cloud.logging._helpers import LogSeverity
+        from google.cloud.logging_v2._helpers import LogSeverity
 
         worker = self._make_one(_Logger(self.NAME))
         self.assertTrue(worker._queue.empty())
@@ -322,7 +339,7 @@ class Test_Worker(unittest.TestCase):
         self.assertIsInstance(entry["timestamp"], datetime.datetime)
 
     def test__thread_main(self):
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         worker = self._make_one(_Logger(self.NAME))
 
@@ -338,7 +355,7 @@ class Test_Worker(unittest.TestCase):
         self.assertEqual(worker._queue.qsize(), 0)
 
     def test__thread_main_error(self):
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         worker = self._make_one(_Logger(self.NAME))
         worker._cloud_logger._batch_cls = _RaisingBatch
@@ -353,7 +370,7 @@ class Test_Worker(unittest.TestCase):
         self.assertEqual(worker._queue.qsize(), 0)
 
     def test__thread_main_batches(self):
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         worker = self._make_one(_Logger(self.NAME), max_batch_size=2)
 
@@ -379,7 +396,7 @@ class Test_Worker(unittest.TestCase):
         # the "change detector" test in that way. However, this is still a
         # useful test to verify the queue timeout is appropriately calculated.
         from six.moves import queue
-        from google.cloud.logging.handlers.transports import background_thread
+        from google.cloud.logging_v2.handlers.transports import background_thread
 
         # Use monotonically increasing time.
         time.side_effect = range(1, 6)
@@ -489,7 +506,7 @@ class _Batch(object):
         span_id=None,
         timestamp=None,
     ):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         assert resource is None
         resource = _GLOBAL_RESOURCE

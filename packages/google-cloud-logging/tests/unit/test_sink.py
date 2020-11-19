@@ -18,14 +18,16 @@ import unittest
 class TestSink(unittest.TestCase):
 
     PROJECT = "test-project"
+    PROJECT_PATH = f"projects/{PROJECT}"
     SINK_NAME = "sink-name"
+    FULL_NAME = f"projects/{PROJECT}/sinks/{SINK_NAME}"
     FILTER = "logName:syslog AND severity>=INFO"
     DESTINATION_URI = "faux.googleapis.com/destination"
     WRITER_IDENTITY = "serviceAccount:project-123@example.com"
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.sink import Sink
+        from google.cloud.logging_v2.sink import Sink
 
         return Sink
 
@@ -33,34 +35,37 @@ class TestSink(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        FULL = "projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
         client = _Client(self.PROJECT)
         sink = self._make_one(self.SINK_NAME, client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertIsNone(sink.filter_)
         self.assertIsNone(sink.destination)
         self.assertIs(sink.client, client)
-        self.assertEqual(sink.project, self.PROJECT)
-        self.assertEqual(sink.full_name, FULL)
-        self.assertEqual(sink.path, "/%s" % (FULL,))
+        self.assertEqual(sink.parent, self.PROJECT_PATH)
+        self.assertEqual(sink.full_name, self.FULL_NAME)
+        self.assertEqual(sink.path, f"/{self.FULL_NAME}")
 
     def test_ctor_explicit(self):
-        FULL = "projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
         client = _Client(self.PROJECT)
+        parent = "folders/testFolder"
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            parent=parent,
+            destination=self.DESTINATION_URI,
+            client=client,
         )
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
         self.assertIs(sink.client, client)
-        self.assertEqual(sink.project, self.PROJECT)
-        self.assertEqual(sink.full_name, FULL)
-        self.assertEqual(sink.path, "/%s" % (FULL,))
+        self.assertEqual(sink.parent, parent)
+        self.assertEqual(sink.full_name, f"{parent}/sinks/{self.SINK_NAME}")
+        self.assertEqual(sink.path, f"/{parent}/sinks/{self.SINK_NAME}")
 
     def test_from_api_repr_minimal(self):
         client = _Client(project=self.PROJECT)
-        FULL = "projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+
         RESOURCE = {"name": self.SINK_NAME, "destination": self.DESTINATION_URI}
         klass = self._get_target_class()
         sink = klass.from_api_repr(RESOURCE, client=client)
@@ -69,12 +74,12 @@ class TestSink(unittest.TestCase):
         self.assertIsNone(sink.filter_)
         self.assertIsNone(sink.writer_identity)
         self.assertIs(sink._client, client)
-        self.assertEqual(sink.project, self.PROJECT)
-        self.assertEqual(sink.full_name, FULL)
+        self.assertEqual(sink.parent, self.PROJECT_PATH)
+        self.assertEqual(sink.full_name, self.FULL_NAME)
 
     def test_from_api_repr_full(self):
         client = _Client(project=self.PROJECT)
-        FULL = "projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        parent = "organizations/my_organization"
         RESOURCE = {
             "name": self.SINK_NAME,
             "destination": self.DESTINATION_URI,
@@ -82,14 +87,14 @@ class TestSink(unittest.TestCase):
             "writerIdentity": self.WRITER_IDENTITY,
         }
         klass = self._get_target_class()
-        sink = klass.from_api_repr(RESOURCE, client=client)
+        sink = klass.from_api_repr(RESOURCE, client=client, parent=parent)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
         self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertIs(sink._client, client)
-        self.assertEqual(sink.project, self.PROJECT)
-        self.assertEqual(sink.full_name, FULL)
+        self.assertEqual(sink.parent, parent)
+        self.assertEqual(sink.full_name, f"{parent}/sinks/{self.SINK_NAME}")
 
     def test_create_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -101,7 +106,10 @@ class TestSink(unittest.TestCase):
             "writerIdentity": self.WRITER_IDENTITY,
         }
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client,
         )
 
         sink.create()
@@ -112,14 +120,23 @@ class TestSink(unittest.TestCase):
         self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_create_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI, False),
+            (
+                self.PROJECT_PATH,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                False,
+            ),
         )
 
     def test_create_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client1
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client1,
         )
         api = client2.sinks_api = _DummySinksAPI()
         api._sink_create_response = {
@@ -137,19 +154,28 @@ class TestSink(unittest.TestCase):
         self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_create_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI, True),
+            (
+                self.PROJECT_PATH,
+                self.SINK_NAME,
+                self.FILTER,
+                self.DESTINATION_URI,
+                True,
+            ),
         )
 
     def test_exists_miss_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.sinks_api = _DummySinksAPI()
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client,
         )
 
         self.assertFalse(sink.exists())
 
-        self.assertEqual(api._sink_get_called_with, (self.PROJECT, self.SINK_NAME))
+        self.assertEqual(api._sink_get_called_with, (self.FULL_NAME))
 
     def test_exists_hit_w_alternate_client(self):
         RESOURCE = {
@@ -162,12 +188,15 @@ class TestSink(unittest.TestCase):
         api = client2.sinks_api = _DummySinksAPI()
         api._sink_get_response = RESOURCE
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client1
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client1,
         )
 
         self.assertTrue(sink.exists(client=client2))
 
-        self.assertEqual(api._sink_get_called_with, (self.PROJECT, self.SINK_NAME))
+        self.assertEqual(api._sink_get_called_with, (self.FULL_NAME))
 
     def test_reload_w_bound_client(self):
         NEW_DESTINATION_URI = "faux.googleapis.com/other"
@@ -182,7 +211,7 @@ class TestSink(unittest.TestCase):
         self.assertEqual(sink.destination, NEW_DESTINATION_URI)
         self.assertIsNone(sink.filter_)
         self.assertIsNone(sink.writer_identity)
-        self.assertEqual(api._sink_get_called_with, (self.PROJECT, self.SINK_NAME))
+        self.assertEqual(api._sink_get_called_with, (self.FULL_NAME))
 
     def test_reload_w_alternate_client(self):
         NEW_FILTER = "logName:syslog AND severity>=INFO"
@@ -204,7 +233,7 @@ class TestSink(unittest.TestCase):
         self.assertEqual(sink.destination, NEW_DESTINATION_URI)
         self.assertEqual(sink.filter_, NEW_FILTER)
         self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
-        self.assertEqual(api._sink_get_called_with, (self.PROJECT, self.SINK_NAME))
+        self.assertEqual(api._sink_get_called_with, (self.FULL_NAME))
 
     def test_update_w_bound_client(self):
         client = _Client(project=self.PROJECT)
@@ -216,7 +245,10 @@ class TestSink(unittest.TestCase):
             "writerIdentity": self.WRITER_IDENTITY,
         }
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client,
         )
 
         sink.update()
@@ -227,7 +259,7 @@ class TestSink(unittest.TestCase):
         self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_update_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI, False),
+            (self.FULL_NAME, self.FILTER, self.DESTINATION_URI, False),
         )
 
     def test_update_w_alternate_client(self):
@@ -241,7 +273,10 @@ class TestSink(unittest.TestCase):
             "writerIdentity": self.WRITER_IDENTITY,
         }
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client1
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client1,
         )
 
         sink.update(client=client2, unique_writer_identity=True)
@@ -252,31 +287,37 @@ class TestSink(unittest.TestCase):
         self.assertEqual(sink.writer_identity, self.WRITER_IDENTITY)
         self.assertEqual(
             api._sink_update_called_with,
-            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI, True),
+            (self.FULL_NAME, self.FILTER, self.DESTINATION_URI, True),
         )
 
     def test_delete_w_bound_client(self):
         client = _Client(project=self.PROJECT)
         api = client.sinks_api = _DummySinksAPI()
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client,
         )
 
         sink.delete()
 
-        self.assertEqual(api._sink_delete_called_with, (self.PROJECT, self.SINK_NAME))
+        self.assertEqual(api._sink_delete_called_with, (self.FULL_NAME))
 
     def test_delete_w_alternate_client(self):
         client1 = _Client(project=self.PROJECT)
         client2 = _Client(project=self.PROJECT)
         api = client2.sinks_api = _DummySinksAPI()
         sink = self._make_one(
-            self.SINK_NAME, self.FILTER, self.DESTINATION_URI, client=client1
+            self.SINK_NAME,
+            filter_=self.FILTER,
+            destination=self.DESTINATION_URI,
+            client=client1,
         )
 
         sink.delete(client=client2)
 
-        self.assertEqual(api._sink_delete_called_with, (self.PROJECT, self.SINK_NAME))
+        self.assertEqual(api._sink_delete_called_with, (self.FULL_NAME))
 
 
 class _Client(object):
@@ -286,10 +327,10 @@ class _Client(object):
 
 class _DummySinksAPI(object):
     def sink_create(
-        self, project, sink_name, filter_, destination, unique_writer_identity=False
+        self, parent, sink_name, filter_, destination, *, unique_writer_identity=False
     ):
         self._sink_create_called_with = (
-            project,
+            parent,
             sink_name,
             filter_,
             destination,
@@ -297,20 +338,19 @@ class _DummySinksAPI(object):
         )
         return self._sink_create_response
 
-    def sink_get(self, project, sink_name):
+    def sink_get(self, sink_name):
         from google.cloud.exceptions import NotFound
 
-        self._sink_get_called_with = (project, sink_name)
+        self._sink_get_called_with = sink_name
         try:
             return self._sink_get_response
         except AttributeError:
             raise NotFound("miss")
 
     def sink_update(
-        self, project, sink_name, filter_, destination, unique_writer_identity=False
+        self, sink_name, filter_, destination, *, unique_writer_identity=False
     ):
         self._sink_update_called_with = (
-            project,
             sink_name,
             filter_,
             destination,
@@ -318,5 +358,5 @@ class _DummySinksAPI(object):
         )
         return self._sink_update_response
 
-    def sink_delete(self, project, sink_name):
-        self._sink_delete_called_with = (project, sink_name)
+    def sink_delete(self, sink_name):
+        self._sink_delete_called_with = sink_name

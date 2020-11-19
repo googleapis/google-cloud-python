@@ -1,4 +1,6 @@
-# Copyright 2016 Google LLC
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,20 +13,41 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-"""Google Stackdriver Logging API wrapper."""
+from google.cloud.logging_v2 import __version__
+from google.cloud.logging_v2 import ASCENDING
+from google.cloud.logging_v2 import DESCENDING
 
+from google.cloud.logging_v2.client import Client
+from google.cloud.logging_v2.entries import logger_name_from_path
+from google.cloud.logging_v2.entries import LogEntry
+from google.cloud.logging_v2.entries import TextEntry
+from google.cloud.logging_v2.entries import StructEntry
+from google.cloud.logging_v2.entries import ProtobufEntry
+from google.cloud.logging_v2 import handlers
+from google.cloud.logging_v2.logger import Logger
+from google.cloud.logging_v2.logger import Batch
+from google.cloud.logging_v2.metric import Metric
+from google.cloud.logging_v2.resource import Resource
+from google.cloud.logging_v2.sink import Sink
+from google.cloud.logging_v2 import types
 
-from pkg_resources import get_distribution
-
-__version__ = get_distribution("google-cloud-logging").version
-
-from google.cloud.logging.client import Client
-
-
-ASCENDING = "timestamp asc"
-"""Query string to order by ascending timestamps."""
-DESCENDING = "timestamp desc"
-"""Query string to order by decending timestamps."""
-
-__all__ = ["__version__", "ASCENDING", "Client", "DESCENDING"]
+__all__ = (
+    "__version__",
+    "ASCENDING",
+    "Batch",
+    "Client",
+    "DESCENDING",
+    "handlers",
+    "logger_name_from_path",
+    "Logger",
+    "LogEntry",
+    "Metric",
+    "ProtobufEntry",
+    "Resource",
+    "Sink",
+    "StructEntry",
+    "TextEntry",
+    "types",
+)

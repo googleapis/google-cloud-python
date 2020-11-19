@@ -1,6 +1,6 @@
 Sinks
 =====
 
-.. automodule:: google.cloud.logging.sink
+.. automodule:: google.cloud.logging_v2.sink
   :members:
   :show-inheritance:

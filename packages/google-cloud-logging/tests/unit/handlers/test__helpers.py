@@ -20,7 +20,7 @@ import mock
 class Test_get_trace_id_from_flask(unittest.TestCase):
     @staticmethod
     def _call_fut():
-        from google.cloud.logging.handlers import _helpers
+        from google.cloud.logging_v2.handlers import _helpers
 
         return _helpers.get_trace_id_from_flask()
 
@@ -62,7 +62,7 @@ class Test_get_trace_id_from_flask(unittest.TestCase):
 class Test_get_trace_id_from_django(unittest.TestCase):
     @staticmethod
     def _call_fut():
-        from google.cloud.logging.handlers import _helpers
+        from google.cloud.logging_v2.handlers import _helpers
 
         return _helpers.get_trace_id_from_django()
 
@@ -76,14 +76,14 @@ class Test_get_trace_id_from_django(unittest.TestCase):
 
     def tearDown(self):
         from django.test.utils import teardown_test_environment
-        from google.cloud.logging.handlers.middleware import request
+        from google.cloud.logging_v2.handlers.middleware import request
 
         teardown_test_environment()
         request._thread_locals.__dict__.clear()
 
     def test_no_context_header(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers.middleware import request
+        from google.cloud.logging_v2.handlers.middleware import request
 
         django_request = RequestFactory().get("/")
 
@@ -94,7 +94,7 @@ class Test_get_trace_id_from_django(unittest.TestCase):
 
     def test_valid_context_header(self):
         from django.test import RequestFactory
-        from google.cloud.logging.handlers.middleware import request
+        from google.cloud.logging_v2.handlers.middleware import request
 
         django_trace_header = "HTTP_X_CLOUD_TRACE_CONTEXT"
         expected_trace_id = "testtraceiddjango"
@@ -114,17 +114,17 @@ class Test_get_trace_id_from_django(unittest.TestCase):
 class Test_get_trace_id(unittest.TestCase):
     @staticmethod
     def _call_fut():
-        from google.cloud.logging.handlers import _helpers
+        from google.cloud.logging_v2.handlers import _helpers
 
         return _helpers.get_trace_id()
 
     def _helper(self, django_return, flask_return):
         django_patch = mock.patch(
-            "google.cloud.logging.handlers._helpers.get_trace_id_from_django",
+            "google.cloud.logging_v2.handlers._helpers.get_trace_id_from_django",
             return_value=django_return,
         )
         flask_patch = mock.patch(
-            "google.cloud.logging.handlers._helpers.get_trace_id_from_flask",
+            "google.cloud.logging_v2.handlers._helpers.get_trace_id_from_flask",
             return_value=flask_return,
         )
 

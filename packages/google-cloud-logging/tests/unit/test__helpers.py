@@ -25,7 +25,7 @@ import mock
 class Test_entry_from_resource(unittest.TestCase):
     @staticmethod
     def _call_fut(resource, client, loggers):
-        from google.cloud.logging._helpers import entry_from_resource
+        from google.cloud.logging_v2._helpers import entry_from_resource
 
         return entry_from_resource(resource, client, loggers)
 
@@ -39,7 +39,7 @@ class Test_entry_from_resource(unittest.TestCase):
         loggers = {}
         mock_class = EntryMock()
 
-        name = "google.cloud.logging._helpers." + class_name
+        name = "google.cloud.logging_v2._helpers." + class_name
         with mock.patch(name, new=mock_class):
             result = self._call_fut(resource, client, loggers)
 
@@ -62,7 +62,7 @@ class Test_entry_from_resource(unittest.TestCase):
 class Test_retrieve_metadata_server(unittest.TestCase):
     @staticmethod
     def _call_fut(metadata_key):
-        from google.cloud.logging._helpers import retrieve_metadata_server
+        from google.cloud.logging_v2._helpers import retrieve_metadata_server
 
         return retrieve_metadata_server(metadata_key)
 
@@ -78,7 +78,7 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         requests_mock.get.return_value = response_mock
         requests_mock.codes.ok = status_code_ok
 
-        patch = mock.patch("google.cloud.logging._helpers.requests", requests_mock)
+        patch = mock.patch("google.cloud.logging_v2._helpers.requests", requests_mock)
 
         with patch:
             metadata = self._call_fut(metadata_key)
@@ -96,7 +96,7 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         requests_mock.get.return_value = response_mock
         requests_mock.codes.ok = status_code_ok
 
-        patch = mock.patch("google.cloud.logging._helpers.requests", requests_mock)
+        patch = mock.patch("google.cloud.logging_v2._helpers.requests", requests_mock)
 
         with patch:
             metadata = self._call_fut(metadata_key)
@@ -115,7 +115,7 @@ class Test_retrieve_metadata_server(unittest.TestCase):
         requests_get_patch = mock.patch("requests.get", requests_get_mock)
 
         url_patch = mock.patch(
-            "google.cloud.logging._helpers.METADATA_URL", new=metadata_url
+            "google.cloud.logging_v2._helpers.METADATA_URL", new=metadata_url
         )
 
         with requests_get_patch:
@@ -128,12 +128,12 @@ class Test_retrieve_metadata_server(unittest.TestCase):
 class Test__normalize_severity(unittest.TestCase):
     @staticmethod
     def _stackdriver_severity():
-        from google.cloud.logging._helpers import LogSeverity
+        from google.cloud.logging_v2._helpers import LogSeverity
 
         return LogSeverity
 
     def _normalize_severity_helper(self, stdlib_level, enum_level):
-        from google.cloud.logging._helpers import _normalize_severity
+        from google.cloud.logging_v2._helpers import _normalize_severity
 
         self.assertEqual(_normalize_severity(stdlib_level), enum_level)
 
@@ -173,7 +173,7 @@ class Test__add_defaults_to_filter(unittest.TestCase):
 
     @staticmethod
     def _add_defaults_to_filter(filter_):
-        from google.cloud.logging._helpers import _add_defaults_to_filter
+        from google.cloud.logging_v2._helpers import _add_defaults_to_filter
 
         return _add_defaults_to_filter(filter_)
 

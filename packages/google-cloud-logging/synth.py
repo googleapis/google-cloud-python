@@ -30,13 +30,25 @@ library = gapic.py_library(
     include_protos=True,
 )
 
-# the structure of the logging directory is a bit different, so manually copy the protos
-s.move(library / "google/cloud/logging_v2/proto", "google/cloud/logging_v2/proto")
+s.move(
+    library,
+    excludes=[
+        "setup.py",
+        "README.rst",
+        "google/cloud/logging/__init__.py",  # generated types are hidden from users
+        "google/cloud/logging_v2/__init__.py",  
+        "docs/index.rst",
+        "docs/logging_v2",  # Don't include gapic library docs. Users should use the hand-written layer instead
+        "scripts/fixup_logging_v2_keywords.py",  # don't include script since it only works for generated layer
+    ],
+)
 
-s.move(library / "google/cloud/logging_v2/gapic")
-s.move(library / "tests/unit/gapic/v2")
-# Don't include gapic library docs. Users should use the hand-written layer instead
-# s.move(library / "docs/gapic/v2")
+# Fix generated unit tests
+s.replace(
+    "tests/unit/gapic/logging_v2/test_logging_service_v2.py",
+    "MonitoredResource\(\s*type_",
+    "MonitoredResource(type"
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -44,22 +56,23 @@ s.move(library / "tests/unit/gapic/v2")
 templated_files = common.py_library(
     unit_cov_level=95,
     cov_level=99,
-    system_test_python_versions = ['3.8'],
-    unit_test_python_versions = ['3.5', '3.6', '3.7', '3.8'],
-    system_test_external_dependencies = [
-        'google-cloud-bigquery',
-        'google-cloud-pubsub',
-        'google-cloud-storage',
-        'google-cloud-testutils'
+    microgenerator=True,
+    system_test_external_dependencies=[
+        "google-cloud-bigquery",
+        "google-cloud-pubsub",
+        "google-cloud-storage",
+        "google-cloud-testutils",
     ],
-    unit_test_external_dependencies = [
-       'flask',
-       'webob',
-       'django'
-    ],
+    unit_test_external_dependencies=["flask", "webob", "django"],
     samples=True,
 )
-s.move(templated_files, excludes=[".coveragerc"])
+s.move(templated_files, excludes=[".coveragerc", "docs/multiprocessing.rst"])
+
+# --------------------------------------------------------------------------
+# Samples templates
+# --------------------------------------------------------------------------
+
+python.py_samples()
 
 # --------------------------------------------------------------------------
 # Samples templates

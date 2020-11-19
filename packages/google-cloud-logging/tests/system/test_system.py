@@ -23,13 +23,12 @@ from google.api_core.exceptions import TooManyRequests
 from google.api_core.exceptions import ResourceExhausted
 from google.api_core.exceptions import RetryError
 from google.api_core.exceptions import ServiceUnavailable
-from google.cloud._helpers import UTC
 import google.cloud.logging
-import google.cloud.logging.handlers.handlers
-from google.cloud.logging.handlers.handlers import CloudLoggingHandler
-from google.cloud.logging.handlers.transports import SyncTransport
-from google.cloud.logging import client
-from google.cloud.logging.resource import Resource
+from google.cloud._helpers import UTC
+from google.cloud.logging_v2.handlers.handlers import CloudLoggingHandler
+from google.cloud.logging_v2.handlers.transports import SyncTransport
+from google.cloud.logging_v2 import client
+from google.cloud.logging_v2.resource import Resource
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryResult
@@ -124,7 +123,7 @@ class TestLogging(unittest.TestCase):
     def test_list_entry_with_unregistered(self):
         from google.protobuf import any_pb2
         from google.protobuf import descriptor_pool
-        from google.cloud.logging import entries
+        from google.cloud.logging_v2 import entries
 
         pool = descriptor_pool.Default()
         type_name = "google.cloud.audit.AuditLog"
@@ -319,7 +318,9 @@ class TestLogging(unittest.TestCase):
 
     def test_create_metric(self):
         METRIC_NAME = "test-create-metric%s" % (_RESOURCE_ID,)
-        metric = Config.CLIENT.metric(METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        metric = Config.CLIENT.metric(
+            METRIC_NAME, filter_=DEFAULT_FILTER, description=DEFAULT_DESCRIPTION
+        )
         self.assertFalse(metric.exists())
         retry = RetryErrors(Conflict)
 
@@ -330,7 +331,9 @@ class TestLogging(unittest.TestCase):
 
     def test_list_metrics(self):
         METRIC_NAME = "test-list-metrics%s" % (_RESOURCE_ID,)
-        metric = Config.CLIENT.metric(METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        metric = Config.CLIENT.metric(
+            METRIC_NAME, filter_=DEFAULT_FILTER, description=DEFAULT_DESCRIPTION
+        )
         self.assertFalse(metric.exists())
         before_metrics = list(Config.CLIENT.list_metrics())
         before_names = set(before.name for before in before_metrics)
@@ -348,7 +351,9 @@ class TestLogging(unittest.TestCase):
     def test_reload_metric(self):
         METRIC_NAME = "test-reload-metric%s" % (_RESOURCE_ID,)
         retry = RetryErrors(Conflict)
-        metric = Config.CLIENT.metric(METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        metric = Config.CLIENT.metric(
+            METRIC_NAME, filter_=DEFAULT_FILTER, description=DEFAULT_DESCRIPTION
+        )
         self.assertFalse(metric.exists())
         retry(metric.create)()
         self.to_delete.append(metric)
@@ -365,7 +370,9 @@ class TestLogging(unittest.TestCase):
         retry = RetryErrors(Conflict)
         NEW_FILTER = "logName:other"
         NEW_DESCRIPTION = "updated"
-        metric = Config.CLIENT.metric(METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        metric = Config.CLIENT.metric(
+            METRIC_NAME, filter_=DEFAULT_FILTER, description=DEFAULT_DESCRIPTION
+        )
         self.assertFalse(metric.exists())
         retry(metric.create)()
         self.to_delete.append(metric)
@@ -406,7 +413,7 @@ class TestLogging(unittest.TestCase):
         SINK_NAME = "test-create-sink-bucket%s" % (_RESOURCE_ID,)
 
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
-        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, filter_=DEFAULT_FILTER, destination=uri)
         self.assertFalse(sink.exists())
 
         retry(sink.create)()
@@ -434,7 +441,9 @@ class TestLogging(unittest.TestCase):
         TOPIC_URI = "pubsub.googleapis.com/%s" % (topic_path,)
 
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
-        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
+        sink = Config.CLIENT.sink(
+            SINK_NAME, filter_=DEFAULT_FILTER, destination=TOPIC_URI
+        )
         self.assertFalse(sink.exists())
 
         retry(sink.create)()
@@ -469,7 +478,7 @@ class TestLogging(unittest.TestCase):
         SINK_NAME = "test-create-sink-dataset%s" % (_RESOURCE_ID,)
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         uri = self._init_bigquery_dataset()
-        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, filter_=DEFAULT_FILTER, destination=uri)
         self.assertFalse(sink.exists())
 
         retry(sink.create)()
@@ -481,7 +490,7 @@ class TestLogging(unittest.TestCase):
         SINK_NAME = "test-list-sinks%s" % (_RESOURCE_ID,)
         uri = self._init_storage_bucket()
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
-        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, filter_=DEFAULT_FILTER, destination=uri)
         self.assertFalse(sink.exists())
         before_sinks = list(Config.CLIENT.list_sinks())
         before_names = set(before.name for before in before_sinks)
@@ -499,7 +508,7 @@ class TestLogging(unittest.TestCase):
         SINK_NAME = "test-reload-sink%s" % (_RESOURCE_ID,)
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
         uri = self._init_bigquery_dataset()
-        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, uri)
+        sink = Config.CLIENT.sink(SINK_NAME, filter_=DEFAULT_FILTER, destination=uri)
         self.assertFalse(sink.exists())
         retry(sink.create)()
         self.to_delete.append(sink)
@@ -517,7 +526,9 @@ class TestLogging(unittest.TestCase):
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()
         UPDATED_FILTER = "logName:syslog"
-        sink = Config.CLIENT.sink(SINK_NAME, DEFAULT_FILTER, bucket_uri)
+        sink = Config.CLIENT.sink(
+            SINK_NAME, filter_=DEFAULT_FILTER, destination=bucket_uri
+        )
         self.assertFalse(sink.exists())
         retry(sink.create)()
         self.to_delete.append(sink)

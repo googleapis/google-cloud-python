@@ -30,13 +30,13 @@ class TestConnection(unittest.TestCase):
 
     @staticmethod
     def _get_default_timeout():
-        from google.cloud.logging._http import _http
+        from google.cloud.logging_v2._http import _http
 
         return _http._DEFAULT_TIMEOUT
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging._http import Connection
+        from google.cloud.logging_v2._http import Connection
 
         return Connection
 
@@ -49,8 +49,8 @@ class TestConnection(unittest.TestCase):
         self.assertIs(conn._client, client)
 
     def test_build_api_url_w_custom_endpoint(self):
-        from six.moves.urllib.parse import parse_qsl
-        from six.moves.urllib.parse import urlsplit
+        from urllib.parse import parse_qsl
+        from urllib.parse import urlsplit
 
         custom_endpoint = "https://foo-logging.googleapis.com"
         conn = self._make_one(object(), api_endpoint=custom_endpoint)
@@ -98,14 +98,16 @@ class TestConnection(unittest.TestCase):
 class Test_LoggingAPI(unittest.TestCase):
 
     PROJECT = "project"
+    PROJECT_PATH = "projects/project"
     LIST_ENTRIES_PATH = "entries:list"
     WRITE_ENTRIES_PATH = "entries:write"
     LOGGER_NAME = "LOGGER_NAME"
+    LOGGER_PATH = "projects/project/logs/LOGGER_NAME"
     FILTER = "logName:syslog AND severity>=ERROR"
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging._http import _LoggingAPI
+        from google.cloud.logging_v2._http import _LoggingAPI
 
         return _LoggingAPI
 
@@ -128,15 +130,14 @@ class Test_LoggingAPI(unittest.TestCase):
         return NOW, _datetime_to_rfc3339_w_nanos(NOW)
 
     def test_list_entries_no_paging(self):
-        import six
-        from google.cloud.logging.client import Client
-        from google.cloud.logging.entries import TextEntry
-        from google.cloud.logging.logger import Logger
+        from google.cloud.logging_v2.client import Client
+        from google.cloud.logging_v2.entries import TextEntry
+        from google.cloud.logging_v2.logger import Logger
 
         NOW, TIMESTAMP = self._make_timestamp()
         IID = "IID"
         TEXT = "TEXT"
-        SENT = {"projectIds": [self.PROJECT]}
+        SENT = {"resourceNames": [self.PROJECT_PATH]}
         TOKEN = "TOKEN"
         RETURNED = {
             "entries": [
@@ -145,7 +146,7 @@ class Test_LoggingAPI(unittest.TestCase):
                     "insertId": IID,
                     "resource": {"type": "global"},
                     "timestamp": TIMESTAMP,
-                    "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+                    "logName": f"projects/{self.PROJECT}/logs/{self.LOGGER_NAME}",
                 }
             ],
             "nextPageToken": TOKEN,
@@ -156,8 +157,8 @@ class Test_LoggingAPI(unittest.TestCase):
         client._connection = _Connection(RETURNED)
         api = self._make_one(client)
 
-        iterator = api.list_entries([self.PROJECT])
-        page = six.next(iterator.pages)
+        iterator = api.list_entries([self.PROJECT_PATH])
+        page = next(iterator.pages)
         entries = list(page)
         token = iterator.next_page_token
 
@@ -183,14 +184,16 @@ class Test_LoggingAPI(unittest.TestCase):
         )
 
     def test_list_entries_w_paging(self):
-        from google.cloud.logging import DESCENDING
-        from google.cloud.logging.client import Client
-        from google.cloud.logging.logger import Logger
-        from google.cloud.logging.entries import ProtobufEntry
-        from google.cloud.logging.entries import StructEntry
+        from google.cloud.logging_v2 import DESCENDING
+        from google.cloud.logging_v2.client import Client
+        from google.cloud.logging_v2.logger import Logger
+        from google.cloud.logging_v2.entries import ProtobufEntry
+        from google.cloud.logging_v2.entries import StructEntry
 
         PROJECT1 = "PROJECT1"
+        PROJECT1_PATH = f"projects/{PROJECT1}"
         PROJECT2 = "PROJECT2"
+        PROJECT2_PATH = f"projects/{PROJECT2}"
         NOW, TIMESTAMP = self._make_timestamp()
         IID1 = "IID1"
         IID2 = "IID2"
@@ -200,7 +203,7 @@ class Test_LoggingAPI(unittest.TestCase):
         TOKEN = "TOKEN"
         PAGE_SIZE = 42
         SENT = {
-            "projectIds": [PROJECT1, PROJECT2],
+            "resourceNames": [PROJECT1_PATH, PROJECT2_PATH],
             "filter": self.FILTER,
             "orderBy": DESCENDING,
             "pageSize": PAGE_SIZE,
@@ -231,7 +234,7 @@ class Test_LoggingAPI(unittest.TestCase):
         api = self._make_one(client)
 
         iterator = api.list_entries(
-            projects=[PROJECT1, PROJECT2],
+            resource_names=[PROJECT1_PATH, PROJECT2_PATH],
             filter_=self.FILTER,
             order_by=DESCENDING,
             page_size=PAGE_SIZE,
@@ -277,9 +280,9 @@ class Test_LoggingAPI(unittest.TestCase):
         ENTRY = {
             "textPayload": TEXT,
             "resource": {"type": "global"},
-            "logName": "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME),
+            "logName": "projects/{self.PROJECT}/logs/{self.LOGGER_NAME}",
         }
-        SENT = {"entries": [ENTRY]}
+        SENT = {"entries": [ENTRY], "partialSuccess": False, "dry_run": False}
         conn = _Connection({})
         client = _Client(conn)
         api = self._make_one(client)
@@ -287,13 +290,13 @@ class Test_LoggingAPI(unittest.TestCase):
         api.write_entries([ENTRY])
 
         self.assertEqual(conn._called_with["method"], "POST")
-        path = "/%s" % self.WRITE_ENTRIES_PATH
+        path = f"/{self.WRITE_ENTRIES_PATH}"
         self.assertEqual(conn._called_with["path"], path)
         self.assertEqual(conn._called_with["data"], SENT)
 
     def test_write_entries_multiple(self):
         TEXT = "TEXT"
-        LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        LOG_NAME = f"projects/{self.PROJECT}/logs/{self.LOGGER_NAME}"
         RESOURCE = {"type": "global"}
         LABELS = {"baz": "qux", "spam": "eggs"}
         ENTRY1 = {"textPayload": TEXT}
@@ -303,25 +306,29 @@ class Test_LoggingAPI(unittest.TestCase):
             "resource": RESOURCE,
             "labels": LABELS,
             "entries": [ENTRY1, ENTRY2],
+            "partialSuccess": False,
+            "dry_run": False,
         }
         conn = _Connection({})
         client = _Client(conn)
         api = self._make_one(client)
 
-        api.write_entries([ENTRY1, ENTRY2], LOG_NAME, RESOURCE, LABELS)
+        api.write_entries(
+            [ENTRY1, ENTRY2], logger_name=LOG_NAME, resource=RESOURCE, labels=LABELS
+        )
 
         self.assertEqual(conn._called_with["method"], "POST")
-        path = "/%s" % self.WRITE_ENTRIES_PATH
+        path = f"/{self.WRITE_ENTRIES_PATH}"
         self.assertEqual(conn._called_with["path"], path)
         self.assertEqual(conn._called_with["data"], SENT)
 
     def test_logger_delete(self):
-        path = "/projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
+        path = f"/projects/{self.PROJECT}/logs/{self.LOGGER_NAME}"
         conn = _Connection({})
         client = _Client(conn)
         api = self._make_one(client)
 
-        api.logger_delete(self.PROJECT, self.LOGGER_NAME)
+        api.logger_delete(self.LOGGER_PATH)
 
         self.assertEqual(conn._called_with["method"], "DELETE")
         self.assertEqual(conn._called_with["path"], path)
@@ -330,16 +337,17 @@ class Test_LoggingAPI(unittest.TestCase):
 class Test_SinksAPI(unittest.TestCase):
 
     PROJECT = "project"
+    PROJECT_PATH = "projects/project"
     FILTER = "logName:syslog AND severity>=ERROR"
-    LIST_SINKS_PATH = "projects/%s/sinks" % (PROJECT,)
+    LIST_SINKS_PATH = f"projects/{PROJECT}/sinks"
     SINK_NAME = "sink_name"
-    SINK_PATH = "projects/%s/sinks/%s" % (PROJECT, SINK_NAME)
+    SINK_PATH = f"projects/{PROJECT}/sinks/{SINK_NAME}"
     DESTINATION_URI = "faux.googleapis.com/destination"
     WRITER_IDENTITY = "serviceAccount:project-123@example.com"
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging._http import _SinksAPI
+        from google.cloud.logging_v2._http import _SinksAPI
 
         return _SinksAPI
 
@@ -354,8 +362,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(api.api_request, connection.api_request)
 
     def test_list_sinks_no_paging(self):
-        import six
-        from google.cloud.logging.sink import Sink
+        from google.cloud.logging_v2.sink import Sink
 
         TOKEN = "TOKEN"
         RETURNED = {
@@ -372,8 +379,8 @@ class Test_SinksAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._make_one(client)
 
-        iterator = api.list_sinks(self.PROJECT)
-        page = six.next(iterator.pages)
+        iterator = api.list_sinks(self.PROJECT_PATH)
+        page = next(iterator.pages)
         sinks = list(page)
         token = iterator.next_page_token
 
@@ -389,13 +396,13 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertIs(sink.client, client)
 
         called_with = conn._called_with
-        path = "/%s" % (self.LIST_SINKS_PATH,)
+        path = f"/{self.LIST_SINKS_PATH}"
         self.assertEqual(
             called_with, {"method": "GET", "path": path, "query_params": {}}
         )
 
     def test_list_sinks_w_paging(self):
-        from google.cloud.logging.sink import Sink
+        from google.cloud.logging_v2.sink import Sink
 
         TOKEN = "TOKEN"
         PAGE_SIZE = 42
@@ -412,7 +419,9 @@ class Test_SinksAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._make_one(client)
 
-        iterator = api.list_sinks(self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+        iterator = api.list_sinks(
+            self.PROJECT_PATH, page_size=PAGE_SIZE, page_token=TOKEN
+        )
         sinks = list(iterator)
         token = iterator.next_page_token
 
@@ -428,7 +437,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertIs(sink.client, client)
 
         called_with = conn._called_with
-        path = "/%s" % (self.LIST_SINKS_PATH,)
+        path = f"/{self.LIST_SINKS_PATH}"
         self.assertEqual(
             called_with,
             {
@@ -453,10 +462,10 @@ class Test_SinksAPI(unittest.TestCase):
 
         with self.assertRaises(Conflict):
             api.sink_create(
-                self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI
+                self.PROJECT_PATH, self.SINK_NAME, self.FILTER, self.DESTINATION_URI
             )
 
-        path = "/projects/%s/sinks" % (self.PROJECT,)
+        path = f"/projects/{self.PROJECT}/sinks"
         expected = {
             "method": "POST",
             "path": path,
@@ -478,7 +487,7 @@ class Test_SinksAPI(unittest.TestCase):
         api = self._make_one(client)
 
         returned = api.sink_create(
-            self.PROJECT,
+            self.PROJECT_PATH,
             self.SINK_NAME,
             self.FILTER,
             self.DESTINATION_URI,
@@ -486,7 +495,7 @@ class Test_SinksAPI(unittest.TestCase):
         )
 
         self.assertEqual(returned, after_create)
-        path = "/projects/%s/sinks" % (self.PROJECT,)
+        path = f"/projects/{self.PROJECT}/sinks"
         expected = {
             "method": "POST",
             "path": path,
@@ -503,10 +512,10 @@ class Test_SinksAPI(unittest.TestCase):
         api = self._make_one(client)
 
         with self.assertRaises(NotFound):
-            api.sink_get(self.PROJECT, self.SINK_NAME)
+            api.sink_get(self.SINK_PATH)
 
         self.assertEqual(conn._called_with["method"], "GET")
-        path = "/projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        path = f"/projects/{self.PROJECT}/sinks/{self.SINK_NAME}"
         self.assertEqual(conn._called_with["path"], path)
 
     def test_sink_get_hit(self):
@@ -519,11 +528,11 @@ class Test_SinksAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._make_one(client)
 
-        response = api.sink_get(self.PROJECT, self.SINK_NAME)
+        response = api.sink_get(self.SINK_PATH)
 
         self.assertEqual(response, RESPONSE)
         self.assertEqual(conn._called_with["method"], "GET")
-        path = "/projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        path = f"/projects/{self.PROJECT}/sinks/{self.SINK_NAME}"
         self.assertEqual(conn._called_with["path"], path)
 
     def test_sink_update_miss(self):
@@ -539,11 +548,9 @@ class Test_SinksAPI(unittest.TestCase):
         api = self._make_one(client)
 
         with self.assertRaises(NotFound):
-            api.sink_update(
-                self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI
-            )
+            api.sink_update(self.SINK_PATH, self.FILTER, self.DESTINATION_URI)
 
-        path = "/projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        path = f"/projects/{self.PROJECT}/sinks/{self.SINK_NAME}"
         expected = {
             "method": "PUT",
             "path": path,
@@ -565,15 +572,14 @@ class Test_SinksAPI(unittest.TestCase):
         api = self._make_one(client)
 
         returned = api.sink_update(
-            self.PROJECT,
-            self.SINK_NAME,
+            self.SINK_PATH,
             self.FILTER,
             self.DESTINATION_URI,
             unique_writer_identity=True,
         )
 
         self.assertEqual(returned, after_update)
-        path = "/projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        path = f"/projects/{self.PROJECT}/sinks/{self.SINK_NAME}"
         expected = {
             "method": "PUT",
             "path": path,
@@ -590,10 +596,10 @@ class Test_SinksAPI(unittest.TestCase):
         api = self._make_one(client)
 
         with self.assertRaises(NotFound):
-            api.sink_delete(self.PROJECT, self.SINK_NAME)
+            api.sink_delete(self.SINK_PATH)
 
         self.assertEqual(conn._called_with["method"], "DELETE")
-        path = "/projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        path = f"/projects/{self.PROJECT}/sinks/{self.SINK_NAME}"
         self.assertEqual(conn._called_with["path"], path)
 
     def test_sink_delete_hit(self):
@@ -601,10 +607,10 @@ class Test_SinksAPI(unittest.TestCase):
         client = _Client(conn)
         api = self._make_one(client)
 
-        api.sink_delete(self.PROJECT, self.SINK_NAME)
+        api.sink_delete(self.SINK_PATH)
 
         self.assertEqual(conn._called_with["method"], "DELETE")
-        path = "/projects/%s/sinks/%s" % (self.PROJECT, self.SINK_NAME)
+        path = f"/projects/{self.PROJECT}/sinks/{self.SINK_NAME}"
         self.assertEqual(conn._called_with["path"], path)
 
 
@@ -619,7 +625,7 @@ class Test_MetricsAPI(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging._http import _MetricsAPI
+        from google.cloud.logging_v2._http import _MetricsAPI
 
         return _MetricsAPI
 
@@ -627,8 +633,7 @@ class Test_MetricsAPI(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_list_metrics_no_paging(self):
-        import six
-        from google.cloud.logging.metric import Metric
+        from google.cloud.logging_v2.metric import Metric
 
         TOKEN = "TOKEN"
         RETURNED = {
@@ -640,7 +645,7 @@ class Test_MetricsAPI(unittest.TestCase):
         api = self._make_one(client)
 
         iterator = api.list_metrics(self.PROJECT)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         metrics = list(page)
         token = iterator.next_page_token
 
@@ -662,7 +667,7 @@ class Test_MetricsAPI(unittest.TestCase):
         )
 
     def test_list_metrics_w_paging(self):
-        from google.cloud.logging.metric import Metric
+        from google.cloud.logging_v2.metric import Metric
 
         TOKEN = "TOKEN"
         PAGE_SIZE = 42

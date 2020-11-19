@@ -50,11 +50,11 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.5
+Python >= 3.6
 
-Deprecated Python Versions
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python == 2.7. Python 2.7 support was removed on January 1, 2020.
+Unsupported Python Versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python == 2.7. The last version of the library compatible with Python 2.7 is `google-cloud-logging==1.15.1`.
 
 
 Mac/Linux

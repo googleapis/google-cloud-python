@@ -19,7 +19,7 @@ import mock
 
 class Test_logger_name_from_path(unittest.TestCase):
     def _call_fut(self, path):
-        from google.cloud.logging.entries import logger_name_from_path
+        from google.cloud.logging_v2.entries import logger_name_from_path
 
         return logger_name_from_path(path)
 
@@ -40,7 +40,7 @@ class Test_logger_name_from_path(unittest.TestCase):
 
 class Test__int_or_none(unittest.TestCase):
     def _call_fut(self, value):
-        from google.cloud.logging.entries import _int_or_none
+        from google.cloud.logging_v2.entries import _int_or_none
 
         return _int_or_none(value)
 
@@ -61,7 +61,7 @@ class TestLogEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.entries import LogEntry
+        from google.cloud.logging_v2.entries import LogEntry
 
         return LogEntry
 
@@ -69,7 +69,7 @@ class TestLogEntry(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_ctor_defaults(self):
-        from google.cloud.logging.entries import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.entries import _GLOBAL_RESOURCE
 
         entry = self._make_one()
 
@@ -90,7 +90,7 @@ class TestLogEntry(unittest.TestCase):
 
     def test_ctor_explicit(self):
         import datetime
-        from google.cloud.logging.resource import Resource
+        from google.cloud.logging_v2.resource import Resource
 
         LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
         IID = "IID"
@@ -178,7 +178,7 @@ class TestLogEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.logging.resource import Resource
+        from google.cloud.logging_v2.resource import Resource
 
         klass = self._get_target_class()
         client = _Client(self.PROJECT)
@@ -316,7 +316,7 @@ class TestLogEntry(unittest.TestCase):
         self.assertIsNone(entry.payload)
 
     def test_to_api_repr_w_source_location_no_line(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         LOG_NAME = "test.log"
         FILE = "my_file.py"
@@ -332,7 +332,7 @@ class TestLogEntry(unittest.TestCase):
 
     def test_to_api_repr_explicit(self):
         import datetime
-        from google.cloud.logging.resource import Resource
+        from google.cloud.logging_v2.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
         LOG_NAME = "test.log"
@@ -395,7 +395,7 @@ class TestTextEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.entries import TextEntry
+        from google.cloud.logging_v2.entries import TextEntry
 
         return TextEntry
 
@@ -403,7 +403,7 @@ class TestTextEntry(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_to_api_repr_defaults(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         LOG_NAME = "test.log"
         TEXT = "TESTING"
@@ -417,7 +417,7 @@ class TestTextEntry(unittest.TestCase):
 
     def test_to_api_repr_explicit(self):
         import datetime
-        from google.cloud.logging.resource import Resource
+        from google.cloud.logging_v2.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
         LOG_NAME = "test.log"
@@ -483,7 +483,7 @@ class TestStructEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.entries import StructEntry
+        from google.cloud.logging_v2.entries import StructEntry
 
         return StructEntry
 
@@ -491,7 +491,7 @@ class TestStructEntry(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_to_api_repr_defaults(self):
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 
         LOG_NAME = "test.log"
         JSON_PAYLOAD = {"key": "value"}
@@ -505,7 +505,7 @@ class TestStructEntry(unittest.TestCase):
 
     def test_to_api_repr_explicit(self):
         import datetime
-        from google.cloud.logging.resource import Resource
+        from google.cloud.logging_v2.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
         LOG_NAME = "test.log"
@@ -571,7 +571,7 @@ class TestProtobufEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging.entries import ProtobufEntry
+        from google.cloud.logging_v2.entries import ProtobufEntry
 
         return ProtobufEntry
 
@@ -634,7 +634,7 @@ class TestProtobufEntry(unittest.TestCase):
 
     def test_to_api_repr_proto_defaults(self):
         from google.protobuf.json_format import MessageToDict
-        from google.cloud.logging.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value
 
@@ -652,7 +652,7 @@ class TestProtobufEntry(unittest.TestCase):
     def test_to_api_repr_proto_explicit(self):
         import datetime
         from google.protobuf.json_format import MessageToDict
-        from google.cloud.logging.resource import Resource
+        from google.cloud.logging_v2.resource import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value

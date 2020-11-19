@@ -22,7 +22,7 @@ class TestAppEngineHandler(unittest.TestCase):
     PROJECT = "PROJECT"
 
     def _get_target_class(self):
-        from google.cloud.logging.handlers.app_engine import AppEngineHandler
+        from google.cloud.logging_v2.handlers.app_engine import AppEngineHandler
 
         return AppEngineHandler
 
@@ -31,7 +31,7 @@ class TestAppEngineHandler(unittest.TestCase):
 
     def test_constructor_w_gae_standard_env(self):
         import sys
-        from google.cloud.logging.handlers import app_engine
+        from google.cloud.logging_v2.handlers import app_engine
 
         client = mock.Mock(project=self.PROJECT, spec=["project"])
 
@@ -57,7 +57,7 @@ class TestAppEngineHandler(unittest.TestCase):
 
     def test_constructor_w_gae_flex_env(self):
         import io
-        from google.cloud.logging.handlers import app_engine
+        from google.cloud.logging_v2.handlers import app_engine
 
         client = mock.Mock(project=self.PROJECT, spec=["project"])
         name = "test-logger"
@@ -106,7 +106,7 @@ class TestAppEngineHandler(unittest.TestCase):
 
     def _get_gae_labels_helper(self, trace_id):
         get_trace_patch = mock.patch(
-            "google.cloud.logging.handlers.app_engine.get_trace_id",
+            "google.cloud.logging_v2.handlers.app_engine.get_trace_id",
             return_value=trace_id,
         )
 
@@ -121,7 +121,7 @@ class TestAppEngineHandler(unittest.TestCase):
         return gae_labels
 
     def test_get_gae_labels_with_label(self):
-        from google.cloud.logging.handlers import app_engine
+        from google.cloud.logging_v2.handlers import app_engine
 
         trace_id = "test-gae-trace-id"
         gae_labels = self._get_gae_labels_helper(trace_id)

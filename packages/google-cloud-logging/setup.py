@@ -29,8 +29,9 @@ version = "1.15.1"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.15.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
+    "proto-plus >= 1.11.0",
 ]
 extras = {}
 
@@ -70,7 +71,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -82,7 +82,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     include_package_data=True,
     zip_safe=False,
 )
