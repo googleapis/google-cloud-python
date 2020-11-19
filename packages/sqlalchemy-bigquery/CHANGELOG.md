@@ -8,6 +8,10 @@
 
 2020-11-18
 
+### ⚠️ Breaking Changes ⚠️ 
+
+- `get_table_names()` no longer returns views. ([#62](https://github.com/mxmzdlv/pybigquery/pull/62), [#60](https://github.com/mxmzdlv/pybigquery/issues/60))
+
 ### Features
 
 - Support the `ARRAY` data type in generated DDL. ([#64](https://github.com/mxmzdlv/pybigquery/pull/64))
