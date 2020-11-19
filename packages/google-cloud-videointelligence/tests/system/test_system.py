@@ -38,7 +38,7 @@ def _get_video_uri():
 
 
 def test_annotate_video(client):
-    features_element = videointelligence_v1.enums.Feature.LABEL_DETECTION
+    features_element = videointelligence_v1.Feature.LABEL_DETECTION
     features = [features_element]
     response = client.annotate_video(input_uri=_get_video_uri(), features=features)
 
