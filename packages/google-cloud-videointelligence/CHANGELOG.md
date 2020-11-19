@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.16.1...v2.0.0) (2020-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* use microgenerator. See [Migration Guide](https://pypi.org/project/google-cloud-logging/2.0.0/). (#76)
+
+### Features
+
+* use microgenerator ([#76](https://www.github.com/googleapis/python-videointelligence/issues/76))
+
 ### [1.16.1](https://www.github.com/googleapis/python-videointelligence/compare/v1.16.0...v1.16.1) (2020-11-18)
 
 
