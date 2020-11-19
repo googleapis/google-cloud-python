@@ -16,6 +16,10 @@
 #
 
 from .services.asset_service import AssetServiceClient
+from .types.asset_service import AnalyzeIamPolicyLongrunningRequest
+from .types.asset_service import AnalyzeIamPolicyLongrunningResponse
+from .types.asset_service import AnalyzeIamPolicyRequest
+from .types.asset_service import AnalyzeIamPolicyResponse
 from .types.asset_service import BatchGetAssetsHistoryRequest
 from .types.asset_service import BatchGetAssetsHistoryResponse
 from .types.asset_service import BigQueryDestination
@@ -29,6 +33,8 @@ from .types.asset_service import FeedOutputConfig
 from .types.asset_service import GcsDestination
 from .types.asset_service import GcsOutputResult
 from .types.asset_service import GetFeedRequest
+from .types.asset_service import IamPolicyAnalysisOutputConfig
+from .types.asset_service import IamPolicyAnalysisQuery
 from .types.asset_service import ListFeedsRequest
 from .types.asset_service import ListFeedsResponse
 from .types.asset_service import OutputConfig
@@ -41,6 +47,8 @@ from .types.asset_service import SearchAllResourcesRequest
 from .types.asset_service import SearchAllResourcesResponse
 from .types.asset_service import UpdateFeedRequest
 from .types.assets import Asset
+from .types.assets import IamPolicyAnalysisResult
+from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
 from .types.assets import Resource
 from .types.assets import ResourceSearchResult
@@ -49,6 +57,10 @@ from .types.assets import TimeWindow
 
 
 __all__ = (
+    "AnalyzeIamPolicyLongrunningRequest",
+    "AnalyzeIamPolicyLongrunningResponse",
+    "AnalyzeIamPolicyRequest",
+    "AnalyzeIamPolicyResponse",
     "Asset",
     "BatchGetAssetsHistoryRequest",
     "BatchGetAssetsHistoryResponse",
@@ -63,6 +75,10 @@ __all__ = (
     "GcsDestination",
     "GcsOutputResult",
     "GetFeedRequest",
+    "IamPolicyAnalysisOutputConfig",
+    "IamPolicyAnalysisQuery",
+    "IamPolicyAnalysisResult",
+    "IamPolicyAnalysisState",
     "IamPolicySearchResult",
     "ListFeedsRequest",
     "ListFeedsResponse",

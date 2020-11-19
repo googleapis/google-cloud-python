@@ -232,7 +232,7 @@ class AnalyzeIamPolicyRequest(proto.Message):
         )
 
     analysis_query = proto.Field(
-        proto.MESSAGE, number=1, message=IamPolicyAnalysisQuery,
+        proto.MESSAGE, number=1, message="IamPolicyAnalysisQuery",
     )
 
     options = proto.Field(proto.MESSAGE, number=2, message=Options,)
@@ -280,7 +280,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
         """
 
         analysis_query = proto.Field(
-            proto.MESSAGE, number=1, message=IamPolicyAnalysisQuery,
+            proto.MESSAGE, number=1, message="IamPolicyAnalysisQuery",
         )
 
         analysis_results = proto.RepeatedField(
@@ -431,13 +431,13 @@ class ExportIamPolicyAnalysisRequest(proto.Message):
         analyze_service_account_impersonation = proto.Field(proto.BOOL, number=6)
 
     analysis_query = proto.Field(
-        proto.MESSAGE, number=1, message=IamPolicyAnalysisQuery,
+        proto.MESSAGE, number=1, message="IamPolicyAnalysisQuery",
     )
 
     options = proto.Field(proto.MESSAGE, number=2, message=Options,)
 
     output_config = proto.Field(
-        proto.MESSAGE, number=3, message=IamPolicyAnalysisOutputConfig,
+        proto.MESSAGE, number=3, message="IamPolicyAnalysisOutputConfig",
     )
 
 
@@ -453,7 +453,7 @@ class ExportIamPolicyAnalysisResponse(proto.Message):
     """
 
     output_config = proto.Field(
-        proto.MESSAGE, number=1, message=IamPolicyAnalysisOutputConfig,
+        proto.MESSAGE, number=1, message="IamPolicyAnalysisOutputConfig",
     )
 
 

@@ -194,6 +194,22 @@ class AssetServiceTransport(abc.ABC):
                 default_timeout=15.0,
                 client_info=client_info,
             ),
+            self.analyze_iam_policy: gapic_v1.method.wrap_method(
+                self.analyze_iam_policy,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.analyze_iam_policy_longrunning: gapic_v1.method.wrap_method(
+                self.analyze_iam_policy_longrunning,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
         }
 
     @property
@@ -291,6 +307,27 @@ class AssetServiceTransport(abc.ABC):
             asset_service.SearchAllIamPoliciesResponse,
             typing.Awaitable[asset_service.SearchAllIamPoliciesResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_iam_policy(
+        self,
+    ) -> typing.Callable[
+        [asset_service.AnalyzeIamPolicyRequest],
+        typing.Union[
+            asset_service.AnalyzeIamPolicyResponse,
+            typing.Awaitable[asset_service.AnalyzeIamPolicyResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def analyze_iam_policy_longrunning(
+        self,
+    ) -> typing.Callable[
+        [asset_service.AnalyzeIamPolicyLongrunningRequest],
+        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
     ]:
         raise NotImplementedError()
 

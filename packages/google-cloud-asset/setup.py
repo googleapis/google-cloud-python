@@ -32,6 +32,7 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "google-cloud-access-context-manager >= 0.1.2, < 0.2.0dev",
     "google-cloud-org-policy >= 0.1.2, < 0.2.0dev",
+    "google-cloud-os-config >= 1.0.0, <2.0.0dev",
     "proto-plus >= 0.4.0",
     "libcst >= 0.2.5",
 ]

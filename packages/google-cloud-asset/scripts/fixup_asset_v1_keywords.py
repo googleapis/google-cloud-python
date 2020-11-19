@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -40,6 +41,8 @@ def partition(
 class assetCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+    'analyze_iam_policy': ('analysis_query', 'execution_timeout', ),
+    'analyze_iam_policy_longrunning': ('analysis_query', 'output_config', ),
     'batch_get_assets_history': ('parent', 'asset_names', 'content_type', 'read_time_window', ),
     'create_feed': ('parent', 'feed_id', 'feed', ),
     'delete_feed': ('name', ),

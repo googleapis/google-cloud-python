@@ -14,6 +14,8 @@
 
 """This script is used to synthesize generated parts of this library."""
 
+import re
+
 import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
@@ -36,6 +38,40 @@ for version in versions:
 
     s.move(library, excludes=excludes)
 
+# Fix import of 'osconfig' type
+s.replace(
+    "google/cloud/asset_v1/types/assets.py",
+    "from google\.cloud\.osconfig\.v1 import inventory_pb2 as inventory",
+    "from google.cloud.osconfig_v1 import Inventory"
+)
+
+s.replace(
+    "google/cloud/asset_v1/types/assets.py",
+    "message=inventory\.Inventory,",
+    "message=Inventory,"
+)
+
+# Remove broken `parse_asset_path` method
+# The resource pattern is '*' which breaks the regex match
+s.replace(
+    "google/cloud/**/client.py",
+    """@staticmethod
+    def parse_asset_path.*?@staticmethod""",
+    """@staticmethod""",
+    flags=re.MULTILINE | re.DOTALL
+)
+
+s.replace(
+    "google/cloud/**/async_client.py",
+    """parse_asset_path = staticmethod\(AssetServiceClient\.parse_asset_path\)""",
+    ""
+)
+s.replace(
+    "tests/unit/**/test_asset_service.py",
+    """def test_parse_asset_path.*?def""",
+    """def""",
+    flags=re.MULTILINE | re.DOTALL,
+)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
@@ -52,13 +88,22 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 
 python.py_samples(skip_readmes=True)
 
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", '''["']sphinx["']''', '"sphinx<3.0.0"')
+s.replace(
+    "noxfile.py",
+    "google\.cloud\.cloudasset",
+    "google/cloud",
+)
 
 s.replace(
     "noxfile.py",
-    "google.cloud.cloudasset",
-    "google.cloud.asset",
+    '''["']--cov=google\.cloud["'],''',
+    "",
+)
+
+s.replace(
+    "noxfile.py",
+    """"--cov=tests.unit",""",
+    """"--cov=tests/unit",""",
 )
 
 # Temporarily disable warnings due to

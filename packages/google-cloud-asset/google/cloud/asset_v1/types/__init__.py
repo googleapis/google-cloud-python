@@ -22,6 +22,8 @@ from .assets import (
     Resource,
     ResourceSearchResult,
     IamPolicySearchResult,
+    IamPolicyAnalysisState,
+    IamPolicyAnalysisResult,
 )
 from .asset_service import (
     ExportAssetsRequest,
@@ -47,6 +49,12 @@ from .asset_service import (
     SearchAllResourcesResponse,
     SearchAllIamPoliciesRequest,
     SearchAllIamPoliciesResponse,
+    IamPolicyAnalysisQuery,
+    AnalyzeIamPolicyRequest,
+    AnalyzeIamPolicyResponse,
+    IamPolicyAnalysisOutputConfig,
+    AnalyzeIamPolicyLongrunningRequest,
+    AnalyzeIamPolicyLongrunningResponse,
 )
 
 
@@ -57,6 +65,8 @@ __all__ = (
     "Resource",
     "ResourceSearchResult",
     "IamPolicySearchResult",
+    "IamPolicyAnalysisState",
+    "IamPolicyAnalysisResult",
     "ExportAssetsRequest",
     "ExportAssetsResponse",
     "BatchGetAssetsHistoryRequest",
@@ -80,4 +90,10 @@ __all__ = (
     "SearchAllResourcesResponse",
     "SearchAllIamPoliciesRequest",
     "SearchAllIamPoliciesResponse",
+    "IamPolicyAnalysisQuery",
+    "AnalyzeIamPolicyRequest",
+    "AnalyzeIamPolicyResponse",
+    "IamPolicyAnalysisOutputConfig",
+    "AnalyzeIamPolicyLongrunningRequest",
+    "AnalyzeIamPolicyLongrunningResponse",
 )

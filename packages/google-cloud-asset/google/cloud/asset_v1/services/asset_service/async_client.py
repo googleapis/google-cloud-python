@@ -48,11 +48,47 @@ class AssetServiceAsyncClient:
     DEFAULT_ENDPOINT = AssetServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AssetServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    asset_path = staticmethod(AssetServiceClient.asset_path)
+
     feed_path = staticmethod(AssetServiceClient.feed_path)
     parse_feed_path = staticmethod(AssetServiceClient.parse_feed_path)
 
+    common_billing_account_path = staticmethod(
+        AssetServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        AssetServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(AssetServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(AssetServiceClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(AssetServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        AssetServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(AssetServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        AssetServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(AssetServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        AssetServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = AssetServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> AssetServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            AssetServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(AssetServiceClient).get_transport_class, type(AssetServiceClient)
@@ -295,7 +331,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -372,7 +409,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -453,7 +491,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -539,7 +578,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([feed]):
+        has_flattened_params = any([feed])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -607,7 +647,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -753,7 +794,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([scope, query, asset_types]):
+        has_flattened_params = any([scope, query, asset_types])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -768,8 +810,9 @@ class AssetServiceAsyncClient:
             request.scope = scope
         if query is not None:
             request.query = query
-        if asset_types is not None:
-            request.asset_types = asset_types
+
+        if asset_types:
+            request.asset_types.extend(asset_types)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -894,7 +937,8 @@ class AssetServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([scope, query]):
+        has_flattened_params = any([scope, query])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -939,6 +983,142 @@ class AssetServiceAsyncClient:
         # an `__aiter__` convenience method.
         response = pagers.SearchAllIamPoliciesAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def analyze_iam_policy(
+        self,
+        request: asset_service.AnalyzeIamPolicyRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> asset_service.AnalyzeIamPolicyResponse:
+        r"""Analyzes IAM policies to answer which identities have
+        what accesses on which resources.
+
+        Args:
+            request (:class:`~.asset_service.AnalyzeIamPolicyRequest`):
+                The request object. A request message for
+                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.asset_service.AnalyzeIamPolicyResponse:
+                A response message for
+                [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = asset_service.AnalyzeIamPolicyRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.analyze_iam_policy,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("analysis_query.scope", request.analysis_query.scope),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def analyze_iam_policy_longrunning(
+        self,
+        request: asset_service.AnalyzeIamPolicyLongrunningRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Analyzes IAM policies asynchronously to answer which identities
+        have what accesses on which resources, and writes the analysis
+        results to a Google Cloud Storage or a BigQuery destination. For
+        Cloud Storage destination, the output format is the JSON format
+        that represents a
+        [AnalyzeIamPolicyResponse][google.cloud.asset.v1.AnalyzeIamPolicyResponse].
+        This method implements the
+        [google.longrunning.Operation][google.longrunning.Operation],
+        which allows you to track the operation status. We recommend
+        intervals of at least 2 seconds with exponential backoff retry
+        to poll the operation result. The metadata contains the request
+        to help callers to map responses to requests.
+
+        Args:
+            request (:class:`~.asset_service.AnalyzeIamPolicyLongrunningRequest`):
+                The request object. A request message for
+                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:``~.asset_service.AnalyzeIamPolicyLongrunningResponse``:
+                A response message for
+                [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = asset_service.AnalyzeIamPolicyLongrunningRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.analyze_iam_policy_longrunning,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("analysis_query.scope", request.analysis_query.scope),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            asset_service.AnalyzeIamPolicyLongrunningResponse,
+            metadata_type=asset_service.AnalyzeIamPolicyLongrunningRequest,
         )
 
         # Done; return the response.

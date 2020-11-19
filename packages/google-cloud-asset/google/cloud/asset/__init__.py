@@ -19,6 +19,12 @@ from google.cloud.asset_v1.services.asset_service.async_client import (
     AssetServiceAsyncClient,
 )
 from google.cloud.asset_v1.services.asset_service.client import AssetServiceClient
+from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyLongrunningRequest
+from google.cloud.asset_v1.types.asset_service import (
+    AnalyzeIamPolicyLongrunningResponse,
+)
+from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyRequest
+from google.cloud.asset_v1.types.asset_service import AnalyzeIamPolicyResponse
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryRequest
 from google.cloud.asset_v1.types.asset_service import BatchGetAssetsHistoryResponse
 from google.cloud.asset_v1.types.asset_service import BigQueryDestination
@@ -32,6 +38,8 @@ from google.cloud.asset_v1.types.asset_service import FeedOutputConfig
 from google.cloud.asset_v1.types.asset_service import GcsDestination
 from google.cloud.asset_v1.types.asset_service import GcsOutputResult
 from google.cloud.asset_v1.types.asset_service import GetFeedRequest
+from google.cloud.asset_v1.types.asset_service import IamPolicyAnalysisOutputConfig
+from google.cloud.asset_v1.types.asset_service import IamPolicyAnalysisQuery
 from google.cloud.asset_v1.types.asset_service import ListFeedsRequest
 from google.cloud.asset_v1.types.asset_service import ListFeedsResponse
 from google.cloud.asset_v1.types.asset_service import OutputConfig
@@ -44,6 +52,8 @@ from google.cloud.asset_v1.types.asset_service import SearchAllResourcesRequest
 from google.cloud.asset_v1.types.asset_service import SearchAllResourcesResponse
 from google.cloud.asset_v1.types.asset_service import UpdateFeedRequest
 from google.cloud.asset_v1.types.assets import Asset
+from google.cloud.asset_v1.types.assets import IamPolicyAnalysisResult
+from google.cloud.asset_v1.types.assets import IamPolicyAnalysisState
 from google.cloud.asset_v1.types.assets import IamPolicySearchResult
 from google.cloud.asset_v1.types.assets import Resource
 from google.cloud.asset_v1.types.assets import ResourceSearchResult
@@ -51,6 +61,10 @@ from google.cloud.asset_v1.types.assets import TemporalAsset
 from google.cloud.asset_v1.types.assets import TimeWindow
 
 __all__ = (
+    "AnalyzeIamPolicyLongrunningRequest",
+    "AnalyzeIamPolicyLongrunningResponse",
+    "AnalyzeIamPolicyRequest",
+    "AnalyzeIamPolicyResponse",
     "Asset",
     "AssetServiceAsyncClient",
     "AssetServiceClient",
@@ -67,6 +81,10 @@ __all__ = (
     "GcsDestination",
     "GcsOutputResult",
     "GetFeedRequest",
+    "IamPolicyAnalysisOutputConfig",
+    "IamPolicyAnalysisQuery",
+    "IamPolicyAnalysisResult",
+    "IamPolicyAnalysisState",
     "IamPolicySearchResult",
     "ListFeedsRequest",
     "ListFeedsResponse",
