@@ -100,7 +100,7 @@ class TestCursor(unittest.TestCase):
         def run_helper(ret_value):
             transaction.execute_update.return_value = ret_value
             res = cursor._do_execute_update(
-                transaction=transaction, sql="sql", params=None
+                transaction=transaction, sql="SELECT * WHERE true", params={},
             )
             return res
 
