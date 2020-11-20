@@ -2577,6 +2577,12 @@ class Test_Blob(unittest.TestCase):
             if_metageneration_not_match,
             **timeout_kwarg
         )
+
+        # Adjust num_retries expectations to reflect the conditional default in
+        # _do_upload()
+        if num_retries is None and if_metageneration_match is None:
+            num_retries = 0
+
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
         if size is not None and size <= _MAX_MULTIPART_SIZE:
