@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Interact with Stackdriver Error Reporting via Logging API.
+"""Interact with Error Reporting via Logging API.
 
-It's possible to report Stackdriver Error Reporting errors by formatting
-structured log messages in Stackdriver Logging in a given format. This
+It's possible to report Error Reporting errors by formatting
+structured log messages in Cloud Logging in a given format. This
 client provides a mechanism to report errors using that technique.
 """
 
@@ -23,7 +23,7 @@ import google.cloud.logging.client
 
 
 class _ErrorReportingLoggingAPI(object):
-    """Report to Stackdriver Error Reporting via Logging API
+    """Report to Error Reporting via Logging API
 
     :type project: str
     :param project: the project which the client acts on behalf of. If not

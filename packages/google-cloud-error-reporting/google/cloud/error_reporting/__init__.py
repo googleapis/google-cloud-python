@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client library for Stackdriver Error Reporting"""
+"""Client library for Error Reporting"""
 
 
 from pkg_resources import get_distribution

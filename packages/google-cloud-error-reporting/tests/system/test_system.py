@@ -24,7 +24,7 @@ from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
 
 
-ERROR_MSG = "Stackdriver Error Reporting System Test"
+ERROR_MSG = "Error Reporting System Test"
 
 
 def setUpModule():

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client for interacting with the Stackdriver Error Reporting API"""
+"""Client for interacting with the Error Reporting API"""
 
 import os
 import traceback
@@ -317,7 +317,7 @@ class Client(ClientWithProject):
         self.report_errors_api.report_error_event(error_report)
 
     def report(self, message, http_context=None, user=None):
-        """ Reports a message to Stackdriver Error Reporting
+        """ Reports a message to Error Reporting
 
         https://cloud.google.com/error-reporting/docs/formatting-error-messages
 
@@ -362,8 +362,7 @@ class Client(ClientWithProject):
         )
 
     def report_exception(self, http_context=None, user=None):
-        """ Reports the details of the latest exceptions to Stackdriver Error
-            Reporting.
+        """ Reports the details of the latest exceptions to Error Reporting.
 
           :type http_context: :class`google.cloud.error_reporting.HTTPContext`
           :param http_context: The HTTP request which was processed when the

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Utility functions for Stackdriver Error Reporting."""
+"""Utility functions for Error Reporting."""
 
 from google.cloud.error_reporting.client import HTTPContext
 
@@ -35,8 +35,8 @@ def build_flask_context(request):
     :param request: The Flask request object to convert.
 
     :rtype: :class:`~google.cloud.error_reporting.client.HTTPContext`
-    :returns: An HTTPContext object ready to be sent to the Stackdriver Error
-              Reporting API.
+    :returns: An HTTPContext object ready to be sent to the Error Reporting
+              API.
     """
     return HTTPContext(
         url=request.url,

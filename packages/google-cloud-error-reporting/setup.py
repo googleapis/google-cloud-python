@@ -21,7 +21,7 @@ import setuptools
 # Package metadata.
 
 name = "google-cloud-error-reporting"
-description = "Stackdriver Error Reporting API client library"
+description = "Error Reporting API client library"
 version = "1.0.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
