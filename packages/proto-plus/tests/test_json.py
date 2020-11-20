@@ -97,6 +97,29 @@ def test_json_default_enums():
     assert json2 == '{"zone":"EPIPELAGIC"}'
 
 
+def test_json_default_values():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+        name = proto.Field(proto.STRING, number=2)
+
+    s = Squid(name="Steve")
+    json1 = (
+        Squid.to_json(s, including_default_value_fields=False)
+        .replace(" ", "")
+        .replace("\n", "")
+    )
+    assert json1 == '{"name":"Steve"}'
+
+    json2 = Squid.to_json(s).replace(" ", "").replace("\n", "")
+    assert (
+        json2 == '{"name":"Steve","massKg":0}' or json2 == '{"massKg":0,"name":"Steve"}'
+    )
+
+    s1 = Squid.from_json(json1)
+    s2 = Squid.from_json(json2)
+    assert s == s1 == s2
+
+
 def test_json_unknown_field():
     # Note that 'lengthCm' is unknown in the local definition.
     # This could happen if the client is using an older proto definition
