@@ -43,12 +43,13 @@ _OUTBOUND_ENTRY_FIELDS = (  # (name, default)
 
 
 class Logger(object):
+    """Loggers represent named targets for log entries.
+
+    See https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
+    """
+
     def __init__(self, name, client, *, labels=None):
-        """Loggers represent named targets for log entries.
-
-        See
-        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.logs
-
+        """
         Args:
             name (str): The name of the logger.
             client (~logging_v2.client.Client):
@@ -56,7 +57,6 @@ class Logger(object):
                 for the logger (which requires a project).
             labels (Optional[dict]): Mapping of default labels for entries written
                 via this logger.
-
 
         """
         self.name = name
@@ -247,6 +247,7 @@ class Logger(object):
                     "organizations/[ORGANIZATION_ID]"
                     "billingAccounts/[BILLING_ACCOUNT_ID]"
                     "folders/[FOLDER_ID]"
+
                 If not passed, defaults to the project bound to the client.
             filter_ (Optional[str]): a filter expression. See
                 https://cloud.google.com/logging/docs/view/advanced_filters
