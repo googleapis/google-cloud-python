@@ -32,7 +32,7 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
 
         return _ErrorReportingLoggingAPI(project, credentials, **kw)
 
-    @mock.patch("google.cloud.logging.client.Client")
+    @mock.patch("google.cloud.logging.Client")
     def test_ctor_defaults(self, mocked_cls):
         credentials = _make_credentials()
 
@@ -43,7 +43,7 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
             self.PROJECT, credentials, _http=None, client_info=None, client_options=None
         )
 
-    @mock.patch("google.cloud.logging.client.Client")
+    @mock.patch("google.cloud.logging.Client")
     def test_ctor_explicit(self, mocked_cls):
         credentials = _make_credentials()
         http = mock.Mock()
@@ -67,7 +67,7 @@ class Test_ErrorReportingLoggingAPI(unittest.TestCase):
             client_options=client_options,
         )
 
-    @mock.patch("google.cloud.logging.client.Client")
+    @mock.patch("google.cloud.logging.Client")
     def test_report_error_event(self, mocked_cls):
         credentials = _make_credentials()
         logging_api = self._make_one(self.PROJECT, credentials)

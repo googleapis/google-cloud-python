@@ -19,7 +19,7 @@ structured log messages in Cloud Logging in a given format. This
 client provides a mechanism to report errors using that technique.
 """
 
-import google.cloud.logging.client
+import google.cloud.logging
 
 
 class _ErrorReportingLoggingAPI(object):
@@ -69,7 +69,7 @@ class _ErrorReportingLoggingAPI(object):
         client_info=None,
         client_options=None,
     ):
-        self.logging_client = google.cloud.logging.client.Client(
+        self.logging_client = google.cloud.logging.Client(
             project,
             credentials,
             _http=_http,
