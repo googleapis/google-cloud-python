@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.11.0...v1.12.0) (2020-11-20)
+
+
+### Features
+
+* add default values parameter to to_json ([#164](https://www.github.com/googleapis/proto-plus-python/issues/164)) ([691f1b2](https://www.github.com/googleapis/proto-plus-python/commit/691f1b24454502c4ac49a88a09d1c9fbc287b2bd))
+
 ## [1.11.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.10.2...v1.11.0) (2020-10-19)
 
 
