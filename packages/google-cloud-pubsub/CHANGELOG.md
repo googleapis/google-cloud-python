@@ -5,6 +5,26 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.2.0](https://www.github.com/googleapis/python-pubsub/compare/v2.1.0...v2.2.0) (2020-11-16)
+
+
+### Features
+
+* Add dead lettering max delivery attempts argument ([#236](https://www.github.com/googleapis/python-pubsub/issues/236)) ([7687ae5](https://www.github.com/googleapis/python-pubsub/commit/7687ae500bdb9c76e3ffb23302b4f32dc9627d81))
+* Enable server side flow control by default with the option to turn it off ([#231](https://www.github.com/googleapis/python-pubsub/issues/231)) ([94d738c](https://www.github.com/googleapis/python-pubsub/commit/94d738c07c6404a152c6729f5ba4b106b1fe9355))
+
+
+### Bug Fixes
+
+* fix mtls issue in handwritten layer ([#226](https://www.github.com/googleapis/python-pubsub/issues/226)) ([09a409c](https://www.github.com/googleapis/python-pubsub/commit/09a409c6240a74dcb46d8f3f86d4fb95a52274a7))
+* make fixup script consistent with migration docs ([#208](https://www.github.com/googleapis/python-pubsub/issues/208)) ([b64e218](https://www.github.com/googleapis/python-pubsub/commit/b64e2187ab0810437575580d6ddb5315ff60e274))
+
+
+### Documentation
+
+* document potentially unexpected blocking behavior of publish() method ([#214](https://www.github.com/googleapis/python-pubsub/issues/214)) ([b6d9bd7](https://www.github.com/googleapis/python-pubsub/commit/b6d9bd7c38d4fe597c25b7b5869fd4a1259c7687))
+* fix get topic_path in subscriber sample ([#210](https://www.github.com/googleapis/python-pubsub/issues/210)) ([7228f6c](https://www.github.com/googleapis/python-pubsub/commit/7228f6c9a4c050bf22bb4bc3582b89b04eaa8702))
+
 ## 2.1.0
 
 09-21-2020 02:19 PDT
