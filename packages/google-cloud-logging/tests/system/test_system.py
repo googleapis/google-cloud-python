@@ -14,6 +14,8 @@
 
 import datetime
 import logging
+import os
+import pytest
 import unittest
 
 from google.api_core.exceptions import BadGateway
@@ -81,10 +83,19 @@ class Config(object):
     """
 
     CLIENT = None
+    use_mtls = os.environ.get("GOOGLE_API_USE_MTLS_ENDPOINT", "never")
 
 
 def setUpModule():
     Config.CLIENT = client.Client()
+
+
+# Skip the test cases using bigquery, storage and pubsub clients for mTLS testing.
+# Bigquery and storage uses http which doesn't have mTLS support, pubsub doesn't
+# have mTLS fix released yet.
+skip_for_mtls = pytest.mark.skipif(
+    Config.use_mtls == "always", reason="Skip the test case for mTLS testing"
+)
 
 
 class TestLogging(unittest.TestCase):
@@ -408,6 +419,7 @@ class TestLogging(unittest.TestCase):
 
         return BUCKET_URI
 
+    @skip_for_mtls
     def test_create_sink_storage_bucket(self):
         uri = self._init_storage_bucket()
         SINK_NAME = "test-create-sink-bucket%s" % (_RESOURCE_ID,)
@@ -421,6 +433,7 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
+    @skip_for_mtls
     def test_create_sink_pubsub_topic(self):
         from google.cloud import pubsub_v1
 
@@ -474,6 +487,7 @@ class TestLogging(unittest.TestCase):
         bigquery_client.update_dataset(dataset, ["access_entries"])
         return dataset_uri
 
+    @skip_for_mtls
     def test_create_sink_bigquery_dataset(self):
         SINK_NAME = "test-create-sink-dataset%s" % (_RESOURCE_ID,)
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
@@ -486,6 +500,7 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
+    @skip_for_mtls
     def test_list_sinks(self):
         SINK_NAME = "test-list-sinks%s" % (_RESOURCE_ID,)
         uri = self._init_storage_bucket()
@@ -504,6 +519,7 @@ class TestLogging(unittest.TestCase):
         after_names = set(after.name for after in after_sinks)
         self.assertTrue(sink.name in after_names)
 
+    @skip_for_mtls
     def test_reload_sink(self):
         SINK_NAME = "test-reload-sink%s" % (_RESOURCE_ID,)
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
@@ -520,6 +536,7 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.filter_, DEFAULT_FILTER)
         self.assertEqual(sink.destination, uri)
 
+    @skip_for_mtls
     def test_update_sink(self):
         SINK_NAME = "test-update-sink%s" % (_RESOURCE_ID,)
         retry = RetryErrors((Conflict, ServiceUnavailable), max_tries=10)
