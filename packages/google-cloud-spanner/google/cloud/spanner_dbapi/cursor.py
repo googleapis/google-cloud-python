@@ -14,6 +14,7 @@
 
 """Database cursor for Google Cloud Spanner DB-API."""
 
+from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
 from google.api_core.exceptions import InternalServerError
@@ -22,7 +23,7 @@ from google.api_core.exceptions import InvalidArgument
 from collections import namedtuple
 
 from google.cloud import spanner_v1 as spanner
-
+from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 from google.cloud.spanner_dbapi.exceptions import IntegrityError
 from google.cloud.spanner_dbapi.exceptions import InterfaceError
 from google.cloud.spanner_dbapi.exceptions import OperationalError
@@ -34,11 +35,13 @@ from google.cloud.spanner_dbapi._helpers import code_to_display_size
 
 from google.cloud.spanner_dbapi import parse_utils
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
+from google.cloud.spanner_dbapi.parse_utils import sql_pyformat_args_to_spanner
 from google.cloud.spanner_dbapi.utils import PeekIterator
 
 _UNSET_COUNT = -1
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
+Statement = namedtuple("Statement", "sql, params, param_types, checksum")
 
 
 class Cursor(object):
@@ -54,6 +57,8 @@ class Cursor(object):
         self._row_count = _UNSET_COUNT
         self.connection = connection
         self._is_closed = False
+        # the currently running SQL statement results checksum
+        self._checksum = None
 
         # the number of rows to fetch at a time with fetchmany()
         self.arraysize = 1
@@ -166,12 +171,13 @@ class Cursor(object):
             self.connection.run_prior_DDL_statements()
 
             if not self.connection.autocommit:
-                transaction = self.connection.transaction_checkout()
+                sql, params = sql_pyformat_args_to_spanner(sql, args)
 
-                sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, args)
-
-                self._result_set = transaction.execute_sql(
-                    sql, params, param_types=get_param_types(params)
+                statement = Statement(
+                    sql, params, get_param_types(params), ResultsChecksum(),
+                )
+                (self._result_set, self._checksum,) = self.connection.run_statement(
+                    statement
                 )
                 self._itr = PeekIterator(self._result_set)
                 return
@@ -213,9 +219,31 @@ class Cursor(object):
         self._raise_if_closed()
 
         try:
-            return next(self)
+            res = next(self)
+            self._checksum.consume_result(res)
+            return res
         except StopIteration:
-            return None
+            return
+        except Aborted:
+            self.connection.retry_transaction()
+            return self.fetchone()
+
+    def fetchall(self):
+        """Fetch all (remaining) rows of a query result, returning them as
+        a sequence of sequences.
+        """
+        self._raise_if_closed()
+
+        res = []
+        try:
+            for row in self:
+                self._checksum.consume_result(row)
+                res.append(row)
+        except Aborted:
+            self._connection.retry_transaction()
+            return self.fetchall()
+
+        return res
 
     def fetchmany(self, size=None):
         """Fetch the next set of rows of a query result, returning a sequence
@@ -236,19 +264,16 @@ class Cursor(object):
         items = []
         for i in range(size):
             try:
-                items.append(tuple(self.__next__()))
+                res = next(self)
+                self._checksum.consume_result(res)
+                items.append(res)
             except StopIteration:
                 break
+            except Aborted:
+                self._connection.retry_transaction()
+                return self.fetchmany(size)
 
         return items
-
-    def fetchall(self):
-        """Fetch all (remaining) rows of a query result, returning them as
-        a sequence of sequences.
-        """
-        self._raise_if_closed()
-
-        return list(self.__iter__())
 
     def nextset(self):
         """A no-op, raising an error if the cursor or connection is closed."""

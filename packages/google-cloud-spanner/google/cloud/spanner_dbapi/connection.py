@@ -14,11 +14,16 @@
 
 """DB-API Connection for the Google Cloud Spanner."""
 
+import time
 import warnings
 
+from google.api_core.exceptions import Aborted
 from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
+from google.cloud.spanner_v1.session import _get_retry_delay
 
+from google.cloud.spanner_dbapi.checksum import _compare_checksums
+from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 from google.cloud.spanner_dbapi.cursor import Cursor
 from google.cloud.spanner_dbapi.exceptions import InterfaceError
 from google.cloud.spanner_dbapi.version import DEFAULT_USER_AGENT
@@ -26,6 +31,7 @@ from google.cloud.spanner_dbapi.version import PY_VERSION
 
 
 AUTOCOMMIT_MODE_WARNING = "This method is non-operational in autocommit mode"
+MAX_INTERNAL_RETRIES = 50
 
 
 class Connection:
@@ -48,9 +54,16 @@ class Connection:
 
         self._transaction = None
         self._session = None
+        # SQL statements, which were executed
+        # within the current transaction
+        self._statements = []
 
         self.is_closed = False
         self._autocommit = False
+        # indicator to know if the session pool used by
+        # this connection should be cleared on the
+        # connection close
+        self._own_pool = True
 
     @property
     def autocommit(self):
@@ -114,6 +127,58 @@ class Connection:
         self.database._pool.put(self._session)
         self._session = None
 
+    def retry_transaction(self):
+        """Retry the aborted transaction.
+
+        All the statements executed in the original transaction
+        will be re-executed in new one. Results checksums of the
+        original statements and the retried ones will be compared.
+
+        :raises: :class:`google.cloud.spanner_dbapi.exceptions.RetryAborted`
+            If results checksum of the retried statement is
+            not equal to the checksum of the original one.
+        """
+        attempt = 0
+        while True:
+            self._transaction = None
+            attempt += 1
+            if attempt > MAX_INTERNAL_RETRIES:
+                raise
+
+            try:
+                self._rerun_previous_statements()
+                break
+            except Aborted as exc:
+                delay = _get_retry_delay(exc.errors[0], attempt)
+                if delay:
+                    time.sleep(delay)
+
+    def _rerun_previous_statements(self):
+        """
+        Helper to run all the remembered statements
+        from the last transaction.
+        """
+        for statement in self._statements:
+            res_iter, retried_checksum = self.run_statement(statement, retried=True)
+            # executing all the completed statements
+            if statement != self._statements[-1]:
+                for res in res_iter:
+                    retried_checksum.consume_result(res)
+
+                _compare_checksums(statement.checksum, retried_checksum)
+            # executing the failed statement
+            else:
+                # streaming up to the failed result or
+                # to the end of the streaming iterator
+                while len(retried_checksum) < len(statement.checksum):
+                    try:
+                        res = next(iter(res_iter))
+                        retried_checksum.consume_result(res)
+                    except StopIteration:
+                        break
+
+                _compare_checksums(statement.checksum, retried_checksum)
+
     def transaction_checkout(self):
         """Get a Cloud Spanner transaction.
 
@@ -158,6 +223,9 @@ class Connection:
         ):
             self._transaction.rollback()
 
+        if self._own_pool:
+            self.database._pool.clear()
+
         self.is_closed = True
 
     def commit(self):
@@ -168,8 +236,13 @@ class Connection:
         if self._autocommit:
             warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
         elif self._transaction:
-            self._transaction.commit()
-            self._release_session()
+            try:
+                self._transaction.commit()
+                self._release_session()
+                self._statements = []
+            except Aborted:
+                self.retry_transaction()
+                self.commit()
 
     def rollback(self):
         """Rolls back any pending transaction.
@@ -182,6 +255,7 @@ class Connection:
         elif self._transaction:
             self._transaction.rollback()
             self._release_session()
+            self._statements = []
 
     def cursor(self):
         """Factory to create a DB-API Cursor."""
@@ -198,6 +272,32 @@ class Connection:
 
             return self.database.update_ddl(ddl_statements).result()
 
+    def run_statement(self, statement, retried=False):
+        """Run single SQL statement in begun transaction.
+
+        This method is never used in autocommit mode. In
+        !autocommit mode however it remembers every executed
+        SQL statement with its parameters.
+
+        :type statement: :class:`dict`
+        :param statement: SQL statement to execute.
+
+        :rtype: :class:`google.cloud.spanner_v1.streamed.StreamedResultSet`,
+                :class:`google.cloud.spanner_dbapi.checksum.ResultsChecksum`
+        :returns: Streamed result set of the statement and a
+                  checksum of this statement results.
+        """
+        transaction = self.transaction_checkout()
+        if not retried:
+            self._statements.append(statement)
+
+        return (
+            transaction.execute_sql(
+                statement.sql, statement.params, param_types=statement.param_types,
+            ),
+            ResultsChecksum() if retried else statement.checksum,
+        )
+
     def __enter__(self):
         return self
 
@@ -207,7 +307,12 @@ class Connection:
 
 
 def connect(
-    instance_id, database_id, project=None, credentials=None, pool=None, user_agent=None
+    instance_id,
+    database_id,
+    project=None,
+    credentials=None,
+    pool=None,
+    user_agent=None,
 ):
     """Creates a connection to a Google Cloud Spanner database.
 
@@ -261,4 +366,8 @@ def connect(
     if not database.exists():
         raise ValueError("database '%s' does not exist." % database_id)
 
-    return Connection(instance, database)
+    conn = Connection(instance, database)
+    if pool is not None:
+        conn._own_pool = False
+
+    return conn

@@ -285,8 +285,11 @@ class TestCursor(unittest.TestCase):
         sys.version_info[0] < 3, "Python 2 has an outdated iterator definition"
     )
     def test_fetchone(self):
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
         cursor = self._make_one(connection)
+        cursor._checksum = ResultsChecksum()
         lst = [1, 2, 3]
         cursor._itr = iter(lst)
         for i in range(len(lst)):
@@ -294,8 +297,11 @@ class TestCursor(unittest.TestCase):
         self.assertIsNone(cursor.fetchone())
 
     def test_fetchmany(self):
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
         cursor = self._make_one(connection)
+        cursor._checksum = ResultsChecksum()
         lst = [(1,), (2,), (3,)]
         cursor._itr = iter(lst)
 
@@ -305,8 +311,11 @@ class TestCursor(unittest.TestCase):
         self.assertEqual(result, lst[1:])
 
     def test_fetchall(self):
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
         cursor = self._make_one(connection)
+        cursor._checksum = ResultsChecksum()
         lst = [(1,), (2,), (3,)]
         cursor._itr = iter(lst)
         self.assertEqual(cursor.fetchall(), lst)
@@ -453,3 +462,108 @@ class TestCursor(unittest.TestCase):
                 param_types={"table_name": param_types.STRING},
             )
             self.assertEqual(result, expected)
+
+    def test_fetchone_retry_aborted(self):
+        """Check that aborted fetch re-executing transaction."""
+        from google.api_core.exceptions import Aborted
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.connection import connect
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+        cursor._checksum = ResultsChecksum()
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
+            side_effect=(Aborted("Aborted"), None),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_dbapi.connection.Connection.retry_transaction"
+            ) as retry_mock:
+
+                cursor.fetchone()
+
+                retry_mock.assert_called_with()
+
+    def test_fetchone_retry_aborted_statements(self):
+        """Check that retried transaction executing the same statements."""
+        from google.api_core.exceptions import Aborted
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.connection import connect
+        from google.cloud.spanner_dbapi.cursor import Statement
+
+        row = ["field1", "field2"]
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+        cursor._checksum = ResultsChecksum()
+        cursor._checksum.consume_result(row)
+
+        statement = Statement("SELECT 1", [], {}, cursor._checksum,)
+        connection._statements.append(statement)
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
+            side_effect=(Aborted("Aborted"), None),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_dbapi.connection.Connection.run_statement",
+                return_value=([row], ResultsChecksum()),
+            ) as run_mock:
+
+                cursor.fetchone()
+
+                run_mock.assert_called_with(statement, retried=True)
+
+    def test_fetchone_retry_aborted_statements_checksums_mismatch(self):
+        """Check transaction retrying with underlying data being changed."""
+        from google.api_core.exceptions import Aborted
+        from google.cloud.spanner_dbapi.exceptions import RetryAborted
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.connection import connect
+        from google.cloud.spanner_dbapi.cursor import Statement
+
+        row = ["field1", "field2"]
+        row2 = ["updated_field1", "field2"]
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+        cursor._checksum = ResultsChecksum()
+        cursor._checksum.consume_result(row)
+
+        statement = Statement("SELECT 1", [], {}, cursor._checksum,)
+        connection._statements.append(statement)
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.cursor.Cursor.__next__",
+            side_effect=(Aborted("Aborted"), None),
+        ):
+            with mock.patch(
+                "google.cloud.spanner_dbapi.connection.Connection.run_statement",
+                return_value=([row2], ResultsChecksum()),
+            ) as run_mock:
+
+                with self.assertRaises(RetryAborted):
+                    cursor.fetchone()
+
+                run_mock.assert_called_with(statement, retried=True)

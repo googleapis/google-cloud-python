@@ -100,3 +100,13 @@ class NotSupportedError(DatabaseError):
     """
 
     pass
+
+
+class RetryAborted(OperationalError):
+    """
+    Error for case of no aborted transaction retry
+    is available, because of underlying data being
+    changed during a retry.
+    """
+
+    pass
