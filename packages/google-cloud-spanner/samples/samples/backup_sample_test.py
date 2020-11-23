@@ -79,12 +79,6 @@ def test_restore_database(capsys):
     assert BACKUP_ID in out
 
 
-@pytest.mark.skip(
-    reason=(
-        "failing due to a production bug"
-        "https://github.com/googleapis/python-spanner/issues/149"
-    )
-)
 def test_list_backup_operations(capsys, spanner_instance):
     backup_sample.list_backup_operations(INSTANCE_ID, DATABASE_ID)
     out, _ = capsys.readouterr()
