@@ -23,7 +23,7 @@ import six
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud._helpers import _datetime_from_microseconds
-from google.cloud._helpers import _microseconds_from_datetime
+from google.cloud._helpers import _RFC3339_MICROS
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
 
@@ -313,12 +313,9 @@ def _timestamp_to_json_parameter(value):
 
 
 def _timestamp_to_json_row(value):
-    """Coerce 'value' to an JSON-compatible representation.
-
-    This version returns floating-point seconds value used in row data.
-    """
+    """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, datetime.datetime):
-        value = _microseconds_from_datetime(value) * 1e-6
+        value = value.strftime(_RFC3339_MICROS)
     return value
 
 

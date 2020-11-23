@@ -5804,7 +5804,7 @@ class TestClient(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud.bigquery.schema import SchemaField
 
         WHEN_TS = 1437767599.006
@@ -5834,7 +5834,7 @@ class TestClient(unittest.TestCase):
             result = {"full_name": row[0], "age": str(row[1])}
             joined = row[2]
             if isinstance(joined, datetime.datetime):
-                joined = _microseconds_from_datetime(joined) * 1e-6
+                joined = joined.strftime(_RFC3339_MICROS)
             if joined is not None:
                 result["joined"] = joined
             return result
@@ -5864,7 +5864,7 @@ class TestClient(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import _microseconds_from_datetime
+        from google.cloud._helpers import _RFC3339_MICROS
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table
 
@@ -5910,7 +5910,7 @@ class TestClient(unittest.TestCase):
                 row = copy.deepcopy(row)
                 del row["joined"]
             elif isinstance(joined, datetime.datetime):
-                row["joined"] = _microseconds_from_datetime(joined) * 1e-6
+                row["joined"] = joined.strftime(_RFC3339_MICROS)
             row["age"] = str(row["age"])
             return row
 
@@ -6109,16 +6109,16 @@ class TestClient(unittest.TestCase):
                             {
                                 "score": "12",
                                 "times": [
-                                    1543665600.0,  # 2018-12-01 12:00 UTC
-                                    1543669200.0,  # 2018-12-01 13:00 UTC
+                                    "2018-12-01T12:00:00.000000Z",
+                                    "2018-12-01T13:00:00.000000Z",
                                 ],
                                 "distances": [1.25, 2.5],
                             },
                             {
                                 "score": "13",
                                 "times": [
-                                    1543752000.0,  # 2018-12-02 12:00 UTC
-                                    1543755600.0,  # 2018-12-02 13:00 UTC
+                                    "2018-12-02T12:00:00.000000Z",
+                                    "2018-12-02T13:00:00.000000Z",
                                 ],
                                 "distances": [-1.25, -2.5],
                             },
