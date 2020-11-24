@@ -55,9 +55,9 @@ extras = {
     ],
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
-        "opentelemetry-api==0.9b0",
-        "opentelemetry-sdk==0.9b0",
-        "opentelemetry-instrumentation==0.9b0 ",
+        "opentelemetry-api==0.11b0",
+        "opentelemetry-sdk==0.11b0",
+        "opentelemetry-instrumentation==0.11b0",
     ],
 }
 
