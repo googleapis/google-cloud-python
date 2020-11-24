@@ -1630,6 +1630,40 @@ class TestRowIterator(unittest.TestCase):
 
         api_request.assert_called_once_with(method="GET", path=path, query_params={})
 
+    def test_iterate_with_cached_first_page(self):
+        from google.cloud.bigquery.schema import SchemaField
+
+        first_page = {
+            "rows": [
+                {"f": [{"v": "Whillma Phlyntstone"}, {"v": "27"}]},
+                {"f": [{"v": "Bhetty Rhubble"}, {"v": "28"}]},
+            ],
+            "pageToken": "next-page",
+        }
+        schema = [
+            SchemaField("name", "STRING", mode="REQUIRED"),
+            SchemaField("age", "INTEGER", mode="REQUIRED"),
+        ]
+        rows = [
+            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+        ]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(
+            _mock_client(), api_request, path, schema, first_page_response=first_page
+        )
+        rows = list(row_iterator)
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0].age, 27)
+        self.assertEqual(rows[1].age, 28)
+        self.assertEqual(rows[2].age, 32)
+        self.assertEqual(rows[3].age, 33)
+
+        api_request.assert_called_once_with(
+            method="GET", path=path, query_params={"pageToken": "next-page"}
+        )
+
     def test_page_size(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -1653,6 +1687,29 @@ class TestRowIterator(unittest.TestCase):
             method="GET",
             path=path,
             query_params={"maxResults": row_iterator._page_size},
+        )
+
+    def test__is_completely_cached_returns_false_without_first_page(self):
+        iterator = self._make_one(first_page_response=None)
+        self.assertFalse(iterator._is_completely_cached())
+
+    def test__is_completely_cached_returns_false_with_page_token(self):
+        first_page = {"pageToken": "next-page"}
+        iterator = self._make_one(first_page_response=first_page)
+        self.assertFalse(iterator._is_completely_cached())
+
+    def test__is_completely_cached_returns_true(self):
+        first_page = {"rows": []}
+        iterator = self._make_one(first_page_response=first_page)
+        self.assertTrue(iterator._is_completely_cached())
+
+    def test__validate_bqstorage_returns_false_when_completely_cached(self):
+        first_page = {"rows": []}
+        iterator = self._make_one(first_page_response=first_page)
+        self.assertFalse(
+            iterator._validate_bqstorage(
+                bqstorage_client=None, create_bqstorage_client=True
+            )
         )
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")

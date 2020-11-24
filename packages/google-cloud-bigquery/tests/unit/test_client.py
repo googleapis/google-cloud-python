@@ -319,7 +319,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method="GET",
             path=path,
-            query_params={"timeoutMs": 500, "location": self.LOCATION},
+            query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
             timeout=42,
         )
 
@@ -336,7 +336,7 @@ class TestClient(unittest.TestCase):
         conn.api_request.assert_called_once_with(
             method="GET",
             path="/projects/PROJECT/queries/nothere",
-            query_params={"location": self.LOCATION},
+            query_params={"maxResults": 0, "location": self.LOCATION},
             timeout=None,
         )
 

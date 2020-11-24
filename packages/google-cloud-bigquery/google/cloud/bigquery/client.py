@@ -1534,7 +1534,7 @@ class Client(ClientWithProject):
                 A new ``_QueryResults`` instance.
         """
 
-        extra_params = {}
+        extra_params = {"maxResults": 0}
 
         if project is None:
             project = self.project
@@ -3187,7 +3187,6 @@ class Client(ClientWithProject):
         page_size=None,
         retry=DEFAULT_RETRY,
         timeout=None,
-        first_page_response=None,
     ):
         """List the rows of a completed query.
         See
@@ -3248,7 +3247,6 @@ class Client(ClientWithProject):
             table=destination,
             extra_params=params,
             total_rows=total_rows,
-            first_page_response=first_page_response,
         )
         return row_iterator
 

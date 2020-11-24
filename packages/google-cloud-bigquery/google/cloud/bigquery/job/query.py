@@ -1177,10 +1177,6 @@ class QueryJob(_AsyncJob):
         if self._query_results.total_rows is None:
             return _EmptyRowIterator()
 
-        first_page_response = None
-        if max_results is None and page_size is None and start_index is None:
-            first_page_response = self._query_results._properties
-
         rows = self._client._list_rows_from_query_results(
             self.job_id,
             self.location,
@@ -1193,7 +1189,6 @@ class QueryJob(_AsyncJob):
             start_index=start_index,
             retry=retry,
             timeout=timeout,
-            first_page_response=first_page_response,
         )
         rows._preserve_order = _contains_order_by(self.query)
         return rows
