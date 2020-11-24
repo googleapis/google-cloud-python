@@ -49,7 +49,7 @@ After `installation <#Installation>`__, you'll need to edit your Django
    .. code:: python
 
        INSTALLED_APPS = [
-           'spanner_django',
+           'django_spanner',
            ...
        ]
 
@@ -62,7 +62,7 @@ Format
 
     DATABASES = {
         'default': {
-            'ENGINE': 'spanner_django',
+            'ENGINE': 'django_spanner',
             'PROJECT': '<project_id>',
             'INSTANCE': '<instance_id>',
             'NAME': '<database_name>',
@@ -81,7 +81,7 @@ Database configurations
 
     DATABASES = {
         'default': {
-            'ENGINE': 'spanner_django',
+            'ENGINE': 'django_spanner',
             'PROJECT': 'appdev-soda-spanner-staging', # Or the GCP project-id
             'INSTANCE': 'django-dev1', # Or the Cloud Spanner instance
             'NAME': 'db1', # Or the Cloud Spanner database to use
