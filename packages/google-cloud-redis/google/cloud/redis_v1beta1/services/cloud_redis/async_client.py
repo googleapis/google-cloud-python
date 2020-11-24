@@ -29,11 +29,11 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation
-from google.api_core import operation_async
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.redis_v1beta1.services.cloud_redis import pagers
 from google.cloud.redis_v1beta1.types import cloud_redis
-from google.protobuf import any_pb2 as any  # type: ignore
+from google.protobuf import any_pb2 as gp_any  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
@@ -406,7 +406,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_redis.Instance,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.
@@ -511,7 +511,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_redis.Instance,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.
@@ -604,7 +604,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_redis.Instance,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.
@@ -704,7 +704,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_redis.Instance,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.
@@ -800,7 +800,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_redis.Instance,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.
@@ -895,7 +895,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             cloud_redis.Instance,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.
@@ -991,7 +991,7 @@ class CloudRedisAsyncClient:
             response,
             self._client._transport.operations_client,
             empty.Empty,
-            metadata_type=any.Any,
+            metadata_type=gp_any.Any,
         )
 
         # Done; return the response.

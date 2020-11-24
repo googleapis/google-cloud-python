@@ -29,8 +29,8 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation
-from google.api_core import operation_async
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.redis_v1.services.cloud_redis import pagers
 from google.cloud.redis_v1.types import cloud_redis
 from google.protobuf import empty_pb2 as empty  # type: ignore
