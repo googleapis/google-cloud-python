@@ -3613,7 +3613,7 @@ class Blob(_PropertyMixin):
         if value is not None:
             value = _datetime_to_rfc3339(value)
 
-        self._properties["customTime"] = value
+        self._patch_property("customTime", value)
 
 
 def _get_encryption_headers(key, source=False):

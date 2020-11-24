@@ -3987,6 +3987,7 @@ class Test_Blob(unittest.TestCase):
             if_generation_match=GENERATION_NUMBER,
             if_source_generation_match=SOURCE_GENERATION_NUMBER,
         )
+
         self.assertEqual(blob.storage_class, "NEARLINE")
 
         kw = connection._requested
@@ -4236,6 +4237,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.metadata)
         blob.metadata = METADATA
         self.assertEqual(blob.metadata, METADATA)
+        self.assertIn("metadata", blob._changes)
 
     def test_metadata_setter_w_nan(self):
         BLOB_NAME = "blob-name"
@@ -4246,6 +4248,7 @@ class Test_Blob(unittest.TestCase):
         blob.metadata = METADATA
         value = blob.metadata["foo"]
         self.assertIsInstance(value, str)
+        self.assertIn("metadata", blob._changes)
 
     def test_metageneration(self):
         BUCKET = object()
@@ -4444,6 +4447,7 @@ class Test_Blob(unittest.TestCase):
         self.assertIsNone(blob.custom_time)
         blob.custom_time = TIMESTAMP
         self.assertEqual(blob.custom_time, TIMESTAMP)
+        self.assertIn("customTime", blob._changes)
 
     def test_custom_time_setter_none_value(self):
         from google.cloud._helpers import _RFC3339_MICROS
