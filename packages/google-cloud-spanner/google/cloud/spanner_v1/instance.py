@@ -14,7 +14,6 @@
 
 """User friendly container for Cloud Spanner Instance."""
 
-import google.api_core.operation
 import re
 
 from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
@@ -466,7 +465,7 @@ class Instance(object):
         page_iter = self._client.database_admin_api.list_backup_operations(
             request=request, metadata=metadata
         )
-        return map(self._item_to_operation, page_iter)
+        return page_iter
 
     def list_database_operations(self, filter_="", page_size=None):
         """List database operations for the instance.
@@ -494,18 +493,4 @@ class Instance(object):
         page_iter = self._client.database_admin_api.list_database_operations(
             request=request, metadata=metadata
         )
-        return map(self._item_to_operation, page_iter)
-
-    def _item_to_operation(self, operation_pb):
-        """Convert an operation protobuf to the native object.
-        :type operation_pb: :class:`~google.longrunning.operations.Operation`
-        :param operation_pb: An operation returned from the API.
-        :rtype: :class:`~google.api_core.operation.Operation`
-        :returns: The next operation in the page.
-        """
-        operations_client = self._client.database_admin_api.transport.operations_client
-        metadata_type = _type_string_to_type_pb(operation_pb.metadata.type_url)
-        response_type = _OPERATION_RESPONSE_TYPES[metadata_type]
-        return google.api_core.operation.from_gapic(
-            operation_pb, operations_client, response_type, metadata_type=metadata_type
-        )
+        return page_iter
