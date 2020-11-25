@@ -10,22 +10,22 @@ from django.db.backends.base.introspection import (
     TableInfo,
 )
 from django.db.models import Index
-from google.cloud.spanner_v1.proto import type_pb2
+from google.cloud.spanner_v1 import TypeCode
 
 
 class DatabaseIntrospection(BaseDatabaseIntrospection):
     data_types_reverse = {
-        type_pb2.BOOL: "BooleanField",
-        type_pb2.BYTES: "BinaryField",
-        type_pb2.DATE: "DateField",
-        type_pb2.FLOAT64: "FloatField",
-        type_pb2.INT64: "IntegerField",
-        type_pb2.STRING: "CharField",
-        type_pb2.TIMESTAMP: "DateTimeField",
+        TypeCode.BOOL: "BooleanField",
+        TypeCode.BYTES: "BinaryField",
+        TypeCode.DATE: "DateField",
+        TypeCode.FLOAT64: "FloatField",
+        TypeCode.INT64: "IntegerField",
+        TypeCode.STRING: "CharField",
+        TypeCode.TIMESTAMP: "DateTimeField",
     }
 
     def get_field_type(self, data_type, description):
-        if data_type == type_pb2.STRING and description.internal_size == "MAX":
+        if data_type == TypeCode.STRING and description.internal_size == "MAX":
             return "TextField"
         return super().get_field_type(data_type, description)
 
