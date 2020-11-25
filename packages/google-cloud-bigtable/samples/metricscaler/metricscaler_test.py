@@ -15,7 +15,6 @@
 """Unit and system tests for metricscaler.py"""
 
 import os
-import time
 import uuid
 
 from google.cloud import bigtable
@@ -23,6 +22,7 @@ from google.cloud.bigtable import enums
 from mock import Mock, patch
 
 import pytest
+from test_utils.retry import RetryInstanceState
 
 from metricscaler import get_cpu_load
 from metricscaler import get_storage_utilization
@@ -109,32 +109,31 @@ def test_scale_bigtable(instance):
     instance.reload()
 
     cluster = instance.cluster(BIGTABLE_INSTANCE)
-    cluster.reload()
+
+    _nonzero_node_count = RetryInstanceState(
+        instance_predicate=lambda c: c.serve_nodes > 0,
+        max_tries=10,
+    )
+    _nonzero_node_count(cluster.reload)()
+
     original_node_count = cluster.serve_nodes
 
     scale_bigtable(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, True)
 
-    for n in range(10):
-        time.sleep(10)
-        cluster.reload()
-        new_node_count = cluster.serve_nodes
-        try:
-            assert (new_node_count == (original_node_count + SIZE_CHANGE_STEP))
-        except AssertionError:
-            if n == 9:
-                raise
+    expected_count = original_node_count + SIZE_CHANGE_STEP
+    _scaled_node_count = RetryInstanceState(
+        instance_predicate=lambda c: c.serve_nodes == expected_count,
+        max_tries=10,
+    )
+    _scaled_node_count(cluster.reload)()
 
     scale_bigtable(BIGTABLE_INSTANCE, BIGTABLE_INSTANCE, False)
 
-    for n in range(10):
-        time.sleep(10)
-        cluster.reload()
-        final_node_count = cluster.serve_nodes
-        try:
-            assert final_node_count == original_node_count
-        except AssertionError:
-            if n == 9:
-                raise
+    _restored_node_count = RetryInstanceState(
+        instance_predicate=lambda c: c.serve_nodes == original_node_count,
+        max_tries=10,
+    )
+    _restored_node_count(cluster.reload)()
 
 
 def test_handle_dev_instance(capsys, dev_instance):
