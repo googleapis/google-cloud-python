@@ -17,7 +17,7 @@ description = "Bridge to enable using Django with Spanner."
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 3 - Alpha"
-dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 1.8.0"]
+dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 2.0.0"]
 extras = {}
 
 BASE_DIR = os.path.dirname(__file__)
@@ -53,7 +53,6 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Topic :: Utilities",
@@ -61,5 +60,5 @@ setup(
         "Framework :: Django :: 2.2",
     ],
     extras_require=extras,
-    python_requires=">=3.5",
+    python_requires=">=3.6",
 )
