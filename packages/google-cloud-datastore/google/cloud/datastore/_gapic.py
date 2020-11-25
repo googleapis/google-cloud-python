@@ -15,7 +15,7 @@
 """Helpers for making API requests via gapic / gRPC."""
 
 from grpc import insecure_channel
-import six
+from urllib.parse import urlparse
 
 from google.cloud._helpers import make_secure_channel
 from google.cloud._http import DEFAULT_USER_AGENT
@@ -32,7 +32,7 @@ def make_datastore_api(client):
     :rtype: :class:`.datastore.v1.datastore_client.DatastoreClient`
     :returns: A datastore API instance with the proper credentials.
     """
-    parse_result = six.moves.urllib_parse.urlparse(client._base_url)
+    parse_result = urlparse(client._base_url)
     host = parse_result.netloc
     if parse_result.scheme == "https":
         channel = make_secure_channel(client._credentials, DEFAULT_USER_AGENT, host)

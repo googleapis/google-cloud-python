@@ -15,7 +15,7 @@
 import unittest
 
 import mock
-from six.moves import http_client
+from http import client
 
 import requests
 
@@ -72,7 +72,7 @@ class Test__request(unittest.TestCase):
         error.code = code_pb2.FAILED_PRECONDITION
 
         http = _make_requests_session(
-            [_make_response(http_client.BAD_REQUEST, content=error.SerializeToString())]
+            [_make_response(client.BAD_REQUEST, content=error.SerializeToString())]
         )
 
         with self.assertRaises(BadRequest) as exc:
@@ -808,7 +808,7 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
             self.assertEqual(key_before, key_after)
 
 
-def _make_response(status=http_client.OK, content=b"", headers={}):
+def _make_response(status=client.OK, content=b"", headers={}):
     response = requests.Response()
     response.status_code = status
     response._content = content

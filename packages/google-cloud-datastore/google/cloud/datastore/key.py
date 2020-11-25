@@ -16,7 +16,6 @@
 
 import base64
 import copy
-import six
 
 from google.cloud.datastore_v1.types import entity as _entity_pb2
 
@@ -185,14 +184,14 @@ class Key(object):
         result = []
         for kind, id_or_name in zip(kind_list, id_or_name_list):
             curr_key_part = {}
-            if isinstance(kind, six.string_types):
+            if isinstance(kind, str):
                 curr_key_part["kind"] = kind
             else:
                 raise ValueError(kind, "Kind was not a string.")
 
-            if isinstance(id_or_name, six.string_types):
+            if isinstance(id_or_name, str):
                 curr_key_part["name"] = id_or_name
-            elif isinstance(id_or_name, six.integer_types):
+            elif isinstance(id_or_name, int):
                 curr_key_part["id"] = id_or_name
             elif id_or_name is not partial_ending:
                 raise ValueError(id_or_name, "ID/name was not a string or integer.")
@@ -264,9 +263,9 @@ class Key(object):
         if not self.is_partial:
             raise ValueError("Only a partial key can be completed.")
 
-        if isinstance(id_or_name, six.string_types):
+        if isinstance(id_or_name, str):
             id_or_name_key = "name"
-        elif isinstance(id_or_name, six.integer_types):
+        elif isinstance(id_or_name, int):
             id_or_name_key = "id"
         else:
             raise ValueError(id_or_name, "ID/name was not a string or integer.")

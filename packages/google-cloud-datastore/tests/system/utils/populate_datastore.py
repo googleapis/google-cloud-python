@@ -23,8 +23,6 @@ import sys
 import time
 import uuid
 
-import six
-
 from google.cloud import datastore
 
 
@@ -121,7 +119,7 @@ def add_characters(client=None):
         # Get a client that uses the test dataset.
         client = datastore.Client()
     with client.transaction() as xact:
-        for key_path, character in six.moves.zip(KEY_PATHS, CHARACTERS):
+        for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character["name"]:
                 raise ValueError(("Character and key don't agree", key_path, character))
             entity = datastore.Entity(key=client.key(*key_path))

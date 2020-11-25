@@ -18,7 +18,6 @@ import unittest
 import warnings
 
 import requests
-import six
 
 from google.cloud._helpers import UTC
 from google.cloud import datastore
@@ -294,7 +293,7 @@ class TestDatastoreQuery(TestDatastore):
 
         # Fetch characters.
         iterator = query.fetch(limit=limit)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         character_entities = list(page)
         cursor = iterator.next_page_token
         self.assertEqual(len(character_entities), limit)
@@ -442,7 +441,7 @@ class TestDatastoreQuery(TestDatastore):
         iterator = page_query.fetch(limit=limit, offset=offset)
 
         # Fetch characters.
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         entities = list(page)
         cursor = iterator.next_page_token
         self.assertEqual(len(entities), limit)
@@ -466,7 +465,7 @@ class TestDatastoreQuery(TestDatastore):
         iterator = page_query.fetch(limit=limit, offset=offset)
 
         # Fetch characters.
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         entities = list(page)
         cursor = iterator.next_page_token
         self.assertEqual(len(entities), limit)

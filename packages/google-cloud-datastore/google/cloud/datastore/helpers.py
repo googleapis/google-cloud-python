@@ -22,7 +22,6 @@ import itertools
 
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
-import six
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
@@ -105,7 +104,7 @@ def _property_tuples(entity_pb):
     :returns: An iterator that yields tuples of a name and ``Value``
               corresponding to properties on the entity.
     """
-    return six.iteritems(entity_pb.properties)
+    return iter(entity_pb.properties.items())
 
 
 def entity_from_protobuf(pb):
@@ -206,7 +205,7 @@ def _set_pb_meaning_from_entity(entity, name, value, value_pb, is_list=False):
     if is_list:
         if not isinstance(meaning, list):
             meaning = itertools.repeat(meaning)
-        val_iter = six.moves.zip(value_pb.array_value.values, meaning)
+        val_iter = zip(value_pb.array_value.values, meaning)
         for sub_value_pb, sub_meaning in val_iter:
             if sub_meaning is not None:
                 sub_value_pb.meaning = sub_meaning
@@ -359,11 +358,11 @@ def _pb_attr_value(val):
         name, value = "boolean", val
     elif isinstance(val, float):
         name, value = "double", val
-    elif isinstance(val, six.integer_types):
+    elif isinstance(val, int):
         name, value = "integer", val
-    elif isinstance(val, six.text_type):
+    elif isinstance(val, str):
         name, value = "string", val
-    elif isinstance(val, six.binary_type):
+    elif isinstance(val, bytes):
         name, value = "blob", val
     elif isinstance(val, Entity):
         name, value = "entity", val

@@ -19,8 +19,6 @@ from __future__ import print_function
 import os
 import sys
 
-import six
-
 from google.cloud import datastore
 
 
@@ -96,7 +94,7 @@ def main():
 
     print_func("This command will remove all entities for " "the following kinds:")
     print_func("\n".join("- " + val for val in kinds))
-    response = six.moves.input("Is this OK [y/n]? ")
+    response = input("Is this OK [y/n]? ")
 
     if response.lower() == "y":
 
