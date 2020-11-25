@@ -40,7 +40,7 @@ try:
     _GAPIC_LIBRARY_VERSION = pkg_resources.get_distribution(
         "google-cloud-bigtable"
     ).version
-except pkg_resources.DistributionNotFound:
+except pkg_resources.DistributionNotFound:  # pragma: NO COVER
     _GAPIC_LIBRARY_VERSION = None
 
 

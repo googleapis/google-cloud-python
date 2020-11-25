@@ -352,6 +352,7 @@ intersphinx_mapping = {
         None,
     ),
     "grpc": ("https://grpc.io/grpc/python/", None),
+    "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
 }
 
 
