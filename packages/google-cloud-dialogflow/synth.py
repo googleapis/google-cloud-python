@@ -16,8 +16,10 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
+common = gcp.CommonTemplates()
 
 versions = ["v2beta1", "v2"]
 
@@ -314,5 +316,15 @@ s.replace(
     """client\.agent_path\('\[PROJECT\]'\)""",
     """client.agent_path("[PROJECT]", "[AGENT]")""",
 )
+
+# ----------------------------------------------------------------------------
+# Add templated files
+# ----------------------------------------------------------------------------
+templated_files = common.py_library(
+    samples=True,
+)
+s.move(templated_files, excludes=["noxfile.py"])
+
+python.py_samples()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
