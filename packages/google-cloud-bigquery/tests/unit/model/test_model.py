@@ -186,6 +186,23 @@ def test_from_api_repr_w_unknown_fields(target_class):
     assert got._properties is resource
 
 
+def test_from_api_repr_w_unknown_type(target_class):
+    from google.cloud.bigquery import ModelReference
+
+    resource = {
+        "modelReference": {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "modelId": "my_model",
+        },
+        "modelType": "BE_A_GOOD_ROLE_MODEL",
+    }
+    got = target_class.from_api_repr(resource)
+    assert got.reference == ModelReference.from_string("my-project.my_dataset.my_model")
+    assert got.model_type == 0
+    assert got._properties is resource
+
+
 @pytest.mark.parametrize(
     "resource,filter_fields,expected",
     [

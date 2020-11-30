@@ -305,9 +305,15 @@ class Model(object):
             start_time = datetime_helpers.from_microseconds(1e3 * float(start_time))
             training_run["startTime"] = datetime_helpers.to_rfc3339(start_time)
 
-        this._proto = json_format.ParseDict(
-            resource, types.Model()._pb, ignore_unknown_fields=True
-        )
+        try:
+            this._proto = json_format.ParseDict(
+                resource, types.Model()._pb, ignore_unknown_fields=True
+            )
+        except json_format.ParseError:
+            resource["modelType"] = "MODEL_TYPE_UNSPECIFIED"
+            this._proto = json_format.ParseDict(
+                resource, types.Model()._pb, ignore_unknown_fields=True
+            )
         return this
 
     def _build_resource(self, filter_fields):
