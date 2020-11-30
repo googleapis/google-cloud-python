@@ -272,6 +272,11 @@ class TestTableReference(unittest.TestCase):
         )
         self.assertEqual(repr(table1), expected)
 
+    def test___str__(self):
+        dataset = DatasetReference("project1", "dataset1")
+        table1 = self._make_one(dataset, "table1")
+        self.assertEqual(str(table1), "project1.dataset1.table1")
+
 
 class TestTable(unittest.TestCase, _SchemaBase):
 
@@ -813,6 +818,9 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(got.project, "string-project")
         self.assertEqual(got.dataset_id, "string_dataset")
         self.assertEqual(got.table_id, "string_table")
+        self.assertEqual(
+            str(got.reference), "string-project.string_dataset.string_table"
+        )
 
     def test_from_string_legacy_string(self):
         cls = self._get_target_class()

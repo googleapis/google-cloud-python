@@ -262,6 +262,9 @@ class TableReference(object):
     def __hash__(self):
         return hash(self._key())
 
+    def __str__(self):
+        return f"{self.project}.{self.dataset_id}.{self.table_id}"
+
     def __repr__(self):
         from google.cloud.bigquery.dataset import DatasetReference
 
@@ -475,7 +478,7 @@ class Table(object):
         """Union[str, None]: ID for the table (:data:`None` until set from the
         server).
 
-        In the format ``project_id:dataset_id.table_id``.
+        In the format ``project-id:dataset_id.table_id``.
         """
         return self._properties.get("id")
 
@@ -484,7 +487,8 @@ class Table(object):
         """Union[str, None]: The type of the table (:data:`None` until set from
         the server).
 
-        Possible values are ``'TABLE'``, ``'VIEW'``, or ``'EXTERNAL'``.
+        Possible values are ``'TABLE'``, ``'VIEW'``, ``'MATERIALIZED_VIEW'`` or
+        ``'EXTERNAL'``.
         """
         return self._properties.get("type")
 
