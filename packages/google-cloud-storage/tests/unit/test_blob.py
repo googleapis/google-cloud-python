@@ -1622,66 +1622,86 @@ class Test_Blob(unittest.TestCase):
     def test_download_as_byte_w_custom_timeout(self):
         self._download_as_bytes_helper(raw_download=False, timeout=9.58)
 
-    def _download_as_text_helper(self, raw_download, encoding=None, timeout=None):
+    def _download_as_text_helper(
+        self,
+        raw_download,
+        client=None,
+        start=None,
+        end=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=None,
+        encoding=None,
+        charset=None,
+        no_charset=False,
+        expected_value=u"DEADBEEF",
+        payload=None,
+    ):
+        if payload is None:
+            if encoding is not None:
+                payload = expected_value.encode(encoding)
+            else:
+                payload = expected_value.encode()
+
         blob_name = "blob-name"
-        client = mock.Mock(spec=["_http"])
-        bucket = _Bucket(client)
-        media_link = "http://example.com/media/"
-        properties = {"mediaLink": media_link}
-        if encoding:
-            properties["contentEncoding"] = encoding
+        bucket = _Bucket()
+
+        properties = {}
+        if charset is not None:
+            properties["contentType"] = "text/plain; charset={}".format(charset)
+        elif no_charset:
+            properties = {"contentType": "text/plain"}
+
         blob = self._make_one(blob_name, bucket=bucket, properties=properties)
-        blob._do_download = mock.Mock()
+        blob.download_as_bytes = mock.Mock(return_value=payload)
+
+        kwargs = {"raw_download": raw_download}
+
+        if client is not None:
+            kwargs["client"] = client
+
+        if start is not None:
+            kwargs["start"] = start
+
+        if end is not None:
+            kwargs["end"] = end
+
+        if encoding is not None:
+            kwargs["encoding"] = encoding
+
+        if if_generation_match is not None:
+            kwargs["if_generation_match"] = if_generation_match
+
+        if if_generation_not_match is not None:
+            kwargs["if_generation_not_match"] = if_generation_not_match
+
+        if if_metageneration_match is not None:
+            kwargs["if_metageneration_match"] = if_metageneration_match
+
+        if if_metageneration_not_match is not None:
+            kwargs["if_metageneration_not_match"] = if_metageneration_not_match
 
         if timeout is None:
             expected_timeout = self._get_default_timeout()
-            fetched = blob.download_as_text(raw_download=raw_download)
         else:
-            expected_timeout = timeout
-            fetched = blob.download_as_text(raw_download=raw_download, timeout=timeout)
+            kwargs["timeout"] = expected_timeout = timeout
 
-        self.assertEqual(fetched, "")
+        fetched = blob.download_as_text(**kwargs)
 
-        headers = {"accept-encoding": "gzip"}
-        blob._do_download.assert_called_once_with(
-            client._http,
-            mock.ANY,
-            media_link,
-            headers,
-            None,
-            None,
-            raw_download,
+        self.assertEqual(fetched, expected_value)
+
+        blob.download_as_bytes.assert_called_once_with(
+            client=client,
+            start=start,
+            end=end,
+            raw_download=raw_download,
             timeout=expected_timeout,
-            checksum="md5",
-        )
-        stream = blob._do_download.mock_calls[0].args[1]
-        self.assertIsInstance(stream, io.BytesIO)
-
-    def test_download_as_text_w_generation_match(self):
-        GENERATION_NUMBER = 6
-        MEDIA_LINK = "http://example.com/media/"
-
-        client = mock.Mock(spec=["_http"])
-        blob = self._make_one(
-            "blob-name", bucket=_Bucket(client), properties={"mediaLink": MEDIA_LINK}
-        )
-        blob.download_to_file = mock.Mock()
-
-        fetched = blob.download_as_text(if_generation_match=GENERATION_NUMBER)
-        self.assertEqual(fetched, "")
-
-        blob.download_to_file.assert_called_once_with(
-            mock.ANY,
-            client=None,
-            start=None,
-            end=None,
-            raw_download=False,
-            if_generation_match=GENERATION_NUMBER,
-            if_generation_not_match=None,
-            if_metageneration_match=None,
-            if_metageneration_not_match=None,
-            timeout=self._get_default_timeout(),
-            checksum="md5",
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
         )
 
     def test_download_as_text_wo_raw(self):
@@ -1690,11 +1710,64 @@ class Test_Blob(unittest.TestCase):
     def test_download_as_text_w_raw(self):
         self._download_as_text_helper(raw_download=True)
 
+    def test_download_as_text_w_client(self):
+        self._download_as_text_helper(raw_download=False, client=object())
+
+    def test_download_as_text_w_start(self):
+        self._download_as_text_helper(raw_download=False, start=123)
+
+    def test_download_as_text_w_end(self):
+        self._download_as_text_helper(raw_download=False, end=456)
+
     def test_download_as_text_w_custom_timeout(self):
         self._download_as_text_helper(raw_download=False, timeout=9.58)
 
+    def test_download_as_text_w_if_generation_match(self):
+        self._download_as_text_helper(raw_download=False, if_generation_match=6)
+
+    def test_download_as_text_w_if_generation_not_match(self):
+        self._download_as_text_helper(raw_download=False, if_generation_not_match=6)
+
+    def test_download_as_text_w_if_metageneration_match(self):
+        self._download_as_text_helper(raw_download=False, if_metageneration_match=6)
+
+    def test_download_as_text_w_if_metageneration_not_match(self):
+        self._download_as_text_helper(raw_download=False, if_metageneration_not_match=6)
+
     def test_download_as_text_w_encoding(self):
-        self._download_as_text_helper(raw_download=False, encoding="utf-8")
+        encoding = "utf-16"
+        self._download_as_text_helper(
+            raw_download=False, encoding=encoding,
+        )
+
+    def test_download_as_text_w_no_charset(self):
+        self._download_as_text_helper(
+            raw_download=False, no_charset=True,
+        )
+
+    def test_download_as_text_w_non_ascii_w_explicit_encoding(self):
+        expected_value = u"\x0AFe"
+        encoding = "utf-16"
+        charset = "latin1"
+        payload = expected_value.encode(encoding)
+        self._download_as_text_helper(
+            raw_download=False,
+            expected_value=expected_value,
+            payload=payload,
+            encoding=encoding,
+            charset=charset,
+        )
+
+    def test_download_as_text_w_non_ascii_wo_explicit_encoding_w_charset(self):
+        expected_value = u"\x0AFe"
+        charset = "utf-16"
+        payload = expected_value.encode(charset)
+        self._download_as_text_helper(
+            raw_download=False,
+            expected_value=expected_value,
+            payload=payload,
+            charset=charset,
+        )
 
     @mock.patch("warnings.warn")
     def test_download_as_string(self, mock_warn):

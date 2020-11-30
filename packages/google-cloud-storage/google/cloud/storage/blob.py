@@ -26,6 +26,7 @@
 """
 
 import base64
+import cgi
 import copy
 import hashlib
 from io import BytesIO
@@ -151,8 +152,8 @@ class Blob(_PropertyMixin):
         contents.
 
     :type generation: long
-    :param generation: (Optional) If present, selects a specific revision of
-                       this object.
+    :param generation:
+        (Optional) If present, selects a specific revision of this object.
     """
 
     _chunk_size = None  # Default value for each instance.
@@ -339,9 +340,10 @@ class Blob(_PropertyMixin):
          :type uri: str
          :param uri: The blob uri pass to get blob object.
 
-         :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-         :param client: (Optional) The client to use.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
          :rtype: :class:`google.cloud.storage.blob.Blob`
          :returns: The blob object created.
@@ -421,9 +423,10 @@ class Blob(_PropertyMixin):
         log in.
 
         :type expiration: Union[Integer, datetime.datetime, datetime.timedelta]
-        :param expiration: Point in time when the signed URL should expire. If
-                           a ``datetime`` instance is passed without an explicit
-                           ``tzinfo`` set,  it will be assumed to be ``UTC``.
+        :param expiration:
+            Point in time when the signed URL should expire. If a ``datetime``
+            instance is passed without an explicit ``tzinfo`` set,  it will be
+            assumed to be ``UTC``.
 
         :type api_access_endpoint: str
         :param api_access_endpoint: (Optional) URI base.
@@ -432,29 +435,30 @@ class Blob(_PropertyMixin):
         :param method: The HTTP verb that will be used when requesting the URL.
 
         :type content_md5: str
-        :param content_md5: (Optional) The MD5 hash of the object referenced by
-                            ``resource``.
+        :param content_md5:
+            (Optional) The MD5 hash of the object referenced by ``resource``.
 
         :type content_type: str
-        :param content_type: (Optional) The content type of the object
-                             referenced by ``resource``.
+        :param content_type:
+            (Optional) The content type of the object referenced by
+            ``resource``.
 
         :type response_disposition: str
-        :param response_disposition: (Optional) Content disposition of
-                                     responses to requests for the signed URL.
-                                     For example, to enable the signed URL
-                                     to initiate a file of ``blog.png``, use
-                                     the value
-                                     ``'attachment; filename=blob.png'``.
+        :param response_disposition:
+            (Optional) Content disposition of responses to requests for the
+            signed URL.  For example, to enable the signed URL to initiate a
+            file of ``blog.png``, use the value ``'attachment;
+            filename=blob.png'``.
 
         :type response_type: str
-        :param response_type: (Optional) Content type of responses to requests
-                              for the signed URL. Ignored if content_type is
-                              set on object/blob metadata.
+        :param response_type:
+            (Optional) Content type of responses to requests for the signed
+            URL. Ignored if content_type is set on object/blob metadata.
 
         :type generation: str
-        :param generation: (Optional) A value that indicates which generation
-                           of the resource to fetch.
+        :param generation:
+            (Optional) A value that indicates which generation of the resource
+            to fetch.
 
         :type headers: dict
         :param headers:
@@ -470,24 +474,26 @@ class Blob(_PropertyMixin):
             signed URLs. See:
             https://cloud.google.com/storage/docs/xml-api/reference-headers#query
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
-        :type credentials: :class:`google.auth.credentials.Credentials` or
-                           :class:`NoneType`
-        :param credentials: The authorization credentials to attach to requests.
-                            These credentials identify this application to the service.
-                            If none are specified, the client will attempt to ascertain
-                            the credentials from the environment.
+        :type credentials: :class:`google.auth.credentials.Credentials`
+        :param credentials:
+            (Optional) The authorization credentials to attach to requests.
+            These credentials identify this application to the service.  If
+            none are specified, the client will attempt to ascertain the
+            credentials from the environment.
 
         :type version: str
-        :param version: (Optional) The version of signed credential to create.
-                        Must be one of 'v2' | 'v4'.
+        :param version:
+            (Optional) The version of signed credential to create.  Must be one
+            of 'v2' | 'v4'.
 
         :type service_account_email: str
-        :param service_account_email: (Optional) E-mail address of the service account.
+        :param service_account_email:
+            (Optional) E-mail address of the service account.
 
         :type access_token: str
         :param access_token: (Optional) Access token for a service account.
@@ -499,15 +505,16 @@ class Blob(_PropertyMixin):
 
         :type bucket_bound_hostname: str
         :param bucket_bound_hostname:
-            (Optional) If passed, then construct the URL relative to the bucket-bound hostname.
-            Value can be a bare or with scheme, e.g., 'example.com' or 'http://example.com'.
-            See: https://cloud.google.com/storage/docs/request-endpoints#cname
+            (Optional) If passed, then construct the URL relative to the
+            bucket-bound hostname.  Value can be a bare or with scheme, e.g.,
+            'example.com' or 'http://example.com'.  See:
+            https://cloud.google.com/storage/docs/request-endpoints#cname
 
         :type scheme: str
         :param scheme:
-            (Optional) If ``bucket_bound_hostname`` is passed as a bare hostname, use
-            this value as the scheme.  ``https`` will work only when using a CDN.
-            Defaults to ``"http"``.
+            (Optional) If ``bucket_bound_hostname`` is passed as a bare
+            hostname, use this value as the scheme.  ``https`` will work only
+            when using a CDN.  Defaults to ``"http"``.
 
         :raises: :exc:`ValueError` when version is invalid.
         :raises: :exc:`TypeError` when expiration is not a valid type.
@@ -592,37 +599,41 @@ class Blob(_PropertyMixin):
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
+
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the server
+            response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
@@ -671,38 +682,41 @@ class Blob(_PropertyMixin):
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the server
+            response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :raises: :class:`google.cloud.exceptions.NotFound`
                  (propagated from
@@ -723,8 +737,9 @@ class Blob(_PropertyMixin):
         """Return the client's transport.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :rtype transport:
             :class:`~google.auth.transport.requests.AuthorizedSession`
@@ -752,24 +767,26 @@ class Blob(_PropertyMixin):
         :param client: The client to use.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :rtype: str
         :returns: The download URL for the current blob.
@@ -844,8 +861,9 @@ class Blob(_PropertyMixin):
 
         :type transport:
             :class:`~google.auth.transport.requests.AuthorizedSession`
-        :param transport: The transport (with credentials) that will
-                          make authenticated requests.
+        :param transport:
+            The transport (with credentials) that will make authenticated
+            requests.
 
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
@@ -970,10 +988,10 @@ class Blob(_PropertyMixin):
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type start: int
         :param start: (Optional) The first byte in a range to be downloaded.
@@ -986,24 +1004,26 @@ class Blob(_PropertyMixin):
             (Optional) If true, download the object without any expansion.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1076,10 +1096,10 @@ class Blob(_PropertyMixin):
         :type filename: str
         :param filename: A filename to be passed to ``open``.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type start: int
         :param start: (Optional) The first byte in a range to be downloaded.
@@ -1092,24 +1112,26 @@ class Blob(_PropertyMixin):
             (Optional) If true, download the object without any expansion.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1178,10 +1200,10 @@ class Blob(_PropertyMixin):
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type start: int
         :param start: (Optional) The first byte in a range to be downloaded.
@@ -1194,24 +1216,26 @@ class Blob(_PropertyMixin):
             (Optional) If true, download the object without any expansion.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1273,10 +1297,10 @@ class Blob(_PropertyMixin):
         .. note::
            Deprecated alias for :meth:`download_as_bytes`.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type start: int
         :param start: (Optional) The first byte in a range to be downloaded.
@@ -1289,24 +1313,26 @@ class Blob(_PropertyMixin):
             (Optional) If true, download the object without any expansion.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1345,22 +1371,22 @@ class Blob(_PropertyMixin):
         start=None,
         end=None,
         raw_download=False,
-        encoding="utf-8",
+        encoding=None,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
     ):
-        """Download the contents of this blob as a string.
+        """Download the contents of this blob as text (*not* bytes).
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type start: int
         :param start: (Optional) The first byte in a range to be downloaded.
@@ -1373,29 +1399,32 @@ class Blob(_PropertyMixin):
             (Optional) If true, download the object without any expansion.
 
         :type encoding: str
-        :param encoding: (Optional) The data of the blob will be decoded by
-                         encoding method.  Defaults to UTF-8. Apply only
-                         if the value of ``blob.content_encoding`` is None.
+        :param encoding: (Optional) encoding to be used to decode the
+            downloaded bytes.  Defaults to the ``charset`` param of
+            attr:`content_type`, or else to "utf-8".
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1406,9 +1435,7 @@ class Blob(_PropertyMixin):
             See :meth:`requests.Session.request` documentation for details.
 
         :rtype: text
-        :returns: The data stored in this blob.
-
-        :raises: :class:`google.cloud.exceptions.NotFound`
+        :returns: The data stored in this blob, decoded to text.
         """
         data = self.download_as_bytes(
             client=client,
@@ -1422,10 +1449,15 @@ class Blob(_PropertyMixin):
             timeout=timeout,
         )
 
-        if self.content_encoding:
-            return data.decode(self.content_encoding)
-        else:
+        if encoding is not None:
             return data.decode(encoding)
+
+        if self.content_type is not None:
+            _, params = cgi.parse_header(self.content_type)
+            if "charset" in params:
+                return data.decode(params["charset"])
+
+        return data.decode("utf-8")
 
     def _get_content_type(self, content_type, filename=None):
         """Determine the content type from the current object.
@@ -1440,8 +1472,8 @@ class Blob(_PropertyMixin):
         :param content_type: (Optional) Type of content.
 
         :type filename: str
-        :param filename: (Optional) The name of the file where the content
-                         is stored.
+        :param filename:
+            (Optional) The name of the file where the content is stored.
 
         :rtype: str
         :returns: Type of content gathered from the object.
@@ -1537,8 +1569,9 @@ class Blob(_PropertyMixin):
         - The default value ('application/octet-stream')
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type stream: IO[bytes]
         :param stream: A bytes IO object open for reading.
@@ -1547,43 +1580,45 @@ class Blob(_PropertyMixin):
         :param content_type: Type of content being uploaded (or :data:`None`).
 
         :type size: int
-        :param size: The number of bytes to be uploaded (which will be read
-                     from ``stream``). If not provided, the upload will be
-                     concluded once ``stream`` is exhausted (or :data:`None`).
+        :param size:
+            The number of bytes to be uploaded (which will be read from
+            ``stream``). If not provided, the upload will be concluded once
+            ``stream`` is exhausted (or :data:`None`).
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. By default, only uploads
-                            with if_metageneration_match set will be retried, as
-                            uploads without the argument are not guaranteed to
-                            be idempotent. Setting num_retries will override
-                            this default behavior and guarantee retries even
-                            when if_metageneration_match is not set.
-                            (Deprecated: This argument will be removed in a
-                            future release.)
+        :param num_retries:
+            Number of upload retries. By default, only uploads with
+            if_metageneration_match set will be retried, as uploads without the
+            argument are not guaranteed to be idempotent. Setting num_retries
+            will override this default behavior and guarantee retries even when
+            if_metageneration_match is not set.  (Deprecated: This argument
+            will be removed in a future release.)
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1699,8 +1734,9 @@ class Blob(_PropertyMixin):
         - The default value ('application/octet-stream')
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type stream: IO[bytes]
         :param stream: A bytes IO object open for reading.
@@ -1709,26 +1745,26 @@ class Blob(_PropertyMixin):
         :param content_type: Type of content being uploaded (or :data:`None`).
 
         :type size: int
-        :param size: The number of bytes to be uploaded (which will be read
-                     from ``stream``). If not provided, the upload will be
-                     concluded once ``stream`` is exhausted (or :data:`None`).
+        :param size:
+            The number of bytes to be uploaded (which will be read from
+            ``stream``). If not provided, the upload will be concluded once
+            ``stream`` is exhausted (or :data:`None`).
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. By default, only uploads
-                            with if_metageneration_match set will be retried, as
-                            uploads without the argument are not guaranteed to
-                            be idempotent. Setting num_retries will override
-                            this default behavior and guarantee retries even
-                            when if_metageneration_match is not set.
-                            (Deprecated: This argument will be removed in a
-                            future release.)
+        :param num_retries:
+            Number of upload retries. By default, only uploads with
+            if_metageneration_match set will be retried, as uploads without the
+            argument are not guaranteed to be idempotent. Setting num_retries
+            will override this default behavior and guarantee retries even when
+            if_metageneration_match is not set.  (Deprecated: This argument
+            will be removed in a future release.)
 
         :type extra_headers: dict
-        :param extra_headers: (Optional) Extra headers to add to standard
-                              headers.
+        :param extra_headers:
+            (Optional) Extra headers to add to standard headers.
 
         :type chunk_size: int
         :param chunk_size:
@@ -1740,25 +1776,27 @@ class Blob(_PropertyMixin):
             The default value of ``chunk_size`` is 100 MB.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -1886,8 +1924,9 @@ class Blob(_PropertyMixin):
         - The default value ('application/octet-stream')
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type stream: IO[bytes]
         :param stream: A bytes IO object open for reading.
@@ -1896,43 +1935,45 @@ class Blob(_PropertyMixin):
         :param content_type: Type of content being uploaded (or :data:`None`).
 
         :type size: int
-        :param size: The number of bytes to be uploaded (which will be read
-                     from ``stream``). If not provided, the upload will be
-                     concluded once ``stream`` is exhausted (or :data:`None`).
+        :param size:
+            The number of bytes to be uploaded (which will be read from
+            ``stream``). If not provided, the upload will be concluded once
+            ``stream`` is exhausted (or :data:`None`).
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. By default, only uploads
-                            with if_metageneration_match set will be retried, as
-                            uploads without the argument are not guaranteed to
-                            be idempotent. Setting num_retries will override
-                            this default behavior and guarantee retries even
-                            when if_metageneration_match is not set.
-                            (Deprecated: This argument will be removed in a
-                            future release.)
+        :param num_retries:
+            Number of upload retries. By default, only uploads with
+            if_metageneration_match set will be retried, as uploads without the
+            argument are not guaranteed to be idempotent. Setting num_retries
+            will override this default behavior and guarantee retries even when
+            if_metageneration_match is not set.  (Deprecated: This argument
+            will be removed in a future release.)
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -2010,8 +2051,9 @@ class Blob(_PropertyMixin):
         - The default value ('application/octet-stream')
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type stream: IO[bytes]
         :param stream: A bytes IO object open for reading.
@@ -2020,43 +2062,45 @@ class Blob(_PropertyMixin):
         :param content_type: Type of content being uploaded (or :data:`None`).
 
         :type size: int
-        :param size: The number of bytes to be uploaded (which will be read
-                     from ``stream``). If not provided, the upload will be
-                     concluded once ``stream`` is exhausted (or :data:`None`).
+        :param size:
+            The number of bytes to be uploaded (which will be read from
+            ``stream``). If not provided, the upload will be concluded once
+            ``stream`` is exhausted (or :data:`None`).
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. By default, only uploads
-                            with if_metageneration_match set will be retried, as
-                            uploads without the argument are not guaranteed to
-                            be idempotent. Setting num_retries will override
-                            this default behavior and guarantee retries even
-                            when if_metageneration_match is not set.
-                            (Deprecated: This argument will be removed in a
-                            future release.)
+        :param num_retries:
+            Number of upload retries. By default, only uploads with
+            if_metageneration_match set will be retried, as uploads without the
+            argument are not guaranteed to be idempotent. Setting num_retries
+            will override this default behavior and guarantee retries even when
+            if_metageneration_match is not set.  (Deprecated: This argument
+            will be removed in a future release.)
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -2184,54 +2228,58 @@ class Blob(_PropertyMixin):
         :param file_obj: A file handle open for reading.
 
         :type rewind: bool
-        :param rewind: If True, seek to the beginning of the file handle before
-                       writing the file to Cloud Storage.
+        :param rewind:
+            If True, seek to the beginning of the file handle before writing
+            the file to Cloud Storage.
 
         :type size: int
-        :param size: The number of bytes to be uploaded (which will be read
-                     from ``file_obj``). If not provided, the upload will be
-                     concluded once ``file_obj`` is exhausted.
+        :param size:
+            The number of bytes to be uploaded (which will be read from
+            ``file_obj``). If not provided, the upload will be concluded once
+            ``file_obj`` is exhausted.
 
         :type content_type: str
         :param content_type: (Optional) Type of content being uploaded.
 
         :type num_retries: int
-        :param num_retries: Number of upload retries. By default, only uploads
-                            with if_metageneration_match set will be retried, as
-                            uploads without the argument are not guaranteed to
-                            be idempotent. Setting num_retries will override
-                            this default behavior and guarantee retries even
-                            when if_metageneration_match is not set.
-                            (Deprecated: This argument will be removed in a
-                            future release.)
+        :param num_retries:
+            Number of upload retries. By default, only uploads with
+            if_metageneration_match set will be retried, as uploads without the
+            argument are not guaranteed to be idempotent. Setting num_retries
+            will override this default behavior and guarantee retries even when
+            if_metageneration_match is not set.  (Deprecated: This argument
+            will be removed in a future release.)
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -2330,32 +2378,35 @@ class Blob(_PropertyMixin):
         :param content_type: (Optional) Type of content being uploaded.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -2426,41 +2477,45 @@ class Blob(_PropertyMixin):
         to that project.
 
         :type data: bytes or str
-        :param data: The data to store in this blob.  If the value is
-                     text, it will be encoded as UTF-8.
+        :param data:
+            The data to store in this blob.  If the value is text, it will be
+            encoded as UTF-8.
 
         :type content_type: str
-        :param content_type: (Optional) Type of content being uploaded. Defaults
-                             to ``'text/plain'``.
+        :param content_type:
+            (Optional) Type of content being uploaded. Defaults to
+            ``'text/plain'``.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type predefined_acl: str
         :param predefined_acl: (Optional) Predefined access control list
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
+        :param if_generation_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation does not match the given value. If no live blob
+            exists, the precondition fails.  Setting to 0 makes the operation
+            succeed only if there is a live version of the blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
+        :param if_metageneration_not_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -2547,21 +2602,24 @@ class Blob(_PropertyMixin):
         to that project.
 
         :type size: int
-        :param size: (Optional) The maximum number of bytes that can be
-                     uploaded using this session. If the size is not known
-                     when creating the session, this should be left blank.
+        :param size:
+            (Optional) The maximum number of bytes that can be uploaded using
+            this session. If the size is not known when creating the session,
+            this should be left blank.
 
         :type content_type: str
         :param content_type: (Optional) Type of content being uploaded.
 
         :type origin: str
-        :param origin: (Optional) If set, the upload can only be completed
-                       by a user-agent that uploads from the given origin. This
-                       can be useful when passing the session to a web client.
+        :param origin:
+            (Optional) If set, the upload can only be completed by a user-agent
+            that uploads from the given origin. This can be useful when passing
+            the session to a web client.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
         :param timeout:
@@ -2633,25 +2691,26 @@ class Blob(_PropertyMixin):
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current object's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the current object's bucket.
 
         :type requested_policy_version: int or ``NoneType``
-        :param requested_policy_version: (Optional) The version of IAM policies to request.
-                                         If a policy with a condition is requested without
-                                         setting this, the server will return an error.
-                                         This must be set to a value of 3 to retrieve IAM
-                                         policies containing conditions. This is to prevent
-                                         client code that isn't aware of IAM conditions from
-                                         interpreting and modifying policies incorrectly.
-                                         The service might return a policy with version lower
-                                         than the one that was requested, based on the
-                                         feature syntax in the policy fetched.
+        :param requested_policy_version:
+            (Optional) The version of IAM policies to request.  If a policy
+            with a condition is requested without setting this, the server will
+            return an error.  This must be set to a value of 3 to retrieve IAM
+            policies containing conditions. This is to prevent client code that
+            isn't aware of IAM conditions from interpreting and modifying
+            policies incorrectly.  The service might return a policy with
+            version lower than the one that was requested, based on the feature
+            syntax in the policy fetched.
+
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the server
+            response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
@@ -2696,13 +2755,15 @@ class Blob(_PropertyMixin):
         :type policy: :class:`google.api_core.iam.Policy`
         :param policy: policy instance used to update bucket's IAM policy.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the current bucket.
+
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the server
+            response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
@@ -2747,13 +2808,15 @@ class Blob(_PropertyMixin):
         :type permissions: list of string
         :param permissions: the permissions to check
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the current bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the current bucket.
+
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the server
+            response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
@@ -2778,10 +2841,10 @@ class Blob(_PropertyMixin):
     def make_public(self, client=None):
         """Update blob's ACL, granting read access to anonymous users.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client)
@@ -2789,10 +2852,10 @@ class Blob(_PropertyMixin):
     def make_private(self, client=None):
         """Update blob's ACL, revoking read access for anonymous users.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
         """
         self.acl.all().revoke_read()
         self.acl.save(client=client)
@@ -2813,10 +2876,10 @@ class Blob(_PropertyMixin):
         :type sources: list of :class:`Blob`
         :param sources: Blobs whose contents will be composed into this blob.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use. If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
         :param timeout: (Optional) The amount of time, in seconds, to wait
@@ -2826,16 +2889,17 @@ class Blob(_PropertyMixin):
             See :meth:`requests.Session.request` documentation for details.
 
         :type if_generation_match: list of long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob. The list must match
-                                    ``sources`` item-to-item.
+        :param if_generation_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current generation matches the given value.  Setting to 0 makes the
+            operation succeed only if there are no live versions of the blob.
+            The list must match ``sources`` item-to-item.
 
         :type if_metageneration_match: list of long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether
-                                        the blob's current metageneration matches the given
-                                        value. The list must match ``sources`` item-to-item.
+        :param if_metageneration_match:
+            (Optional) Make the operation conditional on whether the blob's
+            current metageneration matches the given value. The list must match
+            ``sources`` item-to-item.
 
         Example:
             Compose blobs using generation match preconditions.
@@ -2932,78 +2996,70 @@ class Blob(_PropertyMixin):
         :param source: blob whose contents will be rewritten into this blob.
 
         :type token: str
-        :param token: (Optional) Token returned from an earlier, not-completed
-                       call to rewrite the same source blob.  If passed,
-                       result will include updated status, total bytes written.
+        :param token:
+            (Optional) Token returned from an earlier, not-completed call to
+            rewrite the same source blob.  If passed, result will include
+            updated status, total bytes written.
 
-        :type client: :class:`~google.cloud.storage.client.Client` or
-                      ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait for the server
+            response.
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Makes the operation
-                                    conditional on whether the destination
-                                    object's current generation matches the
-                                    given value. Setting to 0 makes the
-                                    operation succeed only if there are no
-                                    live versions of the object.
+        :param if_generation_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current generation matches the given value.
+            Setting to 0 makes the operation succeed only if there are no live
+            versions of the object.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        generation does not match the given
-                                        value. If no live object exists,
-                                        the precondition fails. Setting to
-                                        0 makes the operation succeed only
-                                        if there is a live version
-                                        of the object.
+        :param if_generation_not_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current generation does not match the given
+            value. If no live object exists, the precondition fails. Setting to
+            0 makes the operation succeed only if there is a live version of
+            the object.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        metageneration matches the given
-                                        value.
+        :param if_metageneration_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current metageneration matches the given
+            value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Makes the operation
-                                            conditional on whether the
-                                            destination object's current
-                                            metageneration does not match
-                                            the given value.
+        :param if_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current metageneration does not match the
+            given value.
 
         :type if_source_generation_match: long
-        :param if_source_generation_match: (Optional) Makes the operation
-                                           conditional on whether the source
-                                           object's generation matches the
-                                           given value.
+        :param if_source_generation_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation matches the given value.
 
         :type if_source_generation_not_match: long
-        :param if_source_generation_not_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's generation does not match
-                                               the given value.
+        :param if_source_generation_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation does not match the given value.
 
         :type if_source_metageneration_match: long
-        :param if_source_metageneration_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's current metageneration
-                                               matches the given value.
+        :param if_source_metageneration_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration matches the given value.
 
         :type if_source_metageneration_not_match: long
-        :param if_source_metageneration_not_match: (Optional) Makes the operation
-                                                   conditional on whether the source
-                                                   object's current metageneration
-                                                   does not match the given value.
+        :param if_source_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration does not match the given value.
 
         :rtype: tuple
         :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
@@ -3099,65 +3155,56 @@ class Blob(_PropertyMixin):
             :attr:`~google.cloud.storage.constants.REGIONAL_LEGACY_STORAGE_CLASS`.
 
         :type client: :class:`~google.cloud.storage.client.Client`
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Makes the operation
-                                    conditional on whether the destination
-                                    object's current generation matches the
-                                    given value. Setting to 0 makes the
-                                    operation succeed only if there are no
-                                    live versions of the object.
+        :param if_generation_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current generation matches the given value.
+            Setting to 0 makes the operation succeed only if there are no live
+            versions of the object.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        generation does not match the given
-                                        value. If no live object exists,
-                                        the precondition fails. Setting to
-                                        0 makes the operation succeed only
-                                        if there is a live version
-                                        of the object.
+        :param if_generation_not_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current generation does not match the given
+            value. If no live object exists, the precondition fails. Setting to
+            0 makes the operation succeed only if there is a live version of
+            the object.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        metageneration matches the given
-                                        value.
+        :param if_metageneration_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current metageneration matches the given
+            value.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Makes the operation
-                                            conditional on whether the
-                                            destination object's current
-                                            metageneration does not match
-                                            the given value.
+        :param if_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the
+            destination object's current metageneration does not match the
+            given value.
 
         :type if_source_generation_match: long
-        :param if_source_generation_match: (Optional) Makes the operation
-                                           conditional on whether the source
-                                           object's generation matches the
-                                           given value.
+        :param if_source_generation_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation matches the given value.
 
         :type if_source_generation_not_match: long
-        :param if_source_generation_not_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's generation does not match
-                                               the given value.
+        :param if_source_generation_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation does not match the given value.
 
         :type if_source_metageneration_match: long
-        :param if_source_metageneration_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's current metageneration
-                                               matches the given value.
+        :param if_source_metageneration_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration matches the given value.
 
         :type if_source_metageneration_not_match: long
-        :param if_source_metageneration_not_match: (Optional) Makes the operation
-                                                   conditional on whether the source
-                                                   object's current metageneration
-                                                   does not match the given value.
+        :param if_source_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration does not match the given value.
 
         :type timeout: float or tuple
         :param timeout:
@@ -3607,8 +3654,7 @@ class Blob(_PropertyMixin):
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :type value: :class:`datetime.datetime`
-        :param value: (Optional) Set the custom time of blob. Datetime object
-                      parsed from RFC3339 valid timestamp.
+        :param value: new value
         """
         if value is not None:
             value = _datetime_to_rfc3339(value)
