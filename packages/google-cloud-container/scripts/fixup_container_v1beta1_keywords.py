@@ -48,6 +48,7 @@ class containerCallTransformer(cst.CSTTransformer):
     'delete_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
     'delete_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
     'get_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
+    'get_json_web_keys': ('parent', ),
     'get_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
     'get_operation': ('project_id', 'zone', 'operation_id', 'name', ),
     'get_server_config': ('project_id', 'zone', 'name', ),
@@ -72,7 +73,7 @@ class containerCallTransformer(cst.CSTTransformer):
     'start_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', 'rotate_credentials', ),
     'update_cluster': ('project_id', 'zone', 'cluster_id', 'update', 'name', ),
     'update_master': ('project_id', 'zone', 'cluster_id', 'master_version', 'name', ),
-    'update_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_version', 'image_type', 'workload_metadata_config', 'name', ),
+    'update_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_version', 'image_type', 'locations', 'workload_metadata_config', 'name', 'upgrade_settings', 'linux_node_config', 'kubelet_config', ),
 
     }
 

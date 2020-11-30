@@ -30,6 +30,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.container_v1beta1.services.cluster_manager import pagers
 from google.cloud.container_v1beta1.types import cluster_service
+from google.rpc import status_pb2 as status  # type: ignore
 
 from .transports.base import ClusterManagerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
@@ -43,6 +44,9 @@ class ClusterManagerAsyncClient:
 
     DEFAULT_ENDPOINT = ClusterManagerClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ClusterManagerClient.DEFAULT_MTLS_ENDPOINT
+
+    topic_path = staticmethod(ClusterManagerClient.topic_path)
+    parse_topic_path = staticmethod(ClusterManagerClient.parse_topic_path)
 
     common_billing_account_path = staticmethod(
         ClusterManagerClient.common_billing_account_path
@@ -386,7 +390,7 @@ class ClusterManagerAsyncClient:
                 should not be set.
             cluster (:class:`~.cluster_service.Cluster`):
                 Required. A `cluster
-                resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.zones.clusters>`__
+                resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters>`__
                 This corresponds to the ``cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -710,11 +714,19 @@ class ClusterManagerAsyncClient:
                 should not be set.
             logging_service (:class:`str`):
                 Required. The logging service the cluster should use to
-                write metrics. Currently available options:
+                write logs. Currently available options:
 
-                -  "logging.googleapis.com" - the Google Cloud Logging
-                   service
-                -  "none" - no metrics will be exported from the cluster
+                -  ``logging.googleapis.com/kubernetes`` - The Cloud
+                   Logging service with a Kubernetes-native resource
+                   model
+                -  ``logging.googleapis.com`` - The legacy Cloud Logging
+                   service (no longer available as of GKE 1.15).
+                -  ``none`` - no logs will be exported from the cluster.
+
+                If left as an empty
+                string,\ ``logging.googleapis.com/kubernetes`` will be
+                used for GKE 1.14+ or ``logging.googleapis.com`` for
+                earlier versions.
                 This corresponds to the ``logging_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -825,9 +837,19 @@ class ClusterManagerAsyncClient:
                 Required. The monitoring service the cluster should use
                 to write metrics. Currently available options:
 
-                -  "monitoring.googleapis.com" - the Google Cloud
-                   Monitoring service
-                -  "none" - no metrics will be exported from the cluster
+                -  "monitoring.googleapis.com/kubernetes" - The Cloud
+                   Monitoring service with a Kubernetes-native resource
+                   model
+                -  ``monitoring.googleapis.com`` - The legacy Cloud
+                   Monitoring service (no longer available as of GKE
+                   1.15).
+                -  ``none`` - No metrics will be exported from the
+                   cluster.
+
+                If left as an empty
+                string,\ ``monitoring.googleapis.com/kubernetes`` will
+                be used for GKE 1.14+ or ``monitoring.googleapis.com``
+                for earlier versions.
                 This corresponds to the ``monitoring_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1012,7 +1034,9 @@ class ClusterManagerAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cluster_service.Operation:
-        r"""Sets the locations for a specific cluster.
+        r"""Sets the locations for a specific cluster. Deprecated. Use
+        `projects.locations.clusters.update <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters/update>`__
+        instead.
 
         Args:
             request (:class:`~.cluster_service.SetLocationsRequest`):
@@ -1906,6 +1930,64 @@ class ClusterManagerAsyncClient:
         # Done; return the response.
         return response
 
+    async def get_json_web_keys(
+        self,
+        request: cluster_service.GetJSONWebKeysRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cluster_service.GetJSONWebKeysResponse:
+        r"""Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+        This API is not yet intended for general use, and is not
+        available for all clusters.
+
+        Args:
+            request (:class:`~.cluster_service.GetJSONWebKeysRequest`):
+                The request object. GetJSONWebKeysRequest gets the
+                public component of the keys used by the cluster to sign
+                token requests. This will be the jwks_uri for the
+                discover document returned by getOpenIDConfig. See the
+                OpenID Connect Discovery 1.0 specification for details.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.cluster_service.GetJSONWebKeysResponse:
+                GetJSONWebKeysResponse is a valid
+                JSON Web Key Set as specififed in rfc
+                7517
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = cluster_service.GetJSONWebKeysRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_json_web_keys,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     async def get_node_pool(
         self,
         request: cluster_service.GetNodePoolRequest = None,
@@ -2547,17 +2629,14 @@ class ClusterManagerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             label_fingerprint (:class:`str`):
-                Required. The fingerprint of the
-                previous set of labels for this
-                resource, used to detect conflicts. The
-                fingerprint is initially generated by
-                Kubernetes Engine and changes after
-                every request to modify or update
-                labels. You must always provide an up-
-                to-date fingerprint hash when updating
-                or changing labels. Make a
-                <code>get()</code> request to the
-                resource to get the latest fingerprint.
+                Required. The fingerprint of the previous set of labels
+                for this resource, used to detect conflicts. The
+                fingerprint is initially generated by Kubernetes Engine
+                and changes after every request to modify or update
+                labels. You must always provide an up-to-date
+                fingerprint hash when updating or changing labels. Make
+                a ``get()`` request to the resource to get the latest
+                fingerprint.
                 This corresponds to the ``label_fingerprint`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

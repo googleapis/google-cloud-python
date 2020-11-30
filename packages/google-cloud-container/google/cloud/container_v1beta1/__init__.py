@@ -27,16 +27,28 @@ from .types.cluster_service import ClientCertificateConfig
 from .types.cluster_service import CloudRunConfig
 from .types.cluster_service import Cluster
 from .types.cluster_service import ClusterAutoscaling
+from .types.cluster_service import ClusterTelemetry
 from .types.cluster_service import ClusterUpdate
 from .types.cluster_service import CompleteIPRotationRequest
+from .types.cluster_service import ConfidentialNodes
+from .types.cluster_service import ConfigConnectorConfig
 from .types.cluster_service import CreateClusterRequest
 from .types.cluster_service import CreateNodePoolRequest
 from .types.cluster_service import DailyMaintenanceWindow
 from .types.cluster_service import DatabaseEncryption
+from .types.cluster_service import DatapathProvider
+from .types.cluster_service import DefaultSnatStatus
 from .types.cluster_service import DeleteClusterRequest
 from .types.cluster_service import DeleteNodePoolRequest
+from .types.cluster_service import DnsCacheConfig
+from .types.cluster_service import EphemeralStorageConfig
+from .types.cluster_service import GcePersistentDiskCsiDriverConfig
 from .types.cluster_service import GetClusterRequest
+from .types.cluster_service import GetJSONWebKeysRequest
+from .types.cluster_service import GetJSONWebKeysResponse
 from .types.cluster_service import GetNodePoolRequest
+from .types.cluster_service import GetOpenIDConfigRequest
+from .types.cluster_service import GetOpenIDConfigResponse
 from .types.cluster_service import GetOperationRequest
 from .types.cluster_service import GetServerConfigRequest
 from .types.cluster_service import HorizontalPodAutoscaling
@@ -44,8 +56,11 @@ from .types.cluster_service import HttpLoadBalancing
 from .types.cluster_service import IPAllocationPolicy
 from .types.cluster_service import IntraNodeVisibilityConfig
 from .types.cluster_service import IstioConfig
+from .types.cluster_service import Jwk
+from .types.cluster_service import KalmConfig
 from .types.cluster_service import KubernetesDashboard
 from .types.cluster_service import LegacyAbac
+from .types.cluster_service import LinuxNodeConfig
 from .types.cluster_service import ListClustersRequest
 from .types.cluster_service import ListClustersResponse
 from .types.cluster_service import ListLocationsRequest
@@ -59,6 +74,7 @@ from .types.cluster_service import ListUsableSubnetworksResponse
 from .types.cluster_service import Location
 from .types.cluster_service import MaintenancePolicy
 from .types.cluster_service import MaintenanceWindow
+from .types.cluster_service import Master
 from .types.cluster_service import MasterAuth
 from .types.cluster_service import MasterAuthorizedNetworksConfig
 from .types.cluster_service import MaxPodsConstraint
@@ -66,18 +82,24 @@ from .types.cluster_service import NetworkConfig
 from .types.cluster_service import NetworkPolicy
 from .types.cluster_service import NetworkPolicyConfig
 from .types.cluster_service import NodeConfig
+from .types.cluster_service import NodeKubeletConfig
 from .types.cluster_service import NodeManagement
 from .types.cluster_service import NodePool
 from .types.cluster_service import NodePoolAutoscaling
 from .types.cluster_service import NodeTaint
+from .types.cluster_service import NotificationConfig
 from .types.cluster_service import Operation
 from .types.cluster_service import OperationProgress
 from .types.cluster_service import PodSecurityPolicyConfig
 from .types.cluster_service import PrivateClusterConfig
+from .types.cluster_service import PrivateClusterMasterGlobalAccessConfig
 from .types.cluster_service import RecurringTimeWindow
+from .types.cluster_service import ReleaseChannel
+from .types.cluster_service import ReservationAffinity
 from .types.cluster_service import ResourceLimit
 from .types.cluster_service import ResourceUsageExportConfig
 from .types.cluster_service import RollbackNodePoolUpgradeRequest
+from .types.cluster_service import SandboxConfig
 from .types.cluster_service import ServerConfig
 from .types.cluster_service import SetAddonsConfigRequest
 from .types.cluster_service import SetLabelsRequest
@@ -92,15 +114,20 @@ from .types.cluster_service import SetNodePoolAutoscalingRequest
 from .types.cluster_service import SetNodePoolManagementRequest
 from .types.cluster_service import SetNodePoolSizeRequest
 from .types.cluster_service import ShieldedInstanceConfig
+from .types.cluster_service import ShieldedNodes
 from .types.cluster_service import StartIPRotationRequest
 from .types.cluster_service import StatusCondition
 from .types.cluster_service import TimeWindow
+from .types.cluster_service import TpuConfig
 from .types.cluster_service import UpdateClusterRequest
 from .types.cluster_service import UpdateMasterRequest
 from .types.cluster_service import UpdateNodePoolRequest
+from .types.cluster_service import UpgradeEvent
+from .types.cluster_service import UpgradeResourceType
 from .types.cluster_service import UsableSubnetwork
 from .types.cluster_service import UsableSubnetworkSecondaryRange
 from .types.cluster_service import VerticalPodAutoscaling
+from .types.cluster_service import WorkloadIdentityConfig
 from .types.cluster_service import WorkloadMetadataConfig
 
 
@@ -116,16 +143,28 @@ __all__ = (
     "CloudRunConfig",
     "Cluster",
     "ClusterAutoscaling",
+    "ClusterTelemetry",
     "ClusterUpdate",
     "CompleteIPRotationRequest",
+    "ConfidentialNodes",
+    "ConfigConnectorConfig",
     "CreateClusterRequest",
     "CreateNodePoolRequest",
     "DailyMaintenanceWindow",
     "DatabaseEncryption",
+    "DatapathProvider",
+    "DefaultSnatStatus",
     "DeleteClusterRequest",
     "DeleteNodePoolRequest",
+    "DnsCacheConfig",
+    "EphemeralStorageConfig",
+    "GcePersistentDiskCsiDriverConfig",
     "GetClusterRequest",
+    "GetJSONWebKeysRequest",
+    "GetJSONWebKeysResponse",
     "GetNodePoolRequest",
+    "GetOpenIDConfigRequest",
+    "GetOpenIDConfigResponse",
     "GetOperationRequest",
     "GetServerConfigRequest",
     "HorizontalPodAutoscaling",
@@ -133,8 +172,11 @@ __all__ = (
     "IPAllocationPolicy",
     "IntraNodeVisibilityConfig",
     "IstioConfig",
+    "Jwk",
+    "KalmConfig",
     "KubernetesDashboard",
     "LegacyAbac",
+    "LinuxNodeConfig",
     "ListClustersRequest",
     "ListClustersResponse",
     "ListLocationsRequest",
@@ -148,6 +190,7 @@ __all__ = (
     "Location",
     "MaintenancePolicy",
     "MaintenanceWindow",
+    "Master",
     "MasterAuth",
     "MasterAuthorizedNetworksConfig",
     "MaxPodsConstraint",
@@ -155,18 +198,24 @@ __all__ = (
     "NetworkPolicy",
     "NetworkPolicyConfig",
     "NodeConfig",
+    "NodeKubeletConfig",
     "NodeManagement",
     "NodePool",
     "NodePoolAutoscaling",
     "NodeTaint",
+    "NotificationConfig",
     "Operation",
     "OperationProgress",
     "PodSecurityPolicyConfig",
     "PrivateClusterConfig",
+    "PrivateClusterMasterGlobalAccessConfig",
     "RecurringTimeWindow",
+    "ReleaseChannel",
+    "ReservationAffinity",
     "ResourceLimit",
     "ResourceUsageExportConfig",
     "RollbackNodePoolUpgradeRequest",
+    "SandboxConfig",
     "ServerConfig",
     "SetAddonsConfigRequest",
     "SetLabelsRequest",
@@ -181,15 +230,20 @@ __all__ = (
     "SetNodePoolManagementRequest",
     "SetNodePoolSizeRequest",
     "ShieldedInstanceConfig",
+    "ShieldedNodes",
     "StartIPRotationRequest",
     "StatusCondition",
     "TimeWindow",
+    "TpuConfig",
     "UpdateClusterRequest",
     "UpdateMasterRequest",
     "UpdateNodePoolRequest",
+    "UpgradeEvent",
+    "UpgradeResourceType",
     "UsableSubnetwork",
     "UsableSubnetworkSecondaryRange",
     "VerticalPodAutoscaling",
+    "WorkloadIdentityConfig",
     "WorkloadMetadataConfig",
     "ClusterManagerClient",
 )

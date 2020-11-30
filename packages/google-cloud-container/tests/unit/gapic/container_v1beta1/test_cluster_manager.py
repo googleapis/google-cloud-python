@@ -41,6 +41,9 @@ from google.cloud.container_v1beta1.services.cluster_manager import transports
 from google.cloud.container_v1beta1.types import cluster_service
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
+from google.rpc import code_pb2 as code  # type: ignore
+from google.rpc import status_pb2 as status  # type: ignore
 
 
 def client_cert_source_callback():
@@ -5073,6 +5076,134 @@ async def test_list_node_pools_flattened_error_async():
         )
 
 
+def test_get_json_web_keys(
+    transport: str = "grpc", request_type=cluster_service.GetJSONWebKeysRequest
+):
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cluster_service.GetJSONWebKeysResponse()
+
+        response = client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
+
+
+def test_get_json_web_keys_from_dict():
+    test_get_json_web_keys(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_async(
+    transport: str = "grpc_asyncio", request_type=cluster_service.GetJSONWebKeysRequest
+):
+    client = ClusterManagerAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.GetJSONWebKeysResponse()
+        )
+
+        response = await client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.GetJSONWebKeysResponse)
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_async_from_dict():
+    await test_get_json_web_keys_async(request_type=dict)
+
+
+def test_get_json_web_keys_field_headers():
+    client = ClusterManagerClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.GetJSONWebKeysRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = cluster_service.GetJSONWebKeysResponse()
+
+        client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_json_web_keys_field_headers_async():
+    client = ClusterManagerAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.GetJSONWebKeysRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.GetJSONWebKeysResponse()
+        )
+
+        await client.get_json_web_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
 def test_get_node_pool(
     transport: str = "grpc", request_type=cluster_service.GetNodePoolRequest
 ):
@@ -5090,6 +5221,7 @@ def test_get_node_pool(
         call.return_value = cluster_service.NodePool(
             name="name_value",
             initial_node_count=1911,
+            locations=["locations_value"],
             self_link="self_link_value",
             version="version_value",
             instance_group_urls=["instance_group_urls_value"],
@@ -5113,6 +5245,8 @@ def test_get_node_pool(
     assert response.name == "name_value"
 
     assert response.initial_node_count == 1911
+
+    assert response.locations == ["locations_value"]
 
     assert response.self_link == "self_link_value"
 
@@ -5150,6 +5284,7 @@ async def test_get_node_pool_async(
             cluster_service.NodePool(
                 name="name_value",
                 initial_node_count=1911,
+                locations=["locations_value"],
                 self_link="self_link_value",
                 version="version_value",
                 instance_group_urls=["instance_group_urls_value"],
@@ -5173,6 +5308,8 @@ async def test_get_node_pool_async(
     assert response.name == "name_value"
 
     assert response.initial_node_count == 1911
+
+    assert response.locations == ["locations_value"]
 
     assert response.self_link == "self_link_value"
 
@@ -9201,6 +9338,7 @@ def test_cluster_manager_base_transport():
         "cancel_operation",
         "get_server_config",
         "list_node_pools",
+        "get_json_web_keys",
         "get_node_pool",
         "create_node_pool",
         "delete_node_pool",
@@ -9408,8 +9546,29 @@ def test_cluster_manager_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_topic_path():
+    project = "squid"
+    topic = "clam"
+
+    expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+    actual = ClusterManagerClient.topic_path(project, topic)
+    assert expected == actual
+
+
+def test_parse_topic_path():
+    expected = {
+        "project": "whelk",
+        "topic": "octopus",
+    }
+    path = ClusterManagerClient.topic_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ClusterManagerClient.parse_topic_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -9420,7 +9579,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = ClusterManagerClient.common_billing_account_path(**expected)
 
@@ -9430,7 +9589,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = ClusterManagerClient.common_folder_path(folder)
@@ -9439,7 +9598,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = ClusterManagerClient.common_folder_path(**expected)
 
@@ -9449,7 +9608,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ClusterManagerClient.common_organization_path(organization)
@@ -9458,7 +9617,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = ClusterManagerClient.common_organization_path(**expected)
 
@@ -9468,7 +9627,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
 
     expected = "projects/{project}".format(project=project,)
     actual = ClusterManagerClient.common_project_path(project)
@@ -9477,7 +9636,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = ClusterManagerClient.common_project_path(**expected)
 
@@ -9487,8 +9646,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -9499,8 +9658,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ClusterManagerClient.common_location_path(**expected)
 

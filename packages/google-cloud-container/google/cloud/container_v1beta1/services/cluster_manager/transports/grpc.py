@@ -493,7 +493,9 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
     ) -> Callable[[cluster_service.SetLocationsRequest], cluster_service.Operation]:
         r"""Return a callable for the set locations method over gRPC.
 
-        Sets the locations for a specific cluster.
+        Sets the locations for a specific cluster. Deprecated. Use
+        `projects.locations.clusters.update <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters/update>`__
+        instead.
 
         Returns:
             Callable[[~.SetLocationsRequest],
@@ -740,6 +742,37 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
                 response_deserializer=cluster_service.ListNodePoolsResponse.deserialize,
             )
         return self._stubs["list_node_pools"]
+
+    @property
+    def get_json_web_keys(
+        self,
+    ) -> Callable[
+        [cluster_service.GetJSONWebKeysRequest], cluster_service.GetJSONWebKeysResponse
+    ]:
+        r"""Return a callable for the get json web keys method over gRPC.
+
+        Gets the public component of the cluster signing keys
+        in JSON Web Key format.
+        This API is not yet intended for general use, and is not
+        available for all clusters.
+
+        Returns:
+            Callable[[~.GetJSONWebKeysRequest],
+                    ~.GetJSONWebKeysResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_json_web_keys" not in self._stubs:
+            self._stubs["get_json_web_keys"] = self.grpc_channel.unary_unary(
+                "/google.container.v1beta1.ClusterManager/GetJSONWebKeys",
+                request_serializer=cluster_service.GetJSONWebKeysRequest.serialize,
+                response_deserializer=cluster_service.GetJSONWebKeysResponse.deserialize,
+            )
+        return self._stubs["get_json_web_keys"]
 
     @property
     def get_node_pool(

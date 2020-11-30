@@ -233,6 +233,9 @@ class ClusterManagerTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.get_json_web_keys: gapic_v1.method.wrap_method(
+                self.get_json_web_keys, default_timeout=None, client_info=client_info,
+            ),
             self.get_node_pool: gapic_v1.method.wrap_method(
                 self.get_node_pool,
                 default_retry=retries.Retry(
@@ -520,6 +523,18 @@ class ClusterManagerTransport(abc.ABC):
         typing.Union[
             cluster_service.ListNodePoolsResponse,
             typing.Awaitable[cluster_service.ListNodePoolsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_json_web_keys(
+        self,
+    ) -> typing.Callable[
+        [cluster_service.GetJSONWebKeysRequest],
+        typing.Union[
+            cluster_service.GetJSONWebKeysResponse,
+            typing.Awaitable[cluster_service.GetJSONWebKeysResponse],
         ],
     ]:
         raise NotImplementedError()

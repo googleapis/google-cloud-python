@@ -19,13 +19,23 @@ import proto  # type: ignore
 
 
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
+from google.rpc import code_pb2 as gr_code  # type: ignore
+from google.rpc import status_pb2 as gr_status  # type: ignore
 
 
 __protobuf__ = proto.module(
     package="google.container.v1beta1",
     manifest={
+        "DatapathProvider",
+        "UpgradeResourceType",
+        "LinuxNodeConfig",
+        "NodeKubeletConfig",
         "NodeConfig",
         "ShieldedInstanceConfig",
+        "SandboxConfig",
+        "EphemeralStorageConfig",
+        "ReservationAffinity",
         "NodeTaint",
         "MasterAuth",
         "ClientCertificateConfig",
@@ -34,6 +44,11 @@ __protobuf__ = proto.module(
         "HorizontalPodAutoscaling",
         "KubernetesDashboard",
         "NetworkPolicyConfig",
+        "DnsCacheConfig",
+        "KalmConfig",
+        "ConfigConnectorConfig",
+        "GcePersistentDiskCsiDriverConfig",
+        "PrivateClusterMasterGlobalAccessConfig",
         "PrivateClusterConfig",
         "IstioConfig",
         "CloudRunConfig",
@@ -44,6 +59,7 @@ __protobuf__ = proto.module(
         "BinaryAuthorization",
         "PodSecurityPolicyConfig",
         "AuthenticatorGroupsConfig",
+        "ClusterTelemetry",
         "Cluster",
         "ClusterUpdate",
         "Operation",
@@ -106,12 +122,112 @@ __protobuf__ = proto.module(
         "UsableSubnetworkSecondaryRange",
         "UsableSubnetwork",
         "VerticalPodAutoscaling",
+        "DefaultSnatStatus",
         "IntraNodeVisibilityConfig",
         "MaxPodsConstraint",
+        "WorkloadIdentityConfig",
         "DatabaseEncryption",
         "ResourceUsageExportConfig",
+        "ShieldedNodes",
+        "GetOpenIDConfigRequest",
+        "GetOpenIDConfigResponse",
+        "GetJSONWebKeysRequest",
+        "Jwk",
+        "GetJSONWebKeysResponse",
+        "ReleaseChannel",
+        "TpuConfig",
+        "Master",
+        "NotificationConfig",
+        "ConfidentialNodes",
+        "UpgradeEvent",
     },
 )
+
+
+class DatapathProvider(proto.Enum):
+    r"""The datapath provider selects the implementation of the
+    Kubernetes networking // model for service resolution and
+    network policy enforcement.
+    """
+    DATAPATH_PROVIDER_UNSPECIFIED = 0
+    LEGACY_DATAPATH = 1
+    ADVANCED_DATAPATH = 2
+
+
+class UpgradeResourceType(proto.Enum):
+    r"""UpgradeResourceType is the resource type that is upgrading.
+    It is used in upgrade notifications.
+    """
+    UPGRADE_RESOURCE_TYPE_UNSPECIFIED = 0
+    MASTER = 1
+    NODE_POOL = 2
+
+
+class LinuxNodeConfig(proto.Message):
+    r"""Parameters that can be configured on Linux nodes.
+
+    Attributes:
+        sysctls (Sequence[~.cluster_service.LinuxNodeConfig.SysctlsEntry]):
+            The Linux kernel parameters to be applied to the nodes and
+            all pods running on the nodes.
+
+            The following parameters are supported.
+
+            net.core.netdev_max_backlog net.core.rmem_max
+            net.core.wmem_default net.core.wmem_max net.core.optmem_max
+            net.core.somaxconn net.ipv4.tcp_rmem net.ipv4.tcp_wmem
+            net.ipv4.tcp_tw_reuse
+    """
+
+    sysctls = proto.MapField(proto.STRING, proto.STRING, number=1)
+
+
+class NodeKubeletConfig(proto.Message):
+    r"""Node kubelet configs.
+
+    Attributes:
+        cpu_manager_policy (str):
+            Control the CPU management policy on the
+            node. See
+            https://kubernetes.io/docs/tasks/administer-
+            cluster/cpu-management-policies/
+            The following values are allowed.
+              - "none": the default, which represents the
+            existing scheduling behavior.   - "static":
+            allows pods with certain resource
+            characteristics to be               granted
+            increased CPU affinity and exclusivity on the
+            node.  The default value is 'none' if
+            unspecified.
+        cpu_cfs_quota (~.wrappers.BoolValue):
+            Enable CPU CFS quota enforcement for
+            containers that specify CPU limits.
+            This option is enabled by default which makes
+            kubelet use CFS quota
+            (https://www.kernel.org/doc/Documentation/scheduler/sched-
+            bwc.txt) to enforce container CPU limits.
+            Otherwise, CPU limits will not be enforced at
+            all.
+
+            Disable this option to mitigate CPU throttling
+            problems while still having your pods to be in
+            Guaranteed QoS class by specifying the CPU
+            limits.
+            The default value is 'true' if unspecified.
+        cpu_cfs_quota_period (str):
+            Set the CPU CFS quota period value 'cpu.cfs_period_us'.
+
+            The string must be a sequence of decimal numbers, each with
+            optional fraction and a unit suffix, such as "300ms". Valid
+            time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+            The value must be a positive duration.
+    """
+
+    cpu_manager_policy = proto.Field(proto.STRING, number=1)
+
+    cpu_cfs_quota = proto.Field(proto.MESSAGE, number=2, message=wrappers.BoolValue,)
+
+    cpu_cfs_quota_period = proto.Field(proto.STRING, number=3)
 
 
 class NodeConfig(proto.Message):
@@ -120,11 +236,9 @@ class NodeConfig(proto.Message):
     Attributes:
         machine_type (str):
             The name of a Google Compute Engine `machine
-            type <https://cloud.google.com/compute/docs/machine-types>`__
-            (e.g. ``n1-standard-1``).
+            type <https://cloud.google.com/compute/docs/machine-types>`__.
 
-            If unspecified, the default machine type is
-            ``n1-standard-1``.
+            If unspecified, the default machine type is ``e2-medium``.
         disk_size_gb (int):
             Size of the disk attached to each node,
             specified in GB. The smallest allowed disk size
@@ -149,29 +263,48 @@ class NodeConfig(proto.Message):
             scopes will be added.
         service_account (str):
             The Google Cloud Platform Service Account to
-            be used by the node VMs. If no Service Account
-            is specified, the "default" service account is
-            used.
+            be used by the node VMs. Specify the email
+            address of the Service Account; otherwise, if no
+            Service Account is specified, the "default"
+            service account is used.
         metadata (Sequence[~.cluster_service.NodeConfig.MetadataEntry]):
             The metadata key/value pairs assigned to instances in the
             cluster.
 
-            Keys must conform to the regexp [a-zA-Z0-9-_]+ and be less
-            than 128 bytes in length. These are reflected as part of a
-            URL in the metadata server. Additionally, to avoid
+            Keys must conform to the regexp ``[a-zA-Z0-9-_]+`` and be
+            less than 128 bytes in length. These are reflected as part
+            of a URL in the metadata server. Additionally, to avoid
             ambiguity, keys must not conflict with any other metadata
             keys for the project or be one of the reserved keys:
-            "cluster-location" "cluster-name" "cluster-uid"
-            "configure-sh" "containerd-configure-sh" "enable-oslogin"
-            "gci-ensure-gke-docker" "gci-metrics-enabled"
-            "gci-update-strategy" "instance-template" "kube-env"
-            "startup-script" "user-data" "disable-address-manager"
-            "windows-startup-script-ps1" "common-psm1"
-            "k8s-node-setup-psm1" "install-ssh-psm1" "user-profile-psm1"
-            "serial-port-logging-enable" Values are free-form strings,
-            and only have meaning as interpreted by the image running in
-            the instance. The only restriction placed on them is that
-            each value's size must be less than or equal to 32 KB.
+
+            -  "cluster-location"
+            -  "cluster-name"
+            -  "cluster-uid"
+            -  "configure-sh"
+            -  "containerd-configure-sh"
+            -  "enable-oslogin"
+            -  "gci-ensure-gke-docker"
+            -  "gci-metrics-enabled"
+            -  "gci-update-strategy"
+            -  "instance-template"
+            -  "kube-env"
+            -  "startup-script"
+            -  "user-data"
+            -  "disable-address-manager"
+            -  "windows-startup-script-ps1"
+            -  "common-psm1"
+            -  "k8s-node-setup-psm1"
+            -  "install-ssh-psm1"
+            -  "user-profile-psm1"
+
+            The following keys are reserved for Windows nodes:
+
+            -  "serial-port-logging-enable"
+
+            Values are free-form strings, and only have meaning as
+            interpreted by the image running in the instance. The only
+            restriction placed on them is that each value's size must be
+            less than or equal to 32 KB.
 
             The total size of all keys and values must be less than 512
             KB.
@@ -218,21 +351,32 @@ class NodeConfig(proto.Message):
             attached to each node. See
             https://cloud.google.com/compute/docs/gpus for
             more information about support for GPUs.
+        sandbox_config (~.cluster_service.SandboxConfig):
+            Sandbox configuration for this node.
+        node_group (str):
+            Setting this field will assign instances of this pool to run
+            on the specified node group. This is useful for running
+            workloads on `sole tenant
+            nodes <https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes>`__.
+        reservation_affinity (~.cluster_service.ReservationAffinity):
+            The optional reservation affinity. Setting this field will
+            apply the specified `Zonal Compute
+            Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
+            to this node pool.
         disk_type (str):
             Type of the disk attached to each node (e.g.
-            'pd-standard' or 'pd-ssd')
+            'pd-standard', 'pd-ssd' or 'pd-balanced')
+
             If unspecified, the default disk type is 'pd-
             standard'
         min_cpu_platform (str):
             Minimum CPU platform to be used by this instance. The
             instance may be scheduled on the specified or newer CPU
             platform. Applicable values are the friendly names of CPU
-            platforms, such as minCpuPlatform: "Intel Haswell" or
-            minCpuPlatform: "Intel Sandy Bridge". For more information,
-            read `how to specify min CPU
+            platforms, such as ``minCpuPlatform: "Intel Haswell"`` or
+            ``minCpuPlatform: "Intel Sandy Bridge"``. For more
+            information, read `how to specify min CPU
             platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
-            To unset the min cpu platform field pass "automatic" as
-            field value.
         workload_metadata_config (~.cluster_service.WorkloadMetadataConfig):
             The workload metadata configuration for this
             node.
@@ -243,8 +387,25 @@ class NodeConfig(proto.Message):
             valid values, see:
             https://kubernetes.io/docs/concepts/configuration/taint-
             and-toleration/
+        boot_disk_kms_key (str):
+            The Customer Managed Encryption Key used to encrypt the boot
+            disk attached to each node in the node pool. This should be
+            of the form
+            projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+            For more information about protecting resources with Cloud
+            KMS Keys please see:
+            https://cloud.google.com/compute/docs/disks/customer-managed-encryption
         shielded_instance_config (~.cluster_service.ShieldedInstanceConfig):
             Shielded Instance options.
+        linux_node_config (~.cluster_service.LinuxNodeConfig):
+            Parameters that can be configured on Linux
+            nodes.
+        kubelet_config (~.cluster_service.NodeKubeletConfig):
+            Node kubelet configs.
+        ephemeral_storage_config (~.cluster_service.EphemeralStorageConfig):
+            Parameters for the ephemeral storage
+            filesystem. If unspecified, ephemeral storage is
+            backed by the boot disk.
     """
 
     machine_type = proto.Field(proto.STRING, number=1)
@@ -271,6 +432,14 @@ class NodeConfig(proto.Message):
         proto.MESSAGE, number=11, message="AcceleratorConfig",
     )
 
+    sandbox_config = proto.Field(proto.MESSAGE, number=17, message="SandboxConfig",)
+
+    node_group = proto.Field(proto.STRING, number=18)
+
+    reservation_affinity = proto.Field(
+        proto.MESSAGE, number=19, message="ReservationAffinity",
+    )
+
     disk_type = proto.Field(proto.STRING, number=12)
 
     min_cpu_platform = proto.Field(proto.STRING, number=13)
@@ -281,8 +450,20 @@ class NodeConfig(proto.Message):
 
     taints = proto.RepeatedField(proto.MESSAGE, number=15, message="NodeTaint",)
 
+    boot_disk_kms_key = proto.Field(proto.STRING, number=23)
+
     shielded_instance_config = proto.Field(
         proto.MESSAGE, number=20, message="ShieldedInstanceConfig",
+    )
+
+    linux_node_config = proto.Field(
+        proto.MESSAGE, number=21, message="LinuxNodeConfig",
+    )
+
+    kubelet_config = proto.Field(proto.MESSAGE, number=22, message="NodeKubeletConfig",)
+
+    ephemeral_storage_config = proto.Field(
+        proto.MESSAGE, number=24, message="EphemeralStorageConfig",
     )
 
 
@@ -314,13 +495,86 @@ class ShieldedInstanceConfig(proto.Message):
     enable_integrity_monitoring = proto.Field(proto.BOOL, number=2)
 
 
+class SandboxConfig(proto.Message):
+    r"""SandboxConfig contains configurations of the sandbox to use
+    for the node.
+
+    Attributes:
+        sandbox_type (str):
+            Type of the sandbox to use for the node (e.g.
+            'gvisor')
+        type_ (~.cluster_service.SandboxConfig.Type):
+            Type of the sandbox to use for the node.
+    """
+
+    class Type(proto.Enum):
+        r"""Possible types of sandboxes."""
+        UNSPECIFIED = 0
+        GVISOR = 1
+
+    sandbox_type = proto.Field(proto.STRING, number=1)
+
+    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
+
+
+class EphemeralStorageConfig(proto.Message):
+    r"""EphemeralStorageConfig contains configuration for the
+    ephemeral storage filesystem.
+
+    Attributes:
+        local_ssd_count (int):
+            Number of local SSDs to use to back ephemeral
+            storage. Uses NVMe interfaces. Each local SSD is
+            375 GB in size. If zero, it means to disable
+            using local SSDs as ephemeral storage.
+    """
+
+    local_ssd_count = proto.Field(proto.INT32, number=1)
+
+
+class ReservationAffinity(proto.Message):
+    r"""`ReservationAffinity <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
+    is the configuration of desired reservation which instances could
+    take capacity from.
+
+    Attributes:
+        consume_reservation_type (~.cluster_service.ReservationAffinity.Type):
+            Corresponds to the type of reservation
+            consumption.
+        key (str):
+            Corresponds to the label key of a reservation resource. To
+            target a SPECIFIC_RESERVATION by name, specify
+            "googleapis.com/reservation-name" as the key and specify the
+            name of your reservation as its value.
+        values (Sequence[str]):
+            Corresponds to the label value(s) of
+            reservation resource(s).
+    """
+
+    class Type(proto.Enum):
+        r"""Indicates whether to consume capacity from a reservation or
+        not.
+        """
+        UNSPECIFIED = 0
+        NO_RESERVATION = 1
+        ANY_RESERVATION = 2
+        SPECIFIC_RESERVATION = 3
+
+    consume_reservation_type = proto.Field(proto.ENUM, number=1, enum=Type,)
+
+    key = proto.Field(proto.STRING, number=2)
+
+    values = proto.RepeatedField(proto.STRING, number=3)
+
+
 class NodeTaint(proto.Message):
-    r"""Kubernetes taint is comprised of three fields: key, value,
-    and effect. Effect can only be one of three types:  NoSchedule,
+    r"""Kubernetes taint is comprised of three fields: key, value, and
+    effect. Effect can only be one of three types: NoSchedule,
     PreferNoSchedule or NoExecute.
-    For more information, including usage and the valid values, see:
-    https://kubernetes.io/docs/concepts/configuration/taint-and-
-    toleration/
+
+    See
+    `here <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration>`__
+    for more information, including usage and the valid values.
 
     Attributes:
         key (str):
@@ -357,6 +611,12 @@ class MasterAuth(proto.Message):
             clusters v1.6.0 and later, basic authentication
             can be disabled by leaving username unspecified
             (or setting it to the empty string).
+            Warning: basic authentication is deprecated, and
+            will be removed in GKE control plane versions
+            1.19 and newer. For a list of recommended
+            authentication methods, see:
+            https://cloud.google.com/kubernetes-
+            engine/docs/how-to/api-server-authentication
         password (str):
             The password to use for HTTP basic
             authentication to the master endpoint. Because
@@ -364,14 +624,20 @@ class MasterAuth(proto.Message):
             should create a strong password.  If a password
             is provided for cluster creation, username must
             be non-empty.
+
+            Warning: basic authentication is deprecated, and
+            will be removed in GKE control plane versions
+            1.19 and newer. For a list of recommended
+            authentication methods, see:
+            https://cloud.google.com/kubernetes-
+            engine/docs/how-to/api-server-authentication
         client_certificate_config (~.cluster_service.ClientCertificateConfig):
             Configuration for client certificate
             authentication on the cluster. For clusters
             before v1.12, if no configuration is specified,
             a client certificate is issued.
         cluster_ca_certificate (str):
-            [Output only] Base64-encoded public certificate that is the
-            root of trust for the cluster.
+
         client_certificate (str):
             [Output only] Base64-encoded public certificate used by
             clients to authenticate to the cluster endpoint.
@@ -443,6 +709,19 @@ class AddonsConfig(proto.Message):
             Configuration for the Cloud Run addon. The ``IstioConfig``
             addon must be enabled in order to enable Cloud Run addon.
             This option can only be enabled at cluster creation time.
+        dns_cache_config (~.cluster_service.DnsCacheConfig):
+            Configuration for NodeLocalDNS, a dns cache
+            running on cluster nodes
+        config_connector_config (~.cluster_service.ConfigConnectorConfig):
+            Configuration for the ConfigConnector add-on,
+            a Kubernetes extension to manage hosted GCP
+            services through the Kubernetes API
+        gce_persistent_disk_csi_driver_config (~.cluster_service.GcePersistentDiskCsiDriverConfig):
+            Configuration for the Compute Engine
+            Persistent Disk CSI driver.
+        kalm_config (~.cluster_service.KalmConfig):
+            Configuration for the KALM addon, which
+            manages the lifecycle of k8s applications.
     """
 
     http_load_balancing = proto.Field(
@@ -464,6 +743,18 @@ class AddonsConfig(proto.Message):
     istio_config = proto.Field(proto.MESSAGE, number=5, message="IstioConfig",)
 
     cloud_run_config = proto.Field(proto.MESSAGE, number=7, message="CloudRunConfig",)
+
+    dns_cache_config = proto.Field(proto.MESSAGE, number=8, message="DnsCacheConfig",)
+
+    config_connector_config = proto.Field(
+        proto.MESSAGE, number=10, message="ConfigConnectorConfig",
+    )
+
+    gce_persistent_disk_csi_driver_config = proto.Field(
+        proto.MESSAGE, number=11, message="GcePersistentDiskCsiDriverConfig",
+    )
+
+    kalm_config = proto.Field(proto.MESSAGE, number=12, message="KalmConfig",)
 
 
 class HttpLoadBalancing(proto.Message):
@@ -492,9 +783,8 @@ class HorizontalPodAutoscaling(proto.Message):
         disabled (bool):
             Whether the Horizontal Pod Autoscaling
             feature is enabled in the cluster. When enabled,
-            it ensures that a Heapster pod is running in the
-            cluster, which is also used by the Cloud
-            Monitoring service.
+            it ensures that metrics are collected into
+            Stackdriver Monitoring.
     """
 
     disabled = proto.Field(proto.BOOL, number=1)
@@ -526,6 +816,66 @@ class NetworkPolicyConfig(proto.Message):
     disabled = proto.Field(proto.BOOL, number=1)
 
 
+class DnsCacheConfig(proto.Message):
+    r"""Configuration for NodeLocal DNSCache
+
+    Attributes:
+        enabled (bool):
+            Whether NodeLocal DNSCache is enabled for
+            this cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
+class KalmConfig(proto.Message):
+    r"""Configuration options for the KALM addon.
+
+    Attributes:
+        enabled (bool):
+            Whether KALM is enabled for this cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
+class ConfigConnectorConfig(proto.Message):
+    r"""Configuration options for the Config Connector add-on.
+
+    Attributes:
+        enabled (bool):
+            Whether Cloud Connector is enabled for this
+            cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
+class GcePersistentDiskCsiDriverConfig(proto.Message):
+    r"""Configuration for the Compute Engine PD CSI driver. This
+    option can only be enabled at cluster creation time.
+
+    Attributes:
+        enabled (bool):
+            Whether the Compute Engine PD CSI driver is
+            enabled for this cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
+class PrivateClusterMasterGlobalAccessConfig(proto.Message):
+    r"""Configuration for controlling master global access settings.
+
+    Attributes:
+        enabled (bool):
+            Whenever master is accessible globally or
+            not.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
 class PrivateClusterConfig(proto.Message):
     r"""Configuration options for private clusters.
 
@@ -551,6 +901,11 @@ class PrivateClusterConfig(proto.Message):
         public_endpoint (str):
             Output only. The external IP address of this
             cluster's master endpoint.
+        peering_name (str):
+            Output only. The peering name in the customer
+            VPC used by this cluster.
+        master_global_access_config (~.cluster_service.PrivateClusterMasterGlobalAccessConfig):
+            Controls master global access settings.
     """
 
     enable_private_nodes = proto.Field(proto.BOOL, number=1)
@@ -562,6 +917,12 @@ class PrivateClusterConfig(proto.Message):
     private_endpoint = proto.Field(proto.STRING, number=4)
 
     public_endpoint = proto.Field(proto.STRING, number=5)
+
+    peering_name = proto.Field(proto.STRING, number=7)
+
+    master_global_access_config = proto.Field(
+        proto.MESSAGE, number=8, message="PrivateClusterMasterGlobalAccessConfig",
+    )
 
 
 class IstioConfig(proto.Message):
@@ -594,9 +955,20 @@ class CloudRunConfig(proto.Message):
         disabled (bool):
             Whether Cloud Run addon is enabled for this
             cluster.
+        load_balancer_type (~.cluster_service.CloudRunConfig.LoadBalancerType):
+            Which load balancer type is installed for
+            Cloud Run.
     """
 
+    class LoadBalancerType(proto.Enum):
+        r"""Load balancer type of ingress service of Cloud Run."""
+        LOAD_BALANCER_TYPE_UNSPECIFIED = 0
+        LOAD_BALANCER_TYPE_EXTERNAL = 1
+        LOAD_BALANCER_TYPE_INTERNAL = 2
+
     disabled = proto.Field(proto.BOOL, number=1)
+
+    load_balancer_type = proto.Field(proto.ENUM, number=3, enum=LoadBalancerType,)
 
 
 class MasterAuthorizedNetworksConfig(proto.Message):
@@ -681,8 +1053,11 @@ class IPAllocationPolicy(proto.Message):
 
     Attributes:
         use_ip_aliases (bool):
-            Whether alias IPs will be used for pod IPs in
-            the cluster.
+            Whether alias IPs will be used for pod IPs in the cluster.
+            This is used in conjunction with use_routes. It cannot be
+            true if use_routes is true. If both use_ip_aliases and
+            use_routes are false, then the server picks the default IP
+            allocation mode
         create_subnetwork (bool):
             Whether a new subnetwork will be created automatically for
             the cluster.
@@ -800,7 +1175,15 @@ class IPAllocationPolicy(proto.Message):
             `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
-            ``192.168.0.0/16``) to pick a specific range to use.
+            ``192.168.0.0/16``) to pick a specific range to use. This
+            field is deprecated, use cluster.tpu_config.ipv4_cidr_block
+            instead.
+        use_routes (bool):
+            Whether routes will be used for pod IPs in the cluster. This
+            is used in conjunction with use_ip_aliases. It cannot be
+            true if use_ip_aliases is true. If both use_ip_aliases and
+            use_routes are false, then the server picks the default IP
+            allocation mode
     """
 
     use_ip_aliases = proto.Field(proto.BOOL, number=1)
@@ -828,6 +1211,8 @@ class IPAllocationPolicy(proto.Message):
     allow_route_overlap = proto.Field(proto.BOOL, number=12)
 
     tpu_ipv4_cidr_block = proto.Field(proto.STRING, number=13)
+
+    use_routes = proto.Field(proto.BOOL, number=15)
 
 
 class BinaryAuthorization(proto.Message):
@@ -873,6 +1258,24 @@ class AuthenticatorGroupsConfig(proto.Message):
     enabled = proto.Field(proto.BOOL, number=1)
 
     security_group = proto.Field(proto.STRING, number=2)
+
+
+class ClusterTelemetry(proto.Message):
+    r"""Telemetry integration for the cluster.
+
+    Attributes:
+        type_ (~.cluster_service.ClusterTelemetry.Type):
+            Type of the integration.
+    """
+
+    class Type(proto.Enum):
+        r"""Type of the integration."""
+        UNSPECIFIED = 0
+        DISABLED = 1
+        ENABLED = 2
+        SYSTEM_ONLY = 3
+
+    type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
 
 
 class Cluster(proto.Message):
@@ -925,20 +1328,31 @@ class Cluster(proto.Message):
             The logging service the cluster should use to write logs.
             Currently available options:
 
-            -  ``logging.googleapis.com`` - the Google Cloud Logging
-               service.
+            -  ``logging.googleapis.com/kubernetes`` - The Cloud Logging
+               service with a Kubernetes-native resource model
+            -  ``logging.googleapis.com`` - The legacy Cloud Logging
+               service (no longer available as of GKE 1.15).
             -  ``none`` - no logs will be exported from the cluster.
-            -  if left as an empty string,\ ``logging.googleapis.com``
-               will be used.
+
+            If left as an empty
+            string,\ ``logging.googleapis.com/kubernetes`` will be used
+            for GKE 1.14+ or ``logging.googleapis.com`` for earlier
+            versions.
         monitoring_service (str):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
 
-            -  ``monitoring.googleapis.com`` - the Google Cloud
-               Monitoring service.
-            -  ``none`` - no metrics will be exported from the cluster.
-            -  if left as an empty string, ``monitoring.googleapis.com``
-               will be used.
+            -  "monitoring.googleapis.com/kubernetes" - The Cloud
+               Monitoring service with a Kubernetes-native resource
+               model
+            -  ``monitoring.googleapis.com`` - The legacy Cloud
+               Monitoring service (no longer available as of GKE 1.15).
+            -  ``none`` - No metrics will be exported from the cluster.
+
+            If left as an empty
+            string,\ ``monitoring.googleapis.com/kubernetes`` will be
+            used for GKE 1.14+ or ``monitoring.googleapis.com`` for
+            earlier versions.
         network (str):
             The name of the Google Compute Engine
             `network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__
@@ -968,6 +1382,15 @@ class Cluster(proto.Message):
             The list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
             in which the cluster's nodes should be located.
+
+            This field provides a default value if
+            `NodePool.Locations <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations>`__
+            are not specified during node pool creation.
+
+            Warning: changing cluster locations will update the
+            `NodePool.Locations <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations>`__
+            of all node pools and will result in nodes being added
+            and/or removed.
         enable_kubernetes_alpha (bool):
             Kubernetes alpha features are enabled on this
             cluster. This includes alpha API groups (e.g.
@@ -1036,6 +1459,21 @@ class Cluster(proto.Message):
         vertical_pod_autoscaling (~.cluster_service.VerticalPodAutoscaling):
             Cluster-level Vertical Pod Autoscaling
             configuration.
+        shielded_nodes (~.cluster_service.ShieldedNodes):
+            Shielded Nodes configuration.
+        release_channel (~.cluster_service.ReleaseChannel):
+            Release channel configuration.
+        workload_identity_config (~.cluster_service.WorkloadIdentityConfig):
+            Configuration for the use of Kubernetes
+            Service Accounts in GCP IAM policies.
+        cluster_telemetry (~.cluster_service.ClusterTelemetry):
+            Telemetry integration for the cluster.
+        tpu_config (~.cluster_service.TpuConfig):
+            Configuration for Cloud TPU support;
+        notification_config (~.cluster_service.NotificationConfig):
+            Notification configuration of the cluster.
+        confidential_nodes (~.cluster_service.ConfidentialNodes):
+            Configuration of Confidential Nodes
         self_link (str):
             [Output only] Server-defined URL for the resource.
         zone (str):
@@ -1085,8 +1523,9 @@ class Cluster(proto.Message):
         status (~.cluster_service.Cluster.Status):
             [Output only] The current status of this cluster.
         status_message (str):
-            [Output only] Additional information about the current
-            status of this cluster, if available.
+            [Output only] Deprecated. Use conditions instead. Additional
+            information about the current status of this cluster, if
+            available.
         node_ipv4_cidr_size (int):
             [Output only] The size of the address space on each node for
             hosting containers. This is provisioned from within the
@@ -1116,8 +1555,8 @@ class Cluster(proto.Message):
             `region <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
             in which the cluster resides.
         enable_tpu (bool):
-            Enable the ability to use Cloud TPUs in this
-            cluster.
+            Enable the ability to use Cloud TPUs in this cluster. This
+            field is deprecated, use tpu_config.enabled instead.
         tpu_ipv4_cidr_block (str):
             [Output only] The IP address range of the Cloud TPUs in this
             cluster, in
@@ -1128,6 +1567,8 @@ class Cluster(proto.Message):
         conditions (Sequence[~.cluster_service.StatusCondition]):
             Which conditions caused the current cluster
             state.
+        master (~.cluster_service.Master):
+            Configuration for master components.
     """
 
     class Status(proto.Enum):
@@ -1224,6 +1665,28 @@ class Cluster(proto.Message):
         proto.MESSAGE, number=39, message="VerticalPodAutoscaling",
     )
 
+    shielded_nodes = proto.Field(proto.MESSAGE, number=40, message="ShieldedNodes",)
+
+    release_channel = proto.Field(proto.MESSAGE, number=41, message="ReleaseChannel",)
+
+    workload_identity_config = proto.Field(
+        proto.MESSAGE, number=43, message="WorkloadIdentityConfig",
+    )
+
+    cluster_telemetry = proto.Field(
+        proto.MESSAGE, number=46, message="ClusterTelemetry",
+    )
+
+    tpu_config = proto.Field(proto.MESSAGE, number=47, message="TpuConfig",)
+
+    notification_config = proto.Field(
+        proto.MESSAGE, number=49, message="NotificationConfig",
+    )
+
+    confidential_nodes = proto.Field(
+        proto.MESSAGE, number=50, message="ConfidentialNodes",
+    )
+
     self_link = proto.Field(proto.STRING, number=100)
 
     zone = proto.Field(proto.STRING, number=101)
@@ -1266,6 +1729,8 @@ class Cluster(proto.Message):
         proto.MESSAGE, number=118, message="StatusCondition",
     )
 
+    master = proto.Field(proto.MESSAGE, number=124, message="Master",)
+
 
 class ClusterUpdate(proto.Message):
     r"""ClusterUpdate describes an update to the cluster. Exactly one
@@ -1291,11 +1756,17 @@ class ClusterUpdate(proto.Message):
             The monitoring service the cluster should use to write
             metrics. Currently available options:
 
-            -  "monitoring.googleapis.com/kubernetes" - the Google Cloud
-               Monitoring service with Kubernetes-native resource model
-            -  "monitoring.googleapis.com" - the Google Cloud Monitoring
-               service
-            -  "none" - no metrics will be exported from the cluster
+            -  "monitoring.googleapis.com/kubernetes" - The Cloud
+               Monitoring service with a Kubernetes-native resource
+               model
+            -  ``monitoring.googleapis.com`` - The legacy Cloud
+               Monitoring service (no longer available as of GKE 1.15).
+            -  ``none`` - No metrics will be exported from the cluster.
+
+            If left as an empty
+            string,\ ``monitoring.googleapis.com/kubernetes`` will be
+            used for GKE 1.14+ or ``monitoring.googleapis.com`` for
+            earlier versions.
         desired_addons_config (~.cluster_service.AddonsConfig):
             Configurations for the various addons
             available to run in the cluster.
@@ -1316,12 +1787,13 @@ class ClusterUpdate(proto.Message):
         desired_locations (Sequence[str]):
             The desired list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
-            in which the cluster's nodes should be located. Changing the
-            locations a cluster is in will result in nodes being either
-            created or removed from the cluster, depending on whether
-            locations are being added or removed.
+            in which the cluster's nodes should be located.
 
             This list must always include the cluster's primary zone.
+
+            Warning: changing cluster locations will update the
+            locations of all node pools and will result in nodes being
+            added and/or removed.
         desired_master_authorized_networks_config (~.cluster_service.MasterAuthorizedNetworksConfig):
             The desired configuration options for master
             authorized networks feature.
@@ -1334,22 +1806,44 @@ class ClusterUpdate(proto.Message):
             The desired configuration options for the
             Binary Authorization feature.
         desired_logging_service (str):
-            The logging service the cluster should use to write metrics.
+            The logging service the cluster should use to write logs.
             Currently available options:
 
-            -  "logging.googleapis.com/kubernetes" - the Google Cloud
-               Logging service with Kubernetes-native resource model
-            -  "logging.googleapis.com" - the Google Cloud Logging
-               service
-            -  "none" - no logs will be exported from the cluster
+            -  ``logging.googleapis.com/kubernetes`` - The Cloud Logging
+               service with a Kubernetes-native resource model
+            -  ``logging.googleapis.com`` - The legacy Cloud Logging
+               service (no longer available as of GKE 1.15).
+            -  ``none`` - no logs will be exported from the cluster.
+
+            If left as an empty
+            string,\ ``logging.googleapis.com/kubernetes`` will be used
+            for GKE 1.14+ or ``logging.googleapis.com`` for earlier
+            versions.
         desired_resource_usage_export_config (~.cluster_service.ResourceUsageExportConfig):
             The desired configuration for exporting
             resource usage.
         desired_vertical_pod_autoscaling (~.cluster_service.VerticalPodAutoscaling):
             Cluster-level Vertical Pod Autoscaling
             configuration.
+        desired_private_cluster_config (~.cluster_service.PrivateClusterConfig):
+            The desired private cluster configuration.
         desired_intra_node_visibility_config (~.cluster_service.IntraNodeVisibilityConfig):
             The desired config of Intra-node visibility.
+        desired_default_snat_status (~.cluster_service.DefaultSnatStatus):
+            The desired status of whether to disable
+            default sNAT for this cluster.
+        desired_cluster_telemetry (~.cluster_service.ClusterTelemetry):
+            The desired telemetry integration for the
+            cluster.
+        desired_release_channel (~.cluster_service.ReleaseChannel):
+            The desired release channel configuration.
+        desired_tpu_config (~.cluster_service.TpuConfig):
+            The desired Cloud TPU configuration.
+        desired_datapath_provider (~.cluster_service.DatapathProvider):
+            The desired datapath provider for the
+            cluster.
+        desired_notification_config (~.cluster_service.NotificationConfig):
+            The desired notification configuration.
         desired_master_version (str):
             The Kubernetes version to change the master
             to. The only valid value is the latest supported
@@ -1364,6 +1858,14 @@ class ClusterUpdate(proto.Message):
             version - "1.X.Y-gke.N": picks an explicit
             Kubernetes version - "-": picks the default
             Kubernetes version
+        desired_database_encryption (~.cluster_service.DatabaseEncryption):
+            Configuration of etcd encryption.
+        desired_workload_identity_config (~.cluster_service.WorkloadIdentityConfig):
+            Configuration for Workload Identity.
+        desired_shielded_nodes (~.cluster_service.ShieldedNodes):
+            Configuration for Shielded Nodes.
+        desired_master (~.cluster_service.Master):
+            Configuration for master components.
     """
 
     desired_node_version = proto.Field(proto.STRING, number=4)
@@ -1410,11 +1912,51 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE, number=22, message="VerticalPodAutoscaling",
     )
 
+    desired_private_cluster_config = proto.Field(
+        proto.MESSAGE, number=25, message="PrivateClusterConfig",
+    )
+
     desired_intra_node_visibility_config = proto.Field(
         proto.MESSAGE, number=26, message="IntraNodeVisibilityConfig",
     )
 
+    desired_default_snat_status = proto.Field(
+        proto.MESSAGE, number=28, message="DefaultSnatStatus",
+    )
+
+    desired_cluster_telemetry = proto.Field(
+        proto.MESSAGE, number=30, message="ClusterTelemetry",
+    )
+
+    desired_release_channel = proto.Field(
+        proto.MESSAGE, number=31, message="ReleaseChannel",
+    )
+
+    desired_tpu_config = proto.Field(proto.MESSAGE, number=38, message="TpuConfig",)
+
+    desired_datapath_provider = proto.Field(
+        proto.ENUM, number=50, enum="DatapathProvider",
+    )
+
+    desired_notification_config = proto.Field(
+        proto.MESSAGE, number=55, message="NotificationConfig",
+    )
+
     desired_master_version = proto.Field(proto.STRING, number=100)
+
+    desired_database_encryption = proto.Field(
+        proto.MESSAGE, number=46, message="DatabaseEncryption",
+    )
+
+    desired_workload_identity_config = proto.Field(
+        proto.MESSAGE, number=47, message="WorkloadIdentityConfig",
+    )
+
+    desired_shielded_nodes = proto.Field(
+        proto.MESSAGE, number=48, message="ShieldedNodes",
+    )
+
+    desired_master = proto.Field(proto.MESSAGE, number=52, message="Master",)
 
 
 class Operation(proto.Message):
@@ -1437,8 +1979,9 @@ class Operation(proto.Message):
         detail (str):
             Detailed operation progress, if available.
         status_message (str):
-            If an error has occurred, a textual
-            description of the error.
+            Output only. If an error has occurred, a
+            textual description of the error. Deprecated.
+            Use field error instead.
         self_link (str):
             Server-defined URL for the resource.
         target_link (str):
@@ -1459,13 +2002,17 @@ class Operation(proto.Message):
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
         progress (~.cluster_service.OperationProgress):
-            [Output only] Progress information for an operation.
+            Output only. [Output only] Progress information for an
+            operation.
         cluster_conditions (Sequence[~.cluster_service.StatusCondition]):
             Which conditions caused the current cluster
-            state.
+            state. Deprecated. Use field error instead.
         nodepool_conditions (Sequence[~.cluster_service.StatusCondition]):
             Which conditions caused the current node pool
-            state.
+            state. Deprecated. Use field error instead.
+        error (~.gr_status.Status):
+            The error result of the operation in case of
+            failure.
     """
 
     class Status(proto.Enum):
@@ -1528,6 +2075,8 @@ class Operation(proto.Message):
         proto.MESSAGE, number=14, message="StatusCondition",
     )
 
+    error = proto.Field(proto.MESSAGE, number=15, message=gr_status.Status,)
+
 
 class OperationProgress(proto.Message):
     r"""Information about operation (or operation stage) progress.
@@ -1554,8 +2103,8 @@ class OperationProgress(proto.Message):
 
         Attributes:
             name (str):
-                Metric name, required.
-                e.g., "nodes total", "percent done".
+                Required. Metric name, e.g., "nodes total",
+                "percent done".
             int_value (int):
                 For metrics with integer value.
             double_value (float):
@@ -1599,7 +2148,7 @@ class CreateClusterRequest(proto.Message):
             and replaced by the parent field.
         cluster (~.cluster_service.Cluster):
             Required. A `cluster
-            resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.zones.clusters>`__
+            resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters>`__
         parent (str):
             The parent (project and location) where the cluster will be
             created. Specified in the format ``projects/*/locations/*``.
@@ -1726,12 +2275,28 @@ class UpdateNodePoolRequest(proto.Message):
         image_type (str):
             Required. The desired image type for the node
             pool.
+        locations (Sequence[str]):
+            The desired list of Google Compute Engine
+            `zones <https://cloud.google.com/compute/docs/zones#available>`__
+            in which the node pool's nodes should be located. Changing
+            the locations for a node pool will result in nodes being
+            either created or removed from the node pool, depending on
+            whether locations are being added or removed.
         workload_metadata_config (~.cluster_service.WorkloadMetadataConfig):
-            The desired image type for the node pool.
+            The desired workload metadata config for the
+            node pool.
         name (str):
             The name (project, location, cluster, node pool) of the node
             pool to update. Specified in the format
             ``projects/*/locations/*/clusters/*/nodePools/*``.
+        upgrade_settings (~.cluster_service.NodePool.UpgradeSettings):
+            Upgrade settings control disruption and speed
+            of the upgrade.
+        linux_node_config (~.cluster_service.LinuxNodeConfig):
+            Parameters that can be configured on Linux
+            nodes.
+        kubelet_config (~.cluster_service.NodeKubeletConfig):
+            Node kubelet configs.
     """
 
     project_id = proto.Field(proto.STRING, number=1)
@@ -1746,11 +2311,23 @@ class UpdateNodePoolRequest(proto.Message):
 
     image_type = proto.Field(proto.STRING, number=6)
 
+    locations = proto.RepeatedField(proto.STRING, number=13)
+
     workload_metadata_config = proto.Field(
         proto.MESSAGE, number=14, message="WorkloadMetadataConfig",
     )
 
     name = proto.Field(proto.STRING, number=8)
+
+    upgrade_settings = proto.Field(
+        proto.MESSAGE, number=15, message="NodePool.UpgradeSettings",
+    )
+
+    linux_node_config = proto.Field(
+        proto.MESSAGE, number=19, message="LinuxNodeConfig",
+    )
+
+    kubelet_config = proto.Field(proto.MESSAGE, number=20, message="NodeKubeletConfig",)
 
 
 class SetNodePoolAutoscalingRequest(proto.Message):
@@ -1821,11 +2398,18 @@ class SetLoggingServiceRequest(proto.Message):
             replaced by the name field.
         logging_service (str):
             Required. The logging service the cluster should use to
-            write metrics. Currently available options:
+            write logs. Currently available options:
 
-            -  "logging.googleapis.com" - the Google Cloud Logging
-               service
-            -  "none" - no metrics will be exported from the cluster
+            -  ``logging.googleapis.com/kubernetes`` - The Cloud Logging
+               service with a Kubernetes-native resource model
+            -  ``logging.googleapis.com`` - The legacy Cloud Logging
+               service (no longer available as of GKE 1.15).
+            -  ``none`` - no logs will be exported from the cluster.
+
+            If left as an empty
+            string,\ ``logging.googleapis.com/kubernetes`` will be used
+            for GKE 1.14+ or ``logging.googleapis.com`` for earlier
+            versions.
         name (str):
             The name (project, location, cluster) of the cluster to set
             logging. Specified in the format
@@ -1867,9 +2451,17 @@ class SetMonitoringServiceRequest(proto.Message):
             Required. The monitoring service the cluster should use to
             write metrics. Currently available options:
 
-            -  "monitoring.googleapis.com" - the Google Cloud Monitoring
-               service
-            -  "none" - no metrics will be exported from the cluster
+            -  "monitoring.googleapis.com/kubernetes" - The Cloud
+               Monitoring service with a Kubernetes-native resource
+               model
+            -  ``monitoring.googleapis.com`` - The legacy Cloud
+               Monitoring service (no longer available as of GKE 1.15).
+            -  ``none`` - No metrics will be exported from the cluster.
+
+            If left as an empty
+            string,\ ``monitoring.googleapis.com/kubernetes`` will be
+            used for GKE 1.14+ or ``monitoring.googleapis.com`` for
+            earlier versions.
         name (str):
             The name (project, location, cluster) of the cluster to set
             monitoring. Specified in the format
@@ -2300,14 +2892,62 @@ class ServerConfig(proto.Message):
             Version of Kubernetes the service deploys by
             default.
         valid_node_versions (Sequence[str]):
-            List of valid node upgrade target versions.
+            List of valid node upgrade target versions,
+            in descending order.
         default_image_type (str):
             Default image type.
         valid_image_types (Sequence[str]):
             List of valid image types.
         valid_master_versions (Sequence[str]):
-            List of valid master versions.
+            List of valid master versions, in descending
+            order.
+        channels (Sequence[~.cluster_service.ServerConfig.ReleaseChannelConfig]):
+            List of release channel configurations.
     """
+
+    class ReleaseChannelConfig(proto.Message):
+        r"""ReleaseChannelConfig exposes configuration for a release
+        channel.
+
+        Attributes:
+            channel (~.cluster_service.ReleaseChannel.Channel):
+                The release channel this configuration
+                applies to.
+            default_version (str):
+                The default version for newly created
+                clusters on the channel.
+            available_versions (Sequence[~.cluster_service.ServerConfig.ReleaseChannelConfig.AvailableVersion]):
+                Deprecated. This field has been deprecated and replaced with
+                the valid_versions field.
+            valid_versions (Sequence[str]):
+                List of valid versions for the channel.
+        """
+
+        class AvailableVersion(proto.Message):
+            r"""Deprecated.
+
+            Attributes:
+                version (str):
+                    Kubernetes version.
+                reason (str):
+                    Reason for availability.
+            """
+
+            version = proto.Field(proto.STRING, number=1)
+
+            reason = proto.Field(proto.STRING, number=2)
+
+        channel = proto.Field(proto.ENUM, number=1, enum="ReleaseChannel.Channel",)
+
+        default_version = proto.Field(proto.STRING, number=2)
+
+        available_versions = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="ServerConfig.ReleaseChannelConfig.AvailableVersion",
+        )
+
+        valid_versions = proto.RepeatedField(proto.STRING, number=4)
 
     default_cluster_version = proto.Field(proto.STRING, number=1)
 
@@ -2318,6 +2958,10 @@ class ServerConfig(proto.Message):
     valid_image_types = proto.RepeatedField(proto.STRING, number=5)
 
     valid_master_versions = proto.RepeatedField(proto.STRING, number=6)
+
+    channels = proto.RepeatedField(
+        proto.MESSAGE, number=9, message=ReleaseChannelConfig,
+    )
 
 
 class CreateNodePoolRequest(proto.Message):
@@ -2492,6 +3136,17 @@ class NodePool(proto.Message):
             quota <https://cloud.google.com/compute/quotas>`__ is
             sufficient for this number of instances. You must also have
             available firewall and routes quota.
+        locations (Sequence[str]):
+            The list of Google Compute Engine
+            `zones <https://cloud.google.com/compute/docs/zones#available>`__
+            in which the NodePool's nodes should be located.
+
+            If this value is unspecified during node pool creation, the
+            `Cluster.Locations <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster.FIELDS.locations>`__
+            value will be used, instead.
+
+            Warning: changing node pool locations will result in nodes
+            being added and/or removed.
         self_link (str):
             [Output only] Server-defined URL for the resource.
         version (str):
@@ -2503,8 +3158,9 @@ class NodePool(proto.Message):
         status (~.cluster_service.NodePool.Status):
             [Output only] The status of the nodes in this pool instance.
         status_message (str):
-            [Output only] Additional information about the current
-            status of this node pool instance, if available.
+            [Output only] Deprecated. Use conditions instead. Additional
+            information about the current status of this node pool
+            instance, if available.
         autoscaling (~.cluster_service.NodePoolAutoscaling):
             Autoscaler configuration for this NodePool.
             Autoscaler is enabled only if a valid
@@ -2522,6 +3178,9 @@ class NodePool(proto.Message):
         pod_ipv4_cidr_size (int):
             [Output only] The pod CIDR block size per node in this node
             pool.
+        upgrade_settings (~.cluster_service.NodePool.UpgradeSettings):
+            Upgrade settings control disruption and speed
+            of the upgrade.
     """
 
     class Status(proto.Enum):
@@ -2534,11 +3193,55 @@ class NodePool(proto.Message):
         STOPPING = 5
         ERROR = 6
 
+    class UpgradeSettings(proto.Message):
+        r"""These upgrade settings control the level of parallelism and
+        the level of disruption caused by an upgrade.
+
+        maxUnavailable controls the number of nodes that can be
+        simultaneously unavailable.
+
+        maxSurge controls the number of additional nodes that can be
+        added to the node pool temporarily for the time of the upgrade
+        to increase the number of available nodes.
+
+        (maxUnavailable + maxSurge) determines the level of parallelism
+        (how many nodes are being upgraded at the same time).
+
+        Note: upgrades inevitably introduce some disruption since
+        workloads need to be moved from old nodes to new, upgraded ones.
+        Even if maxUnavailable=0, this holds true. (Disruption stays
+        within the limits of PodDisruptionBudget, if it is configured.)
+
+        Consider a hypothetical node pool with 5 nodes having
+        maxSurge=2, maxUnavailable=1. This means the upgrade process
+        upgrades 3 nodes simultaneously. It creates 2 additional
+        (upgraded) nodes, then it brings down 3 old (not yet upgraded)
+        nodes at the same time. This ensures that there are always at
+        least 4 nodes available.
+
+        Attributes:
+            max_surge (int):
+                The maximum number of nodes that can be
+                created beyond the current size of the node pool
+                during the upgrade process.
+            max_unavailable (int):
+                The maximum number of nodes that can be
+                simultaneously unavailable during the upgrade
+                process. A node is considered available if its
+                status is Ready.
+        """
+
+        max_surge = proto.Field(proto.INT32, number=1)
+
+        max_unavailable = proto.Field(proto.INT32, number=2)
+
     name = proto.Field(proto.STRING, number=1)
 
     config = proto.Field(proto.MESSAGE, number=2, message="NodeConfig",)
 
     initial_node_count = proto.Field(proto.INT32, number=3)
+
+    locations = proto.RepeatedField(proto.STRING, number=13)
 
     self_link = proto.Field(proto.STRING, number=100)
 
@@ -2563,6 +3266,8 @@ class NodePool(proto.Message):
     )
 
     pod_ipv4_cidr_size = proto.Field(proto.INT32, number=7)
+
+    upgrade_settings = proto.Field(proto.MESSAGE, number=107, message=UpgradeSettings,)
 
 
 class NodeManagement(proto.Message):
@@ -2619,14 +3324,13 @@ class MaintenancePolicy(proto.Message):
             Specifies the maintenance window in which
             maintenance may be performed.
         resource_version (str):
-            A hash identifying the version of this
-            policy, so that updates to fields of the policy
-            won't accidentally undo intermediate changes
-            (and so that users of the API unaware of some
-            fields won't accidentally remove other fields).
-            Make a <code>get()</code> request to the cluster
-            to get the current resource version and include
-            it with requests to set the policy.
+            A hash identifying the version of this policy, so that
+            updates to fields of the policy won't accidentally undo
+            intermediate changes (and so that users of the API unaware
+            of some fields won't accidentally remove other fields). Make
+            a ``get()`` request to the cluster to get the current
+            resource version and include it with requests to set the
+            policy.
     """
 
     window = proto.Field(proto.MESSAGE, number=1, message="MaintenanceWindow",)
@@ -2691,38 +3395,43 @@ class RecurringTimeWindow(proto.Message):
             The window of the first recurrence.
         recurrence (str):
             An RRULE
-            (https://tools.ietf.org/html/rfc5545#section-3.8.5.3)
-            for how this window reccurs. They go on for the
-            span of time between the start and end time.
+            (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for
+            how this window reccurs. They go on for the span of time
+            between the start and end time.
 
-            For example, to have something repeat every
-            weekday, you'd use:
-            <code>FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR</code> To
-            repeat some window daily (equivalent to the
-            DailyMaintenanceWindow):
-            <code>FREQ=DAILY</code>
+            For example, to have something repeat every weekday, you'd
+            use: ``FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR``
+
+            To repeat some window daily (equivalent to the
+            DailyMaintenanceWindow): ``FREQ=DAILY``
+
             For the first weekend of every month:
-            <code>FREQ=MONTHLY;BYSETPOS=1;BYDAY=SA,SU</code>
-            This specifies how frequently the window starts.
-            Eg, if you wanted to have a 9-5 UTC-4 window
-            every weekday, you'd use something like: <code>
-              start time = 2019-01-01T09:00:00-0400
-              end time = 2019-01-01T17:00:00-0400
-              recurrence = FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
-            </code>
-            Windows can span multiple days. Eg, to make the
-            window encompass every weekend from midnight
-            Saturday till the last minute of Sunday UTC:
-            <code>
-              start time = 2019-01-05T00:00:00Z
-              end time = 2019-01-07T23:59:00Z
-              recurrence = FREQ=WEEKLY;BYDAY=SA
-            </code>
-            Note the start and end time's specific dates are
-            largely arbitrary except to specify duration of
-            the window and when it first starts. The FREQ
-            values of HOURLY, MINUTELY, and SECONDLY are not
-            supported.
+            ``FREQ=MONTHLY;BYSETPOS=1;BYDAY=SA,SU``
+
+            This specifies how frequently the window starts. Eg, if you
+            wanted to have a 9-5 UTC-4 window every weekday, you'd use
+            something like:
+
+            ::
+
+               start time = 2019-01-01T09:00:00-0400
+               end time = 2019-01-01T17:00:00-0400
+               recurrence = FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+
+            Windows can span multiple days. Eg, to make the window
+            encompass every weekend from midnight Saturday till the last
+            minute of Sunday UTC:
+
+            ::
+
+               start time = 2019-01-05T00:00:00Z
+               end time = 2019-01-07T23:59:00Z
+               recurrence = FREQ=WEEKLY;BYDAY=SA
+
+            Note the start and end time's specific dates are largely
+            arbitrary except to specify duration of the window and when
+            it first starts. The FREQ values of HOURLY, MINUTELY, and
+            SECONDLY are not supported.
     """
 
     window = proto.Field(proto.MESSAGE, number=1, message="TimeWindow",)
@@ -2906,6 +3615,8 @@ class ClusterAutoscaling(proto.Message):
         resource_limits (Sequence[~.cluster_service.ResourceLimit]):
             Contains global constraints regarding minimum
             and maximum amount of resources in the cluster.
+        autoscaling_profile (~.cluster_service.ClusterAutoscaling.AutoscalingProfile):
+            Defines autoscaling behaviour.
         autoprovisioning_node_pool_defaults (~.cluster_service.AutoprovisioningNodePoolDefaults):
             AutoprovisioningNodePoolDefaults contains
             defaults for a node pool created by NAP.
@@ -2915,11 +3626,19 @@ class ClusterAutoscaling(proto.Message):
             in which the NodePool's nodes can be created by NAP.
     """
 
+    class AutoscalingProfile(proto.Enum):
+        r"""Defines possible options for autoscaling_profile field."""
+        PROFILE_UNSPECIFIED = 0
+        OPTIMIZE_UTILIZATION = 1
+        BALANCED = 2
+
     enable_node_autoprovisioning = proto.Field(proto.BOOL, number=1)
 
     resource_limits = proto.RepeatedField(
         proto.MESSAGE, number=2, message="ResourceLimit",
     )
+
+    autoscaling_profile = proto.Field(proto.ENUM, number=3, enum=AutoscalingProfile,)
 
     autoprovisioning_node_pool_defaults = proto.Field(
         proto.MESSAGE, number=4, message="AutoprovisioningNodePoolDefaults",
@@ -2934,17 +3653,88 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
 
     Attributes:
         oauth_scopes (Sequence[str]):
-            Scopes that are used by NAP when creating node pools. If
-            oauth_scopes are specified, service_account should be empty.
+            The set of Google API scopes to be made available on all of
+            the node VMs under the "default" service account.
+
+            The following scopes are recommended, but not required, and
+            by default are not included:
+
+            -  ``https://www.googleapis.com/auth/compute`` is required
+               for mounting persistent storage on your nodes.
+            -  ``https://www.googleapis.com/auth/devstorage.read_only``
+               is required for communicating with **gcr.io** (the
+               `Google Container
+               Registry <https://cloud.google.com/container-registry/>`__).
+
+            If unspecified, no scopes are added, unless Cloud Logging or
+            Cloud Monitoring are enabled, in which case their required
+            scopes will be added.
         service_account (str):
-            The Google Cloud Platform Service Account to be used by the
-            node VMs. If service_account is specified, scopes should be
-            empty.
+            The Google Cloud Platform Service Account to
+            be used by the node VMs. Specify the email
+            address of the Service Account; otherwise, if no
+            Service Account is specified, the "default"
+            service account is used.
+        upgrade_settings (~.cluster_service.NodePool.UpgradeSettings):
+            Upgrade settings control disruption and speed
+            of the upgrade.
+        management (~.cluster_service.NodeManagement):
+            NodeManagement configuration for this
+            NodePool.
+        min_cpu_platform (str):
+            Minimum CPU platform to be used by this instance. The
+            instance may be scheduled on the specified or newer CPU
+            platform. Applicable values are the friendly names of CPU
+            platforms, such as ``minCpuPlatform: "Intel Haswell"`` or
+            ``minCpuPlatform: "Intel Sandy Bridge"``. For more
+            information, read `how to specify min CPU
+            platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
+            To unset the min cpu platform field pass "automatic" as
+            field value.
+        disk_size_gb (int):
+            Size of the disk attached to each node,
+            specified in GB. The smallest allowed disk size
+            is 10GB.
+            If unspecified, the default disk size is 100GB.
+        disk_type (str):
+            Type of the disk attached to each node (e.g.
+            'pd-standard', 'pd-ssd' or 'pd-balanced')
+
+            If unspecified, the default disk type is 'pd-
+            standard'
+        shielded_instance_config (~.cluster_service.ShieldedInstanceConfig):
+            Shielded Instance options.
+        boot_disk_kms_key (str):
+            The Customer Managed Encryption Key used to encrypt the boot
+            disk attached to each node in the node pool. This should be
+            of the form
+            projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+            For more information about protecting resources with Cloud
+            KMS Keys please see:
+            https://cloud.google.com/compute/docs/disks/customer-managed-encryption
     """
 
     oauth_scopes = proto.RepeatedField(proto.STRING, number=1)
 
     service_account = proto.Field(proto.STRING, number=2)
+
+    upgrade_settings = proto.Field(
+        proto.MESSAGE, number=3, message="NodePool.UpgradeSettings",
+    )
+
+    management = proto.Field(proto.MESSAGE, number=4, message="NodeManagement",)
+
+    min_cpu_platform = proto.Field(proto.STRING, number=5)
+
+    disk_size_gb = proto.Field(proto.INT32, number=6)
+
+    disk_type = proto.Field(proto.STRING, number=7)
+
+    shielded_instance_config = proto.Field(
+        proto.MESSAGE, number=8, message="ShieldedInstanceConfig",
+    )
+
+    boot_disk_kms_key = proto.Field(proto.STRING, number=9)
 
 
 class ResourceLimit(proto.Message):
@@ -3022,14 +3812,12 @@ class SetLabelsRequest(proto.Message):
         resource_labels (Sequence[~.cluster_service.SetLabelsRequest.ResourceLabelsEntry]):
             Required. The labels to set for that cluster.
         label_fingerprint (str):
-            Required. The fingerprint of the previous set
-            of labels for this resource, used to detect
-            conflicts. The fingerprint is initially
-            generated by Kubernetes Engine and changes after
-            every request to modify or update labels. You
-            must always provide an up-to-date fingerprint
-            hash when updating or changing labels. Make a
-            <code>get()</code> request to the resource to
+            Required. The fingerprint of the previous set of labels for
+            this resource, used to detect conflicts. The fingerprint is
+            initially generated by Kubernetes Engine and changes after
+            every request to modify or update labels. You must always
+            provide an up-to-date fingerprint hash when updating or
+            changing labels. Make a ``get()`` request to the resource to
             get the latest fingerprint.
         name (str):
             The name (project, location, cluster id) of the cluster to
@@ -3193,6 +3981,9 @@ class WorkloadMetadataConfig(proto.Message):
             NodeMetadata is the configuration for how to
             expose metadata to the workloads running on the
             node.
+        mode (~.cluster_service.WorkloadMetadataConfig.Mode):
+            Mode is the configuration for how to expose
+            metadata to workloads running on the node pool.
     """
 
     class NodeMetadata(proto.Enum):
@@ -3202,8 +3993,19 @@ class WorkloadMetadataConfig(proto.Message):
         UNSPECIFIED = 0
         SECURE = 1
         EXPOSE = 2
+        GKE_METADATA_SERVER = 3
+
+    class Mode(proto.Enum):
+        r"""Mode is the configuration for how to expose metadata to
+        workloads running on the node.
+        """
+        MODE_UNSPECIFIED = 0
+        GCE_METADATA = 1
+        GKE_METADATA = 2
 
     node_metadata = proto.Field(proto.ENUM, number=1, enum=NodeMetadata,)
+
+    mode = proto.Field(proto.ENUM, number=2, enum=Mode,)
 
 
 class SetNetworkPolicyRequest(proto.Message):
@@ -3356,11 +4158,13 @@ class StatusCondition(proto.Message):
 
     Attributes:
         code (~.cluster_service.StatusCondition.Code):
-            Machine-friendly representation of the
-            condition
+            Machine-friendly representation of the condition Deprecated.
+            Use canonical_code instead.
         message (str):
             Human-friendly representation of the
             condition
+        canonical_code (~.gr_code.Code):
+            Canonical code of the condition.
     """
 
     class Code(proto.Enum):
@@ -3375,6 +4179,8 @@ class StatusCondition(proto.Message):
     code = proto.Field(proto.ENUM, number=1, enum=Code,)
 
     message = proto.Field(proto.STRING, number=2)
+
+    canonical_code = proto.Field(proto.ENUM, number=3, enum=gr_code.Code,)
 
 
 class NetworkConfig(proto.Message):
@@ -3396,6 +4202,16 @@ class NetworkConfig(proto.Message):
             Whether Intra-node visibility is enabled for
             this cluster. This makes same node pod to pod
             traffic visible for VPC network.
+        default_snat_status (~.cluster_service.DefaultSnatStatus):
+            Whether the cluster disables default in-node sNAT rules.
+            In-node sNAT rules will be disabled when default_snat_status
+            is disabled. When disabled is set to false, default IP
+            masquerade rules will be applied to the nodes to prevent
+            sNAT on cluster internal traffic.
+        datapath_provider (~.cluster_service.DatapathProvider):
+            The desired datapath provider for this
+            cluster. By default, uses the IPTables-based
+            kube-proxy implementation.
     """
 
     network = proto.Field(proto.STRING, number=1)
@@ -3403,6 +4219,12 @@ class NetworkConfig(proto.Message):
     subnetwork = proto.Field(proto.STRING, number=2)
 
     enable_intra_node_visibility = proto.Field(proto.BOOL, number=5)
+
+    default_snat_status = proto.Field(
+        proto.MESSAGE, number=7, message="DefaultSnatStatus",
+    )
+
+    datapath_provider = proto.Field(proto.ENUM, number=11, enum="DatapathProvider",)
 
 
 class ListUsableSubnetworksRequest(proto.Message):
@@ -3551,6 +4373,18 @@ class VerticalPodAutoscaling(proto.Message):
     enabled = proto.Field(proto.BOOL, number=1)
 
 
+class DefaultSnatStatus(proto.Message):
+    r"""DefaultSnatStatus contains the desired state of whether
+    default sNAT should be disabled on the cluster.
+
+    Attributes:
+        disabled (bool):
+            Disables cluster default sNAT rules.
+    """
+
+    disabled = proto.Field(proto.BOOL, number=1)
+
+
 class IntraNodeVisibilityConfig(proto.Message):
     r"""IntraNodeVisibilityConfig contains the desired config of the
     intra-node visibility on this cluster.
@@ -3574,6 +4408,29 @@ class MaxPodsConstraint(proto.Message):
     """
 
     max_pods_per_node = proto.Field(proto.INT64, number=1)
+
+
+class WorkloadIdentityConfig(proto.Message):
+    r"""Configuration for the use of Kubernetes Service Accounts in
+    GCP IAM policies.
+
+    Attributes:
+        identity_namespace (str):
+            IAM Identity Namespace to attach all
+            Kubernetes Service Accounts to.
+        workload_pool (str):
+            The workload pool to attach all Kubernetes
+            service accounts to.
+        identity_provider (str):
+            identity provider is the third party identity
+            provider.
+    """
+
+    identity_namespace = proto.Field(proto.STRING, number=1)
+
+    workload_pool = proto.Field(proto.STRING, number=2)
+
+    identity_provider = proto.Field(proto.STRING, number=3)
 
 
 class DatabaseEncryption(proto.Message):
@@ -3650,6 +4507,271 @@ class ResourceUsageExportConfig(proto.Message):
     consumption_metering_config = proto.Field(
         proto.MESSAGE, number=3, message=ConsumptionMeteringConfig,
     )
+
+
+class ShieldedNodes(proto.Message):
+    r"""Configuration of Shielded Nodes feature.
+
+    Attributes:
+        enabled (bool):
+            Whether Shielded Nodes features are enabled
+            on all nodes in this cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
+class GetOpenIDConfigRequest(proto.Message):
+    r"""GetOpenIDConfigRequest gets the OIDC discovery document for
+    the cluster. See the OpenID Connect Discovery 1.0 specification
+    for details.
+
+    Attributes:
+        parent (str):
+            The cluster (project, location, cluster id) to get the
+            discovery document for. Specified in the format
+            ``projects/*/locations/*/clusters/*``.
+    """
+
+    parent = proto.Field(proto.STRING, number=1)
+
+
+class GetOpenIDConfigResponse(proto.Message):
+    r"""GetOpenIDConfigResponse is an OIDC discovery document for the
+    cluster. See the OpenID Connect Discovery 1.0 specification for
+    details.
+
+    Attributes:
+        issuer (str):
+            OIDC Issuer.
+        jwks_uri (str):
+            JSON Web Key uri.
+        response_types_supported (Sequence[str]):
+            Supported response types.
+        subject_types_supported (Sequence[str]):
+            Supported subject types.
+        id_token_signing_alg_values_supported (Sequence[str]):
+            supported ID Token signing Algorithms.
+        claims_supported (Sequence[str]):
+            Supported claims.
+        grant_types (Sequence[str]):
+            Supported grant types.
+    """
+
+    issuer = proto.Field(proto.STRING, number=1)
+
+    jwks_uri = proto.Field(proto.STRING, number=2)
+
+    response_types_supported = proto.RepeatedField(proto.STRING, number=3)
+
+    subject_types_supported = proto.RepeatedField(proto.STRING, number=4)
+
+    id_token_signing_alg_values_supported = proto.RepeatedField(proto.STRING, number=5)
+
+    claims_supported = proto.RepeatedField(proto.STRING, number=6)
+
+    grant_types = proto.RepeatedField(proto.STRING, number=7)
+
+
+class GetJSONWebKeysRequest(proto.Message):
+    r"""GetJSONWebKeysRequest gets the public component of the keys used by
+    the cluster to sign token requests. This will be the jwks_uri for
+    the discover document returned by getOpenIDConfig. See the OpenID
+    Connect Discovery 1.0 specification for details.
+
+    Attributes:
+        parent (str):
+            The cluster (project, location, cluster id) to get keys for.
+            Specified in the format
+            ``projects/*/locations/*/clusters/*``.
+    """
+
+    parent = proto.Field(proto.STRING, number=1)
+
+
+class Jwk(proto.Message):
+    r"""Jwk is a JSON Web Key as specified in RFC 7517
+
+    Attributes:
+        kty (str):
+            Key Type.
+        alg (str):
+            Algorithm.
+        use (str):
+            Permitted uses for the public keys.
+        kid (str):
+            Key ID.
+        n (str):
+            Used for RSA keys.
+        e (str):
+            Used for RSA keys.
+        x (str):
+            Used for ECDSA keys.
+        y (str):
+            Used for ECDSA keys.
+        crv (str):
+            Used for ECDSA keys.
+    """
+
+    kty = proto.Field(proto.STRING, number=1)
+
+    alg = proto.Field(proto.STRING, number=2)
+
+    use = proto.Field(proto.STRING, number=3)
+
+    kid = proto.Field(proto.STRING, number=4)
+
+    n = proto.Field(proto.STRING, number=5)
+
+    e = proto.Field(proto.STRING, number=6)
+
+    x = proto.Field(proto.STRING, number=7)
+
+    y = proto.Field(proto.STRING, number=8)
+
+    crv = proto.Field(proto.STRING, number=9)
+
+
+class GetJSONWebKeysResponse(proto.Message):
+    r"""GetJSONWebKeysResponse is a valid JSON Web Key Set as
+    specififed in rfc 7517
+
+    Attributes:
+        keys (Sequence[~.cluster_service.Jwk]):
+            The public component of the keys used by the
+            cluster to sign token requests.
+    """
+
+    keys = proto.RepeatedField(proto.MESSAGE, number=1, message="Jwk",)
+
+
+class ReleaseChannel(proto.Message):
+    r"""ReleaseChannel indicates which release channel a cluster is
+    subscribed to. Release channels are arranged in order of risk.
+    When a cluster is subscribed to a release channel, Google
+    maintains both the master version and the node version. Node
+    auto-upgrade defaults to true and cannot be disabled.
+
+    Attributes:
+        channel (~.cluster_service.ReleaseChannel.Channel):
+            channel specifies which release channel the
+            cluster is subscribed to.
+    """
+
+    class Channel(proto.Enum):
+        r"""Possible values for 'channel'."""
+        UNSPECIFIED = 0
+        RAPID = 1
+        REGULAR = 2
+        STABLE = 3
+
+    channel = proto.Field(proto.ENUM, number=1, enum=Channel,)
+
+
+class TpuConfig(proto.Message):
+    r"""Configuration for Cloud TPU.
+
+    Attributes:
+        enabled (bool):
+            Whether Cloud TPU integration is enabled or
+            not.
+        use_service_networking (bool):
+            Whether to use service networking for Cloud
+            TPU or not.
+        ipv4_cidr_block (str):
+            IPv4 CIDR block reserved for Cloud TPU in the
+            VPC.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+    use_service_networking = proto.Field(proto.BOOL, number=2)
+
+    ipv4_cidr_block = proto.Field(proto.STRING, number=3)
+
+
+class Master(proto.Message):
+    r"""Master is the configuration for components on master."""
+
+
+class NotificationConfig(proto.Message):
+    r"""NotificationConfig is the configuration of notifications.
+
+    Attributes:
+        pubsub (~.cluster_service.NotificationConfig.PubSub):
+            Notification config for Pub/Sub.
+    """
+
+    class PubSub(proto.Message):
+        r"""Pub/Sub specific notification config.
+
+        Attributes:
+            enabled (bool):
+                Enable notifications for Pub/Sub.
+            topic (str):
+                The desired Pub/Sub topic to which notifications will be
+                sent by GKE. Format is
+                ``projects/{project}/topics/{topic}``.
+        """
+
+        enabled = proto.Field(proto.BOOL, number=1)
+
+        topic = proto.Field(proto.STRING, number=2)
+
+    pubsub = proto.Field(proto.MESSAGE, number=1, message=PubSub,)
+
+
+class ConfidentialNodes(proto.Message):
+    r"""ConfidentialNodes is configuration for the confidential nodes
+    feature, which makes nodes run on confidential VMs.
+
+    Attributes:
+        enabled (bool):
+            Whether Confidential Nodes feature is enabled
+            for all nodes in this cluster.
+    """
+
+    enabled = proto.Field(proto.BOOL, number=1)
+
+
+class UpgradeEvent(proto.Message):
+    r"""UpgradeEvent is a notification sent to customers by the
+    cluster server when a resource is upgrading.
+
+    Attributes:
+        resource_type (~.cluster_service.UpgradeResourceType):
+            Required. The resource type that is
+            upgrading.
+        operation (str):
+            Required. The operation associated with this
+            upgrade.
+        operation_start_time (~.timestamp.Timestamp):
+            Required. The time when the operation was
+            started.
+        current_version (str):
+            Required. The current version before the
+            upgrade.
+        target_version (str):
+            Required. The target version for the upgrade.
+        resource (str):
+            Optional. Optional relative path to the
+            resource. For example in node pool upgrades, the
+            relative path of the node pool.
+    """
+
+    resource_type = proto.Field(proto.ENUM, number=1, enum="UpgradeResourceType",)
+
+    operation = proto.Field(proto.STRING, number=2)
+
+    operation_start_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp.Timestamp,
+    )
+
+    current_version = proto.Field(proto.STRING, number=4)
+
+    target_version = proto.Field(proto.STRING, number=5)
+
+    resource = proto.Field(proto.STRING, number=6)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
