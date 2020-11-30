@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-spanner/compare/v2.0.0...v2.1.0) (2020-11-24)
+
+
+### Features
+
+* **dbapi:** add aborted transactions retry support ([#168](https://www.github.com/googleapis/python-spanner/issues/168)) ([d59d502](https://www.github.com/googleapis/python-spanner/commit/d59d502590f618c8b13920ae05ab11add78315b5)), closes [#34](https://www.github.com/googleapis/python-spanner/issues/34) [googleapis/python-spanner-django#544](https://www.github.com/googleapis/python-spanner-django/issues/544)
+* remove adding a dummy WHERE clause into UPDATE and DELETE statements ([#169](https://www.github.com/googleapis/python-spanner/issues/169)) ([7f4d478](https://www.github.com/googleapis/python-spanner/commit/7f4d478fd9812c965cdb185c52aa9a8c9e599bed))
+
+
+### Bug Fixes
+
+* Add sqlparse dependency ([#171](https://www.github.com/googleapis/python-spanner/issues/171)) ([e801a2e](https://www.github.com/googleapis/python-spanner/commit/e801a2e014fcff66a69cb9da83abedb218cda2ab))
+
+
+### Reverts
+
+* Revert "test: unskip list_backup_operations sample test (#170)" (#174) ([6053f4a](https://www.github.com/googleapis/python-spanner/commit/6053f4ab0fc647a9cfc181e16c246141483c2397)), closes [#170](https://www.github.com/googleapis/python-spanner/issues/170) [#174](https://www.github.com/googleapis/python-spanner/issues/174)
+
 ## [2.0.0](https://www.github.com/googleapis/python-spanner/compare/v1.19.1...v2.0.0) (2020-11-11)
 
 
