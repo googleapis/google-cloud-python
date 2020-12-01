@@ -3,22 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-area120-tables",
-        "sha": "7c9b3c552c3e99934c71bc64f6f6421343470875"
+        "remote": "git@github.com:googleapis/python-area120-tables",
+        "sha": "5522f040f009f2ffd8e11eaa21b9ca8fdc8591fa"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "6a69c750c3f01a69017662395f90515bbf1fe1ff",
+        "internalRef": "342721036"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
+        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "b2c32f1c8a4094f0f47fcf5d10f0b6f2bfb3387d"
+        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
       }
     }
   ],

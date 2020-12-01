@@ -220,7 +220,7 @@ class BatchCreateRowsRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    requests = proto.RepeatedField(proto.MESSAGE, number=2, message=CreateRowRequest,)
+    requests = proto.RepeatedField(proto.MESSAGE, number=2, message="CreateRowRequest",)
 
 
 class BatchCreateRowsResponse(proto.Message):
@@ -270,7 +270,7 @@ class BatchUpdateRowsRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    requests = proto.RepeatedField(proto.MESSAGE, number=2, message=UpdateRowRequest,)
+    requests = proto.RepeatedField(proto.MESSAGE, number=2, message="UpdateRowRequest",)
 
 
 class BatchUpdateRowsResponse(proto.Message):
