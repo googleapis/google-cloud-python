@@ -122,6 +122,8 @@ _CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE = (
 _DEFAULT_CHUNKSIZE = 104857600  # 1024 * 1024 B * 100 = 100 MB
 _MAX_MULTIPART_SIZE = 8388608  # 8 MB
 
+_logger = logging.getLogger(__name__)
+
 
 class Blob(_PropertyMixin):
     """A wrapper around Cloud Storage's concept of an ``Object``.
@@ -923,7 +925,7 @@ class Blob(_PropertyMixin):
 
             if checksum:
                 msg = _CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE.format(checksum)
-                logging.info(msg)
+                _logger.info(msg)
 
             if raw_download:
                 klass = RawChunkedDownload

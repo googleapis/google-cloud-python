@@ -1115,7 +1115,7 @@ class Test_Blob(unittest.TestCase):
     def test__do_download_w_chunks_w_checksum(self):
         from google.cloud.storage import blob as blob_module
 
-        with mock.patch("logging.info") as patch:
+        with mock.patch.object(blob_module._logger, "info") as patch:
             self._do_download_helper_w_chunks(
                 w_range=False, raw_download=False, checksum="md5"
             )
@@ -1124,7 +1124,9 @@ class Test_Blob(unittest.TestCase):
         )
 
     def test__do_download_w_chunks_wo_checksum(self):
-        with mock.patch("logging.info") as patch:
+        from google.cloud.storage import blob as blob_module
+
+        with mock.patch.object(blob_module._logger, "info") as patch:
             self._do_download_helper_w_chunks(
                 w_range=False, raw_download=False, checksum=None
             )
