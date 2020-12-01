@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-dialogflow-cx.git",
-        "sha": "06815d6a0ac4377b6cf977a94c8d44753abe9d39"
+        "sha": "e691f77b8415a5df684a67a1df4b1a1bddf6dace"
       }
     },
     {
