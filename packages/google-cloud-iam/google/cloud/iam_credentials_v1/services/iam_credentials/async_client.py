@@ -32,7 +32,7 @@ from google.cloud.iam_credentials_v1.types import common
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import IAMCredentialsTransport
+from .transports.base import IAMCredentialsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 from .client import IAMCredentialsClient
 
@@ -55,8 +55,51 @@ class IAMCredentialsAsyncClient:
     DEFAULT_ENDPOINT = IAMCredentialsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IAMCredentialsClient.DEFAULT_MTLS_ENDPOINT
 
+    service_account_path = staticmethod(IAMCredentialsClient.service_account_path)
+    parse_service_account_path = staticmethod(
+        IAMCredentialsClient.parse_service_account_path
+    )
+
+    common_billing_account_path = staticmethod(
+        IAMCredentialsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        IAMCredentialsClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(IAMCredentialsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        IAMCredentialsClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        IAMCredentialsClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        IAMCredentialsClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(IAMCredentialsClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        IAMCredentialsClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(IAMCredentialsClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        IAMCredentialsClient.parse_common_location_path
+    )
+
     from_service_account_file = IAMCredentialsClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> IAMCredentialsTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            IAMCredentialsTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(IAMCredentialsClient).get_transport_class, type(IAMCredentialsClient)
@@ -68,6 +111,7 @@ class IAMCredentialsAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, IAMCredentialsTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the iam credentials client.
 
@@ -83,16 +127,19 @@ class IAMCredentialsAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -100,7 +147,10 @@ class IAMCredentialsAsyncClient:
         """
 
         self._client = IAMCredentialsClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def generate_access_token(
@@ -182,7 +232,8 @@ class IAMCredentialsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, delegates, scope, lifetime]):
+        has_flattened_params = any([name, delegates, scope, lifetime])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -195,12 +246,13 @@ class IAMCredentialsAsyncClient:
 
         if name is not None:
             request.name = name
-        if delegates is not None:
-            request.delegates = delegates
-        if scope is not None:
-            request.scope = scope
         if lifetime is not None:
             request.lifetime = lifetime
+
+        if delegates:
+            request.delegates.extend(delegates)
+        if scope:
+            request.scope.extend(scope)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -215,7 +267,7 @@ class IAMCredentialsAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -303,7 +355,8 @@ class IAMCredentialsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, delegates, audience, include_email]):
+        has_flattened_params = any([name, delegates, audience, include_email])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -316,12 +369,13 @@ class IAMCredentialsAsyncClient:
 
         if name is not None:
             request.name = name
-        if delegates is not None:
-            request.delegates = delegates
         if audience is not None:
             request.audience = audience
         if include_email is not None:
             request.include_email = include_email
+
+        if delegates:
+            request.delegates.extend(delegates)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -336,7 +390,7 @@ class IAMCredentialsAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -414,7 +468,8 @@ class IAMCredentialsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, delegates, payload]):
+        has_flattened_params = any([name, delegates, payload])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -427,10 +482,11 @@ class IAMCredentialsAsyncClient:
 
         if name is not None:
             request.name = name
-        if delegates is not None:
-            request.delegates = delegates
         if payload is not None:
             request.payload = payload
+
+        if delegates:
+            request.delegates.extend(delegates)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -445,7 +501,7 @@ class IAMCredentialsAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -525,7 +581,8 @@ class IAMCredentialsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, delegates, payload]):
+        has_flattened_params = any([name, delegates, payload])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -538,10 +595,11 @@ class IAMCredentialsAsyncClient:
 
         if name is not None:
             request.name = name
-        if delegates is not None:
-            request.delegates = delegates
         if payload is not None:
             request.payload = payload
+
+        if delegates:
+            request.delegates.extend(delegates)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -556,7 +614,7 @@ class IAMCredentialsAsyncClient:
                 ),
             ),
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -573,11 +631,11 @@ class IAMCredentialsAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-iam",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("IAMCredentialsAsyncClient",)
