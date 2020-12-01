@@ -56,7 +56,7 @@ class BoundingPoly(proto.Message):
     """
 
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=NormalizedVertex,
+        proto.MESSAGE, number=2, message="NormalizedVertex",
     )
 
 

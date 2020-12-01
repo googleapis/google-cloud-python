@@ -210,7 +210,7 @@ class ArrayStats(proto.Message):
             depends on the element type of the array.
     """
 
-    member_stats = proto.Field(proto.MESSAGE, number=2, message=DataStats,)
+    member_stats = proto.Field(proto.MESSAGE, number=2, message="DataStats",)
 
 
 class StructStats(proto.Message):
@@ -224,7 +224,7 @@ class StructStats(proto.Message):
     """
 
     field_stats = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message=DataStats,
+        proto.STRING, proto.MESSAGE, number=1, message="DataStats",
     )
 
 

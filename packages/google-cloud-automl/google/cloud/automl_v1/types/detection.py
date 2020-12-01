@@ -128,7 +128,7 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
     evaluated_bounding_box_count = proto.Field(proto.INT32, number=1)
 
     bounding_box_metrics_entries = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=BoundingBoxMetricsEntry,
+        proto.MESSAGE, number=2, message="BoundingBoxMetricsEntry",
     )
 
     bounding_box_mean_average_precision = proto.Field(proto.FLOAT, number=3)

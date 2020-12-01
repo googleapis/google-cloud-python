@@ -163,6 +163,36 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> AutoMlTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            AutoMlTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def annotation_spec_path(
+        project: str, location: str, dataset: str, annotation_spec: str,
+    ) -> str:
+        """Return a fully-qualified annotation_spec string."""
+        return "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}".format(
+            project=project,
+            location=location,
+            dataset=dataset,
+            annotation_spec=annotation_spec,
+        )
+
+    @staticmethod
+    def parse_annotation_spec_path(path: str) -> Dict[str, str]:
+        """Parse a annotation_spec path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)/annotationSpecs/(?P<annotation_spec>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
     @staticmethod
     def dataset_path(project: str, location: str, dataset: str,) -> str:
         """Return a fully-qualified dataset string."""
@@ -193,6 +223,86 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/models/(?P<model>.+?)$",
             path,
         )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def model_evaluation_path(
+        project: str, location: str, model: str, model_evaluation: str,
+    ) -> str:
+        """Return a fully-qualified model_evaluation string."""
+        return "projects/{project}/locations/{location}/models/{model}/modelEvaluations/{model_evaluation}".format(
+            project=project,
+            location=location,
+            model=model,
+            model_evaluation=model_evaluation,
+        )
+
+    @staticmethod
+    def parse_model_evaluation_path(path: str) -> Dict[str, str]:
+        """Parse a model_evaluation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/models/(?P<model>.+?)/modelEvaluations/(?P<model_evaluation>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
         return m.groupdict() if m else {}
 
     def __init__(
@@ -230,10 +340,10 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:

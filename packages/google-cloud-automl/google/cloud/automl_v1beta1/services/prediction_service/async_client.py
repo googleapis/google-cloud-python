@@ -53,8 +53,49 @@ class PredictionServiceAsyncClient:
     DEFAULT_ENDPOINT = PredictionServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = PredictionServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    model_path = staticmethod(PredictionServiceClient.model_path)
+    parse_model_path = staticmethod(PredictionServiceClient.parse_model_path)
+
+    common_billing_account_path = staticmethod(
+        PredictionServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        PredictionServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(PredictionServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        PredictionServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        PredictionServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        PredictionServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(PredictionServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        PredictionServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(PredictionServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        PredictionServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = PredictionServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> PredictionServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            PredictionServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(PredictionServiceClient).get_transport_class, type(PredictionServiceClient)
@@ -201,7 +242,8 @@ class PredictionServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, payload, params]):
+        has_flattened_params = any([name, payload, params])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -216,8 +258,9 @@ class PredictionServiceAsyncClient:
             request.name = name
         if payload is not None:
             request.payload = payload
-        if params is not None:
-            request.params = params
+
+        if params:
+            request.params.update(params)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -401,7 +444,8 @@ class PredictionServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, input_config, output_config, params]):
+        has_flattened_params = any([name, input_config, output_config, params])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -418,8 +462,9 @@ class PredictionServiceAsyncClient:
             request.input_config = input_config
         if output_config is not None:
             request.output_config = output_config
-        if params is not None:
-            request.params = params
+
+        if params:
+            request.params.update(params)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

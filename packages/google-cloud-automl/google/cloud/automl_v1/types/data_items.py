@@ -186,12 +186,12 @@ class Document(proto.Message):
 
     input_config = proto.Field(proto.MESSAGE, number=1, message=io.DocumentInputConfig,)
 
-    document_text = proto.Field(proto.MESSAGE, number=2, message=TextSnippet,)
+    document_text = proto.Field(proto.MESSAGE, number=2, message="TextSnippet",)
 
     layout = proto.RepeatedField(proto.MESSAGE, number=3, message=Layout,)
 
     document_dimensions = proto.Field(
-        proto.MESSAGE, number=4, message=DocumentDimensions,
+        proto.MESSAGE, number=4, message="DocumentDimensions",
     )
 
     page_count = proto.Field(proto.INT32, number=5)
@@ -209,13 +209,15 @@ class ExamplePayload(proto.Message):
             Example document.
     """
 
-    image = proto.Field(proto.MESSAGE, number=1, oneof="payload", message=Image,)
+    image = proto.Field(proto.MESSAGE, number=1, oneof="payload", message="Image",)
 
     text_snippet = proto.Field(
-        proto.MESSAGE, number=2, oneof="payload", message=TextSnippet,
+        proto.MESSAGE, number=2, oneof="payload", message="TextSnippet",
     )
 
-    document = proto.Field(proto.MESSAGE, number=4, oneof="payload", message=Document,)
+    document = proto.Field(
+        proto.MESSAGE, number=4, oneof="payload", message="Document",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

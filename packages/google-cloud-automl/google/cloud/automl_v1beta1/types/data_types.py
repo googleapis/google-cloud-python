@@ -105,7 +105,7 @@ class StructType(proto.Message):
             mutable.
     """
 
-    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message=DataType,)
+    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message="DataType",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

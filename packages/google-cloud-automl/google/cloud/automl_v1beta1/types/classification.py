@@ -99,7 +99,7 @@ class VideoClassificationAnnotation(proto.Message):
     type_ = proto.Field(proto.STRING, number=1)
 
     classification_annotation = proto.Field(
-        proto.MESSAGE, number=2, message=ClassificationAnnotation,
+        proto.MESSAGE, number=2, message="ClassificationAnnotation",
     )
 
     time_segment = proto.Field(proto.MESSAGE, number=3, message=temporal.TimeSegment,)

@@ -104,7 +104,6 @@ from .types.translation import TranslationModelMetadata
 __all__ = (
     "AnnotationPayload",
     "AnnotationSpec",
-    "AutoMlClient",
     "BatchPredictInputConfig",
     "BatchPredictOperationMetadata",
     "BatchPredictOutputConfig",
@@ -165,6 +164,7 @@ __all__ = (
     "OutputConfig",
     "PredictRequest",
     "PredictResponse",
+    "PredictionServiceClient",
     "TextClassificationDatasetMetadata",
     "TextClassificationModelMetadata",
     "TextExtractionAnnotation",
@@ -185,5 +185,5 @@ __all__ = (
     "UndeployModelRequest",
     "UpdateDatasetRequest",
     "UpdateModelRequest",
-    "PredictionServiceClient",
+    "AutoMlClient",
 )
