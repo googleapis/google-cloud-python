@@ -14,6 +14,7 @@
 
 import datetime
 import os
+import time
 import uuid
 
 from google.cloud import bigtable
@@ -29,6 +30,8 @@ TABLE_ID_PREFIX = 'mobile-time-series-{}'
 
 @pytest.fixture(scope="module", autouse=True)
 def table_id():
+    from google.cloud.bigtable.row_set import RowSet
+
     client = bigtable.Client(project=PROJECT, admin=True)
     instance = client.instance(BIGTABLE_INSTANCE)
 
@@ -43,13 +46,15 @@ def table_id():
     timestamp_minus_hr = datetime.datetime(2019, 5, 1) - datetime.timedelta(
         hours=1)
 
-    rows = [
-        table.direct_row("phone#4c410523#20190501"),
-        table.direct_row("phone#4c410523#20190502"),
-        table.direct_row("phone#4c410523#20190505"),
-        table.direct_row("phone#5c10102#20190501"),
-        table.direct_row("phone#5c10102#20190502"),
+    row_keys = [
+        "phone#4c410523#20190501",
+        "phone#4c410523#20190502",
+        "phone#4c410523#20190505",
+        "phone#5c10102#20190501",
+        "phone#5c10102#20190502",
     ]
+
+    rows = [table.direct_row(row_key) for row_key in row_keys]
 
     rows[0].set_cell("stats_summary", "connected_cell", 1, timestamp)
     rows[0].set_cell("stats_summary", "connected_wifi", 1, timestamp)
@@ -75,6 +80,18 @@ def table_id():
     rows[4].set_cell("cell_plan", "data_plan_10gb", "true", timestamp)
 
     table.mutate_rows(rows)
+
+    # Ensure mutations have propagated.
+    row_set = RowSet()
+
+    for row_key in row_keys:
+        row_set.add_row_key(row_key)
+
+    fetched = list(table.read_rows(row_set=row_set))
+
+    while len(fetched) < len(rows):
+        time.sleep(5)
+        fetched = list(table.read_rows(row_set=row_set))
 
     yield table_id
 
