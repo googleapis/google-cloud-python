@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-datastore/compare/v2.0.1...v2.0.1) (2020-12-02)
+
+
+### Features
+
+* remove six dependency ([#120](https://www.github.com/googleapis/python-datastore/issues/120)) ([b1715e5](https://www.github.com/googleapis/python-datastore/commit/b1715e500f870fd5292bb84232b0039c2ac6be85))
+
 ### [2.0.1](https://www.github.com/googleapis/python-datastore/compare/v2.0.0...v2.0.1) (2020-11-13)
 
 
