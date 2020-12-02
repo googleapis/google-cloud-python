@@ -139,7 +139,6 @@ def setup_logging(
     logger = logging.getLogger()
     logger.setLevel(log_level)
     logger.addHandler(handler)
-    logger.addHandler(logging.StreamHandler())
     for logger_name in all_excluded_loggers:
         logger = logging.getLogger(logger_name)
         logger.propagate = False
