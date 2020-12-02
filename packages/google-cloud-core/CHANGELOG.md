@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [1.4.4](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.3...v1.4.4) (2020-11-30)
+
+
+### Dependencies
+
+* require `six>=1.12.0` and `google-api-core>=1.21.0` ([#46](https://www.github.com/googleapis/python-cloud-core/issues/46)) ([a97b9ca](https://www.github.com/googleapis/python-cloud-core/commit/a97b9cae6d3b8f0c723dfa825f1b76efc2318f80))
+
 ### [1.4.3](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.2...v1.4.3) (2020-10-06)
 
 
