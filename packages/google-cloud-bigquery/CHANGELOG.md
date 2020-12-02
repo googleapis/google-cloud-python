@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-bigquery/compare/v2.4.0...v2.5.0) (2020-12-02)
+
+
+### Features
+
+* add `TableReference.__str__` to get table ID in standard SQL ([#405](https://www.github.com/googleapis/python-bigquery/issues/405)) ([53dff2a](https://www.github.com/googleapis/python-bigquery/commit/53dff2ad3889af04369a22437e6ab9b92c5755b6)), closes [#354](https://www.github.com/googleapis/python-bigquery/issues/354)
+* add progress bar for magics ([#396](https://www.github.com/googleapis/python-bigquery/issues/396)) ([04d0273](https://www.github.com/googleapis/python-bigquery/commit/04d027317a99e3f353e0b7a18076da9b6ba4d8d3))
+* add support for unrecognized model types ([#401](https://www.github.com/googleapis/python-bigquery/issues/401)) ([168f035](https://www.github.com/googleapis/python-bigquery/commit/168f0354c4815bd1aeadbd4e388dcc9b32f97d6b))
+
+
+### Bug Fixes
+
+* avoid floating point for timestamp in `insert_rows` ([#393](https://www.github.com/googleapis/python-bigquery/issues/393)) ([a1949ae](https://www.github.com/googleapis/python-bigquery/commit/a1949ae20ec4f9c771b0cffbcd70792dd6a30dbf))
+
+
+### Performance Improvements
+
+* don't fetch rows when waiting for query to finish ([#400](https://www.github.com/googleapis/python-bigquery/issues/400)) ([730df17](https://www.github.com/googleapis/python-bigquery/commit/730df17ae1ab0b0bb2454f3c134c8f62665bc51b)), closes [#374](https://www.github.com/googleapis/python-bigquery/issues/374) [#394](https://www.github.com/googleapis/python-bigquery/issues/394)
+
+
+### Documentation
+
+* **samples:** add more clustering code snippets ([#330](https://www.github.com/googleapis/python-bigquery/issues/330)) ([809e4a2](https://www.github.com/googleapis/python-bigquery/commit/809e4a27b94ba30c10e0c9a7e89576a9de9fda2b)), closes [#329](https://www.github.com/googleapis/python-bigquery/issues/329)
+
+
+### Dependencies
+
+* update required version of opentelementry for opentelemetry-exporter-google-cloud ([#398](https://www.github.com/googleapis/python-bigquery/issues/398)) ([673a9cb](https://www.github.com/googleapis/python-bigquery/commit/673a9cb51c577c1dd016e76f3634b1e9e21482c5))
+
 ## [2.4.0](https://www.github.com/googleapis/python-bigquery/compare/v2.3.1...v2.4.0) (2020-11-16)
 
 
