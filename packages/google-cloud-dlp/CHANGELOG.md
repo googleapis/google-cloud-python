@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.0.0](https://www.github.com/googleapis/python-dlp/compare/v2.0.0...v3.0.0) (2020-12-02)
+
+
+### ⚠ BREAKING CHANGES
+* rename fields that collide with builtins (#75)
+  * `ByteContentItem.type` -> `ByteContentItem.type_`
+  * `MetadataLocation.type` -> `MetadataLocation.type_`
+  * `Container.type` -> `Container.type_`
+  * `Bucket.min` -> `Bucket.min_`
+  * `Bucket.max `-> `Bucket.max_`
+  * `DlpJob.type` -> `DlpJob.type_`
+  * `GetDlpJobRequest.type` -> `GetDlpJobRequest.type_`
+
+### Bug Fixes
+
+* rename fields that collide with builtins; retrieve job config for risk analysis jobs ([#75](https://www.github.com/googleapis/python-dlp/issues/75)) ([4f3148e](https://www.github.com/googleapis/python-dlp/commit/4f3148e93ec3dfc9395aa38a3afc62498500a055))
+
+
+### Documentation
+
+* **samples:** fix README to accurately reflect the new repo after the move ([#72](https://www.github.com/googleapis/python-dlp/issues/72)) ([dc56806](https://www.github.com/googleapis/python-dlp/commit/dc56806b47f92227e396969d8a583b881aa41fd1))
+
 ## [2.0.0](https://www.github.com/googleapis/python-dlp/compare/v1.0.0...v2.0.0) (2020-08-18)
 
 
