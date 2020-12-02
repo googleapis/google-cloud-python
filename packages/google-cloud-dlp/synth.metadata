@@ -4,21 +4,29 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-dlp.git",
-        "sha": "419772863bfa747cf0ef6278a931f95da70c954f"
+        "sha": "908a8d3e2ee741ebdbc78359a18c7e8a1255c5ea"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "3f87da2ed1ddc3566ef0810c4fc06a2682cc9f5f",
+        "internalRef": "343022252"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d3049e66447b44dc10579e461d5e08e0e3838edd"
+        "sha": "e89175cf074dccc4babb4eca66ae913696e47a71"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d3049e66447b44dc10579e461d5e08e0e3838edd"
+        "sha": "e89175cf074dccc4babb4eca66ae913696e47a71"
       }
     }
   ],
@@ -32,5 +40,98 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/dlp_v2/services.rst",
+    "docs/dlp_v2/types.rst",
+    "docs/multiprocessing.rst",
+    "google/cloud/dlp/__init__.py",
+    "google/cloud/dlp/py.typed",
+    "google/cloud/dlp_v2/__init__.py",
+    "google/cloud/dlp_v2/proto/dlp.proto",
+    "google/cloud/dlp_v2/proto/storage.proto",
+    "google/cloud/dlp_v2/py.typed",
+    "google/cloud/dlp_v2/services/__init__.py",
+    "google/cloud/dlp_v2/services/dlp_service/__init__.py",
+    "google/cloud/dlp_v2/services/dlp_service/async_client.py",
+    "google/cloud/dlp_v2/services/dlp_service/client.py",
+    "google/cloud/dlp_v2/services/dlp_service/pagers.py",
+    "google/cloud/dlp_v2/services/dlp_service/transports/__init__.py",
+    "google/cloud/dlp_v2/services/dlp_service/transports/base.py",
+    "google/cloud/dlp_v2/services/dlp_service/transports/grpc.py",
+    "google/cloud/dlp_v2/services/dlp_service/transports/grpc_asyncio.py",
+    "google/cloud/dlp_v2/types/__init__.py",
+    "google/cloud/dlp_v2/types/dlp.py",
+    "google/cloud/dlp_v2/types/storage.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/snippets/README.rst",
+    "samples/snippets/noxfile.py",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_dlp_v2_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/dlp_v2/__init__.py",
+    "tests/unit/gapic/dlp_v2/test_dlp_service.py"
   ]
 }

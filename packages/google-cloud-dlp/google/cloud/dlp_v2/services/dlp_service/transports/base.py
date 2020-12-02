@@ -19,7 +19,7 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -30,11 +30,11 @@ from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-dlp",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 class DlpServiceTransport(abc.ABC):
@@ -50,6 +50,7 @@ class DlpServiceTransport(abc.ABC):
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -67,6 +68,11 @@ class DlpServiceTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -94,9 +100,9 @@ class DlpServiceTransport(abc.ABC):
         self._credentials = credentials
 
         # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages()
+        self._prep_wrapped_messages(client_info)
 
-    def _prep_wrapped_messages(self):
+    def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.inspect_content: gapic_v1.method.wrap_method(
@@ -110,7 +116,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.redact_image: gapic_v1.method.wrap_method(
                 self.redact_image,
@@ -123,7 +129,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.deidentify_content: gapic_v1.method.wrap_method(
                 self.deidentify_content,
@@ -136,7 +142,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.reidentify_content: gapic_v1.method.wrap_method(
                 self.reidentify_content,
@@ -149,7 +155,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_info_types: gapic_v1.method.wrap_method(
                 self.list_info_types,
@@ -162,17 +168,17 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_inspect_template: gapic_v1.method.wrap_method(
                 self.create_inspect_template,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_inspect_template: gapic_v1.method.wrap_method(
                 self.update_inspect_template,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_inspect_template: gapic_v1.method.wrap_method(
                 self.get_inspect_template,
@@ -185,7 +191,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_inspect_templates: gapic_v1.method.wrap_method(
                 self.list_inspect_templates,
@@ -198,7 +204,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_inspect_template: gapic_v1.method.wrap_method(
                 self.delete_inspect_template,
@@ -211,17 +217,17 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_deidentify_template: gapic_v1.method.wrap_method(
                 self.create_deidentify_template,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_deidentify_template: gapic_v1.method.wrap_method(
                 self.update_deidentify_template,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_deidentify_template: gapic_v1.method.wrap_method(
                 self.get_deidentify_template,
@@ -234,7 +240,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_deidentify_templates: gapic_v1.method.wrap_method(
                 self.list_deidentify_templates,
@@ -247,7 +253,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_deidentify_template: gapic_v1.method.wrap_method(
                 self.delete_deidentify_template,
@@ -260,22 +266,18 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_job_trigger: gapic_v1.method.wrap_method(
-                self.create_job_trigger,
-                default_timeout=300.0,
-                client_info=_client_info,
+                self.create_job_trigger, default_timeout=300.0, client_info=client_info,
             ),
             self.update_job_trigger: gapic_v1.method.wrap_method(
-                self.update_job_trigger,
-                default_timeout=300.0,
-                client_info=_client_info,
+                self.update_job_trigger, default_timeout=300.0, client_info=client_info,
             ),
             self.hybrid_inspect_job_trigger: gapic_v1.method.wrap_method(
                 self.hybrid_inspect_job_trigger,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_job_trigger: gapic_v1.method.wrap_method(
                 self.get_job_trigger,
@@ -288,7 +290,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_job_triggers: gapic_v1.method.wrap_method(
                 self.list_job_triggers,
@@ -301,7 +303,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_job_trigger: gapic_v1.method.wrap_method(
                 self.delete_job_trigger,
@@ -314,15 +316,15 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.activate_job_trigger: gapic_v1.method.wrap_method(
                 self.activate_job_trigger,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.create_dlp_job: gapic_v1.method.wrap_method(
-                self.create_dlp_job, default_timeout=300.0, client_info=_client_info,
+                self.create_dlp_job, default_timeout=300.0, client_info=client_info,
             ),
             self.list_dlp_jobs: gapic_v1.method.wrap_method(
                 self.list_dlp_jobs,
@@ -335,7 +337,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_dlp_job: gapic_v1.method.wrap_method(
                 self.get_dlp_job,
@@ -348,7 +350,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_dlp_job: gapic_v1.method.wrap_method(
                 self.delete_dlp_job,
@@ -361,20 +363,20 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.cancel_dlp_job: gapic_v1.method.wrap_method(
-                self.cancel_dlp_job, default_timeout=300.0, client_info=_client_info,
+                self.cancel_dlp_job, default_timeout=300.0, client_info=client_info,
             ),
             self.create_stored_info_type: gapic_v1.method.wrap_method(
                 self.create_stored_info_type,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.update_stored_info_type: gapic_v1.method.wrap_method(
                 self.update_stored_info_type,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.get_stored_info_type: gapic_v1.method.wrap_method(
                 self.get_stored_info_type,
@@ -387,7 +389,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.list_stored_info_types: gapic_v1.method.wrap_method(
                 self.list_stored_info_types,
@@ -400,7 +402,7 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.delete_stored_info_type: gapic_v1.method.wrap_method(
                 self.delete_stored_info_type,
@@ -413,15 +415,15 @@ class DlpServiceTransport(abc.ABC):
                     ),
                 ),
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.hybrid_inspect_dlp_job: gapic_v1.method.wrap_method(
                 self.hybrid_inspect_dlp_job,
                 default_timeout=300.0,
-                client_info=_client_info,
+                client_info=client_info,
             ),
             self.finish_dlp_job: gapic_v1.method.wrap_method(
-                self.finish_dlp_job, default_timeout=300.0, client_info=_client_info,
+                self.finish_dlp_job, default_timeout=300.0, client_info=client_info,
             ),
         }
 

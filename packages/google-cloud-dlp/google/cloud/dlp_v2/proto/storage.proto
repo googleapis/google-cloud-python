@@ -33,8 +33,8 @@ message InfoType {
   // Name of the information type. Either a name of your choosing when
   // creating a CustomInfoType, or one of the names listed
   // at https://cloud.google.com/dlp/docs/infotypes-reference when specifying
-  // a built-in type. InfoType names should conform to the pattern
-  // `[a-zA-Z0-9_]{1,64}`.
+  // a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
+  // names should conform to the pattern `[A-Za-z0-9$-_]{1,64}`.
   string name = 1;
 }
 
@@ -425,14 +425,16 @@ message CloudStoragePath {
 message BigQueryOptions {
   // How to sample rows if not all rows are scanned. Meaningful only when used
   // in conjunction with either rows_limit or rows_limit_percent. If not
-  // specified, scanning would start from the top.
+  // specified, rows are scanned in the order BigQuery reads them.
   enum SampleMethod {
     SAMPLE_METHOD_UNSPECIFIED = 0;
 
-    // Scan from the top (default).
+    // Scan groups of rows in the order BigQuery provides (default). Multiple
+    // groups of rows may be scanned in parallel, so results may not appear in
+    // the same order the rows are read.
     TOP = 1;
 
-    // Randomly pick the row to start scanning. The scanned rows are contiguous.
+    // Randomly pick groups of rows to scan.
     RANDOM_START = 2;
   }
 
@@ -471,27 +473,31 @@ message StorageConfig {
   // Configuration of the timespan of the items to include in scanning.
   // Currently only supported when inspecting Google Cloud Storage and BigQuery.
   message TimespanConfig {
-    // Exclude files or rows older than this value.
+    // Exclude files, tables, or rows older than this value.
+    // If not set, no lower time limit is applied.
     google.protobuf.Timestamp start_time = 1;
 
-    // Exclude files or rows newer than this value.
-    // If set to zero, no upper time limit is applied.
+    // Exclude files, tables, or rows newer than this value.
+    // If not set, no upper time limit is applied.
     google.protobuf.Timestamp end_time = 2;
 
     // Specification of the field containing the timestamp of scanned items.
     // Used for data sources like Datastore and BigQuery.
     //
     // For BigQuery:
-    // Required to filter out rows based on the given start and
-    // end times. If not specified and the table was modified between the given
-    // start and end times, the entire table will be scanned.
-    // The valid data types of the timestamp field are: `INTEGER`, `DATE`,
-    // `TIMESTAMP`, or `DATETIME` BigQuery column.
+    // If this value is not specified and the table was modified between the
+    // given start and end times, the entire table will be scanned. If this
+    // value is specified, then rows are filtered based on the given start and
+    // end times. Rows with a `NULL` value in the provided BigQuery column are
+    // skipped.
+    // Valid data types of the provided BigQuery column are: `INTEGER`, `DATE`,
+    // `TIMESTAMP`, and `DATETIME`.
     //
-    // For Datastore.
-    // Valid data types of the timestamp field are: `TIMESTAMP`.
-    // Datastore entity will be scanned if the timestamp property does not
-    // exist or its value is empty or invalid.
+    // For Datastore:
+    // If this value is specified, then entities are filtered based on the given
+    // start and end times. If an entity does not contain the provided timestamp
+    // property or contains empty or invalid values, then it is included.
+    // Valid data types of the provided timestamp property are: `TIMESTAMP`.
     FieldId timestamp_field = 3;
 
     // When the job is started by a JobTrigger we will automatically figure out

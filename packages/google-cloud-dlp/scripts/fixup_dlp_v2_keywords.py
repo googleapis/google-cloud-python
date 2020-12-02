@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -63,7 +64,7 @@ class dlpCallTransformer(cst.CSTTransformer):
     'hybrid_inspect_job_trigger': ('name', 'hybrid_item', ),
     'inspect_content': ('parent', 'inspect_config', 'item', 'inspect_template_name', 'location_id', ),
     'list_deidentify_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
-    'list_dlp_jobs': ('parent', 'filter', 'page_size', 'page_token', 'type', 'order_by', 'location_id', ),
+    'list_dlp_jobs': ('parent', 'filter', 'page_size', 'page_token', 'type_', 'order_by', 'location_id', ),
     'list_info_types': ('parent', 'language_code', 'filter', 'location_id', ),
     'list_inspect_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
     'list_job_triggers': ('parent', 'page_token', 'page_size', 'order_by', 'filter', 'location_id', ),

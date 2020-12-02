@@ -88,8 +88,9 @@ class InfoType(proto.Message):
             Name of the information type. Either a name of your choosing
             when creating a CustomInfoType, or one of the names listed
             at https://cloud.google.com/dlp/docs/infotypes-reference
-            when specifying a built-in type. InfoType names should
-            conform to the pattern ``[a-zA-Z0-9_]{1,64}``.
+            when specifying a built-in type. When sending Cloud DLP
+            results to Data Catalog, infoType names should conform to
+            the pattern ``[A-Za-z0-9$-_]{1,64}``.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -355,7 +356,7 @@ class CustomInfoType(proto.Message):
             message="CustomInfoType.DetectionRule.HotwordRule",
         )
 
-    info_type = proto.Field(proto.MESSAGE, number=1, message=InfoType,)
+    info_type = proto.Field(proto.MESSAGE, number=1, message="InfoType",)
 
     likelihood = proto.Field(proto.ENUM, number=6, enum="Likelihood",)
 
@@ -368,7 +369,7 @@ class CustomInfoType(proto.Message):
     )
 
     stored_type = proto.Field(
-        proto.MESSAGE, number=5, oneof="type", message=StoredType,
+        proto.MESSAGE, number=5, oneof="type", message="StoredType",
     )
 
     detection_rules = proto.RepeatedField(
@@ -435,9 +436,9 @@ class DatastoreOptions(proto.Message):
             The kind to process.
     """
 
-    partition_id = proto.Field(proto.MESSAGE, number=1, message=PartitionId,)
+    partition_id = proto.Field(proto.MESSAGE, number=1, message="PartitionId",)
 
-    kind = proto.Field(proto.MESSAGE, number=2, message=KindExpression,)
+    kind = proto.Field(proto.MESSAGE, number=2, message="KindExpression",)
 
 
 class CloudStorageRegexFileSet(proto.Message):
@@ -580,7 +581,7 @@ class CloudStorageOptions(proto.Message):
         url = proto.Field(proto.STRING, number=1)
 
         regex_file_set = proto.Field(
-            proto.MESSAGE, number=2, message=CloudStorageRegexFileSet,
+            proto.MESSAGE, number=2, message="CloudStorageRegexFileSet",
         )
 
     file_set = proto.Field(proto.MESSAGE, number=1, message=FileSet,)
@@ -657,7 +658,7 @@ class BigQueryOptions(proto.Message):
     class SampleMethod(proto.Enum):
         r"""How to sample rows if not all rows are scanned. Meaningful only when
         used in conjunction with either rows_limit or rows_limit_percent. If
-        not specified, scanning would start from the top.
+        not specified, rows are scanned in the order BigQuery reads them.
         """
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
@@ -665,7 +666,9 @@ class BigQueryOptions(proto.Message):
 
     table_reference = proto.Field(proto.MESSAGE, number=1, message="BigQueryTable",)
 
-    identifying_fields = proto.RepeatedField(proto.MESSAGE, number=2, message=FieldId,)
+    identifying_fields = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="FieldId",
+    )
 
     rows_limit = proto.Field(proto.INT64, number=3)
 
@@ -673,7 +676,7 @@ class BigQueryOptions(proto.Message):
 
     sample_method = proto.Field(proto.ENUM, number=4, enum=SampleMethod,)
 
-    excluded_fields = proto.RepeatedField(proto.MESSAGE, number=5, message=FieldId,)
+    excluded_fields = proto.RepeatedField(proto.MESSAGE, number=5, message="FieldId",)
 
 
 class StorageConfig(proto.Message):
@@ -704,26 +707,33 @@ class StorageConfig(proto.Message):
 
         Attributes:
             start_time (~.timestamp.Timestamp):
-                Exclude files or rows older than this value.
+                Exclude files, tables, or rows older than
+                this value. If not set, no lower time limit is
+                applied.
             end_time (~.timestamp.Timestamp):
-                Exclude files or rows newer than this value.
-                If set to zero, no upper time limit is applied.
+                Exclude files, tables, or rows newer than
+                this value. If not set, no upper time limit is
+                applied.
             timestamp_field (~.storage.FieldId):
                 Specification of the field containing the timestamp of
                 scanned items. Used for data sources like Datastore and
                 BigQuery.
 
-                For BigQuery: Required to filter out rows based on the given
-                start and end times. If not specified and the table was
-                modified between the given start and end times, the entire
-                table will be scanned. The valid data types of the timestamp
-                field are: ``INTEGER``, ``DATE``, ``TIMESTAMP``, or
-                ``DATETIME`` BigQuery column.
+                For BigQuery: If this value is not specified and the table
+                was modified between the given start and end times, the
+                entire table will be scanned. If this value is specified,
+                then rows are filtered based on the given start and end
+                times. Rows with a ``NULL`` value in the provided BigQuery
+                column are skipped. Valid data types of the provided
+                BigQuery column are: ``INTEGER``, ``DATE``, ``TIMESTAMP``,
+                and ``DATETIME``.
 
-                For Datastore. Valid data types of the timestamp field are:
-                ``TIMESTAMP``. Datastore entity will be scanned if the
-                timestamp property does not exist or its value is empty or
-                invalid.
+                For Datastore: If this value is specified, then entities are
+                filtered based on the given start and end times. If an
+                entity does not contain the provided timestamp property or
+                contains empty or invalid values, then it is included. Valid
+                data types of the provided timestamp property are:
+                ``TIMESTAMP``.
             enable_auto_population_of_timespan_config (bool):
                 When the job is started by a JobTrigger we will
                 automatically figure out a valid start_time to avoid
@@ -736,20 +746,20 @@ class StorageConfig(proto.Message):
 
         end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 
-        timestamp_field = proto.Field(proto.MESSAGE, number=3, message=FieldId,)
+        timestamp_field = proto.Field(proto.MESSAGE, number=3, message="FieldId",)
 
         enable_auto_population_of_timespan_config = proto.Field(proto.BOOL, number=4)
 
     datastore_options = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message=DatastoreOptions,
+        proto.MESSAGE, number=2, oneof="type", message="DatastoreOptions",
     )
 
     cloud_storage_options = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message=CloudStorageOptions,
+        proto.MESSAGE, number=3, oneof="type", message="CloudStorageOptions",
     )
 
     big_query_options = proto.Field(
-        proto.MESSAGE, number=4, oneof="type", message=BigQueryOptions,
+        proto.MESSAGE, number=4, oneof="type", message="BigQueryOptions",
     )
 
     hybrid_options = proto.Field(
@@ -897,7 +907,7 @@ class Key(proto.Message):
 
         name = proto.Field(proto.STRING, number=3, oneof="id_type")
 
-    partition_id = proto.Field(proto.MESSAGE, number=1, message=PartitionId,)
+    partition_id = proto.Field(proto.MESSAGE, number=1, message="PartitionId",)
 
     path = proto.RepeatedField(proto.MESSAGE, number=2, message=PathElement,)
 
@@ -918,11 +928,11 @@ class RecordKey(proto.Message):
     """
 
     datastore_key = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message=DatastoreKey,
+        proto.MESSAGE, number=2, oneof="type", message="DatastoreKey",
     )
 
     big_query_key = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message=BigQueryKey,
+        proto.MESSAGE, number=3, oneof="type", message="BigQueryKey",
     )
 
     id_values = proto.RepeatedField(proto.STRING, number=5)
@@ -963,9 +973,9 @@ class BigQueryField(proto.Message):
             Designated field in the BigQuery table.
     """
 
-    table = proto.Field(proto.MESSAGE, number=1, message=BigQueryTable,)
+    table = proto.Field(proto.MESSAGE, number=1, message="BigQueryTable",)
 
-    field = proto.Field(proto.MESSAGE, number=2, message=FieldId,)
+    field = proto.Field(proto.MESSAGE, number=2, message="FieldId",)
 
 
 class EntityId(proto.Message):
@@ -982,7 +992,7 @@ class EntityId(proto.Message):
             the entity identifier.
     """
 
-    field = proto.Field(proto.MESSAGE, number=1, message=FieldId,)
+    field = proto.Field(proto.MESSAGE, number=1, message="FieldId",)
 
 
 class TableOptions(proto.Message):
@@ -998,7 +1008,9 @@ class TableOptions(proto.Message):
             more than 3 may be provided.
     """
 
-    identifying_fields = proto.RepeatedField(proto.MESSAGE, number=1, message=FieldId,)
+    identifying_fields = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="FieldId",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

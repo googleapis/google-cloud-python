@@ -276,7 +276,7 @@ class ExclusionRule(proto.Message):
     )
 
     exclude_info_types = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message=ExcludeInfoTypes,
+        proto.MESSAGE, number=3, oneof="type", message="ExcludeInfoTypes",
     )
 
     matching_type = proto.Field(proto.ENUM, number=4, enum="MatchingType",)
@@ -301,7 +301,7 @@ class InspectionRule(proto.Message):
     )
 
     exclusion_rule = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message=ExclusionRule,
+        proto.MESSAGE, number=2, oneof="type", message="ExclusionRule",
     )
 
 
@@ -321,7 +321,7 @@ class InspectionRuleSet(proto.Message):
 
     info_types = proto.RepeatedField(proto.MESSAGE, number=1, message=storage.InfoType,)
 
-    rules = proto.RepeatedField(proto.MESSAGE, number=2, message=InspectionRule,)
+    rules = proto.RepeatedField(proto.MESSAGE, number=2, message="InspectionRule",)
 
 
 class InspectConfig(proto.Message):
@@ -438,14 +438,16 @@ class InspectConfig(proto.Message):
 
     content_options = proto.RepeatedField(proto.ENUM, number=8, enum="ContentOption",)
 
-    rule_set = proto.RepeatedField(proto.MESSAGE, number=10, message=InspectionRuleSet,)
+    rule_set = proto.RepeatedField(
+        proto.MESSAGE, number=10, message="InspectionRuleSet",
+    )
 
 
 class ByteContentItem(proto.Message):
     r"""Container for bytes to inspect or redact.
 
     Attributes:
-        type (~.dlp.ByteContentItem.BytesType):
+        type_ (~.dlp.ByteContentItem.BytesType):
             The type of data stored in the bytes string. Default will be
             TEXT_UTF8.
         data (bytes):
@@ -467,7 +469,7 @@ class ByteContentItem(proto.Message):
         CSV = 12
         TSV = 13
 
-    type = proto.Field(proto.ENUM, number=1, enum=BytesType,)
+    type_ = proto.Field(proto.ENUM, number=1, enum=BytesType,)
 
     data = proto.Field(proto.BYTES, number=2)
 
@@ -492,7 +494,7 @@ class ContentItem(proto.Message):
     table = proto.Field(proto.MESSAGE, number=4, oneof="data_item", message="Table",)
 
     byte_item = proto.Field(
-        proto.MESSAGE, number=5, oneof="data_item", message=ByteContentItem,
+        proto.MESSAGE, number=5, oneof="data_item", message="ByteContentItem",
     )
 
 
@@ -735,13 +737,13 @@ class MetadataLocation(proto.Message):
     r"""Metadata Location
 
     Attributes:
-        type (~.dlp.MetadataType):
+        type_ (~.dlp.MetadataType):
             Type of metadata containing the finding.
         storage_label (~.dlp.StorageMetadataLabel):
             Storage metadata.
     """
 
-    type = proto.Field(proto.ENUM, number=1, enum="MetadataType",)
+    type_ = proto.Field(proto.ENUM, number=1, enum="MetadataType",)
 
     storage_label = proto.Field(
         proto.MESSAGE, number=3, oneof="label", message="StorageMetadataLabel",
@@ -814,7 +816,7 @@ class Container(proto.Message):
     record.
 
     Attributes:
-        type (str):
+        type_ (str):
             Container type, for example BigQuery or
             Google Cloud Storage.
         project_id (str):
@@ -853,7 +855,7 @@ class Container(proto.Message):
             ("generation" for Google Cloud Storage).
     """
 
-    type = proto.Field(proto.STRING, number=1)
+    type_ = proto.Field(proto.STRING, number=1)
 
     project_id = proto.Field(proto.STRING, number=2)
 
@@ -930,10 +932,24 @@ class RedactImageRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The parent resource name.
+            Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         location_id (str):
             Deprecated. This field has no effect.
         inspect_config (~.dlp.InspectConfig):
@@ -981,7 +997,7 @@ class RedactImageRequest(proto.Message):
 
     location_id = proto.Field(proto.STRING, number=8)
 
-    inspect_config = proto.Field(proto.MESSAGE, number=2, message=InspectConfig,)
+    inspect_config = proto.Field(proto.MESSAGE, number=2, message="InspectConfig",)
 
     image_redaction_configs = proto.RepeatedField(
         proto.MESSAGE, number=5, message=ImageRedactionConfig,
@@ -989,7 +1005,7 @@ class RedactImageRequest(proto.Message):
 
     include_findings = proto.Field(proto.BOOL, number=6)
 
-    byte_item = proto.Field(proto.MESSAGE, number=7, message=ByteContentItem,)
+    byte_item = proto.Field(proto.MESSAGE, number=7, message="ByteContentItem",)
 
 
 class Color(proto.Message):
@@ -1034,7 +1050,7 @@ class RedactImageResponse(proto.Message):
 
     extracted_text = proto.Field(proto.STRING, number=2)
 
-    inspect_result = proto.Field(proto.MESSAGE, number=3, message=InspectResult,)
+    inspect_result = proto.Field(proto.MESSAGE, number=3, message="InspectResult",)
 
 
 class DeidentifyContentRequest(proto.Message):
@@ -1044,8 +1060,22 @@ class DeidentifyContentRequest(proto.Message):
         parent (str):
             Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         deidentify_config (~.dlp.DeidentifyConfig):
             Configuration for the de-identification of the content item.
             Items specified here will override the template referenced
@@ -1081,9 +1111,9 @@ class DeidentifyContentRequest(proto.Message):
         proto.MESSAGE, number=2, message="DeidentifyConfig",
     )
 
-    inspect_config = proto.Field(proto.MESSAGE, number=3, message=InspectConfig,)
+    inspect_config = proto.Field(proto.MESSAGE, number=3, message="InspectConfig",)
 
-    item = proto.Field(proto.MESSAGE, number=4, message=ContentItem,)
+    item = proto.Field(proto.MESSAGE, number=4, message="ContentItem",)
 
     inspect_template_name = proto.Field(proto.STRING, number=5)
 
@@ -1102,7 +1132,7 @@ class DeidentifyContentResponse(proto.Message):
             An overview of the changes that were made on the ``item``.
     """
 
-    item = proto.Field(proto.MESSAGE, number=1, message=ContentItem,)
+    item = proto.Field(proto.MESSAGE, number=1, message="ContentItem",)
 
     overview = proto.Field(proto.MESSAGE, number=2, message="TransformationOverview",)
 
@@ -1112,10 +1142,24 @@ class ReidentifyContentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name.
+            Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         reidentify_config (~.dlp.DeidentifyConfig):
             Configuration for the re-identification of the content item.
             This field shares the same proto message type that is used
@@ -1145,10 +1189,12 @@ class ReidentifyContentRequest(proto.Message):
             Template to use. References an instance of
             ``DeidentifyTemplate``. Any configuration directly specified
             in ``reidentify_config`` or ``inspect_config`` will override
-            those set in the template. Singular fields that are set in
-            this request will replace their corresponding fields in the
-            template. Repeated fields are appended. Singular
-            sub-messages and groups are recursively merged.
+            those set in the template. The ``DeidentifyTemplate`` used
+            must include only reversible transformations. Singular
+            fields that are set in this request will replace their
+            corresponding fields in the template. Repeated fields are
+            appended. Singular sub-messages and groups are recursively
+            merged.
         location_id (str):
             Deprecated. This field has no effect.
     """
@@ -1159,9 +1205,9 @@ class ReidentifyContentRequest(proto.Message):
         proto.MESSAGE, number=2, message="DeidentifyConfig",
     )
 
-    inspect_config = proto.Field(proto.MESSAGE, number=3, message=InspectConfig,)
+    inspect_config = proto.Field(proto.MESSAGE, number=3, message="InspectConfig",)
 
-    item = proto.Field(proto.MESSAGE, number=4, message=ContentItem,)
+    item = proto.Field(proto.MESSAGE, number=4, message="ContentItem",)
 
     inspect_template_name = proto.Field(proto.STRING, number=5)
 
@@ -1180,7 +1226,7 @@ class ReidentifyContentResponse(proto.Message):
             An overview of the changes that were made to the ``item``.
     """
 
-    item = proto.Field(proto.MESSAGE, number=1, message=ContentItem,)
+    item = proto.Field(proto.MESSAGE, number=1, message="ContentItem",)
 
     overview = proto.Field(proto.MESSAGE, number=2, message="TransformationOverview",)
 
@@ -1193,8 +1239,22 @@ class InspectContentRequest(proto.Message):
         parent (str):
             Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         inspect_config (~.dlp.InspectConfig):
             Configuration for the inspector. What specified here will
             override the template referenced by the
@@ -1214,9 +1274,9 @@ class InspectContentRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    inspect_config = proto.Field(proto.MESSAGE, number=2, message=InspectConfig,)
+    inspect_config = proto.Field(proto.MESSAGE, number=2, message="InspectConfig",)
 
-    item = proto.Field(proto.MESSAGE, number=3, message=ContentItem,)
+    item = proto.Field(proto.MESSAGE, number=3, message="ContentItem",)
 
     inspect_template_name = proto.Field(proto.STRING, number=4)
 
@@ -1231,7 +1291,7 @@ class InspectContentResponse(proto.Message):
             The findings.
     """
 
-    result = proto.Field(proto.MESSAGE, number=1, message=InspectResult,)
+    result = proto.Field(proto.MESSAGE, number=1, message="InspectResult",)
 
 
 class OutputStorageConfig(proto.Message):
@@ -1355,7 +1415,7 @@ class InspectDataSourceDetails(proto.Message):
         total_estimated_bytes = proto.Field(proto.INT64, number=2)
 
         info_type_stats = proto.RepeatedField(
-            proto.MESSAGE, number=3, message=InfoTypeStats,
+            proto.MESSAGE, number=3, message="InfoTypeStats",
         )
 
         hybrid_stats = proto.Field(
@@ -1428,7 +1488,11 @@ class ListInfoTypesRequest(proto.Message):
         parent (str):
             The parent resource name.
 
-            -  Format:locations/[LOCATION-ID]
+            The format of this value is as follows:
+
+            ::
+
+                locations/<var>LOCATION_ID</var>
         language_code (str):
             BCP-47 language code for localized infoType
             friendly names. If omitted, or if localized
@@ -1459,7 +1523,7 @@ class ListInfoTypesResponse(proto.Message):
     """
 
     info_types = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=InfoTypeDescription,
+        proto.MESSAGE, number=1, message="InfoTypeDescription",
     )
 
 
@@ -1814,12 +1878,12 @@ class PrivacyMetric(proto.Message):
                 in exactly one field of one auxiliary table.
         """
 
-        quasi_ids = proto.RepeatedField(proto.MESSAGE, number=1, message=QuasiId,)
+        quasi_ids = proto.RepeatedField(proto.MESSAGE, number=1, message="QuasiId",)
 
         region_code = proto.Field(proto.STRING, number=2)
 
         auxiliary_tables = proto.RepeatedField(
-            proto.MESSAGE, number=3, message=StatisticalTable,
+            proto.MESSAGE, number=3, message="StatisticalTable",
         )
 
     numerical_stats_config = proto.Field(
@@ -1867,6 +1931,8 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             K-map result
         delta_presence_estimation_result (~.dlp.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult):
             Delta-presence result
+        requested_options (~.dlp.AnalyzeDataSourceRiskDetails.RequestedRiskAnalysisOptions):
+            The configuration used for this job.
     """
 
     class NumericalStatsResult(proto.Message):
@@ -2256,8 +2322,20 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             message="AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket",
         )
 
+    class RequestedRiskAnalysisOptions(proto.Message):
+        r"""Risk analysis options.
+
+        Attributes:
+            job_config (~.dlp.RiskAnalysisJobConfig):
+                The job config for the risk job.
+        """
+
+        job_config = proto.Field(
+            proto.MESSAGE, number=1, message="RiskAnalysisJobConfig",
+        )
+
     requested_privacy_metric = proto.Field(
-        proto.MESSAGE, number=1, message=PrivacyMetric,
+        proto.MESSAGE, number=1, message="PrivacyMetric",
     )
 
     requested_source_table = proto.Field(
@@ -2286,6 +2364,10 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
 
     delta_presence_estimation_result = proto.Field(
         proto.MESSAGE, number=9, oneof="result", message=DeltaPresenceEstimationResult,
+    )
+
+    requested_options = proto.Field(
+        proto.MESSAGE, number=10, message=RequestedRiskAnalysisOptions,
     )
 
 
@@ -2695,7 +2777,7 @@ class ReplaceValueConfig(proto.Message):
             Value to replace it with.
     """
 
-    new_value = proto.Field(proto.MESSAGE, number=1, message=Value,)
+    new_value = proto.Field(proto.MESSAGE, number=1, message="Value",)
 
 
 class ReplaceWithInfoTypeConfig(proto.Message):
@@ -2782,7 +2864,7 @@ class CharacterMaskConfig(proto.Message):
     reverse_order = proto.Field(proto.BOOL, number=3)
 
     characters_to_ignore = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=CharsToIgnore,
+        proto.MESSAGE, number=4, message="CharsToIgnore",
     )
 
 
@@ -2826,9 +2908,9 @@ class FixedSizeBucketingConfig(proto.Message):
             decimals works.
     """
 
-    lower_bound = proto.Field(proto.MESSAGE, number=1, message=Value,)
+    lower_bound = proto.Field(proto.MESSAGE, number=1, message="Value",)
 
-    upper_bound = proto.Field(proto.MESSAGE, number=2, message=Value,)
+    upper_bound = proto.Field(proto.MESSAGE, number=2, message="Value",)
 
     bucket_size = proto.Field(proto.DOUBLE, number=3)
 
@@ -2855,21 +2937,21 @@ class BucketingConfig(proto.Message):
         values.
 
         Attributes:
-            min (~.dlp.Value):
+            min_ (~.dlp.Value):
                 Lower bound of the range, inclusive. Type
                 should be the same as max if used.
-            max (~.dlp.Value):
+            max_ (~.dlp.Value):
                 Upper bound of the range, exclusive; type
                 must match min.
             replacement_value (~.dlp.Value):
                 Required. Replacement value for this bucket.
         """
 
-        min = proto.Field(proto.MESSAGE, number=1, message=Value,)
+        min_ = proto.Field(proto.MESSAGE, number=1, message="Value",)
 
-        max = proto.Field(proto.MESSAGE, number=2, message=Value,)
+        max_ = proto.Field(proto.MESSAGE, number=2, message="Value",)
 
-        replacement_value = proto.Field(proto.MESSAGE, number=3, message=Value,)
+        replacement_value = proto.Field(proto.MESSAGE, number=3, message="Value",)
 
     buckets = proto.RepeatedField(proto.MESSAGE, number=1, message=Bucket,)
 
@@ -2928,7 +3010,10 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
             before/after encryption/decryption. Each character listed
             must appear only once. Number of characters must be in the
             range [2, 95]. This must be encoded as ASCII. The order of
-            characters does not matter.
+            characters does not matter. The full list of allowed
+            characters is:
+            0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+            ~`!@#$%^&*()_-+={[}]|:;"'<,>.?/
         radix (int):
             The native way to select the alphabet. Must be in the range
             [2, 95].
@@ -3108,7 +3193,7 @@ class DateShiftConfig(proto.Message):
     context = proto.Field(proto.MESSAGE, number=3, message=storage.FieldId,)
 
     crypto_key = proto.Field(
-        proto.MESSAGE, number=4, oneof="method", message=CryptoKey,
+        proto.MESSAGE, number=4, oneof="method", message="CryptoKey",
     )
 
 
@@ -3145,7 +3230,7 @@ class InfoTypeTransformations(proto.Message):
         )
 
         primitive_transformation = proto.Field(
-            proto.MESSAGE, number=2, message=PrimitiveTransformation,
+            proto.MESSAGE, number=2, message="PrimitiveTransformation",
         )
 
     transformations = proto.RepeatedField(
@@ -3188,14 +3273,14 @@ class FieldTransformation(proto.Message):
         proto.MESSAGE,
         number=4,
         oneof="transformation",
-        message=PrimitiveTransformation,
+        message="PrimitiveTransformation",
     )
 
     info_type_transformations = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="transformation",
-        message=InfoTypeTransformations,
+        message="InfoTypeTransformations",
     )
 
 
@@ -3214,7 +3299,7 @@ class RecordTransformations(proto.Message):
     """
 
     field_transformations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=FieldTransformation,
+        proto.MESSAGE, number=1, message="FieldTransformation",
     )
 
     record_suppressions = proto.RepeatedField(
@@ -3282,7 +3367,7 @@ class RecordCondition(proto.Message):
 
         operator = proto.Field(proto.ENUM, number=3, enum="RelationalOperator",)
 
-        value = proto.Field(proto.MESSAGE, number=4, message=Value,)
+        value = proto.Field(proto.MESSAGE, number=4, message="Value",)
 
     class Conditions(proto.Message):
         r"""A collection of conditions.
@@ -3405,14 +3490,14 @@ class TransformationSummary(proto.Message):
     field = proto.Field(proto.MESSAGE, number=2, message=storage.FieldId,)
 
     transformation = proto.Field(
-        proto.MESSAGE, number=3, message=PrimitiveTransformation,
+        proto.MESSAGE, number=3, message="PrimitiveTransformation",
     )
 
     field_transformations = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=FieldTransformation,
+        proto.MESSAGE, number=5, message="FieldTransformation",
     )
 
-    record_suppress = proto.Field(proto.MESSAGE, number=6, message=RecordSuppression,)
+    record_suppress = proto.Field(proto.MESSAGE, number=6, message="RecordSuppression",)
 
     results = proto.RepeatedField(proto.MESSAGE, number=4, message=SummaryResult,)
 
@@ -3485,7 +3570,7 @@ class InspectTemplate(proto.Message):
 
     update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
 
-    inspect_config = proto.Field(proto.MESSAGE, number=6, message=InspectConfig,)
+    inspect_config = proto.Field(proto.MESSAGE, number=6, message="InspectConfig",)
 
 
 class DeidentifyTemplate(proto.Message):
@@ -3525,7 +3610,9 @@ class DeidentifyTemplate(proto.Message):
 
     update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
 
-    deidentify_config = proto.Field(proto.MESSAGE, number=6, message=DeidentifyConfig,)
+    deidentify_config = proto.Field(
+        proto.MESSAGE, number=6, message="DeidentifyConfig",
+    )
 
 
 class Error(proto.Message):
@@ -3620,10 +3707,12 @@ class JobTrigger(proto.Message):
         """
 
         schedule = proto.Field(
-            proto.MESSAGE, number=1, oneof="trigger", message=Schedule,
+            proto.MESSAGE, number=1, oneof="trigger", message="Schedule",
         )
 
-        manual = proto.Field(proto.MESSAGE, number=2, oneof="trigger", message=Manual,)
+        manual = proto.Field(
+            proto.MESSAGE, number=2, oneof="trigger", message="Manual",
+        )
 
     name = proto.Field(proto.STRING, number=1)
 
@@ -3637,7 +3726,7 @@ class JobTrigger(proto.Message):
 
     triggers = proto.RepeatedField(proto.MESSAGE, number=5, message=Trigger,)
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=6, message=Error,)
+    errors = proto.RepeatedField(proto.MESSAGE, number=6, message="Error",)
 
     create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
 
@@ -3683,7 +3772,7 @@ class Action(proto.Message):
         """
 
         output_config = proto.Field(
-            proto.MESSAGE, number=1, message=OutputStorageConfig,
+            proto.MESSAGE, number=1, message="OutputStorageConfig",
         )
 
     class PublishToPubSub(proto.Message):
@@ -3780,16 +3869,33 @@ class CreateInspectTemplateRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:organizations/[ORGANIZATION-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-            -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on the scope of
+            the request (project or organization) and whether you have
+            `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+            -  Organizations scope, location specified:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope, no location specified (defaults to
+               global): ``organizations/``\ ORG_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         inspect_template (~.dlp.InspectTemplate):
             Required. The InspectTemplate to create.
         template_id (str):
             The template id can contain uppercase and lowercase letters,
             numbers, and hyphens; that is, it must match the regular
-            expression: ``[a-zA-Z\\d-_]+``. The maximum length is 100
+            expression: ``[a-zA-Z\d-_]+``. The maximum length is 100
             characters. Can be empty to allow the system to generate
             one.
         location_id (str):
@@ -3798,7 +3904,7 @@ class CreateInspectTemplateRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    inspect_template = proto.Field(proto.MESSAGE, number=2, message=InspectTemplate,)
+    inspect_template = proto.Field(proto.MESSAGE, number=2, message="InspectTemplate",)
 
     template_id = proto.Field(proto.STRING, number=3)
 
@@ -3822,7 +3928,7 @@ class UpdateInspectTemplateRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    inspect_template = proto.Field(proto.MESSAGE, number=2, message=InspectTemplate,)
+    inspect_template = proto.Field(proto.MESSAGE, number=2, message="InspectTemplate",)
 
     update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
 
@@ -3848,10 +3954,27 @@ class ListInspectTemplatesRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:organizations/[ORGANIZATION-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-            -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on the scope of
+            the request (project or organization) and whether you have
+            `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+            -  Organizations scope, location specified:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope, no location specified (defaults to
+               global): ``organizations/``\ ORG_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         page_token (str):
             Page token to continue retrieval. Comes from previous call
             to ``ListInspectTemplates``.
@@ -3907,7 +4030,7 @@ class ListInspectTemplatesResponse(proto.Message):
         return self
 
     inspect_templates = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=InspectTemplate,
+        proto.MESSAGE, number=1, message="InspectTemplate",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -3934,14 +4057,28 @@ class CreateJobTriggerRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         job_trigger (~.dlp.JobTrigger):
             Required. The JobTrigger to create.
         trigger_id (str):
             The trigger id can contain uppercase and lowercase letters,
             numbers, and hyphens; that is, it must match the regular
-            expression: ``[a-zA-Z\\d-_]+``. The maximum length is 100
+            expression: ``[a-zA-Z\d-_]+``. The maximum length is 100
             characters. Can be empty to allow the system to generate
             one.
         location_id (str):
@@ -3950,7 +4087,7 @@ class CreateJobTriggerRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    job_trigger = proto.Field(proto.MESSAGE, number=2, message=JobTrigger,)
+    job_trigger = proto.Field(proto.MESSAGE, number=2, message="JobTrigger",)
 
     trigger_id = proto.Field(proto.STRING, number=3)
 
@@ -3985,7 +4122,7 @@ class UpdateJobTriggerRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    job_trigger = proto.Field(proto.MESSAGE, number=2, message=JobTrigger,)
+    job_trigger = proto.Field(proto.MESSAGE, number=2, message="JobTrigger",)
 
     update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
 
@@ -4012,8 +4149,22 @@ class CreateDlpJobRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         inspect_job (~.dlp.InspectJobConfig):
             Set to control what and how to inspect.
         risk_job (~.dlp.RiskAnalysisJobConfig):
@@ -4021,7 +4172,7 @@ class CreateDlpJobRequest(proto.Message):
         job_id (str):
             The job id can contain uppercase and lowercase letters,
             numbers, and hyphens; that is, it must match the regular
-            expression: ``[a-zA-Z\\d-_]+``. The maximum length is 100
+            expression: ``[a-zA-Z\d-_]+``. The maximum length is 100
             characters. Can be empty to allow the system to generate
             one.
         location_id (str):
@@ -4035,7 +4186,7 @@ class CreateDlpJobRequest(proto.Message):
     )
 
     risk_job = proto.Field(
-        proto.MESSAGE, number=3, oneof="job", message=RiskAnalysisJobConfig,
+        proto.MESSAGE, number=3, oneof="job", message="RiskAnalysisJobConfig",
     )
 
     job_id = proto.Field(proto.STRING, number=4)
@@ -4050,8 +4201,22 @@ class ListJobTriggersRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         page_token (str):
             Page token to continue retrieval. Comes from previous call
             to ListJobTriggers. ``order_by`` field must not change for
@@ -4149,7 +4314,7 @@ class ListJobTriggersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    job_triggers = proto.RepeatedField(proto.MESSAGE, number=1, message=JobTrigger,)
+    job_triggers = proto.RepeatedField(proto.MESSAGE, number=1, message="JobTrigger",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -4188,11 +4353,11 @@ class InspectJobConfig(proto.Message):
         proto.MESSAGE, number=1, message=storage.StorageConfig,
     )
 
-    inspect_config = proto.Field(proto.MESSAGE, number=2, message=InspectConfig,)
+    inspect_config = proto.Field(proto.MESSAGE, number=2, message="InspectConfig",)
 
     inspect_template_name = proto.Field(proto.STRING, number=3)
 
-    actions = proto.RepeatedField(proto.MESSAGE, number=4, message=Action,)
+    actions = proto.RepeatedField(proto.MESSAGE, number=4, message="Action",)
 
 
 class DlpJob(proto.Message):
@@ -4201,7 +4366,7 @@ class DlpJob(proto.Message):
     Attributes:
         name (str):
             The server-assigned name.
-        type (~.dlp.DlpJobType):
+        type_ (~.dlp.DlpJobType):
             The type of job.
         state (~.dlp.DlpJob.JobState):
             State of a job.
@@ -4235,16 +4400,19 @@ class DlpJob(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(proto.ENUM, number=2, enum="DlpJobType",)
+    type_ = proto.Field(proto.ENUM, number=2, enum="DlpJobType",)
 
     state = proto.Field(proto.ENUM, number=3, enum=JobState,)
 
     risk_details = proto.Field(
-        proto.MESSAGE, number=4, oneof="details", message=AnalyzeDataSourceRiskDetails,
+        proto.MESSAGE,
+        number=4,
+        oneof="details",
+        message="AnalyzeDataSourceRiskDetails",
     )
 
     inspect_details = proto.Field(
-        proto.MESSAGE, number=5, oneof="details", message=InspectDataSourceDetails,
+        proto.MESSAGE, number=5, oneof="details", message="InspectDataSourceDetails",
     )
 
     create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
@@ -4255,7 +4423,7 @@ class DlpJob(proto.Message):
 
     job_trigger_name = proto.Field(proto.STRING, number=10)
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=11, message=Error,)
+    errors = proto.RepeatedField(proto.MESSAGE, number=11, message="Error",)
 
 
 class GetDlpJobRequest(proto.Message):
@@ -4276,8 +4444,22 @@ class ListDlpJobsRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on whether you
+            have `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         filter (str):
             Allows filtering.
 
@@ -4323,7 +4505,7 @@ class ListDlpJobsRequest(proto.Message):
             The standard list page size.
         page_token (str):
             The standard list page token.
-        type (~.dlp.DlpJobType):
+        type_ (~.dlp.DlpJobType):
             The type of job. Defaults to ``DlpJobType.INSPECT``
         order_by (str):
             Comma separated list of fields to order by, followed by
@@ -4351,7 +4533,7 @@ class ListDlpJobsRequest(proto.Message):
 
     page_token = proto.Field(proto.STRING, number=3)
 
-    type = proto.Field(proto.ENUM, number=5, enum="DlpJobType",)
+    type_ = proto.Field(proto.ENUM, number=5, enum="DlpJobType",)
 
     order_by = proto.Field(proto.STRING, number=6)
 
@@ -4373,7 +4555,7 @@ class ListDlpJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=DlpJob,)
+    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message="DlpJob",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -4421,16 +4603,33 @@ class CreateDeidentifyTemplateRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:organizations/[ORGANIZATION-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-            -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on the scope of
+            the request (project or organization) and whether you have
+            `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+            -  Organizations scope, location specified:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope, no location specified (defaults to
+               global): ``organizations/``\ ORG_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         deidentify_template (~.dlp.DeidentifyTemplate):
             Required. The DeidentifyTemplate to create.
         template_id (str):
             The template id can contain uppercase and lowercase letters,
             numbers, and hyphens; that is, it must match the regular
-            expression: ``[a-zA-Z\\d-_]+``. The maximum length is 100
+            expression: ``[a-zA-Z\d-_]+``. The maximum length is 100
             characters. Can be empty to allow the system to generate
             one.
         location_id (str):
@@ -4440,7 +4639,7 @@ class CreateDeidentifyTemplateRequest(proto.Message):
     parent = proto.Field(proto.STRING, number=1)
 
     deidentify_template = proto.Field(
-        proto.MESSAGE, number=2, message=DeidentifyTemplate,
+        proto.MESSAGE, number=2, message="DeidentifyTemplate",
     )
 
     template_id = proto.Field(proto.STRING, number=3)
@@ -4466,7 +4665,7 @@ class UpdateDeidentifyTemplateRequest(proto.Message):
     name = proto.Field(proto.STRING, number=1)
 
     deidentify_template = proto.Field(
-        proto.MESSAGE, number=2, message=DeidentifyTemplate,
+        proto.MESSAGE, number=2, message="DeidentifyTemplate",
     )
 
     update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
@@ -4493,10 +4692,27 @@ class ListDeidentifyTemplatesRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:organizations/[ORGANIZATION-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-            -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on the scope of
+            the request (project or organization) and whether you have
+            `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+            -  Organizations scope, location specified:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope, no location specified (defaults to
+               global): ``organizations/``\ ORG_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         page_token (str):
             Page token to continue retrieval. Comes from previous call
             to ``ListDeidentifyTemplates``.
@@ -4552,7 +4768,7 @@ class ListDeidentifyTemplatesResponse(proto.Message):
         return self
 
     deidentify_templates = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=DeidentifyTemplate,
+        proto.MESSAGE, number=1, message="DeidentifyTemplate",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -4648,7 +4864,7 @@ class StoredInfoTypeConfig(proto.Message):
     description = proto.Field(proto.STRING, number=2)
 
     large_custom_dictionary = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message=LargeCustomDictionaryConfig,
+        proto.MESSAGE, number=3, oneof="type", message="LargeCustomDictionaryConfig",
     )
 
     dictionary = proto.Field(
@@ -4673,7 +4889,7 @@ class StoredInfoTypeStats(proto.Message):
     """
 
     large_custom_dictionary = proto.Field(
-        proto.MESSAGE, number=1, oneof="type", message=LargeCustomDictionaryStats,
+        proto.MESSAGE, number=1, oneof="type", message="LargeCustomDictionaryStats",
     )
 
 
@@ -4713,15 +4929,15 @@ class StoredInfoTypeVersion(proto.Message):
             Statistics about this storedInfoType version.
     """
 
-    config = proto.Field(proto.MESSAGE, number=1, message=StoredInfoTypeConfig,)
+    config = proto.Field(proto.MESSAGE, number=1, message="StoredInfoTypeConfig",)
 
     create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 
     state = proto.Field(proto.ENUM, number=3, enum="StoredInfoTypeState",)
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=4, message=Error,)
+    errors = proto.RepeatedField(proto.MESSAGE, number=4, message="Error",)
 
-    stats = proto.Field(proto.MESSAGE, number=5, message=StoredInfoTypeStats,)
+    stats = proto.Field(proto.MESSAGE, number=5, message="StoredInfoTypeStats",)
 
 
 class StoredInfoType(proto.Message):
@@ -4741,11 +4957,11 @@ class StoredInfoType(proto.Message):
     name = proto.Field(proto.STRING, number=1)
 
     current_version = proto.Field(
-        proto.MESSAGE, number=2, message=StoredInfoTypeVersion,
+        proto.MESSAGE, number=2, message="StoredInfoTypeVersion",
     )
 
     pending_versions = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=StoredInfoTypeVersion,
+        proto.MESSAGE, number=3, message="StoredInfoTypeVersion",
     )
 
 
@@ -4756,26 +4972,43 @@ class CreateStoredInfoTypeRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:organizations/[ORGANIZATION-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-            -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on the scope of
+            the request (project or organization) and whether you have
+            `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+            -  Organizations scope, location specified:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope, no location specified (defaults to
+               global): ``organizations/``\ ORG_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         config (~.dlp.StoredInfoTypeConfig):
             Required. Configuration of the storedInfoType
             to create.
         stored_info_type_id (str):
             The storedInfoType ID can contain uppercase and lowercase
             letters, numbers, and hyphens; that is, it must match the
-            regular expression: ``[a-zA-Z\\d-_]+``. The maximum length
-            is 100 characters. Can be empty to allow the system to
-            generate one.
+            regular expression: ``[a-zA-Z\d-_]+``. The maximum length is
+            100 characters. Can be empty to allow the system to generate
+            one.
         location_id (str):
             Deprecated. This field has no effect.
     """
 
     parent = proto.Field(proto.STRING, number=1)
 
-    config = proto.Field(proto.MESSAGE, number=2, message=StoredInfoTypeConfig,)
+    config = proto.Field(proto.MESSAGE, number=2, message="StoredInfoTypeConfig",)
 
     stored_info_type_id = proto.Field(proto.STRING, number=3)
 
@@ -4802,7 +5035,7 @@ class UpdateStoredInfoTypeRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    config = proto.Field(proto.MESSAGE, number=2, message=StoredInfoTypeConfig,)
+    config = proto.Field(proto.MESSAGE, number=2, message="StoredInfoTypeConfig",)
 
     update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
 
@@ -4828,10 +5061,27 @@ class ListStoredInfoTypesRequest(proto.Message):
         parent (str):
             Required. Parent resource name.
 
-            -  Format:projects/[PROJECT-ID]
-            -  Format:organizations/[ORGANIZATION-ID]
-            -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-            -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+            The format of this value varies depending on the scope of
+            the request (project or organization) and whether you have
+            `specified a processing
+            location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+            -  Projects scope, location specified:
+               ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+            -  Projects scope, no location specified (defaults to
+               global): ``projects/``\ PROJECT_ID
+            -  Organizations scope, location specified:
+               ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+            -  Organizations scope, no location specified (defaults to
+               global): ``organizations/``\ ORG_ID
+
+            The following example ``parent`` string specifies a parent
+            project with the identifier ``example-project``, and
+            specifies the ``europe-west3`` location for processing data:
+
+            ::
+
+                parent=projects/example-project/locations/europe-west3
         page_token (str):
             Page token to continue retrieval. Comes from previous call
             to ``ListStoredInfoTypes``.
@@ -4887,7 +5137,7 @@ class ListStoredInfoTypesResponse(proto.Message):
         return self
 
     stored_info_types = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=StoredInfoType,
+        proto.MESSAGE, number=1, message="StoredInfoType",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -4955,7 +5205,7 @@ class HybridContentItem(proto.Message):
             to each finding.
     """
 
-    item = proto.Field(proto.MESSAGE, number=1, message=ContentItem,)
+    item = proto.Field(proto.MESSAGE, number=1, message="ContentItem",)
 
     finding_details = proto.Field(
         proto.MESSAGE, number=2, message="HybridFindingDetails",
@@ -5011,7 +5261,7 @@ class HybridFindingDetails(proto.Message):
             -  ``"pipeline" : "etl"``
     """
 
-    container_details = proto.Field(proto.MESSAGE, number=1, message=Container,)
+    container_details = proto.Field(proto.MESSAGE, number=1, message="Container",)
 
     file_offset = proto.Field(proto.INT64, number=2)
 

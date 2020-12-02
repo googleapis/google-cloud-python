@@ -33,7 +33,7 @@ from google.cloud.dlp_v2.types import dlp
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import DlpServiceTransport
+from .transports.base import DlpServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DlpServiceGrpcAsyncIOTransport
 from .client import DlpServiceClient
 
@@ -55,14 +55,61 @@ class DlpServiceAsyncClient:
     DEFAULT_ENDPOINT = DlpServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DlpServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    job_trigger_path = staticmethod(DlpServiceClient.job_trigger_path)
-
-    inspect_template_path = staticmethod(DlpServiceClient.inspect_template_path)
-
     deidentify_template_path = staticmethod(DlpServiceClient.deidentify_template_path)
+    parse_deidentify_template_path = staticmethod(
+        DlpServiceClient.parse_deidentify_template_path
+    )
+    dlp_content_path = staticmethod(DlpServiceClient.dlp_content_path)
+    parse_dlp_content_path = staticmethod(DlpServiceClient.parse_dlp_content_path)
+    dlp_job_path = staticmethod(DlpServiceClient.dlp_job_path)
+    parse_dlp_job_path = staticmethod(DlpServiceClient.parse_dlp_job_path)
+    finding_path = staticmethod(DlpServiceClient.finding_path)
+    parse_finding_path = staticmethod(DlpServiceClient.parse_finding_path)
+    inspect_template_path = staticmethod(DlpServiceClient.inspect_template_path)
+    parse_inspect_template_path = staticmethod(
+        DlpServiceClient.parse_inspect_template_path
+    )
+    job_trigger_path = staticmethod(DlpServiceClient.job_trigger_path)
+    parse_job_trigger_path = staticmethod(DlpServiceClient.parse_job_trigger_path)
+    stored_info_type_path = staticmethod(DlpServiceClient.stored_info_type_path)
+    parse_stored_info_type_path = staticmethod(
+        DlpServiceClient.parse_stored_info_type_path
+    )
+
+    common_billing_account_path = staticmethod(
+        DlpServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        DlpServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(DlpServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(DlpServiceClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(DlpServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        DlpServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(DlpServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(DlpServiceClient.parse_common_project_path)
+
+    common_location_path = staticmethod(DlpServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        DlpServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = DlpServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> DlpServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            DlpServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(DlpServiceClient).get_transport_class, type(DlpServiceClient)
@@ -74,6 +121,7 @@ class DlpServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, DlpServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the dlp service client.
 
@@ -89,16 +137,19 @@ class DlpServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -106,7 +157,10 @@ class DlpServiceAsyncClient:
         """
 
         self._client = DlpServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def inspect_content(
@@ -160,7 +214,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -227,7 +281,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -295,7 +349,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -353,7 +407,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -388,7 +442,11 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 The parent resource name.
 
-                -  Format:locations/[LOCATION-ID]
+                The format of this value is as follows:
+
+                ::
+
+                    locations/<var>LOCATION_ID</var>
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -408,7 +466,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -435,7 +494,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -466,10 +525,28 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:organizations/[ORGANIZATION-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-                -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on the scope
+                of the request (project or organization) and whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+                -  Organizations scope, location specified:
+                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                -  Organizations scope, no location specified (defaults
+                   to global): ``organizations/``\ ORG_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -500,7 +577,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, inspect_template]):
+        has_flattened_params = any([parent, inspect_template])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -521,7 +599,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_inspect_template,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -595,7 +673,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, inspect_template, update_mask]):
+        has_flattened_params = any([name, inspect_template, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -618,7 +697,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_inspect_template,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -679,7 +758,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -706,7 +786,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -741,10 +821,28 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:organizations/[ORGANIZATION-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-                -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on the scope
+                of the request (project or organization) and whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+                -  Organizations scope, location specified:
+                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                -  Organizations scope, no location specified (defaults
+                   to global): ``organizations/``\ ORG_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -767,7 +865,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -794,7 +893,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -850,7 +949,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -877,7 +977,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -914,10 +1014,28 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:organizations/[ORGANIZATION-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-                -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on the scope
+                of the request (project or organization) and whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+                -  Organizations scope, location specified:
+                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                -  Organizations scope, no location specified (defaults
+                   to global): ``organizations/``\ ORG_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -946,7 +1064,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, deidentify_template]):
+        has_flattened_params = any([parent, deidentify_template])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -967,7 +1086,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_deidentify_template,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1039,7 +1158,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, deidentify_template, update_mask]):
+        has_flattened_params = any([name, deidentify_template, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1062,7 +1182,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_deidentify_template,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1121,7 +1241,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1148,7 +1269,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1183,10 +1304,28 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:organizations/[ORGANIZATION-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-                -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on the scope
+                of the request (project or organization) and whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+                -  Organizations scope, location specified:
+                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                -  Organizations scope, no location specified (defaults
+                   to global): ``organizations/``\ ORG_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1209,7 +1348,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1236,7 +1376,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1292,7 +1432,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1319,7 +1460,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1356,8 +1497,23 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1384,7 +1540,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, job_trigger]):
+        has_flattened_params = any([parent, job_trigger])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1405,7 +1562,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_job_trigger,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1475,7 +1632,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, job_trigger, update_mask]):
+        has_flattened_params = any([name, job_trigger, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1498,7 +1656,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_job_trigger,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1558,7 +1716,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1577,7 +1736,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.hybrid_inspect_job_trigger,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1633,7 +1792,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1660,7 +1820,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1694,8 +1854,23 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1717,7 +1892,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1744,7 +1920,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1799,7 +1975,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1826,7 +2003,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1878,7 +2055,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.activate_job_trigger,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1923,8 +2100,23 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1956,7 +2148,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, inspect_job, risk_job]):
+        has_flattened_params = any([parent, inspect_job, risk_job])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1979,7 +2172,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_dlp_job,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2016,8 +2209,23 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2040,7 +2248,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2067,7 +2276,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2128,7 +2337,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2155,7 +2365,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2206,7 +2416,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2233,7 +2444,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2282,7 +2493,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.cancel_dlp_job,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2318,10 +2529,28 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:organizations/[ORGANIZATION-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-                -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on the scope
+                of the request (project or organization) and whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+                -  Organizations scope, location specified:
+                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                -  Organizations scope, no location specified (defaults
+                   to global): ``organizations/``\ ORG_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2348,7 +2577,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, config]):
+        has_flattened_params = any([parent, config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2369,7 +2599,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_stored_info_type,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2444,7 +2674,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, config, update_mask]):
+        has_flattened_params = any([name, config, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2467,7 +2698,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_stored_info_type,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2524,7 +2755,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2551,7 +2783,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2586,10 +2818,28 @@ class DlpServiceAsyncClient:
             parent (:class:`str`):
                 Required. Parent resource name.
 
-                -  Format:projects/[PROJECT-ID]
-                -  Format:organizations/[ORGANIZATION-ID]
-                -  Format:projects/[PROJECT-ID]/locations/[LOCATION-ID]
-                -  Format:organizations/[ORGANIZATION-ID]/locations/[LOCATION-ID]
+                The format of this value varies depending on the scope
+                of the request (project or organization) and whether you
+                have `specified a processing
+                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+
+                -  Projects scope, location specified:
+                   ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
+                -  Projects scope, no location specified (defaults to
+                   global): ``projects/``\ PROJECT_ID
+                -  Organizations scope, location specified:
+                   ``organizations/``\ ORG_ID\ ``/locations/``\ LOCATION_ID
+                -  Organizations scope, no location specified (defaults
+                   to global): ``organizations/``\ ORG_ID
+
+                The following example ``parent`` string specifies a
+                parent project with the identifier ``example-project``,
+                and specifies the ``europe-west3`` location for
+                processing data:
+
+                ::
+
+                    parent=projects/example-project/locations/europe-west3
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2612,7 +2862,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2639,7 +2890,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2695,7 +2946,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2722,7 +2974,7 @@ class DlpServiceAsyncClient:
                 ),
             ),
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2780,7 +3032,8 @@ class DlpServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2799,7 +3052,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.hybrid_inspect_dlp_job,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2849,7 +3102,7 @@ class DlpServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.finish_dlp_job,
             default_timeout=300.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2865,11 +3118,11 @@ class DlpServiceAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-dlp",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("DlpServiceAsyncClient",)
