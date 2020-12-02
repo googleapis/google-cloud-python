@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [1.6.1](https://www.github.com/googleapis/python-bigtable/compare/v1.6.0...v1.6.1) (2020-12-01)
+
+
+### Documentation
+
+* update intersphinx mappings ([#172](https://www.github.com/googleapis/python-bigtable/issues/172)) ([7b09368](https://www.github.com/googleapis/python-bigtable/commit/7b09368d5121782c7f271b3575c838e8a2284c05))
+
 ## [1.6.0](https://www.github.com/googleapis/python-bigtable/compare/v1.5.1...v1.6.0) (2020-11-16)
 
 
