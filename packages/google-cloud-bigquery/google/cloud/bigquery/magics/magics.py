@@ -182,6 +182,7 @@ class Context(object):
         self._default_query_job_config = bigquery.QueryJobConfig()
         self._bigquery_client_options = client_options.ClientOptions()
         self._bqstorage_client_options = client_options.ClientOptions()
+        self._progress_bar_type = "tqdm"
 
     @property
     def credentials(self):
@@ -312,6 +313,26 @@ class Context(object):
     @default_query_job_config.setter
     def default_query_job_config(self, value):
         self._default_query_job_config = value
+
+    @property
+    def progress_bar_type(self):
+        """str: Default progress bar type to use to display progress bar while
+        executing queries through IPython magics.
+
+        Note::
+            Install the ``tqdm`` package to use this feature.
+
+        Example:
+            Manually setting the progress_bar_type:
+
+            >>> from google.cloud.bigquery import magics
+            >>> magics.context.progress_bar_type = "tqdm"
+        """
+        return self._progress_bar_type
+
+    @progress_bar_type.setter
+    def progress_bar_type(self, value):
+        self._progress_bar_type = value
 
 
 context = Context()
@@ -524,6 +545,15 @@ def _create_dataset_if_necessary(client, dataset_id):
         "name (ex. $my_dict_var)."
     ),
 )
+@magic_arguments.argument(
+    "--progress_bar_type",
+    type=str,
+    default=None,
+    help=(
+        "Sets progress bar type to display a progress bar while executing the query."
+        "Defaults to use tqdm. Install the ``tqdm`` package to use this feature."
+    ),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -687,12 +717,16 @@ def _cell_magic(line, query):
             )
             return query_job
 
+        progress_bar = context.progress_bar_type or args.progress_bar_type
+
         if max_results:
             result = query_job.result(max_results=max_results).to_dataframe(
-                bqstorage_client=bqstorage_client
+                bqstorage_client=bqstorage_client, progress_bar_type=progress_bar
             )
         else:
-            result = query_job.to_dataframe(bqstorage_client=bqstorage_client)
+            result = query_job.to_dataframe(
+                bqstorage_client=bqstorage_client, progress_bar_type=progress_bar
+            )
 
         if args.destination_var:
             IPython.get_ipython().push({args.destination_var: result})

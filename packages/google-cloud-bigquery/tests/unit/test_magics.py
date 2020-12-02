@@ -623,7 +623,7 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
     assert client_info.user_agent == "ipython-" + IPython.__version__
 
     query_job_mock.to_dataframe.assert_called_once_with(
-        bqstorage_client=bqstorage_instance_mock
+        bqstorage_client=bqstorage_instance_mock, progress_bar_type="tqdm"
     )
 
     assert isinstance(return_value, pandas.DataFrame)
@@ -665,7 +665,9 @@ def test_bigquery_magic_with_rest_client_requested(monkeypatch):
         return_value = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
         bqstorage_mock.assert_not_called()
-        query_job_mock.to_dataframe.assert_called_once_with(bqstorage_client=None)
+        query_job_mock.to_dataframe.assert_called_once_with(
+            bqstorage_client=None, progress_bar_type="tqdm"
+        )
 
     assert isinstance(return_value, pandas.DataFrame)
 
@@ -1165,6 +1167,71 @@ def test_bigquery_magic_w_maximum_bytes_billed_w_context_setter():
     _, req = conn.api_request.call_args_list[0]
     sent_config = req["data"]["configuration"]["query"]
     assert sent_config["maximumBytesBilled"] == "10203"
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_bigquery_magic_w_progress_bar_type_w_context_setter(monkeypatch):
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context._project = None
+
+    magics.context.progress_bar_type = "tqdm_gui"
+
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(magics.context, "_credentials", mock_credentials)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+
+    sql = "SELECT 17 AS num"
+    result = pandas.DataFrame([17], columns=["num"])
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    with run_query_patch as run_query_mock, bqstorage_client_patch:
+        run_query_mock.return_value = query_job_mock
+
+        return_value = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
+
+        bqstorage_mock.assert_not_called()
+        query_job_mock.to_dataframe.assert_called_once_with(
+            bqstorage_client=None, progress_bar_type=magics.context.progress_bar_type
+        )
+
+    assert isinstance(return_value, pandas.DataFrame)
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_with_progress_bar_type():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.progress_bar_type = None
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic(
+            "bigquery", "--progress_bar_type=tqdm_gui", "SELECT 17 as num"
+        )
+
+        progress_bar_used = run_query_mock.mock_calls[1][2]["progress_bar_type"]
+        assert progress_bar_used == "tqdm_gui"
+        # context progress bar type should not change
+        assert magics.context.progress_bar_type is None
 
 
 @pytest.mark.usefixtures("ipython_interactive")
