@@ -14,6 +14,8 @@
 
 """Shared utilities used by both downloads and uploads."""
 
+from __future__ import absolute_import
+
 import base64
 import hashlib
 import logging
@@ -21,20 +23,11 @@ import random
 import time
 import warnings
 
-from six.moves import http_client
-
 from google.resumable_media import common
 
 
 RANGE_HEADER = u"range"
 CONTENT_RANGE_HEADER = u"content-range"
-RETRYABLE = (
-    common.TOO_MANY_REQUESTS,
-    http_client.INTERNAL_SERVER_ERROR,
-    http_client.BAD_GATEWAY,
-    http_client.SERVICE_UNAVAILABLE,
-    http_client.GATEWAY_TIMEOUT,
-)
 
 _SLOW_CRC32C_WARNING = (
     "Currently using crcmod in pure python form. This is a slow "
@@ -162,23 +155,43 @@ def wait_and_retry(func, get_status_code, retry_strategy):
     Returns:
         object: The return value of ``func``.
     """
-    response = func()
-    if get_status_code(response) not in RETRYABLE:
-        return response
-
     total_sleep = 0.0
     num_retries = 0
     base_wait = 0.5  # When doubled will give 1.0
-    while retry_strategy.retry_allowed(total_sleep, num_retries):
+
+    # Set the retriable_exception_type if possible. We expect requests to be
+    # present here and the transport to be using requests.exceptions errors,
+    # but due to loose coupling with the transport layer we can't guarantee it.
+    try:
+        connection_error_exceptions = _get_connection_error_classes()
+    except ImportError:
+        # We don't know the correct classes to use to catch connection errors,
+        # so an empty tuple here communicates "catch no exceptions".
+        connection_error_exceptions = ()
+
+    while True:  # return on success or when retries exhausted.
+        error = None
+        try:
+            response = func()
+        except connection_error_exceptions as e:
+            error = e
+        else:
+            if get_status_code(response) not in common.RETRYABLE:
+                return response
+
+        if not retry_strategy.retry_allowed(total_sleep, num_retries):
+            # Retries are exhausted and no acceptable response was received. Raise the
+            # retriable_error or return the unacceptable response.
+            if error:
+                raise error
+
+            return response
+
         base_wait, wait_time = calculate_retry_wait(base_wait, retry_strategy.max_sleep)
+
         num_retries += 1
         total_sleep += wait_time
         time.sleep(wait_time)
-        response = func()
-        if get_status_code(response) not in RETRYABLE:
-            return response
-
-    return response
 
 
 def _get_crc32c_object():
@@ -347,6 +360,22 @@ def _get_checksum_object(checksum_type):
         return None
     else:
         raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
+
+
+def _get_connection_error_classes():
+    """Get the exception error classes.
+
+    Requests is a soft dependency here so that multiple transport layers can be
+    added in the future. This code is in a separate function here so that the
+    test framework can override its behavior to simulate requests being
+    unavailable."""
+
+    import requests.exceptions
+
+    return (
+        requests.exceptions.ConnectionError,
+        requests.exceptions.ChunkedEncodingError,
+    )
 
 
 class _DoNothingHash(object):

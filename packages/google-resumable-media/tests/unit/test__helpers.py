@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import absolute_import
+
 import hashlib
 import mock
 import pytest
+import requests.exceptions
 from six.moves import http_client
 
 from google.resumable_media import _helpers
@@ -151,7 +154,7 @@ class Test_calculate_retry_wait(object):
 class Test_wait_and_retry(object):
     def test_success_no_retry(self):
         truthy = http_client.OK
-        assert truthy not in _helpers.RETRYABLE
+        assert truthy not in common.RETRYABLE
         response = _make_response(truthy)
 
         func = mock.Mock(return_value=response, spec=[])
@@ -179,7 +182,7 @@ class Test_wait_and_retry(object):
         ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
         assert ret_val == responses[-1]
-        assert status_codes[-1] not in _helpers.RETRYABLE
+        assert status_codes[-1] not in common.RETRYABLE
 
         assert func.call_count == 4
         assert func.mock_calls == [mock.call()] * 4
@@ -191,6 +194,59 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(1.125)
         sleep_mock.assert_any_call(2.625)
         sleep_mock.assert_any_call(4.375)
+
+    @mock.patch(u"time.sleep")
+    @mock.patch(u"random.randint")
+    def test_success_with_retry_connection_error(self, randint_mock, sleep_mock):
+        randint_mock.side_effect = [125, 625, 375]
+
+        response = _make_response(http_client.NOT_FOUND)
+        responses = [
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectionError,
+            response,
+        ]
+        func = mock.Mock(side_effect=responses, spec=[])
+
+        retry_strategy = common.RetryStrategy()
+        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+
+        assert ret_val == responses[-1]
+
+        assert func.call_count == 4
+        assert func.mock_calls == [mock.call()] * 4
+
+        assert randint_mock.call_count == 3
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 3
+
+        assert sleep_mock.call_count == 3
+        sleep_mock.assert_any_call(1.125)
+        sleep_mock.assert_any_call(2.625)
+        sleep_mock.assert_any_call(4.375)
+
+    @mock.patch(u"time.sleep")
+    @mock.patch(u"random.randint")
+    def test_connection_import_error_failure(self, randint_mock, sleep_mock):
+        randint_mock.side_effect = [125, 625, 375]
+
+        response = _make_response(http_client.NOT_FOUND)
+        responses = [
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectionError,
+            response,
+        ]
+
+        with mock.patch(
+            "google.resumable_media._helpers._get_connection_error_classes",
+            side_effect=ImportError,
+        ):
+            with pytest.raises(requests.exceptions.ConnectionError):
+                func = mock.Mock(side_effect=responses, spec=[])
+
+                retry_strategy = common.RetryStrategy()
+                _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
     @mock.patch(u"time.sleep")
     @mock.patch(u"random.randint")
@@ -214,7 +270,34 @@ class Test_wait_and_retry(object):
         ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
         assert ret_val == responses[-1]
-        assert status_codes[-1] in _helpers.RETRYABLE
+        assert status_codes[-1] in common.RETRYABLE
+
+        assert func.call_count == 8
+        assert func.mock_calls == [mock.call()] * 8
+
+        assert randint_mock.call_count == 7
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 7
+
+        assert sleep_mock.call_count == 7
+        sleep_mock.assert_any_call(1.875)
+        sleep_mock.assert_any_call(2.0)
+        sleep_mock.assert_any_call(4.375)
+        sleep_mock.assert_any_call(8.5)
+        sleep_mock.assert_any_call(16.5)
+        sleep_mock.assert_any_call(32.25)
+        sleep_mock.assert_any_call(64.125)
+
+    @mock.patch(u"time.sleep")
+    @mock.patch(u"random.randint")
+    def test_retry_exceeded_reraises_connection_error(self, randint_mock, sleep_mock):
+        randint_mock.side_effect = [875, 0, 375, 500, 500, 250, 125]
+
+        responses = [requests.exceptions.ConnectionError] * 8
+        func = mock.Mock(side_effect=responses, spec=[])
+
+        retry_strategy = common.RetryStrategy(max_cumulative_retry=100.0)
+        with pytest.raises(requests.exceptions.ConnectionError):
+            _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
 
         assert func.call_count == 8
         assert func.mock_calls == [mock.call()] * 8
