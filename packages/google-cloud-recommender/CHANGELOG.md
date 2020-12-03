@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-recommender/compare/v1.1.1...v2.0.0) (2020-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* use microgenerator (#54)
+
+### Features
+
+* use microgenerator ([#54](https://www.github.com/googleapis/python-recommender/issues/54)) ([63b8a43](https://www.github.com/googleapis/python-recommender/commit/63b8a43ce25a5305664424fa247ad82595c4342f)). See [Migration Guide](https://github.com/googleapis/python-recommender/blob/master/UPGRADING.md).
+
 ### [1.1.1](https://www.github.com/googleapis/python-recommender/compare/v1.1.0...v1.1.1) (2020-10-29)
 
 
