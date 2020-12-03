@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.0.0...v2.1.0) (2020-12-03)
+
+
+### Features
+
+* add common resource helper methods; expose client transport; add shebang to fixup scripts ([#57](https://www.github.com/googleapis/python-secret-manager/issues/57)) ([b5c022b](https://www.github.com/googleapis/python-secret-manager/commit/b5c022bebd36f82bb538d4d8467f25685f84f8bc))
+
 ## [2.0.0](https://www.github.com/googleapis/python-secret-manager/compare/v1.0.0...v2.0.0) (2020-09-15)
 
 
