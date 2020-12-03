@@ -293,15 +293,18 @@ class Table(object):
     """
 
     _PROPERTY_TO_API_FIELD = {
-        "friendly_name": "friendlyName",
+        "encryption_configuration": "encryptionConfiguration",
         "expires": "expirationTime",
-        "time_partitioning": "timePartitioning",
-        "partitioning_type": "timePartitioning",
+        "external_data_configuration": "externalDataConfiguration",
+        "friendly_name": "friendlyName",
+        "mview_enable_refresh": "materializedView",
+        "mview_query": "materializedView",
+        "mview_refresh_interval": "materializedView",
         "partition_expiration": "timePartitioning",
+        "partitioning_type": "timePartitioning",
+        "time_partitioning": "timePartitioning",
         "view_use_legacy_sql": "view",
         "view_query": "view",
-        "external_data_configuration": "externalDataConfiguration",
-        "encryption_configuration": "encryptionConfiguration",
         "require_partition_filter": "requirePartitionFilter",
     }
 
@@ -714,18 +717,14 @@ class Table(object):
         Raises:
             ValueError: For invalid value types.
         """
-        view = self._properties.get("view")
-        if view is not None:
-            return view.get("query")
+        return _helpers._get_sub_prop(self._properties, ["view", "query"])
 
     @view_query.setter
     def view_query(self, value):
         if not isinstance(value, six.string_types):
             raise ValueError("Pass a string")
-        view = self._properties.get("view")
-        if view is None:
-            view = self._properties["view"] = {}
-        view["query"] = value
+        _helpers._set_sub_prop(self._properties, ["view", "query"], value)
+        view = self._properties["view"]
         # The service defaults useLegacySql to True, but this
         # client uses Standard SQL by default.
         if view.get("useLegacySql") is None:
@@ -745,6 +744,78 @@ class Table(object):
         if self._properties.get("view") is None:
             self._properties["view"] = {}
         self._properties["view"]["useLegacySql"] = value
+
+    @property
+    def mview_query(self):
+        """Optional[str]: SQL query defining the table as a materialized
+        view (defaults to :data:`None`).
+        """
+        return _helpers._get_sub_prop(self._properties, ["materializedView", "query"])
+
+    @mview_query.setter
+    def mview_query(self, value):
+        _helpers._set_sub_prop(
+            self._properties, ["materializedView", "query"], str(value)
+        )
+
+    @mview_query.deleter
+    def mview_query(self):
+        """Delete SQL query defining the table as a materialized view."""
+        self._properties.pop("materializedView", None)
+
+    @property
+    def mview_last_refresh_time(self):
+        """Optional[datetime.datetime]: Datetime at which the materialized view was last
+        refreshed (:data:`None` until set from the server).
+        """
+        refresh_time = _helpers._get_sub_prop(
+            self._properties, ["materializedView", "lastRefreshTime"]
+        )
+        if refresh_time is not None:
+            # refresh_time will be in milliseconds.
+            return google.cloud._helpers._datetime_from_microseconds(
+                1000 * int(refresh_time)
+            )
+
+    @property
+    def mview_enable_refresh(self):
+        """Optional[bool]: Enable automatic refresh of the materialized view
+        when the base table is updated. The default value is :data:`True`.
+        """
+        return _helpers._get_sub_prop(
+            self._properties, ["materializedView", "enableRefresh"]
+        )
+
+    @mview_enable_refresh.setter
+    def mview_enable_refresh(self, value):
+        return _helpers._set_sub_prop(
+            self._properties, ["materializedView", "enableRefresh"], value
+        )
+
+    @property
+    def mview_refresh_interval(self):
+        """Optional[datetime.timedelta]: The maximum frequency at which this
+        materialized view will be refreshed. The default value is 1800000
+        milliseconds (30 minutes).
+        """
+        refresh_interval = _helpers._get_sub_prop(
+            self._properties, ["materializedView", "refreshIntervalMs"]
+        )
+        if refresh_interval is not None:
+            return datetime.timedelta(milliseconds=int(refresh_interval))
+
+    @mview_refresh_interval.setter
+    def mview_refresh_interval(self, value):
+        if value is None:
+            refresh_interval_ms = None
+        else:
+            refresh_interval_ms = str(value // datetime.timedelta(milliseconds=1))
+
+        _helpers._set_sub_prop(
+            self._properties,
+            ["materializedView", "refreshIntervalMs"],
+            refresh_interval_ms,
+        )
 
     @property
     def streaming_buffer(self):
