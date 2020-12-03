@@ -15,75 +15,77 @@
 # limitations under the License.
 #
 
-from google.cloud.servicedirectory_v1beta1.services.lookup_service.client import (
+from google.cloud.servicedirectory_v1.services.lookup_service.async_client import (
+    LookupServiceAsyncClient,
+)
+from google.cloud.servicedirectory_v1.services.lookup_service.client import (
     LookupServiceClient,
 )
-from google.cloud.servicedirectory_v1beta1.services.registration_service.client import (
+from google.cloud.servicedirectory_v1.services.registration_service.async_client import (
+    RegistrationServiceAsyncClient,
+)
+from google.cloud.servicedirectory_v1.services.registration_service.client import (
     RegistrationServiceClient,
 )
-from google.cloud.servicedirectory_v1beta1.types.endpoint import Endpoint
-from google.cloud.servicedirectory_v1beta1.types.lookup_service import (
-    ResolveServiceRequest,
-)
-from google.cloud.servicedirectory_v1beta1.types.lookup_service import (
-    ResolveServiceResponse,
-)
-from google.cloud.servicedirectory_v1beta1.types.namespace import Namespace
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.endpoint import Endpoint
+from google.cloud.servicedirectory_v1.types.lookup_service import ResolveServiceRequest
+from google.cloud.servicedirectory_v1.types.lookup_service import ResolveServiceResponse
+from google.cloud.servicedirectory_v1.types.namespace import Namespace
+from google.cloud.servicedirectory_v1.types.registration_service import (
     CreateEndpointRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     CreateNamespaceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     CreateServiceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     DeleteEndpointRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     DeleteNamespaceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     DeleteServiceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     GetEndpointRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     GetNamespaceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     GetServiceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     ListEndpointsRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     ListEndpointsResponse,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     ListNamespacesRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     ListNamespacesResponse,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     ListServicesRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     ListServicesResponse,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     UpdateEndpointRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     UpdateNamespaceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.registration_service import (
+from google.cloud.servicedirectory_v1.types.registration_service import (
     UpdateServiceRequest,
 )
-from google.cloud.servicedirectory_v1beta1.types.service import Service
+from google.cloud.servicedirectory_v1.types.service import Service
 
 __all__ = (
     "CreateEndpointRequest",
@@ -102,8 +104,10 @@ __all__ = (
     "ListNamespacesResponse",
     "ListServicesRequest",
     "ListServicesResponse",
+    "LookupServiceAsyncClient",
     "LookupServiceClient",
     "Namespace",
+    "RegistrationServiceAsyncClient",
     "RegistrationServiceClient",
     "ResolveServiceRequest",
     "ResolveServiceResponse",

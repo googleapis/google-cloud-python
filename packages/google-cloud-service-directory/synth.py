@@ -19,38 +19,48 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate Service Directory GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "servicedirectory", "v1beta1"
-)
+versions = ["v1beta1", "v1"]
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+for version in versions:
+    library = gapic.py_library(
+        service="servicedirectory",
+        version=version,
+        bazel_target=f"//google/cloud/servicedirectory/{version}:servicedirectory-{version}-py",
+    )
+
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "README.rst",
+            "docs/index.rst",
+            f"scripts/fixup_servicedirectory_{version}_keywords.py",
+        ],
+    )
 
 # rename library to google-cloud-service-directory
-s.replace(["google/**/*.py", "tests/**/*.py"], "google-cloud-servicedirectory", "google-cloud-service-directory")
+s.replace(
+    ["google/**/*.py", "tests/**/*.py"],
+    "google-cloud-servicedirectory",
+    "google-cloud-service-directory",
+)
 
 # surround path with * with ``
-s.replace("google/**/*.py", '''["'](projects/\*/.*)["']\.''', "``\g<1>``" )
+s.replace("google/**/*.py", """["'](projects/\*/.*)["']\.""", "``\g<1>``")
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    cov_level=100,
-    samples=False,
-    unit_test_python_versions=["3.6", "3.7", "3.8"],
-    system_test_python_versions=["3.7"],
-)
+templated_files = common.py_library(cov_level=100, samples=False, microgenerator=True,)
 
-s.move(templated_files, excludes=[".coveragerc"])  # the microgenerator has a good coveragerc file
-
-# Extra lint ignores for microgenerator tests
-# TODO: Remove when https://github.com/googleapis/gapic-generator-python/issues/425 is closed
-s.replace(".flake8", "(ignore = .*)", "\g<1>, F401, F841")
+s.move(
+    templated_files, excludes=[".coveragerc"]
+)  # the microgenerator has a good coveragerc file
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

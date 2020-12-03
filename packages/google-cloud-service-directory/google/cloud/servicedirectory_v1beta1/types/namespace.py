@@ -19,7 +19,7 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.servicedirectory.v1beta1", manifest={"Namespace"}
+    package="google.cloud.servicedirectory.v1beta1", manifest={"Namespace",},
 )
 
 
@@ -41,6 +41,7 @@ class Namespace(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     labels = proto.MapField(proto.STRING, proto.STRING, number=2)
 
 
