@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-service-directory/compare/v0.3.0...v0.4.0) (2020-12-03)
+
+
+### Features
+
+* add v1; add async client ([#30](https://www.github.com/googleapis/python-service-directory/issues/30)) ([7a771b1](https://www.github.com/googleapis/python-service-directory/commit/7a771b12d61e47e1cd341f3bd2d2fc8d221e07c0))
+
 ## [0.3.0](https://www.github.com/googleapis/python-service-directory/compare/v0.2.0...v0.3.0) (2020-06-11)
 
 
