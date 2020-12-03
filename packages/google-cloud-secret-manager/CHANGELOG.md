@@ -5,7 +5,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* migrate to use microgen (#44)
+* migrate to use microgen. See [Migration Guide](https://googleapis.dev/python/secretmanager/latest/UPGRADING.html) (#44)
 
 ### Features
 
