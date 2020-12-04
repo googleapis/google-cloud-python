@@ -15,10 +15,10 @@ The 1.0.0 release requires Python 3.6+.
 > **WARNING**: Breaking change
 Methods expect request objects. We provide a script that will convert most common use cases.
 
-* Install the library
+* Install the library and `libcst` which is required for the fixup script.
 
 ```py
-python3 -m pip install google-cloud-phishing-protection
+python3 -m pip install google-cloud-phishing-protection libcst
 ```
 
 * The scripts `fixup_phishingprotection_v1beta1_keywords.py` shipped with the library. It expects

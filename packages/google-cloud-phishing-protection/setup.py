@@ -24,9 +24,8 @@ description = "Phishing Protection API API client library"
 version = "0.4.0"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.21.0, < 2.0.0dev",
-    "libcst >= 0.2.5",
-    "proto-plus >= 1.1.0",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "proto-plus >= 1.4.0",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
