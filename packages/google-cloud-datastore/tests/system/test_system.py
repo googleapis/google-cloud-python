@@ -72,9 +72,8 @@ def setUpModule():
 
 
 def tearDownModule():
-    keys = [entity.key for entity in Config.TO_DELETE]
     with Config.CLIENT.transaction():
-        Config.CLIENT.delete_multi(keys)
+        Config.CLIENT.delete_multi(Config.TO_DELETE)
 
 
 class TestDatastore(unittest.TestCase):
@@ -83,8 +82,7 @@ class TestDatastore(unittest.TestCase):
 
     def tearDown(self):
         with Config.CLIENT.transaction():
-            keys = [entity.key for entity in self.case_entities_to_delete]
-            Config.CLIENT.delete_multi(keys)
+            Config.CLIENT.delete_multi(self.case_entities_to_delete)
 
 
 class TestDatastoreAllocateIDs(TestDatastore):

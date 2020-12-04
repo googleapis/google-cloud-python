@@ -961,6 +961,24 @@ class TestClient(unittest.TestCase):
         self.assertEqual(mutated_key, key._key)
         client._datastore_api_internal.commit.assert_not_called()
 
+    def test_delete_multi_w_existing_transaction_entity(self):
+        from google.cloud.datastore.entity import Entity
+
+        creds = _make_credentials()
+        client = self._make_one(credentials=creds)
+        client._datastore_api_internal = _make_datastore_api()
+
+        key = _Key()
+        entity = Entity(key=key)
+
+        with _NoCommitTransaction(client) as CURR_XACT:
+            result = client.delete_multi([entity])
+
+        self.assertIsNone(result)
+        mutated_key = _mutated_pb(self, CURR_XACT.mutations, "delete")
+        self.assertEqual(mutated_key, key._key)
+        client._datastore_api_internal.commit.assert_not_called()
+
     def test_allocate_ids_w_partial_key(self):
         num_ids = 2
 

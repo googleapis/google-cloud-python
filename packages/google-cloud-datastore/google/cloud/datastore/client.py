@@ -622,7 +622,8 @@ class Client(ClientWithProject):
            The backend API does not make a distinction between a single key or
            multiple keys in a commit request.
 
-        :type key: :class:`google.cloud.datastore.key.Key`
+        :type key: :class:`google.cloud.datastore.key.Key`, :class:`google.cloud.datastore.entity.Entity`
+
         :param key: The key to be deleted from the datastore.
 
         :type retry: :class:`google.api_core.retry.Retry`
@@ -643,7 +644,7 @@ class Client(ClientWithProject):
     def delete_multi(self, keys, retry=None, timeout=None):
         """Delete keys from the Cloud Datastore.
 
-        :type keys: list of :class:`google.cloud.datastore.key.Key`
+        :type keys: list of :class:`google.cloud.datastore.key.Key`, :class:`google.cloud.datastore.entity.Entity`
         :param keys: The keys to be deleted from the Datastore.
 
         :type retry: :class:`google.api_core.retry.Retry`
@@ -671,6 +672,9 @@ class Client(ClientWithProject):
             current.begin()
 
         for key in keys:
+            if isinstance(key, Entity):
+                # If the key is in fact an Entity, the key can be extracted.
+                key = key.key
             current.delete(key)
 
         if not in_batch:
