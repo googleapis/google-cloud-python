@@ -800,6 +800,7 @@ def test_get_bucket(
             name="name_value",
             description="description_value",
             retention_days=1512,
+            locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
         )
 
@@ -820,6 +821,8 @@ def test_get_bucket(
     assert response.description == "description_value"
 
     assert response.retention_days == 1512
+
+    assert response.locked is True
 
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
@@ -848,6 +851,7 @@ async def test_get_bucket_async(
                 name="name_value",
                 description="description_value",
                 retention_days=1512,
+                locked=True,
                 lifecycle_state=logging_config.LifecycleState.ACTIVE,
             )
         )
@@ -868,6 +872,8 @@ async def test_get_bucket_async(
     assert response.description == "description_value"
 
     assert response.retention_days == 1512
+
+    assert response.locked is True
 
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
@@ -928,6 +934,158 @@ async def test_get_bucket_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
+def test_create_bucket(
+    transport: str = "grpc", request_type=logging_config.CreateBucketRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_bucket), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.LogBucket(
+            name="name_value",
+            description="description_value",
+            retention_days=1512,
+            locked=True,
+            lifecycle_state=logging_config.LifecycleState.ACTIVE,
+        )
+
+        response = client.create_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.CreateBucketRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, logging_config.LogBucket)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.retention_days == 1512
+
+    assert response.locked is True
+
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+def test_create_bucket_from_dict():
+    test_create_bucket(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.CreateBucketRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_bucket), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogBucket(
+                name="name_value",
+                description="description_value",
+                retention_days=1512,
+                locked=True,
+                lifecycle_state=logging_config.LifecycleState.ACTIVE,
+            )
+        )
+
+        response = await client.create_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.CreateBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogBucket)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.retention_days == 1512
+
+    assert response.locked is True
+
+    assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_async_from_dict():
+    await test_create_bucket_async(request_type=dict)
+
+
+def test_create_bucket_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateBucketRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_bucket), "__call__") as call:
+        call.return_value = logging_config.LogBucket()
+
+        client.create_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_bucket_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateBucketRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_bucket), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogBucket()
+        )
+
+        await client.create_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
 def test_update_bucket(
     transport: str = "grpc", request_type=logging_config.UpdateBucketRequest
 ):
@@ -946,6 +1104,7 @@ def test_update_bucket(
             name="name_value",
             description="description_value",
             retention_days=1512,
+            locked=True,
             lifecycle_state=logging_config.LifecycleState.ACTIVE,
         )
 
@@ -966,6 +1125,8 @@ def test_update_bucket(
     assert response.description == "description_value"
 
     assert response.retention_days == 1512
+
+    assert response.locked is True
 
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
@@ -994,6 +1155,7 @@ async def test_update_bucket_async(
                 name="name_value",
                 description="description_value",
                 retention_days=1512,
+                locked=True,
                 lifecycle_state=logging_config.LifecycleState.ACTIVE,
             )
         )
@@ -1014,6 +1176,8 @@ async def test_update_bucket_async(
     assert response.description == "description_value"
 
     assert response.retention_days == 1512
+
+    assert response.locked is True
 
     assert response.lifecycle_state == logging_config.LifecycleState.ACTIVE
 
@@ -1063,6 +1227,1094 @@ async def test_update_bucket_field_headers_async():
         )
 
         await client.update_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_bucket(
+    transport: str = "grpc", request_type=logging_config.DeleteBucketRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_bucket), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.delete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.DeleteBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_bucket_from_dict():
+    test_delete_bucket(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_delete_bucket_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.DeleteBucketRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_bucket), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        response = await client.delete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.DeleteBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_bucket_async_from_dict():
+    await test_delete_bucket_async(request_type=dict)
+
+
+def test_delete_bucket_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteBucketRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_bucket), "__call__") as call:
+        call.return_value = None
+
+        client.delete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_bucket_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteBucketRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_bucket), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        await client.delete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_undelete_bucket(
+    transport: str = "grpc", request_type=logging_config.UndeleteBucketRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_bucket), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.undelete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.UndeleteBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_undelete_bucket_from_dict():
+    test_undelete_bucket(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_undelete_bucket_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.UndeleteBucketRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_bucket), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        response = await client.undelete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.UndeleteBucketRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_undelete_bucket_async_from_dict():
+    await test_undelete_bucket_async(request_type=dict)
+
+
+def test_undelete_bucket_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UndeleteBucketRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_bucket), "__call__") as call:
+        call.return_value = None
+
+        client.undelete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_undelete_bucket_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UndeleteBucketRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.undelete_bucket), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        await client.undelete_bucket(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_list_views(
+    transport: str = "grpc", request_type=logging_config.ListViewsRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.ListViewsResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        response = client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.ListViewsRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, pagers.ListViewsPager)
+
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_views_from_dict():
+    test_list_views(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_list_views_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.ListViewsRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.ListViewsResponse(next_page_token="next_page_token_value",)
+        )
+
+        response = await client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.ListViewsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListViewsAsyncPager)
+
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_from_dict():
+    await test_list_views_async(request_type=dict)
+
+
+def test_list_views_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListViewsRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        call.return_value = logging_config.ListViewsResponse()
+
+        client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_views_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.ListViewsRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.ListViewsResponse()
+        )
+
+        await client.list_views(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_views_flattened():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.ListViewsResponse()
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_views(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].parent == "parent_value"
+
+
+def test_list_views_flattened_error():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_views(
+            logging_config.ListViewsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_views_flattened_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.ListViewsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.ListViewsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_views(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_list_views_flattened_error_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_views(
+            logging_config.ListViewsRequest(), parent="parent_value",
+        )
+
+
+def test_list_views_pager():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                ],
+                next_page_token="abc",
+            ),
+            logging_config.ListViewsResponse(views=[], next_page_token="def",),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(),], next_page_token="ghi",
+            ),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(), logging_config.LogView(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_views(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, logging_config.LogView) for i in results)
+
+
+def test_list_views_pages():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_views), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                ],
+                next_page_token="abc",
+            ),
+            logging_config.ListViewsResponse(views=[], next_page_token="def",),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(),], next_page_token="ghi",
+            ),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(), logging_config.LogView(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_views(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_pager():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_views), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                ],
+                next_page_token="abc",
+            ),
+            logging_config.ListViewsResponse(views=[], next_page_token="def",),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(),], next_page_token="ghi",
+            ),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(), logging_config.LogView(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_views(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, logging_config.LogView) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_views_async_pages():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_views), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            logging_config.ListViewsResponse(
+                views=[
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                    logging_config.LogView(),
+                ],
+                next_page_token="abc",
+            ),
+            logging_config.ListViewsResponse(views=[], next_page_token="def",),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(),], next_page_token="ghi",
+            ),
+            logging_config.ListViewsResponse(
+                views=[logging_config.LogView(), logging_config.LogView(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_views(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_view(transport: str = "grpc", request_type=logging_config.GetViewRequest):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.LogView(
+            name="name_value", description="description_value", filter="filter_value",
+        )
+
+        response = client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.GetViewRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, logging_config.LogView)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.filter == "filter_value"
+
+
+def test_get_view_from_dict():
+    test_get_view(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_get_view_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.GetViewRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogView(
+                name="name_value",
+                description="description_value",
+                filter="filter_value",
+            )
+        )
+
+        response = await client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.GetViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogView)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.filter == "filter_value"
+
+
+@pytest.mark.asyncio
+async def test_get_view_async_from_dict():
+    await test_get_view_async(request_type=dict)
+
+
+def test_get_view_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetViewRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        call.return_value = logging_config.LogView()
+
+        client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_view_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.GetViewRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogView()
+        )
+
+        await client.get_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_create_view(
+    transport: str = "grpc", request_type=logging_config.CreateViewRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.LogView(
+            name="name_value", description="description_value", filter="filter_value",
+        )
+
+        response = client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.CreateViewRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, logging_config.LogView)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.filter == "filter_value"
+
+
+def test_create_view_from_dict():
+    test_create_view(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_create_view_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.CreateViewRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogView(
+                name="name_value",
+                description="description_value",
+                filter="filter_value",
+            )
+        )
+
+        response = await client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.CreateViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogView)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.filter == "filter_value"
+
+
+@pytest.mark.asyncio
+async def test_create_view_async_from_dict():
+    await test_create_view_async(request_type=dict)
+
+
+def test_create_view_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateViewRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        call.return_value = logging_config.LogView()
+
+        client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_view_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.CreateViewRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogView()
+        )
+
+        await client.create_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_update_view(
+    transport: str = "grpc", request_type=logging_config.UpdateViewRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = logging_config.LogView(
+            name="name_value", description="description_value", filter="filter_value",
+        )
+
+        response = client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.UpdateViewRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, logging_config.LogView)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.filter == "filter_value"
+
+
+def test_update_view_from_dict():
+    test_update_view(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_update_view_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.UpdateViewRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogView(
+                name="name_value",
+                description="description_value",
+                filter="filter_value",
+            )
+        )
+
+        response = await client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.UpdateViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, logging_config.LogView)
+
+    assert response.name == "name_value"
+
+    assert response.description == "description_value"
+
+    assert response.filter == "filter_value"
+
+
+@pytest.mark.asyncio
+async def test_update_view_async_from_dict():
+    await test_update_view_async(request_type=dict)
+
+
+def test_update_view_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateViewRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        call.return_value = logging_config.LogView()
+
+        client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_view_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.UpdateViewRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            logging_config.LogView()
+        )
+
+        await client.update_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_view(
+    transport: str = "grpc", request_type=logging_config.DeleteViewRequest
+):
+    client = ConfigServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        response = client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.DeleteViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_view_from_dict():
+    test_delete_view(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_delete_view_async(
+    transport: str = "grpc_asyncio", request_type=logging_config.DeleteViewRequest
+):
+    client = ConfigServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        response = await client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == logging_config.DeleteViewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_view_async_from_dict():
+    await test_delete_view_async(request_type=dict)
+
+
+def test_delete_view_field_headers():
+    client = ConfigServiceV2Client(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteViewRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        call.return_value = None
+
+        client.delete_view(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_view_field_headers_async():
+    client = ConfigServiceV2AsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = logging_config.DeleteViewRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_view), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        await client.delete_view(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -3941,7 +5193,15 @@ def test_config_service_v2_base_transport():
     methods = (
         "list_buckets",
         "get_bucket",
+        "create_bucket",
         "update_bucket",
+        "delete_bucket",
+        "undelete_bucket",
+        "list_views",
+        "get_view",
+        "create_view",
+        "update_view",
+        "delete_view",
         "list_sinks",
         "get_sink",
         "create_sink",
@@ -4260,8 +5520,35 @@ def test_parse_log_sink_path():
     assert expected == actual
 
 
+def test_log_view_path():
+    project = "oyster"
+    location = "nudibranch"
+    bucket = "cuttlefish"
+    view = "mussel"
+
+    expected = "projects/{project}/locations/{location}/buckets/{bucket}/views/{view}".format(
+        project=project, location=location, bucket=bucket, view=view,
+    )
+    actual = ConfigServiceV2Client.log_view_path(project, location, bucket, view)
+    assert expected == actual
+
+
+def test_parse_log_view_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "bucket": "scallop",
+        "view": "abalone",
+    }
+    path = ConfigServiceV2Client.log_view_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConfigServiceV2Client.parse_log_view_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -4272,7 +5559,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = ConfigServiceV2Client.common_billing_account_path(**expected)
 
@@ -4282,7 +5569,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = ConfigServiceV2Client.common_folder_path(folder)
@@ -4291,7 +5578,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = ConfigServiceV2Client.common_folder_path(**expected)
 
@@ -4301,7 +5588,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ConfigServiceV2Client.common_organization_path(organization)
@@ -4310,7 +5597,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = ConfigServiceV2Client.common_organization_path(**expected)
 
@@ -4320,7 +5607,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
 
     expected = "projects/{project}".format(project=project,)
     actual = ConfigServiceV2Client.common_project_path(project)
@@ -4329,7 +5616,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = ConfigServiceV2Client.common_project_path(**expected)
 
@@ -4339,8 +5626,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -4351,8 +5638,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = ConfigServiceV2Client.common_location_path(**expected)
 

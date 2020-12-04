@@ -116,8 +116,32 @@ class ConfigServiceV2Transport(abc.ABC):
             self.get_bucket: gapic_v1.method.wrap_method(
                 self.get_bucket, default_timeout=None, client_info=client_info,
             ),
+            self.create_bucket: gapic_v1.method.wrap_method(
+                self.create_bucket, default_timeout=None, client_info=client_info,
+            ),
             self.update_bucket: gapic_v1.method.wrap_method(
                 self.update_bucket, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_bucket: gapic_v1.method.wrap_method(
+                self.delete_bucket, default_timeout=None, client_info=client_info,
+            ),
+            self.undelete_bucket: gapic_v1.method.wrap_method(
+                self.undelete_bucket, default_timeout=None, client_info=client_info,
+            ),
+            self.list_views: gapic_v1.method.wrap_method(
+                self.list_views, default_timeout=None, client_info=client_info,
+            ),
+            self.get_view: gapic_v1.method.wrap_method(
+                self.get_view, default_timeout=None, client_info=client_info,
+            ),
+            self.create_view: gapic_v1.method.wrap_method(
+                self.create_view, default_timeout=None, client_info=client_info,
+            ),
+            self.update_view: gapic_v1.method.wrap_method(
+                self.update_view, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_view: gapic_v1.method.wrap_method(
+                self.delete_view, default_timeout=None, client_info=client_info,
             ),
             self.list_sinks: gapic_v1.method.wrap_method(
                 self.list_sinks,
@@ -267,6 +291,17 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_bucket(
+        self,
+    ) -> typing.Callable[
+        [logging_config.CreateBucketRequest],
+        typing.Union[
+            logging_config.LogBucket, typing.Awaitable[logging_config.LogBucket]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_bucket(
         self,
     ) -> typing.Callable[
@@ -274,6 +309,72 @@ class ConfigServiceV2Transport(abc.ABC):
         typing.Union[
             logging_config.LogBucket, typing.Awaitable[logging_config.LogBucket]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_bucket(
+        self,
+    ) -> typing.Callable[
+        [logging_config.DeleteBucketRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def undelete_bucket(
+        self,
+    ) -> typing.Callable[
+        [logging_config.UndeleteBucketRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_views(
+        self,
+    ) -> typing.Callable[
+        [logging_config.ListViewsRequest],
+        typing.Union[
+            logging_config.ListViewsResponse,
+            typing.Awaitable[logging_config.ListViewsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_view(
+        self,
+    ) -> typing.Callable[
+        [logging_config.GetViewRequest],
+        typing.Union[logging_config.LogView, typing.Awaitable[logging_config.LogView]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_view(
+        self,
+    ) -> typing.Callable[
+        [logging_config.CreateViewRequest],
+        typing.Union[logging_config.LogView, typing.Awaitable[logging_config.LogView]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_view(
+        self,
+    ) -> typing.Callable[
+        [logging_config.UpdateViewRequest],
+        typing.Union[logging_config.LogView, typing.Awaitable[logging_config.LogView]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_view(
+        self,
+    ) -> typing.Callable[
+        [logging_config.DeleteViewRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
     ]:
         raise NotImplementedError()
 

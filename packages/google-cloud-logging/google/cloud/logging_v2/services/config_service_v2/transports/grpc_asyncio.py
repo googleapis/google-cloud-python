@@ -243,7 +243,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     ]:
         r"""Return a callable for the list buckets method over gRPC.
 
-        Lists buckets (Beta).
+        Lists buckets.
 
         Returns:
             Callable[[~.ListBucketsRequest],
@@ -271,7 +271,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     ]:
         r"""Return a callable for the get bucket method over gRPC.
 
-        Gets a bucket (Beta).
+        Gets a bucket.
 
         Returns:
             Callable[[~.GetBucketRequest],
@@ -292,6 +292,36 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         return self._stubs["get_bucket"]
 
     @property
+    def create_bucket(
+        self,
+    ) -> Callable[
+        [logging_config.CreateBucketRequest], Awaitable[logging_config.LogBucket]
+    ]:
+        r"""Return a callable for the create bucket method over gRPC.
+
+        Creates a bucket that can be used to store log
+        entries. Once a bucket has been created, the region
+        cannot be changed.
+
+        Returns:
+            Callable[[~.CreateBucketRequest],
+                    Awaitable[~.LogBucket]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_bucket" not in self._stubs:
+            self._stubs["create_bucket"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/CreateBucket",
+                request_serializer=logging_config.CreateBucketRequest.serialize,
+                response_deserializer=logging_config.LogBucket.deserialize,
+            )
+        return self._stubs["create_bucket"]
+
+    @property
     def update_bucket(
         self,
     ) -> Callable[
@@ -309,8 +339,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         If the bucket has a LifecycleState of DELETE_REQUESTED,
         FAILED_PRECONDITION will be returned.
 
-        A buckets region may not be modified after it is created. This
-        method is in Beta.
+        A buckets region may not be modified after it is created.
 
         Returns:
             Callable[[~.UpdateBucketRequest],
@@ -329,6 +358,199 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
                 response_deserializer=logging_config.LogBucket.deserialize,
             )
         return self._stubs["update_bucket"]
+
+    @property
+    def delete_bucket(
+        self,
+    ) -> Callable[[logging_config.DeleteBucketRequest], Awaitable[empty.Empty]]:
+        r"""Return a callable for the delete bucket method over gRPC.
+
+        Deletes a bucket. Moves the bucket to the DELETE_REQUESTED
+        state. After 7 days, the bucket will be purged and all logs in
+        the bucket will be permanently deleted.
+
+        Returns:
+            Callable[[~.DeleteBucketRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_bucket" not in self._stubs:
+            self._stubs["delete_bucket"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/DeleteBucket",
+                request_serializer=logging_config.DeleteBucketRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_bucket"]
+
+    @property
+    def undelete_bucket(
+        self,
+    ) -> Callable[[logging_config.UndeleteBucketRequest], Awaitable[empty.Empty]]:
+        r"""Return a callable for the undelete bucket method over gRPC.
+
+        Undeletes a bucket. A bucket that has been deleted
+        may be undeleted within the grace period of 7 days.
+
+        Returns:
+            Callable[[~.UndeleteBucketRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "undelete_bucket" not in self._stubs:
+            self._stubs["undelete_bucket"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/UndeleteBucket",
+                request_serializer=logging_config.UndeleteBucketRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["undelete_bucket"]
+
+    @property
+    def list_views(
+        self,
+    ) -> Callable[
+        [logging_config.ListViewsRequest], Awaitable[logging_config.ListViewsResponse]
+    ]:
+        r"""Return a callable for the list views method over gRPC.
+
+        Lists views on a bucket.
+
+        Returns:
+            Callable[[~.ListViewsRequest],
+                    Awaitable[~.ListViewsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_views" not in self._stubs:
+            self._stubs["list_views"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/ListViews",
+                request_serializer=logging_config.ListViewsRequest.serialize,
+                response_deserializer=logging_config.ListViewsResponse.deserialize,
+            )
+        return self._stubs["list_views"]
+
+    @property
+    def get_view(
+        self,
+    ) -> Callable[[logging_config.GetViewRequest], Awaitable[logging_config.LogView]]:
+        r"""Return a callable for the get view method over gRPC.
+
+        Gets a view.
+
+        Returns:
+            Callable[[~.GetViewRequest],
+                    Awaitable[~.LogView]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_view" not in self._stubs:
+            self._stubs["get_view"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/GetView",
+                request_serializer=logging_config.GetViewRequest.serialize,
+                response_deserializer=logging_config.LogView.deserialize,
+            )
+        return self._stubs["get_view"]
+
+    @property
+    def create_view(
+        self,
+    ) -> Callable[
+        [logging_config.CreateViewRequest], Awaitable[logging_config.LogView]
+    ]:
+        r"""Return a callable for the create view method over gRPC.
+
+        Creates a view over logs in a bucket. A bucket may
+        contain a maximum of 50 views.
+
+        Returns:
+            Callable[[~.CreateViewRequest],
+                    Awaitable[~.LogView]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_view" not in self._stubs:
+            self._stubs["create_view"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/CreateView",
+                request_serializer=logging_config.CreateViewRequest.serialize,
+                response_deserializer=logging_config.LogView.deserialize,
+            )
+        return self._stubs["create_view"]
+
+    @property
+    def update_view(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateViewRequest], Awaitable[logging_config.LogView]
+    ]:
+        r"""Return a callable for the update view method over gRPC.
+
+        Updates a view. This method replaces the following fields in the
+        existing view with values from the new view: ``filter``.
+
+        Returns:
+            Callable[[~.UpdateViewRequest],
+                    Awaitable[~.LogView]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_view" not in self._stubs:
+            self._stubs["update_view"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/UpdateView",
+                request_serializer=logging_config.UpdateViewRequest.serialize,
+                response_deserializer=logging_config.LogView.deserialize,
+            )
+        return self._stubs["update_view"]
+
+    @property
+    def delete_view(
+        self,
+    ) -> Callable[[logging_config.DeleteViewRequest], Awaitable[empty.Empty]]:
+        r"""Return a callable for the delete view method over gRPC.
+
+        Deletes a view from a bucket.
+
+        Returns:
+            Callable[[~.DeleteViewRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_view" not in self._stubs:
+            self._stubs["delete_view"] = self.grpc_channel.unary_unary(
+                "/google.logging.v2.ConfigServiceV2/DeleteView",
+                request_serializer=logging_config.DeleteViewRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_view"]
 
     @property
     def list_sinks(

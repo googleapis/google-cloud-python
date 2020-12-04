@@ -58,6 +58,8 @@ class ConfigServiceV2AsyncClient:
     )
     log_sink_path = staticmethod(ConfigServiceV2Client.log_sink_path)
     parse_log_sink_path = staticmethod(ConfigServiceV2Client.parse_log_sink_path)
+    log_view_path = staticmethod(ConfigServiceV2Client.log_view_path)
+    parse_log_view_path = staticmethod(ConfigServiceV2Client.parse_log_view_path)
 
     common_billing_account_path = staticmethod(
         ConfigServiceV2Client.common_billing_account_path
@@ -161,12 +163,11 @@ class ConfigServiceV2AsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBucketsAsyncPager:
-        r"""Lists buckets (Beta).
+        r"""Lists buckets.
 
         Args:
             request (:class:`~.logging_config.ListBucketsRequest`):
-                The request object. The parameters to `ListBuckets`
-                (Beta).
+                The request object. The parameters to `ListBuckets`.
             parent (:class:`str`):
                 Required. The parent resource whose buckets are to be
                 listed:
@@ -193,7 +194,7 @@ class ConfigServiceV2AsyncClient:
 
         Returns:
             ~.pagers.ListBucketsAsyncPager:
-                The response from ListBuckets (Beta).
+                The response from ListBuckets.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -251,12 +252,11 @@ class ConfigServiceV2AsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> logging_config.LogBucket:
-        r"""Gets a bucket (Beta).
+        r"""Gets a bucket.
 
         Args:
             request (:class:`~.logging_config.GetBucketRequest`):
-                The request object. The parameters to `GetBucket`
-                (Beta).
+                The request object. The parameters to `GetBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -266,9 +266,7 @@ class ConfigServiceV2AsyncClient:
 
         Returns:
             ~.logging_config.LogBucket:
-                Describes a repository of logs
-                (Beta).
-
+                Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
 
@@ -286,6 +284,56 @@ class ConfigServiceV2AsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def create_bucket(
+        self,
+        request: logging_config.CreateBucketRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> logging_config.LogBucket:
+        r"""Creates a bucket that can be used to store log
+        entries. Once a bucket has been created, the region
+        cannot be changed.
+
+        Args:
+            request (:class:`~.logging_config.CreateBucketRequest`):
+                The request object. The parameters to `CreateBucket`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.logging_config.LogBucket:
+                Describes a repository of logs.
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.CreateBucketRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_bucket,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -312,13 +360,11 @@ class ConfigServiceV2AsyncClient:
         If the bucket has a LifecycleState of DELETE_REQUESTED,
         FAILED_PRECONDITION will be returned.
 
-        A buckets region may not be modified after it is created. This
-        method is in Beta.
+        A buckets region may not be modified after it is created.
 
         Args:
             request (:class:`~.logging_config.UpdateBucketRequest`):
-                The request object. The parameters to `UpdateBucket`
-                (Beta).
+                The request object. The parameters to `UpdateBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -328,9 +374,7 @@ class ConfigServiceV2AsyncClient:
 
         Returns:
             ~.logging_config.LogBucket:
-                Describes a repository of logs
-                (Beta).
-
+                Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
 
@@ -355,6 +399,372 @@ class ConfigServiceV2AsyncClient:
 
         # Done; return the response.
         return response
+
+    async def delete_bucket(
+        self,
+        request: logging_config.DeleteBucketRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a bucket. Moves the bucket to the DELETE_REQUESTED
+        state. After 7 days, the bucket will be purged and all logs in
+        the bucket will be permanently deleted.
+
+        Args:
+            request (:class:`~.logging_config.DeleteBucketRequest`):
+                The request object. The parameters to `DeleteBucket`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.DeleteBucketRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_bucket,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    async def undelete_bucket(
+        self,
+        request: logging_config.UndeleteBucketRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Undeletes a bucket. A bucket that has been deleted
+        may be undeleted within the grace period of 7 days.
+
+        Args:
+            request (:class:`~.logging_config.UndeleteBucketRequest`):
+                The request object. The parameters to `UndeleteBucket`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.UndeleteBucketRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.undelete_bucket,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    async def list_views(
+        self,
+        request: logging_config.ListViewsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListViewsAsyncPager:
+        r"""Lists views on a bucket.
+
+        Args:
+            request (:class:`~.logging_config.ListViewsRequest`):
+                The request object. The parameters to `ListViews`.
+            parent (:class:`str`):
+                Required. The bucket whose views are to be listed:
+
+                ::
+
+                    "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]".
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.pagers.ListViewsAsyncPager:
+                The response from ListViews.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = logging_config.ListViewsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_views,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListViewsAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_view(
+        self,
+        request: logging_config.GetViewRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> logging_config.LogView:
+        r"""Gets a view.
+
+        Args:
+            request (:class:`~.logging_config.GetViewRequest`):
+                The request object. The parameters to `GetView`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.logging_config.LogView:
+                Describes a view over logs in a
+                bucket.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.GetViewRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_view,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def create_view(
+        self,
+        request: logging_config.CreateViewRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> logging_config.LogView:
+        r"""Creates a view over logs in a bucket. A bucket may
+        contain a maximum of 50 views.
+
+        Args:
+            request (:class:`~.logging_config.CreateViewRequest`):
+                The request object. The parameters to `CreateView`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.logging_config.LogView:
+                Describes a view over logs in a
+                bucket.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.CreateViewRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_view,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def update_view(
+        self,
+        request: logging_config.UpdateViewRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> logging_config.LogView:
+        r"""Updates a view. This method replaces the following fields in the
+        existing view with values from the new view: ``filter``.
+
+        Args:
+            request (:class:`~.logging_config.UpdateViewRequest`):
+                The request object. The parameters to `UpdateView`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.logging_config.LogView:
+                Describes a view over logs in a
+                bucket.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.UpdateViewRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_view,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def delete_view(
+        self,
+        request: logging_config.DeleteViewRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a view from a bucket.
+
+        Args:
+            request (:class:`~.logging_config.DeleteViewRequest`):
+                The request object. The parameters to `DeleteView`.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+
+        request = logging_config.DeleteViewRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_view,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
     async def list_sinks(
         self,

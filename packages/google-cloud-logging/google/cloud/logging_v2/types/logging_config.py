@@ -27,12 +27,22 @@ __protobuf__ = proto.module(
     manifest={
         "LifecycleState",
         "LogBucket",
+        "LogView",
         "LogSink",
         "BigQueryOptions",
         "ListBucketsRequest",
         "ListBucketsResponse",
+        "CreateBucketRequest",
         "UpdateBucketRequest",
         "GetBucketRequest",
+        "DeleteBucketRequest",
+        "UndeleteBucketRequest",
+        "ListViewsRequest",
+        "ListViewsResponse",
+        "CreateViewRequest",
+        "UpdateViewRequest",
+        "GetViewRequest",
+        "DeleteViewRequest",
         "ListSinksRequest",
         "ListSinksResponse",
         "GetSinkRequest",
@@ -54,20 +64,20 @@ __protobuf__ = proto.module(
 
 
 class LifecycleState(proto.Enum):
-    r"""LogBucket lifecycle states (Beta)."""
+    r"""LogBucket lifecycle states."""
     LIFECYCLE_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     DELETE_REQUESTED = 2
 
 
 class LogBucket(proto.Message):
-    r"""Describes a repository of logs (Beta).
+    r"""Describes a repository of logs.
 
     Attributes:
         name (str):
             The resource name of the bucket. For example:
             "projects/my-project-id/locations/my-location/buckets/my-bucket-id
-            The supported locations are: "global" "us-central1"
+            The supported locations are: "global"
 
             For the location of ``global`` it is unspecified where logs
             are actually stored. Once a bucket has been created, the
@@ -88,6 +98,11 @@ class LogBucket(proto.Message):
             period is 1 day. If this value is set to zero at
             bucket creation time, the default time of 30
             days will be used.
+        locked (bool):
+            Whether the bucket has been locked.
+            The retention period on a locked bucket may not
+            be changed. Locked buckets may only be deleted
+            if they are empty.
         lifecycle_state (~.logging_config.LifecycleState):
             Output only. The bucket lifecycle state.
     """
@@ -102,7 +117,46 @@ class LogBucket(proto.Message):
 
     retention_days = proto.Field(proto.INT32, number=11)
 
+    locked = proto.Field(proto.BOOL, number=9)
+
     lifecycle_state = proto.Field(proto.ENUM, number=12, enum="LifecycleState",)
+
+
+class LogView(proto.Message):
+    r"""Describes a view over logs in a bucket.
+
+    Attributes:
+        name (str):
+            The resource name of the view.
+            For example
+            "projects/my-project-id/locations/my-
+            location/buckets/my-bucket-id/views/my-view
+        description (str):
+            Describes this view.
+        create_time (~.timestamp.Timestamp):
+            Output only. The creation timestamp of the
+            view.
+        update_time (~.timestamp.Timestamp):
+            Output only. The last update timestamp of the
+            view.
+        filter (str):
+            Filter that restricts which log entries in a bucket are
+            visible in this view. Filters are restricted to be a logical
+            AND of ==/!= of any of the following: originating
+            project/folder/organization/billing account. resource type
+            log id Example: SOURCE("projects/myproject") AND
+            resource.type = "gce_instance" AND LOG_ID("stdout")
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+    description = proto.Field(proto.STRING, number=3)
+
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+
+    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
+
+    filter = proto.Field(proto.STRING, number=7)
 
 
 class LogSink(proto.Message):
@@ -152,10 +206,15 @@ class LogSink(proto.Message):
         disabled (bool):
             Optional. If set to True, then this sink is
             disabled and it does not export any log entries.
+        exclusions (Sequence[~.logging_config.LogExclusion]):
+            Optional. Log entries that match any of the exclusion
+            filters will not be exported. If a log entry is matched by
+            both ``filter`` and one of ``exclusion_filters`` it will not
+            be exported.
         output_version_format (~.logging_config.LogSink.VersionFormat):
             Deprecated. This field is unused.
         writer_identity (str):
-            Output only. An IAM identity–a service account or
+            Output only. An IAM identity—a service account or
             group—under which Logging writes the exported log entries to
             the sink's destination. This field is set by
             [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink]
@@ -218,6 +277,8 @@ class LogSink(proto.Message):
 
     disabled = proto.Field(proto.BOOL, number=19)
 
+    exclusions = proto.RepeatedField(proto.MESSAGE, number=16, message="LogExclusion",)
+
     output_version_format = proto.Field(proto.ENUM, number=6, enum=VersionFormat,)
 
     writer_identity = proto.Field(proto.STRING, number=8)
@@ -264,7 +325,7 @@ class BigQueryOptions(proto.Message):
 
 
 class ListBucketsRequest(proto.Message):
-    r"""The parameters to ``ListBuckets`` (Beta).
+    r"""The parameters to ``ListBuckets``.
 
     Attributes:
         parent (str):
@@ -302,7 +363,7 @@ class ListBucketsRequest(proto.Message):
 
 
 class ListBucketsResponse(proto.Message):
-    r"""The response from ListBuckets (Beta).
+    r"""The response from ListBuckets.
 
     Attributes:
         buckets (Sequence[~.logging_config.LogBucket]):
@@ -323,8 +384,39 @@ class ListBucketsResponse(proto.Message):
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
+class CreateBucketRequest(proto.Message):
+    r"""The parameters to ``CreateBucket``.
+
+    Attributes:
+        parent (str):
+            Required. The resource in which to create the bucket:
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
+
+            Example: ``"projects/my-logging-project/locations/global"``
+        bucket_id (str):
+            Required. A client-assigned identifier such as
+            ``"my-bucket"``. Identifiers are limited to 100 characters
+            and can include only letters, digits, underscores, hyphens,
+            and periods.
+        bucket (~.logging_config.LogBucket):
+            Required. The new bucket. The region
+            specified in the new bucket must be compliant
+            with any Location Restriction Org Policy. The
+            name field in the bucket is ignored.
+    """
+
+    parent = proto.Field(proto.STRING, number=1)
+
+    bucket_id = proto.Field(proto.STRING, number=2)
+
+    bucket = proto.Field(proto.MESSAGE, number=3, message="LogBucket",)
+
+
 class UpdateBucketRequest(proto.Message):
-    r"""The parameters to ``UpdateBucket`` (Beta).
+    r"""The parameters to ``UpdateBucket``.
 
     Attributes:
         name (str):
@@ -364,7 +456,7 @@ class UpdateBucketRequest(proto.Message):
 
 
 class GetBucketRequest(proto.Message):
-    r"""The parameters to ``GetBucket`` (Beta).
+    r"""The parameters to ``GetBucket``.
 
     Attributes:
         name (str):
@@ -379,6 +471,196 @@ class GetBucketRequest(proto.Message):
 
             Example:
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+
+class DeleteBucketRequest(proto.Message):
+    r"""The parameters to ``DeleteBucket``.
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the bucket to delete.
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+
+            Example:
+            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+
+class UndeleteBucketRequest(proto.Message):
+    r"""The parameters to ``UndeleteBucket``.
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the bucket to undelete.
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+
+            Example:
+            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id"``.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+
+class ListViewsRequest(proto.Message):
+    r"""The parameters to ``ListViews``.
+
+    Attributes:
+        parent (str):
+            Required. The bucket whose views are to be listed:
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]".
+        page_token (str):
+            Optional. If present, then retrieve the next batch of
+            results from the preceding call to this method.
+            ``pageToken`` must be the value of ``nextPageToken`` from
+            the previous response. The values of other method parameters
+            should be identical to those in the previous call.
+        page_size (int):
+            Optional. The maximum number of results to return from this
+            request. Non-positive values are ignored. The presence of
+            ``nextPageToken`` in the response indicates that more
+            results might be available.
+    """
+
+    parent = proto.Field(proto.STRING, number=1)
+
+    page_token = proto.Field(proto.STRING, number=2)
+
+    page_size = proto.Field(proto.INT32, number=3)
+
+
+class ListViewsResponse(proto.Message):
+    r"""The response from ListViews.
+
+    Attributes:
+        views (Sequence[~.logging_config.LogView]):
+            A list of views.
+        next_page_token (str):
+            If there might be more results than appear in this response,
+            then ``nextPageToken`` is included. To get the next set of
+            results, call the same method again using the value of
+            ``nextPageToken`` as ``pageToken``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    views = proto.RepeatedField(proto.MESSAGE, number=1, message="LogView",)
+
+    next_page_token = proto.Field(proto.STRING, number=2)
+
+
+class CreateViewRequest(proto.Message):
+    r"""The parameters to ``CreateView``.
+
+    Attributes:
+        parent (str):
+            Required. The bucket in which to create the view
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+
+            Example:
+            ``"projects/my-logging-project/locations/my-location/buckets/my-bucket"``
+        view_id (str):
+            Required. The id to use for this view.
+        view (~.logging_config.LogView):
+            Required. The new view.
+    """
+
+    parent = proto.Field(proto.STRING, number=1)
+
+    view_id = proto.Field(proto.STRING, number=2)
+
+    view = proto.Field(proto.MESSAGE, number=3, message="LogView",)
+
+
+class UpdateViewRequest(proto.Message):
+    r"""The parameters to ``UpdateView``.
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the view to update
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+
+            Example:
+            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
+        view (~.logging_config.LogView):
+            Required. The updated view.
+        update_mask (~.field_mask.FieldMask):
+            Optional. Field mask that specifies the fields in ``view``
+            that need an update. A field will be overwritten if, and
+            only if, it is in the update mask. ``name`` and output only
+            fields cannot be updated.
+
+            For a detailed ``FieldMask`` definition, see
+            https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
+
+            Example: ``updateMask=filter``.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+    view = proto.Field(proto.MESSAGE, number=2, message="LogView",)
+
+    update_mask = proto.Field(proto.MESSAGE, number=4, message=field_mask.FieldMask,)
+
+
+class GetViewRequest(proto.Message):
+    r"""The parameters to ``GetView``.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the policy:
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+
+            Example:
+            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+
+class DeleteViewRequest(proto.Message):
+    r"""The parameters to ``DeleteView``.
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the view to delete:
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+
+            Example:
+            ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
     """
 
     name = proto.Field(proto.STRING, number=1)
