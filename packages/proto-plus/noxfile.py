@@ -14,17 +14,25 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 
 import nox
 
 
-@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
+
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def unit(session, proto="python"):
     """Run the unit test suite."""
 
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
     session.env["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = proto
     session.install("coverage", "pytest", "pytest-cov", "pytz")
-    session.install("-e", ".[testing]")
+    session.install("-e", ".[testing]", "-c", constraints_path)
 
     session.run(
         "py.test",
@@ -43,7 +51,10 @@ def unit(session, proto="python"):
     )
 
 
-@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
+# Check if protobuf has released wheels for new python versions
+# https://pypi.org/project/protobuf/#files
+# This list will generally be shorter than 'unit'
+@nox.session(python=["3.6", "3.7", "3.8"])
 def unitcpp(session):
     return unit(session, proto="cpp")
 
