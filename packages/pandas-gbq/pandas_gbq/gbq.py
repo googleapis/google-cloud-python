@@ -604,8 +604,7 @@ class GbqConnector(object):
     def load_data(
         self,
         dataframe,
-        dataset_id,
-        table_id,
+        destination_table_ref,
         chunksize=None,
         schema=None,
         progress_bar=True,
@@ -618,8 +617,7 @@ class GbqConnector(object):
             chunks = load.load_chunks(
                 self.client,
                 dataframe,
-                dataset_id,
-                table_id,
+                destination_table_ref,
                 chunksize=chunksize,
                 schema=schema,
                 location=self.location,
@@ -1037,7 +1035,8 @@ def to_gbq(
     dataframe : pandas.DataFrame
         DataFrame to be written to a Google BigQuery table.
     destination_table : str
-        Name of table to be written, in the form ``dataset.tablename``.
+        Name of table to be written, in the form ``dataset.tablename`` or
+        ``project.dataset.tablename``.
     project_id : str, optional
         Google BigQuery Account project ID. Optional when available from
         the environment.
@@ -1133,7 +1132,8 @@ def to_gbq(
 
     if "." not in destination_table:
         raise NotFoundException(
-            "Invalid Table Name. Should be of the form 'datasetId.tableId' "
+            "Invalid Table Name. Should be of the form 'datasetId.tableId' or "
+            "'projectId.datasetId.tableId'"
         )
 
     connector = GbqConnector(
@@ -1145,7 +1145,14 @@ def to_gbq(
         private_key=private_key,
     )
     bqclient = connector.client
-    dataset_id, table_id = destination_table.rsplit(".", 1)
+
+    destination_table_ref = bigquery.table.TableReference.from_string(
+        destination_table, default_project=connector.project_id
+    )
+
+    project_id_table = destination_table_ref.project
+    dataset_id = destination_table_ref.dataset_id
+    table_id = destination_table_ref.table_id
 
     default_schema = _generate_bq_schema(dataframe)
     if not table_schema:
@@ -1157,10 +1164,10 @@ def to_gbq(
 
     # If table exists, check if_exists parameter
     try:
-        table = bqclient.get_table(destination_table)
+        table = bqclient.get_table(destination_table_ref)
     except google_exceptions.NotFound:
         table_connector = _Table(
-            project_id,
+            project_id_table,
             dataset_id,
             location=location,
             credentials=connector.credentials,
@@ -1203,8 +1210,7 @@ def to_gbq(
 
     connector.load_data(
         dataframe,
-        dataset_id,
-        table_id,
+        destination_table_ref,
         chunksize=chunksize,
         schema=table_schema,
         progress_bar=progress_bar,
@@ -1279,8 +1285,12 @@ class _Table(GbqConnector):
             true if table exists, otherwise false
         """
         from google.api_core.exceptions import NotFound
+        from google.cloud.bigquery import DatasetReference
+        from google.cloud.bigquery import TableReference
 
-        table_ref = self.client.dataset(self.dataset_id).table(table_id)
+        table_ref = TableReference(
+            DatasetReference(self.project_id, self.dataset_id), table_id
+        )
         try:
             self.client.get_table(table_ref)
             return True
@@ -1300,12 +1310,14 @@ class _Table(GbqConnector):
             Use the generate_bq_schema to generate your table schema from a
             dataframe.
         """
+        from google.cloud.bigquery import DatasetReference
         from google.cloud.bigquery import SchemaField
         from google.cloud.bigquery import Table
+        from google.cloud.bigquery import TableReference
 
         if self.exists(table_id):
             raise TableCreationError(
-                "Table {0} already " "exists".format(table_id)
+                "Table {0} already exists".format(table_id)
             )
 
         if not _Dataset(self.project_id, credentials=self.credentials).exists(
@@ -1317,7 +1329,9 @@ class _Table(GbqConnector):
                 location=self.location,
             ).create(self.dataset_id)
 
-        table_ref = self.client.dataset(self.dataset_id).table(table_id)
+        table_ref = TableReference(
+            DatasetReference(self.project_id, self.dataset_id), table_id
+        )
         table = Table(table_ref)
 
         schema = pandas_gbq.schema.add_default_nullable_mode(schema)

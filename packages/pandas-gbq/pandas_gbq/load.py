@@ -50,13 +50,11 @@ def encode_chunks(dataframe, chunksize=None):
 def load_chunks(
     client,
     dataframe,
-    dataset_id,
-    table_id,
+    destination_table_ref,
     chunksize=None,
     schema=None,
     location=None,
 ):
-    destination_table = client.dataset(dataset_id).table(table_id)
     job_config = bigquery.LoadJobConfig()
     job_config.write_disposition = "WRITE_APPEND"
     job_config.source_format = "CSV"
@@ -77,7 +75,7 @@ def load_chunks(
             yield remaining_rows
             client.load_table_from_file(
                 chunk_buffer,
-                destination_table,
+                destination_table_ref,
                 job_config=job_config,
                 location=location,
             ).result()

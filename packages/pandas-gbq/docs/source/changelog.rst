@@ -1,6 +1,19 @@
 Changelog
 =========
 
+.. _changelog-0.15.0:
+
+0.15.0 / TBD
+------------
+
+Features
+~~~~~~~~
+
+- Load DataFrame with ``to_gbq`` to a table in a project different from the API
+  client project. Specify the target table ID as ``project.dataset.table`` to
+  use this feature. (:issue:`321`, :issue:`347`)
+
+
 .. _changelog-0.14.1:
 
 0.14.1 / 2020-11-10
