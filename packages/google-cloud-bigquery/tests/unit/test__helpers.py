@@ -190,18 +190,18 @@ class Test_timestamp_from_json(unittest.TestCase):
         with self.assertRaises(TypeError):
             self._call_fut(None, _Field("REQUIRED"))
 
-    def test_w_string_value(self):
+    def test_w_string_int_value(self):
         from google.cloud._helpers import _EPOCH
 
-        coerced = self._call_fut("1.234567", object())
+        coerced = self._call_fut("1234567", object())
         self.assertEqual(
             coerced, _EPOCH + datetime.timedelta(seconds=1, microseconds=234567)
         )
 
-    def test_w_float_value(self):
+    def test_w_int_value(self):
         from google.cloud._helpers import _EPOCH
 
-        coerced = self._call_fut(1.234567, object())
+        coerced = self._call_fut(1234567, object())
         self.assertEqual(
             coerced, _EPOCH + datetime.timedelta(seconds=1, microseconds=234567)
         )

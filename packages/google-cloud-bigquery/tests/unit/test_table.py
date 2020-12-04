@@ -2451,8 +2451,8 @@ class TestRowIterator(unittest.TestCase):
 
         schema = [SchemaField("some_timestamp", "TIMESTAMP")]
         rows = [
-            {"f": [{"v": "81953424000.0"}]},  # 4567-01-01 00:00:00  UTC
-            {"f": [{"v": "253402214400.0"}]},  # 9999-12-31 00:00:00  UTC
+            {"f": [{"v": "81953424000000000"}]},  # 4567-01-01 00:00:00  UTC
+            {"f": [{"v": "253402214400000000"}]},  # 9999-12-31 00:00:00  UTC
         ]
         path = "/foo"
         api_request = mock.Mock(return_value={"rows": rows})
@@ -2675,9 +2675,9 @@ class TestRowIterator(unittest.TestCase):
         ]
         row_data = [
             [None, None, None, None, None, None],
-            ["1.4338368E9", "420", "1.1", u"Cash", "true", "1999-12-01"],
-            ["1.3878117E9", "2580", "17.7", u"Cash", "false", "1953-06-14"],
-            ["1.3855653E9", "2280", "4.4", u"Credit", "true", "1981-11-04"],
+            ["1433836800000000", "420", "1.1", u"Cash", "true", "1999-12-01"],
+            ["1387811700000000", "2580", "17.7", u"Cash", "false", "1953-06-14"],
+            ["1385565300000000", "2280", "4.4", u"Credit", "true", "1981-11-04"],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"
@@ -2715,9 +2715,17 @@ class TestRowIterator(unittest.TestCase):
             SchemaField("date", "DATE"),
         ]
         row_data = [
-            ["1.4338368E9", "420", "1.1", "1.77", u"Cash", "true", "1999-12-01"],
-            ["1.3878117E9", "2580", "17.7", "28.5", u"Cash", "false", "1953-06-14"],
-            ["1.3855653E9", "2280", "4.4", "7.1", u"Credit", "true", "1981-11-04"],
+            ["1433836800000000", "420", "1.1", "1.77", u"Cash", "true", "1999-12-01"],
+            [
+                "1387811700000000",
+                "2580",
+                "17.7",
+                "28.5",
+                u"Cash",
+                "false",
+                "1953-06-14",
+            ],
+            ["1385565300000000", "2280", "4.4", "7.1", u"Credit", "true", "1981-11-04"],
         ]
         rows = [{"f": [{"v": field} for field in row]} for row in row_data]
         path = "/foo"

@@ -3157,6 +3157,7 @@ class Client(ClientWithProject):
         if start_index is not None:
             params["startIndex"] = start_index
 
+        params["formatOptions.useInt64Timestamp"] = True
         row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry, timeout=timeout),
@@ -3237,6 +3238,7 @@ class Client(ClientWithProject):
         if start_index is not None:
             params["startIndex"] = start_index
 
+        params["formatOptions.useInt64Timestamp"] = True
         row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry, timeout=timeout),

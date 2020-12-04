@@ -839,6 +839,7 @@ class TestQueryJob(_Base):
             query_params={
                 "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
                 "location": "EU",
+                "formatOptions.useInt64Timestamp": True,
             },
             timeout=None,
         )
@@ -887,6 +888,7 @@ class TestQueryJob(_Base):
             query_params={
                 "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
                 "location": "EU",
+                "formatOptions.useInt64Timestamp": True,
             },
             timeout=None,
         )
@@ -1118,6 +1120,7 @@ class TestQueryJob(_Base):
                 "maxResults": 3,
                 "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
                 "location": "US",
+                "formatOptions.useInt64Timestamp": True,
             },
             timeout=None,
         )
@@ -1129,6 +1132,7 @@ class TestQueryJob(_Base):
                 "maxResults": 3,
                 "fields": _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS,
                 "location": "US",
+                "formatOptions.useInt64Timestamp": True,
             },
             timeout=None,
         )

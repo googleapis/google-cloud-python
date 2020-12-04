@@ -501,7 +501,7 @@ def test_to_dataframe_column_dtypes():
     }
     row_data = [
         [
-            "1.4338368E9",
+            "1433836800000000",
             "420",
             "1.1",
             "1.77",
@@ -509,8 +509,8 @@ def test_to_dataframe_column_dtypes():
             "true",
             "1999-12-01",
         ],
-        ["1.3878117E9", "2580", "17.7", "28.5", "Cash", "false", "1953-06-14"],
-        ["1.3855653E9", "2280", "4.4", "7.1", "Credit", "true", "1981-11-04"],
+        ["1387811700000000", "2580", "17.7", "28.5", "Cash", "false", "1953-06-14"],
+        ["1385565300000000", "2280", "4.4", "7.1", "Credit", "true", "1981-11-04"],
     ]
     rows = [{"f": [{"v": field} for field in row]} for row in row_data]
     query_resource["rows"] = rows
