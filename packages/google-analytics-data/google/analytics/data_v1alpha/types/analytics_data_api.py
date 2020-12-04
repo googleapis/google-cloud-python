@@ -87,13 +87,13 @@ class RunReportRequest(proto.Message):
             row 0.
 
             To learn more about this pagination parameter, see
-            `Pagination <basics#pagination>`__.
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         limit (int):
             The number of rows to return. If unspecified, 10 rows are
             returned. If -1, all rows are returned.
 
             To learn more about this pagination parameter, see
-            `Pagination <basics#pagination>`__.
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         metric_aggregations (Sequence[~.data.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
@@ -193,7 +193,7 @@ class RunReportResponse(proto.Message):
             50 rows.
 
             To learn more about this pagination parameter, see
-            `Pagination <basics#pagination>`__.
+            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         metadata (~.data.ResponseMetaData):
             Metadata for the report.
         property_quota (~.data.PropertyQuota):
@@ -481,7 +481,7 @@ class GetMetadataRequest(proto.Message):
             parameters. Property is a numeric Google Analytics GA4
             Property identifier. To learn more, see `where to find your
             Property
-            ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
             Example: properties/1234/metadata
 
@@ -501,7 +501,7 @@ class RunRealtimeReportRequest(proto.Message):
             A Google Analytics GA4 property identifier whose events are
             tracked. Specified in the URL path and not the body. To
             learn more, see `where to find your Property
-            ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
             Example: properties/1234
         dimensions (Sequence[~.data.Dimension]):

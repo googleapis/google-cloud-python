@@ -35,8 +35,8 @@ __protobuf__ = proto.module(
         "Pivot",
         "CohortSpec",
         "Cohort",
-        "CohortReportSettings",
         "CohortsRange",
+        "CohortReportSettings",
         "ResponseMetaData",
         "DimensionHeader",
         "MetricHeader",
@@ -120,7 +120,7 @@ class Entity(proto.Message):
         property_id (str):
             A Google Analytics GA4 property id. To learn more, see
             `where to find your Property
-            ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
     """
 
     property_id = proto.Field(proto.STRING, number=1)
@@ -136,7 +136,7 @@ class Dimension(proto.Message):
     Attributes:
         name (str):
             The name of the dimension. See the `API
-            Dimensions <https://developers.google.com/analytics/trusted-testing/analytics-data/api-schema#dimensions>`__
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>`__
             for the list of dimension names.
 
             If ``dimensionExpression`` is specified, ``name`` can be any
@@ -236,7 +236,7 @@ class Metric(proto.Message):
     Attributes:
         name (str):
             The name of the metric. See the `API
-            Metrics <https://developers.google.com/analytics/trusted-testing/analytics-data/api-schema#metrics>`__
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>`__
             for the list of metric names.
 
             If ``expression`` is specified, ``name`` can be any string
@@ -603,15 +603,35 @@ class Pivot(proto.Message):
 
 
 class CohortSpec(proto.Message):
-    r"""Specification for a cohort report.
+    r"""Specification of cohorts for a cohort report. Cohort reports can be
+    used for example to create a time series of user retention for the
+    cohort. For example, you could select the cohort of users that were
+    acquired in the first week of September and follow that cohort for
+    the next six weeks. Selecting the users acquired in the first week
+    of September cohort is specified in the ``cohort`` object. Following
+    that cohort for the next six weeks is specified in the
+    ``cohortsRange`` object.
+
+    The report response could show a weekly time series where say your
+    app has retained 60% of this cohort after three weeks and 25% of
+    this cohort after six weeks. These two percentages can be calculated
+    by the metric ``cohortActiveUsers/cohortTotalUsers`` and will be
+    separate rows in the report.
 
     Attributes:
         cohorts (Sequence[~.data.Cohort]):
-            The definition for the cohorts.
+            Defines the selection criteria to group users
+            into cohorts.
+            Most cohort reports define only a single cohort.
+            If multiple cohorts are specified, each cohort
+            can be recognized in the report by their name.
         cohorts_range (~.data.CohortsRange):
-            The data ranges of cohorts.
+            Cohort reports follow cohorts over an
+            extended reporting date range. This range
+            specifies an offset duration to follow the
+            cohorts over.
         cohort_report_settings (~.data.CohortReportSettings):
-            Settings of a cohort report.
+            Optional settings for a cohort report.
     """
 
     cohorts = proto.RepeatedField(proto.MESSAGE, number=1, message="Cohort",)
@@ -624,9 +644,9 @@ class CohortSpec(proto.Message):
 
 
 class Cohort(proto.Message):
-    r"""Defines a cohort. A cohort is a group of users who share a
-    common characteristic. For example, all users with the same
-    acquisition date belong to the same cohort.
+    r"""Defines a cohort selection criteria. A cohort is a group of users
+    who share a common characteristic. For example, users with the same
+    ``firstTouchDate`` belong to the same cohort.
 
     Attributes:
         name (str):
@@ -636,23 +656,30 @@ class Cohort(proto.Message):
             are named by their zero based index ``cohort_0``,
             ``cohort_1``, etc.
         dimension (str):
-            The dimension used by cohort. Only supports
-            ``firstTouchDate`` for retention report.
+            Dimension used by the cohort. Required and only supports
+            ``firstTouchDate``.
         date_range (~.data.DateRange):
-            The cohort selects users whose first visit date is between
-            start date and end date defined in the ``dateRange``. In a
-            cohort request, this ``dateRange`` is required and the
+            The cohort selects users whose first touch date is between
+            start date and end date defined in the ``dateRange``. This
+            ``dateRange`` does not specify the full date range of event
+            data that is present in a cohort report. In a cohort report,
+            this ``dateRange`` is extended by the granularity and offset
+            present in the ``cohortsRange``; event data for the extended
+            reporting date range is present in a cohort report.
+
+            In a cohort request, this ``dateRange`` is required and the
             ``dateRanges`` in the ``RunReportRequest`` or
             ``RunPivotReportRequest`` must be unspecified.
 
-            The date range should be aligned with the cohort's
-            granularity. If CohortsRange uses daily granularity, the
-            date range can be aligned to any day. If CohortsRange uses
-            weekly granularity, the date range should be aligned to the
-            week boundary, starting at Sunday and ending Saturday. If
-            CohortsRange uses monthly granularity, the date range should
-            be aligned to the month, starting at the first and ending on
-            the last day of the month.
+            This ``dateRange`` should generally be aligned with the
+            cohort's granularity. If ``CohortsRange`` uses daily
+            granularity, this ``dateRange`` can be a single day. If
+            ``CohortsRange`` uses weekly granularity, this ``dateRange``
+            can be aligned to a week boundary, starting at Sunday and
+            ending Saturday. If ``CohortsRange`` uses monthly
+            granularity, this ``dateRange`` can be aligned to a month,
+            starting at the first and ending on the last day of the
+            month.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -662,37 +689,57 @@ class Cohort(proto.Message):
     date_range = proto.Field(proto.MESSAGE, number=3, message="DateRange",)
 
 
-class CohortReportSettings(proto.Message):
-    r"""Settings of a cohort report.
-
-    Attributes:
-        accumulate (bool):
-            If true, accumulates the result from first visit day to the
-            end day. Not supported in ``RunReportRequest``.
-    """
-
-    accumulate = proto.Field(proto.BOOL, number=1)
-
-
 class CohortsRange(proto.Message):
-    r"""Describes date range for a cohort report.
+    r"""Configures the extended reporting date range for a cohort
+    report. Specifies an offset duration to follow the cohorts over.
 
     Attributes:
         granularity (~.data.CohortsRange.Granularity):
-            Reporting date range for each cohort is
-            calculated based on these three fields.
+            The granularity used to interpret the ``startOffset`` and
+            ``endOffset`` for the extended reporting date range for a
+            cohort report.
         start_offset (int):
-            For daily cohorts, this will be the start day
-            offset. For weekly cohorts, this will be the
-            week offset.
+            ``startOffset`` specifies the start date of the extended
+            reporting date range for a cohort report. ``startOffset`` is
+            commonly set to 0 so that reports contain data from the
+            acquisition of the cohort forward.
+
+            If ``granularity`` is ``DAILY``, the ``startDate`` of the
+            extended reporting date range is ``startDate`` of the cohort
+            plus ``startOffset`` days.
+
+            If ``granularity`` is ``WEEKLY``, the ``startDate`` of the
+            extended reporting date range is ``startDate`` of the cohort
+            plus ``startOffset * 7`` days.
+
+            If ``granularity`` is ``MONTHLY``, the ``startDate`` of the
+            extended reporting date range is ``startDate`` of the cohort
+            plus ``startOffset * 30`` days.
         end_offset (int):
-            For daily cohorts, this will be the end day
-            offset. For weekly cohorts, this will be the
-            week offset.
+            ``endOffset`` specifies the end date of the extended
+            reporting date range for a cohort report. ``endOffset`` can
+            be any positive integer but is commonly set to 5 to 10 so
+            that reports contain data on the cohort for the next several
+            granularity time periods.
+
+            If ``granularity`` is ``DAILY``, the ``endDate`` of the
+            extended reporting date range is ``endDate`` of the cohort
+            plus ``endOffset`` days.
+
+            If ``granularity`` is ``WEEKLY``, the ``endDate`` of the
+            extended reporting date range is ``endDate`` of the cohort
+            plus ``endOffset * 7`` days.
+
+            If ``granularity`` is ``MONTHLY``, the ``endDate`` of the
+            extended reporting date range is ``endDate`` of the cohort
+            plus ``endOffset * 30`` days.
     """
 
     class Granularity(proto.Enum):
-        r"""Reporting granularity for the cohorts."""
+        r"""The granularity used to interpret the ``startOffset`` and
+        ``endOffset`` for the extended reporting date range for a cohort
+        report.
+        """
         GRANULARITY_UNSPECIFIED = 0
         DAILY = 1
         WEEKLY = 2
@@ -703,6 +750,18 @@ class CohortsRange(proto.Message):
     start_offset = proto.Field(proto.INT32, number=2)
 
     end_offset = proto.Field(proto.INT32, number=3)
+
+
+class CohortReportSettings(proto.Message):
+    r"""Optional settings of a cohort report.
+
+    Attributes:
+        accumulate (bool):
+            If true, accumulates the result from first touch day to the
+            end day. Not supported in ``RunReportRequest``.
+    """
+
+    accumulate = proto.Field(proto.BOOL, number=1)
 
 
 class ResponseMetaData(proto.Message):
@@ -956,6 +1015,9 @@ class DimensionMetadata(proto.Message):
             or one of ``deprecatedApiNames`` for a period of time. After
             the deprecation period, the dimension will be available only
             by ``apiName``.
+        custom_definition (bool):
+            True if the dimension is a custom dimension
+            for this property.
     """
 
     api_name = proto.Field(proto.STRING, number=1)
@@ -965,6 +1027,8 @@ class DimensionMetadata(proto.Message):
     description = proto.Field(proto.STRING, number=3)
 
     deprecated_api_names = proto.RepeatedField(proto.STRING, number=4)
+
+    custom_definition = proto.Field(proto.BOOL, number=5)
 
 
 class MetricMetadata(proto.Message):
@@ -993,6 +1057,9 @@ class MetricMetadata(proto.Message):
             used in `Metric <#Metric>`__'s ``expression`` field for
             equivalent reports. Most metrics are not expressions, and
             for non-expressions, this field is empty.
+        custom_definition (bool):
+            True if the metric is a custom metric for
+            this property.
     """
 
     api_name = proto.Field(proto.STRING, number=1)
@@ -1006,6 +1073,8 @@ class MetricMetadata(proto.Message):
     type_ = proto.Field(proto.ENUM, number=5, enum="MetricType",)
 
     expression = proto.Field(proto.STRING, number=6)
+
+    custom_definition = proto.Field(proto.BOOL, number=7)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

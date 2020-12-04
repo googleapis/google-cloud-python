@@ -366,7 +366,7 @@ class AlphaAnalyticsDataAsyncClient:
                 parameters. Property is a numeric Google Analytics GA4
                 Property identifier. To learn more, see `where to find
                 your Property
-                ID <https://developers.google.com/analytics/trusted-testing/analytics-data/property-id>`__.
+                ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
                 Example: properties/1234/metadata
 
