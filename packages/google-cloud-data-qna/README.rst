@@ -12,7 +12,7 @@ and answer service for BigQuery data.
 .. warning::
    Data QnA is currently in private Alpha. Access is only available to
    allowlisted users. Apply for access
-   `here <https://docs.google.com/forms/d/e/1FAIpQLSc4Vszsmm6LrPT1MoNbC074SYCMBXB8tps6OEmdmg9zBgo3TA/viewform>`_.
+   `here <http://g.co/cloud/data-qna>`_.
 
 .. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
