@@ -6290,38 +6290,43 @@ class TestClient(unittest.TestCase):
         creds = _make_credentials()
         http = object()
         client = self._make_one(project=project, credentials=creds, _http=http)
-        conn = client._connection = make_connection({})
         table_ref = DatasetReference(project, ds_id).table(table_id)
-        schema = [SchemaField("account", "STRING"), SchemaField("balance", "NUMERIC")]
-        insert_table = table.Table(table_ref, schema=schema)
         rows = [
             ("Savings", decimal.Decimal("23.47")),
             ("Checking", decimal.Decimal("1.98")),
             ("Mortgage", decimal.Decimal("-12345678909.87654321")),
         ]
-
-        with mock.patch("uuid.uuid4", side_effect=map(str, range(len(rows)))):
-            errors = client.insert_rows(insert_table, rows)
-
-        self.assertEqual(len(errors), 0)
-        rows_json = [
-            {"account": "Savings", "balance": "23.47"},
-            {"account": "Checking", "balance": "1.98"},
-            {"account": "Mortgage", "balance": "-12345678909.87654321"},
+        schemas = [
+            [SchemaField("account", "STRING"), SchemaField("balance", "NUMERIC")],
+            [SchemaField("account", "STRING"), SchemaField("balance", "BIGNUMERIC")],
         ]
-        sent = {
-            "rows": [
-                {"json": row, "insertId": str(i)} for i, row in enumerate(rows_json)
+
+        for schema in schemas:
+            conn = client._connection = make_connection({})
+
+            insert_table = table.Table(table_ref, schema=schema)
+            with mock.patch("uuid.uuid4", side_effect=map(str, range(len(rows)))):
+                errors = client.insert_rows(insert_table, rows)
+
+            self.assertEqual(len(errors), 0)
+            rows_json = [
+                {"account": "Savings", "balance": "23.47"},
+                {"account": "Checking", "balance": "1.98"},
+                {"account": "Mortgage", "balance": "-12345678909.87654321"},
             ]
-        }
-        conn.api_request.assert_called_once_with(
-            method="POST",
-            path="/projects/{}/datasets/{}/tables/{}/insertAll".format(
-                project, ds_id, table_id
-            ),
-            data=sent,
-            timeout=None,
-        )
+            sent = {
+                "rows": [
+                    {"json": row, "insertId": str(i)} for i, row in enumerate(rows_json)
+                ]
+            }
+            conn.api_request.assert_called_once_with(
+                method="POST",
+                path="/projects/{}/datasets/{}/tables/{}/insertAll".format(
+                    project, ds_id, table_id
+                ),
+                data=sent,
+                timeout=None,
+            )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_insert_rows_from_dataframe(self):
@@ -6914,6 +6919,43 @@ class TestClient(unittest.TestCase):
             req = conn.api_request.call_args_list[i]
             test[1]["formatOptions.useInt64Timestamp"] = True
             self.assertEqual(req[1]["query_params"], test[1], "for kwargs %s" % test[0])
+
+    def test_list_rows_w_numeric(self):
+        from google.cloud.bigquery.schema import SchemaField
+        from google.cloud.bigquery.table import Table
+
+        resource = {
+            "totalRows": 3,
+            "rows": [
+                {"f": [{"v": "-1.23456789"}, {"v": "-123456789.987654321"}]},
+                {"f": [{"v": None}, {"v": "3.141592653589793238462643383279502884"}]},
+                {"f": [{"v": "2718281828459045235360287471.352662497"}, {"v": None}]},
+            ],
+        }
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+        client._connection = make_connection(resource)
+        schema = [
+            SchemaField("num", "NUMERIC"),
+            SchemaField("bignum", "BIGNUMERIC"),
+        ]
+        table = Table(self.TABLE_REF, schema=schema)
+
+        iterator = client.list_rows(table)
+        rows = list(iterator)
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(rows[0]["num"], decimal.Decimal("-1.23456789"))
+        self.assertEqual(rows[0]["bignum"], decimal.Decimal("-123456789.987654321"))
+        self.assertIsNone(rows[1]["num"])
+        self.assertEqual(
+            rows[1]["bignum"], decimal.Decimal("3.141592653589793238462643383279502884")
+        )
+        self.assertEqual(
+            rows[2]["num"], decimal.Decimal("2718281828459045235360287471.352662497")
+        )
+        self.assertIsNone(rows[2]["bignum"])
 
     def test_list_rows_repeated_fields(self):
         from google.cloud.bigquery.schema import SchemaField
