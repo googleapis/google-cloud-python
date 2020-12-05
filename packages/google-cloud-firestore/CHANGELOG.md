@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.0.2](https://www.github.com/googleapis/python-firestore/compare/v2.0.1...v2.0.2) (2020-12-05)
+
+
+### Bug Fixes
+
+* request and flattened params are exclusive, surface transport in generated layer ([#256](https://www.github.com/googleapis/python-firestore/issues/256)) ([386e85e](https://www.github.com/googleapis/python-firestore/commit/386e85ecf704e1168b0deb4ee9e6c2105a9040a9)), closes [#251](https://www.github.com/googleapis/python-firestore/issues/251) [#252](https://www.github.com/googleapis/python-firestore/issues/252)
+
 ### [2.0.1](https://www.github.com/googleapis/python-firestore/compare/v2.0.0...v2.0.1) (2020-11-12)
 
 
