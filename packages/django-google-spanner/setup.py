@@ -17,7 +17,7 @@ description = "Bridge to enable using Django with Spanner."
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 3 - Alpha"
-dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 2.0.0"]
+dependencies = ["sqlparse >= 0.3.0", "google-cloud-spanner >= 2.1.0"]
 extras = {}
 
 BASE_DIR = os.path.dirname(__file__)
