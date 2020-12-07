@@ -90,7 +90,7 @@ class StandardSqlField(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(proto.MESSAGE, number=2, message=StandardSqlDataType,)
+    type = proto.Field(proto.MESSAGE, number=2, message="StandardSqlDataType",)
 
 
 class StandardSqlStructType(proto.Message):
@@ -101,7 +101,7 @@ class StandardSqlStructType(proto.Message):
 
     """
 
-    fields = proto.RepeatedField(proto.MESSAGE, number=1, message=StandardSqlField,)
+    fields = proto.RepeatedField(proto.MESSAGE, number=1, message="StandardSqlField",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

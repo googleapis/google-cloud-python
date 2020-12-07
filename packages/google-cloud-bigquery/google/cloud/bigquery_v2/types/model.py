@@ -1495,7 +1495,7 @@ class PatchModelRequest(proto.Message):
 
     model_id = proto.Field(proto.STRING, number=3)
 
-    model = proto.Field(proto.MESSAGE, number=4, message=Model,)
+    model = proto.Field(proto.MESSAGE, number=4, message="Model",)
 
 
 class DeleteModelRequest(proto.Message):
@@ -1559,7 +1559,7 @@ class ListModelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    models = proto.RepeatedField(proto.MESSAGE, number=1, message=Model,)
+    models = proto.RepeatedField(proto.MESSAGE, number=1, message="Model",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
