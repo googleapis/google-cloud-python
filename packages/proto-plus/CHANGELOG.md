@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.12.0...v1.13.0) (2020-12-04)
+
+
+### Features
+
+* add 3.9 support and drop 3.5 ([#167](https://www.github.com/googleapis/proto-plus-python/issues/167)) ([6d17195](https://www.github.com/googleapis/proto-plus-python/commit/6d171956e14b398aece931b9dde1013be9644b74))
+
 ## [1.12.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.11.0...v1.12.0) (2020-11-20)
 
 
