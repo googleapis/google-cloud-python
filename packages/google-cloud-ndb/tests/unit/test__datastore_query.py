@@ -165,6 +165,22 @@ class Test_count:
             ),
             mock.Mock(
                 batch=mock.Mock(
+                    more_results=_datastore_query.NOT_FINISHED,
+                    skipped_results=0,
+                    entity_results=[],
+                    end_cursor=b"secondCursor",
+                    skipped_cursor=b"skiptomylou",
+                    spec=(
+                        "more_results",
+                        "skipped_results",
+                        "entity_results",
+                        "end_cursor",
+                    ),
+                ),
+                spec=("batch",),
+            ),
+            mock.Mock(
+                batch=mock.Mock(
                     more_results=_datastore_query.NO_MORE_RESULTS,
                     skipped_results=99,
                     entity_results=[object()],
@@ -201,6 +217,17 @@ class Test_count:
                         offset=10000,
                         projection=["__key__"],
                         start_cursor=_datastore_query.Cursor(b"himom"),
+                    ),
+                ),
+                {},
+            ),
+            (
+                (
+                    query_module.QueryOptions(
+                        limit=1,
+                        offset=10000,
+                        projection=["__key__"],
+                        start_cursor=_datastore_query.Cursor(b"skiptomylou"),
                     ),
                 ),
                 {},

@@ -169,7 +169,7 @@ def _count_by_skipping(query):
         # so for a workaround, just bail as soon as we neither skip nor retrieve any
         # results
         new_count = batch.skipped_results + len(batch.entity_results)
-        if new_count == 0:
+        if new_count == 0 and more_results != NOT_FINISHED:
             break
 
         count += new_count
