@@ -1165,6 +1165,140 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tuple(table.schema), table_schema)
         self.assertEqual(table.num_rows, 2)
 
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_load_table_from_dataframe_w_explicit_schema_source_format_csv(self):
+        from google.cloud.bigquery.job import SourceFormat
+
+        table_schema = (
+            bigquery.SchemaField("bool_col", "BOOLEAN"),
+            bigquery.SchemaField("bytes_col", "BYTES"),
+            bigquery.SchemaField("date_col", "DATE"),
+            bigquery.SchemaField("dt_col", "DATETIME"),
+            bigquery.SchemaField("float_col", "FLOAT"),
+            bigquery.SchemaField("geo_col", "GEOGRAPHY"),
+            bigquery.SchemaField("int_col", "INTEGER"),
+            bigquery.SchemaField("num_col", "NUMERIC"),
+            bigquery.SchemaField("str_col", "STRING"),
+            bigquery.SchemaField("time_col", "TIME"),
+            bigquery.SchemaField("ts_col", "TIMESTAMP"),
+        )
+        df_data = collections.OrderedDict(
+            [
+                ("bool_col", [True, None, False]),
+                ("bytes_col", ["abc", None, "def"]),
+                (
+                    "date_col",
+                    [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
+                ),
+                (
+                    "dt_col",
+                    [
+                        datetime.datetime(1, 1, 1, 0, 0, 0),
+                        None,
+                        datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+                    ],
+                ),
+                ("float_col", [float("-inf"), float("nan"), float("inf")]),
+                (
+                    "geo_col",
+                    [
+                        "POINT(30 10)",
+                        None,
+                        "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+                    ],
+                ),
+                ("int_col", [-9223372036854775808, None, 9223372036854775807]),
+                (
+                    "num_col",
+                    [
+                        decimal.Decimal("-99999999999999999999999999999.999999999"),
+                        None,
+                        decimal.Decimal("99999999999999999999999999999.999999999"),
+                    ],
+                ),
+                ("str_col", [u"abc", None, u"def"]),
+                (
+                    "time_col",
+                    [datetime.time(0, 0, 0), None, datetime.time(23, 59, 59, 999999)],
+                ),
+                (
+                    "ts_col",
+                    [
+                        datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+                        None,
+                        datetime.datetime(
+                            9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
+                        ),
+                    ],
+                ),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, dtype="object", columns=df_data.keys())
+
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_explicit_schema_csv".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        job_config = bigquery.LoadJobConfig(
+            schema=table_schema, source_format=SourceFormat.CSV
+        )
+        load_job = Config.CLIENT.load_table_from_dataframe(
+            dataframe, table_id, job_config=job_config
+        )
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table_id)
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 3)
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_load_table_from_dataframe_w_explicit_schema_source_format_csv_floats(self):
+        from google.cloud.bigquery.job import SourceFormat
+
+        table_schema = (bigquery.SchemaField("float_col", "FLOAT"),)
+        df_data = collections.OrderedDict(
+            [
+                (
+                    "float_col",
+                    [
+                        0.14285714285714285,
+                        0.51428571485748,
+                        0.87128748,
+                        1.807960649,
+                        2.0679610649,
+                        2.4406779661016949,
+                        3.7148514257,
+                        3.8571428571428572,
+                        1.51251252e40,
+                    ],
+                ),
+            ]
+        )
+        dataframe = pandas.DataFrame(df_data, dtype="object", columns=df_data.keys())
+
+        dataset_id = _make_dataset_id("bq_load_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_dataframe_w_explicit_schema_csv".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        job_config = bigquery.LoadJobConfig(
+            schema=table_schema, source_format=SourceFormat.CSV
+        )
+        load_job = Config.CLIENT.load_table_from_dataframe(
+            dataframe, table_id, job_config=job_config
+        )
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table_id)
+        rows = self._fetch_single_page(table)
+        floats = [r.values()[0] for r in rows]
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 9)
+        self.assertEqual(floats, df_data["float_col"])
+
     def test_load_table_from_json_schema_autodetect(self):
         json_rows = [
             {"name": "John", "age": 18, "birthday": "2001-10-15", "is_awesome": False},
