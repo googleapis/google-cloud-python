@@ -87,7 +87,7 @@ class Test_get_trace_id_from_django(unittest.TestCase):
 
         django_request = RequestFactory().get("/")
 
-        middleware = request.RequestMiddleware()
+        middleware = request.RequestMiddleware(None)
         middleware.process_request(django_request)
         trace_id = self._call_fut()
         self.assertIsNone(trace_id)
@@ -104,7 +104,7 @@ class Test_get_trace_id_from_django(unittest.TestCase):
             "/", **{django_trace_header: django_trace_id}
         )
 
-        middleware = request.RequestMiddleware()
+        middleware = request.RequestMiddleware(None)
         middleware.process_request(django_request)
         trace_id = self._call_fut()
 

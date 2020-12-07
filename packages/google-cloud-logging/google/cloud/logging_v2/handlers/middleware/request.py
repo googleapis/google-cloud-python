@@ -42,7 +42,7 @@ except ImportError:  # pragma: NO COVER
 class RequestMiddleware(MiddlewareMixin):
     """Saves the request in thread local"""
 
-    def __init__(self, *, get_response=None):
+    def __init__(self, get_response):
         self.get_response = get_response
 
     def process_request(self, request):

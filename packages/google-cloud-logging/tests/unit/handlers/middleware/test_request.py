@@ -41,6 +41,9 @@ class TestRequestMiddleware(DjangoBase):
         return request.RequestMiddleware
 
     def _make_one(self, *args, **kw):
+        if not args and "get_response" not in kw:
+            kw["get_response"] = None
+
         return self._get_target_class()(*args, **kw)
 
     def test_process_request(self):
@@ -53,6 +56,16 @@ class TestRequestMiddleware(DjangoBase):
 
         django_request = request._get_django_request()
         self.assertEqual(django_request, mock_request)
+
+    def test_can_instantiate_middleware_without_kwargs(self):
+        handler = mock.Mock()
+        middleware = self._make_one(handler)
+        self.assertEqual(middleware.get_response, handler)
+
+    def test_can_instantiate_middleware_with_kwargs(self):
+        handler = mock.Mock()
+        middleware = self._make_one(get_response=handler)
+        self.assertEqual(middleware.get_response, handler)
 
 
 class Test__get_django_request(DjangoBase):
