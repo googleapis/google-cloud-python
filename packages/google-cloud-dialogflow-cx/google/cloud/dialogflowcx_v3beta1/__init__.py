@@ -94,6 +94,8 @@ from .types.response_message import ResponseMessage
 from .types.session import AudioInput
 from .types.session import DetectIntentRequest
 from .types.session import DetectIntentResponse
+from .types.session import DtmfInput
+from .types.session import EventInput
 from .types.session import FulfillIntentRequest
 from .types.session import FulfillIntentResponse
 from .types.session import IntentInput
@@ -103,6 +105,7 @@ from .types.session import MatchIntentResponse
 from .types.session import QueryInput
 from .types.session import QueryParameters
 from .types.session import QueryResult
+from .types.session import SentimentAnalysisResult
 from .types.session import StreamingDetectIntentRequest
 from .types.session import StreamingDetectIntentResponse
 from .types.session import StreamingRecognitionResult
@@ -171,11 +174,13 @@ __all__ = (
     "DeleteWebhookRequest",
     "DetectIntentRequest",
     "DetectIntentResponse",
+    "DtmfInput",
     "EntityType",
     "EntityTypesClient",
     "Environment",
     "EnvironmentsClient",
     "EventHandler",
+    "EventInput",
     "ExportAgentRequest",
     "ExportAgentResponse",
     "Flow",
@@ -198,6 +203,7 @@ __all__ = (
     "Intent",
     "IntentInput",
     "IntentView",
+    "IntentsClient",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "ListEntityTypesRequest",
@@ -235,6 +241,7 @@ __all__ = (
     "QueryResult",
     "ResponseMessage",
     "RestoreAgentRequest",
+    "SentimentAnalysisResult",
     "SessionEntityType",
     "SessionEntityTypesClient",
     "SessionInfo",
@@ -269,5 +276,4 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
-    "IntentsClient",
 )

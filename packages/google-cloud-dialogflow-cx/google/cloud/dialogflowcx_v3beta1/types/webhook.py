@@ -150,7 +150,7 @@ class ListWebhooksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    webhooks = proto.RepeatedField(proto.MESSAGE, number=1, message=Webhook,)
+    webhooks = proto.RepeatedField(proto.MESSAGE, number=1, message="Webhook",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -182,7 +182,7 @@ class CreateWebhookRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    webhook = proto.Field(proto.MESSAGE, number=2, message=Webhook,)
+    webhook = proto.Field(proto.MESSAGE, number=2, message="Webhook",)
 
 
 class UpdateWebhookRequest(proto.Message):
@@ -198,7 +198,7 @@ class UpdateWebhookRequest(proto.Message):
             updated.
     """
 
-    webhook = proto.Field(proto.MESSAGE, number=1, message=Webhook,)
+    webhook = proto.Field(proto.MESSAGE, number=1, message="Webhook",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 

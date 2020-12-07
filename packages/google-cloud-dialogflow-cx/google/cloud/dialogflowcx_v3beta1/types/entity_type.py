@@ -228,7 +228,7 @@ class ListEntityTypesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_types = proto.RepeatedField(proto.MESSAGE, number=1, message=EntityType,)
+    entity_types = proto.RepeatedField(proto.MESSAGE, number=1, message="EntityType",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -287,7 +287,7 @@ class CreateEntityTypeRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    entity_type = proto.Field(proto.MESSAGE, number=2, message=EntityType,)
+    entity_type = proto.Field(proto.MESSAGE, number=2, message="EntityType",)
 
     language_code = proto.Field(proto.STRING, number=3)
 
@@ -315,7 +315,7 @@ class UpdateEntityTypeRequest(proto.Message):
             The mask to control which fields get updated.
     """
 
-    entity_type = proto.Field(proto.MESSAGE, number=1, message=EntityType,)
+    entity_type = proto.Field(proto.MESSAGE, number=1, message="EntityType",)
 
     language_code = proto.Field(proto.STRING, number=2)
 

@@ -141,7 +141,7 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(proto.MESSAGE, number=1, message=Environment,)
+    environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -179,7 +179,7 @@ class CreateEnvironmentRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    environment = proto.Field(proto.MESSAGE, number=2, message=Environment,)
+    environment = proto.Field(proto.MESSAGE, number=2, message="Environment",)
 
 
 class UpdateEnvironmentRequest(proto.Message):
@@ -194,7 +194,7 @@ class UpdateEnvironmentRequest(proto.Message):
             get updated.
     """
 
-    environment = proto.Field(proto.MESSAGE, number=1, message=Environment,)
+    environment = proto.Field(proto.MESSAGE, number=1, message="Environment",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
@@ -257,7 +257,7 @@ class LookupEnvironmentHistoryResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(proto.MESSAGE, number=1, message=Environment,)
+    environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

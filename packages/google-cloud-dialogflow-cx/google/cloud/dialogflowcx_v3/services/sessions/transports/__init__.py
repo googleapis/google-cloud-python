@@ -15,8 +15,22 @@
 # limitations under the License.
 #
 
+from collections import OrderedDict
+from typing import Dict, Type
 
-__protobuf__ = proto.module(package="google.cloud.dialogflow.cx.v3beta1", manifest={},)
+from .base import SessionsTransport
+from .grpc import SessionsGrpcTransport
+from .grpc_asyncio import SessionsGrpcAsyncIOTransport
 
 
-__all__ = tuple(sorted(__protobuf__.manifest))
+# Compile a registry of transports.
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
+_transport_registry["grpc"] = SessionsGrpcTransport
+_transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
+
+
+__all__ = (
+    "SessionsTransport",
+    "SessionsGrpcTransport",
+    "SessionsGrpcAsyncIOTransport",
+)

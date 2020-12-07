@@ -56,9 +56,6 @@ class NluSettings(proto.Message):
             to 0.0, the default of 0.3 is used.
         model_training_mode (~.gcdc_flow.NluSettings.ModelTrainingMode):
             Indicates NLU model training mode.
-        enable_spell_correction (bool):
-            Indicates if automatic spell correction is
-            enabled in detect intent requests.
     """
 
     class ModelType(proto.Enum):
@@ -78,8 +75,6 @@ class NluSettings(proto.Message):
     classification_threshold = proto.Field(proto.FLOAT, number=3)
 
     model_training_mode = proto.Field(proto.ENUM, number=4, enum=ModelTrainingMode,)
-
-    enable_spell_correction = proto.Field(proto.BOOL, number=5)
 
 
 class Flow(proto.Message):
@@ -164,7 +159,7 @@ class Flow(proto.Message):
         proto.MESSAGE, number=10, message=page.EventHandler,
     )
 
-    nlu_settings = proto.Field(proto.MESSAGE, number=11, message=NluSettings,)
+    nlu_settings = proto.Field(proto.MESSAGE, number=11, message="NluSettings",)
 
 
 class CreateFlowRequest(proto.Message):
@@ -192,7 +187,7 @@ class CreateFlowRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    flow = proto.Field(proto.MESSAGE, number=2, message=Flow,)
+    flow = proto.Field(proto.MESSAGE, number=2, message="Flow",)
 
     language_code = proto.Field(proto.STRING, number=3)
 
@@ -279,7 +274,7 @@ class ListFlowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    flows = proto.RepeatedField(proto.MESSAGE, number=1, message=Flow,)
+    flows = proto.RepeatedField(proto.MESSAGE, number=1, message="Flow",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -334,7 +329,7 @@ class UpdateFlowRequest(proto.Message):
             before they can be used.
     """
 
-    flow = proto.Field(proto.MESSAGE, number=1, message=Flow,)
+    flow = proto.Field(proto.MESSAGE, number=1, message="Flow",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 

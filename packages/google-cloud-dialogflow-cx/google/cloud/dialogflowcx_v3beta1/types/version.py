@@ -145,7 +145,7 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(proto.MESSAGE, number=1, message=Version,)
+    versions = proto.RepeatedField(proto.MESSAGE, number=1, message="Version",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -182,7 +182,7 @@ class CreateVersionRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    version = proto.Field(proto.MESSAGE, number=2, message=Version,)
+    version = proto.Field(proto.MESSAGE, number=2, message="Version",)
 
 
 class UpdateVersionRequest(proto.Message):
@@ -198,7 +198,7 @@ class UpdateVersionRequest(proto.Message):
             updated.
     """
 
-    version = proto.Field(proto.MESSAGE, number=1, message=Version,)
+    version = proto.Field(proto.MESSAGE, number=1, message="Version",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 

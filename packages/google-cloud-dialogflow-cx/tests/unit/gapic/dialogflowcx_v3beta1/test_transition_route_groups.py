@@ -44,7 +44,6 @@ from google.cloud.dialogflowcx_v3beta1.services.transition_route_groups import (
 )
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment
 from google.cloud.dialogflowcx_v3beta1.types import page
-from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
 from google.cloud.dialogflowcx_v3beta1.types import response_message
 from google.cloud.dialogflowcx_v3beta1.types import transition_route_group
 from google.cloud.dialogflowcx_v3beta1.types import (
@@ -110,12 +109,12 @@ def test_transition_route_groups_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "dialogflow.googleapis.com:443"
+        assert client.transport._host == "dialogflow.googleapis.com:443"
 
 
 def test_transition_route_groups_client_get_transport_class():
@@ -175,15 +174,14 @@ def test_transition_route_groups_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -192,15 +190,14 @@ def test_transition_route_groups_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "always".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -209,78 +206,22 @@ def test_transition_route_groups_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
-            patched.return_value = None
-            client = client_class(client_options=options)
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=client_cert_source_callback,
-                quota_project_id=None,
-                client_info=transports.base.DEFAULT_CLIENT_INFO,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_MTLS_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "Unsupported"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
             client = client_class()
 
     # Check the case quota_project_id is provided
@@ -293,11 +234,157 @@ def test_transition_route_groups_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (
+            TransitionRouteGroupsClient,
+            transports.TransitionRouteGroupsGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            TransitionRouteGroupsAsyncClient,
+            transports.TransitionRouteGroupsGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (
+            TransitionRouteGroupsClient,
+            transports.TransitionRouteGroupsGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            TransitionRouteGroupsAsyncClient,
+            transports.TransitionRouteGroupsGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    TransitionRouteGroupsClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(TransitionRouteGroupsClient),
+)
+@mock.patch.object(
+    TransitionRouteGroupsAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(TransitionRouteGroupsAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_transition_route_groups_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -328,8 +415,7 @@ def test_transition_route_groups_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -363,8 +449,7 @@ def test_transition_route_groups_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -383,8 +468,7 @@ def test_transition_route_groups_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -404,7 +488,7 @@ def test_list_transition_route_groups(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.ListTransitionRouteGroupsResponse(
@@ -420,6 +504,7 @@ def test_list_transition_route_groups(
         assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListTransitionRouteGroupsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -430,18 +515,21 @@ def test_list_transition_route_groups_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_transition_route_groups_async(transport: str = "grpc_asyncio"):
+async def test_list_transition_route_groups_async(
+    transport: str = "grpc_asyncio",
+    request_type=transition_route_group.ListTransitionRouteGroupsRequest,
+):
     client = TransitionRouteGroupsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = transition_route_group.ListTransitionRouteGroupsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -456,12 +544,17 @@ async def test_list_transition_route_groups_async(transport: str = "grpc_asyncio
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == transition_route_group.ListTransitionRouteGroupsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTransitionRouteGroupsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_transition_route_groups_async_from_dict():
+    await test_list_transition_route_groups_async(request_type=dict)
 
 
 def test_list_transition_route_groups_field_headers():
@@ -476,7 +569,7 @@ def test_list_transition_route_groups_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         call.return_value = transition_route_group.ListTransitionRouteGroupsResponse()
 
@@ -505,7 +598,7 @@ async def test_list_transition_route_groups_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             transition_route_group.ListTransitionRouteGroupsResponse()
@@ -530,7 +623,7 @@ def test_list_transition_route_groups_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.ListTransitionRouteGroupsResponse()
@@ -569,7 +662,7 @@ async def test_list_transition_route_groups_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.ListTransitionRouteGroupsResponse()
@@ -609,7 +702,7 @@ def test_list_transition_route_groups_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -659,7 +752,7 @@ def test_list_transition_route_groups_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_transition_route_groups), "__call__"
+        type(client.transport.list_transition_route_groups), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -701,7 +794,7 @@ async def test_list_transition_route_groups_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_transition_route_groups),
+        type(client.transport.list_transition_route_groups),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -753,7 +846,7 @@ async def test_list_transition_route_groups_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_transition_route_groups),
+        type(client.transport.list_transition_route_groups),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -807,7 +900,7 @@ def test_get_transition_route_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_transition_route_group), "__call__"
+        type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.TransitionRouteGroup(
@@ -823,6 +916,7 @@ def test_get_transition_route_group(
         assert args[0] == transition_route_group.GetTransitionRouteGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, transition_route_group.TransitionRouteGroup)
 
     assert response.name == "name_value"
@@ -835,18 +929,21 @@ def test_get_transition_route_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_transition_route_group_async(transport: str = "grpc_asyncio"):
+async def test_get_transition_route_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=transition_route_group.GetTransitionRouteGroupRequest,
+):
     client = TransitionRouteGroupsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = transition_route_group.GetTransitionRouteGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_transition_route_group), "__call__"
+        type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -861,7 +958,7 @@ async def test_get_transition_route_group_async(transport: str = "grpc_asyncio")
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == transition_route_group.GetTransitionRouteGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, transition_route_group.TransitionRouteGroup)
@@ -869,6 +966,11 @@ async def test_get_transition_route_group_async(transport: str = "grpc_asyncio")
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_transition_route_group_async_from_dict():
+    await test_get_transition_route_group_async(request_type=dict)
 
 
 def test_get_transition_route_group_field_headers():
@@ -883,7 +985,7 @@ def test_get_transition_route_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_transition_route_group), "__call__"
+        type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         call.return_value = transition_route_group.TransitionRouteGroup()
 
@@ -912,7 +1014,7 @@ async def test_get_transition_route_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_transition_route_group), "__call__"
+        type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             transition_route_group.TransitionRouteGroup()
@@ -937,7 +1039,7 @@ def test_get_transition_route_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_transition_route_group), "__call__"
+        type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.TransitionRouteGroup()
@@ -975,7 +1077,7 @@ async def test_get_transition_route_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_transition_route_group), "__call__"
+        type(client.transport.get_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.TransitionRouteGroup()
@@ -1023,7 +1125,7 @@ def test_create_transition_route_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_transition_route_group), "__call__"
+        type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup(
@@ -1041,6 +1143,7 @@ def test_create_transition_route_group(
         )
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
 
     assert response.name == "name_value"
@@ -1053,18 +1156,21 @@ def test_create_transition_route_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_transition_route_group_async(transport: str = "grpc_asyncio"):
+async def test_create_transition_route_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+):
     client = TransitionRouteGroupsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_transition_route_group), "__call__"
+        type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1079,7 +1185,9 @@ async def test_create_transition_route_group_async(transport: str = "grpc_asynci
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert (
+            args[0] == gcdc_transition_route_group.CreateTransitionRouteGroupRequest()
+        )
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
@@ -1087,6 +1195,11 @@ async def test_create_transition_route_group_async(transport: str = "grpc_asynci
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_transition_route_group_async_from_dict():
+    await test_create_transition_route_group_async(request_type=dict)
 
 
 def test_create_transition_route_group_field_headers():
@@ -1101,7 +1214,7 @@ def test_create_transition_route_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_transition_route_group), "__call__"
+        type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
 
@@ -1130,7 +1243,7 @@ async def test_create_transition_route_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_transition_route_group), "__call__"
+        type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcdc_transition_route_group.TransitionRouteGroup()
@@ -1155,7 +1268,7 @@ def test_create_transition_route_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_transition_route_group), "__call__"
+        type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
@@ -1208,7 +1321,7 @@ async def test_create_transition_route_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_transition_route_group), "__call__"
+        type(client.transport.create_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
@@ -1271,7 +1384,7 @@ def test_update_transition_route_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_transition_route_group), "__call__"
+        type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup(
@@ -1289,6 +1402,7 @@ def test_update_transition_route_group(
         )
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
 
     assert response.name == "name_value"
@@ -1301,18 +1415,21 @@ def test_update_transition_route_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_transition_route_group_async(transport: str = "grpc_asyncio"):
+async def test_update_transition_route_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+):
     client = TransitionRouteGroupsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_transition_route_group), "__call__"
+        type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1327,7 +1444,9 @@ async def test_update_transition_route_group_async(transport: str = "grpc_asynci
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert (
+            args[0] == gcdc_transition_route_group.UpdateTransitionRouteGroupRequest()
+        )
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_transition_route_group.TransitionRouteGroup)
@@ -1335,6 +1454,11 @@ async def test_update_transition_route_group_async(transport: str = "grpc_asynci
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_transition_route_group_async_from_dict():
+    await test_update_transition_route_group_async(request_type=dict)
 
 
 def test_update_transition_route_group_field_headers():
@@ -1349,7 +1473,7 @@ def test_update_transition_route_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_transition_route_group), "__call__"
+        type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
 
@@ -1381,7 +1505,7 @@ async def test_update_transition_route_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_transition_route_group), "__call__"
+        type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcdc_transition_route_group.TransitionRouteGroup()
@@ -1409,7 +1533,7 @@ def test_update_transition_route_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_transition_route_group), "__call__"
+        type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
@@ -1462,7 +1586,7 @@ async def test_update_transition_route_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_transition_route_group), "__call__"
+        type(client.transport.update_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup()
@@ -1525,7 +1649,7 @@ def test_delete_transition_route_group(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_transition_route_group), "__call__"
+        type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1547,18 +1671,21 @@ def test_delete_transition_route_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_transition_route_group_async(transport: str = "grpc_asyncio"):
+async def test_delete_transition_route_group_async(
+    transport: str = "grpc_asyncio",
+    request_type=transition_route_group.DeleteTransitionRouteGroupRequest,
+):
     client = TransitionRouteGroupsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = transition_route_group.DeleteTransitionRouteGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_transition_route_group), "__call__"
+        type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -1569,10 +1696,15 @@ async def test_delete_transition_route_group_async(transport: str = "grpc_asynci
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == transition_route_group.DeleteTransitionRouteGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_transition_route_group_async_from_dict():
+    await test_delete_transition_route_group_async(request_type=dict)
 
 
 def test_delete_transition_route_group_field_headers():
@@ -1587,7 +1719,7 @@ def test_delete_transition_route_group_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_transition_route_group), "__call__"
+        type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         call.return_value = None
 
@@ -1616,7 +1748,7 @@ async def test_delete_transition_route_group_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_transition_route_group), "__call__"
+        type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1639,7 +1771,7 @@ def test_delete_transition_route_group_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_transition_route_group), "__call__"
+        type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1678,7 +1810,7 @@ async def test_delete_transition_route_group_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_transition_route_group), "__call__"
+        type(client.transport.delete_transition_route_group), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1747,7 +1879,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = TransitionRouteGroupsClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1765,12 +1897,27 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TransitionRouteGroupsGrpcTransport,
+        transports.TransitionRouteGroupsGrpcAsyncIOTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = TransitionRouteGroupsClient(
         credentials=credentials.AnonymousCredentials(),
     )
-    assert isinstance(client._transport, transports.TransitionRouteGroupsGrpcTransport,)
+    assert isinstance(client.transport, transports.TransitionRouteGroupsGrpcTransport,)
 
 
 def test_transition_route_groups_base_transport_error():
@@ -1828,6 +1975,17 @@ def test_transition_route_groups_base_transport_with_credentials_file():
         )
 
 
+def test_transition_route_groups_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.dialogflowcx_v3beta1.services.transition_route_groups.transports.TransitionRouteGroupsTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.TransitionRouteGroupsTransport()
+        adc.assert_called_once()
+
+
 def test_transition_route_groups_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
@@ -1866,7 +2024,7 @@ def test_transition_route_groups_host_no_port():
             api_endpoint="dialogflow.googleapis.com"
         ),
     )
-    assert client._transport._host == "dialogflow.googleapis.com:443"
+    assert client.transport._host == "dialogflow.googleapis.com:443"
 
 
 def test_transition_route_groups_host_with_port():
@@ -1876,205 +2034,216 @@ def test_transition_route_groups_host_with_port():
             api_endpoint="dialogflow.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "dialogflow.googleapis.com:8000"
+    assert client.transport._host == "dialogflow.googleapis.com:8000"
 
 
 def test_transition_route_groups_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.TransitionRouteGroupsGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
 def test_transition_route_groups_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.TransitionRouteGroupsGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_transition_route_groups_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.TransitionRouteGroupsGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=(
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/dialogflow",
-        ),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_transition_route_groups_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.TransitionRouteGroupsGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=(
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/dialogflow",
-        ),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [
+        transports.TransitionRouteGroupsGrpcTransport,
+        transports.TransitionRouteGroupsGrpcAsyncIOTransport,
+    ],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_transition_route_groups_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
+def test_transition_route_groups_transport_channel_mtls_with_client_cert_source(
+    transport_class,
 ):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=(
+                    "https://www.googleapis.com/auth/cloud-platform",
+                    "https://www.googleapis.com/auth/dialogflow",
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TransitionRouteGroupsGrpcTransport,
+        transports.TransitionRouteGroupsGrpcAsyncIOTransport,
+    ],
+)
+def test_transition_route_groups_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.TransitionRouteGroupsGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/dialogflow",
-            ),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=(
+                    "https://www.googleapis.com/auth/cloud-platform",
+                    "https://www.googleapis.com/auth/dialogflow",
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_transition_route_groups_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.TransitionRouteGroupsGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/dialogflow",
-            ),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
-
-
-def test_transition_route_group_path():
+def test_flow_path():
     project = "squid"
     location = "clam"
     agent = "whelk"
     flow = "octopus"
-    transition_route_group = "oyster"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
+        project=project, location=location, agent=agent, flow=flow,
+    )
+    actual = TransitionRouteGroupsClient.flow_path(project, location, agent, flow)
+    assert expected == actual
+
+
+def test_parse_flow_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "flow": "mussel",
+    }
+    path = TransitionRouteGroupsClient.flow_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_flow_path(path)
+    assert expected == actual
+
+
+def test_intent_path():
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    intent = "abalone"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
+        project=project, location=location, agent=agent, intent=intent,
+    )
+    actual = TransitionRouteGroupsClient.intent_path(project, location, agent, intent)
+    assert expected == actual
+
+
+def test_parse_intent_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "intent": "octopus",
+    }
+    path = TransitionRouteGroupsClient.intent_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_intent_path(path)
+    assert expected == actual
+
+
+def test_page_path():
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    flow = "mussel"
+    page = "winkle"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
+        project=project, location=location, agent=agent, flow=flow, page=page,
+    )
+    actual = TransitionRouteGroupsClient.page_path(project, location, agent, flow, page)
+    assert expected == actual
+
+
+def test_parse_page_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "agent": "abalone",
+        "flow": "squid",
+        "page": "clam",
+    }
+    path = TransitionRouteGroupsClient.page_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_page_path(path)
+    assert expected == actual
+
+
+def test_transition_route_group_path():
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    flow = "nudibranch"
+    transition_route_group = "cuttlefish"
 
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
@@ -2091,16 +2260,144 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "agent": "mussel",
-        "flow": "winkle",
-        "transition_route_group": "nautilus",
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "flow": "scallop",
+        "transition_route_group": "abalone",
     }
     path = TransitionRouteGroupsClient.transition_route_group_path(**expected)
 
     # Check that the path construction is reversible.
     actual = TransitionRouteGroupsClient.parse_transition_route_group_path(path)
+    assert expected == actual
+
+
+def test_webhook_path():
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    webhook = "octopus"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
+        project=project, location=location, agent=agent, webhook=webhook,
+    )
+    actual = TransitionRouteGroupsClient.webhook_path(project, location, agent, webhook)
+    assert expected == actual
+
+
+def test_parse_webhook_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "webhook": "mussel",
+    }
+    path = TransitionRouteGroupsClient.webhook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_webhook_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "winkle"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = TransitionRouteGroupsClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "nautilus",
+    }
+    path = TransitionRouteGroupsClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "scallop"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = TransitionRouteGroupsClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "abalone",
+    }
+    path = TransitionRouteGroupsClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "squid"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = TransitionRouteGroupsClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "clam",
+    }
+    path = TransitionRouteGroupsClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "whelk"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = TransitionRouteGroupsClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "octopus",
+    }
+    path = TransitionRouteGroupsClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "oyster"
+    location = "nudibranch"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = TransitionRouteGroupsClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+    }
+    path = TransitionRouteGroupsClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TransitionRouteGroupsClient.parse_common_location_path(path)
     assert expected == actual
 
 

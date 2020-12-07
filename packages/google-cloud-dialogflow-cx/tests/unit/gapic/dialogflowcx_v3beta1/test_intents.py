@@ -88,12 +88,12 @@ def test_intents_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "dialogflow.googleapis.com:443"
+        assert client.transport._host == "dialogflow.googleapis.com:443"
 
 
 def test_intents_client_get_transport_class():
@@ -139,15 +139,14 @@ def test_intents_client_client_options(client_class, transport_class, transport_
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -156,15 +155,14 @@ def test_intents_client_client_options(client_class, transport_class, transport_
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "always".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -173,78 +171,22 @@ def test_intents_client_client_options(client_class, transport_class, transport_
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
-            patched.return_value = None
-            client = client_class(client_options=options)
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=client_cert_source_callback,
-                quota_project_id=None,
-                client_info=transports.base.DEFAULT_CLIENT_INFO,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_MTLS_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "Unsupported"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
             client = client_class()
 
     # Check the case quota_project_id is provided
@@ -257,11 +199,143 @@ def test_intents_client_client_options(client_class, transport_class, transport_
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (IntentsClient, transports.IntentsGrpcTransport, "grpc", "true"),
+        (
+            IntentsAsyncClient,
+            transports.IntentsGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (IntentsClient, transports.IntentsGrpcTransport, "grpc", "false"),
+        (
+            IntentsAsyncClient,
+            transports.IntentsGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    IntentsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IntentsClient)
+)
+@mock.patch.object(
+    IntentsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(IntentsAsyncClient)
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_intents_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -284,8 +358,7 @@ def test_intents_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -311,8 +384,7 @@ def test_intents_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -329,8 +401,7 @@ def test_intents_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -346,7 +417,7 @@ def test_list_intents(transport: str = "grpc", request_type=intent.ListIntentsRe
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_intents), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = intent.ListIntentsResponse(
             next_page_token="next_page_token_value",
@@ -361,6 +432,7 @@ def test_list_intents(transport: str = "grpc", request_type=intent.ListIntentsRe
         assert args[0] == intent.ListIntentsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListIntentsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -371,19 +443,19 @@ def test_list_intents_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_intents_async(transport: str = "grpc_asyncio"):
+async def test_list_intents_async(
+    transport: str = "grpc_asyncio", request_type=intent.ListIntentsRequest
+):
     client = IntentsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = intent.ListIntentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             intent.ListIntentsResponse(next_page_token="next_page_token_value",)
@@ -395,12 +467,17 @@ async def test_list_intents_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == intent.ListIntentsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListIntentsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_intents_async_from_dict():
+    await test_list_intents_async(request_type=dict)
 
 
 def test_list_intents_field_headers():
@@ -412,7 +489,7 @@ def test_list_intents_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_intents), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         call.return_value = intent.ListIntentsResponse()
 
         client.list_intents(request)
@@ -437,9 +514,7 @@ async def test_list_intents_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             intent.ListIntentsResponse()
         )
@@ -460,7 +535,7 @@ def test_list_intents_flattened():
     client = IntentsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_intents), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = intent.ListIntentsResponse()
 
@@ -492,9 +567,7 @@ async def test_list_intents_flattened_async():
     client = IntentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_intents), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = intent.ListIntentsResponse()
 
@@ -529,7 +602,7 @@ def test_list_intents_pager():
     client = IntentsClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_intents), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             intent.ListIntentsResponse(
@@ -561,7 +634,7 @@ def test_list_intents_pages():
     client = IntentsClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_intents), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_intents), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             intent.ListIntentsResponse(
@@ -586,9 +659,7 @@ async def test_list_intents_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_intents),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_intents), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -619,9 +690,7 @@ async def test_list_intents_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_intents),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_intents), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -653,19 +722,72 @@ def test_get_intent(transport: str = "grpc", request_type=intent.GetIntentReques
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = intent.Intent(
             name="name_value",
             display_name="display_name_value",
             priority=898,
             is_fallback=True,
+            description="description_value",
         )
 
         response = client.get_intent(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == intent.GetIntentRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, intent.Intent)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+    assert response.priority == 898
+
+    assert response.is_fallback is True
+
+    assert response.description == "description_value"
+
+
+def test_get_intent_from_dict():
+    test_get_intent(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_get_intent_async(
+    transport: str = "grpc_asyncio", request_type=intent.GetIntentRequest
+):
+    client = IntentsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            intent.Intent(
+                name="name_value",
+                display_name="display_name_value",
+                priority=898,
+                is_fallback=True,
+                description="description_value",
+            )
+        )
+
+        response = await client.get_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
         assert args[0] == intent.GetIntentRequest()
@@ -681,53 +803,12 @@ def test_get_intent(transport: str = "grpc", request_type=intent.GetIntentReques
 
     assert response.is_fallback is True
 
-
-def test_get_intent_from_dict():
-    test_get_intent(request_type=dict)
+    assert response.description == "description_value"
 
 
 @pytest.mark.asyncio
-async def test_get_intent_async(transport: str = "grpc_asyncio"):
-    client = IntentsAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = intent.GetIntentRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_intent), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            intent.Intent(
-                name="name_value",
-                display_name="display_name_value",
-                priority=898,
-                is_fallback=True,
-            )
-        )
-
-        response = await client.get_intent(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, intent.Intent)
-
-    assert response.name == "name_value"
-
-    assert response.display_name == "display_name_value"
-
-    assert response.priority == 898
-
-    assert response.is_fallback is True
+async def test_get_intent_async_from_dict():
+    await test_get_intent_async(request_type=dict)
 
 
 def test_get_intent_field_headers():
@@ -739,7 +820,7 @@ def test_get_intent_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
         call.return_value = intent.Intent()
 
         client.get_intent(request)
@@ -764,9 +845,7 @@ async def test_get_intent_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(intent.Intent())
 
         await client.get_intent(request)
@@ -785,7 +864,7 @@ def test_get_intent_flattened():
     client = IntentsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = intent.Intent()
 
@@ -817,9 +896,7 @@ async def test_get_intent_flattened_async():
     client = IntentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = intent.Intent()
 
@@ -860,19 +937,72 @@ def test_create_intent(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_intent.Intent(
             name="name_value",
             display_name="display_name_value",
             priority=898,
             is_fallback=True,
+            description="description_value",
         )
 
         response = client.create_intent(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcdc_intent.CreateIntentRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, gcdc_intent.Intent)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+    assert response.priority == 898
+
+    assert response.is_fallback is True
+
+    assert response.description == "description_value"
+
+
+def test_create_intent_from_dict():
+    test_create_intent(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_create_intent_async(
+    transport: str = "grpc_asyncio", request_type=gcdc_intent.CreateIntentRequest
+):
+    client = IntentsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_intent.Intent(
+                name="name_value",
+                display_name="display_name_value",
+                priority=898,
+                is_fallback=True,
+                description="description_value",
+            )
+        )
+
+        response = await client.create_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
         assert args[0] == gcdc_intent.CreateIntentRequest()
@@ -888,53 +1018,12 @@ def test_create_intent(
 
     assert response.is_fallback is True
 
-
-def test_create_intent_from_dict():
-    test_create_intent(request_type=dict)
+    assert response.description == "description_value"
 
 
 @pytest.mark.asyncio
-async def test_create_intent_async(transport: str = "grpc_asyncio"):
-    client = IntentsAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = gcdc_intent.CreateIntentRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_intent), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_intent.Intent(
-                name="name_value",
-                display_name="display_name_value",
-                priority=898,
-                is_fallback=True,
-            )
-        )
-
-        response = await client.create_intent(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_intent.Intent)
-
-    assert response.name == "name_value"
-
-    assert response.display_name == "display_name_value"
-
-    assert response.priority == 898
-
-    assert response.is_fallback is True
+async def test_create_intent_async_from_dict():
+    await test_create_intent_async(request_type=dict)
 
 
 def test_create_intent_field_headers():
@@ -946,7 +1035,7 @@ def test_create_intent_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
         call.return_value = gcdc_intent.Intent()
 
         client.create_intent(request)
@@ -971,9 +1060,7 @@ async def test_create_intent_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcdc_intent.Intent())
 
         await client.create_intent(request)
@@ -992,7 +1079,7 @@ def test_create_intent_flattened():
     client = IntentsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_intent.Intent()
 
@@ -1030,9 +1117,7 @@ async def test_create_intent_flattened_async():
     client = IntentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_intent.Intent()
 
@@ -1079,19 +1164,72 @@ def test_update_intent(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_intent.Intent(
             name="name_value",
             display_name="display_name_value",
             priority=898,
             is_fallback=True,
+            description="description_value",
         )
 
         response = client.update_intent(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcdc_intent.UpdateIntentRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, gcdc_intent.Intent)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+    assert response.priority == 898
+
+    assert response.is_fallback is True
+
+    assert response.description == "description_value"
+
+
+def test_update_intent_from_dict():
+    test_update_intent(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_update_intent_async(
+    transport: str = "grpc_asyncio", request_type=gcdc_intent.UpdateIntentRequest
+):
+    client = IntentsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_intent.Intent(
+                name="name_value",
+                display_name="display_name_value",
+                priority=898,
+                is_fallback=True,
+                description="description_value",
+            )
+        )
+
+        response = await client.update_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
         assert args[0] == gcdc_intent.UpdateIntentRequest()
@@ -1107,53 +1245,12 @@ def test_update_intent(
 
     assert response.is_fallback is True
 
-
-def test_update_intent_from_dict():
-    test_update_intent(request_type=dict)
+    assert response.description == "description_value"
 
 
 @pytest.mark.asyncio
-async def test_update_intent_async(transport: str = "grpc_asyncio"):
-    client = IntentsAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = gcdc_intent.UpdateIntentRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_intent), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gcdc_intent.Intent(
-                name="name_value",
-                display_name="display_name_value",
-                priority=898,
-                is_fallback=True,
-            )
-        )
-
-        response = await client.update_intent(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, gcdc_intent.Intent)
-
-    assert response.name == "name_value"
-
-    assert response.display_name == "display_name_value"
-
-    assert response.priority == 898
-
-    assert response.is_fallback is True
+async def test_update_intent_async_from_dict():
+    await test_update_intent_async(request_type=dict)
 
 
 def test_update_intent_field_headers():
@@ -1165,7 +1262,7 @@ def test_update_intent_field_headers():
     request.intent.name = "intent.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
         call.return_value = gcdc_intent.Intent()
 
         client.update_intent(request)
@@ -1190,9 +1287,7 @@ async def test_update_intent_field_headers_async():
     request.intent.name = "intent.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcdc_intent.Intent())
 
         await client.update_intent(request)
@@ -1211,7 +1306,7 @@ def test_update_intent_flattened():
     client = IntentsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_intent.Intent()
 
@@ -1250,9 +1345,7 @@ async def test_update_intent_flattened_async():
     client = IntentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_intent.Intent()
 
@@ -1300,7 +1393,7 @@ def test_delete_intent(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1321,19 +1414,19 @@ def test_delete_intent_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_intent_async(transport: str = "grpc_asyncio"):
+async def test_delete_intent_async(
+    transport: str = "grpc_asyncio", request_type=intent.DeleteIntentRequest
+):
     client = IntentsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = intent.DeleteIntentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1343,10 +1436,15 @@ async def test_delete_intent_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == intent.DeleteIntentRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_intent_async_from_dict():
+    await test_delete_intent_async(request_type=dict)
 
 
 def test_delete_intent_field_headers():
@@ -1358,7 +1456,7 @@ def test_delete_intent_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         call.return_value = None
 
         client.delete_intent(request)
@@ -1383,9 +1481,7 @@ async def test_delete_intent_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_intent(request)
@@ -1404,7 +1500,7 @@ def test_delete_intent_flattened():
     client = IntentsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_intent), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1436,9 +1532,7 @@ async def test_delete_intent_flattened_async():
     client = IntentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_intent), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1503,7 +1597,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = IntentsClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1521,10 +1615,22 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = IntentsClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.IntentsGrpcTransport,)
+    assert isinstance(client.transport, transports.IntentsGrpcTransport,)
 
 
 def test_intents_base_transport_error():
@@ -1582,6 +1688,17 @@ def test_intents_base_transport_with_credentials_file():
         )
 
 
+def test_intents_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.dialogflowcx_v3beta1.services.intents.transports.IntentsTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.IntentsTransport()
+        adc.assert_called_once()
+
+
 def test_intents_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
@@ -1620,7 +1737,7 @@ def test_intents_host_no_port():
             api_endpoint="dialogflow.googleapis.com"
         ),
     )
-    assert client._transport._host == "dialogflow.googleapis.com:443"
+    assert client.transport._host == "dialogflow.googleapis.com:443"
 
 
 def test_intents_host_with_port():
@@ -1630,204 +1747,151 @@ def test_intents_host_with_port():
             api_endpoint="dialogflow.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "dialogflow.googleapis.com:8000"
+    assert client.transport._host == "dialogflow.googleapis.com:8000"
 
 
 def test_intents_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.IntentsGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
 def test_intents_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.IntentsGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_intents_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.IntentsGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=(
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/dialogflow",
-        ),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_intents_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.IntentsGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=(
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/dialogflow",
-        ),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_intents_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_intents_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=(
+                    "https://www.googleapis.com/auth/cloud-platform",
+                    "https://www.googleapis.com/auth/dialogflow",
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.IntentsGrpcTransport, transports.IntentsGrpcAsyncIOTransport],
+)
+def test_intents_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.IntentsGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/dialogflow",
-            ),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=(
+                    "https://www.googleapis.com/auth/cloud-platform",
+                    "https://www.googleapis.com/auth/dialogflow",
+                ),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_intents_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.IntentsGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/dialogflow",
-            ),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
-
-
-def test_intent_path():
+def test_entity_type_path():
     project = "squid"
     location = "clam"
     agent = "whelk"
-    intent = "octopus"
+    entity_type = "octopus"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
+        project=project, location=location, agent=agent, entity_type=entity_type,
+    )
+    actual = IntentsClient.entity_type_path(project, location, agent, entity_type)
+    assert expected == actual
+
+
+def test_parse_entity_type_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "entity_type": "mussel",
+    }
+    path = IntentsClient.entity_type_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IntentsClient.parse_entity_type_path(path)
+    assert expected == actual
+
+
+def test_intent_path():
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    intent = "abalone"
 
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
         project=project, location=location, agent=agent, intent=intent,
@@ -1838,15 +1902,116 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "agent": "cuttlefish",
-        "intent": "mussel",
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "intent": "octopus",
     }
     path = IntentsClient.intent_path(**expected)
 
     # Check that the path construction is reversible.
     actual = IntentsClient.parse_intent_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "oyster"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = IntentsClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "nudibranch",
+    }
+    path = IntentsClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IntentsClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "cuttlefish"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = IntentsClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "mussel",
+    }
+    path = IntentsClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IntentsClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "winkle"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = IntentsClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nautilus",
+    }
+    path = IntentsClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IntentsClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "scallop"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = IntentsClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "abalone",
+    }
+    path = IntentsClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IntentsClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "squid"
+    location = "clam"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = IntentsClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+    }
+    path = IntentsClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = IntentsClient.parse_common_location_path(path)
     assert expected == actual
 
 

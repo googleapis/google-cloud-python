@@ -16,17 +16,29 @@
 #
 
 from collections import OrderedDict
+from distutils import util
 import os
 import re
-from typing import Callable, Dict, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Callable,
+    Dict,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -131,6 +143,49 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> SessionsTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            SessionsTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def entity_type_path(
+        project: str, location: str, agent: str, entity_type: str,
+    ) -> str:
+        """Return a fully-qualified entity_type string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
+            project=project, location=location, agent=agent, entity_type=entity_type,
+        )
+
+    @staticmethod
+    def parse_entity_type_path(path: str) -> Dict[str, str]:
+        """Parse a entity_type path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/entityTypes/(?P<entity_type>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def flow_path(project: str, location: str, agent: str, flow: str,) -> str:
+        """Return a fully-qualified flow string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
+            project=project, location=location, agent=agent, flow=flow,
+        )
+
+    @staticmethod
+    def parse_flow_path(path: str) -> Dict[str, str]:
+        """Parse a flow path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
     @staticmethod
     def intent_path(project: str, location: str, agent: str, intent: str,) -> str:
         """Return a fully-qualified intent string."""
@@ -143,6 +198,40 @@ class SessionsClient(metaclass=SessionsClientMeta):
         """Parse a intent path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/intents/(?P<intent>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def page_path(
+        project: str, location: str, agent: str, flow: str, page: str,
+    ) -> str:
+        """Return a fully-qualified page string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
+            project=project, location=location, agent=agent, flow=flow, page=page,
+        )
+
+    @staticmethod
+    def parse_page_path(path: str) -> Dict[str, str]:
+        """Parse a page path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/pages/(?P<page>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def session_path(project: str, location: str, agent: str, session: str,) -> str:
+        """Return a fully-qualified session string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}".format(
+            project=project, location=location, agent=agent, session=session,
+        )
+
+    @staticmethod
+    def parse_session_path(path: str) -> Dict[str, str]:
+        """Parse a session path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/sessions/(?P<session>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -169,12 +258,109 @@ class SessionsClient(metaclass=SessionsClientMeta):
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def transition_route_group_path(
+        project: str, location: str, agent: str, flow: str, transition_route_group: str,
+    ) -> str:
+        """Return a fully-qualified transition_route_group string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+            transition_route_group=transition_route_group,
+        )
+
+    @staticmethod
+    def parse_transition_route_group_path(path: str) -> Dict[str, str]:
+        """Parse a transition_route_group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/transitionRouteGroups/(?P<transition_route_group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def webhook_path(project: str, location: str, agent: str, webhook: str,) -> str:
+        """Return a fully-qualified webhook string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
+            project=project, location=location, agent=agent, webhook=webhook,
+        )
+
+    @staticmethod
+    def parse_webhook_path(path: str) -> Dict[str, str]:
+        """Parse a webhook path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/webhooks/(?P<webhook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, SessionsTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, SessionsTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the sessions client.
@@ -188,23 +374,26 @@ class SessionsClient(metaclass=SessionsClientMeta):
             transport (Union[str, ~.SessionsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (client_options_lib.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -212,29 +401,47 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        )
+
+        ssl_credentials = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                import grpc  # type: ignore
+
+                cert, key = client_options.client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
                 )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
+                is_mtls = True
+            else:
+                creds = SslCredentials()
+                is_mtls = creds.is_mtls
+                ssl_credentials = creds.ssl_credentials if is_mtls else None
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -258,10 +465,9 @@ class SessionsClient(metaclass=SessionsClientMeta):
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
-                host=client_options.api_endpoint,
+                host=api_endpoint,
                 scopes=client_options.scopes,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
+                ssl_channel_credentials=ssl_credentials,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -340,7 +546,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 client to the
                 [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3beta1.Sessions.StreamingDetectIntent]
                 method.
-
                 Multiple request messages should be sent in order:
 
                 1.  The first message must contain
@@ -348,19 +553,19 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 [query_input][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_input]
                 plus optionally
                 [query_params][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_params].
-                If the client wants to receive an audio response, it
+                If the client     wants to receive an audio response, it
                 should also contain
                 [output_audio_config][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.output_audio_config].
                 2.  If
                 [query_input][google.cloud.dialogflow.cx.v3beta1.StreamingDetectIntentRequest.query_input]
                 was set to
                 [query_input.audio.config][google.cloud.dialogflow.cx.v3beta1.AudioInput.config],
-                all subsequent messages must contain
+                all subsequent messages     must contain
                 [query_input.audio.audio][google.cloud.dialogflow.cx.v3beta1.AudioInput.audio]
-                to continue with Speech recognition. If you decide to
-                rather detect an     intent from text input after you
-                already started Speech recognition,     please send a
-                message with
+                to continue with     Speech recognition.
+                    If you decide to rather detect an intent from text
+                input after you already started Speech recognition,
+                please send a message     with
                 [query_input.text][google.cloud.dialogflow.cx.v3beta1.QueryInput.text].
                     However, note that:
 

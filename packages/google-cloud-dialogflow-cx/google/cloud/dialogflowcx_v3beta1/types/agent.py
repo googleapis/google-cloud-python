@@ -126,7 +126,7 @@ class Agent(proto.Message):
     avatar_uri = proto.Field(proto.STRING, number=7)
 
     speech_to_text_settings = proto.Field(
-        proto.MESSAGE, number=13, message=SpeechToTextSettings,
+        proto.MESSAGE, number=13, message="SpeechToTextSettings",
     )
 
     start_flow = proto.Field(proto.STRING, number=16)
@@ -177,7 +177,7 @@ class ListAgentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    agents = proto.RepeatedField(proto.MESSAGE, number=1, message=Agent,)
+    agents = proto.RepeatedField(proto.MESSAGE, number=1, message="Agent",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -209,7 +209,7 @@ class CreateAgentRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    agent = proto.Field(proto.MESSAGE, number=2, message=Agent,)
+    agent = proto.Field(proto.MESSAGE, number=2, message="Agent",)
 
 
 class UpdateAgentRequest(proto.Message):
@@ -225,7 +225,7 @@ class UpdateAgentRequest(proto.Message):
             updated.
     """
 
-    agent = proto.Field(proto.MESSAGE, number=1, message=Agent,)
+    agent = proto.Field(proto.MESSAGE, number=1, message="Agent",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 

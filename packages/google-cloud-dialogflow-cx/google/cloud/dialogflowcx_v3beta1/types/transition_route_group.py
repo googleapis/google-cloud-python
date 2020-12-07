@@ -133,7 +133,7 @@ class ListTransitionRouteGroupsResponse(proto.Message):
         return self
 
     transition_route_groups = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=TransitionRouteGroup,
+        proto.MESSAGE, number=1, message="TransitionRouteGroup",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -198,7 +198,7 @@ class CreateTransitionRouteGroupRequest(proto.Message):
     parent = proto.Field(proto.STRING, number=1)
 
     transition_route_group = proto.Field(
-        proto.MESSAGE, number=2, message=TransitionRouteGroup,
+        proto.MESSAGE, number=2, message="TransitionRouteGroup",
     )
 
     language_code = proto.Field(proto.STRING, number=3)
@@ -229,7 +229,7 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
     """
 
     transition_route_group = proto.Field(
-        proto.MESSAGE, number=1, message=TransitionRouteGroup,
+        proto.MESSAGE, number=1, message="TransitionRouteGroup",
     )
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)

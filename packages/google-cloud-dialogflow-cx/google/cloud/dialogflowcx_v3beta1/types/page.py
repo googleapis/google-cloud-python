@@ -181,6 +181,12 @@ class Form(proto.Message):
                 The default value of an optional parameter.
                 If the parameter is required, the default value
                 will be ignored.
+            redact (bool):
+                Indicates whether the parameter content is
+                logged in text and audio. If it is set to true,
+                the parameter content will be replaced to
+                parameter name in both request and response. The
+                default value is false.
         """
 
         class FillBehavior(proto.Message):
@@ -253,6 +259,8 @@ class Form(proto.Message):
         )
 
         default_value = proto.Field(proto.MESSAGE, number=9, message=struct.Value,)
+
+        redact = proto.Field(proto.BOOL, number=11)
 
     parameters = proto.RepeatedField(proto.MESSAGE, number=1, message=Parameter,)
 
@@ -440,7 +448,7 @@ class ListPagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    pages = proto.RepeatedField(proto.MESSAGE, number=1, message=Page,)
+    pages = proto.RepeatedField(proto.MESSAGE, number=1, message="Page",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -507,7 +515,7 @@ class CreatePageRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    page = proto.Field(proto.MESSAGE, number=2, message=Page,)
+    page = proto.Field(proto.MESSAGE, number=2, message="Page",)
 
     language_code = proto.Field(proto.STRING, number=3)
 
@@ -541,7 +549,7 @@ class UpdatePageRequest(proto.Message):
             updated.
     """
 
-    page = proto.Field(proto.MESSAGE, number=1, message=Page,)
+    page = proto.Field(proto.MESSAGE, number=1, message="Page",)
 
     language_code = proto.Field(proto.STRING, number=2)
 

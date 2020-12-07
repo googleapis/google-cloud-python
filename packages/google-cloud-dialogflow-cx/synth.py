@@ -25,22 +25,25 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate dialogflow CX GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="dialogflow",
-    version="v3beta1",
-    bazel_target="//google/cloud/dialogflow/cx/v3beta1:dialogflow-cx-v3beta1-py",
+versions = ["v3beta1", "v3"]
 
-)
+for version in versions:
+    library = gapic.py_library(
+        service="dialogflow",
+        version=version,
+        bazel_target=f"//google/cloud/dialogflow/cx/{version}:dialogflow-cx-{version}-py",
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "docs/index.rst",
-        "noxfile.py",
-        "scripts/fixup_dialogflowcx_v3beta1_keywords.py",
-    ],
-)
+    )
+
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "docs/index.rst",
+            "noxfile.py",
+            f"scripts/fixup_dialogflowcx_{version}_keywords.py",
+        ],
+    )
 
 # ----------------------------------------------------------------------------
 # Add templated files

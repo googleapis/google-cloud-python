@@ -134,7 +134,7 @@ class ListSessionEntityTypesResponse(proto.Message):
         return self
 
     session_entity_types = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=SessionEntityType,
+        proto.MESSAGE, number=1, message="SessionEntityType",
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -177,7 +177,7 @@ class CreateSessionEntityTypeRequest(proto.Message):
     parent = proto.Field(proto.STRING, number=1)
 
     session_entity_type = proto.Field(
-        proto.MESSAGE, number=2, message=SessionEntityType,
+        proto.MESSAGE, number=2, message="SessionEntityType",
     )
 
 
@@ -198,7 +198,7 @@ class UpdateSessionEntityTypeRequest(proto.Message):
     """
 
     session_entity_type = proto.Field(
-        proto.MESSAGE, number=1, message=SessionEntityType,
+        proto.MESSAGE, number=1, message="SessionEntityType",
     )
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)

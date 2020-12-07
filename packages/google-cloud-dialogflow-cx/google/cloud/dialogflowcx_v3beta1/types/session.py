@@ -43,11 +43,14 @@ __protobuf__ = proto.module(
         "TextInput",
         "IntentInput",
         "AudioInput",
+        "EventInput",
+        "DtmfInput",
         "Match",
         "MatchIntentRequest",
         "MatchIntentResponse",
         "FulfillIntentRequest",
         "FulfillIntentResponse",
+        "SentimentAnalysisResult",
     },
 )
 
@@ -67,6 +70,9 @@ class DetectIntentRequest(proto.Message):
             appropriate ``Session ID``. It can be a random number or
             some type of session identifiers (preferably hashed). The
             length of the ``Session ID`` must not exceed 36 characters.
+
+            For more information, see the `sessions
+            guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
         query_params (~.gcdc_session.QueryParameters):
             The parameters of this query.
         query_input (~.gcdc_session.QueryInput):
@@ -176,6 +182,9 @@ class StreamingDetectIntentRequest(proto.Message):
             some type of session identifiers (preferably hashed). The
             length of the ``Session ID`` must not exceed 36 characters.
             Note: session must be set in the first request.
+
+            For more information, see the `sessions
+            guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
         query_params (~.gcdc_session.QueryParameters):
             The parameters of this query.
         query_input (~.gcdc_session.QueryInput):
@@ -222,7 +231,7 @@ class StreamingDetectIntentResponse(proto.Message):
     )
 
     detect_intent_response = proto.Field(
-        proto.MESSAGE, number=2, oneof="response", message=DetectIntentResponse,
+        proto.MESSAGE, number=2, oneof="response", message="DetectIntentResponse",
     )
 
 
@@ -373,6 +382,10 @@ class QueryParameters(proto.Message):
                   from composite entity property names to property
                   values
                -  Else: parameter value
+        analyze_query_text_sentiment (bool):
+            Configures whether sentiment analysis should
+            be performed. If not provided, sentiment
+            analysis is not performed.
     """
 
     time_zone = proto.Field(proto.STRING, number=1)
@@ -387,12 +400,17 @@ class QueryParameters(proto.Message):
 
     parameters = proto.Field(proto.MESSAGE, number=5, message=struct.Struct,)
 
+    analyze_query_text_sentiment = proto.Field(proto.BOOL, number=8)
+
 
 class QueryInput(proto.Message):
-    r"""Represents the query input. It can contain either:
+    r"""Represents the query input. It can contain one of:
     1.  A conversational query in the form of text.
 
     2.  An intent query that specifies which intent to trigger.
+    3.  Natural language speech audio to be processed.
+
+    4.  An event to be triggered.
 
     Attributes:
         text (~.gcdc_session.TextInput):
@@ -402,6 +420,10 @@ class QueryInput(proto.Message):
         audio (~.gcdc_session.AudioInput):
             The natural language speech audio to be
             processed.
+        event (~.gcdc_session.EventInput):
+            The event to be triggered.
+        dtmf (~.gcdc_session.DtmfInput):
+            The DTMF event to be handled.
         language_code (str):
             Required. The language of the input. See `Language
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
@@ -415,6 +437,10 @@ class QueryInput(proto.Message):
     intent = proto.Field(proto.MESSAGE, number=3, oneof="input", message="IntentInput",)
 
     audio = proto.Field(proto.MESSAGE, number=5, oneof="input", message="AudioInput",)
+
+    event = proto.Field(proto.MESSAGE, number=6, oneof="input", message="EventInput",)
+
+    dtmf = proto.Field(proto.MESSAGE, number=7, oneof="input", message="DtmfInput",)
 
     language_code = proto.Field(proto.STRING, number=4)
 
@@ -514,6 +540,11 @@ class QueryResult(proto.Message):
             this field could contain webhook call latency.
             The string keys of the Struct's fields map can
             change without notice.
+        sentiment_analysis_result (~.gcdc_session.SentimentAnalysisResult):
+            The sentiment analyss result, which depends on
+            [``analyze_query_text_sentiment``]
+            [google.cloud.dialogflow.cx.v3beta1.QueryParameters.analyze_query_text_sentiment],
+            specified in the request.
     """
 
     text = proto.Field(proto.STRING, number=1, oneof="query")
@@ -549,6 +580,10 @@ class QueryResult(proto.Message):
     match = proto.Field(proto.MESSAGE, number=15, message="Match",)
 
     diagnostic_info = proto.Field(proto.MESSAGE, number=10, message=struct.Struct,)
+
+    sentiment_analysis_result = proto.Field(
+        proto.MESSAGE, number=17, message="SentimentAnalysisResult",
+    )
 
 
 class TextInput(proto.Message):
@@ -604,6 +639,32 @@ class AudioInput(proto.Message):
     audio = proto.Field(proto.BYTES, number=2)
 
 
+class EventInput(proto.Message):
+    r"""Represents the event to trigger.
+
+    Attributes:
+        event (str):
+            Name of the event.
+    """
+
+    event = proto.Field(proto.STRING, number=1)
+
+
+class DtmfInput(proto.Message):
+    r"""Represents the input for dtmf event.
+
+    Attributes:
+        digits (str):
+            The dtmf digits.
+        finish_digit (str):
+            The finish digit (if any).
+    """
+
+    digits = proto.Field(proto.STRING, number=1)
+
+    finish_digit = proto.Field(proto.STRING, number=2)
+
+
 class Match(proto.Message):
     r"""Represents one match result of [MatchIntent][].
 
@@ -614,6 +675,10 @@ class Match(proto.Message):
             message, including but not limited to: ``name`` and
             ``display_name``. Only filled for
             [``INTENT``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType]
+            match type.
+        event (str):
+            The event that matched the query. Only filled for
+            [``EVENT``][google.cloud.dialogflow.cx.v3beta1.Match.MatchType]
             match type.
         parameters (~.struct.Struct):
             The collection of parameters extracted from
@@ -662,8 +727,11 @@ class Match(proto.Message):
         PARAMETER_FILLING = 3
         NO_MATCH = 4
         NO_INPUT = 5
+        EVENT = 6
 
     intent = proto.Field(proto.MESSAGE, number=1, message=gcdc_intent.Intent,)
+
+    event = proto.Field(proto.STRING, number=6)
 
     parameters = proto.Field(proto.MESSAGE, number=2, message=struct.Struct,)
 
@@ -689,6 +757,9 @@ class MatchIntentRequest(proto.Message):
             appropriate ``Session ID``. It can be a random number or
             some type of session identifiers (preferably hashed). The
             length of the ``Session ID`` must not exceed 36 characters.
+
+            For more information, see the `sessions
+            guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
         query_params (~.gcdc_session.QueryParameters):
             The parameters of this query.
         query_input (~.gcdc_session.QueryInput):
@@ -697,9 +768,9 @@ class MatchIntentRequest(proto.Message):
 
     session = proto.Field(proto.STRING, number=1)
 
-    query_params = proto.Field(proto.MESSAGE, number=2, message=QueryParameters,)
+    query_params = proto.Field(proto.MESSAGE, number=2, message="QueryParameters",)
 
-    query_input = proto.Field(proto.MESSAGE, number=3, message=QueryInput,)
+    query_input = proto.Field(proto.MESSAGE, number=3, message="QueryInput",)
 
 
 class MatchIntentResponse(proto.Message):
@@ -721,6 +792,10 @@ class MatchIntentResponse(proto.Message):
             audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
             provided as input, this field will contain the trascript for
             the audio.
+        trigger_event (str):
+            If an [event][google.cloud.dialogflow.cx.v3beta1.EventInput]
+            was provided as input, this field will contain a copy of the
+            event name.
         matches (Sequence[~.gcdc_session.Match]):
             Match results, if more than one, ordered
             descendingly by the confidence we have that the
@@ -737,7 +812,9 @@ class MatchIntentResponse(proto.Message):
 
     transcript = proto.Field(proto.STRING, number=3, oneof="query")
 
-    matches = proto.RepeatedField(proto.MESSAGE, number=4, message=Match,)
+    trigger_event = proto.Field(proto.STRING, number=6, oneof="query")
+
+    matches = proto.RepeatedField(proto.MESSAGE, number=4, message="Match",)
 
     current_page = proto.Field(proto.MESSAGE, number=5, message=page.Page,)
 
@@ -757,10 +834,10 @@ class FulfillIntentRequest(proto.Message):
     """
 
     match_intent_request = proto.Field(
-        proto.MESSAGE, number=1, message=MatchIntentRequest,
+        proto.MESSAGE, number=1, message="MatchIntentRequest",
     )
 
-    match = proto.Field(proto.MESSAGE, number=2, message=Match,)
+    match = proto.Field(proto.MESSAGE, number=2, message="Match",)
 
     output_audio_config = proto.Field(
         proto.MESSAGE, number=3, message=audio_config.OutputAudioConfig,
@@ -798,13 +875,34 @@ class FulfillIntentResponse(proto.Message):
 
     response_id = proto.Field(proto.STRING, number=1)
 
-    query_result = proto.Field(proto.MESSAGE, number=2, message=QueryResult,)
+    query_result = proto.Field(proto.MESSAGE, number=2, message="QueryResult",)
 
     output_audio = proto.Field(proto.BYTES, number=3)
 
     output_audio_config = proto.Field(
         proto.MESSAGE, number=4, message=audio_config.OutputAudioConfig,
     )
+
+
+class SentimentAnalysisResult(proto.Message):
+    r"""The result of sentiment analysis. Sentiment analysis inspects
+    user input and identifies the prevailing subjective opinion,
+    especially to determine a user's attitude as positive, negative,
+    or neutral.
+
+    Attributes:
+        score (float):
+            Sentiment score between -1.0 (negative
+            sentiment) and 1.0 (positive sentiment).
+        magnitude (float):
+            A non-negative number in the [0, +inf) range, which
+            represents the absolute magnitude of sentiment, regardless
+            of score (positive or negative).
+    """
+
+    score = proto.Field(proto.FLOAT, number=1)
+
+    magnitude = proto.Field(proto.FLOAT, number=2)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

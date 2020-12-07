@@ -90,6 +90,26 @@ class Intent(proto.Message):
             mistakenly matched, since training phrases
             assigned to fallback intents act as negative
             examples that triggers no-match event.
+        labels (Sequence[~.gcdc_intent.Intent.LabelsEntry]):
+            Optional. The key/value metadata to label an intent. Labels
+            can contain lowercase letters, digits and the symbols '-'
+            and '_'. International characters are allowed, including
+            letters from unicase alphabets. Keys must start with a
+            letter. Keys and values can be no longer than 63 characters
+            and no more than 128 bytes.
+
+            Prefix "sys-" is reserved for Dialogflow defined labels.
+            Currently allowed Dialogflow defined labels include:
+
+            -  sys-head
+            -  sys-contextual The above labels do not require value.
+               "sys-head" means the intent is a head intent.
+               "sys-contextual" means the intent is a contextual intent.
+        description (str):
+            Optional. Human readable description for
+            better understanding an intent like its scope,
+            content, result etc. Maximum character limit:
+            140 characters.
     """
 
     class TrainingPhrase(proto.Message):
@@ -176,6 +196,12 @@ class Intent(proto.Message):
             is_list (bool):
                 Indicates whether the parameter represents a
                 list of values.
+            redact (bool):
+                Indicates whether the parameter content is
+                logged in text and audio. If it is set to true,
+                the parameter content will be replaced to
+                parameter id in both request and response. The
+                default value is false.
         """
 
         id = proto.Field(proto.STRING, number=1)
@@ -183,6 +209,8 @@ class Intent(proto.Message):
         entity_type = proto.Field(proto.STRING, number=2)
 
         is_list = proto.Field(proto.BOOL, number=3)
+
+        redact = proto.Field(proto.BOOL, number=4)
 
     name = proto.Field(proto.STRING, number=1)
 
@@ -197,6 +225,10 @@ class Intent(proto.Message):
     priority = proto.Field(proto.INT32, number=5)
 
     is_fallback = proto.Field(proto.BOOL, number=6)
+
+    labels = proto.MapField(proto.STRING, proto.STRING, number=7)
+
+    description = proto.Field(proto.STRING, number=8)
 
 
 class ListIntentsRequest(proto.Message):
@@ -258,7 +290,7 @@ class ListIntentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intents = proto.RepeatedField(proto.MESSAGE, number=1, message=Intent,)
+    intents = proto.RepeatedField(proto.MESSAGE, number=1, message="Intent",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -313,7 +345,7 @@ class CreateIntentRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    intent = proto.Field(proto.MESSAGE, number=2, message=Intent,)
+    intent = proto.Field(proto.MESSAGE, number=2, message="Intent",)
 
     language_code = proto.Field(proto.STRING, number=3)
 
@@ -341,7 +373,7 @@ class UpdateIntentRequest(proto.Message):
             updated.
     """
 
-    intent = proto.Field(proto.MESSAGE, number=1, message=Intent,)
+    intent = proto.Field(proto.MESSAGE, number=1, message="Intent",)
 
     language_code = proto.Field(proto.STRING, number=2)
 

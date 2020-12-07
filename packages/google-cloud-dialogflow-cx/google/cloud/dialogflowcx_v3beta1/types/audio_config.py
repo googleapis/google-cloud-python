@@ -269,7 +269,7 @@ class SynthesizeSpeechConfig(proto.Message):
 
     effects_profile_id = proto.RepeatedField(proto.STRING, number=5)
 
-    voice = proto.Field(proto.MESSAGE, number=4, message=VoiceSelectionParams,)
+    voice = proto.Field(proto.MESSAGE, number=4, message="VoiceSelectionParams",)
 
 
 class OutputAudioConfig(proto.Message):
@@ -299,7 +299,7 @@ class OutputAudioConfig(proto.Message):
     sample_rate_hertz = proto.Field(proto.INT32, number=2)
 
     synthesize_speech_config = proto.Field(
-        proto.MESSAGE, number=3, message=SynthesizeSpeechConfig,
+        proto.MESSAGE, number=3, message="SynthesizeSpeechConfig",
     )
 
 
