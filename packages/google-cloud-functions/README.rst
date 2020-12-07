@@ -15,7 +15,7 @@ Python Client for Cloud Functions
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-functions.svg
    :target: https://pypi.org/project/google-cloud-functions
 .. _Cloud Functions API: https://cloud.google.com/functions/
-.. _Client Library Documentation: https://googleapis.dev/python/cloudfunctionslatest
+.. _Client Library Documentation: https://googleapis.dev/python/cloudfunctions/latest
 .. _Product Documentation:  https://cloud.google.com/functions/
 
 Quick Start
