@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.1.1...v0.2.0) (2020-12-07)
+
+
+### Features
+
+* add v3 ([#21](https://www.github.com/googleapis/python-dialogflow-cx/issues/21)) ([97c7fb5](https://www.github.com/googleapis/python-dialogflow-cx/commit/97c7fb53e5f6af7d8b0fea3043c60da9ee1f549b))
+
 ### [0.1.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.1.0...v0.1.1) (2020-11-17)
 
 
