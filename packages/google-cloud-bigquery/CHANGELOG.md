@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-bigquery/compare/v2.5.0...v2.6.0) (2020-12-07)
+
+
+### Features
+
+* add support for materialized views ([#408](https://www.github.com/googleapis/python-bigquery/issues/408)) ([57ffc66](https://www.github.com/googleapis/python-bigquery/commit/57ffc665319331e0a00583d5d652fd14a510cf2a)), closes [#407](https://www.github.com/googleapis/python-bigquery/issues/407)
+* convert `BIGNUMERIC` values to decimal objects ([#414](https://www.github.com/googleapis/python-bigquery/issues/414)) ([d472d2d](https://www.github.com/googleapis/python-bigquery/commit/d472d2d2b33e40b954652d31476dea8c90e6a2dc)), closes [#367](https://www.github.com/googleapis/python-bigquery/issues/367)
+* support CSV format in `load_table_from_dataframe` pandas connector ([#399](https://www.github.com/googleapis/python-bigquery/issues/399)) ([0046742](https://www.github.com/googleapis/python-bigquery/commit/0046742abdd2b5eab3c3e935316f91e7eef44d44))
+
+
+### Bug Fixes
+
+* preserve timestamp microsecond precision with rows from REST API ([#402](https://www.github.com/googleapis/python-bigquery/issues/402)) ([04510a7](https://www.github.com/googleapis/python-bigquery/commit/04510a7dc7570466550bbdf500d7020bef2af44d))
+
+
+### Documentation
+
+* update intersphinx links ([#404](https://www.github.com/googleapis/python-bigquery/issues/404)) ([a9d8ae8](https://www.github.com/googleapis/python-bigquery/commit/a9d8ae8a920dec655b77dca9d9128e569f1d07a7))
+
 ## [2.5.0](https://www.github.com/googleapis/python-bigquery/compare/v2.4.0...v2.5.0) (2020-12-02)
 
 
