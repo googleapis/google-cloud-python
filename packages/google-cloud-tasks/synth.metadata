@@ -3,22 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-tasks.git",
-        "sha": "1a5a65fd55ba23421b4e7fbce0e74a46697ba092"
+        "remote": "git@github.com:googleapis/python-tasks",
+        "sha": "2261c21b962c7e0aaa3e1b5c7c66a04258ec0339"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "d9bc6eb41bdacddcd5bd3a0af581bc769cc080d3",
+        "internalRef": "346185632"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d91dd8aac77f7a9c5506c238038a26fa4f9e361e"
+        "sha": "5d11bd2888c38ce1fb6fa6bf25494a4219a73928"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d91dd8aac77f7a9c5506c238038a26fa4f9e361e"
+        "sha": "5d11bd2888c38ce1fb6fa6bf25494a4219a73928"
       }
     }
   ],

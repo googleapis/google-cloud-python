@@ -139,7 +139,7 @@ class Queue(proto.Message):
             Configuration options for writing logs to `Stackdriver
             Logging <https://cloud.google.com/logging/docs/>`__. If this
             field is unset, then no logs are written.
-        type (~.queue.Queue.Type):
+        type_ (~.queue.Queue.Type):
             Immutable. The type of a queue (push or pull).
 
             ``Queue.type`` is an immutable property of the queue that is
@@ -178,7 +178,7 @@ class Queue(proto.Message):
         proto.MESSAGE, number=10, message="StackdriverLoggingConfig",
     )
 
-    type = proto.Field(proto.ENUM, number=11, enum=Type,)
+    type_ = proto.Field(proto.ENUM, number=11, enum=Type,)
 
 
 class RateLimits(proto.Message):
