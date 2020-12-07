@@ -37,6 +37,7 @@ from google.cloud.spanner_dbapi import parse_utils
 from google.cloud.spanner_dbapi.parse_utils import get_param_types
 from google.cloud.spanner_dbapi.parse_utils import sql_pyformat_args_to_spanner
 from google.cloud.spanner_dbapi.utils import PeekIterator
+from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
 
 _UNSET_COUNT = -1
 
@@ -210,8 +211,20 @@ class Cursor(object):
         """
         self._raise_if_closed()
 
+        classification = parse_utils.classify_stmt(operation)
+        if classification == parse_utils.STMT_DDL:
+            raise ProgrammingError(
+                "Executing DDL statements with executemany() method is not allowed."
+            )
+
+        many_result_set = StreamedManyResultSets()
+
         for params in seq_of_params:
             self.execute(operation, params)
+            many_result_set.add_iter(self._itr)
+
+        self._result_set = many_result_set
+        self._itr = many_result_set
 
     def fetchone(self):
         """Fetch the next row of a query result set, returning a single

@@ -305,6 +305,46 @@ VALUES
 
         self.assertEqual(cursor._checksum.checksum.digest(), checksum.digest())
 
+    def test_execute_many(self):
+        # connect to the test database
+        conn = Connection(Config.INSTANCE, self._db)
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+INSERT INTO contacts (contact_id, first_name, last_name, email)
+VALUES (1, 'first-name', 'last-name', 'test.email@example.com'),
+       (2, 'first-name2', 'last-name2', 'test.email2@example.com')
+        """
+        )
+        conn.commit()
+
+        cursor.executemany(
+            """
+SELECT * FROM contacts WHERE contact_id = @a1
+""",
+            ({"a1": 1}, {"a1": 2}),
+        )
+        res = cursor.fetchall()
+        conn.commit()
+
+        self.assertEqual(len(res), 2)
+        self.assertEqual(res[0][0], 1)
+        self.assertEqual(res[1][0], 2)
+
+        # checking that execute() and executemany()
+        # results are not mixed together
+        cursor.execute(
+            """
+SELECT * FROM contacts WHERE contact_id = 1
+""",
+        )
+        res = cursor.fetchone()
+        conn.commit()
+
+        self.assertEqual(res[0], 1)
+        conn.close()
+
 
 def clear_table(transaction):
     """Clear the test table."""
