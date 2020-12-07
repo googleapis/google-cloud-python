@@ -5,6 +5,22 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.0.0](https://www.github.com/googleapis/python-phishingprotection/compare/v0.4.0...v1.0.0) (2020-12-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Move to API to python microgenerator. See [Migration Guide](https://github.com/googleapis/python-phishingprotection/blob/master/UPGRADING.md). (#31)
+
+### Features
+
+* move to API to python microgenerator ([#31](https://www.github.com/googleapis/python-phishingprotection/issues/31)) ([826fabd](https://www.github.com/googleapis/python-phishingprotection/commit/826fabd0b6591a7cca7cfcdbcc16b853c067cd3d))
+
+
+### Bug Fixes
+
+* update retry config ([#27](https://www.github.com/googleapis/python-phishingprotection/issues/27)) ([c0418ae](https://www.github.com/googleapis/python-phishingprotection/commit/c0418ae2e4d13f32706d3ce6844c6260b27ca0b7))
+
 ## [0.4.0](https://www.github.com/googleapis/python-phishingprotection/compare/v0.3.0...v0.4.0) (2020-06-23)
 
 
