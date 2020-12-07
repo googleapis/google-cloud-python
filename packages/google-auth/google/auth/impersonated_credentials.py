@@ -148,7 +148,7 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
     Initialize a source credential which does not have access to
     list bucket::
 
-        from google.oauth2 import service_acccount
+        from google.oauth2 import service_account
 
         target_scopes = [
             'https://www.googleapis.com/auth/devstorage.read_only']
