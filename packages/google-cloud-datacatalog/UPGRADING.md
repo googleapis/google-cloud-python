@@ -1,13 +1,13 @@
-# 2.0.0 Migration Guide
+# 3.0.0 Migration Guide
 
-The 2.0 release of the `google-cloud-datacatalog` client is a significant upgrade based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for earlier versions of this library will likely require updates to use this version. This document describes the changes that have been made, and what you need to do to update your usage.
+The 3.0 release of the `google-cloud-datacatalog` client is a significant upgrade based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for earlier versions of this library will likely require updates to use this version. This document describes the changes that have been made, and what you need to do to update your usage.
 
 If you experience issues or have questions, please file an [issue](https://github.com/googleapis/python-datacatalog/issues).
 
 ## Supported Python Versions
 
 > **WARNING**: Breaking change
-The 2.0.0 release requires Python 3.6+.
+The 3.0.0 release requires Python 3.6+.
 
 
 ## Method Calls
@@ -45,7 +45,7 @@ return datacatalog.lookup_entry(request={'linked_resource': resource_name})
 
 ### More Details
 
-In `google-cloud-datacatalog<2.0.0`, parameters required by the API were positional parameters and optional parameters were keyword parameters.
+In `google-cloud-datacatalog<=1.0.0`, parameters required by the API were positional parameters and optional parameters were keyword parameters.
 
 **Before:**
 ```py
@@ -60,7 +60,7 @@ In `google-cloud-datacatalog<2.0.0`, parameters required by the API were positio
     ):
 ```
 
-In the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
+In the 3.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
 
 Some methods have additional keyword only parameters. The available parameters depend on the `google.api.method_signature` annotation specified by the API producer.
 
@@ -127,24 +127,19 @@ The submodules `enums` and `types` have been removed.
 **Before:**
 ```py
 from google.cloud import datacatalog_v1
-entry = datacatalog_v1beta1.types.Entry()
-entry.type = datacatalog_v1beta1.enums.EntryType.FILESET
+entry = datacatalog_v1.types.Entry()
+entry.type = datacatalog_v1.enums.EntryType.FILESET
 ```
 
 
 **After:**
 ```py
 from google.cloud import datacatalog_v1
-entry = datacatalog_v1beta1.Entry()
-entry.type = datacatalog_v1beta1.EntryType.FILESET
+entry = datacatalog_v1.Entry()
+entry.type = datacatalog_v1.EntryType.FILESET
 ```
 
-## Project Path Helper Methods
+## Common Resource Path Helper Methods
 
-The project path helper method `project_path` has been removed. Please construct
-this path manually.
-
-```py
-project = 'my-project'
-project_path = f'projects/{project}'
-```
+The `location_path` method existing in `google-cloud-datacatalog<=1.0.0` was renamed to `common_location_path`.
+And more resource path helper methods were added: `common_billing_account_path`, `common_folder_path`, `common_organization_path`, and `common_project_path`.
