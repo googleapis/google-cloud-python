@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-functions/compare/v0.4.0...v0.5.0) (2020-12-07)
+
+
+### Features
+
+* add common resource helper paths, expose client transport ([#17](https://www.github.com/googleapis/python-functions/issues/17)) ([e2660f2](https://www.github.com/googleapis/python-functions/commit/e2660f2c53055560c2e7848fa3969d1440aebb62))
+
+
+### Documentation
+
+* fix link to documentation ([#24](https://www.github.com/googleapis/python-functions/issues/24)) ([8f3ef44](https://www.github.com/googleapis/python-functions/commit/8f3ef446c1ffc5a3395773a70450624c0de99526)), closes [#22](https://www.github.com/googleapis/python-functions/issues/22)
+
 ## [0.4.0](https://www.github.com/googleapis/python-functions/compare/v0.1.0...v0.4.0) (2020-10-02)
 
 
