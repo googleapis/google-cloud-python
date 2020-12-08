@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-bigquery-datatransfer",
-        "sha": "334cc3d05edf69740ad1e06ed5ff67e6d5ddc59c"
+        "remote": "https://github.com/googleapis/python-bigquery-datatransfer.git",
+        "sha": "e0bcedb58109e38a58584d5b3087f03e1fa10835"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6a69c750c3f01a69017662395f90515bbf1fe1ff",
-        "internalRef": "342721036"
+        "sha": "3f87da2ed1ddc3566ef0810c4fc06a2682cc9f5f",
+        "internalRef": "343022252"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
+        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
+        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
       }
     }
   ],
@@ -40,5 +40,98 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/bigquery_datatransfer_v1/services.rst",
+    "docs/bigquery_datatransfer_v1/types.rst",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "google/cloud/bigquery_datatransfer/__init__.py",
+    "google/cloud/bigquery_datatransfer/py.typed",
+    "google/cloud/bigquery_datatransfer_v1/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/proto/datatransfer.proto",
+    "google/cloud/bigquery_datatransfer_v1/proto/transfer.proto",
+    "google/cloud/bigquery_datatransfer_v1/py.typed",
+    "google/cloud/bigquery_datatransfer_v1/services/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/async_client.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/client.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/pagers.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/transports/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/transports/base.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/transports/grpc.py",
+    "google/cloud/bigquery_datatransfer_v1/services/data_transfer_service/transports/grpc_asyncio.py",
+    "google/cloud/bigquery_datatransfer_v1/types/__init__.py",
+    "google/cloud/bigquery_datatransfer_v1/types/datatransfer.py",
+    "google/cloud/bigquery_datatransfer_v1/types/transfer.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/noxfile.py",
+    "samples/snippets/noxfile.py",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_bigquery_datatransfer_v1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/bigquery_datatransfer_v1/__init__.py",
+    "tests/unit/gapic/bigquery_datatransfer_v1/test_data_transfer_service.py"
   ]
 }
