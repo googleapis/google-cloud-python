@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.37.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.36.0...v0.37.0) (2020-12-08)
+
+
+### Features
+
+* add proper handling of query/path/body parameters for rest transport ([#702](https://www.github.com/googleapis/gapic-generator-python/issues/702)) ([6b2de5d](https://www.github.com/googleapis/gapic-generator-python/commit/6b2de5dd9fbf15e6b0a42b428b01eb03f1a3820a))
+
 ## [0.36.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.35.11...v0.36.0) (2020-11-14)
 
 
