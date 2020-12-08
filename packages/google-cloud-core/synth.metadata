@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-cloud-core.git",
-        "sha": "5768ce33a182c97d9c3b2cd77d2fec6a39326b68"
+        "sha": "172e5e5de155aa485089e77ba6199ba71e08614e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "9a7d9fbb7045c34c9d3d22c1ff766eeae51f04c9"
+        "sha": "32af6da519a6b042e3da62008e2a75e991efb6b4"
       }
     }
   ],
@@ -58,6 +58,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
