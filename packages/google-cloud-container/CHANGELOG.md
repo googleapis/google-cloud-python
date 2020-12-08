@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-container/compare/v2.2.0...v2.3.0) (2020-12-08)
+
+
+### Features
+
+* sync v1beta1 GKE API; deprecate SetLocations and use UpdateCluster; support for sysctls config in Linux nodes; support for node kubelet config controlling CPU manager policy, CFS quota; support for Customer Managed Encryption ([17f0a29](https://www.github.com/googleapis/python-container/commit/17f0a29401ffeaafca6166f9f6169a83c00b145a))
+
+
+### Bug Fixes
+
+* Update CODEOWNERS ([#59](https://www.github.com/googleapis/python-container/issues/59)) ([0f9a41e](https://www.github.com/googleapis/python-container/commit/0f9a41eb3394d4940941bc38a3e2e5cb3ad6b8dd)), closes [#58](https://www.github.com/googleapis/python-container/issues/58)
+
+
+### Documentation
+
+* **python:** update intersphinx for grpc and auth ([#53](https://www.github.com/googleapis/python-container/issues/53)) ([6a0fef7](https://www.github.com/googleapis/python-container/commit/6a0fef7f30976357cc9f42c0213931d1a2c76eac))
+
 ## [2.2.0](https://www.github.com/googleapis/python-container/compare/v2.1.0...v2.2.0) (2020-11-17)
 
 All changes are from [#51](https://www.github.com/googleapis/python-container/issues/51) / [d3f5465](https://www.github.com/googleapis/python-container/commit/d3f546574300cd18bb0cb1627f226cfe34ee8098)
