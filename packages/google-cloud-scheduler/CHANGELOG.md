@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-scheduler/compare/v2.0.0...v2.1.0) (2020-12-08)
+
+
+### Features
+
+* add common resource helpers; expose client transport ([#41](https://www.github.com/googleapis/python-scheduler/issues/41)) ([f9fc0f9](https://www.github.com/googleapis/python-scheduler/commit/f9fc0f9613302de642680c87286de0a02f09d086))
+
 ## [2.0.0](https://www.github.com/googleapis/python-scheduler/compare/v1.3.0...v2.0.0) (2020-08-27)
 
 
