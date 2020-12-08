@@ -27,7 +27,7 @@ class TestSink(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         return Sink
 

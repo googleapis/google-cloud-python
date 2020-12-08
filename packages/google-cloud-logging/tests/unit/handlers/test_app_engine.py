@@ -22,7 +22,7 @@ class TestAppEngineHandler(unittest.TestCase):
     PROJECT = "PROJECT"
 
     def _get_target_class(self):
-        from google.cloud.logging_v2.handlers.app_engine import AppEngineHandler
+        from google.cloud.logging.handlers import AppEngineHandler
 
         return AppEngineHandler
 

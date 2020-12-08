@@ -43,7 +43,7 @@ class TestClient(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.client import Client
+        from google.cloud.logging import Client
 
         return Client
 
@@ -238,7 +238,7 @@ class TestClient(unittest.TestCase):
         self.assertIs(again, api)
 
     def test_logger(self):
-        from google.cloud.logging_v2.logger import Logger
+        from google.cloud.logging import Logger
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -249,7 +249,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
 
     def test_list_entries_defaults(self):
-        from google.cloud.logging_v2.entries import TextEntry
+        from google.cloud.logging import TextEntry
 
         IID = "IID"
         TEXT = "TEXT"
@@ -308,10 +308,10 @@ class TestClient(unittest.TestCase):
         self.assertLess(yesterday - timestamp, timedelta(minutes=1))
 
     def test_list_entries_explicit(self):
-        from google.cloud.logging_v2 import DESCENDING
-        from google.cloud.logging_v2.entries import ProtobufEntry
-        from google.cloud.logging_v2.entries import StructEntry
-        from google.cloud.logging_v2.logger import Logger
+        from google.cloud.logging import DESCENDING
+        from google.cloud.logging import ProtobufEntry
+        from google.cloud.logging import StructEntry
+        from google.cloud.logging import Logger
 
         PROJECT1 = "PROJECT1"
         PROJECT2 = "PROJECT2"
@@ -404,10 +404,10 @@ class TestClient(unittest.TestCase):
         self.assertLess(yesterday - timestamp, timedelta(minutes=1))
 
     def test_list_entries_explicit_timestamp(self):
-        from google.cloud.logging_v2 import DESCENDING
-        from google.cloud.logging_v2.entries import ProtobufEntry
-        from google.cloud.logging_v2.entries import StructEntry
-        from google.cloud.logging_v2.logger import Logger
+        from google.cloud.logging import DESCENDING
+        from google.cloud.logging import ProtobufEntry
+        from google.cloud.logging import StructEntry
+        from google.cloud.logging import Logger
 
         PROJECT1 = "PROJECT1"
         PROJECT2 = "PROJECT2"
@@ -492,7 +492,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_sink_defaults(self):
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -505,7 +505,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.parent, self.PROJECT_PATH)
 
     def test_sink_explicit(self):
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
@@ -520,7 +520,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(sink.parent, self.PROJECT_PATH)
 
     def test_list_sinks_no_paging(self):
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         PROJECT = "PROJECT"
         TOKEN = "TOKEN"
@@ -559,7 +559,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_sinks_with_paging(self):
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         PROJECT = "PROJECT"
         SINK_NAME = "sink_name"
@@ -603,7 +603,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_metric_defaults(self):
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         creds = _make_credentials()
 
@@ -617,7 +617,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_metric_explicit(self):
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         creds = _make_credentials()
 
@@ -633,7 +633,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(metric.project, self.PROJECT)
 
     def test_list_metrics_no_paging(self):
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         metrics = [
             {
@@ -669,7 +669,7 @@ class TestClient(unittest.TestCase):
         )
 
     def test_list_metrics_with_paging(self):
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         token = "TOKEN"
         next_token = "T00KEN"
@@ -719,7 +719,7 @@ class TestClient(unittest.TestCase):
         import os
         from google.cloud._testing import _Monkey
         from google.cloud.logging_v2.client import _APPENGINE_FLEXIBLE_ENV_VM
-        from google.cloud.logging_v2.handlers import AppEngineHandler
+        from google.cloud.logging.handlers import AppEngineHandler
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -734,7 +734,7 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(handler, AppEngineHandler)
 
     def test_get_default_handler_container_engine(self):
-        from google.cloud.logging_v2.handlers import ContainerEngineHandler
+        from google.cloud.logging.handlers import ContainerEngineHandler
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -753,8 +753,8 @@ class TestClient(unittest.TestCase):
 
     def test_get_default_handler_general(self):
         import io
-        from google.cloud.logging_v2.handlers import CloudLoggingHandler
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging import Resource
 
         name = "test-logger"
         resource = Resource("resource_type", {"resource_label": "value"})
@@ -778,7 +778,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(handler.labels, labels)
 
     def test_setup_logging(self):
-        from google.cloud.logging_v2.handlers import CloudLoggingHandler
+        from google.cloud.logging.handlers import CloudLoggingHandler
 
         credentials = _make_credentials()
         client = self._make_one(
@@ -804,8 +804,8 @@ class TestClient(unittest.TestCase):
 
     def test_setup_logging_w_extra_kwargs(self):
         import io
-        from google.cloud.logging_v2.handlers import CloudLoggingHandler
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging.handlers import CloudLoggingHandler
+        from google.cloud.logging import Resource
 
         name = "test-logger"
         resource = Resource("resource_type", {"resource_label": "value"})

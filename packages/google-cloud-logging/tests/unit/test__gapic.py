@@ -17,7 +17,7 @@ import unittest
 import google.auth.credentials
 import mock
 
-import google.cloud.logging_v2
+import google.cloud.logging
 from google.cloud import logging_v2
 from google.cloud.logging_v2 import _gapic
 from google.cloud.logging_v2.services.config_service_v2 import ConfigServiceV2Client
@@ -91,7 +91,7 @@ class Test_LoggingAPI(object):
             result = client.list_entries(
                 [PROJECT_PATH],
                 filter_=FILTER,
-                order_by=google.cloud.logging_v2.ASCENDING,
+                order_by=google.cloud.logging.ASCENDING,
                 page_size=42,
                 page_token="token",
             )
@@ -103,7 +103,7 @@ class Test_LoggingAPI(object):
         request = call.call_args.args[0]
         assert request.resource_names == [PROJECT_PATH]
         assert request.filter == FILTER
-        assert request.order_by == google.cloud.logging_v2.ASCENDING
+        assert request.order_by == google.cloud.logging.ASCENDING
         assert request.page_size == 42
         assert request.page_token == "token"
 
@@ -179,7 +179,7 @@ class Test_SinksAPI(object):
         # Check the response
         assert len(sinks) == 1
         sink = sinks[0]
-        assert isinstance(sink, google.cloud.logging_v2.sink.Sink)
+        assert isinstance(sink, google.cloud.logging.Sink)
         assert sink.name == self.SINK_NAME
         assert sink.destination == self.DESTINATION_URI
         assert sink.filter_ == FILTER
@@ -351,7 +351,7 @@ class Test_MetricsAPI(object):
         # Check the response
         assert len(metrics) == 1
         metric = metrics[0]
-        assert isinstance(metric, google.cloud.logging_v2.metric.Metric)
+        assert isinstance(metric, google.cloud.logging.Metric)
         assert metric.name == self.METRIC_PATH
         assert metric.description == self.DESCRIPTION
         assert metric.filter_ == FILTER

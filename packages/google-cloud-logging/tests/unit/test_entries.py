@@ -61,7 +61,7 @@ class TestLogEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.entries import LogEntry
+        from google.cloud.logging import LogEntry
 
         return LogEntry
 
@@ -90,7 +90,7 @@ class TestLogEntry(unittest.TestCase):
 
     def test_ctor_explicit(self):
         import datetime
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
 
         LOG_NAME = "projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME)
         IID = "IID"
@@ -178,7 +178,7 @@ class TestLogEntry(unittest.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from google.cloud._helpers import UTC
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
 
         klass = self._get_target_class()
         client = _Client(self.PROJECT)
@@ -332,7 +332,7 @@ class TestLogEntry(unittest.TestCase):
 
     def test_to_api_repr_explicit(self):
         import datetime
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
         LOG_NAME = "test.log"
@@ -395,7 +395,7 @@ class TestTextEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.entries import TextEntry
+        from google.cloud.logging import TextEntry
 
         return TextEntry
 
@@ -417,7 +417,7 @@ class TestTextEntry(unittest.TestCase):
 
     def test_to_api_repr_explicit(self):
         import datetime
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
         LOG_NAME = "test.log"
@@ -483,7 +483,7 @@ class TestStructEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.entries import StructEntry
+        from google.cloud.logging import StructEntry
 
         return StructEntry
 
@@ -505,7 +505,7 @@ class TestStructEntry(unittest.TestCase):
 
     def test_to_api_repr_explicit(self):
         import datetime
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
 
         LOG_NAME = "test.log"
@@ -571,7 +571,7 @@ class TestProtobufEntry(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.entries import ProtobufEntry
+        from google.cloud.logging import ProtobufEntry
 
         return ProtobufEntry
 
@@ -652,7 +652,7 @@ class TestProtobufEntry(unittest.TestCase):
     def test_to_api_repr_proto_explicit(self):
         import datetime
         from google.protobuf.json_format import MessageToDict
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.protobuf.struct_pb2 import Struct
         from google.protobuf.struct_pb2 import Value

@@ -25,7 +25,7 @@ class TestMetric(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         return Metric
 

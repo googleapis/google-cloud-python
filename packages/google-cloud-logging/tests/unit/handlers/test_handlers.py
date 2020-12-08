@@ -22,7 +22,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
     @staticmethod
     def _get_target_class():
-        from google.cloud.logging_v2.handlers.handlers import CloudLoggingHandler
+        from google.cloud.logging.handlers import CloudLoggingHandler
 
         return CloudLoggingHandler
 
@@ -47,7 +47,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
     def test_ctor_explicit(self):
         import io
-        from google.cloud.logging_v2.resource import Resource
+        from google.cloud.logging import Resource
 
         resource = Resource("resource_type", {"resource_label": "value"})
         labels = {"handler_lable": "value"}
@@ -91,7 +91,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
 class TestSetupLogging(unittest.TestCase):
     def _call_fut(self, handler, excludes=None):
-        from google.cloud.logging_v2.handlers.handlers import setup_logging
+        from google.cloud.logging.handlers import setup_logging
 
         if excludes:
             return setup_logging(handler, excluded_loggers=excludes)

@@ -130,9 +130,9 @@ class Test_LoggingAPI(unittest.TestCase):
         return NOW, _datetime_to_rfc3339_w_nanos(NOW)
 
     def test_list_entries_no_paging(self):
-        from google.cloud.logging_v2.client import Client
-        from google.cloud.logging_v2.entries import TextEntry
-        from google.cloud.logging_v2.logger import Logger
+        from google.cloud.logging import Client
+        from google.cloud.logging import TextEntry
+        from google.cloud.logging import Logger
 
         NOW, TIMESTAMP = self._make_timestamp()
         IID = "IID"
@@ -184,11 +184,11 @@ class Test_LoggingAPI(unittest.TestCase):
         )
 
     def test_list_entries_w_paging(self):
-        from google.cloud.logging_v2 import DESCENDING
-        from google.cloud.logging_v2.client import Client
-        from google.cloud.logging_v2.logger import Logger
-        from google.cloud.logging_v2.entries import ProtobufEntry
-        from google.cloud.logging_v2.entries import StructEntry
+        from google.cloud.logging import DESCENDING
+        from google.cloud.logging import Client
+        from google.cloud.logging import Logger
+        from google.cloud.logging import ProtobufEntry
+        from google.cloud.logging import StructEntry
 
         PROJECT1 = "PROJECT1"
         PROJECT1_PATH = f"projects/{PROJECT1}"
@@ -362,7 +362,7 @@ class Test_SinksAPI(unittest.TestCase):
         self.assertEqual(api.api_request, connection.api_request)
 
     def test_list_sinks_no_paging(self):
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         TOKEN = "TOKEN"
         RETURNED = {
@@ -402,7 +402,7 @@ class Test_SinksAPI(unittest.TestCase):
         )
 
     def test_list_sinks_w_paging(self):
-        from google.cloud.logging_v2.sink import Sink
+        from google.cloud.logging import Sink
 
         TOKEN = "TOKEN"
         PAGE_SIZE = 42
@@ -633,7 +633,7 @@ class Test_MetricsAPI(unittest.TestCase):
         return self._get_target_class()(*args, **kw)
 
     def test_list_metrics_no_paging(self):
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         TOKEN = "TOKEN"
         RETURNED = {
@@ -667,7 +667,7 @@ class Test_MetricsAPI(unittest.TestCase):
         )
 
     def test_list_metrics_w_paging(self):
-        from google.cloud.logging_v2.metric import Metric
+        from google.cloud.logging import Metric
 
         TOKEN = "TOKEN"
         PAGE_SIZE = 42
