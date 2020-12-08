@@ -25,6 +25,18 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
+# 'docfx' is excluded since it only needs to run in 'docs-presubmit'
+nox.options.sessions = [
+    "unit",
+    "system",
+    "snippets",
+    "cover",
+    "lint",
+    "lint_setup_py",
+    "blacken",
+    "docs",
+]
+
 
 def default(session):
     """Default unit test session.

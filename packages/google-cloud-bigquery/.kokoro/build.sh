@@ -15,7 +15,11 @@
 
 set -eo pipefail
 
-cd github/python-bigquery
+if [[ -z "${PROJECT_ROOT:-}" ]]; then
+    PROJECT_ROOT="github/python-bigquery"
+fi
+
+cd "${PROJECT_ROOT}"
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
