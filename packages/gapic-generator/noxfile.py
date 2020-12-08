@@ -52,6 +52,10 @@ def unit(session):
     )
 
 
+# TODO(yon-mg): -add compute context manager that includes rest transport
+#               -add compute unit tests
+#               (to test against temporarily while rest transport is incomplete)
+#               (to be removed once all features are complete)
 @contextmanager
 def showcase_library(
     session, templates="DEFAULT", other_opts: typing.Iterable[str] = ()
@@ -87,6 +91,8 @@ def showcase_library(
 
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
+        # TODO(yon-mg): add "transports=grpc+rest" when all rest features required for
+        #               Showcase are implemented i.e. (grpc transcoding, LROs, etc)
         opts = "--python_gapic_opt="
         opts += ",".join(other_opts + (f"{template_opt}",))
         cmd_tup = (

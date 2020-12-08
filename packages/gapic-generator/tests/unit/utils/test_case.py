@@ -25,3 +25,19 @@ def test_camel_to_snake():
 
 def test_constant_to_snake():
     assert case.to_snake_case('CONSTANT_CASE_THING') == 'constant_case_thing'
+
+
+def test_pascal_to_camel():
+    assert case.to_camel_case('PascalCaseThing') == 'pascalCaseThing'
+
+
+def test_snake_to_camel():
+    assert case.to_camel_case('snake_case_thing') == 'snakeCaseThing'
+
+
+def test_constant_to_camel():
+    assert case.to_camel_case('CONSTANT_CASE_THING') == 'constantCaseThing'
+
+
+def test_kebab_to_camel():
+    assert case.to_camel_case('kebab-case-thing') == 'kebabCaseThing'

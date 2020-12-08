@@ -14,6 +14,7 @@
 
 from gapic.utils.cache import cached_property
 from gapic.utils.case import to_snake_case
+from gapic.utils.case import to_camel_case
 from gapic.utils.code import empty
 from gapic.utils.code import nth
 from gapic.utils.code import partition
@@ -38,6 +39,7 @@ __all__ = (
     'rst',
     'sort_lines',
     'to_snake_case',
+    'to_camel_case',
     'to_valid_filename',
     'to_valid_module_name',
     'wrap',

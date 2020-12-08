@@ -364,6 +364,7 @@ jobs:
 
             cd ..
             nox -s showcase_mtls_alternative_templates
+  # TODO(yon-mg): add compute unit tests
   showcase-unit-3.6:
     docker:
       - image: python:3.6-slim

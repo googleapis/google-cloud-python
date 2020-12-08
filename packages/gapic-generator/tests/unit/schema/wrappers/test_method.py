@@ -279,6 +279,57 @@ def test_method_http_opt_no_http_rule():
     assert method.http_opt == None
 
 
+def test_method_path_params():
+    # tests only the basic case of grpc transcoding
+    http_rule = http_pb2.HttpRule(post='/v1/{project}/topics')
+    method = make_method('DoSomething', http_rule=http_rule)
+    assert method.path_params == ['project']
+
+
+def test_method_path_params_no_http_rule():
+    method = make_method('DoSomething')
+    assert method.path_params == []
+
+
+def test_method_query_params():
+    # tests only the basic case of grpc transcoding
+    http_rule = http_pb2.HttpRule(
+        post='/v1/{project}/topics',
+        body='address'
+    )
+    input_message = make_message(
+        'MethodInput',
+        fields=(
+            make_field('region'),
+            make_field('project'),
+            make_field('address')
+        )
+    )
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
+    assert method.query_params == {'region'}
+
+
+def test_method_query_params_no_body():
+    # tests only the basic case of grpc transcoding
+    http_rule = http_pb2.HttpRule(post='/v1/{project}/topics')
+    input_message = make_message(
+        'MethodInput',
+        fields=(
+            make_field('region'),
+            make_field('project'),
+        )
+    )
+    method = make_method('DoSomething', http_rule=http_rule,
+                         input_message=input_message)
+    assert method.query_params == {'region'}
+
+
+def test_method_query_params_no_http_rule():
+    method = make_method('DoSomething')
+    assert method.query_params == set()
+
+
 def test_method_idempotent_yes():
     http_rule = http_pb2.HttpRule(get='/v1/{parent=projects/*}/topics')
     method = make_method('DoSomething', http_rule=http_rule)

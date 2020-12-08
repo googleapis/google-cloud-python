@@ -133,31 +133,59 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- endif %}
         """
 
-        {%- if 'body' in method.http_opt.keys() %}
-        # Jsonify the input
-        data = {{ method.output.ident }}.to_json(
-            {%- if method.http_opt['body'] == '*' %}
-            request
-            {%- else %}
-            request.body
-            {%- endif %}
+        {# TODO(yon-mg): refactor when implementing grpc transcoding 
+                         - parse request pb & assign body, path params
+                         - shove leftovers into query params
+                         - make sure dotted nested fields preserved
+                         - format url and send the request
+        #}
+        {%- if 'body' in method.http_opt %}
+        # Jsonify the request body
+        {%- if method.http_opt['body'] != '*' %}
+        body = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
+            request.{{ method.http_opt['body'] }},
+            including_default_value_fields=False
         )
+        {%- else %}
+        body = {{ method.input.ident }}.to_json(
+            request
+        )
+        {%- endif %}
         {%- endif %}
 
         {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
-        #              current impl assumes simpler version of grpc transcoding
-        # Send the request
+        #               current impl assumes basic case of grpc transcoding
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
-            {%- for field in method.input.fields.keys() %}
+            {%- for field in method.path_params %}
             {{ field }}=request.{{ field }},
             {%- endfor %}
         )
+
+        {# TODO(yon-mg): move all query param logic out of wrappers into here to handle
+                         nested fields correctly (can't just use set of top level fields
+        #}
+        # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
+        #               not required for GCE
+        query_params = {
+            {%- for field in method.query_params %}
+            '{{ field|camel_case }}': request.{{ field }},
+            {%- endfor %}
+        }
+        # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
+        #               discards default values
+        # TODO(yon-mg): add test for proper url encoded strings
+        query_params = ((k, v) for k, v in query_params.items() if v)
+        for i, (param_name, param_value) in enumerate(query_params):
+            q = '?' if i == 0 else '&'
+            url += "{q}{name}={value}".format(q=q, name=param_name, value=param_value.replace(' ', '+'))
+
+        # Send the request
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
-            url,
-            {%- if 'body' in method.http_opt.keys() %}
-            json=data,
+            url
+            {%- if 'body' in method.http_opt %},
+            json=body,
             {%- endif %}
         )
         {%- if not method.void %}

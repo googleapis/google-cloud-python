@@ -45,3 +45,19 @@ def to_snake_case(s: str) -> str:
 
     # Done; return the camel-cased string.
     return s.lower()
+
+
+def to_camel_case(s: str) -> str:
+    '''Convert any string to camel case.
+
+    This is provided to templates as the ``camel_case`` filter.
+
+    Args:
+        s (str): The input string, provided in any sane case system
+
+    Returns:
+        str: The string in lower camel case.
+    '''
+
+    items = re.split(r'[_-]', to_snake_case(s))
+    return items[0].lower() + "".join(x.capitalize() for x in items[1:])

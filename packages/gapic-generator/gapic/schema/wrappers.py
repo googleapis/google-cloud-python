@@ -767,6 +767,31 @@ class Method:
         # TODO(yon-mg): enums for http verbs?
         return answer
 
+    @property
+    def path_params(self) -> Sequence[str]:
+        """Return the path parameters found in the http annotation path template"""
+        # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
+        if self.http_opt is None:
+            return []
+
+        pattern = r'\{(\w+)\}'
+        return re.findall(pattern, self.http_opt['url'])
+
+    @property
+    def query_params(self) -> Set[str]:
+        """Return query parameters for API call as determined by http annotation and grpc transcoding"""
+        # TODO(yon-mg): fully implement grpc transcoding (currently only handles basic case)
+        # TODO(yon-mg): remove this method and move logic to generated client
+        if self.http_opt is None:
+            return set()
+
+        params = set(self.path_params)
+        body = self.http_opt.get('body')
+        if body:
+            params.add(body)
+
+        return set(self.input.fields) - params
+
     # TODO(yon-mg): refactor as there may be more than one method signature
     @utils.cached_property
     def flattened_fields(self) -> Mapping[str, Field]:

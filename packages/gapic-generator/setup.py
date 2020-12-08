@@ -51,9 +51,9 @@ setup(
         "protobuf >= 3.12.0",
         "pypandoc >= 1.4",
         "PyYAML >= 5.1.1",
-        "dataclasses<0.8; python_version < '3.7'"
+        "dataclasses < 0.8; python_version < '3.7'"
     ),
-    extras_require={':python_version<"3.7"': ("dataclasses >= 0.4",),},
+    extras_require={':python_version<"3.7"': ("dataclasses >= 0.4, < 0.8",),},
     tests_require=("pyfakefs >= 3.6",),
     python_requires=">=3.6",
     classifiers=(
