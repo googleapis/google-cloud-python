@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-tasks/compare/v2.0.0...v2.1.0) (2020-12-07)
+
+
+### Features
+
+* add common resource helpers; expose client transport; add shebang to fixup scripts ([#34](https://www.github.com/googleapis/python-tasks/issues/34)) ([511e9f3](https://www.github.com/googleapis/python-tasks/commit/511e9f3d5da4c8b86adca8bddc65dc37a989edcf))
+
 ## [2.0.0](https://www.github.com/googleapis/python-tasks/compare/v1.5.0...v2.0.0) (2020-09-02)
 
 
