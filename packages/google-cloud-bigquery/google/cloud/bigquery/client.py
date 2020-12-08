@@ -881,7 +881,22 @@ class Client(ClientWithProject):
             dataset (google.cloud.bigquery.dataset.Dataset):
                 The dataset to update.
             fields (Sequence[str]):
-                The properties of ``dataset`` to change (e.g. "friendly_name").
+                The properties of ``dataset`` to change. These are strings
+                corresponding to the properties of
+                :class:`~google.cloud.bigquery.dataset.Dataset`.
+
+                For example, to update the default expiration times, specify
+                both properties in the ``fields`` argument:
+
+                .. code-block:: python
+
+                    bigquery_client.update_dataset(
+                        dataset,
+                        [
+                            "default_partition_expiration_ms",
+                            "default_table_expiration_ms",
+                        ]
+                    )
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
             timeout (Optional[float]):
@@ -928,8 +943,18 @@ class Client(ClientWithProject):
         Args:
             model (google.cloud.bigquery.model.Model): The model to update.
             fields (Sequence[str]):
-                The fields of ``model`` to change, spelled as the Model
-                properties (e.g. "friendly_name").
+                The properties of ``model`` to change. These are strings
+                corresponding to the properties of
+                :class:`~google.cloud.bigquery.model.Model`.
+
+                For example, to update the descriptive properties of the model,
+                specify them in the ``fields`` argument:
+
+                .. code-block:: python
+
+                    bigquery_client.update_model(
+                        model, ["description", "friendly_name"]
+                    )
             retry (Optional[google.api_core.retry.Retry]):
                 A description of how to retry the API call.
             timeout (Optional[float]):
@@ -980,11 +1005,20 @@ class Client(ClientWithProject):
         occurred since the read.
 
         Args:
-            routine (google.cloud.bigquery.routine.Routine): The routine to update.
+            routine (google.cloud.bigquery.routine.Routine):
+                The routine to update.
             fields (Sequence[str]):
                 The fields of ``routine`` to change, spelled as the
-                :class:`~google.cloud.bigquery.routine.Routine` properties
-                (e.g. ``type_``).
+                :class:`~google.cloud.bigquery.routine.Routine` properties.
+
+                For example, to update the description property of the routine,
+                specify it in the ``fields`` argument:
+
+                .. code-block:: python
+
+                    bigquery_client.update_routine(
+                        routine, ["description"]
+                    )
             retry (Optional[google.api_core.retry.Retry]):
                 A description of how to retry the API call.
             timeout (Optional[float]):
@@ -1035,8 +1069,18 @@ class Client(ClientWithProject):
         Args:
             table (google.cloud.bigquery.table.Table): The table to update.
             fields (Sequence[str]):
-                The fields of ``table`` to change, spelled as the Table
-                properties (e.g. "friendly_name").
+                The fields of ``table`` to change, spelled as the
+                :class:`~google.cloud.bigquery.table.Table` properties.
+
+                For example, to update the descriptive properties of the table,
+                specify them in the ``fields`` argument:
+
+                .. code-block:: python
+
+                    bigquery_client.update_table(
+                        table,
+                        ["description", "friendly_name"]
+                    )
             retry (Optional[google.api_core.retry.Retry]):
                 A description of how to retry the API call.
             timeout (Optional[float]):
