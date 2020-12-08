@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-container.git",
-        "sha": "20401fb2dfa4ac59d385926d345db979473c4688"
+        "sha": "6a0fef7f30976357cc9f42c0213931d1a2c76eac"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "9a7d9fbb7045c34c9d3d22c1ff766eeae51f04c9"
+        "sha": "f94318521f63085b9ccb43d42af89f153fb39f15"
       }
     }
   ],
@@ -87,6 +87,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
