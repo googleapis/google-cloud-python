@@ -2035,7 +2035,7 @@ class TestQuery:
             raise Exception("Shouldn't get called.")
 
         query = query_module.Query()
-        assert query.map(callback) == []
+        assert query.map(callback) == ()
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

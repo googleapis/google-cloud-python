@@ -1668,7 +1668,7 @@ def test_map_empty_result_set(dispose_of):
         raise Exception("Shouldn't be called.")
 
     query = SomeKind.query()
-    assert query.map(somefunc) == []
+    assert query.map(somefunc) == ()
 
 
 @pytest.mark.usefixtures("client_context")

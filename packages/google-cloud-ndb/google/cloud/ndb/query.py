@@ -2010,7 +2010,7 @@ class Query(object):
         if futures:
             mapped_results = yield futures
         else:
-            mapped_results = []
+            mapped_results = ()
 
         raise tasklets.Return(mapped_results)
 
