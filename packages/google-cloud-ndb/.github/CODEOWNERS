@@ -2,4 +2,4 @@
 # This file controls who is tagged for review for any given pull request.
 
 # These are the default owners
-*                       @crwilcox @andrewsg    
+*                     @googleapis/firestore-dpe @andrewsg    
