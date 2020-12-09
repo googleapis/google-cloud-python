@@ -218,6 +218,25 @@ that are affected are: `memcache_add`, `memcache_cas`, `memcache_decr`,
   is no longer supported.
 - The `merge_future` argument to `Query.map` and `Query.map_async` is no longer
   supported.
+- Key.urlsafe() output is subtly different: the original NDB included a GAE 
+  Datastore-specific "location prefix", but that string is neither necessary
+  nor available on Cloud Datastore. For applications that require urlsafe()
+  strings to be exactly consistent between versions, use
+  Key.to_legacy_urlsafe(location_prefix) and pass in your location prefix as an
+  argument. Location prefixes are most commonly "s~" (or "e~" in Europe) but
+  the easiest way to find your prefix is to base64 decode any urlsafe key
+  produced by the original NDB and manually inspect it. The location prefix
+  will be consistent for an App Engine project and its corresponding Datastore
+  instance over its entire lifetime.
+- Key.urlsafe outputs a "bytes" object on Python 3. This is consistent behavior
+  and actually just a change in nomenclature; in Python 2, the "str" type
+  referred to a bytestring, and in Python 3 the corresponding type is called
+  "bytes". Users may notice a difficulty in incorporating urlsafe() strings in
+  JSON objects in Python 3; that is due to a change in the json.JSONEncoder
+  default behavior between Python 2 and Python 3 (in Python 2, json.JSONEncoder
+  accepted bytestrings and attempted to convert them to unicode automatically,
+  which can result in corrupted data and as such is no longer done) and does not
+  reflect a change in NDB behavior.
 
 ## Privatization
 
