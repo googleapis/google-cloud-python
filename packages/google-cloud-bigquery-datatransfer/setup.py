@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-bigquery-datatransfer"
 description = "BigQuery Data Transfer API client library"
-version = "2.1.0"
+version = "3.0.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

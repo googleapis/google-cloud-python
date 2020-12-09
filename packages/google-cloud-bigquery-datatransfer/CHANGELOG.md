@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.0.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v2.1.0...v3.0.0) (2020-12-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* type is renamed to type_ to avoid conflict with built-in functions (introduced in googleapis/gapic-generator-python#595)
+
+### Features
+
+* add common resource path helpers ([#69](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/69)) ([e0bcedb](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/e0bcedb58109e38a58584d5b3087f03e1fa10835))
+
+
+### Bug Fixes
+
+* avoid collision with built-in functions by renaming type property to type_ ([#53](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/53)) ([b954411](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/b95441140f7c86dd3e833aef0532badd6280ef48)), closes [/github.com/googleapis/python-talent/blob/ef045e8eb348db36d7a2a611e6f26b11530d273b/samples/snippets/noxfile_config.py#L27-L32](https://www.github.com/googleapis//github.com/googleapis/python-talent/blob/ef045e8eb348db36d7a2a611e6f26b11530d273b/samples/snippets/noxfile_config.py/issues/L27-L32)
+
+
+### Documentation
+
+* update intersphinx links ([#78](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/78)) ([a78ba39](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/a78ba39bf1507cbc9e2a51fe4553d602da7f7601))
+
 ## 2.1.0
 
 09-29-2020 09:34 PDT
