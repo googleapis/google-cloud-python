@@ -50,6 +50,14 @@ s.replace(
     r"""google-cloud-containeranalysis""",
 )
 
+# Fix imported type from grafeas
+
+s.replace(
+    "google/**/types/containeranalysis.py",
+    "from grafeas\.v1 import vulnerability_pb2 as vulnerability",
+    "from grafeas.grafeas_v1.types import vulnerability"
+)
+
 # Insert helper method to get grafeas client
 
 s.replace(
