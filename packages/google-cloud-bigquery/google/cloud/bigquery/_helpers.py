@@ -40,7 +40,7 @@ _PROJECT_PREFIX_PATTERN = re.compile(
 
 def _not_null(value, field):
     """Check whether 'value' should be coerced to 'field' type."""
-    return value is not None or field.mode != "NULLABLE"
+    return value is not None or (field is not None and field.mode != "NULLABLE")
 
 
 def _int_from_json(value, field):

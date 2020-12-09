@@ -383,6 +383,16 @@ class Test_ArrayQueryParameter(unittest.TestCase):
         self.assertEqual(param.array_type, "INT64")
         self.assertEqual(param.values, [])
 
+    def test_from_api_repr_w_none_values(self):
+        RESOURCE = {
+            "parameterType": {"type": "ARRAY", "arrayType": {"type": "INT64"}},
+            "parameterValue": {"arrayValues": [{"value": "1"}, {"value": None}]},
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertEqual(param.array_type, "INT64")
+        self.assertEqual(param.values, [1, None])
+
     def test_from_api_repr_w_struct_type(self):
         from google.cloud.bigquery.query import StructQueryParameter
 
