@@ -145,6 +145,7 @@ class _PropertyMixin(object):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY,
     ):
         """Reload properties from Cloud Storage.
 
@@ -187,6 +188,20 @@ class _PropertyMixin(object):
         :type if_metageneration_not_match: long
         :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
                                             blob's current metageneration does not match the given value.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
         """
         client = self._require_client(client)
         query_params = self._query_params
@@ -207,7 +222,7 @@ class _PropertyMixin(object):
             headers=self._encryption_headers(),
             _target_object=self,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=retry,
         )
         self._set_properties(api_response)
 
@@ -247,6 +262,7 @@ class _PropertyMixin(object):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ):
         """Sends all changed properties in a PATCH request.
 
@@ -286,6 +302,20 @@ class _PropertyMixin(object):
         :type if_metageneration_not_match: long
         :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
                                             blob's current metageneration does not match the given value.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
         """
         client = self._require_client(client)
         query_params = self._query_params
@@ -309,7 +339,7 @@ class _PropertyMixin(object):
             query_params=query_params,
             _target_object=self,
             timeout=timeout,
-            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            retry=retry,
         )
         self._set_properties(api_response)
 
@@ -321,6 +351,7 @@ class _PropertyMixin(object):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ):
         """Sends all properties in a PUT request.
 
@@ -360,6 +391,20 @@ class _PropertyMixin(object):
         :type if_metageneration_not_match: long
         :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
                                             blob's current metageneration does not match the given value.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
         """
         client = self._require_client(client)
 
@@ -380,7 +425,7 @@ class _PropertyMixin(object):
             query_params=query_params,
             _target_object=self,
             timeout=timeout,
-            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            retry=retry,
         )
         self._set_properties(api_response)
 

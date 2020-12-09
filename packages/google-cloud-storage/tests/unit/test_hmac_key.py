@@ -238,6 +238,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "path": expected_path,
             "query_params": {},
             "timeout": 42,
+            "retry": DEFAULT_RETRY,
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -266,6 +267,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "path": expected_path,
             "query_params": {"userProject": user_project},
             "timeout": self._get_default_timeout(),
+            "retry": DEFAULT_RETRY,
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -290,6 +292,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "path": expected_path,
             "query_params": {},
             "timeout": 42,
+            "retry": DEFAULT_RETRY,
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 
@@ -320,6 +323,7 @@ class TestHMACKeyMetadata(unittest.TestCase):
             "path": expected_path,
             "query_params": {"userProject": user_project},
             "timeout": self._get_default_timeout(),
+            "retry": DEFAULT_RETRY,
         }
         connection.api_request.assert_called_once_with(**expected_kwargs)
 

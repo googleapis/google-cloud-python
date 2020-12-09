@@ -46,6 +46,7 @@ from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
 
 _marker = object()
@@ -235,7 +236,9 @@ class Client(ClientWithProject):
         """
         return self._batch_stack.top
 
-    def get_service_account_email(self, project=None, timeout=_DEFAULT_TIMEOUT):
+    def get_service_account_email(
+        self, project=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY
+    ):
         """Get the email address of the project's GCS service account
 
         :type project: str
@@ -249,6 +252,20 @@ class Client(ClientWithProject):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
         :rtype: str
         :returns: service account email address
         """
@@ -256,7 +273,7 @@ class Client(ClientWithProject):
             project = self.project
         path = "/projects/%s/serviceAccount" % (project,)
         api_response = self._base_connection.api_request(
-            method="GET", path=path, timeout=timeout, retry=DEFAULT_RETRY,
+            method="GET", path=path, timeout=timeout, retry=retry,
         )
         return api_response["email_address"]
 
@@ -297,6 +314,7 @@ class Client(ClientWithProject):
         timeout=_DEFAULT_TIMEOUT,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ):
         """API call: retrieve a bucket via a GET request.
 
@@ -323,6 +341,20 @@ class Client(ClientWithProject):
             if_metageneration_not_match (Optional[long]):
                 Make the operation conditional on whether the blob's
                 current metageneration does not match the given value.
+
+            retry (Optional[Union[google.api_core.retry.Retry, google.cloud.storage.retry.ConditionalRetryPolicy]]):
+                How to retry the RPC. A None value will disable retries.
+                A google.api_core.retry.Retry value will enable retries, and the object will
+                define retriable response codes and errors and configure backoff and timeout options.
+
+                A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+                activates it only if certain conditions are met. This class exists to provide safe defaults
+                for RPC calls that are not technically safe to retry normally (due to potential data
+                duplication or other side-effects) but become safe to retry if a condition such as
+                if_metageneration_match is set.
+
+                See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+                information on retry types and how to configure them.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -359,6 +391,7 @@ class Client(ClientWithProject):
             timeout=timeout,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            retry=retry,
         )
         return bucket
 
@@ -368,6 +401,7 @@ class Client(ClientWithProject):
         timeout=_DEFAULT_TIMEOUT,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
     ):
         """Get a bucket by name, returning None if not found.
 
@@ -397,6 +431,20 @@ class Client(ClientWithProject):
         :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
                                             blob's current metageneration does not match the given value.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
         :rtype: :class:`google.cloud.storage.bucket.Bucket`
         :returns: The bucket matching the name provided or None if not found.
         """
@@ -406,6 +454,7 @@ class Client(ClientWithProject):
                 timeout=timeout,
                 if_metageneration_match=if_metageneration_match,
                 if_metageneration_not_match=if_metageneration_not_match,
+                retry=retry,
             )
         except NotFound:
             return None
@@ -420,6 +469,7 @@ class Client(ClientWithProject):
         predefined_acl=None,
         predefined_default_object_acl=None,
         timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
     ):
         """API call: create a new bucket via a POST request.
 
@@ -457,6 +507,20 @@ class Client(ClientWithProject):
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
+
+            retry (Optional[Union[google.api_core.retry.Retry, google.cloud.storage.retry.ConditionalRetryPolicy]]):
+                How to retry the RPC. A None value will disable retries.
+                A google.api_core.retry.Retry value will enable retries, and the object will
+                define retriable response codes and errors and configure backoff and timeout options.
+
+                A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+                activates it only if certain conditions are met. This class exists to provide safe defaults
+                for RPC calls that are not technically safe to retry normally (due to potential data
+                duplication or other side-effects) but become safe to retry if a condition such as
+                if_metageneration_match is set.
+
+                See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+                information on retry types and how to configure them.
 
         Returns:
             google.cloud.storage.bucket.Bucket
@@ -532,7 +596,7 @@ class Client(ClientWithProject):
             data=properties,
             _target_object=bucket,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=retry,
         )
 
         bucket._set_properties(api_response)
@@ -598,6 +662,7 @@ class Client(ClientWithProject):
         projection="noAcl",
         fields=None,
         timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -668,6 +733,20 @@ class Client(ClientWithProject):
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
 
+            retry (Optional[Union[google.api_core.retry.Retry, google.cloud.storage.retry.ConditionalRetryPolicy]]):
+                How to retry the RPC. A None value will disable retries.
+                A google.api_core.retry.Retry value will enable retries, and the object will
+                define retriable response codes and errors and configure backoff and timeout options.
+
+                A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+                activates it only if certain conditions are met. This class exists to provide safe defaults
+                for RPC calls that are not technically safe to retry normally (due to potential data
+                duplication or other side-effects) but become safe to retry if a condition such as
+                if_metageneration_match is set.
+
+                See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+                information on retry types and how to configure them.
+
         Returns:
             Iterator of all :class:`~google.cloud.storage.blob.Blob`
             in this bucket matching the arguments.
@@ -695,6 +774,7 @@ class Client(ClientWithProject):
             fields=fields,
             client=self,
             timeout=timeout,
+            retry=retry,
         )
 
     def list_buckets(
@@ -706,6 +786,7 @@ class Client(ClientWithProject):
         fields=None,
         project=None,
         timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
     ):
         """Get all buckets in the project associated to the client.
 
@@ -757,6 +838,20 @@ class Client(ClientWithProject):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :raises ValueError: if both ``project`` is ``None`` and the client's
                             project is also ``None``.
@@ -780,7 +875,7 @@ class Client(ClientWithProject):
             extra_params["fields"] = fields
 
         api_request = functools.partial(
-            self._connection.api_request, retry=DEFAULT_RETRY, timeout=timeout
+            self._connection.api_request, retry=retry, timeout=timeout
         )
 
         return page_iterator.HTTPIterator(
@@ -852,6 +947,7 @@ class Client(ClientWithProject):
         project_id=None,
         user_project=None,
         timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
     ):
         """List HMAC keys for a project.
 
@@ -882,6 +978,20 @@ class Client(ClientWithProject):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
         :rtype:
             Tuple[:class:`~google.cloud.storage.hmac_key.HMACKeyMetadata`, str]
         :returns: metadata for the created key, plus the bytes of the key's secret, which is an 40-character base64-encoded string.
@@ -902,7 +1012,7 @@ class Client(ClientWithProject):
             extra_params["userProject"] = user_project
 
         api_request = functools.partial(
-            self._connection.api_request, timeout=timeout, retry=DEFAULT_RETRY
+            self._connection.api_request, timeout=timeout, retry=retry
         )
 
         return page_iterator.HTTPIterator(

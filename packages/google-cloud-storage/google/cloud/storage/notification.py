@@ -275,7 +275,7 @@ class BucketNotification(object):
             retry=None,
         )
 
-    def exists(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def exists(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Test whether this notification exists.
 
         See:
@@ -295,6 +295,20 @@ class BucketNotification(object):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
         :rtype: bool
         :returns: True, if the notification exists, else False.
         :raises ValueError: if the notification has no ID.
@@ -310,14 +324,18 @@ class BucketNotification(object):
 
         try:
             client._connection.api_request(
-                method="GET", path=self.path, query_params=query_params, timeout=timeout
+                method="GET",
+                path=self.path,
+                query_params=query_params,
+                timeout=timeout,
+                retry=retry,
             )
         except NotFound:
             return False
         else:
             return True
 
-    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def reload(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Update this notification from the server configuration.
 
         See:
@@ -337,6 +355,21 @@ class BucketNotification(object):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
+
         :raises ValueError: if the notification has no ID.
         """
         if self.notification_id is None:
@@ -353,11 +386,11 @@ class BucketNotification(object):
             path=self.path,
             query_params=query_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=retry,
         )
         self._set_properties(response)
 
-    def delete(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def delete(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Delete this notification.
 
         See:
@@ -377,6 +410,20 @@ class BucketNotification(object):
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
 
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
+
         :raises: :class:`google.api_core.exceptions.NotFound`:
             if the notification does not exist.
         :raises ValueError: if the notification has no ID.
@@ -395,7 +442,7 @@ class BucketNotification(object):
             path=self.path,
             query_params=query_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=retry,
         )
 
 

@@ -456,7 +456,7 @@ class ACL(object):
         self.entities.clear()
 
         found = client._connection.api_request(
-            method="GET", path=path, query_params=query_params, timeout=timeout
+            method="GET", path=path, query_params=query_params, timeout=timeout,
         )
         self.loaded = True
         for entry in found.get("items", ()):

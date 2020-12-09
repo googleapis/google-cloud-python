@@ -189,7 +189,7 @@ class HMACKeyMetadata(object):
         """
         return self._user_project
 
-    def exists(self, timeout=_DEFAULT_TIMEOUT):
+    def exists(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Determine whether or not the key for this metadata exists.
 
         :type timeout: float or tuple
@@ -198,6 +198,20 @@ class HMACKeyMetadata(object):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
 
         :rtype: bool
         :returns: True if the key exists in Cloud Storage.
@@ -209,14 +223,18 @@ class HMACKeyMetadata(object):
                 qs_params["userProject"] = self.user_project
 
             self._client._connection.api_request(
-                method="GET", path=self.path, query_params=qs_params, timeout=timeout
+                method="GET",
+                path=self.path,
+                query_params=qs_params,
+                timeout=timeout,
+                retry=retry,
             )
         except NotFound:
             return False
         else:
             return True
 
-    def reload(self, timeout=_DEFAULT_TIMEOUT):
+    def reload(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Reload properties from Cloud Storage.
 
         :type timeout: float or tuple
@@ -225,6 +243,20 @@ class HMACKeyMetadata(object):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
 
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
@@ -235,10 +267,14 @@ class HMACKeyMetadata(object):
             qs_params["userProject"] = self.user_project
 
         self._properties = self._client._connection.api_request(
-            method="GET", path=self.path, query_params=qs_params, timeout=timeout
+            method="GET",
+            path=self.path,
+            query_params=qs_params,
+            timeout=timeout,
+            retry=retry,
         )
 
-    def update(self, timeout=_DEFAULT_TIMEOUT):
+    def update(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY_IF_ETAG_IN_JSON):
         """Save writable properties to Cloud Storage.
 
         :type timeout: float or tuple
@@ -247,6 +283,20 @@ class HMACKeyMetadata(object):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
 
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
@@ -262,10 +312,10 @@ class HMACKeyMetadata(object):
             data=payload,
             query_params=qs_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY_IF_ETAG_IN_JSON,
+            retry=retry,
         )
 
-    def delete(self, timeout=_DEFAULT_TIMEOUT):
+    def delete(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):
         """Delete the key from Cloud Storage.
 
         :type timeout: float or tuple
@@ -274,6 +324,20 @@ class HMACKeyMetadata(object):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
 
         :raises :class:`~google.api_core.exceptions.NotFound`:
             if the key does not exist on the back-end.
@@ -290,5 +354,5 @@ class HMACKeyMetadata(object):
             path=self.path,
             query_params=qs_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=retry,
         )

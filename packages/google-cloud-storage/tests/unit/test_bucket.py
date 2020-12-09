@@ -666,6 +666,7 @@ class Test_Bucket(unittest.TestCase):
             "query_params": {"fields": "name"},
             "_target_object": None,
             "timeout": 42,
+            "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -700,6 +701,7 @@ class Test_Bucket(unittest.TestCase):
             },
             "_target_object": None,
             "timeout": 42,
+            "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -727,6 +729,7 @@ class Test_Bucket(unittest.TestCase):
             "query_params": {"fields": "name", "userProject": USER_PROJECT},
             "_target_object": None,
             "timeout": self._get_default_timeout(),
+            "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -1615,6 +1618,7 @@ class Test_Bucket(unittest.TestCase):
             if_generation_not_match=None,
             if_metageneration_match=None,
             if_metageneration_not_match=None,
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
 
     def test_rename_blob_with_generation_match(self):
@@ -1665,6 +1669,7 @@ class Test_Bucket(unittest.TestCase):
             if_generation_not_match=None,
             if_metageneration_match=None,
             if_metageneration_not_match=None,
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
 
     def test_rename_blob_to_itself(self):
@@ -2744,9 +2749,9 @@ class Test_Bucket(unittest.TestCase):
             def grant_read(self):
                 self._granted = True
 
-            def save(self, client=None, timeout=None):
+            def save(self, client=None, timeout=None, retry=DEFAULT_RETRY):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, client, timeout)
+                    (self._bucket, self._name, self._granted, client, timeout, retry)
                 )
 
         def item_to_blob(self, item):
@@ -2763,10 +2768,10 @@ class Test_Bucket(unittest.TestCase):
         bucket.default_object_acl.loaded = True
 
         with mock.patch("google.cloud.storage.bucket._item_to_blob", new=item_to_blob):
-            bucket.make_public(recursive=True, timeout=42)
+            bucket.make_public(recursive=True, timeout=42, retry=DEFAULT_RETRY)
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None, 42)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None, 42, DEFAULT_RETRY)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]["method"], "PATCH")
@@ -2886,9 +2891,9 @@ class Test_Bucket(unittest.TestCase):
             def revoke_read(self):
                 self._granted = False
 
-            def save(self, client=None, timeout=None):
+            def save(self, client=None, timeout=None, retry=DEFAULT_RETRY):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, client, timeout)
+                    (self._bucket, self._name, self._granted, client, timeout, retry)
                 )
 
         def item_to_blob(self, item):
@@ -2905,10 +2910,10 @@ class Test_Bucket(unittest.TestCase):
         bucket.default_object_acl.loaded = True
 
         with mock.patch("google.cloud.storage.bucket._item_to_blob", new=item_to_blob):
-            bucket.make_private(recursive=True, timeout=42)
+            bucket.make_private(recursive=True, timeout=42, retry=DEFAULT_RETRY)
         self.assertEqual(list(bucket.acl), no_permissions)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None, 42)])
+        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None, 42, DEFAULT_RETRY)])
         kw = connection._requested
         self.assertEqual(len(kw), 2)
         self.assertEqual(kw[0]["method"], "PATCH")

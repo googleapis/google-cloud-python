@@ -347,7 +347,11 @@ class TestBucketNotification(unittest.TestCase):
         self.assertFalse(notification.exists(timeout=42))
 
         api_request.assert_called_once_with(
-            method="GET", path=self.NOTIFICATION_PATH, query_params={}, timeout=42
+            method="GET",
+            path=self.NOTIFICATION_PATH,
+            query_params={},
+            timeout=42,
+            retry=DEFAULT_RETRY,
         )
 
     def test_exists_hit(self):
@@ -371,6 +375,7 @@ class TestBucketNotification(unittest.TestCase):
             path=self.NOTIFICATION_PATH,
             query_params={"userProject": USER_PROJECT},
             timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
     def test_reload_wo_notification_id(self):
