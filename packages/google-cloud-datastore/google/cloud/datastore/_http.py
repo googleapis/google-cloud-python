@@ -31,7 +31,30 @@ API_URL_TEMPLATE = "{api_base}/{api_version}/projects" "/{project}:{method}"
 """A template for the URL of a particular API call."""
 
 
-def _request(http, project, method, data, base_url, client_info):
+def _make_retry_timeout_kwargs(retry, timeout):
+    """Helper for methods taking optional retry / timout args."""
+    kwargs = {}
+
+    if retry is not None:
+        kwargs["retry"] = retry
+
+    if timeout is not None:
+        kwargs["timeout"] = timeout
+
+    return kwargs
+
+
+def _make_request_pb(request, request_pb_type):
+    """Helper for converting dicts to request messages."""
+    if not isinstance(request, request_pb_type):
+        request = request_pb_type(**request)
+
+    return request
+
+
+def _request(
+    http, project, method, data, base_url, client_info, retry=None, timeout=None,
+):
     """Make a request over the Http transport to the Cloud Datastore API.
 
     :type http: :class:`requests.Session`
@@ -54,6 +77,12 @@ def _request(http, project, method, data, base_url, client_info):
     :type client_info: :class:`google.api_core.client_info.ClientInfo`
     :param client_info: used to generate user agent.
 
+    :type retry: :class:`google.api_core.retry.Retry`
+    :param retry: (Optional) retry policy for the request
+
+    :type timeout: float or tuple(float, float)
+    :param timeout: (Optional) timeout for the request
+
     :rtype: str
     :returns: The string response content from the API call.
     :raises: :class:`google.cloud.exceptions.GoogleCloudError` if the
@@ -67,7 +96,17 @@ def _request(http, project, method, data, base_url, client_info):
     }
     api_url = build_api_url(project, method, base_url)
 
-    response = http.request(url=api_url, method="POST", headers=headers, data=data)
+    requester = http.request
+
+    if retry is not None:
+        requester = retry(requester)
+
+    if timeout is not None:
+        response = requester(
+            url=api_url, method="POST", headers=headers, data=data, timeout=timeout,
+        )
+    else:
+        response = requester(url=api_url, method="POST", headers=headers, data=data)
 
     if response.status_code != 200:
         error_status = status_pb2.Status.FromString(response.content)
@@ -78,7 +117,17 @@ def _request(http, project, method, data, base_url, client_info):
     return response.content
 
 
-def _rpc(http, project, method, base_url, client_info, request_pb, response_pb_cls):
+def _rpc(
+    http,
+    project,
+    method,
+    base_url,
+    client_info,
+    request_pb,
+    response_pb_cls,
+    retry=None,
+    timeout=None,
+):
     """Make a protobuf RPC request.
 
     :type http: :class:`requests.Session`
@@ -105,11 +154,20 @@ def _rpc(http, project, method, base_url, client_info, request_pb, response_pb_c
     :param response_pb_cls: The class used to unmarshall the response
                             protobuf.
 
+    :type retry: :class:`google.api_core.retry.Retry`
+    :param retry: (Optional) retry policy for the request
+
+    :type timeout: float or tuple(float, float)
+    :param timeout: (Optional) timeout for the request
+
     :rtype: :class:`google.protobuf.message.Message`
     :returns: The RPC message parsed from the response.
     """
     req_data = request_pb._pb.SerializeToString()
-    response = _request(http, project, method, req_data, base_url, client_info)
+    kwargs = _make_retry_timeout_kwargs(retry, timeout)
+    response = _request(
+        http, project, method, req_data, base_url, client_info, **kwargs
+    )
     return response_pb_cls.deserialize(response)
 
 
@@ -149,27 +207,25 @@ class HTTPDatastoreAPI(object):
     def __init__(self, client):
         self.client = client
 
-    def lookup(self, project_id, keys, read_options=None):
+    def lookup(self, request, retry=None, timeout=None):
         """Perform a ``lookup`` request.
 
-        :type project_id: str
-        :param project_id: The project to connect to. This is
-                           usually your project name in the cloud console.
+        :type request: :class:`_datastore_pb2.LookupRequest` or dict
+        :param request:
+            Parameter bundle for API request.
 
-        :type keys: List[.entity_pb2.Key]
-        :param keys: The keys to retrieve from the datastore.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
 
-        :type read_options: :class:`.datastore_pb2.ReadOptions`
-        :param read_options: (Optional) The options for this lookup. Contains
-                             either the transaction for the read or
-                             ``STRONG`` or ``EVENTUAL`` read consistency.
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
 
         :rtype: :class:`.datastore_pb2.LookupResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.LookupRequest(
-            project_id=project_id, read_options=read_options, keys=keys
-        )
+        request_pb = _make_request_pb(request, _datastore_pb2.LookupRequest)
+        project_id = request_pb.project_id
+
         return _rpc(
             self.client._http,
             project_id,
@@ -178,44 +234,29 @@ class HTTPDatastoreAPI(object):
             self.client._client_info,
             request_pb,
             _datastore_pb2.LookupResponse,
+            retry=retry,
+            timeout=timeout,
         )
 
-    def run_query(
-        self, project_id, partition_id, read_options=None, query=None, gql_query=None
-    ):
+    def run_query(self, request, retry=None, timeout=None):
         """Perform a ``runQuery`` request.
 
-        :type project_id: str
-        :param project_id: The project to connect to. This is
-                           usually your project name in the cloud console.
+        :type request: :class:`_datastore_pb2.BeginTransactionRequest` or dict
+        :param request:
+            Parameter bundle for API request.
 
-        :type partition_id: :class:`.entity_pb2.PartitionId`
-        :param partition_id: Partition ID corresponding to an optional
-                             namespace and project ID.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
 
-        :type read_options: :class:`.datastore_pb2.ReadOptions`
-        :param read_options: (Optional) The options for this query. Contains
-                             either the transaction for the read or
-                             ``STRONG`` or ``EVENTUAL`` read consistency.
-
-        :type query: :class:`.query_pb2.Query`
-        :param query: (Optional) The query protobuf to run. At most one of
-                      ``query`` and ``gql_query`` can be specified.
-
-        :type gql_query: :class:`.query_pb2.GqlQuery`
-        :param gql_query: (Optional) The GQL query to run. At most one of
-                          ``query`` and ``gql_query`` can be specified.
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
 
         :rtype: :class:`.datastore_pb2.RunQueryResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.RunQueryRequest(
-            project_id=project_id,
-            partition_id=partition_id,
-            read_options=read_options,
-            query=query,
-            gql_query=gql_query,
-        )
+        request_pb = _make_request_pb(request, _datastore_pb2.RunQueryRequest)
+        project_id = request_pb.project_id
+
         return _rpc(
             self.client._http,
             project_id,
@@ -224,22 +265,29 @@ class HTTPDatastoreAPI(object):
             self.client._client_info,
             request_pb,
             _datastore_pb2.RunQueryResponse,
+            retry=retry,
+            timeout=timeout,
         )
 
-    def begin_transaction(self, project_id, transaction_options=None):
+    def begin_transaction(self, request, retry=None, timeout=None):
         """Perform a ``beginTransaction`` request.
 
-        :type project_id: str
-        :param project_id: The project to connect to. This is
-                           usually your project name in the cloud console.
+        :type request: :class:`_datastore_pb2.BeginTransactionRequest` or dict
+        :param request:
+            Parameter bundle for API request.
 
-        :type transaction_options: ~.datastore_v1.types.TransactionOptions
-        :param transaction_options: (Optional) Options for a new transaction.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
+
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
 
         :rtype: :class:`.datastore_pb2.BeginTransactionResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.BeginTransactionRequest()
+        request_pb = _make_request_pb(request, _datastore_pb2.BeginTransactionRequest)
+        project_id = request_pb.project_id
+
         return _rpc(
             self.client._http,
             project_id,
@@ -248,37 +296,29 @@ class HTTPDatastoreAPI(object):
             self.client._client_info,
             request_pb,
             _datastore_pb2.BeginTransactionResponse,
+            retry=retry,
+            timeout=timeout,
         )
 
-    def commit(self, project_id, mode, mutations, transaction=None):
+    def commit(self, request, retry=None, timeout=None):
         """Perform a ``commit`` request.
 
-        :type project_id: str
-        :param project_id: The project to connect to. This is
-                           usually your project name in the cloud console.
+        :type request: :class:`_datastore_pb2.CommitRequest` or dict
+        :param request:
+            Parameter bundle for API request.
 
-        :type mode: :class:`.gapic.datastore.v1.enums.CommitRequest.Mode`
-        :param mode: The type of commit to perform. Expected to be one of
-                     ``TRANSACTIONAL`` or ``NON_TRANSACTIONAL``.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
 
-        :type mutations: list
-        :param mutations: List of :class:`.datastore_pb2.Mutation`, the
-                          mutations to perform.
-
-        :type transaction: bytes
-        :param transaction: (Optional) The transaction ID returned from
-                            :meth:`begin_transaction`.  Non-transactional
-                            commits must pass :data:`None`.
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
 
         :rtype: :class:`.datastore_pb2.CommitResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.CommitRequest(
-            project_id=project_id,
-            mode=mode,
-            transaction=transaction,
-            mutations=mutations,
-        )
+        request_pb = _make_request_pb(request, _datastore_pb2.CommitRequest)
+        project_id = request_pb.project_id
+
         return _rpc(
             self.client._http,
             project_id,
@@ -287,25 +327,29 @@ class HTTPDatastoreAPI(object):
             self.client._client_info,
             request_pb,
             _datastore_pb2.CommitResponse,
+            retry=retry,
+            timeout=timeout,
         )
 
-    def rollback(self, project_id, transaction):
+    def rollback(self, request, retry=None, timeout=None):
         """Perform a ``rollback`` request.
 
-        :type project_id: str
-        :param project_id: The project to connect to. This is
-                           usually your project name in the cloud console.
+        :type request: :class:`_datastore_pb2.RollbackRequest` or dict
+        :param request:
+            Parameter bundle for API request.
 
-        :type transaction: bytes
-        :param transaction: The transaction ID to rollback.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
+
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
 
         :rtype: :class:`.datastore_pb2.RollbackResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.RollbackRequest(
-            project_id=project_id, transaction=transaction
-        )
-        # Response is empty (i.e. no fields) but we return it anyway.
+        request_pb = _make_request_pb(request, _datastore_pb2.RollbackRequest)
+        project_id = request_pb.project_id
+
         return _rpc(
             self.client._http,
             project_id,
@@ -314,22 +358,29 @@ class HTTPDatastoreAPI(object):
             self.client._client_info,
             request_pb,
             _datastore_pb2.RollbackResponse,
+            retry=retry,
+            timeout=timeout,
         )
 
-    def allocate_ids(self, project_id, keys):
+    def allocate_ids(self, request, retry=None, timeout=None):
         """Perform an ``allocateIds`` request.
 
-        :type project_id: str
-        :param project_id: The project to connect to. This is
-                           usually your project name in the cloud console.
+        :type request: :class:`_datastore_pb2.AllocateIdsRequest` or dict
+        :param request:
+            Parameter bundle for API request.
 
-        :type keys: List[.entity_pb2.Key]
-        :param keys: The keys for which the backend should allocate IDs.
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
+
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
 
         :rtype: :class:`.datastore_pb2.AllocateIdsResponse`
         :returns: The returned protobuf response object.
         """
-        request_pb = _datastore_pb2.AllocateIdsRequest(keys=keys)
+        request_pb = _make_request_pb(request, _datastore_pb2.AllocateIdsRequest)
+        project_id = request_pb.project_id
+
         return _rpc(
             self.client._http,
             project_id,
@@ -338,4 +389,37 @@ class HTTPDatastoreAPI(object):
             self.client._client_info,
             request_pb,
             _datastore_pb2.AllocateIdsResponse,
+            retry=retry,
+            timeout=timeout,
+        )
+
+    def reserve_ids(self, request, retry=None, timeout=None):
+        """Perform an ``reserveIds`` request.
+
+        :type request: :class:`_datastore_pb2.ReserveIdsRequest` or dict
+        :param request:
+            Parameter bundle for API request.
+
+        :type retry: :class:`google.api_core.retry.Retry`
+        :param retry: (Optional) retry policy for the request
+
+        :type timeout: float or tuple(float, float)
+        :param timeout: (Optional) timeout for the request
+
+        :rtype: :class:`.datastore_pb2.ReserveIdsResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb = _make_request_pb(request, _datastore_pb2.ReserveIdsRequest)
+        project_id = request_pb.project_id
+
+        return _rpc(
+            self.client._http,
+            project_id,
+            "reserveIds",
+            self.client._base_url,
+            self.client._client_info,
+            request_pb,
+            _datastore_pb2.ReserveIdsResponse,
+            retry=retry,
+            timeout=timeout,
         )

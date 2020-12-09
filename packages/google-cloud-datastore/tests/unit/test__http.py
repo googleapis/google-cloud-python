@@ -20,6 +20,82 @@ from http import client
 import requests
 
 
+class Test__make_retry_timeout_kwargs(unittest.TestCase):
+    @staticmethod
+    def _call_fut(retry, timeout):
+        from google.cloud.datastore._http import _make_retry_timeout_kwargs
+
+        return _make_retry_timeout_kwargs(retry, timeout)
+
+    def test_empty(self):
+        expected = {}
+        self.assertEqual(self._call_fut(None, None), expected)
+
+    def test_w_retry(self):
+        retry = object()
+        expected = {"retry": retry}
+        self.assertEqual(self._call_fut(retry, None), expected)
+
+    def test_w_timeout(self):
+        timeout = 5.0
+        expected = {"timeout": timeout}
+        self.assertEqual(self._call_fut(None, timeout), expected)
+
+    def test_w_retry_w_timeout(self):
+        retry = object()
+        timeout = 5.0
+        expected = {"retry": retry, "timeout": timeout}
+        self.assertEqual(self._call_fut(retry, timeout), expected)
+
+
+class Foo:
+    def __init__(self, bar=None, baz=None):
+        self.bar = bar
+        self.baz = baz
+
+
+class Test__make_request_pb(unittest.TestCase):
+    @staticmethod
+    def _call_fut(request, request_pb_type):
+        from google.cloud.datastore._http import _make_request_pb
+
+        return _make_request_pb(request, request_pb_type)
+
+    def test_w_empty_dict(self):
+        request = {}
+
+        foo = self._call_fut(request, Foo)
+
+        self.assertIsInstance(foo, Foo)
+        self.assertIsNone(foo.bar)
+        self.assertIsNone(foo.baz)
+
+    def test_w_partial_dict(self):
+        request = {"bar": "Bar"}
+
+        foo = self._call_fut(request, Foo)
+
+        self.assertIsInstance(foo, Foo)
+        self.assertEqual(foo.bar, "Bar")
+        self.assertIsNone(foo.baz)
+
+    def test_w_complete_dict(self):
+        request = {"bar": "Bar", "baz": "Baz"}
+
+        foo = self._call_fut(request, Foo)
+
+        self.assertIsInstance(foo, Foo)
+        self.assertEqual(foo.bar, "Bar")
+        self.assertEqual(foo.baz, "Baz")
+
+    def test_w_instance(self):
+        passed = Foo()
+
+        foo = self._call_fut(passed, Foo)
+
+        self.assertIs(foo, passed)
+
+
 class Test__request(unittest.TestCase):
     @staticmethod
     def _call_fut(*args, **kwargs):
@@ -27,7 +103,7 @@ class Test__request(unittest.TestCase):
 
         return _request(*args, **kwargs)
 
-    def test_success(self):
+    def _helper(self, retry=None, timeout=None):
         from google.cloud import _http as connection_module
 
         project = "PROJECT"
@@ -40,8 +116,11 @@ class Test__request(unittest.TestCase):
 
         http = _make_requests_session([_make_response(content=response_data)])
 
-        # Call actual function under test.
-        response = self._call_fut(http, project, method, data, base_url, client_info)
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
+
+        response = self._call_fut(
+            http, project, method, data, base_url, client_info, **kwargs
+        )
         self.assertEqual(response, response_data)
 
         # Check that the mocks were called as expected.
@@ -51,9 +130,29 @@ class Test__request(unittest.TestCase):
             "User-Agent": user_agent,
             connection_module.CLIENT_INFO_HEADER: user_agent,
         }
+
+        if retry is not None:
+            retry.assert_called_once_with(http.request)
+
+        kwargs.pop("retry", None)
         http.request.assert_called_once_with(
-            method="POST", url=expected_url, headers=expected_headers, data=data
+            method="POST",
+            url=expected_url,
+            headers=expected_headers,
+            data=data,
+            **kwargs
         )
+
+    def test_ok(self):
+        self._helper()
+
+    def test_w_retry(self):
+        retry = mock.MagicMock()
+        self._helper(retry=retry)
+
+    def test_w_timeout(self):
+        timeout = 5.0
+        self._helper(timeout=timeout)
 
     def test_failure(self):
         from google.cloud.exceptions import BadRequest
@@ -89,7 +188,7 @@ class Test__rpc(unittest.TestCase):
 
         return _rpc(*args, **kwargs)
 
-    def test_it(self):
+    def _helper(self, retry=None, timeout=None):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         http = object()
@@ -100,6 +199,9 @@ class Test__rpc(unittest.TestCase):
         request_pb = datastore_pb2.BeginTransactionRequest(project_id=project)
 
         response_pb = datastore_pb2.BeginTransactionResponse(transaction=b"7830rmc")
+
+        kwargs = _make_retry_timeout_kwargs(retry, timeout)
+
         patch = mock.patch(
             "google.cloud.datastore._http._request",
             return_value=response_pb._pb.SerializeToString(),
@@ -113,17 +215,31 @@ class Test__rpc(unittest.TestCase):
                 client_info,
                 request_pb,
                 datastore_pb2.BeginTransactionResponse,
+                **kwargs
             )
-            self.assertEqual(result, response_pb._pb)
 
-            mock_request.assert_called_once_with(
-                http,
-                project,
-                method,
-                request_pb._pb.SerializeToString(),
-                base_url,
-                client_info,
-            )
+        self.assertEqual(result, response_pb._pb)
+
+        mock_request.assert_called_once_with(
+            http,
+            project,
+            method,
+            request_pb._pb.SerializeToString(),
+            base_url,
+            client_info,
+            **kwargs
+        )
+
+    def test_defaults(self):
+        self._helper()
+
+    def test_w_retry(self):
+        retry = mock.MagicMock()
+        self._helper(retry=retry)
+
+    def test_w_timeout(self):
+        timeout = 5.0
+        self._helper(timeout=timeout)
 
 
 class TestHTTPDatastoreAPI(unittest.TestCase):
@@ -147,127 +263,35 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
         ds_api = self._make_one(client)
         self.assertIs(ds_api.client, client)
 
-    def test_lookup_single_key_empty_response(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        key_pb = _make_key_pb(project)
-        rsp_pb = datastore_pb2.LookupResponse()
-        read_options = datastore_pb2.ReadOptions()
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb], read_options=read_options)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 0)
-        self.assertEqual(len(response.missing), 0)
-        self.assertEqual(len(response.deferred), 0)
-
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
-        self.assertEqual(list(request.keys), [key_pb._pb])
-        self.assertEqual(request.read_options, read_options._pb)
-
-    def test_lookup_single_key_empty_response_w_eventual(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        key_pb = _make_key_pb(project)
-        rsp_pb = datastore_pb2.LookupResponse()
-        read_options = datastore_pb2.ReadOptions(
-            read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
-        )
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb], read_options=read_options)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 0)
-        self.assertEqual(len(response.missing), 0)
-        self.assertEqual(len(response.deferred), 0)
-
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
-        self.assertEqual(list(request.keys), [key_pb._pb])
-        self.assertEqual(request.read_options, read_options._pb)
-
-    def test_lookup_single_key_empty_response_w_transaction(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        transaction = b"TRANSACTION"
-        key_pb = _make_key_pb(project)
-        rsp_pb = datastore_pb2.LookupResponse()
-        read_options = datastore_pb2.ReadOptions(transaction=transaction)
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb], read_options=read_options)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 0)
-        self.assertEqual(len(response.missing), 0)
-        self.assertEqual(len(response.deferred), 0)
-
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
-        self.assertEqual(list(request.keys), [key_pb._pb])
-        self.assertEqual(request.read_options, read_options._pb)
-
-    def test_lookup_single_key_nonempty_response(self):
+    def _lookup_single_helper(
+        self,
+        read_consistency=None,
+        transaction=None,
+        empty=True,
+        retry=None,
+        timeout=None,
+    ):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore_v1.types import entity as entity_pb2
 
         project = "PROJECT"
         key_pb = _make_key_pb(project)
-        rsp_pb = datastore_pb2.LookupResponse()
-        entity = entity_pb2.Entity()
-        entity.key._pb.CopyFrom(key_pb._pb)
-        rsp_pb._pb.found.add(entity=entity._pb)
-        read_options = datastore_pb2.ReadOptions()
 
-        # Create mock HTTP and client with response.
+        options_kw = {}
+        if read_consistency is not None:
+            options_kw["read_consistency"] = read_consistency
+        if transaction is not None:
+            options_kw["transaction"] = transaction
+
+        read_options = datastore_pb2.ReadOptions(**options_kw)
+
+        rsp_pb = datastore_pb2.LookupResponse()
+
+        if not empty:
+            entity = entity_pb2.Entity()
+            entity.key._pb.CopyFrom(key_pb._pb)
+            rsp_pb._pb.found.add(entity=entity._pb)
+
         http = _make_requests_session(
             [_make_response(content=rsp_pb._pb.SerializeToString())]
         )
@@ -278,35 +302,97 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
             _client_info=client_info,
             spec=["_http", "_base_url", "_client_info"],
         )
-
-        # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb], read_options=read_options)
+        request = {
+            "project_id": project,
+            "keys": [key_pb],
+            "read_options": read_options,
+        }
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
 
-        # Check the result and verify the callers.
+        response = ds_api.lookup(request=request, **kwargs)
+
         self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 1)
+
+        if empty:
+            self.assertEqual(len(response.found), 0)
+        else:
+            self.assertEqual(len(response.found), 1)
+
         self.assertEqual(len(response.missing), 0)
         self.assertEqual(len(response.deferred), 0)
-        found = response.found[0].entity
-        self.assertEqual(found.key.path[0].kind, "Kind")
-        self.assertEqual(found.key.path[0].id, 1234)
 
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
+        uri = _build_expected_url(client._base_url, project, "lookup")
+        request = _verify_protobuf_call(
+            http, uri, datastore_pb2.LookupRequest(), retry=retry, timeout=timeout,
+        )
+
+        if retry is not None:
+            retry.assert_called_once_with(http.request)
+
         self.assertEqual(list(request.keys), [key_pb._pb])
         self.assertEqual(request.read_options, read_options._pb)
 
-    def test_lookup_multiple_keys_empty_response(self):
+    def test_lookup_single_key_miss(self):
+        self._lookup_single_helper()
+
+    def test_lookup_single_key_miss_w_read_consistency(self):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
+
+        read_consistency = datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
+        self._lookup_single_helper(read_consistency=read_consistency)
+
+    def test_lookup_single_key_miss_w_transaction(self):
+        transaction = b"TRANSACTION"
+        self._lookup_single_helper(transaction=transaction)
+
+    def test_lookup_single_key_hit(self):
+        self._lookup_single_helper(empty=False)
+
+    def test_lookup_single_key_hit_w_retry(self):
+        retry = mock.MagicMock()
+        self._lookup_single_helper(empty=False, retry=retry)
+
+    def test_lookup_single_key_hit_w_timeout(self):
+        timeout = 5.0
+        self._lookup_single_helper(empty=False, timeout=timeout)
+
+    def _lookup_multiple_helper(
+        self, found=0, missing=0, deferred=0, retry=None, timeout=None,
+    ):
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+        from google.cloud.datastore_v1.types import entity as entity_pb2
 
         project = "PROJECT"
         key_pb1 = _make_key_pb(project)
         key_pb2 = _make_key_pb(project, id_=2345)
-        rsp_pb = datastore_pb2.LookupResponse()
+        keys = [key_pb1, key_pb2]
         read_options = datastore_pb2.ReadOptions()
 
-        # Create mock HTTP and client with response.
+        rsp_pb = datastore_pb2.LookupResponse()
+
+        found_keys = []
+        for i_found in range(found):
+            key = keys[i_found]
+            found_keys.append(key._pb)
+            entity = entity_pb2.Entity()
+            entity.key._pb.CopyFrom(key._pb)
+            rsp_pb._pb.found.add(entity=entity._pb)
+
+        missing_keys = []
+        for i_missing in range(missing):
+            key = keys[i_missing]
+            missing_keys.append(key._pb)
+            entity = entity_pb2.Entity()
+            entity.key._pb.CopyFrom(key._pb)
+            rsp_pb._pb.missing.add(entity=entity._pb)
+
+        deferred_keys = []
+        for i_deferred in range(deferred):
+            key = keys[i_deferred]
+            deferred_keys.append(key._pb)
+            rsp_pb._pb.deferred.append(key._pb)
+
         http = _make_requests_session(
             [_make_response(content=rsp_pb._pb.SerializeToString())]
         )
@@ -317,123 +403,95 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
             _client_info=client_info,
             spec=["_http", "_base_url", "_client_info"],
         )
-
-        # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb1, key_pb2], read_options=read_options)
+        request = {
+            "project_id": project,
+            "keys": keys,
+            "read_options": read_options,
+        }
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
 
-        # Check the result and verify the callers.
+        response = ds_api.lookup(request=request, **kwargs)
+
         self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 0)
-        self.assertEqual(len(response.missing), 0)
-        self.assertEqual(len(response.deferred), 0)
 
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
+        self.assertEqual([found.entity.key for found in response.found], found_keys)
+        self.assertEqual(
+            [missing.entity.key for missing in response.missing], missing_keys
+        )
+        self.assertEqual(list(response.deferred), deferred_keys)
+
+        uri = _build_expected_url(client._base_url, project, "lookup")
+        request = _verify_protobuf_call(
+            http, uri, datastore_pb2.LookupRequest(), retry=retry, timeout=timeout,
+        )
         self.assertEqual(list(request.keys), [key_pb1._pb, key_pb2._pb])
         self.assertEqual(request.read_options, read_options._pb)
+
+    def test_lookup_multiple_keys_w_empty_response(self):
+        self._lookup_multiple_helper()
+
+    def test_lookup_multiple_keys_w_retry(self):
+        retry = mock.MagicMock()
+        self._lookup_multiple_helper(retry=retry)
+
+    def test_lookup_multiple_keys_w_timeout(self):
+        timeout = 5.0
+        self._lookup_multiple_helper(timeout=timeout)
+
+    def test_lookup_multiple_keys_w_found(self):
+        self._lookup_multiple_helper(found=2)
 
     def test_lookup_multiple_keys_w_missing(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        key_pb1 = _make_key_pb(project)
-        key_pb2 = _make_key_pb(project, id_=2345)
-        rsp_pb = datastore_pb2.LookupResponse()
-        er_1 = rsp_pb._pb.missing.add()
-        er_1.entity.key.CopyFrom(key_pb1._pb)
-        er_2 = rsp_pb._pb.missing.add()
-        er_2.entity.key.CopyFrom(key_pb2._pb)
-        read_options = datastore_pb2.ReadOptions()
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb1, key_pb2], read_options=read_options)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 0)
-        self.assertEqual(len(response.deferred), 0)
-        missing_keys = [result.entity.key for result in response.missing]
-        self.assertEqual(missing_keys, [key_pb1._pb, key_pb2._pb])
-
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
-        self.assertEqual(list(request.keys), [key_pb1._pb, key_pb2._pb])
-        self.assertEqual(request.read_options, read_options._pb)
+        self._lookup_multiple_helper(missing=2)
 
     def test_lookup_multiple_keys_w_deferred(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+        self._lookup_multiple_helper(deferred=2)
 
-        project = "PROJECT"
-        key_pb1 = _make_key_pb(project)
-        key_pb2 = _make_key_pb(project, id_=2345)
-        rsp_pb = datastore_pb2.LookupResponse()
-        rsp_pb._pb.deferred.add().CopyFrom(key_pb1._pb)
-        rsp_pb._pb.deferred.add().CopyFrom(key_pb2._pb)
-        read_options = datastore_pb2.ReadOptions()
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.lookup(project, [key_pb1, key_pb2], read_options=read_options)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-        uri = _build_expected_url(client._base_url, project, "lookup")
-        self.assertEqual(len(response.found), 0)
-        self.assertEqual(len(response.missing), 0)
-        self.assertEqual(list(response.deferred), [key_pb1._pb, key_pb2._pb])
-
-        request = _verify_protobuf_call(http, uri, datastore_pb2.LookupRequest())
-        self.assertEqual(list(request.keys), [key_pb1._pb, key_pb2._pb])
-        self.assertEqual(request.read_options, read_options._pb)
-
-    def test_run_query_w_eventual_no_transaction(self):
+    def _run_query_helper(
+        self,
+        read_consistency=None,
+        transaction=None,
+        namespace=None,
+        found=0,
+        retry=None,
+        timeout=None,
+    ):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
         from google.cloud.datastore_v1.types import entity as entity_pb2
         from google.cloud.datastore_v1.types import query as query_pb2
 
         project = "PROJECT"
         kind = "Nonesuch"
-        cursor = b"\x00"
         query_pb = self._make_query_pb(kind)
-        partition_id = entity_pb2.PartitionId(project_id=project)
-        read_options = datastore_pb2.ReadOptions(
-            read_consistency=datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
-        )
+
+        partition_kw = {"project_id": project}
+        if namespace is not None:
+            partition_kw["namespace_id"] = namespace
+
+        partition_id = entity_pb2.PartitionId(**partition_kw)
+
+        options_kw = {}
+        if read_consistency is not None:
+            options_kw["read_consistency"] = read_consistency
+        if transaction is not None:
+            options_kw["transaction"] = transaction
+        read_options = datastore_pb2.ReadOptions(**options_kw)
+
+        cursor = b"\x00"
+        batch_kw = {
+            "entity_result_type": query_pb2.EntityResult.ResultType.FULL,
+            "end_cursor": cursor,
+            "more_results": query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
+        }
+        if found:
+            batch_kw["entity_results"] = [
+                query_pb2.EntityResult(entity=entity_pb2.Entity())
+            ] * found
         rsp_pb = datastore_pb2.RunQueryResponse(
-            batch=query_pb2.QueryResultBatch(
-                entity_result_type=query_pb2.EntityResult.ResultType.FULL,
-                end_cursor=cursor,
-                more_results=query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
-            )
+            batch=query_pb2.QueryResultBatch(**batch_kw)
         )
 
-        # Create mock HTTP and client with response.
         http = _make_requests_session(
             [_make_response(content=rsp_pb._pb.SerializeToString())]
         )
@@ -444,155 +502,53 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
             _client_info=client_info,
             spec=["_http", "_base_url", "_client_info"],
         )
-
-        # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.run_query(project, partition_id, read_options, query=query_pb)
+        request = {
+            "project_id": project,
+            "partition_id": partition_id,
+            "read_options": read_options,
+            "query": query_pb,
+        }
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
 
-        # Check the result and verify the callers.
+        response = ds_api.run_query(request=request, **kwargs)
+
         self.assertEqual(response, rsp_pb._pb)
 
         uri = _build_expected_url(client._base_url, project, "runQuery")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.RunQueryRequest())
+        request = _verify_protobuf_call(
+            http, uri, datastore_pb2.RunQueryRequest(), retry=retry, timeout=timeout,
+        )
         self.assertEqual(request.partition_id, partition_id._pb)
         self.assertEqual(request.query, query_pb._pb)
         self.assertEqual(request.read_options, read_options._pb)
 
-    def test_run_query_wo_eventual_w_transaction(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-        from google.cloud.datastore_v1.types import entity as entity_pb2
-        from google.cloud.datastore_v1.types import query as query_pb2
+    def test_run_query_simple(self):
+        self._run_query_helper()
 
-        project = "PROJECT"
-        kind = "Nonesuch"
-        cursor = b"\x00"
+    def test_run_query_w_retry(self):
+        retry = mock.MagicMock()
+        self._run_query_helper(retry=retry)
+
+    def test_run_query_w_timeout(self):
+        timeout = 5.0
+        self._run_query_helper(timeout=timeout)
+
+    def test_run_query_w_read_consistency(self):
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+
+        read_consistency = datastore_pb2.ReadOptions.ReadConsistency.EVENTUAL
+        self._run_query_helper(read_consistency=read_consistency)
+
+    def test_run_query_w_transaction(self):
         transaction = b"TRANSACTION"
-        query_pb = self._make_query_pb(kind)
-        partition_id = entity_pb2.PartitionId(project_id=project)
-        read_options = datastore_pb2.ReadOptions(transaction=transaction)
-        rsp_pb = datastore_pb2.RunQueryResponse(
-            batch=query_pb2.QueryResultBatch(
-                entity_result_type=query_pb2.EntityResult.ResultType.FULL,
-                end_cursor=cursor,
-                more_results=query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
-            )
-        )
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.run_query(project, partition_id, read_options, query=query_pb)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-
-        uri = _build_expected_url(client._base_url, project, "runQuery")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.RunQueryRequest())
-        self.assertEqual(request.partition_id, partition_id._pb)
-        self.assertEqual(request.query, query_pb._pb)
-        self.assertEqual(request.read_options, read_options._pb)
-
-    def test_run_query_wo_namespace_empty_result(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-        from google.cloud.datastore_v1.types import entity as entity_pb2
-        from google.cloud.datastore_v1.types import query as query_pb2
-
-        project = "PROJECT"
-        kind = "Nonesuch"
-        cursor = b"\x00"
-        query_pb = self._make_query_pb(kind)
-        partition_id = entity_pb2.PartitionId(project_id=project)
-        read_options = datastore_pb2.ReadOptions()
-        rsp_pb = datastore_pb2.RunQueryResponse(
-            batch=query_pb2.QueryResultBatch(
-                entity_result_type=query_pb2.EntityResult.ResultType.FULL,
-                end_cursor=cursor,
-                more_results=query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
-            )
-        )
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.run_query(project, partition_id, read_options, query=query_pb)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-
-        uri = _build_expected_url(client._base_url, project, "runQuery")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.RunQueryRequest())
-        self.assertEqual(request.partition_id, partition_id._pb)
-        self.assertEqual(request.query, query_pb._pb)
-        self.assertEqual(request.read_options, read_options._pb)
+        self._run_query_helper(transaction=transaction)
 
     def test_run_query_w_namespace_nonempty_result(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-        from google.cloud.datastore_v1.types import entity as entity_pb2
-        from google.cloud.datastore_v1.types import query as query_pb2
-
-        project = "PROJECT"
-        kind = "Kind"
         namespace = "NS"
-        query_pb = self._make_query_pb(kind)
-        partition_id = entity_pb2.PartitionId(
-            project_id=project, namespace_id=namespace
-        )
-        read_options = datastore_pb2.ReadOptions()
-        rsp_pb = datastore_pb2.RunQueryResponse(
-            batch=query_pb2.QueryResultBatch(
-                entity_result_type=query_pb2.EntityResult.ResultType.FULL,
-                entity_results=[query_pb2.EntityResult(entity=entity_pb2.Entity())],
-                more_results=query_pb2.QueryResultBatch.MoreResultsType.NO_MORE_RESULTS,
-            )
-        )
+        self._run_query_helper(namespace=namespace, found=1)
 
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.run_query(project, partition_id, read_options, query=query_pb)
-
-        # Check the result and verify the callers.
-        self.assertEqual(response, rsp_pb._pb)
-
-        uri = _build_expected_url(client._base_url, project, "runQuery")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.RunQueryRequest())
-        self.assertEqual(request.partition_id, partition_id._pb)
-        self.assertEqual(request.query, query_pb._pb)
-
-    def test_begin_transaction(self):
+    def _begin_transaction_helper(self, options=None, retry=None, timeout=None):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
@@ -614,101 +570,116 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.begin_transaction(project)
+        request = {"project_id": project}
+
+        if options is not None:
+            request["transaction_options"] = options
+
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
+
+        response = ds_api.begin_transaction(request=request, **kwargs)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb._pb)
 
         uri = _build_expected_url(client._base_url, project, "beginTransaction")
         request = _verify_protobuf_call(
-            http, uri, datastore_pb2.BeginTransactionRequest()
+            http,
+            uri,
+            datastore_pb2.BeginTransactionRequest(),
+            retry=retry,
+            timeout=timeout,
         )
-        # The RPC-over-HTTP request does not set the project in the request.
-        self.assertEqual(request.project_id, u"")
+
+    def test_begin_transaction_wo_options(self):
+        self._begin_transaction_helper()
+
+    def test_begin_transaction_w_options(self):
+        from google.cloud.datastore_v1.types import TransactionOptions
+
+        read_only = TransactionOptions.ReadOnly._meta.pb()
+        options = TransactionOptions(read_only=read_only)
+        self._begin_transaction_helper(options=options)
+
+    def test_begin_transaction_w_retry(self):
+        retry = mock.MagicMock()
+        self._begin_transaction_helper(retry=retry)
+
+    def test_begin_transaction_w_timeout(self):
+        timeout = 5.0
+        self._begin_transaction_helper(timeout=timeout)
+
+    def _commit_helper(self, transaction=None, retry=None, timeout=None):
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+        from google.cloud.datastore.helpers import _new_value_pb
+
+        project = "PROJECT"
+        key_pb = _make_key_pb(project)
+        rsp_pb = datastore_pb2.CommitResponse()
+        req_pb = datastore_pb2.CommitRequest()
+        mutation = req_pb._pb.mutations.add()
+        insert = mutation.upsert
+        insert.key.CopyFrom(key_pb._pb)
+        value_pb = _new_value_pb(insert, "foo")
+        value_pb.string_value = u"Foo"
+
+        http = _make_requests_session(
+            [_make_response(content=rsp_pb._pb.SerializeToString())]
+        )
+        client_info = _make_client_info()
+        client = mock.Mock(
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
+        )
+
+        rq_class = datastore_pb2.CommitRequest
+        ds_api = self._make_one(client)
+
+        request = {"project_id": project, "mutations": [mutation]}
+
+        if transaction is not None:
+            request["transaction"] = transaction
+            mode = request["mode"] = rq_class.Mode.TRANSACTIONAL
+        else:
+            mode = request["mode"] = rq_class.Mode.NON_TRANSACTIONAL
+
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
+
+        result = ds_api.commit(request=request, **kwargs)
+
+        self.assertEqual(result, rsp_pb._pb)
+
+        uri = _build_expected_url(client._base_url, project, "commit")
+        request = _verify_protobuf_call(
+            http, uri, rq_class(), retry=retry, timeout=timeout,
+        )
+        self.assertEqual(list(request.mutations), [mutation])
+        self.assertEqual(request.mode, mode)
+
+        if transaction is not None:
+            self.assertEqual(request.transaction, transaction)
+        else:
+            self.assertEqual(request.transaction, b"")
 
     def test_commit_wo_transaction(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-        from google.cloud.datastore.helpers import _new_value_pb
-
-        project = "PROJECT"
-        key_pb = _make_key_pb(project)
-        rsp_pb = datastore_pb2.CommitResponse()
-        req_pb = datastore_pb2.CommitRequest()
-        mutation = req_pb._pb.mutations.add()
-        insert = mutation.upsert
-        insert.key.CopyFrom(key_pb._pb)
-        value_pb = _new_value_pb(insert, "foo")
-        value_pb.string_value = u"Foo"
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        rq_class = datastore_pb2.CommitRequest
-        ds_api = self._make_one(client)
-        mode = rq_class.Mode.NON_TRANSACTIONAL
-        result = ds_api.commit(project, mode, [mutation])
-
-        # Check the result and verify the callers.
-        self.assertEqual(result, rsp_pb._pb)
-
-        uri = _build_expected_url(client._base_url, project, "commit")
-        request = _verify_protobuf_call(http, uri, rq_class())
-        self.assertEqual(request.transaction, b"")
-        self.assertEqual(list(request.mutations), [mutation])
-        self.assertEqual(request.mode, rq_class.Mode.NON_TRANSACTIONAL)
+        self._commit_helper()
 
     def test_commit_w_transaction(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-        from google.cloud.datastore.helpers import _new_value_pb
+        transaction = b"xact"
 
-        project = "PROJECT"
-        key_pb = _make_key_pb(project)
-        rsp_pb = datastore_pb2.CommitResponse()
-        req_pb = datastore_pb2.CommitRequest()
-        mutation = req_pb._pb.mutations.add()
-        insert = mutation.upsert
-        insert.key.CopyFrom(key_pb._pb)
-        value_pb = _new_value_pb(insert, "foo")
-        value_pb.string_value = u"Foo"
+        self._commit_helper(transaction=transaction)
 
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
+    def test_commit_w_retry(self):
+        retry = mock.MagicMock()
+        self._commit_helper(retry=retry)
 
-        # Make request.
-        rq_class = datastore_pb2.CommitRequest
-        ds_api = self._make_one(client)
-        mode = rq_class.Mode.TRANSACTIONAL
-        result = ds_api.commit(project, mode, [mutation], transaction=b"xact")
+    def test_commit_w_timeout(self):
+        timeout = 5.0
+        self._commit_helper(timeout=timeout)
 
-        # Check the result and verify the callers.
-        self.assertEqual(result, rsp_pb._pb)
-
-        uri = _build_expected_url(client._base_url, project, "commit")
-        request = _verify_protobuf_call(http, uri, rq_class())
-        self.assertEqual(request.transaction, b"xact")
-        self.assertEqual(list(request.mutations), [mutation])
-        self.assertEqual(request.mode, rq_class.Mode.TRANSACTIONAL)
-
-    def test_rollback_ok(self):
+    def _rollback_helper(self, retry=None, timeout=None):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
@@ -729,22 +700,46 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
 
         # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.rollback(project, transaction)
+        request = {"project_id": project, "transaction": transaction}
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
+
+        response = ds_api.rollback(request=request, **kwargs)
 
         # Check the result and verify the callers.
         self.assertEqual(response, rsp_pb._pb)
 
         uri = _build_expected_url(client._base_url, project, "rollback")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.RollbackRequest())
+        request = _verify_protobuf_call(
+            http, uri, datastore_pb2.RollbackRequest(), retry=retry, timeout=timeout,
+        )
         self.assertEqual(request.transaction, transaction)
 
-    def test_allocate_ids_empty(self):
+    def test_rollback_ok(self):
+        self._rollback_helper()
+
+    def test_rollback_w_retry(self):
+        retry = mock.MagicMock()
+        self._rollback_helper(retry=retry)
+
+    def test_rollback_w_timeout(self):
+        timeout = 5.0
+        self._rollback_helper(timeout=timeout)
+
+    def _allocate_ids_helper(self, count=0, retry=None, timeout=None):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
 
         project = "PROJECT"
+        before_key_pbs = []
+        after_key_pbs = []
         rsp_pb = datastore_pb2.AllocateIdsResponse()
 
-        # Create mock HTTP and client with response.
+        for i_count in range(count):
+            requested = _make_key_pb(project, id_=None)
+            before_key_pbs.append(requested)
+            allocated = _make_key_pb(project, id_=i_count)
+            after_key_pbs.append(allocated)
+            rsp_pb._pb.keys.add().CopyFrom(allocated._pb)
+
         http = _make_requests_session(
             [_make_response(content=rsp_pb._pb.SerializeToString())]
         )
@@ -755,57 +750,89 @@ class TestHTTPDatastoreAPI(unittest.TestCase):
             _client_info=client_info,
             spec=["_http", "_base_url", "_client_info"],
         )
-
-        # Make request.
         ds_api = self._make_one(client)
-        response = ds_api.allocate_ids(project, [])
 
-        # Check the result and verify the callers.
+        request = {"project_id": project, "keys": before_key_pbs}
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
+
+        response = ds_api.allocate_ids(request=request, **kwargs)
+
         self.assertEqual(response, rsp_pb._pb)
-        self.assertEqual(list(response.keys), [])
-
-        uri = _build_expected_url(client._base_url, project, "allocateIds")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.AllocateIdsRequest())
-        self.assertEqual(list(request.keys), [])
-
-    def test_allocate_ids_non_empty(self):
-        from google.cloud.datastore_v1.types import datastore as datastore_pb2
-
-        project = "PROJECT"
-        before_key_pbs = [
-            _make_key_pb(project, id_=None),
-            _make_key_pb(project, id_=None),
-        ]
-        after_key_pbs = [_make_key_pb(project), _make_key_pb(project, id_=2345)]
-        rsp_pb = datastore_pb2.AllocateIdsResponse()
-        rsp_pb._pb.keys.add().CopyFrom(after_key_pbs[0]._pb)
-        rsp_pb._pb.keys.add().CopyFrom(after_key_pbs[1]._pb)
-
-        # Create mock HTTP and client with response.
-        http = _make_requests_session(
-            [_make_response(content=rsp_pb._pb.SerializeToString())]
-        )
-        client_info = _make_client_info()
-        client = mock.Mock(
-            _http=http,
-            _base_url="test.invalid",
-            _client_info=client_info,
-            spec=["_http", "_base_url", "_client_info"],
-        )
-
-        # Make request.
-        ds_api = self._make_one(client)
-        response = ds_api.allocate_ids(project, before_key_pbs)
-
-        # Check the result and verify the callers.
         self.assertEqual(list(response.keys), [i._pb for i in after_key_pbs])
-        self.assertEqual(response, rsp_pb._pb)
 
         uri = _build_expected_url(client._base_url, project, "allocateIds")
-        request = _verify_protobuf_call(http, uri, datastore_pb2.AllocateIdsRequest())
+        request = _verify_protobuf_call(
+            http, uri, datastore_pb2.AllocateIdsRequest(), retry=retry, timeout=timeout,
+        )
         self.assertEqual(len(request.keys), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.keys):
             self.assertEqual(key_before, key_after)
+
+    def test_allocate_ids_empty(self):
+        self._allocate_ids_helper()
+
+    def test_allocate_ids_non_empty(self):
+        self._allocate_ids_helper(count=2)
+
+    def test_allocate_ids_w_retry(self):
+        retry = mock.MagicMock()
+        self._allocate_ids_helper(retry=retry)
+
+    def test_allocate_ids_w_timeout(self):
+        timeout = 5.0
+        self._allocate_ids_helper(timeout=timeout)
+
+    def _reserve_ids_helper(self, count=0, retry=None, timeout=None):
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+
+        project = "PROJECT"
+        before_key_pbs = []
+        rsp_pb = datastore_pb2.ReserveIdsResponse()
+
+        for i_count in range(count):
+            requested = _make_key_pb(project, id_=i_count)
+            before_key_pbs.append(requested)
+
+        http = _make_requests_session(
+            [_make_response(content=rsp_pb._pb.SerializeToString())]
+        )
+        client_info = _make_client_info()
+        client = mock.Mock(
+            _http=http,
+            _base_url="test.invalid",
+            _client_info=client_info,
+            spec=["_http", "_base_url", "_client_info"],
+        )
+        ds_api = self._make_one(client)
+
+        request = {"project_id": project, "keys": before_key_pbs}
+        kwargs = _make_retry_timeout_kwargs(retry, timeout, http)
+
+        response = ds_api.reserve_ids(request=request, **kwargs)
+
+        self.assertEqual(response, rsp_pb._pb)
+
+        uri = _build_expected_url(client._base_url, project, "reserveIds")
+        request = _verify_protobuf_call(
+            http, uri, datastore_pb2.AllocateIdsRequest(), retry=retry, timeout=timeout,
+        )
+        self.assertEqual(len(request.keys), len(before_key_pbs))
+        for key_before, key_after in zip(before_key_pbs, request.keys):
+            self.assertEqual(key_before, key_after)
+
+    def test_reserve_ids_empty(self):
+        self._reserve_ids_helper()
+
+    def test_reserve_ids_non_empty(self):
+        self._reserve_ids_helper(count=2)
+
+    def test_reserve_ids_w_retry(self):
+        retry = mock.MagicMock()
+        self._reserve_ids_helper(retry=retry)
+
+    def test_reserve_ids_w_timeout(self):
+        timeout = 5.0
+        self._reserve_ids_helper(timeout=timeout)
 
 
 def _make_response(status=client.OK, content=b"", headers={}):
@@ -849,7 +876,7 @@ def _make_client_info(user_agent=_USER_AGENT):
     return client_info
 
 
-def _verify_protobuf_call(http, expected_url, pb):
+def _verify_protobuf_call(http, expected_url, pb, retry=None, timeout=None):
     from google.cloud import _http as connection_module
 
     expected_headers = {
@@ -858,10 +885,36 @@ def _verify_protobuf_call(http, expected_url, pb):
         connection_module.CLIENT_INFO_HEADER: _USER_AGENT,
     }
 
-    http.request.assert_called_once_with(
-        method="POST", url=expected_url, headers=expected_headers, data=mock.ANY
-    )
+    if retry is not None:
+        retry.assert_called_once_with(http.request)
+
+    if timeout is not None:
+        http.request.assert_called_once_with(
+            method="POST",
+            url=expected_url,
+            headers=expected_headers,
+            data=mock.ANY,
+            timeout=timeout,
+        )
+    else:
+        http.request.assert_called_once_with(
+            method="POST", url=expected_url, headers=expected_headers, data=mock.ANY
+        )
 
     data = http.request.mock_calls[0][2]["data"]
     pb._pb.ParseFromString(data)
     return pb
+
+
+def _make_retry_timeout_kwargs(retry, timeout, http=None):
+    kwargs = {}
+
+    if retry is not None:
+        kwargs["retry"] = retry
+        if http is not None:
+            retry.return_value = http.request
+
+    if timeout is not None:
+        kwargs["timeout"] = timeout
+
+    return kwargs
