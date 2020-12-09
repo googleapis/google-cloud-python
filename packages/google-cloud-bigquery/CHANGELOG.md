@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+### [2.6.1](https://www.github.com/googleapis/python-bigquery/compare/v2.6.0...v2.6.1) (2020-12-09)
+
+
+### Bug Fixes
+
+* handle null values in array query parameters ([#426](https://www.github.com/googleapis/python-bigquery/issues/426)) ([78fde4a](https://www.github.com/googleapis/python-bigquery/commit/78fde4a92e61a89d0b490b93acc90fff9635d1bf))
+
+
+### Documentation
+
+* add examples of `fields` argument to update methods ([#418](https://www.github.com/googleapis/python-bigquery/issues/418)) ([8c7e02b](https://www.github.com/googleapis/python-bigquery/commit/8c7e02b0de2c92ee965414e7c430eb57d1877326))
+
 ## [2.6.0](https://www.github.com/googleapis/python-bigquery/compare/v2.5.0...v2.6.0) (2020-12-07)
 
 
