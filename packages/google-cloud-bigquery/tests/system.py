@@ -2414,9 +2414,8 @@ class TestBigQuery(unittest.TestCase):
 
         query_job = Config.CLIENT.query(
             """
-            SELECT name, SUM(number) AS total_people
-            FROM `bigquery-public-data.usa_names.usa_1910_current`
-            GROUP BY name
+            SELECT COUNT(*)
+            FROM UNNEST(GENERATE_ARRAY(1,1000000)), UNNEST(GENERATE_ARRAY(1, 10000))
             """,
             location="US",
             job_config=job_config,
@@ -2427,9 +2426,7 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(requests.exceptions.Timeout):
             query_job.done(timeout=0.1)
 
-        # Now wait for the result using a more realistic deadline.
-        query_job.result(timeout=30)
-        self.assertTrue(query_job.done(timeout=30))
+        Config.CLIENT.cancel_job(query_job.job_id, location=query_job.location)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_query_results_to_dataframe(self):
