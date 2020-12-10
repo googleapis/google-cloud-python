@@ -1,7 +1,7 @@
 Python Client for BigQuery Data Transfer API
 ============================================
 
-|GA| |pypi| |versions| 
+|GA| |pypi| |versions|
 
 The `BigQuery Data Transfer API`_ allows users to transfer data from partner
 SaaS applications to Google BigQuery on a scheduled, managed basis.
@@ -78,32 +78,6 @@ Windows
     virtualenv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-bigquery-datatransfer
-
-Example Usage
-~~~~~~~~~~~~~
-
-DataTransferServiceClient
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code:: py
-
-    from google.cloud import bigquery_datatransfer_v1
-
-    client = bigquery_datatransfer_v1.DataTransferServiceClient()
-
-    parent = client.location_path('[PROJECT]', '[LOCATION]')
-
-
-    # Iterate over all results
-    for element in client.list_data_sources(parent):
-        # process element
-        pass
-
-    # Or iterate over results one page at a time
-    for page in client.list_data_sources(parent).pages:
-        for element in page:
-            # process element
-            pass
 
 Next Steps
 ~~~~~~~~~~
