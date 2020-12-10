@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.37.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.37.0...v0.37.1) (2020-12-10)
+
+
+### Bug Fixes
+
+* remove client recv msg limit ([#704](https://www.github.com/googleapis/gapic-generator-python/issues/704)) ([80147ce](https://www.github.com/googleapis/gapic-generator-python/commit/80147ce177ce435dcb1b611181e80dc35f915293))
+
 ## [0.37.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.36.0...v0.37.0) (2020-12-08)
 
 
