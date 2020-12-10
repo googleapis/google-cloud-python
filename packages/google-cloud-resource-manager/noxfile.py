@@ -79,9 +79,8 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.cloudresourcemanager",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
+        "--cov=google/cloud",
+        "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
