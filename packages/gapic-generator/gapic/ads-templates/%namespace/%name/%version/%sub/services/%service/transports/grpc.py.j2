@@ -124,6 +124,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 ssl_credentials=ssl_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             self._ssl_channel_credentials = ssl_credentials
         else:
@@ -138,6 +142,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
                 credentials=credentials,
                 ssl_credentials=ssl_channel_credentials,
                 scopes=self.AUTH_SCOPES,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
 
         self._stubs = {}  # type: Dict[str, Callable]

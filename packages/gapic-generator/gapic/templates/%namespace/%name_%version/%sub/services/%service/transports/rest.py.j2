@@ -101,6 +101,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
                     self._host,
                     credentials=self._credentials,
                     scopes=self.AUTH_SCOPES,
+                    options=[
+                        ("grpc.max_send_message_length", -1),
+                        ("grpc.max_receive_message_length", -1),
+                    ],
                 )
             )
 
