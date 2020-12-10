@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+### [0.30.3](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.2...v0.30.3) (2020-12-10)
+
+
+### Documentation
+
+* update intersphinx for grpc and auth ([#35](https://www.github.com/googleapis/python-resource-manager/issues/35)) ([e98319c](https://www.github.com/googleapis/python-resource-manager/commit/e98319c7096a8101d47ec8f026050f866f59830c))
+* update language of py2 admonition ([#26](https://www.github.com/googleapis/python-resource-manager/issues/26)) ([07bdc02](https://www.github.com/googleapis/python-resource-manager/commit/07bdc0215663fc8e3a35bd353aefbdcb4d3a5d30))
+
 ### [0.30.2](https://www.github.com/googleapis/python-resource-manager/compare/v0.30.1...v0.30.2) (2020-05-19)
 
 
