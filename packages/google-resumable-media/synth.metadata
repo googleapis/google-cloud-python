@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/google-resumable-media-python.git",
-        "sha": "0731354577c244029c982b7b2a5c43ca911e2b73"
+        "sha": "c0490dd07632ccd11a1cdb04091e9dd8ccfc9b1b"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "f1d8e6619ca2b9ebbc68c13af4ec5dba2803fc44"
+        "sha": "da5c6050d13b4950c82666a81d8acd25157664ae"
       }
     }
   ],
@@ -24,6 +24,7 @@
     ".kokoro/docs/common.cfg",
     ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
     ".kokoro/presubmit/common.cfg",
     ".kokoro/presubmit/presubmit.cfg",
     ".kokoro/publish-docs.sh",
