@@ -14,8 +14,8 @@
 
 """Google Compute Engine credentials.
 
-This module provides authentication for application running on Google Compute
-Engine using the Compute Engine metadata server.
+This module provides authentication for an application running on Google
+Compute Engine using the Compute Engine metadata server.
 
 """
 
