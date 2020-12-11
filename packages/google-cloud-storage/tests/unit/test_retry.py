@@ -14,6 +14,8 @@
 
 import unittest
 
+from google.cloud.storage import _helpers
+
 import mock
 
 
@@ -112,7 +114,7 @@ class Test_is_generation_specified(unittest.TestCase):
         self.assertTrue(self._call_fut(query_params))
 
     def test_wo_generation_w_if_generation_match(self):
-        query_params = {"if_generation_match": 123}
+        query_params = {"ifGenerationMatch": 123}
 
         self.assertTrue(self._call_fut(query_params))
 
@@ -129,7 +131,7 @@ class Test_is_metageneration_specified(unittest.TestCase):
         self.assertFalse(self._call_fut(query_params))
 
     def test_w_if_metageneration_match(self):
-        query_params = {"if_metageneration_match": 123}
+        query_params = {"ifMetagenerationMatch": 123}
 
         self.assertTrue(self._call_fut(query_params))
 
@@ -163,48 +165,62 @@ class Test_is_etag_in_json(unittest.TestCase):
 
 
 class Test_default_conditional_retry_policies(unittest.TestCase):
-    def test_is_generation_specified_match_metageneration(self):
+    def test_is_generation_specified_match_generation_match(self):
         from google.cloud.storage import retry
+
+        query_dict = {}
+        _helpers._add_generation_match_parameters(query_dict, if_generation_match=1)
 
         conditional_policy = retry.DEFAULT_RETRY_IF_GENERATION_SPECIFIED
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_generation_match": 1}
+            query_params=query_dict
         )
         self.assertEqual(policy, retry.DEFAULT_RETRY)
 
     def test_is_generation_specified_match_generation(self):
         from google.cloud.storage import retry
 
+        query_dict = {"generation": 1}
+
         conditional_policy = retry.DEFAULT_RETRY_IF_GENERATION_SPECIFIED
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"generation": 1}
+            query_params=query_dict
         )
         self.assertEqual(policy, retry.DEFAULT_RETRY)
 
     def test_is_generation_specified_mismatch(self):
         from google.cloud.storage import retry
 
+        query_dict = {}
+        _helpers._add_generation_match_parameters(query_dict, if_metageneration_match=1)
+
         conditional_policy = retry.DEFAULT_RETRY_IF_GENERATION_SPECIFIED
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_metageneration_match": 1}
+            query_params=query_dict
         )
         self.assertEqual(policy, None)
 
     def test_is_metageneration_specified_match(self):
         from google.cloud.storage import retry
 
+        query_dict = {}
+        _helpers._add_generation_match_parameters(query_dict, if_metageneration_match=1)
+
         conditional_policy = retry.DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_metageneration_match": 1}
+            query_params=query_dict
         )
         self.assertEqual(policy, retry.DEFAULT_RETRY)
 
     def test_is_metageneration_specified_mismatch(self):
         from google.cloud.storage import retry
 
+        query_dict = {}
+        _helpers._add_generation_match_parameters(query_dict, if_generation_match=1)
+
         conditional_policy = retry.DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_generation_match": 1}
+            query_params=query_dict
         )
         self.assertEqual(policy, None)
 
@@ -213,7 +229,7 @@ class Test_default_conditional_retry_policies(unittest.TestCase):
 
         conditional_policy = retry.DEFAULT_RETRY_IF_ETAG_IN_JSON
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_generation_match": 1}, data='{"etag": "12345678"}'
+            query_params={"ifGenerationMatch": 1}, data='{"etag": "12345678"}'
         )
         self.assertEqual(policy, retry.DEFAULT_RETRY)
 
@@ -222,7 +238,7 @@ class Test_default_conditional_retry_policies(unittest.TestCase):
 
         conditional_policy = retry.DEFAULT_RETRY_IF_ETAG_IN_JSON
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_generation_match": 1}, data="{}"
+            query_params={"ifGenerationMatch": 1}, data="{}"
         )
         self.assertEqual(policy, None)
 
@@ -231,6 +247,6 @@ class Test_default_conditional_retry_policies(unittest.TestCase):
 
         conditional_policy = retry.DEFAULT_RETRY_IF_ETAG_IN_JSON
         policy = conditional_policy.get_retry_policy_if_conditions_met(
-            query_params={"if_generation_match": 1}, data="I am invalid JSON!"
+            query_params={"ifGenerationMatch": 1}, data="I am invalid JSON!"
         )
         self.assertEqual(policy, None)

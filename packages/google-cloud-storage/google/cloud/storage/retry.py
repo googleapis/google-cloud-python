@@ -99,13 +99,13 @@ class ConditionalRetryPolicy(object):
 def is_generation_specified(query_params):
     """Return True if generation or if_generation_match is specified."""
     generation = query_params.get("generation") is not None
-    if_generation_match = query_params.get("if_generation_match") is not None
+    if_generation_match = query_params.get("ifGenerationMatch") is not None
     return generation or if_generation_match
 
 
 def is_metageneration_specified(query_params):
     """Return True if if_metageneration_match is specified."""
-    if_metageneration_match = query_params.get("if_metageneration_match") is not None
+    if_metageneration_match = query_params.get("ifMetagenerationMatch") is not None
     return if_metageneration_match
 
 
