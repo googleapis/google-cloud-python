@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import sys
 import uuid
 
 import backoff
@@ -23,25 +24,26 @@ import pytest
 import subscriber
 
 UUID = uuid.uuid4().hex
+PY_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}"
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
-TOPIC = "subscription-test-topic-" + UUID
-DEAD_LETTER_TOPIC = "subscription-test-dead-letter-topic-" + UUID
-SUBSCRIPTION_ADMIN = "subscription-test-subscription-admin-" + UUID
-SUBSCRIPTION_ASYNC = "subscription-test-subscription-async-" + UUID
-SUBSCRIPTION_SYNC = "subscription-test-subscription-sync-" + UUID
-SUBSCRIPTION_DLQ = "subscription-test-subscription-dlq-" + UUID
-ENDPOINT = "https://{}.appspot.com/push".format(PROJECT_ID)
-NEW_ENDPOINT = "https://{}.appspot.com/push2".format(PROJECT_ID)
+TOPIC = f"subscription-test-topic-{PY_VERSION}-{UUID}"
+DEAD_LETTER_TOPIC = f"subscription-test-dead-letter-topic-{PY_VERSION}-{UUID}"
+SUBSCRIPTION_ADMIN = f"subscription-test-subscription-admin-{PY_VERSION}-{UUID}"
+SUBSCRIPTION_ASYNC = f"subscription-test-subscription-async-{PY_VERSION}-{UUID}"
+SUBSCRIPTION_SYNC = f"subscription-test-subscription-sync-{PY_VERSION}-{UUID}"
+SUBSCRIPTION_DLQ = f"subscription-test-subscription-dlq-{PY_VERSION}-{UUID}"
+ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push"
+NEW_ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push2"
 DEFAULT_MAX_DELIVERY_ATTEMPTS = 5
 UPDATED_MAX_DELIVERY_ATTEMPTS = 20
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def publisher_client():
     yield pubsub_v1.PublisherClient()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def topic(publisher_client):
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC)
 
@@ -55,7 +57,7 @@ def topic(publisher_client):
     publisher_client.delete_topic(request={"topic": topic.name})
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def dead_letter_topic(publisher_client):
     topic_path = publisher_client.topic_path(PROJECT_ID, DEAD_LETTER_TOPIC)
 
@@ -69,14 +71,14 @@ def dead_letter_topic(publisher_client):
     publisher_client.delete_topic(request={"topic": dead_letter_topic.name})
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def subscriber_client():
     subscriber_client = pubsub_v1.SubscriberClient()
     yield subscriber_client
     subscriber_client.close()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def subscription_admin(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(
         PROJECT_ID, SUBSCRIPTION_ADMIN
@@ -94,7 +96,7 @@ def subscription_admin(subscriber_client, topic):
     yield subscription.name
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def subscription_sync(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(
         PROJECT_ID, SUBSCRIPTION_SYNC
@@ -114,7 +116,7 @@ def subscription_sync(subscriber_client, topic):
     subscriber_client.delete_subscription(request={"subscription": subscription.name})
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def subscription_async(subscriber_client, topic):
     subscription_path = subscriber_client.subscription_path(
         PROJECT_ID, SUBSCRIPTION_ASYNC
@@ -134,7 +136,7 @@ def subscription_async(subscriber_client, topic):
     subscriber_client.delete_subscription(request={"subscription": subscription.name})
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def subscription_dlq(subscriber_client, topic, dead_letter_topic):
     from google.cloud.pubsub_v1.types import DeadLetterPolicy
 
@@ -159,6 +161,13 @@ def subscription_dlq(subscriber_client, topic, dead_letter_topic):
     yield subscription.name
 
     subscriber_client.delete_subscription(request={"subscription": subscription.name})
+
+
+def _publish_messages(publisher_client, topic, **attrs):
+    for n in range(5):
+        data = f"message {n}".encode("utf-8")
+        publish_future = publisher_client.publish(topic, data, **attrs)
+        publish_future.result()
 
 
 def test_list_in_topic(subscription_admin, capsys):
@@ -219,16 +228,41 @@ def test_create_subscription_with_dead_letter_policy(
     assert f"After {DEFAULT_MAX_DELIVERY_ATTEMPTS} delivery attempts." in out
 
 
+def test_receive_with_delivery_attempts(
+    publisher_client, topic, dead_letter_topic, subscription_dlq, capsys
+):
+    _publish_messages(publisher_client, topic)
+
+    subscriber.receive_messages_with_delivery_attempts(PROJECT_ID, SUBSCRIPTION_DLQ, 90)
+
+    out, _ = capsys.readouterr()
+    assert f"Listening for messages on {subscription_dlq}.." in out
+    assert "With delivery attempts: " in out
+
+
 def test_update_dead_letter_policy(subscription_dlq, dead_letter_topic, capsys):
     _ = subscriber.update_subscription_with_dead_letter_policy(
-        PROJECT_ID, TOPIC, SUBSCRIPTION_DLQ, DEAD_LETTER_TOPIC,
-        UPDATED_MAX_DELIVERY_ATTEMPTS
+        PROJECT_ID,
+        TOPIC,
+        SUBSCRIPTION_DLQ,
+        DEAD_LETTER_TOPIC,
+        UPDATED_MAX_DELIVERY_ATTEMPTS,
     )
 
     out, _ = capsys.readouterr()
     assert dead_letter_topic in out
     assert subscription_dlq in out
     assert f"max_delivery_attempts: {UPDATED_MAX_DELIVERY_ATTEMPTS}" in out
+
+
+def test_remove_dead_letter_policy(subscription_dlq, capsys):
+    subscription_after_update = subscriber.remove_dead_letter_policy(
+        PROJECT_ID, TOPIC, SUBSCRIPTION_DLQ
+    )
+
+    out, _ = capsys.readouterr()
+    assert subscription_dlq in out
+    assert subscription_after_update.dead_letter_policy.dead_letter_topic == ""
 
 
 def test_create_subscription_with_ordering(
@@ -293,13 +327,6 @@ def test_delete(subscriber_client, subscription_admin):
     eventually_consistent_test()
 
 
-def _publish_messages(publisher_client, topic, **attrs):
-    for n in range(5):
-        data = "message {}".format(n).encode("utf-8")
-        publish_future = publisher_client.publish(topic, data, **attrs)
-        publish_future.result()
-
-
 def test_receive(publisher_client, topic, subscription_async, capsys):
     _publish_messages(publisher_client, topic)
 
@@ -340,6 +367,17 @@ def test_receive_with_flow_control(publisher_client, topic, subscription_async, 
     assert "message" in out
 
 
+def test_listen_for_errors(publisher_client, topic, subscription_async, capsys):
+
+    _publish_messages(publisher_client, topic)
+
+    subscriber.listen_for_errors(PROJECT_ID, SUBSCRIPTION_ASYNC, 5)
+
+    out, _ = capsys.readouterr()
+    assert subscription_async in out
+    assert "threw an exception" in out
+
+
 def test_receive_synchronously(publisher_client, topic, subscription_sync, capsys):
     _publish_messages(publisher_client, topic)
 
@@ -360,36 +398,3 @@ def test_receive_synchronously_with_lease(
 
     out, _ = capsys.readouterr()
     assert f"Received and acknowledged 3 messages from {subscription_sync}." in out
-
-
-def test_listen_for_errors(publisher_client, topic, subscription_async, capsys):
-
-    _publish_messages(publisher_client, topic)
-
-    subscriber.listen_for_errors(PROJECT_ID, SUBSCRIPTION_ASYNC, 5)
-
-    out, _ = capsys.readouterr()
-    assert subscription_async in out
-    assert "threw an exception" in out
-
-
-def test_receive_with_delivery_attempts(
-    publisher_client, topic, subscription_dlq, capsys
-):
-    _publish_messages(publisher_client, topic)
-
-    subscriber.receive_messages_with_delivery_attempts(PROJECT_ID, SUBSCRIPTION_DLQ, 15)
-
-    out, _ = capsys.readouterr()
-    assert f"Listening for messages on {subscription_dlq}.." in out
-    assert "With delivery attempts: " in out
-
-
-def test_remove_dead_letter_policy(subscription_dlq, capsys):
-    subscription_after_update = subscriber.remove_dead_letter_policy(
-        PROJECT_ID, TOPIC, SUBSCRIPTION_DLQ
-    )
-
-    out, _ = capsys.readouterr()
-    assert subscription_dlq in out
-    assert subscription_after_update.dead_letter_policy.dead_letter_topic == ""
