@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.0.2](https://www.github.com/googleapis/python-translate/compare/v3.0.1...v3.0.2) (2020-12-09)
+
+
+### Documentation
+
+* add w/ glossary and model ([1e030d4](https://www.github.com/googleapis/python-translate/commit/1e030d4557ee1f67bad5e5b4759d0200efd27afd))
+
 ### [3.0.1](https://www.github.com/googleapis/python-translate/compare/v3.0.0...v3.0.1) (2020-08-08)
 
 
