@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.24.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.23.0...v1.24.0) (2020-12-11)
+
+
+### Features
+
+* add Python 3.9 support, drop Python 3.5 support ([#655](https://www.github.com/googleapis/google-auth-library-python/issues/655)) ([6de753d](https://www.github.com/googleapis/google-auth-library-python/commit/6de753d585254c813b3e6cbde27bf5466261ba10)), closes [#654](https://www.github.com/googleapis/google-auth-library-python/issues/654)
+
+
+### Bug Fixes
+
+* avoid losing the original '_include_email' parameter in impersonated credentials ([#626](https://www.github.com/googleapis/google-auth-library-python/issues/626)) ([fd9b5b1](https://www.github.com/googleapis/google-auth-library-python/commit/fd9b5b10c80950784bd37ee56e32c505acb5078d))
+
+
+### Documentation
+
+* fix typo in import ([#651](https://www.github.com/googleapis/google-auth-library-python/issues/651)) ([3319ea8](https://www.github.com/googleapis/google-auth-library-python/commit/3319ea8ae876c73a94f51237b3bbb3f5df2aef89)), closes [#650](https://www.github.com/googleapis/google-auth-library-python/issues/650)
+
 ## [1.23.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.22.1...v1.23.0) (2020-10-29)
 
 
