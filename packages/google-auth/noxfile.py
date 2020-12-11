@@ -75,7 +75,7 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
-@nox.session(python=["3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def unit(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(*(ASYNC_DEPENDENCIES))
@@ -90,7 +90,7 @@ def unit(session):
     )
 
 
-@nox.session(python=["2.7", "3.5"])
+@nox.session(python=["2.7"])
 def unit_prev_versions(session):
     session.install(*TEST_DEPENDENCIES)
     session.install(".")
