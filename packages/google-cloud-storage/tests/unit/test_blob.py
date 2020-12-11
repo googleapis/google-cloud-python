@@ -52,6 +52,12 @@ class Test_Blob(unittest.TestCase):
 
         return _DEFAULT_TIMEOUT
 
+    @staticmethod
+    def _make_client(*args, **kw):
+        from google.cloud.storage.client import Client
+
+        return Client(*args, **kw)
+
     def test_ctor_wo_encryption_key(self):
         BLOB_NAME = "blob-name"
         bucket = _Bucket()
@@ -1176,7 +1182,7 @@ class Test_Blob(unittest.TestCase):
 
         blob_name = "blob-name"
         media_link = "http://test.invalid"
-        client = mock.Mock(spec=[u"_http"])
+        client = self._make_client()
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
         blob._properties["mediaLink"] = media_link
@@ -1204,8 +1210,7 @@ class Test_Blob(unittest.TestCase):
 
     def test_download_to_file_wo_media_link(self):
         blob_name = "blob-name"
-        client = mock.Mock(_connection=_Connection, spec=[u"_http"])
-        client._connection.API_BASE_URL = "https://storage.googleapis.com"
+        client = self._make_client()
         bucket = _Bucket(client)
         blob = self._make_one(blob_name, bucket=bucket)
         blob._do_download = mock.Mock()
@@ -1243,8 +1248,7 @@ class Test_Blob(unittest.TestCase):
             )
         )
 
-        client = mock.Mock(_connection=_Connection, spec=[u"_http"])
-        client._connection.API_BASE_URL = "https://storage.googleapis.com"
+        client = self._make_client()
         blob = self._make_one("blob-name", bucket=_Bucket(client))
         blob._do_download = mock.Mock()
         file_obj = io.BytesIO()
@@ -1265,7 +1269,7 @@ class Test_Blob(unittest.TestCase):
 
     def _download_to_file_helper(self, use_chunks, raw_download, timeout=None):
         blob_name = "blob-name"
-        client = mock.Mock(spec=[u"_http"])
+        client = self._make_client()
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
@@ -1324,7 +1328,7 @@ class Test_Blob(unittest.TestCase):
         from google.cloud._testing import _NamedTemporaryFile
 
         blob_name = "blob-name"
-        client = mock.Mock(spec=["_http"])
+        client = self._make_client()
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
@@ -1377,7 +1381,7 @@ class Test_Blob(unittest.TestCase):
         EXPECTED_LINK = MEDIA_LINK + "?ifGenerationMatch={}".format(GENERATION_NUMBER)
         HEADERS = {"accept-encoding": "gzip"}
 
-        client = mock.Mock(spec=["_http"])
+        client = self._make_client()
 
         blob = self._make_one(
             "blob-name", bucket=_Bucket(client), properties={"mediaLink": MEDIA_LINK}
@@ -1422,7 +1426,7 @@ class Test_Blob(unittest.TestCase):
         from google.resumable_media import DataCorruption
 
         blob_name = "blob-name"
-        client = mock.Mock(spec=["_http"])
+        client = self._make_client()
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
@@ -1465,7 +1469,7 @@ class Test_Blob(unittest.TestCase):
 
         blob_name = "blob-name"
         # Create a fake client/bucket and use them in the Blob() constructor.
-        client = mock.Mock(spec=["_http"])
+        client = self._make_client()
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}
@@ -1496,7 +1500,7 @@ class Test_Blob(unittest.TestCase):
 
     def _download_as_bytes_helper(self, raw_download, timeout=None):
         blob_name = "blob-name"
-        client = mock.Mock(spec=["_http"])
+        client = self._make_client()
         bucket = _Bucket(client)
         media_link = "http://example.com/media/"
         properties = {"mediaLink": media_link}

@@ -1007,32 +1007,72 @@ class TestClient(unittest.TestCase):
         json_sent = http.request.call_args_list[0][1]["data"]
         self.assertEqual(json_expected, json.loads(json_sent))
 
-    def test_download_blob_to_file_with_blob(self):
-        project = "PROJECT"
-        credentials = _make_credentials()
-        client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
-        file_obj = io.BytesIO()
+    def test_download_blob_to_file_with_failure(self):
+        from google.resumable_media import InvalidResponse
+        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
-        client.download_blob_to_file(blob, file_obj)
-        blob.download_to_file.assert_called_once_with(
-            file_obj, client=client, start=None, end=None
+        raw_response = requests.Response()
+        raw_response.status_code = http_client.NOT_FOUND
+        raw_request = requests.Request("GET", "http://example.com")
+        raw_response.request = raw_request.prepare()
+        grmp_response = InvalidResponse(raw_response)
+
+        credentials = _make_credentials()
+        client = self._make_one(credentials=credentials)
+        blob = mock.create_autospec(Blob)
+        blob._encryption_key = None
+        blob._get_download_url = mock.Mock()
+        blob._do_download = mock.Mock()
+        blob._do_download.side_effect = grmp_response
+
+        file_obj = io.BytesIO()
+        with self.assertRaises(exceptions.NotFound):
+            client.download_blob_to_file(blob, file_obj)
+
+        self.assertEqual(file_obj.tell(), 0)
+
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http,
+            file_obj,
+            blob._get_download_url(),
+            headers,
+            None,
+            None,
+            False,
+            checksum="md5",
+            timeout=_DEFAULT_TIMEOUT,
         )
 
     def test_download_blob_to_file_with_uri(self):
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
         project = "PROJECT"
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
         blob = mock.Mock()
         file_obj = io.BytesIO()
+        blob._encryption_key = None
+        blob._get_download_url = mock.Mock()
+        blob._do_download = mock.Mock()
 
         with mock.patch(
             "google.cloud.storage.client.Blob.from_string", return_value=blob
         ):
             client.download_blob_to_file("gs://bucket_name/path/to/object", file_obj)
 
-        blob.download_to_file.assert_called_once_with(
-            file_obj, client=client, start=None, end=None
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http,
+            file_obj,
+            blob._get_download_url(),
+            headers,
+            None,
+            None,
+            False,
+            checksum="md5",
+            timeout=_DEFAULT_TIMEOUT,
         )
 
     def test_download_blob_to_file_with_invalid_uri(self):
@@ -1043,6 +1083,51 @@ class TestClient(unittest.TestCase):
 
         with pytest.raises(ValueError, match="URI scheme must be gs"):
             client.download_blob_to_file("http://bucket_name/path/to/object", file_obj)
+
+    def _download_blob_to_file_helper(self, use_chunks, raw_download):
+        from google.cloud.storage.blob import Blob
+        from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+
+        credentials = _make_credentials()
+        client = self._make_one(credentials=credentials)
+        blob = mock.create_autospec(Blob)
+        blob._encryption_key = None
+        blob._get_download_url = mock.Mock()
+        if use_chunks:
+            blob._CHUNK_SIZE_MULTIPLE = 1
+            blob.chunk_size = 3
+        blob._do_download = mock.Mock()
+
+        file_obj = io.BytesIO()
+        if raw_download:
+            client.download_blob_to_file(blob, file_obj, raw_download=True)
+        else:
+            client.download_blob_to_file(blob, file_obj)
+
+        headers = {"accept-encoding": "gzip"}
+        blob._do_download.assert_called_once_with(
+            client._http,
+            file_obj,
+            blob._get_download_url(),
+            headers,
+            None,
+            None,
+            raw_download,
+            checksum="md5",
+            timeout=_DEFAULT_TIMEOUT,
+        )
+
+    def test_download_blob_to_file_wo_chunks_wo_raw(self):
+        self._download_blob_to_file_helper(use_chunks=False, raw_download=False)
+
+    def test_download_blob_to_file_w_chunks_wo_raw(self):
+        self._download_blob_to_file_helper(use_chunks=True, raw_download=False)
+
+    def test_download_blob_to_file_wo_chunks_w_raw(self):
+        self._download_blob_to_file_helper(use_chunks=False, raw_download=True)
+
+    def test_download_blob_to_file_w_chunks_w_raw(self):
+        self._download_blob_to_file_helper(use_chunks=True, raw_download=True)
 
     def test_list_blobs(self):
         from google.cloud.storage.bucket import Bucket
