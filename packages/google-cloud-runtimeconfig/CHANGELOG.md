@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-runtimeconfig/#history
 
+### [0.32.1](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.32.0...v0.32.1) (2020-12-10)
+
+
+### Documentation
+
+* update intersphinx for grpc and auth ([#27](https://www.github.com/googleapis/python-runtimeconfig/issues/27)) ([1044e73](https://www.github.com/googleapis/python-runtimeconfig/commit/1044e73a4e65e2bef5e9a5a36d1e64e28169dc3e))
+
 ## [0.32.0](https://www.github.com/googleapis/python-runtimeconfig/compare/v0.31.0...v0.32.0) (2020-06-05)
 
 
