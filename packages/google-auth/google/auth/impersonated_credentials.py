@@ -341,6 +341,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         return self.__class__(
             target_credentials=self._target_credentials,
             target_audience=target_audience,
+            include_email=self._include_email,
             quota_project_id=self._quota_project_id,
         )
 
@@ -348,6 +349,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
         return self.__class__(
             target_credentials=self._target_credentials,
             target_audience=target_audience,
+            include_email=self._include_email,
             quota_project_id=self._quota_project_id,
         )
 

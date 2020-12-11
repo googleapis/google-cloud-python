@@ -368,12 +368,13 @@ class TestImpersonatedCredentials(object):
         assert not credentials.expired
 
         id_creds = impersonated_credentials.IDTokenCredentials(
-            credentials, target_audience=target_audience
+            credentials, target_audience=target_audience, include_email=True
         )
         id_creds = id_creds.from_credentials(target_credentials=credentials)
         id_creds.refresh(request)
 
         assert id_creds.token == ID_TOKEN_DATA
+        assert id_creds._include_email is True
 
     def test_id_token_with_target_audience(
         self, mock_donor_credentials, mock_authorizedsession_idtoken
@@ -396,12 +397,15 @@ class TestImpersonatedCredentials(object):
         assert credentials.valid
         assert not credentials.expired
 
-        id_creds = impersonated_credentials.IDTokenCredentials(credentials)
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            credentials, include_email=True
+        )
         id_creds = id_creds.with_target_audience(target_audience=target_audience)
         id_creds.refresh(request)
 
         assert id_creds.token == ID_TOKEN_DATA
         assert id_creds.expiry == datetime.datetime.fromtimestamp(ID_TOKEN_EXPIRY)
+        assert id_creds._include_email is True
 
     def test_id_token_invalid_cred(
         self, mock_donor_credentials, mock_authorizedsession_idtoken
