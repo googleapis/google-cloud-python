@@ -287,6 +287,12 @@ class UpdateDatabaseDdlMetadata(proto.Message):
             Reports the commit timestamps of all statements that have
             succeeded so far, where ``commit_timestamps[i]`` is the
             commit timestamp for the statement ``statements[i]``.
+        throttled (bool):
+            Output only. When true, indicates that the
+            operation is throttled e.g due to resource
+            constraints. When resources become available the
+            operation will resume and this field will be
+            false again.
     """
 
     database = proto.Field(proto.STRING, number=1)
@@ -296,6 +302,8 @@ class UpdateDatabaseDdlMetadata(proto.Message):
     commit_timestamps = proto.RepeatedField(
         proto.MESSAGE, number=3, message=timestamp.Timestamp,
     )
+
+    throttled = proto.Field(proto.BOOL, number=4)
 
 
 class DropDatabaseRequest(proto.Message):
