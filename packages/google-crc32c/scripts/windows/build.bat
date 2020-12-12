@@ -49,7 +49,7 @@ popd
 copy %CRC32C_INSTALL_PREFIX%bin\google_crc32c.dll .
 
 @rem update python deps and build wheels (requires CRC32C_INSTALL_PREFIX is set)
-FOR %%V IN (3.5-64,3.6-64,3.7-64) DO (
+FOR %%V IN (3.6-64,3.7-64) DO (
     py -%%V -m pip install --upgrade pip setuptools wheel
     py -%%V -m pip wheel . --wheel-dir wheels/
 )
@@ -77,7 +77,7 @@ popd
 copy %CRC32C_INSTALL_PREFIX%bin\google_crc32c.dll .
 
 @rem update python deps and build wheels (requires CRC32C_INSTALL_PREFIX is set)
-FOR %%V IN (3.5-32,3.6-32,3.7-32) DO (
+FOR %%V IN (3.6-32,3.7-32) DO (
     py -%%V -m pip install --upgrade pip setuptools wheel
     py -%%V -m pip wheel . --wheel-dir wheels/
 )
