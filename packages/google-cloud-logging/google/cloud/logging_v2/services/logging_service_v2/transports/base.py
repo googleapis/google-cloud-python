@@ -186,6 +186,21 @@ class LoggingServiceV2Transport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.tail_log_entries: gapic_v1.method.wrap_method(
+                self.tail_log_entries,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded,
+                        exceptions.InternalServerError,
+                        exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
         }
 
     @property
@@ -240,6 +255,18 @@ class LoggingServiceV2Transport(abc.ABC):
         [logging.ListLogsRequest],
         typing.Union[
             logging.ListLogsResponse, typing.Awaitable[logging.ListLogsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def tail_log_entries(
+        self,
+    ) -> typing.Callable[
+        [logging.TailLogEntriesRequest],
+        typing.Union[
+            logging.TailLogEntriesResponse,
+            typing.Awaitable[logging.TailLogEntriesResponse],
         ],
     ]:
         raise NotImplementedError()

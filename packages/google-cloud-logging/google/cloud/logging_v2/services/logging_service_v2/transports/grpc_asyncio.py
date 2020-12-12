@@ -390,5 +390,35 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             )
         return self._stubs["list_logs"]
 
+    @property
+    def tail_log_entries(
+        self,
+    ) -> Callable[
+        [logging.TailLogEntriesRequest], Awaitable[logging.TailLogEntriesResponse]
+    ]:
+        r"""Return a callable for the tail log entries method over gRPC.
+
+        Streaming read of log entries as they are ingested.
+        Until the stream is terminated, it will continue reading
+        logs.
+
+        Returns:
+            Callable[[~.TailLogEntriesRequest],
+                    Awaitable[~.TailLogEntriesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "tail_log_entries" not in self._stubs:
+            self._stubs["tail_log_entries"] = self.grpc_channel.stream_stream(
+                "/google.logging.v2.LoggingServiceV2/TailLogEntries",
+                request_serializer=logging.TailLogEntriesRequest.serialize,
+                response_deserializer=logging.TailLogEntriesResponse.deserialize,
+            )
+        return self._stubs["tail_log_entries"]
+
 
 __all__ = ("LoggingServiceV2GrpcAsyncIOTransport",)

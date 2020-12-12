@@ -20,6 +20,7 @@ import proto  # type: ignore
 
 from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
 from google.cloud.logging_v2.types import log_entry
+from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.rpc import status_pb2 as status  # type: ignore
 
 
@@ -36,6 +37,8 @@ __protobuf__ = proto.module(
         "ListMonitoredResourceDescriptorsResponse",
         "ListLogsRequest",
         "ListLogsResponse",
+        "TailLogEntriesRequest",
+        "TailLogEntriesResponse",
     },
 )
 
@@ -208,6 +211,12 @@ class ListLogEntriesRequest(proto.Message):
                 "billingAccounts/[BILLING_ACCOUNT_ID]"
                 "folders/[FOLDER_ID]"
 
+            May alternatively be one or more views
+            projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+
             Projects listed in the ``project_ids`` field are added to
             this list.
         filter (str):
@@ -358,6 +367,16 @@ class ListLogsRequest(proto.Message):
             ``pageToken`` must be the value of ``nextPageToken`` from
             the previous response. The values of other method parameters
             should be identical to those in the previous call.
+        resource_names (Sequence[str]):
+            Optional. The resource name that owns the logs:
+            projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+            folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+
+            To support legacy queries, it could also be:
+            "projects/[PROJECT_ID]" "organizations/[ORGANIZATION_ID]"
+            "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]".
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -365,6 +384,8 @@ class ListLogsRequest(proto.Message):
     page_size = proto.Field(proto.INT32, number=2)
 
     page_token = proto.Field(proto.STRING, number=3)
+
+    resource_names = proto.RepeatedField(proto.STRING, number=8)
 
 
 class ListLogsResponse(proto.Message):
@@ -389,6 +410,103 @@ class ListLogsResponse(proto.Message):
     log_names = proto.RepeatedField(proto.STRING, number=3)
 
     next_page_token = proto.Field(proto.STRING, number=2)
+
+
+class TailLogEntriesRequest(proto.Message):
+    r"""The parameters to ``TailLogEntries``.
+
+    Attributes:
+        resource_names (Sequence[str]):
+            Required. Name of a parent resource from which to retrieve
+            log entries:
+
+            ::
+
+                "projects/[PROJECT_ID]"
+                "organizations/[ORGANIZATION_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]"
+                "folders/[FOLDER_ID]"
+
+            May alternatively be one or more views:
+            "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+            "organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+            "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+            "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]".
+        filter (str):
+            Optional. A filter that chooses which log entries to return.
+            See `Advanced Logs
+            Filters <https://cloud.google.com/logging/docs/view/advanced_filters>`__.
+            Only log entries that match the filter are returned. An
+            empty filter matches all log entries in the resources listed
+            in ``resource_names``. Referencing a parent resource that is
+            not in ``resource_names`` will cause the filter to return no
+            results. The maximum length of the filter is 20000
+            characters.
+        buffer_window (~.duration.Duration):
+            Optional. The amount of time to buffer log
+            entries at the server before being returned to
+            prevent out of order results due to late
+            arriving log entries. Valid values are between
+            0-60000 milliseconds. Defaults to 2000
+            milliseconds.
+    """
+
+    resource_names = proto.RepeatedField(proto.STRING, number=1)
+
+    filter = proto.Field(proto.STRING, number=2)
+
+    buffer_window = proto.Field(proto.MESSAGE, number=3, message=duration.Duration,)
+
+
+class TailLogEntriesResponse(proto.Message):
+    r"""Result returned from ``TailLogEntries``.
+
+    Attributes:
+        entries (Sequence[~.log_entry.LogEntry]):
+            A list of log entries. Each response in the stream will
+            order entries with increasing values of
+            ``LogEntry.timestamp``. Ordering is not guaranteed between
+            separate responses.
+        suppression_info (Sequence[~.logging.TailLogEntriesResponse.SuppressionInfo]):
+            If entries that otherwise would have been
+            included in the session were not sent back to
+            the client, counts of relevant entries omitted
+            from the session with the reason that they were
+            not included. There will be at most one of each
+            reason per response. The counts represent the
+            number of suppressed entries since the last
+            streamed response.
+    """
+
+    class SuppressionInfo(proto.Message):
+        r"""Information about entries that were omitted from the session.
+
+        Attributes:
+            reason (~.logging.TailLogEntriesResponse.SuppressionInfo.Reason):
+                The reason that entries were omitted from the
+                session.
+            suppressed_count (int):
+                A lower bound on the count of entries omitted due to
+                ``reason``.
+        """
+
+        class Reason(proto.Enum):
+            r"""An indicator of why entries were omitted."""
+            REASON_UNSPECIFIED = 0
+            RATE_LIMIT = 1
+            NOT_CONSUMED = 2
+
+        reason = proto.Field(
+            proto.ENUM, number=1, enum="TailLogEntriesResponse.SuppressionInfo.Reason",
+        )
+
+        suppressed_count = proto.Field(proto.INT32, number=2)
+
+    entries = proto.RepeatedField(proto.MESSAGE, number=1, message=log_entry.LogEntry,)
+
+    suppression_info = proto.RepeatedField(
+        proto.MESSAGE, number=2, message=SuppressionInfo,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

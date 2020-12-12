@@ -1698,6 +1698,81 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+def test_tail_log_entries(
+    transport: str = "grpc", request_type=logging.TailLogEntriesRequest
+):
+    client = LoggingServiceV2Client(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tail_log_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([logging.TailLogEntriesResponse()])
+
+        response = client.tail_log_entries(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, logging.TailLogEntriesResponse)
+
+
+def test_tail_log_entries_from_dict():
+    test_tail_log_entries(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_tail_log_entries_async(
+    transport: str = "grpc_asyncio", request_type=logging.TailLogEntriesRequest
+):
+    client = LoggingServiceV2AsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    requests = [request]
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.tail_log_entries), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[logging.TailLogEntriesResponse()]
+        )
+
+        response = await client.tail_log_entries(iter(requests))
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert next(args[0]) == request
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, logging.TailLogEntriesResponse)
+
+
+@pytest.mark.asyncio
+async def test_tail_log_entries_async_from_dict():
+    await test_tail_log_entries_async(request_type=dict)
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.LoggingServiceV2GrpcTransport(
@@ -1800,6 +1875,7 @@ def test_logging_service_v2_base_transport():
         "list_log_entries",
         "list_monitored_resource_descriptors",
         "list_logs",
+        "tail_log_entries",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

@@ -66,6 +66,8 @@ from .logging import (
     ListMonitoredResourceDescriptorsResponse,
     ListLogsRequest,
     ListLogsResponse,
+    TailLogEntriesRequest,
+    TailLogEntriesResponse,
 )
 from .logging_metrics import (
     LogMetric,
@@ -125,6 +127,8 @@ __all__ = (
     "ListMonitoredResourceDescriptorsResponse",
     "ListLogsRequest",
     "ListLogsResponse",
+    "TailLogEntriesRequest",
+    "TailLogEntriesResponse",
     "LogMetric",
     "ListLogMetricsRequest",
     "ListLogMetricsResponse",
