@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:  2.7,
-  3.5, 3.6, 3.7 and 3.8 on both UNIX and Windows.
+  3.6, 3.7 and 3.8 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -156,7 +156,7 @@ Running System Tests
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details.
 
-- Once you have downloaded your json keys, set the environment variable 
+- Once you have downloaded your json keys, set the environment variable
   ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
 
    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
@@ -202,12 +202,10 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.5`_
 -  `Python 3.6`_
 -  `Python 3.7`_
 -  `Python 3.8`_
 
-.. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
@@ -220,7 +218,7 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
 We also explicitly decided to support Python 3 beginning with version
-3.5. Reasons for this include:
+3.6. Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_

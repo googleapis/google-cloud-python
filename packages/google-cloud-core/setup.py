@@ -43,7 +43,7 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 version = {}
 with open(os.path.join(package_root, "google/cloud/version.py")) as fp:
     exec(fp.read(), version)
-version = version['__version__']
+version = version["__version__"]
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
@@ -78,10 +78,10 @@ setuptools.setup(
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],

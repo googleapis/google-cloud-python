@@ -1,7 +1,7 @@
 Core Helpers for Google Cloud Python Client Library
 ===================================================
 
-|pypi| |versions| 
+|pypi| |versions|
 
 This library is not meant to stand-alone. Instead it defines
 common helpers (e.g. base ``Client`` classes) used by all of the
@@ -32,7 +32,7 @@ to `Python Development Environment Setup Guide`_ for Google Cloud Platform.
 
 Supported Python Versions
 -------------------------
-Python >= 3.5
+Python >= 3.6
 
 Deprecated Python Versions
 --------------------------

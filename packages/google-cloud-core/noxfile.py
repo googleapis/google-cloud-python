@@ -31,19 +31,12 @@ def default(session):
     run the tests.
     """
     constraints_path = os.path.join(
-        CURRENT_DIRECTORY,
-        "testing",
-        "constraints-{}.txt".format(session.python)
+        CURRENT_DIRECTORY, "testing", "constraints-{}.txt".format(session.python)
     )
 
     # Install all test dependencies, then install local packages in-place.
     session.install(
-        "mock",
-        "pytest",
-        "pytest-cov",
-        "grpcio >= 1.0.2",
-        "-c",
-        constraints_path
+        "mock", "pytest", "pytest-cov", "grpcio >= 1.0.2", "-c", constraints_path
     )
     session.install("-e", ".", "-c", constraints_path)
 
@@ -62,7 +55,7 @@ def default(session):
     )
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["2.7", "3.6", "3.7", "3.8", "3.9"])
 def unit(session):
     """Default unit test session."""
     default(session)
@@ -98,6 +91,7 @@ def cover(session):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
     session.run("coverage", "erase")
+
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
