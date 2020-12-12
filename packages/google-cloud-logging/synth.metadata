@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-logging.git",
-        "sha": "4e24b3c360adef8d7761573d789867857586337d"
+        "sha": "7eaa5853f3a45e3db015a09841b98aeab461e6f3"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a073c873f3928c561bdf87fdfbf1d081d1998984"
+        "sha": "18c5dbdb4ac8cf75d4d8174e7b4558f48e76f8a1"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a073c873f3928c561bdf87fdfbf1d081d1998984"
+        "sha": "18c5dbdb4ac8cf75d4d8174e7b4558f48e76f8a1"
       }
     }
   ],
@@ -85,6 +85,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
@@ -134,7 +135,6 @@
     "renovate.json",
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
-    "samples/snippets/README.rst",
     "samples/snippets/noxfile.py",
     "scripts/decrypt-secrets.sh",
     "scripts/readme-gen/readme_gen.py",
