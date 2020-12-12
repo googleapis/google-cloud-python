@@ -21,7 +21,7 @@ import nox
 from sys import platform
 
 
-@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def build_libcrc32c(session):
     if platform.startswith("win"):
         session.run("cmd", "-c", "scripts\\windows\\build.bat")
@@ -33,8 +33,9 @@ def build_libcrc32c(session):
         raise Exception("Unsupported")
 
 
-@nox.session(python=["3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def check(session):
+    session.install("cffi>=1.0.0")
     session.install("--no-index", "--find-links=wheels", "google-crc32c")
 
     # Run py.test against the unit tests.
