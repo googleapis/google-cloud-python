@@ -79,7 +79,7 @@ s.replace(
 templated_files = common.py_library(
     unit_cov_level=97,
     cov_level=97,
-    unit_test_python_versions=["3.6", "3.7", "3.8"],
+    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
     system_test_python_versions=["3.8"],
 )
 s.move(templated_files, excludes=["docs/multiprocessing.rst", ".coveragerc"])
