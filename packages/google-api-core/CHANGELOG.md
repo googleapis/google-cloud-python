@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.24.0](https://www.github.com/googleapis/python-api-core/compare/v1.23.0...v1.24.0) (2020-12-14)
+
+
+### Features
+
+* add support for Python 3.9, drop support for Python 3.5 ([#111](https://www.github.com/googleapis/python-api-core/issues/111)) ([fdbed0f](https://www.github.com/googleapis/python-api-core/commit/fdbed0f0cbae8de21c73338a6817f8aa79cef4c9)), closes [#110](https://www.github.com/googleapis/python-api-core/issues/110)
+
+
+### Documentation
+
+* explain how to create credentials from dict ([#109](https://www.github.com/googleapis/python-api-core/issues/109)) ([5dce6d6](https://www.github.com/googleapis/python-api-core/commit/5dce6d61e7324a415c1b3ceaeec1ce1b5f1ea189))
+
 ## [1.23.0](https://www.github.com/googleapis/python-api-core/compare/v1.22.4...v1.23.0) (2020-10-16)
 
 
