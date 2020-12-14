@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.0.0](https://www.github.com/googleapis/python-dialogflow/compare/v1.1.0...v2.0.0) (2020-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* use microgenerator. See [Migration Guide](https://github.com/googleapis/python-dialogflow/blob/master/UPGRADING.md). (#239)
+
+### Features
+
+* use microgenerator ([#239](https://www.github.com/googleapis/python-dialogflow/issues/239)) ([57c90a5](https://www.github.com/googleapis/python-dialogflow/commit/57c90a5b72668e599047b358f634f939d70a051f))
+
 ## [1.1.0](https://www.github.com/googleapis/dialogflow-python-client-v2/compare/v1.0.0...v1.1.0) (2020-08-26)
 
 
