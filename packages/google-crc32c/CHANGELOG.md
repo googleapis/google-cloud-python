@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-crc32c/compare/v0.1.1...v1.1.0) (2020-12-14)
+
+
+### Features
+
+* add Python 3.9 support, drop Python 3.5 support ([#42](https://www.github.com/googleapis/python-crc32c/issues/42)) ([1d7fe63](https://www.github.com/googleapis/python-crc32c/commit/1d7fe6338fbcb0e74245f84c2034ac5371f7782a)), closes [#38](https://www.github.com/googleapis/python-crc32c/issues/38)
+
+
+### Bug Fixes
+
+* add LICENSE to package manifest ([#34](https://www.github.com/googleapis/python-crc32c/issues/34)) ([6c8883b](https://www.github.com/googleapis/python-crc32c/commit/6c8883b2c41aaa6f0dd5991896ad58e73f516182))
+
 ### [1.0.0](https://www.github.com/googleapis/python-crc32c/compare/v0.1.0...v1.0.0) (2020-08-07)
 
 ### Breaking Changes
