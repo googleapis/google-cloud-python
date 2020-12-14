@@ -30,7 +30,7 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-auth >= 1.11.0, < 2.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
-    "google-resumable-media >= 1.0.0, < 2.0dev",
+    "google-resumable-media >= 1.2.0, < 2.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
 ]
 extras = {}
