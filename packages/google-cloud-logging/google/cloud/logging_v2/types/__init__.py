@@ -54,6 +54,7 @@ from .logging_config import (
     GetCmekSettingsRequest,
     UpdateCmekSettingsRequest,
     CmekSettings,
+    LifecycleState,
 )
 from .logging import (
     DeleteLogRequest,
@@ -78,7 +79,6 @@ from .logging_metrics import (
     UpdateLogMetricRequest,
     DeleteLogMetricRequest,
 )
-
 
 __all__ = (
     "LogEntry",
@@ -117,6 +117,7 @@ __all__ = (
     "GetCmekSettingsRequest",
     "UpdateCmekSettingsRequest",
     "CmekSettings",
+    "LifecycleState",
     "DeleteLogRequest",
     "WriteLogEntriesRequest",
     "WriteLogEntriesResponse",

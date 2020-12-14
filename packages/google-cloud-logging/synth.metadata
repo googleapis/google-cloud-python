@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-logging.git",
-        "sha": "7eaa5853f3a45e3db015a09841b98aeab461e6f3"
+        "sha": "3a25c8cd9bd06e5a8f488945c9bc94380e2bf0d1"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "e8857c4c36948e7e0500377cd7fcecbf2459afc8",
-        "internalRef": "344435830"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {
