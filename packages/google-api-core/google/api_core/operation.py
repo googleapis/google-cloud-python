@@ -192,7 +192,7 @@ class Operation(polling.PollingFuture):
         )
 
 
-def _refresh_http(api_request, operation_name):
+def _refresh_http(api_request, operation_name, retry=None):
     """Refresh an operation using a JSON/HTTP client.
 
     Args:
@@ -200,11 +200,16 @@ def _refresh_http(api_request, operation_name):
             should generally be
             :meth:`google.cloud._http.Connection.api_request`.
         operation_name (str): The name of the operation.
+        retry (google.api_core.retry.Retry): (Optional) retry policy
 
     Returns:
         google.longrunning.operations_pb2.Operation: The operation.
     """
     path = "operations/{}".format(operation_name)
+
+    if retry is not None:
+        api_request = retry(api_request)
+
     api_response = api_request(method="GET", path=path)
     return json_format.ParseDict(api_response, operations_pb2.Operation())
 
@@ -249,19 +254,25 @@ def from_http_json(operation, api_request, result_type, **kwargs):
     return Operation(operation_proto, refresh, cancel, result_type, **kwargs)
 
 
-def _refresh_grpc(operations_stub, operation_name):
+def _refresh_grpc(operations_stub, operation_name, retry=None):
     """Refresh an operation using a gRPC client.
 
     Args:
         operations_stub (google.longrunning.operations_pb2.OperationsStub):
             The gRPC operations stub.
         operation_name (str): The name of the operation.
+        retry (google.api_core.retry.Retry): (Optional) retry policy
 
     Returns:
         google.longrunning.operations_pb2.Operation: The operation.
     """
     request_pb = operations_pb2.GetOperationRequest(name=operation_name)
-    return operations_stub.GetOperation(request_pb)
+
+    rpc = operations_stub.GetOperation
+    if retry is not None:
+        rpc = retry(rpc)
+
+    return rpc(request_pb)
 
 
 def _cancel_grpc(operations_stub, operation_name):

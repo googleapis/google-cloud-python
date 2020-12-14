@@ -177,13 +177,35 @@ def test_unexpected_result():
 
 
 def test__refresh_http():
-    api_request = mock.Mock(return_value={"name": TEST_OPERATION_NAME, "done": True})
+    json_response = {"name": TEST_OPERATION_NAME, "done": True}
+    api_request = mock.Mock(return_value=json_response)
 
     result = operation._refresh_http(api_request, TEST_OPERATION_NAME)
 
+    assert isinstance(result, operations_pb2.Operation)
     assert result.name == TEST_OPERATION_NAME
     assert result.done is True
+
     api_request.assert_called_once_with(
+        method="GET", path="operations/{}".format(TEST_OPERATION_NAME)
+    )
+
+
+def test__refresh_http_w_retry():
+    json_response = {"name": TEST_OPERATION_NAME, "done": True}
+    api_request = mock.Mock()
+    retry = mock.Mock()
+    retry.return_value.return_value = json_response
+
+    result = operation._refresh_http(api_request, TEST_OPERATION_NAME, retry=retry)
+
+    assert isinstance(result, operations_pb2.Operation)
+    assert result.name == TEST_OPERATION_NAME
+    assert result.done is True
+
+    api_request.assert_not_called()
+    retry.assert_called_once_with(api_request)
+    retry.return_value.assert_called_once_with(
         method="GET", path="operations/{}".format(TEST_OPERATION_NAME)
     )
 
@@ -222,6 +244,21 @@ def test__refresh_grpc():
     assert result == expected_result
     expected_request = operations_pb2.GetOperationRequest(name=TEST_OPERATION_NAME)
     operations_stub.GetOperation.assert_called_once_with(expected_request)
+
+
+def test__refresh_grpc_w_retry():
+    operations_stub = mock.Mock(spec=["GetOperation"])
+    expected_result = make_operation_proto(done=True)
+    retry = mock.Mock()
+    retry.return_value.return_value = expected_result
+
+    result = operation._refresh_grpc(operations_stub, TEST_OPERATION_NAME, retry=retry)
+
+    assert result == expected_result
+    expected_request = operations_pb2.GetOperationRequest(name=TEST_OPERATION_NAME)
+    operations_stub.GetOperation.assert_not_called()
+    retry.assert_called_once_with(operations_stub.GetOperation)
+    retry.return_value.assert_called_once_with(expected_request)
 
 
 def test__cancel_grpc():
