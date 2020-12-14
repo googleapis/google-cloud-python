@@ -71,13 +71,13 @@ def default(session):
         session.run(*pytest_args)
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=["2.7", "3.6", "3.7", "3.8", "3.9"])
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=["2.7", "3.6", "3.7", "3.8", "3.9"])
 def unit_grpc_gcp(session):
     """Run the unit test suite with grpcio-gcp installed."""
 
