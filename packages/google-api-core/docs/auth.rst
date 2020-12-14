@@ -6,7 +6,11 @@ Authentication
 Overview
 ========
 
-*   **If you're running in Compute Engine or App Engine**,
+For a language agnostic overview of authentication on Google Cloud, see `Authentication Overview`_.
+
+.. _Authentication Overview: https://cloud.google.com/docs/authentication
+
+*   **If you're running in a Google Virtual Machine Environment (Compute Engine, App Engine, Cloud Run, Cloud Functions)**,
     authentication should "just work".
 
 *   **If you're developing locally**,
@@ -41,7 +45,7 @@ Overview
 
         $ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/keyfile.json"
 
-.. _service account: https://cloud.google.com/storage/docs/authentication#generating-a-private-key
+.. _service account: https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating
 
 Client-Provided Authentication
 ==============================
@@ -97,11 +101,17 @@ After creation, you can pass it directly to a :class:`Client <google.cloud.clien
 .. tip::
     To create a credentials object, follow the `google-auth-guide`_.
 
-.. _google-auth-guide: https://google-auth.readthedocs.io/en/latest/user-guide.html#service-account-private-key-files
+.. _google-auth-guide: https://googleapis.dev/python/google-auth/latest/user-guide.html#service-account-private-key-files
 
 
-Google App Engine Environment
------------------------------
+Google App Engine Standard First Generation Environment
+-------------------------------------------------------
+
+These credentials are used only in the legacy Python 2.7
+`First Generation Standard Environment`_. All other App Engine
+runtimes use Compute Engine credentials.
+
+.. _First Generation Standard Environment: https://cloud.google.com/appengine/docs/standard/runtimes
 
 To create
 :class:`credentials <google.auth.app_engine.Credentials>`
@@ -115,9 +125,12 @@ just for Google App Engine:
 Google Compute Engine Environment
 ---------------------------------
 
+These credentials are used in Google Virtual Machine Environments.
+This includes most App Engine runtimes, Compute Engine, Cloud
+Functions, and Cloud Run.
+
 To create
-:class:`credentials <google.auth.compute_engine.Credentials>`
-just for Google Compute Engine:
+:class:`credentials <google.auth.compute_engine.Credentials>`:
 
 .. code:: python
 
@@ -129,16 +142,24 @@ Service Accounts
 
 A `service account`_ is stored in a JSON keyfile.
 
-The
-:meth:`from_service_account_json() <google.cloud.client.Client.from_service_account_json>`
-factory can be used to create a :class:`Client <google.cloud.client.Client>` with
-service account credentials.
+.. code:: python
 
-For example, with a JSON keyfile:
+    from google.oauth2 import service_account
+
+    credentials = service_account.Credentials.from_service_account_file(
+        '/path/to/key.json')
+
+A JSON string or dictionary:
 
 .. code:: python
 
-    client = Client.from_service_account_json('/path/to/keyfile.json')
+    import json
+
+    from google.oauth2 import service_account
+
+    json_account_info = json.loads(...)  # convert JSON to dictionary
+    credentials = service_account.Credentials.from_service_account_info(
+        json_account_info)
 
 .. tip::
 
@@ -160,7 +181,7 @@ possible to call Google Cloud APIs with a user account via
 
     A production application should **use a service account**,
     but you may wish to use your own personal user account when first
-    getting started with the ``google-cloud-python`` library.
+    getting started with the ``google-cloud-*`` library.
 
 The simplest way to use credentials from a user account is via
 Application Default Credentials using ``gcloud auth login``
@@ -183,67 +204,10 @@ Troubleshooting
 Setting up a Service Account
 ----------------------------
 
-If your application is not running on Google Compute Engine,
-you need a `Google Developers Service Account`_.
+If your application is not running on a Google Virtual Machine Environment,
+you need a Service Account. See `Creating a Service Account`_.
 
-#. Visit the `Google Developers Console`_.
-
-#. Create a new project or click on an existing project.
-
-#. Navigate to **APIs & auth** > **APIs** and enable the APIs
-   that your application requires.
-
-   .. raw:: html
-
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/enable-apis.png"/>
-
-  .. note::
-
-      You may need to enable billing in order to use these services.
-
-      * **BigQuery**
-
-        * BigQuery API
-
-      * **Datastore**
-
-        * Google Cloud Datastore API
-
-      * **Pub/Sub**
-
-        * Google Cloud Pub/Sub
-
-      * **Storage**
-
-        * Google Cloud Storage
-        * Google Cloud Storage JSON API
-
-#. Navigate to **APIs & auth** > **Credentials**.
-
-   You should see a screen like one of the following:
-
-   .. raw:: html
-
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/create-new-service-account.png">
-
-   .. raw:: html
-
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/create-new-service-account-existing-keys.png">
-
-  Find the "Add credentials" drop down and select "Service account" to be
-  guided through downloading a new JSON keyfile.
-
-  If you want to re-use an existing service account,
-  you can easily generate a new keyfile.
-  Just select the account you wish to re-use,
-  and click **Generate new JSON key**:
-
-   .. raw:: html
-
-     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/google-cloud-common/master/authentication/reuse-service-account.png">
-
-.. _Google Developers Console: https://console.developers.google.com/project
-.. _Google Developers Service Account: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+.. _Creating a Service Account: https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating
 
 Using Google Compute Engine
 ---------------------------
@@ -262,24 +226,7 @@ you add the correct scopes for the APIs you want to access:
     * ``https://www.googleapis.com/auth/cloud-platform``
     * ``https://www.googleapis.com/auth/cloud-platform.read-only``
 
-* **BigQuery**
-
-    * ``https://www.googleapis.com/auth/bigquery``
-    * ``https://www.googleapis.com/auth/bigquery.insertdata``
-
-* **Datastore**
-
-    * ``https://www.googleapis.com/auth/datastore``
-    * ``https://www.googleapis.com/auth/userinfo.email``
-
-* **Pub/Sub**
-
-    * ``https://www.googleapis.com/auth/pubsub``
-
-* **Storage**
-
-    * ``https://www.googleapis.com/auth/devstorage.full_control``
-    * ``https://www.googleapis.com/auth/devstorage.read_only``
-    * ``https://www.googleapis.com/auth/devstorage.read_write``
+For scopes for specific APIs see `OAuth 2.0 Scopes for Google APIs`_
 
 .. _set up the GCE instance: https://cloud.google.com/compute/docs/authentication#using
+.. _OAuth 2.0 Scopes for Google APIS: https://developers.google.com/identity/protocols/oauth2/scopes
