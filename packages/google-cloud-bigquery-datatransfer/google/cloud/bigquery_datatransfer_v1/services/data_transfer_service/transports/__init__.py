@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = DataTransferServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataTransferServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "DataTransferServiceTransport",
     "DataTransferServiceGrpcTransport",

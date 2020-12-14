@@ -21,6 +21,8 @@ from .transfer import (
     TransferConfig,
     TransferRun,
     TransferMessage,
+    TransferType,
+    TransferState,
 )
 from .datatransfer import (
     DataSourceParameter,
@@ -48,13 +50,14 @@ from .datatransfer import (
     StartManualTransferRunsResponse,
 )
 
-
 __all__ = (
     "EmailPreferences",
     "ScheduleOptions",
     "TransferConfig",
     "TransferRun",
     "TransferMessage",
+    "TransferType",
+    "TransferState",
     "DataSourceParameter",
     "DataSource",
     "GetDataSourceRequest",
