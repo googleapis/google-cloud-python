@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# dialogflow documentation build configuration file
+# google-cloud-dialogflow documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -67,7 +67,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"dialogflow"
+project = u"google-cloud-dialogflow"
 copyright = u"2019, Google"
 author = u"Google APIs"
 
@@ -140,9 +140,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for dialogflow",
+    "description": "Google Cloud Client Libraries for google-cloud-dialogflow",
     "github_user": "googleapis",
-    "github_repo": "dialogflow-python-client-v2",
+    "github_repo": "python-dialogflow",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -234,7 +234,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "dialogflow-doc"
+htmlhelp_basename = "google-cloud-dialogflow-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -265,7 +265,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "dialogflow.tex", u"dialogflow Documentation", author, "manual")
+    (
+        master_doc,
+        "google-cloud-dialogflow.tex",
+        u"google-cloud-dialogflow Documentation",
+        author,
+        "manual",
+    )
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -293,7 +299,15 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "dialogflow", u"dialogflow Documentation", [author], 1)]
+man_pages = [
+    (
+        master_doc,
+        "google-cloud-dialogflow",
+        u"google-cloud-dialogflow Documentation",
+        [author],
+        1,
+    )
+]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -307,11 +321,11 @@ man_pages = [(master_doc, "dialogflow", u"dialogflow Documentation", [author], 1
 texinfo_documents = [
     (
         master_doc,
-        "dialogflow",
-        u"dialogflow Documentation",
+        "google-cloud-dialogflow",
+        u"google-cloud-dialogflow Documentation",
         author,
-        "dialogflow",
-        "dialogflow Library",
+        "google-cloud-dialogflow",
+        "google-cloud-dialogflow Library",
         "APIs",
     )
 ]
@@ -333,7 +347,7 @@ texinfo_documents = [
 intersphinx_mapping = {
     "python": ("https://python.readthedocs.org/en/latest/", None),
     "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
-    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None),
+    "google.api_core": ("https://googleapis.dev/python/google-api-core/latest/", None,),
     "grpc": ("https://grpc.github.io/grpc/python/", None),
     "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
 }

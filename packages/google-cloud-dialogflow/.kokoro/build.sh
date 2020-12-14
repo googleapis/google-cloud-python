@@ -15,7 +15,7 @@
 
 set -eo pipefail
 
-cd github/dialogflow-python-client-v2
+cd github/python-dialogflow
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1

@@ -4,21 +4,21 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/dialogflow-python-client-v2.git",
-        "sha": "3d387173a0938ff1b5c82f99afcb02ab8b2afdc9"
+        "sha": "6994539cf55851c6bf96772b4ee0bdba05c073e2"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c2de32114ec484aa708d32012d1fa8d75232daf5"
+        "sha": "352f25621c28d2fa0784984ea0ed5ea697aa1525"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c2de32114ec484aa708d32012d1fa8d75232daf5"
+        "sha": "352f25621c28d2fa0784984ea0ed5ea697aa1525"
       }
     }
   ]

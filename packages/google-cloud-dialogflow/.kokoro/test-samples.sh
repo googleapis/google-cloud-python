@@ -20,7 +20,7 @@ set -eo pipefail
 # Enables `**` to include files nested inside sub-folders
 shopt -s globstar
 
-cd github/dialogflow-python-client-v2
+cd github/python-dialogflow
 
 # Run periodic samples tests at latest release
 if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then

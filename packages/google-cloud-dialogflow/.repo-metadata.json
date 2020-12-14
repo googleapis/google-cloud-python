@@ -6,8 +6,8 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
   "release_level": "ga",
   "language": "python",
-  "repo": "googleapis/dialogflow-python-client-v2",
-  "distribution_name": "dialogflow",
+  "repo": "googleapis/python-dialogflow",
+  "distribution_name": "google-cloud-dialogflow",
   "api_id": "dialogflow.googleapis.com",
   "requires_billing": true
 }

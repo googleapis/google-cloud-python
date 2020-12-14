@@ -35,21 +35,21 @@ Using a Development Checkout
 You'll have to create a development environment using a Git checkout:
 
 - While logged into your GitHub account, navigate to the
-  ``dialogflow-python-client-v2`` `repo`_ on GitHub.
+  ``python-dialogflow`` `repo`_ on GitHub.
 
-- Fork and clone the ``dialogflow-python-client-v2`` repository to your GitHub account by
+- Fork and clone the ``python-dialogflow`` repository to your GitHub account by
   clicking the "Fork" button.
 
-- Clone your fork of ``dialogflow-python-client-v2`` from your GitHub account to your local
+- Clone your fork of ``python-dialogflow`` from your GitHub account to your local
   computer, substituting your account username and specifying the destination
-  as ``hack-on-dialogflow-python-client-v2``.  E.g.::
+  as ``hack-on-python-dialogflow``.  E.g.::
 
    $ cd ${HOME}
-   $ git clone git@github.com:USERNAME/dialogflow-python-client-v2.git hack-on-dialogflow-python-client-v2
-   $ cd hack-on-dialogflow-python-client-v2
-   # Configure remotes such that you can pull changes from the googleapis/dialogflow-python-client-v2
+   $ git clone git@github.com:USERNAME/python-dialogflow.git hack-on-python-dialogflow
+   $ cd hack-on-python-dialogflow
+   # Configure remotes such that you can pull changes from the googleapis/python-dialogflow
    # repository into your local repository.
-   $ git remote add upstream git@github.com:googleapis/dialogflow-python-client-v2.git
+   $ git remote add upstream git@github.com:googleapis/python-dialogflow.git
    # fetch and merge changes from upstream into master
    $ git fetch upstream
    $ git merge upstream/master
@@ -60,7 +60,7 @@ repo, from which you can submit a pull request.
 To work on the codebase and run the tests, we recommend using ``nox``,
 but you can also use a ``virtualenv`` of your own creation.
 
-.. _repo: https://github.com/googleapis/dialogflow-python-client-v2
+.. _repo: https://github.com/googleapis/python-dialogflow
 
 Using ``nox``
 =============
@@ -107,9 +107,19 @@ Coding Style
    export GOOGLE_CLOUD_TESTING_BRANCH="master"
 
   By doing this, you are specifying the location of the most up-to-date
-  version of ``dialogflow-python-client-v2``. The the suggested remote name ``upstream``
+  version of ``python-dialogflow``. The the suggested remote name ``upstream``
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
+
+- This repository contains configuration for the
+  `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
+  our linters during a commit.  If you have it installed on your ``$PATH``,
+  you can enable enforcing those checks via:
+
+.. code-block:: bash
+
+   $ pre-commit install
+   pre-commit installed at .git/hooks/pre-commit
 
 Exceptions to PEP8:
 
@@ -180,10 +190,10 @@ The `description on PyPI`_ for the project comes directly from the
 ``README``. Due to the reStructuredText (``rst``) parser used by
 PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
 instead of
-``https://github.com/googleapis/dialogflow-python-client-v2/blob/master/CONTRIBUTING.rst``)
+``https://github.com/googleapis/python-dialogflow/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/dialogflow
+.. _description on PyPI: https://pypi.org/project/google-cloud-dialogflow
 
 
 *************************
@@ -205,7 +215,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/dialogflow-python-client-v2/blob/master/noxfile.py
+.. _config: https://github.com/googleapis/python-dialogflow/blob/master/noxfile.py
 
 Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
