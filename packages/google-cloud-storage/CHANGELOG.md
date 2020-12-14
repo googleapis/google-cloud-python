@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.35.0](https://www.github.com/googleapis/python-storage/compare/v1.34.0...v1.35.0) (2020-12-14)
+
+
+### Features
+
+* support ConnectionError retries for media operations ([#342](https://www.github.com/googleapis/python-storage/issues/342)) ([e55b25b](https://www.github.com/googleapis/python-storage/commit/e55b25be1e32f17b17bffe1da99fca5062f180cb))
+
 ## [1.34.0](https://www.github.com/googleapis/python-storage/compare/v1.33.0...v1.34.0) (2020-12-11)
 
 
