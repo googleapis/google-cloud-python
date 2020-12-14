@@ -148,7 +148,7 @@ class BaseClient(ClientWithProject):
             # We need this in order to set appropriate keepalive options.
 
             if self._emulator_host is not None:
-                channel = grpc.insecure_channel(self._emulator_host)
+                channel = self._emulator_channel()
             else:
                 channel = transport.create_channel(
                     self._target,
@@ -164,6 +164,48 @@ class BaseClient(ClientWithProject):
             client_module._client_info = self._client_info
 
         return self._firestore_api_internal
+
+    def _emulator_channel(self):
+        """
+        Creates a channel using self._credentials in a similar way to grpc.secure_channel but
+        using grpc.local_channel_credentials() rather than grpc.ssh_channel_credentials() to allow easy connection
+        to a local firestore emulator. This allows local testing of firestore rules if the credentials have been
+        created from a signed custom token.
+
+        :return: grcp.Channel
+        """
+        return grpc._channel.Channel(
+            self._emulator_host,
+            (),
+            self._local_composite_credentials()._credentials,
+            None,
+        )
+
+    def _local_composite_credentials(self):
+        """
+        Ceates the credentials for the local emulator channel
+        :return: grpc.ChannelCredentials
+        """
+        credentials = google.auth.credentials.with_scopes_if_required(
+            self._credentials, None
+        )
+        request = google.auth.transport.requests.Request()
+
+        # Create the metadata plugin for inserting the authorization header.
+        metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials, request
+        )
+
+        # Create a set of grpc.CallCredentials using the metadata plugin.
+        google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
+
+        # Using the local_credentials to allow connection to emulator
+        local_credentials = grpc.local_channel_credentials()
+
+        # Combine the local credentials and the authorization credentials.
+        return grpc.composite_channel_credentials(
+            local_credentials, google_auth_credentials
+        )
 
     def _target_helper(self, client_class) -> str:
         """Return the target (where the API is).

@@ -14,6 +14,7 @@
 
 import datetime
 import unittest
+import grpc
 
 import mock
 
@@ -67,10 +68,11 @@ class TestBaseClient(unittest.TestCase):
         return_value=mock.sentinel.firestore_api,
     )
     @mock.patch(
-        "grpc.insecure_channel", autospec=True,
+        "google.cloud.firestore_v1.base_client.BaseClient._emulator_channel",
+        autospec=True,
     )
     def test__firestore_api_property_with_emulator(
-        self, mock_insecure_channel, mock_client
+        self, mock_emulator_channel, mock_client
     ):
         emulator_host = "localhost:8081"
         with mock.patch("os.getenv") as getenv:
@@ -82,7 +84,7 @@ class TestBaseClient(unittest.TestCase):
         self.assertIs(firestore_api, mock_client.return_value)
         self.assertIs(firestore_api, client._firestore_api_internal)
 
-        mock_insecure_channel.assert_called_once_with(emulator_host)
+        mock_emulator_channel.assert_called_once()
 
         # Call again to show that it is cached, but call count is still 1.
         self.assertIs(client._firestore_api, mock_client.return_value)
@@ -133,6 +135,36 @@ class TestBaseClient(unittest.TestCase):
                 ("google-cloud-resource-prefix", client._database_string),
                 ("authorization", "Bearer owner"),
             ],
+        )
+
+    def test_emulator_channel(self):
+        emulator_host = "localhost:8081"
+        with mock.patch("os.getenv") as getenv:
+            getenv.return_value = emulator_host
+
+            credentials = _make_credentials()
+            database = "quanta"
+            client = self._make_one(
+                project=self.PROJECT, credentials=credentials, database=database
+            )
+
+        # checks that a channel is created
+        channel = client._emulator_channel()
+        self.assertTrue(isinstance(channel, grpc._channel.Channel))
+        # checks that the credentials are composite ones using a local channel from grpc
+        composite_credentials = client._local_composite_credentials()
+        self.assertTrue(isinstance(composite_credentials, grpc.ChannelCredentials))
+        self.assertTrue(
+            isinstance(
+                composite_credentials._credentials._call_credentialses[0],
+                grpc._cython.cygrpc.MetadataPluginCallCredentials,
+            )
+        )
+        self.assertTrue(
+            isinstance(
+                composite_credentials._credentials._channel_credentials,
+                grpc._cython.cygrpc.LocalChannelCredentials,
+            )
         )
 
     def test_field_path(self):
