@@ -32,7 +32,6 @@ _transport_registry[
     "grpc_asyncio"
 ] = PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
 
-
 __all__ = (
     "PhishingProtectionServiceV1Beta1Transport",
     "PhishingProtectionServiceV1Beta1GrpcTransport",

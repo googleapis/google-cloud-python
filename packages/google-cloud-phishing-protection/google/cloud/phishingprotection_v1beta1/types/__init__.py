@@ -20,7 +20,6 @@ from .phishingprotection import (
     ReportPhishingResponse,
 )
 
-
 __all__ = (
     "ReportPhishingRequest",
     "ReportPhishingResponse",
