@@ -40,12 +40,12 @@ class NotificationConfig(proto.Message):
             The description of the notification config
             (max of 1024 characters).
         pubsub_topic (str):
-            The PubSub topic to send notifications to. Its format is
+            The Pub/Sub topic to send notifications to. Its format is
             "projects/[project_id]/topics/[topic]".
         service_account (str):
             Output only. The service account that needs
             "pubsub.topics.publish" permission to publish to
-            the PubSub topic.
+            the Pub/Sub topic.
         streaming_config (~.notification_config.NotificationConfig.StreamingConfig):
             The config for triggering streaming-based
             notifications.

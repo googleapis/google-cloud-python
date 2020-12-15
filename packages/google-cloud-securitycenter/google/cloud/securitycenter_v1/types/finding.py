@@ -90,6 +90,9 @@ class Finding(proto.Message):
         create_time (~.timestamp.Timestamp):
             The time at which the finding was created in
             Security Command Center.
+        severity (~.finding.Finding.Severity):
+            The severity of the finding. This field is
+            managed by the source that writes the finding.
     """
 
     class State(proto.Enum):
@@ -97,6 +100,14 @@ class Finding(proto.Message):
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
+
+    class Severity(proto.Enum):
+        r"""The severity of the finding."""
+        SEVERITY_UNSPECIFIED = 0
+        CRITICAL = 1
+        HIGH = 2
+        MEDIUM = 3
+        LOW = 4
 
     name = proto.Field(proto.STRING, number=1)
 
@@ -121,6 +132,8 @@ class Finding(proto.Message):
     event_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
 
     create_time = proto.Field(proto.MESSAGE, number=10, message=timestamp.Timestamp,)
+
+    severity = proto.Field(proto.ENUM, number=12, enum=Severity,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

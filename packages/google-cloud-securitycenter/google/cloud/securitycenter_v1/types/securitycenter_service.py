@@ -277,7 +277,7 @@ class GroupAssetsRequest(proto.Message):
             filter string.
 
             Use a partial match on the empty string to filter based on a
-            property existing:\ ``resource_properties.my_property : ""``
+            property existing: ``resource_properties.my_property : ""``
 
             Use a negated partial match on the empty string to filter
             based on a property not existing:
@@ -454,6 +454,8 @@ class GroupFindingsRequest(proto.Message):
 
             -  event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
+            -  severity: ``=``, ``:``
+
                Usage: This should be milliseconds since epoch or an
                RFC3339 string. Examples:
                ``event_time = "2019-06-10T16:07:18-07:00"``
@@ -485,6 +487,7 @@ class GroupFindingsRequest(proto.Message):
             -  category
             -  state
             -  parent
+            -  severity
 
             The following fields are supported when compare_duration is
             set:
@@ -853,10 +856,9 @@ class ListAssetsRequest(proto.Message):
             state_change is "UNUSED", which will be the state_change set
             for all assets present at read_time.
         field_mask (~.gp_field_mask.FieldMask):
-            Optional. A field mask to specify the
-            ListAssetsResult fields to be listed in the
-            response. An empty field mask will list all
-            fields.
+            A field mask to specify the ListAssetsResult
+            fields to be listed in the response.
+            An empty field mask will list all fields.
         page_token (str):
             The value returned by the last ``ListAssetsResponse``;
             indicates that this is a continuation of a prior
@@ -987,14 +989,26 @@ class ListFindingsRequest(proto.Message):
 
             The following field and operator combinations are supported:
 
-            name: ``=`` parent: ``=``, ``:`` resource_name: ``=``, ``:``
-            state: ``=``, ``:`` category: ``=``, ``:`` external_uri:
-            ``=``, ``:`` event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+            -  name: ``=``
 
-            Usage: This should be milliseconds since epoch or an RFC3339
-            string. Examples:
-            ``event_time = "2019-06-10T16:07:18-07:00"``
-            ``event_time = 1560208038000``
+            -  parent: ``=``, ``:``
+
+            -  resource_name: ``=``, ``:``
+
+            -  state: ``=``, ``:``
+
+            -  category: ``=``, ``:``
+
+            -  external_uri: ``=``, ``:``
+
+            -  event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
+
+            -  severity: ``=``, ``:``
+
+               Usage: This should be milliseconds since epoch or an
+               RFC3339 string. Examples:
+               ``event_time = "2019-06-10T16:07:18-07:00"``
+               ``event_time = 1560208038000``
 
             security_marks.marks: ``=``, ``:`` source_properties: ``=``,
             ``:``, ``>``, ``<``, ``>=``, ``<=``
@@ -1064,9 +1078,9 @@ class ListFindingsRequest(proto.Message):
             state_change is "UNUSED", which will be the state_change set
             for all findings present at read_time.
         field_mask (~.gp_field_mask.FieldMask):
-            Optional. A field mask to specify the Finding
-            fields to be listed in the response. An empty
-            field mask will list all fields.
+            A field mask to specify the Finding fields to
+            be listed in the response. An empty field mask
+            will list all fields.
         page_token (str):
             The value returned by the last ``ListFindingsResponse``;
             indicates that this is a continuation of a prior

@@ -152,6 +152,30 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> SecurityCenterTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            SecurityCenterTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def asset_path(organization: str, asset: str,) -> str:
+        """Return a fully-qualified asset string."""
+        return "organizations/{organization}/assets/{asset}".format(
+            organization=organization, asset=asset,
+        )
+
+    @staticmethod
+    def parse_asset_path(path: str) -> Dict[str, str]:
+        """Parse a asset path into its component segments."""
+        m = re.match(
+            r"^organizations/(?P<organization>.+?)/assets/(?P<asset>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
     @staticmethod
     def finding_path(organization: str, source: str, finding: str,) -> str:
         """Return a fully-qualified finding string."""
@@ -230,6 +254,76 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def topic_path(project: str, topic: str,) -> str:
+        """Return a fully-qualified topic string."""
+        return "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+
+    @staticmethod
+    def parse_topic_path(path: str) -> Dict[str, str]:
+        """Parse a topic path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
@@ -265,10 +359,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -830,13 +924,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request = iam_policy.GetIamPolicyRequest(**request)
 
         elif not request:
-            request = iam_policy.GetIamPolicyRequest()
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if resource is not None:
-                request.resource = resource
+            request = iam_policy.GetIamPolicyRequest(resource=resource,)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1193,6 +1281,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 -  state
                 - parent
 
+                -  severity
 
                 The following fields are supported when compare_duration
                 is set:
@@ -1863,13 +1952,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request = iam_policy.SetIamPolicyRequest(**request)
 
         elif not request:
-            request = iam_policy.SetIamPolicyRequest()
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if resource is not None:
-                request.resource = resource
+            request = iam_policy.SetIamPolicyRequest(resource=resource,)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1947,16 +2030,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request = iam_policy.TestIamPermissionsRequest(**request)
 
         elif not request:
-            request = iam_policy.TestIamPermissionsRequest()
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if resource is not None:
-                request.resource = resource
-
-            if permissions:
-                request.permissions.extend(permissions)
+            request = iam_policy.TestIamPermissionsRequest(
+                resource=resource, permissions=permissions,
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

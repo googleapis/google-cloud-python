@@ -54,7 +54,6 @@ from .securitycenter_service import (
     UpdateSecurityMarksRequest,
 )
 
-
 __all__ = (
     "SecurityMarks",
     "Asset",
