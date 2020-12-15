@@ -1,0 +1,12 @@
+{
+    "name": "binaryauthorization",
+    "name_pretty": "Binary Authorization",
+    "product_documentation": "https://cloud.google.com/binary-authorization",
+    "client_documentation": "https://googleapis.dev/python/binaryauthorization/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-binary-authorization",
+    "distribution_name": "google-cloud-binary-authorization",
+    "api_id": "binaryauthorization.googleapis.com"
+    }
