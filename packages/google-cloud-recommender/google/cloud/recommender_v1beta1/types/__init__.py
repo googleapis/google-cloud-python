@@ -42,7 +42,6 @@ from .recommender_service import (
     MarkRecommendationFailedRequest,
 )
 
-
 __all__ = (
     "Insight",
     "InsightStateInfo",
