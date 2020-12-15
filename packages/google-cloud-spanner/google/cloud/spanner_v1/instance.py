@@ -99,6 +99,9 @@ class Instance(object):
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
+
+    :type labels: dict (str -> str) or None
+    :param labels: (Optional) User-assigned labels for this instance.
     """
 
     def __init__(
@@ -109,6 +112,7 @@ class Instance(object):
         node_count=DEFAULT_NODE_COUNT,
         display_name=None,
         emulator_host=None,
+        labels=None,
     ):
         self.instance_id = instance_id
         self._client = client
@@ -116,6 +120,9 @@ class Instance(object):
         self.node_count = node_count
         self.display_name = display_name or instance_id
         self.emulator_host = emulator_host
+        if labels is None:
+            labels = {}
+        self.labels = labels
 
     def _update_from_pb(self, instance_pb):
         """Refresh self from the server-provided protobuf.
@@ -127,6 +134,7 @@ class Instance(object):
         self.display_name = instance_pb.display_name
         self.configuration_name = instance_pb.config
         self.node_count = instance_pb.node_count
+        self.labels = instance_pb.labels
 
     @classmethod
     def from_pb(cls, instance_pb, client):
@@ -242,6 +250,7 @@ class Instance(object):
             config=self.configuration_name,
             display_name=self.display_name,
             node_count=self.node_count,
+            labels=self.labels,
         )
         metadata = _metadata_with_prefix(self.name)
 
@@ -296,7 +305,7 @@ class Instance(object):
 
         .. note::
 
-            Updates the ``display_name`` and ``node_count``. To change those
+            Updates the ``display_name``, ``node_count`` and ``labels``. To change those
             values before updating, set them via
 
             .. code:: python
@@ -316,8 +325,9 @@ class Instance(object):
             config=self.configuration_name,
             display_name=self.display_name,
             node_count=self.node_count,
+            labels=self.labels,
         )
-        field_mask = FieldMask(paths=["config", "display_name", "node_count"])
+        field_mask = FieldMask(paths=["config", "display_name", "node_count", "labels"])
         metadata = _metadata_with_prefix(self.name)
 
         future = api.update_instance(

@@ -38,6 +38,7 @@ class TestInstance(unittest.TestCase):
     TIMEOUT_SECONDS = 1
     DATABASE_ID = "database_id"
     DATABASE_NAME = "%s/databases/%s" % (INSTANCE_NAME, DATABASE_ID)
+    LABELS = {"test": "true"}
 
     def _getTargetClass(self):
         from google.cloud.spanner_v1.instance import Instance
@@ -57,6 +58,7 @@ class TestInstance(unittest.TestCase):
         self.assertIs(instance.configuration_name, None)
         self.assertEqual(instance.node_count, DEFAULT_NODE_COUNT)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
+        self.assertEqual(instance.labels, {})
 
     def test_constructor_non_default(self):
         DISPLAY_NAME = "display_name"
@@ -68,12 +70,14 @@ class TestInstance(unittest.TestCase):
             configuration_name=self.CONFIG_NAME,
             node_count=self.NODE_COUNT,
             display_name=DISPLAY_NAME,
+            labels=self.LABELS,
         )
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertIs(instance._client, client)
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
+        self.assertEqual(instance.labels, self.LABELS)
 
     def test_copy(self):
         DISPLAY_NAME = "display_name"
@@ -145,6 +149,7 @@ class TestInstance(unittest.TestCase):
             name=self.INSTANCE_NAME,
             config=self.CONFIG_NAME,
             display_name=self.INSTANCE_ID,
+            labels=self.LABELS,
         )
 
         klass = self._getTargetClass()
@@ -153,12 +158,21 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
+        self.assertEqual(instance.labels, self.LABELS)
 
     def test_name_property(self):
         client = _Client(project=self.PROJECT)
 
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
+
+    def test_labels_property(self):
+        client = _Client(project=self.PROJECT)
+
+        instance = self._make_one(
+            self.INSTANCE_ID, client, self.CONFIG_NAME, labels=self.LABELS
+        )
+        self.assertEqual(instance.labels, self.LABELS)
 
     def test___eq__(self):
         client = object()
@@ -231,6 +245,7 @@ class TestInstance(unittest.TestCase):
             configuration_name=self.CONFIG_NAME,
             display_name=self.DISPLAY_NAME,
             node_count=self.NODE_COUNT,
+            labels=self.LABELS,
         )
 
         future = instance.create()
@@ -244,6 +259,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
+        self.assertEqual(instance.labels, self.LABELS)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_exists_instance_grpc_error(self):
@@ -327,6 +343,7 @@ class TestInstance(unittest.TestCase):
             config=self.CONFIG_NAME,
             display_name=self.DISPLAY_NAME,
             node_count=self.NODE_COUNT,
+            labels=self.LABELS,
         )
         api = client.instance_admin_api = _FauxInstanceAdminAPI(
             _get_instance_response=instance_pb
@@ -338,6 +355,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.configuration_name, self.CONFIG_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance.labels, self.LABELS)
 
         name, metadata = api._got_instance
         self.assertEqual(name, self.INSTANCE_NAME)
@@ -371,7 +389,9 @@ class TestInstance(unittest.TestCase):
             instance.update()
 
         instance, field_mask, metadata = api._updated_instance
-        self.assertEqual(field_mask.paths, ["config", "display_name", "node_count"])
+        self.assertEqual(
+            field_mask.paths, ["config", "display_name", "node_count", "labels"]
+        )
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
@@ -390,6 +410,7 @@ class TestInstance(unittest.TestCase):
             configuration_name=self.CONFIG_NAME,
             node_count=self.NODE_COUNT,
             display_name=self.DISPLAY_NAME,
+            labels=self.LABELS,
         )
 
         future = instance.update()
@@ -397,11 +418,14 @@ class TestInstance(unittest.TestCase):
         self.assertIs(future, op_future)
 
         instance, field_mask, metadata = api._updated_instance
-        self.assertEqual(field_mask.paths, ["config", "display_name", "node_count"])
+        self.assertEqual(
+            field_mask.paths, ["config", "display_name", "node_count", "labels"]
+        )
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
+        self.assertEqual(instance.labels, self.LABELS)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_delete_grpc_error(self):

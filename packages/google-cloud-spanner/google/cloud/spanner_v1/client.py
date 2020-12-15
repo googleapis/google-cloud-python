@@ -289,6 +289,7 @@ class Client(ClientWithProject):
         configuration_name=None,
         display_name=None,
         node_count=DEFAULT_NODE_COUNT,
+        labels=None,
     ):
         """Factory to create a instance associated with this client.
 
@@ -313,6 +314,9 @@ class Client(ClientWithProject):
         :param node_count: (Optional) The number of nodes in the instance's
                             cluster; used to set up the instance's cluster.
 
+        :type labels: dict (str -> str) or None
+        :param labels: (Optional) User-assigned labels for this instance.
+
         :rtype: :class:`~google.cloud.spanner_v1.instance.Instance`
         :returns: an instance owned by this client.
         """
@@ -323,6 +327,7 @@ class Client(ClientWithProject):
             node_count,
             display_name,
             self._emulator_host,
+            labels,
         )
 
     def list_instances(self, filter_="", page_size=None):
