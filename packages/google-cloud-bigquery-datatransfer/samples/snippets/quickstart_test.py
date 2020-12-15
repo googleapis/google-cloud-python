@@ -15,7 +15,11 @@
 from . import quickstart
 
 
-def test_quickstart(capsys, project_id):
+def test_quickstart(capsys, transfer_client, project_id):
+    # Use the transfer_client fixture so we know quota is attributed to the
+    # correct project.
+    assert transfer_client is not None
+
     quickstart.run_quickstart(override_values={"project_id": project_id})
     out, _ = capsys.readouterr()
     assert "Supported Data Sources:" in out
