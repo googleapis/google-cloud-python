@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.0.0...v1.1.0) (2020-12-15)
+
+
+### Features
+
+* **v1:** add field severity to findings; add common resource helper; expose client tranport ([#87](https://www.github.com/googleapis/python-securitycenter/issues/87)) ([e28b8e2](https://www.github.com/googleapis/python-securitycenter/commit/e28b8e24ac8a01a3db95decf21a635b046ecce97)), closes [/github.com/googleapis/python-talent/blob/ef045e8eb348db36d7a2a611e6f26b11530d273b/samples/snippets/noxfile_config.py#L27-L32](https://www.github.com/googleapis//github.com/googleapis/python-talent/blob/ef045e8eb348db36d7a2a611e6f26b11530d273b/samples/snippets/noxfile_config.py/issues/L27-L32)
+
+
+### Documentation
+
+* add securitycenter prefix to samples, wrap published samples and repl… ([#85](https://www.github.com/googleapis/python-securitycenter/issues/85)) ([553dfbb](https://www.github.com/googleapis/python-securitycenter/commit/553dfbb89f7e72ad280aaa5d59cc4a054aa1948e))
+* update documentation on severity ([#72](https://www.github.com/googleapis/python-securitycenter/issues/72)) ([4ba96b2](https://www.github.com/googleapis/python-securitycenter/commit/4ba96b268d92eb57b816593b1fb968f269ed188e))
+* update snippets_findings tags ([#78](https://www.github.com/googleapis/python-securitycenter/issues/78)) ([c7e301f](https://www.github.com/googleapis/python-securitycenter/commit/c7e301f0d45d2e3d04263df63a515b52ce0391b3))
+* update snippets_list_assets tags ([#77](https://www.github.com/googleapis/python-securitycenter/issues/77)) ([11aef56](https://www.github.com/googleapis/python-securitycenter/commit/11aef56a0a9cf281e0d647d64d72c921e4b837d0))
+
 ## [1.0.0](https://www.github.com/googleapis/python-securitycenter/compare/v0.7.1...v1.0.0) (2020-10-08)
 
 
