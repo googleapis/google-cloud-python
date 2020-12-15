@@ -27,7 +27,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* migrate to v2.0.0 (#147)
+* list_instances, list_databases, list_instance_configs, and list_backups will now return protos rather than the handwritten wrapper (#147)
 
 ### Features
 
