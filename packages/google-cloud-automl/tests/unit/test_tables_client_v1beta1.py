@@ -1599,6 +1599,24 @@ class TestTablesClient(object):
             )
         )
 
+    def test_batch_predict_bigquery_with_params(self):
+        client = self.tables_client({}, {})
+        client.batch_predict(
+            model_name="my_model",
+            bigquery_input_uri="bq://input",
+            bigquery_output_uri="bq://output",
+            params={"feature_importance": "true"},
+        )
+
+        client.prediction_client.batch_predict.assert_called_with(
+            request=automl_v1beta1.BatchPredictRequest(
+                name="my_model",
+                input_config={"bigquery_source": {"input_uri": "bq://input"}},
+                output_config={"bigquery_destination": {"output_uri": "bq://output"}},
+                params={"feature_importance": "true"},
+            )
+        )
+
     def test_batch_predict_mixed(self):
         client = self.tables_client({}, {})
         client.batch_predict(

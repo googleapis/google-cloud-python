@@ -2999,7 +2999,10 @@ class TablesClient(object):
             )
 
         req = google.cloud.automl_v1beta1.BatchPredictRequest(
-            name=model_name, input_config=input_request, output_config=output_request,
+            name=model_name,
+            input_config=input_request,
+            output_config=output_request,
+            params=params,
         )
 
         method_kwargs = self.__process_request_kwargs(req, **kwargs)
