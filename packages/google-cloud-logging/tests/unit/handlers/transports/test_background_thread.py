@@ -64,12 +64,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, resource=_GLOBAL_RESOURCE)
 
         transport.worker.enqueue.assert_called_once_with(
-            record,
-            message,
-            resource=_GLOBAL_RESOURCE,
-            labels=None,
-            trace=None,
-            span_id=None,
+            record, message, resource=_GLOBAL_RESOURCE,
         )
 
     def test_trace_send(self):
@@ -91,12 +86,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, resource=_GLOBAL_RESOURCE, trace=trace)
 
         transport.worker.enqueue.assert_called_once_with(
-            record,
-            message,
-            resource=_GLOBAL_RESOURCE,
-            labels=None,
-            trace=trace,
-            span_id=None,
+            record, message, resource=_GLOBAL_RESOURCE, trace=trace,
         )
 
     def test_span_send(self):
@@ -118,12 +108,7 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, resource=_GLOBAL_RESOURCE, span_id=span_id)
 
         transport.worker.enqueue.assert_called_once_with(
-            record,
-            message,
-            resource=_GLOBAL_RESOURCE,
-            labels=None,
-            trace=None,
-            span_id=span_id,
+            record, message, resource=_GLOBAL_RESOURCE, span_id=span_id,
         )
 
     def test_flush(self):
@@ -297,11 +282,12 @@ class Test_Worker(unittest.TestCase):
         expected_info = {"message": message, "python_logger": "testing"}
         self.assertEqual(entry["info"], expected_info)
         self.assertEqual(entry["severity"], LogSeverity.INFO)
-        self.assertIsNone(entry["resource"])
-        self.assertIsNone(entry["labels"])
-        self.assertIsNone(entry["trace"])
-        self.assertIsNone(entry["span_id"])
         self.assertIsInstance(entry["timestamp"], datetime.datetime)
+        self.assertNotIn("resource", entry.keys())
+        self.assertNotIn("labels", entry.keys())
+        self.assertNotIn("trace", entry.keys())
+        self.assertNotIn("span_id", entry.keys())
+        self.assertNotIn("http_request", entry.keys())
 
     def test_enqueue_explicit(self):
         import datetime
@@ -503,6 +489,7 @@ class _Batch(object):
         trace=None,
         span_id=None,
         timestamp=None,
+        http_request=None,
     ):
         from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 

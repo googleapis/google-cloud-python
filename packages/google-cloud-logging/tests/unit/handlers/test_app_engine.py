@@ -87,36 +87,54 @@ class TestAppEngineHandler(unittest.TestCase):
         self.assertIs(handler.stream, stream)
 
     def test_emit(self):
-        client = mock.Mock(project=self.PROJECT, spec=["project"])
-        handler = self._make_one(client, transport=_Transport)
-        gae_resource = handler.get_gae_resource()
-        gae_labels = handler.get_gae_labels()
-        trace = None
-        logname = "app"
-        message = "hello world"
-        record = logging.LogRecord(logname, logging, None, None, message, None, None)
-        handler.emit(record)
-
-        self.assertIs(handler.transport.client, client)
-        self.assertEqual(handler.transport.name, logname)
-        self.assertEqual(
-            handler.transport.send_called_with,
-            (record, message, gae_resource, gae_labels, trace),
+        expected_http_request = {"request_url": "test"}
+        trace_id = "trace-test"
+        expected_trace_id = f"projects/{self.PROJECT}/traces/{trace_id}"
+        get_request_patch = mock.patch(
+            "google.cloud.logging_v2.handlers.app_engine.get_request_data",
+            return_value=(expected_http_request, trace_id),
         )
+        with get_request_patch:
+            # library integrations mocked to return test data
+            client = mock.Mock(project=self.PROJECT, spec=["project"])
+            handler = self._make_one(client, transport=_Transport)
+            gae_resource = handler.get_gae_resource()
+            gae_labels = handler.get_gae_labels()
+            logname = "app"
+            message = "hello world"
+            record = logging.LogRecord(
+                logname, logging, None, None, message, None, None
+            )
+            handler.project_id = self.PROJECT
+            handler.emit(record)
+
+            self.assertIs(handler.transport.client, client)
+            self.assertEqual(handler.transport.name, logname)
+            self.assertEqual(
+                handler.transport.send_called_with,
+                (
+                    record,
+                    message,
+                    gae_resource,
+                    gae_labels,
+                    expected_trace_id,
+                    expected_http_request,
+                ),
+            )
 
     def _get_gae_labels_helper(self, trace_id):
-        get_trace_patch = mock.patch(
-            "google.cloud.logging_v2.handlers.app_engine.get_trace_id",
-            return_value=trace_id,
+        get_request_patch = mock.patch(
+            "google.cloud.logging_v2.handlers.app_engine.get_request_data",
+            return_value=(None, trace_id),
         )
 
         client = mock.Mock(project=self.PROJECT, spec=["project"])
         # The handler actually calls ``get_gae_labels()``.
-        with get_trace_patch as mock_get_trace:
+        with get_request_patch as mock_get_request:
             handler = self._make_one(client, transport=_Transport)
 
             gae_labels = handler.get_gae_labels()
-            self.assertEqual(mock_get_trace.mock_calls, [mock.call()])
+            self.assertEqual(mock_get_request.mock_calls, [mock.call()])
 
         return gae_labels
 
@@ -138,5 +156,5 @@ class _Transport(object):
         self.client = client
         self.name = name
 
-    def send(self, record, message, resource, labels, trace):
-        self.send_called_with = (record, message, resource, labels, trace)
+    def send(self, record, message, resource, labels, trace, http_request):
+        self.send_called_with = (record, message, resource, labels, trace, http_request)

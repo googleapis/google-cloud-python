@@ -58,6 +58,7 @@ class TestSyncHandler(unittest.TestCase):
             None,
             None,
             None,
+            None,
         )
         self.assertEqual(transport.logger.log_struct_called_with, EXPECTED_SENT)
 
@@ -76,6 +77,7 @@ class _Logger(object):
         labels=None,
         trace=None,
         span_id=None,
+        http_request=None,
     ):
         self.log_struct_called_with = (
             message,
@@ -84,6 +86,7 @@ class _Logger(object):
             labels,
             trace,
             span_id,
+            http_request,
         )
 
 

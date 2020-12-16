@@ -222,31 +222,21 @@ class _Worker(object):
                 file=sys.stderr,
             )
 
-    def enqueue(
-        self, record, message, *, resource=None, labels=None, trace=None, span_id=None
-    ):
+    def enqueue(self, record, message, **kwargs):
         """Queues a log entry to be written by the background thread.
 
         Args:
             record (logging.LogRecord): Python log record that the handler was called with.
             message (str): The message from the ``LogRecord`` after being
                         formatted by the associated log formatters.
-            resource (Optional[google.cloud.logging_v2.resource.Resource]):
-                Monitored resource of the entry
-            labels (Optional[dict]): Mapping of labels for the entry.
-            trace (Optional[str]): TraceID to apply to the logging entry.
-            span_id (Optional[str]): Span_id within the trace for the log entry.
-                Specify the trace parameter if span_id is set.
+            kwargs: Additional optional arguments for the logger
         """
         queue_entry = {
             "info": {"message": message, "python_logger": record.name},
             "severity": _helpers._normalize_severity(record.levelno),
-            "resource": resource,
-            "labels": labels,
-            "trace": trace,
-            "span_id": span_id,
             "timestamp": datetime.datetime.utcfromtimestamp(record.created),
         }
+        queue_entry.update(kwargs)
         self._queue.put_nowait(queue_entry)
 
     def flush(self):
@@ -291,30 +281,16 @@ class BackgroundThreadTransport(Transport):
         )
         self.worker.start()
 
-    def send(
-        self, record, message, resource=None, labels=None, trace=None, span_id=None
-    ):
+    def send(self, record, message, **kwargs):
         """Overrides Transport.send().
 
         Args:
             record (logging.LogRecord): Python log record that the handler was called with.
             message (str): The message from the ``LogRecord`` after being
                 formatted by the associated log formatters.
-            resource (Optional[google.cloud.logging_v2.resource.Resource]):
-                Monitored resource of the entry.
-            labels (Optional[dict]): Mapping of labels for the entry.
-            trace (Optional[str]): TraceID to apply to the logging entry.
-            span_id (Optional[str]): span_id within the trace for the log entry.
-                Specify the trace parameter if span_id is set.
+            kwargs: Additional optional arguments for the logger
         """
-        self.worker.enqueue(
-            record,
-            message,
-            resource=resource,
-            labels=labels,
-            trace=trace,
-            span_id=span_id,
-        )
+        self.worker.enqueue(record, message, **kwargs)
 
     def flush(self):
         """Submit any pending log records."""

@@ -23,9 +23,14 @@ except ImportError:  # pragma: NO COVER
     flask = None
 
 from google.cloud.logging_v2.handlers.middleware.request import _get_django_request
+from google.logging.type.http_request_pb2 import HttpRequest
 
 _DJANGO_TRACE_HEADER = "HTTP_X_CLOUD_TRACE_CONTEXT"
+_DJANGO_USERAGENT_HEADER = "HTTP_USER_AGENT"
+_DJANGO_REMOTE_ADDR_HEADER = "REMOTE_ADDR"
+_DJANGO_REFERER_HEADER = "HTTP_REFERER"
 _FLASK_TRACE_HEADER = "X_CLOUD_TRACE_CONTEXT"
+_PROTOCOL_HEADER = "SERVER_PROTOCOL"
 
 
 def format_stackdriver_json(record, message):
@@ -46,59 +51,86 @@ def format_stackdriver_json(record, message):
     return json.dumps(payload)
 
 
-def get_trace_id_from_flask():
-    """Get trace_id from flask request headers.
+def get_request_data_from_flask():
+    """Get http_request and trace data from flask request headers.
 
     Returns:
-        str: TraceID in HTTP request headers.
+        Tuple[Optional[google.logging.type.http_request_pb2.HttpRequest], Optional[str]]:
+            Data related to the current http request and the trace_id for the
+            request. Both fields will be None if a flask request isn't found.
     """
     if flask is None or not flask.request:
-        return None
+        return None, None
 
+    # build http_request
+    http_request = HttpRequest(
+        request_method=flask.request.method,
+        request_url=flask.request.url,
+        request_size=flask.request.content_length,
+        user_agent=flask.request.user_agent.string,
+        remote_ip=flask.request.remote_addr,
+        referer=flask.request.referrer,
+        protocol=flask.request.environ.get(_PROTOCOL_HEADER),
+    )
+
+    # find trace id
+    trace_id = None
     header = flask.request.headers.get(_FLASK_TRACE_HEADER)
+    if header:
+        trace_id = header.split("/", 1)[0]
 
-    if header is None:
-        return None
-
-    trace_id = header.split("/", 1)[0]
-
-    return trace_id
+    return http_request, trace_id
 
 
-def get_trace_id_from_django():
-    """Get trace_id from django request headers.
+def get_request_data_from_django():
+    """Get http_request and trace data from django request headers.
 
     Returns:
-        str: TraceID in HTTP request headers.
+        Tuple[Optional[google.logging.type.http_request_pb2.HttpRequest], Optional[str]]:
+            Data related to the current http request and the trace_id for the
+            request. Both fields will be None if a django request isn't found.
     """
     request = _get_django_request()
 
     if request is None:
-        return None
+        return None, None
+    # build http_request
+    http_request = HttpRequest(
+        request_method=request.method,
+        request_url=request.build_absolute_uri(),
+        request_size=len(request.body),
+        user_agent=request.META.get(_DJANGO_USERAGENT_HEADER),
+        remote_ip=request.META.get(_DJANGO_REMOTE_ADDR_HEADER),
+        referer=request.META.get(_DJANGO_REFERER_HEADER),
+        protocol=request.META.get(_PROTOCOL_HEADER),
+    )
 
+    # find trace id
+    trace_id = None
     header = request.META.get(_DJANGO_TRACE_HEADER)
-    if header is None:
-        return None
+    if header:
+        trace_id = header.split("/", 1)[0]
 
-    trace_id = header.split("/", 1)[0]
-
-    return trace_id
+    return http_request, trace_id
 
 
-def get_trace_id():
-    """Helper to get trace_id from web application request header.
+def get_request_data():
+    """Helper to get http_request and trace data from supported web
+    frameworks (currently supported: Flask and Django).
 
     Returns:
-        str: TraceID in HTTP request headers.
+        Tuple[Optional[google.logging.type.http_request_pb2.HttpRequest], Optional[str]]:
+            Data related to the current http request and the trace_id for the
+            request. Both fields will be None if a supported web request isn't found.
     """
     checkers = (
-        get_trace_id_from_django,
-        get_trace_id_from_flask,
+        get_request_data_from_django,
+        get_request_data_from_flask,
     )
 
     for checker in checkers:
-        trace_id = checker()
-        if trace_id is not None:
-            return trace_id
+        http_request, trace_id = checker()
+        if http_request is not None:
+            return http_request, trace_id
 
-    return None
+    return None, None
