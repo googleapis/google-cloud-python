@@ -252,6 +252,7 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
                 "collection_id": collection.id,
                 "page_size": page_size,
                 "show_missing": True,
+                "mask": {"field_paths": None},
             },
             metadata=client._rpc_metadata,
             **kwargs,
