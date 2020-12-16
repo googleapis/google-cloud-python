@@ -48,6 +48,7 @@ class {{ service.async_client_name }}:
     parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path)
     {% endfor %}
 
+    from_service_account_info = {{ service.client_name }}.from_service_account_info
     from_service_account_file = {{ service.client_name }}.from_service_account_file
     from_service_account_json = from_service_account_file
 
