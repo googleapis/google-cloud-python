@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.38.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.37.1...v0.38.0) (2020-12-16)
+
+
+### Features
+
+* add 'from_service_account_info' factory to clients ([#706](https://www.github.com/googleapis/gapic-generator-python/issues/706)) ([94d5f0c](https://www.github.com/googleapis/gapic-generator-python/commit/94d5f0c11b8041cbae8e4a89bb504d6c6e200a95)), closes [#705](https://www.github.com/googleapis/gapic-generator-python/issues/705)
+
 ### [0.37.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.37.0...v0.37.1) (2020-12-10)
 
 
