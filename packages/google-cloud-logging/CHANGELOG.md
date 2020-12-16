@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+### [2.0.2](https://www.github.com/googleapis/python-logging/compare/v2.0.1...v2.0.2) (2020-12-14)
+
+
+### Bug Fixes
+
+* Add submodule imports for handlers to logging alias ([#117](https://www.github.com/googleapis/python-logging/issues/117)) ([6843a3a](https://www.github.com/googleapis/python-logging/commit/6843a3aee3c0908ddbc493e7a9ecdddd01df34ef))
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#131](https://www.github.com/googleapis/python-logging/issues/131)) ([6349b89](https://www.github.com/googleapis/python-logging/commit/6349b899811cbb16f5548df0b77564b46666c4e7))
+* Remove keyword only argument for RequestsMiddleware ([#113](https://www.github.com/googleapis/python-logging/issues/113)) ([e704f28](https://www.github.com/googleapis/python-logging/commit/e704f287a40db38d0da42fa5e21e7a9ef73922ec))
+
 ### [2.0.1](https://www.github.com/googleapis/python-logging/compare/v2.0.0...v2.0.1) (2020-12-02)
 
 
