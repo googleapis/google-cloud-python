@@ -17,11 +17,27 @@ from django_spanner.utils import add_dummy_where
 
 
 class SQLCompiler(BaseSQLCompiler):
+    """
+    A variation of the Django SQL compiler, adjusted for Spanner-specific
+    functionality.
+    """
+
     def get_combinator_sql(self, combinator, all):
-        """
+        """Override the native Django method.
+
         Copied from the base class except for:
             combinator_sql += ' ALL' if all else ' DISTINCT'
         Cloud Spanner requires ALL or DISTINCT.
+
+        :type combinator: str
+        :param combinator: A type of the combinator for the operation.
+
+        :type all: bool
+        :param all: Bool option for the SQL statement.
+
+        :rtype: tuple
+        :returns: A tuple containing SQL statement(s) with some additional
+                  parameters.
         """
         features = self.connection.features
         compilers = [
@@ -97,16 +113,20 @@ class SQLCompiler(BaseSQLCompiler):
 
 
 class SQLInsertCompiler(BaseSQLInsertCompiler, SQLCompiler):
+    """A wrapper class for compatibility with Django specifications."""
     pass
 
 
 class SQLDeleteCompiler(BaseSQLDeleteCompiler, SQLCompiler):
+    """A wrapper class for compatibility with Django specifications."""
     pass
 
 
 class SQLUpdateCompiler(BaseSQLUpdateCompiler, SQLCompiler):
+    """A wrapper class for compatibility with Django specifications."""
     pass
 
 
 class SQLAggregateCompiler(BaseSQLAggregateCompiler, SQLCompiler):
+    """A wrapper class for compatibility with Django specifications."""
     pass

@@ -9,6 +9,10 @@ from django.db.backends.base.schema import BaseDatabaseSchemaEditor
 
 
 class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
+    """
+    The database abstraction layer that turns things like “create a model” or
+    “delete a field” into SQL.
+    """
     sql_create_table = (
         "CREATE TABLE %(table)s (%(definition)s) PRIMARY KEY(%(primary_key)s)"
     )
@@ -38,6 +42,9 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         """
         Create a table and any accompanying indexes or unique constraints for
         the given `model`.
+
+        :type model: :class:`~django.db.migrations.operations.models.ModelOperation`
+        :param model: A model for creating a table.
         """
         # Create column SQL, add FK deferreds if needed
         column_sqls = []
@@ -123,6 +130,13 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 self.create_model(field.remote_field.through)
 
     def delete_model(self, model):
+        """
+        Drop the model's table in the database along with any unique constraints
+        or indexes it has.
+
+        :type model: :class:`~django.db.migrations.operations.models.ModelOperation`
+        :param model: A model for creating a table.
+        """
         # Spanner requires dropping all of a table's indexes before dropping
         # the table.
         index_names = self._constraint_names(
@@ -133,6 +147,21 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         super().delete_model(model)
 
     def add_field(self, model, field):
+        """
+        Add a column (or sometimes multiple) to the model's table to
+        represent the field. This will also add indexes or a unique constraint
+        if the field has db_index=True or unique=True. If the field is a
+        ManyToManyField without a value for through, instead of creating a
+        column, it will make a table to represent the relationship. If through
+        is provided, it is a no-op. If the field is a ForeignKey, this will
+        also add the foreign key constraint to the column.
+
+        :type model: :class:`~django.db.migrations.operations.models.ModelOperation`
+        :param model: A model for creating a table.
+
+        :type field: :class:`~django.db.migrations.operations.models.fields.FieldOperation`
+        :param field: The field of the table.
+        """
         # Special-case implicit M2M tables
         if (
             field.many_to_many
@@ -203,6 +232,19 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             )
 
     def remove_field(self, model, field):
+        """
+        Remove the column(s) representing the field from the model's table,
+        along with any unique constraints, foreign key constraints, or indexes
+        caused by that field. If the field is a ManyToManyField without a
+        value for through, it will remove the table created to track the
+        relationship. If through is provided, it is a no-op.
+
+        :type model: :class:`~django.db.migrations.operations.models.ModelOperation`
+        :param model: A model for creating a table.
+
+        :type field: :class:`~django.db.migrations.operations.models.fields.FieldOperation`
+        :param field: The field of the table.
+        """
         # Spanner requires dropping a column's indexes before dropping the
         # column.
         index_names = self._constraint_names(model, [field.column], index=True)
@@ -216,6 +258,18 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         """
         Take a field and return its column definition.
         The field must already have had set_attributes_from_name() called.
+
+        :type model: :class:`~django.db.migrations.operations.models.ModelOperation`
+        :param model: A model for creating a table.
+
+        :type field: :class:`~django.db.migrations.operations.models.fields.FieldOperation`
+        :param field: The field of the table.
+
+        :type include_default: bool
+        :param include_default: (Optional) Flag for including default fields.
+
+        :type exclude_not_null: bool
+        :param exclude_not_null: (Optional) Flag for excluding not null fields.
         """
         # Get the column's type and use that as the basis of the SQL
         db_params = field.db_parameters(connection=self.connection)
@@ -250,6 +304,14 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         return sql, params
 
     def add_index(self, model, index):
+        """Add index to model's table.
+
+        :type model: :class:`~django.db.migrations.operations.models.ModelOperation`
+        :param model: A model for creating a table.
+
+        :type index: :class:`~django.db.migrations.operations.models.Index`
+        :param index: An index to add.
+        """
         # Work around a bug in Django where a space isn't inserting before
         # DESC: https://code.djangoproject.com/ticket/30961
         # This method can be removed in Django 3.1.

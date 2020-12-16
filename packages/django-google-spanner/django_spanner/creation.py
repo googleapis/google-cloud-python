@@ -14,6 +14,11 @@ from django.utils.module_loading import import_string
 
 
 class DatabaseCreation(BaseDatabaseCreation):
+    """
+    Spanner-specific wrapper for Django class encapsulating methods for
+    creation and destruction of the underlying test database.
+    """
+
     def mark_skips(self):
         """Skip tests that don't work on Spanner."""
         for test_name in self.connection.features.skip_tests:
@@ -30,6 +35,11 @@ class DatabaseCreation(BaseDatabaseCreation):
                 )
 
     def create_test_db(self, *args, **kwargs):
+        """Create a test database.
+
+        :rtype: str
+        :returns: The name of the newly created test Database.
+        """
         # This environment variable is set by the Travis build script or
         # by a developer running the tests locally.
         if os.environ.get("RUNNING_SPANNER_BACKEND_TESTS") == "1":
@@ -37,6 +47,11 @@ class DatabaseCreation(BaseDatabaseCreation):
         super().create_test_db(*args, **kwargs)
 
     def _create_test_db(self, verbosity, autoclobber, keepdb=False):
+        """
+        Create dummy test tables. This method is mostly copied from the
+        base class but removes usage of `_nodb_connection` since Spanner doesn't
+        have or need one.
+        """
         # Mostly copied from the base class but removes usage of
         # _nodb_connection since Spanner doesn't have or need one.
         test_database_name = self._get_test_db_name()

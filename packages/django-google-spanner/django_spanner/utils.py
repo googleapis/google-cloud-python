@@ -31,6 +31,12 @@ def add_dummy_where(sql):
     """
     Cloud Spanner requires a WHERE clause on UPDATE and DELETE statements.
     Add a dummy WHERE clause if necessary.
+
+    :type sql: str
+    :param sql: A SQL statement.
+
+    :rtype: str
+    :returns: A SQL statement with dummy WHERE clause.
     """
     if any(
         isinstance(token, sqlparse.sql.Where)

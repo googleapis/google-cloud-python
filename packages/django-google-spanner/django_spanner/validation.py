@@ -7,6 +7,17 @@ from django.db.models import DecimalField
 
 class DatabaseValidation(BaseDatabaseValidation):
     def check_field_type(self, field, field_type):
+        """Check field type and collect errors.
+
+        :type field: :class:`~django.db.migrations.operations.models.fields.FieldOperation`
+        :param field: The field of the table.
+
+        :type field_type: str
+        :param field_type: The type of the field.
+
+        :rtype: list
+        :return: A list of errors.
+        """
         errors = []
         # Disable the error when running the Django test suite.
         if os.environ.get(

@@ -9,5 +9,7 @@ from google.cloud.spanner_dbapi.exceptions import NotSupportedError
 
 
 class DatabaseClient(BaseDatabaseClient):
+    """Wrap the Django base class."""
+
     def runshell(self, parameters):
         raise NotSupportedError("This method is not supported.")
