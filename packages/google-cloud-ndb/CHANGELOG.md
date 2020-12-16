@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.7.2](https://www.github.com/googleapis/python-ndb/compare/v1.7.1...v1.7.2) (2020-12-16)
+
+
+### Bug Fixes
+
+* always use brute-force counting with Datastore emulator and clean up related hacks ([#585](https://www.github.com/googleapis/python-ndb/issues/585)) ([8480a8b](https://www.github.com/googleapis/python-ndb/commit/8480a8bd0d169e2499ee62d1fb9d140aa6ce00d4))
+* return a tuple when empty result returned on query ([#582](https://www.github.com/googleapis/python-ndb/issues/582)) ([7cf0e87](https://www.github.com/googleapis/python-ndb/commit/7cf0e878054dbfe7bc8b6c0c9fea96a602e8e859))
+* support empty not_finished messages that cause query.count() to return early ([#580](https://www.github.com/googleapis/python-ndb/issues/580)) ([fc31553](https://www.github.com/googleapis/python-ndb/commit/fc31553c77f6e7865df0efd4c820f69366f6607c)), closes [#575](https://www.github.com/googleapis/python-ndb/issues/575)
+
+
+### Documentation
+
+* Add urlsafe() info to migration notes ([#579](https://www.github.com/googleapis/python-ndb/issues/579)) ([9df2f9f](https://www.github.com/googleapis/python-ndb/commit/9df2f9f8be40d95fbde297335eb99b19bafad583))
+
 ### [1.7.1](https://www.github.com/googleapis/python-ndb/compare/v1.7.0...v1.7.1) (2020-11-11)
 
 
