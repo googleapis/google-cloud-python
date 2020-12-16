@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.24.1](https://www.github.com/googleapis/python-api-core/compare/v1.24.0...v1.24.1) (2020-12-16)
+
+
+### Bug Fixes
+
+* support 'retry' for ops built from HTTP/gRPC responses ([#115](https://www.github.com/googleapis/python-api-core/issues/115)) ([7a38243](https://www.github.com/googleapis/python-api-core/commit/7a38243c351b228d103eee81fc5ae521ad1c930e)), closes [#87](https://www.github.com/googleapis/python-api-core/issues/87)
+
 ## [1.24.0](https://www.github.com/googleapis/python-api-core/compare/v1.23.0...v1.24.0) (2020-12-14)
 
 
