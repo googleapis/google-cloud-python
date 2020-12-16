@@ -18,6 +18,9 @@
 import base64
 import functools
 import logging
+import os
+
+from google.cloud import environment_vars
 
 from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
@@ -127,7 +130,12 @@ def count(query):
     if filters:
         if filters._multiquery or filters._post_filters():
             return _count_brute_force(query)
-
+    if bool(os.environ.get(environment_vars.GCD_HOST)):
+        # The Datastore emulator has some differences from Datastore that would
+        # break _count_by_skipping.
+        # - it will never set more_results to NO_MORE_RESULTS
+        # - it won't set end_cursor to something useful if no results are returned
+        return _count_brute_force(query)
     return _count_by_skipping(query)
 
 
@@ -165,23 +173,11 @@ def _count_by_skipping(query):
         response = yield _datastore_run_query(query)
         batch = response.batch
 
-        # The Datastore emulator will never set more_results to NO_MORE_RESULTS,
-        # so for a workaround, just bail as soon as we neither skip nor retrieve any
-        # results
-        new_count = batch.skipped_results + len(batch.entity_results)
-        if new_count == 0 and more_results != NOT_FINISHED:
-            break
-
-        count += new_count
+        count += batch.skipped_results + len(batch.entity_results)
         if limit and count >= limit:
             break
 
-        # The Datastore emulator won't set end_cursor to something useful if no results
-        # are returned, so the workaround is to use skipped_cursor in that case
-        if len(batch.entity_results):
-            cursor = Cursor(batch.end_cursor)
-        else:
-            cursor = Cursor(batch.skipped_cursor)
+        cursor = Cursor(batch.end_cursor)
 
         more_results = batch.more_results
 

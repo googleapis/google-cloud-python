@@ -152,8 +152,8 @@ class Test_count:
                     more_results=_datastore_query.NOT_FINISHED,
                     skipped_results=1000,
                     entity_results=[],
-                    end_cursor=b"dontlookatme",
-                    skipped_cursor=b"himom",
+                    end_cursor=b"himom",
+                    skipped_cursor=b"dontlookatme",
                     spec=(
                         "more_results",
                         "skipped_results",
@@ -169,7 +169,6 @@ class Test_count:
                     skipped_results=0,
                     entity_results=[],
                     end_cursor=b"secondCursor",
-                    skipped_cursor=b"skiptomylou",
                     spec=(
                         "more_results",
                         "skipped_results",
@@ -227,7 +226,7 @@ class Test_count:
                         limit=1,
                         offset=10000,
                         projection=["__key__"],
-                        start_cursor=_datastore_query.Cursor(b"skiptomylou"),
+                        start_cursor=_datastore_query.Cursor(b"secondCursor"),
                     ),
                 ),
                 {},
@@ -245,8 +244,8 @@ class Test_count:
                     more_results=_datastore_query.NOT_FINISHED,
                     skipped_results=1000,
                     entity_results=[],
-                    end_cursor=b"dontlookatme",
-                    skipped_cursor=b"himom",
+                    end_cursor=b"himom",
+                    skipped_cursor=b"dontlookatme",
                     spec=(
                         "more_results",
                         "skipped_results",
@@ -303,103 +302,20 @@ class Test_count:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
-    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
-    def test_count_by_skipping_emulator(run_query):
+    @mock.patch("google.cloud.ndb._datastore_query._count_brute_force")
+    def test_count_by_skipping_emulator(count_brute_force):
         """Regression test for #525
 
         Test differences between emulator and the real Datastore.
 
         https://github.com/googleapis/python-ndb/issues/525
         """
-        run_query.side_effect = utils.future_results(
-            mock.Mock(
-                batch=mock.Mock(
-                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
-                    skipped_results=1000,
-                    entity_results=[],
-                    end_cursor=b"dontlookatme",
-                    skipped_cursor=b"himom",
-                    spec=(
-                        "more_results",
-                        "skipped_results",
-                        "entity_results",
-                        "end_cursor",
-                    ),
-                ),
-                spec=("batch",),
-            ),
-            mock.Mock(
-                batch=mock.Mock(
-                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
-                    skipped_results=100,
-                    entity_results=[],
-                    end_cursor=b"nopenuhuh",
-                    skipped_cursor=b"hellodad",
-                    spec=(
-                        "more_results",
-                        "skipped_results",
-                        "entity_results",
-                        "end_cursor",
-                        "skipped_cursor",
-                    ),
-                ),
-                spec=("batch",),
-            ),
-            mock.Mock(
-                batch=mock.Mock(
-                    more_results=_datastore_query.MORE_RESULTS_AFTER_LIMIT,
-                    skipped_results=0,
-                    entity_results=[],
-                    end_cursor=b"nopenuhuh",
-                    skipped_cursor=b"hellodad",
-                    spec=(
-                        "more_results",
-                        "skipped_results",
-                        "entity_results",
-                        "end_cursor",
-                        "skipped_cursor",
-                    ),
-                ),
-                spec=("batch",),
-            ),
-        )
-
+        count_brute_force.return_value = utils.future_result(42)
         query = query_module.QueryOptions()
-        future = _datastore_query.count(query)
-        assert future.result() == 1100
-
-        expected = [
-            mock.call(
-                query_module.QueryOptions(
-                    limit=1,
-                    offset=10000,
-                    projection=["__key__"],
-                )
-            ),
-            (
-                (
-                    query_module.QueryOptions(
-                        limit=1,
-                        offset=10000,
-                        projection=["__key__"],
-                        start_cursor=_datastore_query.Cursor(b"himom"),
-                    ),
-                ),
-                {},
-            ),
-            (
-                (
-                    query_module.QueryOptions(
-                        limit=1,
-                        offset=10000,
-                        projection=["__key__"],
-                        start_cursor=_datastore_query.Cursor(b"hellodad"),
-                    ),
-                ),
-                {},
-            ),
-        ]
-        assert run_query.call_args_list == expected
+        with mock.patch.dict("os.environ", {"DATASTORE_EMULATOR_HOST": "emulator"}):
+            future = _datastore_query.count(query)
+            assert future.result() == 42
+        assert count_brute_force.call_args_list == [mock.call(query)]
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

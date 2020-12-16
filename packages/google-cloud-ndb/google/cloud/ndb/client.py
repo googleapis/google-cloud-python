@@ -95,7 +95,7 @@ class Client(google_client.ClientWithProject):
 
         # Use insecure connection when using Datastore Emulator, otherwise
         # use secure connection
-        emulator = bool(os.environ.get("DATASTORE_EMULATOR_HOST"))
+        emulator = bool(os.environ.get(environment_vars.GCD_HOST))
         self.secure = not emulator
 
         if emulator:
