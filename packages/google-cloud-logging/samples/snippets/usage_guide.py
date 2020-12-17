@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Testable usage examples for Cloud Logging API wrapper
+"""Samples embedded in the Usage Guide (docs/usage.rst)
 
 Each example function takes a ``client`` argument (which must be an instance
 of :class:`google.cloud.logging.client.Client`) and uses it to perform a task
@@ -23,9 +23,10 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
+import os
 import time
 
-from google.cloud.logging.client import Client
+from google.cloud.logging import Client
 
 
 def snippet(func):
@@ -42,25 +43,6 @@ def do_something_with(item):  # pylint: disable=unused-argument
     pass
 
 
-# pylint: disable=reimported,unused-variable,unused-argument
-@snippet
-def instantiate_client(_unused_client, _unused_to_delete):
-    """Instantiate client."""
-
-    # [START client_create_default]
-    from google.cloud import logging
-
-    client = logging.Client()
-    # [END client_create_default]
-
-    credentials = object()
-    # [START client_create_explicit]
-    from google.cloud import logging
-
-    client = logging.Client(project="my-project", credentials=credentials)
-    # [END client_create_explicit]
-
-
 # pylint: enable=reimported,unused-variable,unused-argument
 
 
@@ -71,55 +53,32 @@ def client_list_entries(client, to_delete):  # pylint: disable=unused-argument
     # [START client_list_entries_default]
     for entry in client.list_entries():  # API call(s)
         do_something_with(entry)
-    # [END client_list_entries_default]
+        # [END client_list_entries_default]
+        break
 
     # [START client_list_entries_filter]
-    FILTER = "logName:log_name AND textPayload:simple"
-    for entry in client.list_entries(filter_=FILTER):  # API call(s)
+    filter_str = "logName:log_name AND textPayload:simple"
+    for entry in client.list_entries(filter_=filter_str):  # API call(s)
         do_something_with(entry)
-    # [END client_list_entries_filter]
+        # [END client_list_entries_filter]
+        break
 
     # [START client_list_entries_order_by]
     from google.cloud.logging import DESCENDING
 
     for entry in client.list_entries(order_by=DESCENDING):  # API call(s)
         do_something_with(entry)
-    # [END client_list_entries_order_by]
-
-    # [START client_list_entries_paged]
-    iterator = client.list_entries()
-    pages = iterator.pages
-
-    page1 = next(pages)  # API call
-    for entry in page1:
-        do_something_with(entry)
-
-    page2 = next(pages)  # API call
-    for entry in page2:
-        do_something_with(entry)
-    # [END client_list_entries_paged]
-
-
-# @snippet  Commented because we need real project IDs to test
-def client_list_entries_multi_project(
-    client, to_delete
-):  # pylint: disable=unused-argument
-    """List entries via client across multiple projects."""
-
-    # [START client_list_entries_multi_project]
-    resource_names = ["projects/one-project", "projects/another-project"]
-    for entry in client.list_entries(resource_names=resource_names):  # API call(s)
-        do_something_with(entry)
-    # [END client_list_entries_multi_project]
+        # [END client_list_entries_order_by]
+        break
 
 
 @snippet
 def logger_usage(client, to_delete):
     """Logger usage."""
-    LOG_NAME = "logger_usage_%d" % (_millis())
+    log_name = "logger_usage_%d" % (_millis())
 
     # [START logger_create]
-    logger = client.logger(LOG_NAME)
+    logger = client.logger(log_name)
     # [END logger_create]
     to_delete.append(logger)
 
@@ -134,7 +93,7 @@ def logger_usage(client, to_delete):
     # [END logger_log_struct]
 
     # [START logger_log_resource_text]
-    from google.cloud.logging.resource import Resource
+    from google.cloud.logging import Resource
 
     res = Resource(
         type="generic_node",
@@ -168,11 +127,11 @@ def logger_usage(client, to_delete):
 @snippet
 def metric_crud(client, to_delete):
     """Metric CRUD."""
-    METRIC_NAME = "robots-%d" % (_millis(),)
-    DESCRIPTION = "Robots all up in your server"
-    FILTER = "logName:apache-access AND textPayload:robot"
-    UPDATED_FILTER = "textPayload:robot"
-    UPDATED_DESCRIPTION = "Danger, Will Robinson!"
+    metric_name = "robots-%d" % (_millis(),)
+    description = "Robots all up in your server"
+    filter = "logName:apache-access AND textPayload:robot"
+    updated_filter = "textPayload:robot"
+    updated_description = "Danger, Will Robinson!"
 
     # [START client_list_metrics]
     for metric in client.list_metrics():  # API call(s)
@@ -180,7 +139,7 @@ def metric_crud(client, to_delete):
     # [END client_list_metrics]
 
     # [START metric_create]
-    metric = client.metric(METRIC_NAME, filter_=FILTER, description=DESCRIPTION)
+    metric = client.metric(metric_name, filter_=filter, description=description)
     assert not metric.exists()  # API call
     metric.create()  # API call
     assert metric.exists()  # API call
@@ -188,20 +147,20 @@ def metric_crud(client, to_delete):
     to_delete.append(metric)
 
     # [START metric_reload]
-    existing_metric = client.metric(METRIC_NAME)
+    existing_metric = client.metric(metric_name)
     existing_metric.reload()  # API call
     # [END metric_reload]
-    assert existing_metric.filter_ == FILTER
-    assert existing_metric.description == DESCRIPTION
+    assert existing_metric.filter_ == filter
+    assert existing_metric.description == description
 
     # [START metric_update]
-    existing_metric.filter_ = UPDATED_FILTER
-    existing_metric.description = UPDATED_DESCRIPTION
+    existing_metric.filter_ = updated_filter
+    existing_metric.description = updated_description
     existing_metric.update()  # API call
     # [END metric_update]
     existing_metric.reload()
-    assert existing_metric.filter_ == UPDATED_FILTER
-    assert existing_metric.description == UPDATED_DESCRIPTION
+    assert existing_metric.filter_ == updated_filter
+    assert existing_metric.description == updated_description
 
     def _metric_delete():
         # [START metric_delete]
@@ -215,9 +174,9 @@ def metric_crud(client, to_delete):
 def _sink_storage_setup(client):
     from google.cloud import storage
 
-    BUCKET_NAME = "sink-storage-%d" % (_millis(),)
+    bucket_name = "sink-storage-%d" % (_millis(),)
     client = storage.Client()
-    bucket = client.bucket(BUCKET_NAME)
+    bucket = client.bucket(bucket_name)
     bucket.create()
 
     # [START sink_bucket_permissions]
@@ -236,12 +195,12 @@ def sink_storage(client, to_delete):
     """Sink log entries to storage."""
     bucket = _sink_storage_setup(client)
     to_delete.append(bucket)
-    SINK_NAME = "robots-storage-%d" % (_millis(),)
-    FILTER = "textPayload:robot"
+    sink_name = "robots-storage-%d" % (_millis(),)
+    filter = "textPayload:robot"
 
     # [START sink_storage_create]
-    DESTINATION = "storage.googleapis.com/%s" % (bucket.name,)
-    sink = client.sink(SINK_NAME, filter_=FILTER, destination=DESTINATION)
+    destination = "storage.googleapis.com/%s" % (bucket.name,)
+    sink = client.sink(sink_name, filter_=filter, destination=destination)
     assert not sink.exists()  # API call
     sink.create()  # API call
     assert sink.exists()  # API call
@@ -252,19 +211,17 @@ def sink_storage(client, to_delete):
 def _sink_bigquery_setup(client):
     from google.cloud import bigquery
 
-    DATASET_NAME = "sink_bigquery_%d" % (_millis(),)
+    dataset_name = "sink_bigquery_%d" % (_millis(),)
     client = bigquery.Client()
-    dataset = client.dataset(DATASET_NAME)
-    dataset.create()
-    dataset.reload()
+    dataset = client.create_dataset(dataset_name)
 
     # [START sink_dataset_permissions]
-    from google.cloud.bigquery.dataset import AccessGrant
+    from google.cloud.bigquery.dataset import AccessEntry
 
-    grants = dataset.access_grants
-    grants.append(AccessGrant("WRITER", "groupByEmail", "cloud-logs@google.com"))
-    dataset.access_grants = grants
-    dataset.update()  # API call
+    entry_list = dataset.access_entries
+    entry_list.append(AccessEntry("WRITER", "groupByEmail", "cloud-logs@google.com"))
+    dataset.access_entries = entry_list
+    client.update_dataset(dataset, ["access_entries"])  # API call
     # [END sink_dataset_permissions]
 
     return dataset
@@ -274,13 +231,12 @@ def _sink_bigquery_setup(client):
 def sink_bigquery(client, to_delete):
     """Sink log entries to bigquery."""
     dataset = _sink_bigquery_setup(client)
-    to_delete.append(dataset)
-    SINK_NAME = "robots-bigquery-%d" % (_millis(),)
-    FILTER = "textPayload:robot"
+    sink_name = "robots-bigquery-%d" % (_millis(),)
+    filter_str = "textPayload:robot"
 
     # [START sink_bigquery_create]
-    DESTINATION = "bigquery.googleapis.com%s" % (dataset.path,)
-    sink = client.sink(SINK_NAME, filter_=FILTER, destination=DESTINATION)
+    destination = "bigquery.googleapis.com%s" % (dataset.path,)
+    sink = client.sink(sink_name, filter_=filter_str, destination=destination)
     assert not sink.exists()  # API call
     sink.create()  # API call
     assert sink.exists()  # API call
@@ -291,15 +247,21 @@ def sink_bigquery(client, to_delete):
 def _sink_pubsub_setup(client):
     from google.cloud import pubsub
 
-    TOPIC_NAME = "sink-pubsub-%d" % (_millis(),)
-    client = pubsub.Client()
-    topic = client.topic(TOPIC_NAME)
-    topic.create()
+    client = pubsub.PublisherClient()
+
+    project_id = os.environ["GOOGLE_CLOUD_PROJECT"]
+    topic_id = "sink-pubsub-%d" % (_millis(),)
 
     # [START sink_topic_permissions]
-    policy = topic.get_iam_policy()  # API call
-    policy.owners.add(policy.group("cloud-logs@google.com"))
-    topic.set_iam_policy(policy)  # API call
+    topic_path = client.topic_path(project_id, topic_id)
+    topic = client.create_topic(request={"name": topic_path})
+
+    policy = client.get_iam_policy(request={"resource": topic_path})  # API call
+    policy.bindings.add(role="roles/owner", members=["group:cloud-logs@google.com"])
+
+    client.set_iam_policy(
+        request={"resource": topic_path, "policy": policy}
+    )  # API call
     # [END sink_topic_permissions]
 
     return topic
@@ -309,19 +271,18 @@ def _sink_pubsub_setup(client):
 def sink_pubsub(client, to_delete):
     """Sink log entries to pubsub."""
     topic = _sink_pubsub_setup(client)
-    to_delete.append(topic)
-    SINK_NAME = "robots-pubsub-%d" % (_millis(),)
-    FILTER = "logName:apache-access AND textPayload:robot"
-    UPDATED_FILTER = "textPayload:robot"
+    sink_name = "robots-pubsub-%d" % (_millis(),)
+    filter_str = "logName:apache-access AND textPayload:robot"
+    updated_filter = "textPayload:robot"
 
     # [START sink_pubsub_create]
-    DESTINATION = "pubsub.googleapis.com/%s" % (topic.full_name,)
-    sink = client.sink(SINK_NAME, filter_=FILTER, destination=DESTINATION)
+    destination = "pubsub.googleapis.com/%s" % (topic.name,)
+    sink = client.sink(sink_name, filter_=filter_str, destination=destination)
     assert not sink.exists()  # API call
     sink.create()  # API call
     assert sink.exists()  # API call
     # [END sink_pubsub_create]
-    to_delete.insert(0, sink)  # delete sink before topic
+    created_sink = sink
 
     # [START client_list_sinks]
     for sink in client.list_sinks():  # API call(s)
@@ -329,23 +290,23 @@ def sink_pubsub(client, to_delete):
     # [END client_list_sinks]
 
     # [START sink_reload]
-    existing_sink = client.sink(SINK_NAME)
+    existing_sink = client.sink(sink_name)
     existing_sink.reload()
     # [END sink_reload]
-    assert existing_sink.filter_ == FILTER
-    assert existing_sink.destination == DESTINATION
+    assert existing_sink.filter_ == filter_str
+    assert existing_sink.destination == destination
 
     # [START sink_update]
-    existing_sink.filter_ = UPDATED_FILTER
+    existing_sink.filter_ = updated_filter
     existing_sink.update()
     # [END sink_update]
     existing_sink.reload()
-    assert existing_sink.filter_ == UPDATED_FILTER
+    assert existing_sink.filter_ == updated_filter
 
+    sink = created_sink
     # [START sink_delete]
     sink.delete()
     # [END sink_delete]
-    to_delete.pop(0)
 
 
 @snippet
