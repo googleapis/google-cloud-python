@@ -4,8 +4,10 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import google.cloud.spanner_v1 as spanner
+
 from django.db.backends.base.base import BaseDatabaseWrapper
-from google.cloud import spanner_dbapi as Database, spanner_v1 as spanner
+from google.cloud import spanner_dbapi
 
 from .client import DatabaseClient
 from .creation import DatabaseCreation
@@ -81,6 +83,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     # special characters for REGEXP_CONTAINS operators (e.g. \, *, _) must be
     # escaped on database side.
     pattern_esc = r'REPLACE(REPLACE(REPLACE({}, "\\", "\\\\"), "%%", r"\%%"), "_", r"\_")'
+
     # These are all no-ops in favor of using REGEXP_CONTAINS in the customized
     # lookups.
     pattern_ops = {
@@ -92,7 +95,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         "iendswith": "",
     }
 
-    Database = Database
+    Database = spanner_dbapi
     SchemaEditorClass = DatabaseSchemaEditor
     creation_class = DatabaseCreation
     features_class = DatabaseFeatures
@@ -131,7 +134,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             **self.settings_dict["OPTIONS"],
         }
 
-    def get_new_connection(self, **conn_params):
+    def get_new_connection(self, conn_params):
         """Create a new connection with corresponding connection parameters.
 
         :type conn_params: list
@@ -145,11 +148,13 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         :raises: :class:`ValueError` in case the given instance/database
                  doesn't exist.
         """
-        return Database.connect(**conn_params)
+        return self.Database.connect(**conn_params)
 
     def init_connection_state(self):
         """Initialize the state of the existing connection."""
-        pass
+        self.connection.close()
+        database = self.connection.database
+        self.connection.__init__(self.instance, database)
 
     def create_cursor(self, name=None):
         """Create a new Database cursor.
@@ -177,12 +182,13 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         :rtype: bool
         :returns: True if the connection is open, otherwise False.
         """
-        if self.connection is None:
+        if self.connection is None or self.connection.is_closed:
             return False
+
         try:
             # Use a cursor directly, bypassing Django's utilities.
             self.connection.cursor().execute("SELECT 1")
-        except Database.Error:
+        except self.Database.Error:
             return False
-        else:
-            return True
+
+        return True

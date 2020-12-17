@@ -9,10 +9,10 @@
 
 from __future__ import absolute_import
 
-import nox
 import os
 import shutil
 
+import nox
 
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = [
@@ -60,12 +60,24 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
+    session.install(
+        "django~=2.2", "mock", "mock-import", "pytest", "pytest-cov"
+    )
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
-        "py.test", "--quiet", os.path.join("tests", "unit"), *session.posargs
+        "py.test",
+        "--quiet",
+        "--cov=django_spanner",
+        "--cov=google.cloud",
+        "--cov=tests.unit",
+        "--cov-append",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=60",
+        os.path.join("tests", "unit"),
+        *session.posargs
     )
 
 
