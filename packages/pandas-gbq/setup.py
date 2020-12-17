@@ -18,7 +18,7 @@ def readme():
 
 INSTALL_REQUIRES = [
     "setuptools",
-    "pandas>=0.20.1",
+    "pandas>=0.23.2",
     "pydata-google-auth",
     "google-auth",
     "google-auth-oauthlib",
@@ -44,16 +44,15 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering",
     ],
     keywords="data",
     install_requires=INSTALL_REQUIRES,
     extras_require=extras,
-    python_requires=">=3.5",
+    python_requires=">=3.7",
     packages=find_packages(exclude=["contrib", "docs", "tests*"]),
     test_suite="tests",
 )

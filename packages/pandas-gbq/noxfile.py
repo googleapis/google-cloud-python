@@ -10,8 +10,8 @@ import shutil
 import nox
 
 
-supported_pythons = ["3.5", "3.6", "3.7", "3.8"]
-system_test_pythons = ["3.5", "3.8"]
+supported_pythons = ["3.7", "3.8"]
+system_test_pythons = ["3.7", "3.8"]
 latest_python = "3.8"
 
 # Use a consistent version of black so CI is deterministic.
@@ -19,10 +19,9 @@ latest_python = "3.8"
 black_package = "black==20.8b1"
 
 
-@nox.session
-def lint(session, python=latest_python):
+@nox.session(python=latest_python)
+def lint(session):
     session.install(black_package, "flake8")
-    session.install("-e", ".")
     session.run("flake8", "pandas_gbq")
     session.run("flake8", "tests")
     session.run("black", "--check", ".")
@@ -57,8 +56,8 @@ def unit(session):
     )
 
 
-@nox.session
-def cover(session, python=latest_python):
+@nox.session(python=latest_python)
+def cover(session):
     session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=73")
     session.run("coverage", "erase")

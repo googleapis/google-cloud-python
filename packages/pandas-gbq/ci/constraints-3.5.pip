@@ -1,6 +1,0 @@
-numpy==1.13.3
-pandas==0.20.1
-google-auth==1.4.1
-google-auth-oauthlib==0.0.1
-google-cloud-bigquery==1.11.1
-pydata-google-auth==0.1.2

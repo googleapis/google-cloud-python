@@ -1,38 +1,5 @@
 version: 2
 jobs:
-  # Pip
-  "pip-3.5":
-    docker:
-      - image: thekevjames/nox
-    steps:
-      - checkout
-      - run: ci/config_auth.sh
-      - run: nox -s unit-3.5 system-3.5
-
-  "pip-3.6":
-    docker:
-      - image: thekevjames/nox
-    steps:
-      - checkout
-      - run: ci/config_auth.sh
-      - run: nox -s unit-3.6
-
-  "pip-3.7":
-    docker:
-      - image: thekevjames/nox
-    steps:
-      - checkout
-      - run: ci/config_auth.sh
-      - run: nox -s unit-3.7
-
-  "pip-3.8":
-    docker:
-      - image: thekevjames/nox
-    steps:
-      - checkout
-      - run: ci/config_auth.sh
-      - run: nox -s unit-3.8 system-3.8 cover
-
   "lint":
     docker:
       - image: thekevjames/nox
@@ -43,23 +10,49 @@ jobs:
     steps:
       - checkout
       - run: nox -s lint
+  "docs-presubmit":
+    docker:
+      - image: thekevjames/nox
+    environment:
+      # Resolve "Python 3 was configured to use ASCII as encoding for the environment"
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
+    steps:
+      - checkout
+      - run: nox -s docs
+
+  # Pip
+  "pip-3.7":
+    docker:
+      - image: thekevjames/nox
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: nox -s unit-3.7
+  "pip-3.8":
+    docker:
+      - image: thekevjames/nox
+    steps:
+      - checkout
+      - run: ci/config_auth.sh
+      - run: nox -s unit-3.8 system-3.8 cover
 
   # Conda
-  "conda-3.6-0.20.1":
+  "conda-3.7":
     docker:
       - image: continuumio/miniconda3
     environment:
-      PYTHON: "3.6"
-      PANDAS: "0.20.1"
+      PYTHON: "3.7"
+      PANDAS: "0.23.2"
     steps:
       - checkout
       - run: ci/config_auth.sh
       - run: ci/run_conda.sh
-  "conda-3.8-NIGHTLY":
+  "conda-3.9-NIGHTLY":
     docker:
       - image: continuumio/miniconda3
     environment:
-      PYTHON: "3.8"
+      PYTHON: "3.9"
       PANDAS: "NIGHTLY"
     steps:
       - checkout
@@ -70,10 +63,9 @@ workflows:
   version: 2
   build:
     jobs:
-      - "pip-3.5"
-      - "pip-3.6"
+      - lint
+      - docs-presubmit
       - "pip-3.7"
       - "pip-3.8"
-      - lint
-      - "conda-3.6-0.20.1"
-      - "conda-3.8-NIGHTLY"
+      - "conda-3.7"
+      - "conda-3.9-NIGHTLY"

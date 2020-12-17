@@ -13,6 +13,11 @@ Features
   client project. Specify the target table ID as ``project.dataset.table`` to
   use this feature. (:issue:`321`, :issue:`347`)
 
+Dependencies
+~~~~~~~~~~~~
+
+- Drop support for Python 3.5 and 3.6. (:issue:`337`)
+
 
 .. _changelog-0.14.1:
 
