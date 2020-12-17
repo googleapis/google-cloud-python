@@ -113,6 +113,19 @@ def setUpModule():
     instances = retry(_list_instances)()
     EXISTING_INSTANCES[:] = instances
 
+    # Delete test instances that are older than an hour.
+    cutoff = int(time.time()) - 1 * 60 * 60
+    for instance in Config.CLIENT.list_instances("labels.python-spanner-systests:true"):
+        if "created" not in instance.labels:
+            continue
+        create_time = int(instance.labels["created"])
+        if create_time > cutoff:
+            continue
+        # Instance cannot be deleted while backups exist.
+        for backup in instance.list_backups():
+            backup.delete()
+        instance.delete()
+
     if CREATE_INSTANCE:
         if not USE_EMULATOR:
             # Defend against back-end returning configs for regions we aren't
@@ -124,8 +137,12 @@ def setUpModule():
 
         Config.INSTANCE_CONFIG = configs[0]
         config_name = configs[0].name
+        create_time = str(int(time.time()))
+        labels = {"python-spanner-systests": "true", "created": create_time}
 
-        Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, config_name)
+        Config.INSTANCE = Config.CLIENT.instance(
+            INSTANCE_ID, config_name, labels=labels
+        )
         created_op = Config.INSTANCE.create()
         created_op.result(30)  # block until completion
 
@@ -466,8 +483,10 @@ class TestBackupAPI(unittest.TestCase, _TestData):
 
         current_config = Config.INSTANCE.configuration_name
         same_config_instance_id = "same-config" + unique_resource_id("-")
+        create_time = str(int(time.time()))
+        labels = {"python-spanner-systests": "true", "created": create_time}
         cls._same_config_instance = Config.CLIENT.instance(
-            same_config_instance_id, current_config
+            same_config_instance_id, current_config, labels=labels
         )
         op = cls._same_config_instance.create()
         op.result(30)
@@ -483,8 +502,10 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         cls._diff_config_instance = None
         if len(diff_configs) > 0:
             diff_config_instance_id = "diff-config" + unique_resource_id("-")
+            create_time = str(int(time.time()))
+            labels = {"python-spanner-systests": "true", "created": create_time}
             cls._diff_config_instance = Config.CLIENT.instance(
-                diff_config_instance_id, diff_configs[0]
+                diff_config_instance_id, diff_configs[0], labels=labels
             )
             op = cls._diff_config_instance.create()
             op.result(30)
