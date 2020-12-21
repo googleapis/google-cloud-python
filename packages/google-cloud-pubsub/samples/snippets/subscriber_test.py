@@ -145,7 +145,7 @@ def subscription_dlq(subscriber_client, topic, dead_letter_topic):
     )
 
     try:
-        subscription = subscriber_client.delete_subscription(
+        subscription = subscriber_client.get_subscription(
             request={"subscription": subscription_path}
         )
     except NotFound:
