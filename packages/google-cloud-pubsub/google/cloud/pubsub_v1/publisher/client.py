@@ -26,6 +26,7 @@ import six
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
+from google.auth.credentials import AnonymousCredentials
 from google.oauth2 import service_account
 
 from google.cloud.pubsub_v1 import _gapic
@@ -129,6 +130,7 @@ class Client(object):
             kwargs["channel"] = grpc.insecure_channel(
                 target=os.environ.get("PUBSUB_EMULATOR_HOST")
             )
+            kwargs["credentials"] = AnonymousCredentials()
 
         # The GAPIC client has mTLS logic to determine the api endpoint and the
         # ssl credentials to use. Here we create a GAPIC client to help compute the
