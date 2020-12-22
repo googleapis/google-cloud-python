@@ -42,6 +42,7 @@ class Naming(abc.ABC):
     version: str = ''
     product_name: str = ''
     proto_package: str = ''
+    _warehouse_package_name: str = ''
 
     def __post_init__(self):
         if not self.product_name:
@@ -141,6 +142,10 @@ class Naming(abc.ABC):
                 # with ('x.y',) will become a two-tuple: ('x', 'y')
                 i.capitalize() for i in '.'.join(opts.namespace).split('.')
             ))
+        if opts.warehouse_package_name:
+            package_info = dataclasses.replace(package_info,
+                _warehouse_package_name=opts.warehouse_package_name
+                                               )
 
         # Done; return the naming information.
         return package_info
@@ -186,9 +191,11 @@ class Naming(abc.ABC):
     @property
     def warehouse_package_name(self) -> str:
         """Return the appropriate Python package name for Warehouse."""
-
-        # Piece the name and namespace together to come up with the
-        # proper package name.
+        # If a custom name has been set, use it
+        if self._warehouse_package_name:
+            return self._warehouse_package_name
+        # Otherwise piece the name and namespace together to come
+        # up with the proper package name.
         answer = list(self.namespace) + self.name.split(' ')
         return '-'.join(answer).lower()
 

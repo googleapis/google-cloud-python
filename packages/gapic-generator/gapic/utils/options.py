@@ -34,6 +34,7 @@ class Options:
     """
     name: str = ''
     namespace: Tuple[str, ...] = dataclasses.field(default=())
+    warehouse_package_name: str = ''
     retry: Optional[Dict[str, Any]] = None
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
@@ -53,6 +54,7 @@ class Options:
         'add-iam-methods',      # microgenerator implementation for `reroute_to_grpc_interface`
         # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
         'transport',
+        'warehouse-package-name'  # change the package name on PyPI
     ))
 
     @classmethod
@@ -129,6 +131,8 @@ class Options:
         answer = Options(
             name=opts.pop('name', ['']).pop(),
             namespace=tuple(opts.pop('namespace', [])),
+            warehouse_package_name=opts.pop(
+                'warehouse-package-name', ['']).pop(),
             retry=retry_cfg,
             sample_configs=tuple(
                 cfg_path

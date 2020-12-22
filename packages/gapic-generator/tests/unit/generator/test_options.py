@@ -152,3 +152,8 @@ def test_options_old_naming():
 def test_options_add_iam_methods():
     opts = Options.build('add-iam-methods')
     assert opts.add_iam_methods
+
+
+def test_options_warehouse_package_name():
+    opts = Options.build('warehouse-package-name')
+    assert opts.warehouse_package_name
