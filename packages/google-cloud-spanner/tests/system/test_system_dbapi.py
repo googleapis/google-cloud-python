@@ -20,8 +20,10 @@ import unittest
 
 from google.api_core import exceptions
 
-from google.cloud.spanner_v1 import Client
 from google.cloud.spanner_v1 import BurstyPool
+from google.cloud.spanner_v1 import Client
+from google.cloud.spanner_v1.instance import Backup
+from google.cloud.spanner_v1.instance import Instance
 
 from google.cloud.spanner_dbapi.connection import Connection
 
@@ -56,16 +58,18 @@ def setUpModule():
 
     # Delete test instances that are older than an hour.
     cutoff = int(time.time()) - 1 * 60 * 60
-    for instance in Config.CLIENT.list_instances(
+    for instance_pb in Config.CLIENT.list_instances(
         "labels.python-spanner-dbapi-systests:true"
     ):
+        instance = Instance.from_pb(instance_pb, Config.CLIENT)
         if "created" not in instance.labels:
             continue
         create_time = int(instance.labels["created"])
         if create_time > cutoff:
             continue
         # Instance cannot be deleted while backups exist.
-        for backup in instance.list_backups():
+        for backup_pb in instance.list_backups():
+            backup = Backup.from_pb(backup_pb, instance)
             backup.delete()
         instance.delete()
 
