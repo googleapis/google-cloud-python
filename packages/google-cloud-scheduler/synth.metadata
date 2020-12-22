@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-scheduler.git",
-        "sha": "f9fc0f9613302de642680c87286de0a02f09d086"
+        "sha": "1c8765708716f2876ad86b49c950a2eec6efb63f"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dabe30b45bc86fdaf4126f26cbcfd73babbfa3fe",
-        "internalRef": "345194337"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {

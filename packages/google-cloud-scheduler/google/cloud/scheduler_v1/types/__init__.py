@@ -22,6 +22,7 @@ from .target import (
     AppEngineRouting,
     OAuthToken,
     OidcToken,
+    HttpMethod,
 )
 from .job import (
     Job,
@@ -39,7 +40,6 @@ from .cloudscheduler import (
     RunJobRequest,
 )
 
-
 __all__ = (
     "HttpTarget",
     "AppEngineHttpTarget",
@@ -47,6 +47,7 @@ __all__ = (
     "AppEngineRouting",
     "OAuthToken",
     "OidcToken",
+    "HttpMethod",
     "Job",
     "RetryConfig",
     "ListJobsRequest",
