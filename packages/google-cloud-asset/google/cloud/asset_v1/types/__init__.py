@@ -55,8 +55,8 @@ from .asset_service import (
     IamPolicyAnalysisOutputConfig,
     AnalyzeIamPolicyLongrunningRequest,
     AnalyzeIamPolicyLongrunningResponse,
+    ContentType,
 )
-
 
 __all__ = (
     "TemporalAsset",
@@ -96,4 +96,5 @@ __all__ = (
     "IamPolicyAnalysisOutputConfig",
     "AnalyzeIamPolicyLongrunningRequest",
     "AnalyzeIamPolicyLongrunningResponse",
+    "ContentType",
 )

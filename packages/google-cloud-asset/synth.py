@@ -22,7 +22,7 @@ from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1p1beta1", "v1p2beta1", "v1p4beta1", "v1p5beta1", "v1"]
+versions = ["v1p1beta1", "v1p2beta1", "v1p4beta1", "v1p5beta1", "v1"]
 
 excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
 
@@ -87,24 +87,6 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # ----------------------------------------------------------------------------
 
 python.py_samples(skip_readmes=True)
-
-s.replace(
-    "noxfile.py",
-    "google\.cloud\.cloudasset",
-    "google/cloud",
-)
-
-s.replace(
-    "noxfile.py",
-    '''["']--cov=google\.cloud["'],''',
-    "",
-)
-
-s.replace(
-    "noxfile.py",
-    """"--cov=tests.unit",""",
-    """"--cov=tests/unit",""",
-)
 
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525

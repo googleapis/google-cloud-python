@@ -25,7 +25,6 @@ from .asset_service import (
     ExportIamPolicyAnalysisResponse,
 )
 
-
 __all__ = (
     "IamPolicyAnalysisResult",
     "IamPolicyAnalysisQuery",

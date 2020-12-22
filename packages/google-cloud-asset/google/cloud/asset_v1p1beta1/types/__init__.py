@@ -27,7 +27,6 @@ from .asset_service import (
     SearchAllIamPoliciesResponse,
 )
 
-
 __all__ = (
     "StandardResourceMetadata",
     "IamPolicySearchResult",

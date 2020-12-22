@@ -33,8 +33,8 @@ from .asset_service import (
     PubsubDestination,
     FeedOutputConfig,
     Feed,
+    ContentType,
 )
-
 
 __all__ = (
     "TemporalAsset",
@@ -52,4 +52,5 @@ __all__ = (
     "PubsubDestination",
     "FeedOutputConfig",
     "Feed",
+    "ContentType",
 )

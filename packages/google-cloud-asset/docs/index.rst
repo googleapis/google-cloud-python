@@ -58,15 +58,6 @@ v1p5beta1
     asset_v1p5beta1/types
 
 
-v1beta1
-~~~~~~~~~
-.. toctree::
-    :maxdepth: 2
-
-    asset_v1beta1/services
-    asset_v1beta1/types
-
-
 Migration Guide
 ---------------
 

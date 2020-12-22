@@ -22,12 +22,13 @@ from .assets import (
 from .asset_service import (
     ListAssetsRequest,
     ListAssetsResponse,
+    ContentType,
 )
-
 
 __all__ = (
     "Asset",
     "Resource",
     "ListAssetsRequest",
     "ListAssetsResponse",
+    "ContentType",
 )
