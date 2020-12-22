@@ -173,9 +173,22 @@ class Address:
     @property
     def sphinx(self) -> str:
         """Return the Sphinx identifier for this type."""
-        if self.module:
-            return f'~.{self}'
-        return self.name
+
+        if not self.api_naming:
+            if self.package:
+                return '.'.join(self.package + (self.module, self.name))
+            else:
+                return str(self)
+
+        # Check if this is a generated type
+        # Use the original module name rather than the module_alias
+        if self.proto_package.startswith(self.api_naming.proto_package):
+            return '.'.join(self.api_naming.module_namespace + (
+                self.api_naming.versioned_module_name,
+                ) + self.subpackage + ('types',) + self.parent + (self.name, ))
+
+        # Anything left is a standard _pb2 type
+        return f'{self.proto_package}.{self.module}_pb2.{self.name}'
 
     @property
     def subpackage(self) -> Tuple[str, ...]:

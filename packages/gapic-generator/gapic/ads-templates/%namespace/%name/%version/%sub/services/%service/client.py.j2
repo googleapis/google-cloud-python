@@ -107,7 +107,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            {{ service.client_name }}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -125,7 +125,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            {{ service.client_name }}: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(
             filename)
@@ -188,7 +188,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             transport (Union[str, ~.{{ service.name }}Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -306,7 +306,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() -%}
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
-                {{ field.meta.doc|rst(width=72, indent=16, nl=False) }}
+                {{ field.meta.doc|rst(width=72, indent=16) }}
                 This corresponds to the ``{{ key }}`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -329,7 +329,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {%- else %}
             Iterable[{{ method.client_output.ident.sphinx }}]:
             {%- endif %}
-                {{ method.client_output.meta.doc|rst(width=72, indent=16) }}
+                {{ method.client_output.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {%- endif %}
         """
         {%- if not method.client_streaming %}

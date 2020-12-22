@@ -45,9 +45,9 @@ class {{ method.name }}Pager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`{{ method.input.ident.sphinx }}`):
+            request ({{ method.input.ident.sphinx }}):
                 The initial request object.
-            response (:class:`{{ method.output.ident.sphinx }}`):
+            response ({{ method.output.ident.sphinx }}):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -104,9 +104,9 @@ class {{ method.name }}AsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`{{ method.input.ident.sphinx }}`):
+            request ({{ method.input.ident.sphinx }}):
                 The initial request object.
-            response (:class:`{{ method.output.ident.sphinx }}`):
+            response ({{ method.output.ident.sphinx }}):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

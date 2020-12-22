@@ -140,7 +140,7 @@ class {{ service.async_client_name }}:
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() -%}
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
-                {{ field.meta.doc|rst(width=72, indent=16, nl=False) }}
+                {{ field.meta.doc|rst(width=72, indent=16) }}
                 This corresponds to the ``{{ key }}`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -163,7 +163,7 @@ class {{ service.async_client_name }}:
             {%- else %}
             AsyncIterable[{{ method.client_output_async.ident.sphinx }}]:
             {%- endif %}
-                {{ method.client_output_async.meta.doc|rst(width=72, indent=16) }}
+                {{ method.client_output_async.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {%- endif %}
         """
         {%- if not method.client_streaming %}

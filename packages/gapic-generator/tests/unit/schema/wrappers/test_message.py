@@ -21,6 +21,7 @@ import pytest
 from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
 
+from gapic.schema import naming
 from gapic.schema import metadata
 from gapic.schema import wrappers
 
@@ -50,7 +51,7 @@ def test_message_docstring():
 def test_message_ident():
     message = make_message('Baz', package='foo.v1', module='bar')
     assert str(message.ident) == 'bar.Baz'
-    assert message.ident.sphinx == '~.bar.Baz'
+    assert message.ident.sphinx == 'foo.v1.bar.Baz'
 
 
 def test_message_ident_collisions():
@@ -58,7 +59,23 @@ def test_message_ident_collisions():
         collisions={'bar'},
     )
     assert str(message.ident) == 'fv_bar.Baz'
-    assert message.ident.sphinx == '~.fv_bar.Baz'
+    assert message.ident.sphinx == 'foo.v1.bar.Baz'
+
+
+def test_message_pb2_sphinx_ident():
+    meta = metadata.Metadata(
+        address=metadata.Address(
+            name='Timestamp',
+            package=('google', 'protobuf'),
+            module='timestamp',
+            api_naming=naming.NewNaming(
+                proto_package="foo.bar"
+            )
+        )
+    )
+    message = make_message("Timestamp", package='google.protobuf',
+        module='timestamp', meta=meta)
+    assert message.ident.sphinx == 'google.protobuf.timestamp_pb2.Timestamp'
 
 
 def test_get_field():

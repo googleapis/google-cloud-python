@@ -39,4 +39,4 @@ def test_enum_value_properties():
 def test_enum_ident():
     message = make_enum('Baz', package='foo.v1', module='bar')
     assert str(message.ident) == 'bar.Baz'
-    assert message.ident.sphinx == '~.bar.Baz'
+    assert message.ident.sphinx == 'foo.v1.bar.Baz'

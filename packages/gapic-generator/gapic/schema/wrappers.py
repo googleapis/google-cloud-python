@@ -690,7 +690,7 @@ class Method:
                 documentation=utils.doc(
                     'An object representing a long-running operation. \n\n'
                     'The result type for the operation will be '
-                    ':class:`{ident}`: {doc}'.format(
+                    ':class:`{ident}` {doc}'.format(
                         doc=self.lro.response_type.meta.doc,
                         ident=self.lro.response_type.ident.sphinx,
                     ),
