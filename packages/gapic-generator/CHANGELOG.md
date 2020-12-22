@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.39.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.38.0...v0.39.0) (2020-12-22)
+
+
+### Features
+
+* allow warehouse name to be customized ([#717](https://www.github.com/googleapis/gapic-generator-python/issues/717)) ([7c185e8](https://www.github.com/googleapis/gapic-generator-python/commit/7c185e87cb4252b1f99ed121515814595f9492c4)), closes [#605](https://www.github.com/googleapis/gapic-generator-python/issues/605)
+
+
+### Bug Fixes
+
+* fix sphinx identifiers ([#714](https://www.github.com/googleapis/gapic-generator-python/issues/714)) ([39be474](https://www.github.com/googleapis/gapic-generator-python/commit/39be474b4419dfa521ef51927fd36dbf257d68e3)), closes [#625](https://www.github.com/googleapis/gapic-generator-python/issues/625) [#604](https://www.github.com/googleapis/gapic-generator-python/issues/604)
+
 ## [0.38.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.37.1...v0.38.0) (2020-12-16)
 
 
