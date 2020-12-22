@@ -44,17 +44,13 @@ __protobuf__ = proto.module(
         "RestoreCertificateAuthorityRequest",
         "ScheduleDeleteCertificateAuthorityRequest",
         "UpdateCertificateAuthorityRequest",
-        "CreateCertificateRevocationListRequest",
         "GetCertificateRevocationListRequest",
         "ListCertificateRevocationListsRequest",
         "ListCertificateRevocationListsResponse",
         "UpdateCertificateRevocationListRequest",
-        "CreateReusableConfigRequest",
-        "DeleteReusableConfigRequest",
         "GetReusableConfigRequest",
         "ListReusableConfigsRequest",
         "ListReusableConfigsResponse",
-        "UpdateReusableConfigRequest",
         "OperationMetadata",
     },
 )
@@ -74,7 +70,7 @@ class CreateCertificateRequest(proto.Message):
             ``projects/*/locations/*/certificateAuthorities/*``.
         certificate_id (str):
             Optional. It must be unique within a location and match the
-            regular expression ``[a-zA-Z0-9-]{1,63}``. This field is
+            regular expression ``[a-zA-Z0-9_-]{1,63}``. This field is
             required when using a
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             in the Enterprise
@@ -154,11 +150,15 @@ class ListCertificatesRequest(proto.Message):
             Optional. Pagination token, returned earlier via
             [ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificatesResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match
-            the filter in the response.
+            Optional. Only include resources that match the filter in
+            the response. For details on supported filters and syntax,
+            see `Certificates Filtering
+            documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted.
+            Optional. Specify how the results should be sorted. For
+            details on supported fields and syntax, see `Certificates
+            Sorting
+            documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support>`__.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -345,7 +345,7 @@ class CreateCertificateAuthorityRequest(proto.Message):
             in the format ``projects/*/locations/*``.
         certificate_authority_id (str):
             Required. It must be unique within a location and match the
-            regular expression ``[a-zA-Z0-9-]{1,63}``
+            regular expression ``[a-zA-Z0-9_-]{1,63}``
         certificate_authority (~.resources.CertificateAuthority):
             Required. A
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
@@ -683,57 +683,6 @@ class UpdateCertificateAuthorityRequest(proto.Message):
     request_id = proto.Field(proto.STRING, number=3)
 
 
-class CreateCertificateRevocationListRequest(proto.Message):
-    r"""Request message for
-    [CertificateAuthorityService.CreateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateRevocationList].
-
-    Attributes:
-        parent (str):
-            Required. The resource name of the location and
-            [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
-            associated with the
-            [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList],
-            in the format
-            ``projects/*/locations/*/certificateAuthorities/*``.
-        certificate_revocation_list_id (str):
-            Required. It must be unique within a location and match the
-            regular expression ``[a-zA-Z0-9-]{1,63}``
-        certificate_revocation_list (~.resources.CertificateRevocationList):
-            Required. A
-            [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
-            with initial field values.
-        request_id (str):
-            Optional. An ID to identify requests. Specify
-            a unique request ID so that if you must retry
-            your request, the server will know to ignore the
-            request if it has already been completed. The
-            server will guarantee that for at least 60
-            minutes since the first request.
-
-            For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
-            prevents clients from accidentally creating
-            duplicate commitments.
-            The request ID must be a valid UUID with the
-            exception that zero UUID is not supported
-            (00000000-0000-0000-0000-000000000000).
-    """
-
-    parent = proto.Field(proto.STRING, number=1)
-
-    certificate_revocation_list_id = proto.Field(proto.STRING, number=2)
-
-    certificate_revocation_list = proto.Field(
-        proto.MESSAGE, number=3, message=resources.CertificateRevocationList,
-    )
-
-    request_id = proto.Field(proto.STRING, number=4)
-
-
 class GetCertificateRevocationListRequest(proto.Message):
     r"""Request message for
     [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateRevocationList].
@@ -864,90 +813,6 @@ class UpdateCertificateRevocationListRequest(proto.Message):
     request_id = proto.Field(proto.STRING, number=3)
 
 
-class CreateReusableConfigRequest(proto.Message):
-    r"""Request message for
-    [CertificateAuthorityService.CreateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateReusableConfig].
-
-    Attributes:
-        parent (str):
-            Required. The resource name of the location associated with
-            the
-            [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig],
-            in the format ``projects/*/locations/*``.
-        reusable_config_id (str):
-            Required. It must be unique within a location and match the
-            regular expression ``[a-zA-Z0-9-]{1,63}``
-        reusable_config (~.resources.ReusableConfig):
-            Required. A
-            [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-            with initial field values.
-        request_id (str):
-            Optional. An ID to identify requests. Specify
-            a unique request ID so that if you must retry
-            your request, the server will know to ignore the
-            request if it has already been completed. The
-            server will guarantee that for at least 60
-            minutes since the first request.
-
-            For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
-            prevents clients from accidentally creating
-            duplicate commitments.
-            The request ID must be a valid UUID with the
-            exception that zero UUID is not supported
-            (00000000-0000-0000-0000-000000000000).
-    """
-
-    parent = proto.Field(proto.STRING, number=1)
-
-    reusable_config_id = proto.Field(proto.STRING, number=2)
-
-    reusable_config = proto.Field(
-        proto.MESSAGE, number=3, message=resources.ReusableConfig,
-    )
-
-    request_id = proto.Field(proto.STRING, number=4)
-
-
-class DeleteReusableConfigRequest(proto.Message):
-    r"""Request message for
-    [CertificateAuthorityService.DeleteReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.DeleteReusableConfig].
-
-    Attributes:
-        name (str):
-            Required. The resource name for this
-            [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-            in the format ``projects/*/locations/*/reusableConfigs/*``.
-        request_id (str):
-            Optional. An ID to identify requests. Specify
-            a unique request ID so that if you must retry
-            your request, the server will know to ignore the
-            request if it has already been completed. The
-            server will guarantee that for at least 60
-            minutes since the first request.
-
-            For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
-            prevents clients from accidentally creating
-            duplicate commitments.
-            The request ID must be a valid UUID with the
-            exception that zero UUID is not supported
-            (00000000-0000-0000-0000-000000000000).
-    """
-
-    name = proto.Field(proto.STRING, number=1)
-
-    request_id = proto.Field(proto.STRING, number=2)
-
-
 class GetReusableConfigRequest(proto.Message):
     r"""Request message for
     [CertificateAuthorityService.GetReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetReusableConfig].
@@ -1030,48 +895,6 @@ class ListReusableConfigsResponse(proto.Message):
     next_page_token = proto.Field(proto.STRING, number=2)
 
     unreachable = proto.RepeatedField(proto.STRING, number=3)
-
-
-class UpdateReusableConfigRequest(proto.Message):
-    r"""Request message for
-    [CertificateAuthorityService.UpdateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateReusableConfig].
-
-    Attributes:
-        reusable_config (~.resources.ReusableConfig):
-            Required.
-            [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-            with updated values.
-        update_mask (~.field_mask.FieldMask):
-            Required. A list of fields to be updated in
-            this request.
-        request_id (str):
-            Optional. An ID to identify requests. Specify
-            a unique request ID so that if you must retry
-            your request, the server will know to ignore the
-            request if it has already been completed. The
-            server will guarantee that for at least 60
-            minutes since the first request.
-
-            For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
-            prevents clients from accidentally creating
-            duplicate commitments.
-            The request ID must be a valid UUID with the
-            exception that zero UUID is not supported
-            (00000000-0000-0000-0000-000000000000).
-    """
-
-    reusable_config = proto.Field(
-        proto.MESSAGE, number=1, message=resources.ReusableConfig,
-    )
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
-
-    request_id = proto.Field(proto.STRING, number=3)
 
 
 class OperationMetadata(proto.Message):

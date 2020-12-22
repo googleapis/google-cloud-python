@@ -51,8 +51,11 @@ class RevocationReason(proto.Enum):
     [RevocationReason][google.cloud.security.privateca.v1beta1.RevocationReason]
     indicates whether a
     [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
-    has been revoked, and the reason for revocation. These are standard
-    revocation reasons from RFC 5280.
+    has been revoked, and the reason for revocation. These correspond to
+    standard revocation reasons from RFC 5280. Note that the enum labels
+    and values in this definition are not the same ASN.1 values defined
+    in RFC 5280. These values will be translated to the correct ASN.1
+    values when a CRL is created.
     """
     REVOCATION_REASON_UNSPECIFIED = 0
     KEY_COMPROMISE = 1
@@ -207,13 +210,19 @@ class CertificateAuthority(proto.Message):
         [CryptoKey][google.cloud.kms.v1.CryptoKey] with the
         [CryptoKeyPurpose][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose]
         value ``ASYMMETRIC_SIGN``. These values correspond to the
-        [CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKey.CryptoKeyVersion.CryptoKeyVersionAlgorithm].
-        values.
+        [CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+        values. For RSA signing algorithms, the PSS algorithms should be
+        preferred, use PKCS1 algorithms if required for compatibility. For
+        further recommandations, see
+        https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.
         """
         SIGN_HASH_ALGORITHM_UNSPECIFIED = 0
-        RSA_PSS_2048_SHA_256 = 1
-        RSA_PSS_3072_SHA_256 = 2
-        RSA_PSS_4096_SHA_256 = 3
+        RSA_PSS_2048_SHA256 = 1
+        RSA_PSS_3072_SHA256 = 2
+        RSA_PSS_4096_SHA256 = 3
+        RSA_PKCS1_2048_SHA256 = 6
+        RSA_PKCS1_3072_SHA256 = 7
+        RSA_PKCS1_4096_SHA256 = 8
         EC_P256_SHA256 = 4
         EC_P384_SHA384 = 5
 
@@ -477,8 +486,8 @@ class CertificateAuthority(proto.Message):
         Attributes:
             cloud_kms_key_version (str):
                 Required. The resource name for an existing Cloud KMS
-                CryptoKeyVersion in the
-                format\ ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
+                CryptoKeyVersion in the format
+                ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
                 This option enables full flexibility in the key's
                 capabilities and properties.
             algorithm (~.resources.CertificateAuthority.SignHashAlgorithm):
@@ -654,10 +663,10 @@ class Certificate(proto.Message):
             Immutable. A description of the certificate
             and key that does not require X.509 or ASN.1.
         lifetime (~.duration.Duration):
-            Required. The desired lifetime of a certificate. Used to
-            create the "not_before_time" and "not_after_time" fields
-            inside an X.509 certificate. Note that the lifetime may be
-            truncated if it would extend past the life of any
+            Required. Immutable. The desired lifetime of a certificate.
+            Used to create the "not_before_time" and "not_after_time"
+            fields inside an X.509 certificate. Note that the lifetime
+            may be truncated if it would extend past the life of any
             certificate authority in the issuing chain.
         revocation_details (~.resources.Certificate.RevocationDetails):
             Output only. Details regarding the revocation of this
@@ -803,7 +812,7 @@ class ReusableConfigValues(proto.Message):
         policy_ids (Sequence[~.resources.ObjectId]):
             Optional. Describes the X.509 certificate
             policy object identifiers, per
-            https://tools.ietf.org/html/rfc5280#section-4.2.1.4rfc5280
+            https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
         aia_ocsp_servers (Sequence[str]):
             Optional. Describes Online Certificate Status
             Protocol (OCSP) endpoint addresses that appear
@@ -870,7 +879,7 @@ class ReusableConfigWrapper(proto.Message):
     reusable_config = proto.Field(proto.STRING, number=1, oneof="config_values")
 
     reusable_config_values = proto.Field(
-        proto.MESSAGE, number=2, oneof="config_values", message=ReusableConfigValues,
+        proto.MESSAGE, number=2, oneof="config_values", message="ReusableConfigValues",
     )
 
 
@@ -998,10 +1007,10 @@ class CertificateConfig(proto.Message):
     subject_config = proto.Field(proto.MESSAGE, number=1, message=SubjectConfig,)
 
     reusable_config = proto.Field(
-        proto.MESSAGE, number=2, message=ReusableConfigWrapper,
+        proto.MESSAGE, number=2, message="ReusableConfigWrapper",
     )
 
-    public_key = proto.Field(proto.MESSAGE, number=3, message=PublicKey,)
+    public_key = proto.Field(proto.MESSAGE, number=3, message="PublicKey",)
 
 
 class CertificateDescription(proto.Message):
@@ -1115,9 +1124,11 @@ class CertificateDescription(proto.Message):
         proto.MESSAGE, number=1, message=SubjectDescription,
     )
 
-    config_values = proto.Field(proto.MESSAGE, number=2, message=ReusableConfigValues,)
+    config_values = proto.Field(
+        proto.MESSAGE, number=2, message="ReusableConfigValues",
+    )
 
-    public_key = proto.Field(proto.MESSAGE, number=3, message=PublicKey,)
+    public_key = proto.Field(proto.MESSAGE, number=3, message="PublicKey",)
 
     subject_key_id = proto.Field(proto.MESSAGE, number=4, message=KeyId,)
 
@@ -1164,7 +1175,7 @@ class X509Extension(proto.Message):
             Required. The value of this X.509 extension.
     """
 
-    object_id = proto.Field(proto.MESSAGE, number=1, message=ObjectId,)
+    object_id = proto.Field(proto.MESSAGE, number=1, message="ObjectId",)
 
     critical = proto.Field(proto.BOOL, number=2)
 
@@ -1289,7 +1300,7 @@ class KeyUsage(proto.Message):
     )
 
     unknown_extended_key_usages = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=ObjectId,
+        proto.MESSAGE, number=3, message="ObjectId",
     )
 
 
@@ -1362,7 +1373,7 @@ class SubjectAltNames(proto.Message):
 
     ip_addresses = proto.RepeatedField(proto.STRING, number=4)
 
-    custom_sans = proto.RepeatedField(proto.MESSAGE, number=5, message=X509Extension,)
+    custom_sans = proto.RepeatedField(proto.MESSAGE, number=5, message="X509Extension",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

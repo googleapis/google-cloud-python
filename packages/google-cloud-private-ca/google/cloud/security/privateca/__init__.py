@@ -53,15 +53,6 @@ from google.cloud.security.privateca_v1beta1.types.service import (
     CreateCertificateRequest,
 )
 from google.cloud.security.privateca_v1beta1.types.service import (
-    CreateCertificateRevocationListRequest,
-)
-from google.cloud.security.privateca_v1beta1.types.service import (
-    CreateReusableConfigRequest,
-)
-from google.cloud.security.privateca_v1beta1.types.service import (
-    DeleteReusableConfigRequest,
-)
-from google.cloud.security.privateca_v1beta1.types.service import (
     DisableCertificateAuthorityRequest,
 )
 from google.cloud.security.privateca_v1beta1.types.service import (
@@ -126,9 +117,6 @@ from google.cloud.security.privateca_v1beta1.types.service import (
 from google.cloud.security.privateca_v1beta1.types.service import (
     UpdateCertificateRevocationListRequest,
 )
-from google.cloud.security.privateca_v1beta1.types.service import (
-    UpdateReusableConfigRequest,
-)
 
 __all__ = (
     "ActivateCertificateAuthorityRequest",
@@ -141,9 +129,6 @@ __all__ = (
     "CertificateRevocationList",
     "CreateCertificateAuthorityRequest",
     "CreateCertificateRequest",
-    "CreateCertificateRevocationListRequest",
-    "CreateReusableConfigRequest",
-    "DeleteReusableConfigRequest",
     "DisableCertificateAuthorityRequest",
     "EnableCertificateAuthorityRequest",
     "FetchCertificateAuthorityCsrRequest",
@@ -177,6 +162,5 @@ __all__ = (
     "UpdateCertificateAuthorityRequest",
     "UpdateCertificateRequest",
     "UpdateCertificateRevocationListRequest",
-    "UpdateReusableConfigRequest",
     "X509Extension",
 )

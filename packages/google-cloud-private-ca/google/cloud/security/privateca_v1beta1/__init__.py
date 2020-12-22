@@ -35,9 +35,6 @@ from .types.resources import X509Extension
 from .types.service import ActivateCertificateAuthorityRequest
 from .types.service import CreateCertificateAuthorityRequest
 from .types.service import CreateCertificateRequest
-from .types.service import CreateCertificateRevocationListRequest
-from .types.service import CreateReusableConfigRequest
-from .types.service import DeleteReusableConfigRequest
 from .types.service import DisableCertificateAuthorityRequest
 from .types.service import EnableCertificateAuthorityRequest
 from .types.service import FetchCertificateAuthorityCsrRequest
@@ -61,7 +58,6 @@ from .types.service import ScheduleDeleteCertificateAuthorityRequest
 from .types.service import UpdateCertificateAuthorityRequest
 from .types.service import UpdateCertificateRequest
 from .types.service import UpdateCertificateRevocationListRequest
-from .types.service import UpdateReusableConfigRequest
 
 
 __all__ = (
@@ -73,9 +69,6 @@ __all__ = (
     "CertificateRevocationList",
     "CreateCertificateAuthorityRequest",
     "CreateCertificateRequest",
-    "CreateCertificateRevocationListRequest",
-    "CreateReusableConfigRequest",
-    "DeleteReusableConfigRequest",
     "DisableCertificateAuthorityRequest",
     "EnableCertificateAuthorityRequest",
     "FetchCertificateAuthorityCsrRequest",
@@ -109,7 +102,6 @@ __all__ = (
     "UpdateCertificateAuthorityRequest",
     "UpdateCertificateRequest",
     "UpdateCertificateRevocationListRequest",
-    "UpdateReusableConfigRequest",
     "X509Extension",
     "CertificateAuthorityServiceClient",
 )

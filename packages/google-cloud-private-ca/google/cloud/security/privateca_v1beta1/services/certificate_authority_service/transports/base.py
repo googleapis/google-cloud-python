@@ -174,11 +174,6 @@ class CertificateAuthorityServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_certificate_revocation_list: gapic_v1.method.wrap_method(
-                self.create_certificate_revocation_list,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get_certificate_revocation_list: gapic_v1.method.wrap_method(
                 self.get_certificate_revocation_list,
                 default_timeout=None,
@@ -194,26 +189,11 @@ class CertificateAuthorityServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.create_reusable_config: gapic_v1.method.wrap_method(
-                self.create_reusable_config,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_reusable_config: gapic_v1.method.wrap_method(
-                self.delete_reusable_config,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get_reusable_config: gapic_v1.method.wrap_method(
                 self.get_reusable_config, default_timeout=None, client_info=client_info,
             ),
             self.list_reusable_configs: gapic_v1.method.wrap_method(
                 self.list_reusable_configs,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_reusable_config: gapic_v1.method.wrap_method(
-                self.update_reusable_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -372,15 +352,6 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_certificate_revocation_list(
-        self,
-    ) -> typing.Callable[
-        [service.CreateCertificateRevocationListRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def get_certificate_revocation_list(
         self,
     ) -> typing.Callable[
@@ -414,24 +385,6 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_reusable_config(
-        self,
-    ) -> typing.Callable[
-        [service.CreateReusableConfigRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_reusable_config(
-        self,
-    ) -> typing.Callable[
-        [service.DeleteReusableConfigRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def get_reusable_config(
         self,
     ) -> typing.Callable[
@@ -451,15 +404,6 @@ class CertificateAuthorityServiceTransport(abc.ABC):
             service.ListReusableConfigsResponse,
             typing.Awaitable[service.ListReusableConfigsResponse],
         ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_reusable_config(
-        self,
-    ) -> typing.Callable[
-        [service.UpdateReusableConfigRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -40,7 +40,6 @@ from google.cloud.security.privateca_v1beta1.services.certificate_authority_serv
 from google.cloud.security.privateca_v1beta1.types import resources
 from google.cloud.security.privateca_v1beta1.types import service
 from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
@@ -148,6 +147,15 @@ class CertificateAuthorityServiceClient(
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> CertificateAuthorityServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            CertificateAuthorityServiceTransport: The transport used by the client instance.
+        """
+        return self._transport
+
     @staticmethod
     def certificate_path(
         project: str, location: str, certificate_authority: str, certificate: str,
@@ -229,6 +237,65 @@ class CertificateAuthorityServiceClient(
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
@@ -264,10 +331,10 @@ class CertificateAuthorityServiceClient(
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -385,7 +452,7 @@ class CertificateAuthorityServiceClient(
                 should not be set.
             certificate_id (:class:`str`):
                 Optional. It must be unique within a location and match
-                the regular expression ``[a-zA-Z0-9-]{1,63}``. This
+                the regular expression ``[a-zA-Z0-9_-]{1,63}``. This
                 field is required when using a
                 [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
                 in the Enterprise
@@ -707,6 +774,9 @@ class CertificateAuthorityServiceClient(
     ) -> resources.Certificate:
         r"""Update a
         [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
+        Currently, the only field you can update is the
+        [labels][google.cloud.security.privateca.v1beta1.Certificate.labels]
+        field.
 
         Args:
             request (:class:`~.service.UpdateCertificateRequest`):
@@ -920,7 +990,7 @@ class CertificateAuthorityServiceClient(
                 should not be set.
             certificate_authority_id (:class:`str`):
                 Required. It must be unique within a location and match
-                the regular expression ``[a-zA-Z0-9-]{1,63}``
+                the regular expression ``[a-zA-Z0-9_-]{1,63}``
                 This corresponds to the ``certificate_authority_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1733,123 +1803,6 @@ class CertificateAuthorityServiceClient(
         # Done; return the response.
         return response
 
-    def create_certificate_revocation_list(
-        self,
-        request: service.CreateCertificateRevocationListRequest = None,
-        *,
-        parent: str = None,
-        certificate_revocation_list: resources.CertificateRevocationList = None,
-        certificate_revocation_list_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Create a new
-        [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
-        in a given Project, Location for a particular
-        [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-
-        Args:
-            request (:class:`~.service.CreateCertificateRevocationListRequest`):
-                The request object. Request message for
-                [CertificateAuthorityService.CreateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateRevocationList].
-            parent (:class:`str`):
-                Required. The resource name of the location and
-                [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
-                associated with the
-                [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList],
-                in the format
-                ``projects/*/locations/*/certificateAuthorities/*``.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            certificate_revocation_list (:class:`~.resources.CertificateRevocationList`):
-                Required. A
-                [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
-                with initial field values.
-                This corresponds to the ``certificate_revocation_list`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            certificate_revocation_list_id (:class:`str`):
-                Required. It must be unique within a location and match
-                the regular expression ``[a-zA-Z0-9-]{1,63}``
-                This corresponds to the ``certificate_revocation_list_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:``~.resources.CertificateRevocationList``: A
-                [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
-                corresponds to a signed X.509 certificate Revocation
-                List (CRL). A CRL contains the serial numbers of
-                certificates that should no longer be trusted.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any(
-            [parent, certificate_revocation_list, certificate_revocation_list_id]
-        )
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateCertificateRevocationListRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, service.CreateCertificateRevocationListRequest):
-            request = service.CreateCertificateRevocationListRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if parent is not None:
-                request.parent = parent
-            if certificate_revocation_list is not None:
-                request.certificate_revocation_list = certificate_revocation_list
-            if certificate_revocation_list_id is not None:
-                request.certificate_revocation_list_id = certificate_revocation_list_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_certificate_revocation_list
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            resources.CertificateRevocationList,
-            metadata_type=service.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
     def get_certificate_revocation_list(
         self,
         request: service.GetCertificateRevocationListRequest = None,
@@ -2127,218 +2080,6 @@ class CertificateAuthorityServiceClient(
         # Done; return the response.
         return response
 
-    def create_reusable_config(
-        self,
-        request: service.CreateReusableConfigRequest = None,
-        *,
-        parent: str = None,
-        reusable_config: resources.ReusableConfig = None,
-        reusable_config_id: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Create a new
-        [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-        in a given Project and Location.
-
-        Args:
-            request (:class:`~.service.CreateReusableConfigRequest`):
-                The request object. Request message for
-                [CertificateAuthorityService.CreateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateReusableConfig].
-            parent (:class:`str`):
-                Required. The resource name of the location associated
-                with the
-                [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig],
-                in the format ``projects/*/locations/*``.
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            reusable_config (:class:`~.resources.ReusableConfig`):
-                Required. A
-                [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-                with initial field values.
-                This corresponds to the ``reusable_config`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            reusable_config_id (:class:`str`):
-                Required. It must be unique within a location and match
-                the regular expression ``[a-zA-Z0-9-]{1,63}``
-                This corresponds to the ``reusable_config_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:``~.resources.ReusableConfig``: A
-                [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-                refers to a managed
-                [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues].
-                Those, in turn, are used to describe certain fields of
-                an X.509 certificate, such as the key usage fields,
-                fields specific to CA certificates, certificate policy
-                extensions and custom extensions.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, reusable_config, reusable_config_id])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.CreateReusableConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, service.CreateReusableConfigRequest):
-            request = service.CreateReusableConfigRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if parent is not None:
-                request.parent = parent
-            if reusable_config is not None:
-                request.reusable_config = reusable_config
-            if reusable_config_id is not None:
-                request.reusable_config_id = reusable_config_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_reusable_config]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            resources.ReusableConfig,
-            metadata_type=service.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def delete_reusable_config(
-        self,
-        request: service.DeleteReusableConfigRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""DeleteReusableConfig deletes a
-        [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig].
-
-        Args:
-            request (:class:`~.service.DeleteReusableConfigRequest`):
-                The request object. Request message for
-                [CertificateAuthorityService.DeleteReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.DeleteReusableConfig].
-            name (:class:`str`):
-                Required. The resource name for this
-                [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-                in the format
-                ``projects/*/locations/*/reusableConfigs/*``.
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
-
-                ::
-
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
-
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.DeleteReusableConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, service.DeleteReusableConfigRequest):
-            request = service.DeleteReusableConfigRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_reusable_config]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            empty.Empty,
-            metadata_type=service.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
     def get_reusable_config(
         self,
         request: service.GetReusableConfigRequest = None,
@@ -2499,109 +2240,6 @@ class CertificateAuthorityServiceClient(
         # an `__iter__` convenience method.
         response = pagers.ListReusableConfigsPager(
             method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def update_reusable_config(
-        self,
-        request: service.UpdateReusableConfigRequest = None,
-        *,
-        reusable_config: resources.ReusableConfig = None,
-        update_mask: field_mask.FieldMask = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Update a
-        [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig].
-
-        Args:
-            request (:class:`~.service.UpdateReusableConfigRequest`):
-                The request object. Request message for
-                [CertificateAuthorityService.UpdateReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateReusableConfig].
-            reusable_config (:class:`~.resources.ReusableConfig`):
-                Required.
-                [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-                with updated values.
-                This corresponds to the ``reusable_config`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
-                Required. A list of fields to be
-                updated in this request.
-                This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:``~.resources.ReusableConfig``: A
-                [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-                refers to a managed
-                [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues].
-                Those, in turn, are used to describe certain fields of
-                an X.509 certificate, such as the key usage fields,
-                fields specific to CA certificates, certificate policy
-                extensions and custom extensions.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([reusable_config, update_mask])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a service.UpdateReusableConfigRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, service.UpdateReusableConfigRequest):
-            request = service.UpdateReusableConfigRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if reusable_config is not None:
-                request.reusable_config = reusable_config
-            if update_mask is not None:
-                request.update_mask = update_mask
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_reusable_config]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("reusable_config.name", request.reusable_config.name),)
-            ),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            resources.ReusableConfig,
-            metadata_type=service.OperationMetadata,
         )
 
         # Done; return the response.

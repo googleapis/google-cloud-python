@@ -94,10 +94,10 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
                 for grpc channel. It is ignored if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -106,6 +106,8 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -113,6 +115,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
             warnings.warn(
                 "api_mtls_endpoint and client_cert_source are deprecated",
@@ -149,6 +152,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
             )
+            self._ssl_channel_credentials = ssl_credentials
         else:
             host = host if ":" in host else host + ":443"
 
@@ -226,12 +230,8 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+        """Return the channel designed to connect to this service.
         """
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property
@@ -368,6 +368,9 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
 
         Update a
         [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
+        Currently, the only field you can update is the
+        [labels][google.cloud.security.privateca.v1beta1.Certificate.labels]
+        field.
 
         Returns:
             Callable[[~.UpdateCertificateRequest],
@@ -700,40 +703,6 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
         return self._stubs["update_certificate_authority"]
 
     @property
-    def create_certificate_revocation_list(
-        self,
-    ) -> Callable[
-        [service.CreateCertificateRevocationListRequest], operations.Operation
-    ]:
-        r"""Return a callable for the create certificate revocation
-        list method over gRPC.
-
-        Create a new
-        [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
-        in a given Project, Location for a particular
-        [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-
-        Returns:
-            Callable[[~.CreateCertificateRevocationListRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_certificate_revocation_list" not in self._stubs:
-            self._stubs[
-                "create_certificate_revocation_list"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateRevocationList",
-                request_serializer=service.CreateCertificateRevocationListRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
-            )
-        return self._stubs["create_certificate_revocation_list"]
-
-    @property
     def get_certificate_revocation_list(
         self,
     ) -> Callable[
@@ -832,61 +801,6 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
         return self._stubs["update_certificate_revocation_list"]
 
     @property
-    def create_reusable_config(
-        self,
-    ) -> Callable[[service.CreateReusableConfigRequest], operations.Operation]:
-        r"""Return a callable for the create reusable config method over gRPC.
-
-        Create a new
-        [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
-        in a given Project and Location.
-
-        Returns:
-            Callable[[~.CreateReusableConfigRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_reusable_config" not in self._stubs:
-            self._stubs["create_reusable_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateReusableConfig",
-                request_serializer=service.CreateReusableConfigRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
-            )
-        return self._stubs["create_reusable_config"]
-
-    @property
-    def delete_reusable_config(
-        self,
-    ) -> Callable[[service.DeleteReusableConfigRequest], operations.Operation]:
-        r"""Return a callable for the delete reusable config method over gRPC.
-
-        DeleteReusableConfig deletes a
-        [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig].
-
-        Returns:
-            Callable[[~.DeleteReusableConfigRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_reusable_config" not in self._stubs:
-            self._stubs["delete_reusable_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/DeleteReusableConfig",
-                request_serializer=service.DeleteReusableConfigRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
-            )
-        return self._stubs["delete_reusable_config"]
-
-    @property
     def get_reusable_config(
         self,
     ) -> Callable[[service.GetReusableConfigRequest], resources.ReusableConfig]:
@@ -941,33 +855,6 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
                 response_deserializer=service.ListReusableConfigsResponse.deserialize,
             )
         return self._stubs["list_reusable_configs"]
-
-    @property
-    def update_reusable_config(
-        self,
-    ) -> Callable[[service.UpdateReusableConfigRequest], operations.Operation]:
-        r"""Return a callable for the update reusable config method over gRPC.
-
-        Update a
-        [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig].
-
-        Returns:
-            Callable[[~.UpdateReusableConfigRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_reusable_config" not in self._stubs:
-            self._stubs["update_reusable_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateReusableConfig",
-                request_serializer=service.UpdateReusableConfigRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
-            )
-        return self._stubs["update_reusable_config"]
 
 
 __all__ = ("CertificateAuthorityServiceGrpcTransport",)

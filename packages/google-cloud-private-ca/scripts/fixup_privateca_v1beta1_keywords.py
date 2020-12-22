@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -43,9 +44,6 @@ class privatecaCallTransformer(cst.CSTTransformer):
     'activate_certificate_authority': ('name', 'pem_ca_certificate', 'subordinate_config', 'request_id', ),
     'create_certificate': ('parent', 'certificate', 'certificate_id', 'request_id', ),
     'create_certificate_authority': ('parent', 'certificate_authority_id', 'certificate_authority', 'request_id', ),
-    'create_certificate_revocation_list': ('parent', 'certificate_revocation_list_id', 'certificate_revocation_list', 'request_id', ),
-    'create_reusable_config': ('parent', 'reusable_config_id', 'reusable_config', 'request_id', ),
-    'delete_reusable_config': ('name', 'request_id', ),
     'disable_certificate_authority': ('name', 'request_id', ),
     'enable_certificate_authority': ('name', 'request_id', ),
     'fetch_certificate_authority_csr': ('name', ),
@@ -63,7 +61,6 @@ class privatecaCallTransformer(cst.CSTTransformer):
     'update_certificate': ('certificate', 'update_mask', 'request_id', ),
     'update_certificate_authority': ('certificate_authority', 'update_mask', 'request_id', ),
     'update_certificate_revocation_list': ('certificate_revocation_list', 'update_mask', 'request_id', ),
-    'update_reusable_config': ('reusable_config', 'update_mask', 'request_id', ),
 
     }
 
