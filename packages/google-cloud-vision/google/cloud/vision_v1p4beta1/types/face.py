@@ -71,7 +71,7 @@ class FaceRecognitionResult(proto.Message):
             Recognition confidence. Range [0, 1].
     """
 
-    celebrity = proto.Field(proto.MESSAGE, number=1, message=Celebrity,)
+    celebrity = proto.Field(proto.MESSAGE, number=1, message="Celebrity",)
 
     confidence = proto.Field(proto.FLOAT, number=2)
 

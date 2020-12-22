@@ -67,6 +67,7 @@ from google.cloud.vision_v1.types.image_annotator import OperationMetadata
 from google.cloud.vision_v1.types.image_annotator import OutputConfig
 from google.cloud.vision_v1.types.image_annotator import Property
 from google.cloud.vision_v1.types.image_annotator import SafeSearchAnnotation
+from google.cloud.vision_v1.types.image_annotator import TextDetectionParams
 from google.cloud.vision_v1.types.image_annotator import WebDetectionParams
 from google.cloud.vision_v1.types.product_search import ProductSearchParams
 from google.cloud.vision_v1.types.product_search import ProductSearchResults
@@ -213,6 +214,7 @@ __all__ = (
     "SafeSearchAnnotation",
     "Symbol",
     "TextAnnotation",
+    "TextDetectionParams",
     "UpdateProductRequest",
     "UpdateProductSetRequest",
     "Vertex",

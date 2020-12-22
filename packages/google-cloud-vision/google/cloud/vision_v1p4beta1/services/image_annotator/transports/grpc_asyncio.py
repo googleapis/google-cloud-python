@@ -151,6 +151,8 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -158,6 +160,7 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
             warnings.warn(
                 "api_mtls_endpoint and client_cert_source are deprecated",
@@ -193,7 +196,12 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
                 ssl_credentials=ssl_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
+            self._ssl_channel_credentials = ssl_credentials
         else:
             host = host if ":" in host else host + ":443"
 
@@ -210,6 +218,10 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
                 ssl_credentials=ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
 
         # Run the base constructor.
@@ -223,6 +235,7 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
         )
 
         self._stubs = {}
+        self._operations_client = None
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -242,13 +255,13 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
         client.
         """
         # Sanity check: Only create a new client if we do not already have one.
-        if "operations_client" not in self.__dict__:
-            self.__dict__["operations_client"] = operations_v1.OperationsAsyncClient(
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
                 self.grpc_channel
             )
 
         # Return the client from cache.
-        return self.__dict__["operations_client"]
+        return self._operations_client
 
     @property
     def batch_annotate_images(

@@ -58,6 +58,7 @@ from .types.image_annotator import OperationMetadata
 from .types.image_annotator import OutputConfig
 from .types.image_annotator import Property
 from .types.image_annotator import SafeSearchAnnotation
+from .types.image_annotator import TextDetectionParams
 from .types.image_annotator import WebDetectionParams
 from .types.product_search import ProductSearchCategory
 from .types.product_search import ProductSearchParams
@@ -142,6 +143,7 @@ __all__ = (
     "GetReferenceImageRequest",
     "Image",
     "ImageAnnotationContext",
+    "ImageAnnotatorClient",
     "ImageContext",
     "ImageProperties",
     "ImageSource",
@@ -171,7 +173,6 @@ __all__ = (
     "Position",
     "Product",
     "ProductSearchCategory",
-    "ProductSearchClient",
     "ProductSearchParams",
     "ProductSearchResults",
     "ProductSearchResultsView",
@@ -182,11 +183,12 @@ __all__ = (
     "SafeSearchAnnotation",
     "Symbol",
     "TextAnnotation",
+    "TextDetectionParams",
     "UpdateProductRequest",
     "UpdateProductSetRequest",
     "Vertex",
     "WebDetection",
     "WebDetectionParams",
     "Word",
-    "ImageAnnotatorClient",
+    "ProductSearchClient",
 )

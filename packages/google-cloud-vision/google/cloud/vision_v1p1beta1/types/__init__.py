@@ -46,13 +46,14 @@ from .image_annotator import (
     CropHintsAnnotation,
     CropHintsParams,
     WebDetectionParams,
+    TextDetectionParams,
     ImageContext,
     AnnotateImageRequest,
     AnnotateImageResponse,
     BatchAnnotateImagesRequest,
     BatchAnnotateImagesResponse,
+    Likelihood,
 )
-
 
 __all__ = (
     "Vertex",
@@ -81,9 +82,11 @@ __all__ = (
     "CropHintsAnnotation",
     "CropHintsParams",
     "WebDetectionParams",
+    "TextDetectionParams",
     "ImageContext",
     "AnnotateImageRequest",
     "AnnotateImageResponse",
     "BatchAnnotateImagesRequest",
     "BatchAnnotateImagesResponse",
+    "Likelihood",
 )

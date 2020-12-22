@@ -50,6 +50,7 @@ __protobuf__ = proto.module(
         "CropHintsAnnotation",
         "CropHintsParams",
         "WebDetectionParams",
+        "TextDetectionParams",
         "ImageContext",
         "AnnotateImageRequest",
         "ImageAnnotationContext",
@@ -185,7 +186,7 @@ class Image(proto.Message):
 
     content = proto.Field(proto.BYTES, number=1)
 
-    source = proto.Field(proto.MESSAGE, number=2, message=ImageSource,)
+    source = proto.Field(proto.MESSAGE, number=2, message="ImageSource",)
 
 
 class FaceAnnotation(proto.Message):
@@ -435,9 +436,9 @@ class EntityAnnotation(proto.Message):
 
     bounding_poly = proto.Field(proto.MESSAGE, number=7, message=geometry.BoundingPoly,)
 
-    locations = proto.RepeatedField(proto.MESSAGE, number=8, message=LocationInfo,)
+    locations = proto.RepeatedField(proto.MESSAGE, number=8, message="LocationInfo",)
 
-    properties = proto.RepeatedField(proto.MESSAGE, number=9, message=Property,)
+    properties = proto.RepeatedField(proto.MESSAGE, number=9, message="Property",)
 
 
 class LocalizedObjectAnnotation(proto.Message):
@@ -556,7 +557,7 @@ class DominantColorsAnnotation(proto.Message):
             fraction.
     """
 
-    colors = proto.RepeatedField(proto.MESSAGE, number=1, message=ColorInfo,)
+    colors = proto.RepeatedField(proto.MESSAGE, number=1, message="ColorInfo",)
 
 
 class ImageProperties(proto.Message):
@@ -569,7 +570,7 @@ class ImageProperties(proto.Message):
     """
 
     dominant_colors = proto.Field(
-        proto.MESSAGE, number=1, message=DominantColorsAnnotation,
+        proto.MESSAGE, number=1, message="DominantColorsAnnotation",
     )
 
 
@@ -605,7 +606,7 @@ class CropHintsAnnotation(proto.Message):
             Crop hint results.
     """
 
-    crop_hints = proto.RepeatedField(proto.MESSAGE, number=1, message=CropHint,)
+    crop_hints = proto.RepeatedField(proto.MESSAGE, number=1, message="CropHint",)
 
 
 class CropHintsParams(proto.Message):
@@ -638,6 +639,20 @@ class WebDetectionParams(proto.Message):
     include_geo_results = proto.Field(proto.BOOL, number=2)
 
 
+class TextDetectionParams(proto.Message):
+    r"""Parameters for text detections. This is used to control
+    TEXT_DETECTION and DOCUMENT_TEXT_DETECTION features.
+
+    Attributes:
+        enable_text_detection_confidence_score (bool):
+            By default, Cloud Vision API only includes confidence score
+            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
+            include confidence score for TEXT_DETECTION as well.
+    """
+
+    enable_text_detection_confidence_score = proto.Field(proto.BOOL, number=9)
+
+
 class ImageContext(proto.Message):
     r"""Image context and/or feature-specific parameters.
 
@@ -663,13 +678,16 @@ class ImageContext(proto.Message):
             Parameters for product search.
         web_detection_params (~.image_annotator.WebDetectionParams):
             Parameters for web detection.
+        text_detection_params (~.image_annotator.TextDetectionParams):
+            Parameters for text detection and document
+            text detection.
     """
 
-    lat_long_rect = proto.Field(proto.MESSAGE, number=1, message=LatLongRect,)
+    lat_long_rect = proto.Field(proto.MESSAGE, number=1, message="LatLongRect",)
 
     language_hints = proto.RepeatedField(proto.STRING, number=2)
 
-    crop_hints_params = proto.Field(proto.MESSAGE, number=4, message=CropHintsParams,)
+    crop_hints_params = proto.Field(proto.MESSAGE, number=4, message="CropHintsParams",)
 
     face_recognition_params = proto.Field(
         proto.MESSAGE, number=10, message=face.FaceRecognitionParams,
@@ -680,7 +698,11 @@ class ImageContext(proto.Message):
     )
 
     web_detection_params = proto.Field(
-        proto.MESSAGE, number=6, message=WebDetectionParams,
+        proto.MESSAGE, number=6, message="WebDetectionParams",
+    )
+
+    text_detection_params = proto.Field(
+        proto.MESSAGE, number=12, message="TextDetectionParams",
     )
 
 
@@ -699,11 +721,11 @@ class AnnotateImageRequest(proto.Message):
             image.
     """
 
-    image = proto.Field(proto.MESSAGE, number=1, message=Image,)
+    image = proto.Field(proto.MESSAGE, number=1, message="Image",)
 
-    features = proto.RepeatedField(proto.MESSAGE, number=2, message=Feature,)
+    features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
 
-    image_context = proto.Field(proto.MESSAGE, number=3, message=ImageContext,)
+    image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
 
 
 class ImageAnnotationContext(proto.Message):
@@ -778,27 +800,27 @@ class AnnotateImageResponse(proto.Message):
     """
 
     face_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=FaceAnnotation,
+        proto.MESSAGE, number=1, message="FaceAnnotation",
     )
 
     landmark_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=EntityAnnotation,
+        proto.MESSAGE, number=2, message="EntityAnnotation",
     )
 
     logo_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=EntityAnnotation,
+        proto.MESSAGE, number=3, message="EntityAnnotation",
     )
 
     label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=EntityAnnotation,
+        proto.MESSAGE, number=4, message="EntityAnnotation",
     )
 
     localized_object_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=22, message=LocalizedObjectAnnotation,
+        proto.MESSAGE, number=22, message="LocalizedObjectAnnotation",
     )
 
     text_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=EntityAnnotation,
+        proto.MESSAGE, number=5, message="EntityAnnotation",
     )
 
     full_text_annotation = proto.Field(
@@ -806,15 +828,15 @@ class AnnotateImageResponse(proto.Message):
     )
 
     safe_search_annotation = proto.Field(
-        proto.MESSAGE, number=6, message=SafeSearchAnnotation,
+        proto.MESSAGE, number=6, message="SafeSearchAnnotation",
     )
 
     image_properties_annotation = proto.Field(
-        proto.MESSAGE, number=8, message=ImageProperties,
+        proto.MESSAGE, number=8, message="ImageProperties",
     )
 
     crop_hints_annotation = proto.Field(
-        proto.MESSAGE, number=11, message=CropHintsAnnotation,
+        proto.MESSAGE, number=11, message="CropHintsAnnotation",
     )
 
     web_detection = proto.Field(
@@ -827,7 +849,7 @@ class AnnotateImageResponse(proto.Message):
 
     error = proto.Field(proto.MESSAGE, number=9, message=status.Status,)
 
-    context = proto.Field(proto.MESSAGE, number=21, message=ImageAnnotationContext,)
+    context = proto.Field(proto.MESSAGE, number=21, message="ImageAnnotationContext",)
 
 
 class BatchAnnotateImagesRequest(proto.Message):
@@ -841,7 +863,7 @@ class BatchAnnotateImagesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AnnotateImageRequest,
+        proto.MESSAGE, number=1, message="AnnotateImageRequest",
     )
 
 
@@ -855,7 +877,7 @@ class BatchAnnotateImagesResponse(proto.Message):
     """
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AnnotateImageResponse,
+        proto.MESSAGE, number=1, message="AnnotateImageResponse",
     )
 
 
@@ -891,9 +913,9 @@ class AnnotateFileRequest(proto.Message):
 
     input_config = proto.Field(proto.MESSAGE, number=1, message="InputConfig",)
 
-    features = proto.RepeatedField(proto.MESSAGE, number=2, message=Feature,)
+    features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
 
-    image_context = proto.Field(proto.MESSAGE, number=3, message=ImageContext,)
+    image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
 
     pages = proto.RepeatedField(proto.INT32, number=4)
 
@@ -921,7 +943,7 @@ class AnnotateFileResponse(proto.Message):
     input_config = proto.Field(proto.MESSAGE, number=1, message="InputConfig",)
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=AnnotateImageResponse,
+        proto.MESSAGE, number=2, message="AnnotateImageResponse",
     )
 
     total_pages = proto.Field(proto.INT32, number=3)
@@ -942,7 +964,7 @@ class BatchAnnotateFilesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AnnotateFileRequest,
+        proto.MESSAGE, number=1, message="AnnotateFileRequest",
     )
 
 
@@ -958,7 +980,7 @@ class BatchAnnotateFilesResponse(proto.Message):
     """
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AnnotateFileResponse,
+        proto.MESSAGE, number=1, message="AnnotateFileResponse",
     )
 
 
@@ -980,9 +1002,9 @@ class AsyncAnnotateFileRequest(proto.Message):
 
     input_config = proto.Field(proto.MESSAGE, number=1, message="InputConfig",)
 
-    features = proto.RepeatedField(proto.MESSAGE, number=2, message=Feature,)
+    features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
 
-    image_context = proto.Field(proto.MESSAGE, number=3, message=ImageContext,)
+    image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
 
     output_config = proto.Field(proto.MESSAGE, number=4, message="OutputConfig",)
 
@@ -1012,7 +1034,7 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AnnotateImageRequest,
+        proto.MESSAGE, number=1, message="AnnotateImageRequest",
     )
 
     output_config = proto.Field(proto.MESSAGE, number=2, message="OutputConfig",)
@@ -1041,7 +1063,7 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AsyncAnnotateFileRequest,
+        proto.MESSAGE, number=1, message="AsyncAnnotateFileRequest",
     )
 
 
@@ -1056,7 +1078,7 @@ class AsyncBatchAnnotateFilesResponse(proto.Message):
     """
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=AsyncAnnotateFileResponse,
+        proto.MESSAGE, number=1, message="AsyncAnnotateFileResponse",
     )
 
 

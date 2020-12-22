@@ -49,8 +49,51 @@ class ImageAnnotatorAsyncClient:
     DEFAULT_ENDPOINT = ImageAnnotatorClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ImageAnnotatorClient.DEFAULT_MTLS_ENDPOINT
 
+    product_path = staticmethod(ImageAnnotatorClient.product_path)
+    parse_product_path = staticmethod(ImageAnnotatorClient.parse_product_path)
+    product_set_path = staticmethod(ImageAnnotatorClient.product_set_path)
+    parse_product_set_path = staticmethod(ImageAnnotatorClient.parse_product_set_path)
+
+    common_billing_account_path = staticmethod(
+        ImageAnnotatorClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ImageAnnotatorClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ImageAnnotatorClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ImageAnnotatorClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        ImageAnnotatorClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ImageAnnotatorClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(ImageAnnotatorClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ImageAnnotatorClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(ImageAnnotatorClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ImageAnnotatorClient.parse_common_location_path
+    )
+
     from_service_account_file = ImageAnnotatorClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ImageAnnotatorTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ImageAnnotatorTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ImageAnnotatorClient).get_transport_class, type(ImageAnnotatorClient)
@@ -142,7 +185,8 @@ class ImageAnnotatorAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([requests]):
+        has_flattened_params = any([requests])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -153,8 +197,8 @@ class ImageAnnotatorAsyncClient:
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if requests is not None:
-            request.requests = requests
+        if requests:
+            request.requests.extend(requests)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -220,7 +264,8 @@ class ImageAnnotatorAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([requests]):
+        has_flattened_params = any([requests])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -231,8 +276,8 @@ class ImageAnnotatorAsyncClient:
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if requests is not None:
-            request.requests = requests
+        if requests:
+            request.requests.extend(requests)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -312,7 +357,8 @@ class ImageAnnotatorAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([requests, output_config]):
+        has_flattened_params = any([requests, output_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -323,10 +369,11 @@ class ImageAnnotatorAsyncClient:
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if requests is not None:
-            request.requests = requests
         if output_config is not None:
             request.output_config = output_config
+
+        if requests:
+            request.requests.extend(requests)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -402,7 +449,8 @@ class ImageAnnotatorAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([requests]):
+        has_flattened_params = any([requests])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -413,8 +461,8 @@ class ImageAnnotatorAsyncClient:
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if requests is not None:
-            request.requests = requests
+        if requests:
+            request.requests.extend(requests)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[ImageAnnotatorTransp
 _transport_registry["grpc"] = ImageAnnotatorGrpcTransport
 _transport_registry["grpc_asyncio"] = ImageAnnotatorGrpcAsyncIOTransport
 
-
 __all__ = (
     "ImageAnnotatorTransport",
     "ImageAnnotatorGrpcTransport",

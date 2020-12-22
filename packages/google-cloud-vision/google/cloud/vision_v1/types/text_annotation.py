@@ -129,7 +129,7 @@ class Page(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message=TextAnnotation.TextProperty,
+        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
     )
 
     width = proto.Field(proto.INT32, number=2)
@@ -193,7 +193,7 @@ class Block(proto.Message):
         BARCODE = 5
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message=TextAnnotation.TextProperty,
+        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
     )
 
     bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
@@ -233,7 +233,7 @@ class Paragraph(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message=TextAnnotation.TextProperty,
+        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
     )
 
     bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
@@ -270,7 +270,7 @@ class Word(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message=TextAnnotation.TextProperty,
+        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
     )
 
     bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
@@ -307,7 +307,7 @@ class Symbol(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message=TextAnnotation.TextProperty,
+        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
     )
 
     bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)

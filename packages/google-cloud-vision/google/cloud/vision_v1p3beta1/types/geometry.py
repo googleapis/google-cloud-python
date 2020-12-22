@@ -74,10 +74,10 @@ class BoundingPoly(proto.Message):
             The bounding polygon normalized vertices.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message=Vertex,)
+    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="Vertex",)
 
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=NormalizedVertex,
+        proto.MESSAGE, number=2, message="NormalizedVertex",
     )
 
 
@@ -89,7 +89,7 @@ class NormalizedBoundingPoly(proto.Message):
             Normalized vertices of the bounding polygon.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message=NormalizedVertex,)
+    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="NormalizedVertex",)
 
 
 class Position(proto.Message):

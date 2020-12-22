@@ -49,7 +49,7 @@ class BoundingPoly(proto.Message):
             The bounding polygon vertices.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message=Vertex,)
+    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="Vertex",)
 
 
 class Position(proto.Message):

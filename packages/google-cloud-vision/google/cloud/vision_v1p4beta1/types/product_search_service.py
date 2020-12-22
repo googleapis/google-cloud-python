@@ -238,7 +238,7 @@ class CreateProductRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    product = proto.Field(proto.MESSAGE, number=2, message=Product,)
+    product = proto.Field(proto.MESSAGE, number=2, message="Product",)
 
     product_id = proto.Field(proto.STRING, number=3)
 
@@ -283,7 +283,7 @@ class ListProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(proto.MESSAGE, number=1, message=Product,)
+    products = proto.RepeatedField(proto.MESSAGE, number=1, message="Product",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -317,7 +317,7 @@ class UpdateProductRequest(proto.Message):
             ``product_labels``, ``display_name``, and ``description``.
     """
 
-    product = proto.Field(proto.MESSAGE, number=1, message=Product,)
+    product = proto.Field(proto.MESSAGE, number=1, message="Product",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
@@ -357,7 +357,7 @@ class CreateProductSetRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    product_set = proto.Field(proto.MESSAGE, number=2, message=ProductSet,)
+    product_set = proto.Field(proto.MESSAGE, number=2, message="ProductSet",)
 
     product_set_id = proto.Field(proto.STRING, number=3)
 
@@ -402,7 +402,7 @@ class ListProductSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    product_sets = proto.RepeatedField(proto.MESSAGE, number=1, message=ProductSet,)
+    product_sets = proto.RepeatedField(proto.MESSAGE, number=1, message="ProductSet",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -435,7 +435,7 @@ class UpdateProductSetRequest(proto.Message):
             ``display_name``.
     """
 
-    product_set = proto.Field(proto.MESSAGE, number=1, message=ProductSet,)
+    product_set = proto.Field(proto.MESSAGE, number=1, message="ProductSet",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
@@ -477,7 +477,7 @@ class CreateReferenceImageRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    reference_image = proto.Field(proto.MESSAGE, number=2, message=ReferenceImage,)
+    reference_image = proto.Field(proto.MESSAGE, number=2, message="ReferenceImage",)
 
     reference_image_id = proto.Field(proto.STRING, number=3)
 
@@ -529,7 +529,7 @@ class ListReferenceImagesResponse(proto.Message):
         return self
 
     reference_images = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ReferenceImage,
+        proto.MESSAGE, number=1, message="ReferenceImage",
     )
 
     page_size = proto.Field(proto.INT32, number=2)
@@ -653,7 +653,7 @@ class ListProductsInProductSetResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(proto.MESSAGE, number=1, message=Product,)
+    products = proto.RepeatedField(proto.MESSAGE, number=1, message="Product",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -753,7 +753,7 @@ class ImportProductSetsInputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message=ImportProductSetsGcsSource,
+        proto.MESSAGE, number=1, oneof="source", message="ImportProductSetsGcsSource",
     )
 
 
@@ -774,7 +774,7 @@ class ImportProductSetsRequest(proto.Message):
     parent = proto.Field(proto.STRING, number=1)
 
     input_config = proto.Field(
-        proto.MESSAGE, number=2, message=ImportProductSetsInputConfig,
+        proto.MESSAGE, number=2, message="ImportProductSetsInputConfig",
     )
 
 
@@ -801,7 +801,7 @@ class ImportProductSetsResponse(proto.Message):
     """
 
     reference_images = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ReferenceImage,
+        proto.MESSAGE, number=1, message="ReferenceImage",
     )
 
     statuses = proto.RepeatedField(proto.MESSAGE, number=2, message=status.Status,)
@@ -878,7 +878,7 @@ class PurgeProductsRequest(proto.Message):
     """
 
     product_set_purge_config = proto.Field(
-        proto.MESSAGE, number=2, oneof="target", message=ProductSetPurgeConfig,
+        proto.MESSAGE, number=2, oneof="target", message="ProductSetPurgeConfig",
     )
 
     delete_orphan_products = proto.Field(proto.BOOL, number=3, oneof="target")

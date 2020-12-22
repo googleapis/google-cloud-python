@@ -96,12 +96,12 @@ def test_image_annotator_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "vision.googleapis.com:443"
+        assert client.transport._host == "vision.googleapis.com:443"
 
 
 def test_image_annotator_client_get_transport_class():
@@ -452,7 +452,7 @@ def test_batch_annotate_images(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.batch_annotate_images), "__call__"
+        type(client.transport.batch_annotate_images), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = image_annotator.BatchAnnotateImagesResponse()
@@ -466,6 +466,7 @@ def test_batch_annotate_images(
         assert args[0] == image_annotator.BatchAnnotateImagesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, image_annotator.BatchAnnotateImagesResponse)
 
 
@@ -474,18 +475,21 @@ def test_batch_annotate_images_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_batch_annotate_images_async(transport: str = "grpc_asyncio"):
+async def test_batch_annotate_images_async(
+    transport: str = "grpc_asyncio",
+    request_type=image_annotator.BatchAnnotateImagesRequest,
+):
     client = ImageAnnotatorAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = image_annotator.BatchAnnotateImagesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.batch_annotate_images), "__call__"
+        type(client.transport.batch_annotate_images), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -498,10 +502,15 @@ async def test_batch_annotate_images_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == image_annotator.BatchAnnotateImagesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, image_annotator.BatchAnnotateImagesResponse)
+
+
+@pytest.mark.asyncio
+async def test_batch_annotate_images_async_from_dict():
+    await test_batch_annotate_images_async(request_type=dict)
 
 
 def test_batch_annotate_images_flattened():
@@ -509,7 +518,7 @@ def test_batch_annotate_images_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.batch_annotate_images), "__call__"
+        type(client.transport.batch_annotate_images), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = image_annotator.BatchAnnotateImagesResponse()
@@ -558,7 +567,7 @@ async def test_batch_annotate_images_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.batch_annotate_images), "__call__"
+        type(client.transport.batch_annotate_images), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = image_annotator.BatchAnnotateImagesResponse()
@@ -641,7 +650,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = ImageAnnotatorClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -677,7 +686,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ImageAnnotatorClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.ImageAnnotatorGrpcTransport,)
+    assert isinstance(client.transport, transports.ImageAnnotatorGrpcTransport,)
 
 
 def test_image_annotator_base_transport_error():
@@ -778,7 +787,7 @@ def test_image_annotator_host_no_port():
             api_endpoint="vision.googleapis.com"
         ),
     )
-    assert client._transport._host == "vision.googleapis.com:443"
+    assert client.transport._host == "vision.googleapis.com:443"
 
 
 def test_image_annotator_host_with_port():
@@ -788,7 +797,7 @@ def test_image_annotator_host_with_port():
             api_endpoint="vision.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "vision.googleapis.com:8000"
+    assert client.transport._host == "vision.googleapis.com:8000"
 
 
 def test_image_annotator_grpc_transport_channel():
@@ -800,6 +809,7 @@ def test_image_annotator_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_image_annotator_grpc_asyncio_transport_channel():
@@ -811,6 +821,7 @@ def test_image_annotator_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -859,8 +870,13 @@ def test_image_annotator_transport_channel_mtls_with_client_cert_source(
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -902,8 +918,113 @@ def test_image_annotator_transport_channel_mtls_with_adc(transport_class):
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+
+
+def test_common_billing_account_path():
+    billing_account = "squid"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = ImageAnnotatorClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "clam",
+    }
+    path = ImageAnnotatorClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ImageAnnotatorClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "whelk"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = ImageAnnotatorClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "octopus",
+    }
+    path = ImageAnnotatorClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ImageAnnotatorClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "oyster"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = ImageAnnotatorClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nudibranch",
+    }
+    path = ImageAnnotatorClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ImageAnnotatorClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "cuttlefish"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = ImageAnnotatorClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "mussel",
+    }
+    path = ImageAnnotatorClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ImageAnnotatorClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "winkle"
+    location = "nautilus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = ImageAnnotatorClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+    }
+    path = ImageAnnotatorClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ImageAnnotatorClient.parse_common_location_path(path)
+    assert expected == actual
 
 
 def test_client_withDEFAULT_CLIENT_INFO():

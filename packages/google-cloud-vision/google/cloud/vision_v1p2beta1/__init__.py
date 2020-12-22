@@ -55,6 +55,7 @@ from .types.image_annotator import OperationMetadata
 from .types.image_annotator import OutputConfig
 from .types.image_annotator import Property
 from .types.image_annotator import SafeSearchAnnotation
+from .types.image_annotator import TextDetectionParams
 from .types.image_annotator import WebDetectionParams
 from .types.text_annotation import Block
 from .types.text_annotation import Page
@@ -112,6 +113,7 @@ __all__ = (
     "SafeSearchAnnotation",
     "Symbol",
     "TextAnnotation",
+    "TextDetectionParams",
     "Vertex",
     "WebDetection",
     "WebDetectionParams",

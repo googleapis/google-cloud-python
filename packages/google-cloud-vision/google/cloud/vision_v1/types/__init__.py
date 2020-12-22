@@ -85,6 +85,7 @@ from .image_annotator import (
     CropHintsAnnotation,
     CropHintsParams,
     WebDetectionParams,
+    TextDetectionParams,
     ImageContext,
     AnnotateImageRequest,
     ImageAnnotationContext,
@@ -106,8 +107,8 @@ from .image_annotator import (
     GcsSource,
     GcsDestination,
     OperationMetadata,
+    Likelihood,
 )
-
 
 __all__ = (
     "Vertex",
@@ -171,6 +172,7 @@ __all__ = (
     "CropHintsAnnotation",
     "CropHintsParams",
     "WebDetectionParams",
+    "TextDetectionParams",
     "ImageContext",
     "AnnotateImageRequest",
     "ImageAnnotationContext",
@@ -192,4 +194,5 @@ __all__ = (
     "GcsSource",
     "GcsDestination",
     "OperationMetadata",
+    "Likelihood",
 )
