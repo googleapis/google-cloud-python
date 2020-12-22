@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 from google.api_core.gapic_v1 import client_info
-import mock
 import pytest
 
 from google.cloud.bigquery_storage import types

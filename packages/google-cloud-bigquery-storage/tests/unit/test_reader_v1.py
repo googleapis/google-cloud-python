@@ -18,10 +18,10 @@ import datetime
 import decimal
 import itertools
 import json
+from unittest import mock
 
 import fastavro
 import pyarrow
-import mock
 import pandas
 import pandas.testing
 import pytest
