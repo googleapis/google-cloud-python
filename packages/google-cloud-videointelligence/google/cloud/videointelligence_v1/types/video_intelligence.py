@@ -551,9 +551,17 @@ class FaceDetectionAnnotation(proto.Message):
     r"""Face detection annotation.
 
     Attributes:
+        tracks (Sequence[~.video_intelligence.Track]):
+            The face tracks with attributes.
+        thumbnail (bytes):
+            The thumbnail of a person's face.
         version (str):
             Feature version.
     """
+
+    tracks = proto.RepeatedField(proto.MESSAGE, number=3, message="Track",)
+
+    thumbnail = proto.Field(proto.BYTES, number=4)
 
     version = proto.Field(proto.STRING, number=5)
 
