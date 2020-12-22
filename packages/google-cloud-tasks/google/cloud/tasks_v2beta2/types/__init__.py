@@ -21,6 +21,7 @@ from .target import (
     AppEngineHttpTarget,
     AppEngineHttpRequest,
     AppEngineRouting,
+    HttpMethod,
 )
 from .queue import (
     Queue,
@@ -55,13 +56,13 @@ from .cloudtasks import (
     RunTaskRequest,
 )
 
-
 __all__ = (
     "PullTarget",
     "PullMessage",
     "AppEngineHttpTarget",
     "AppEngineHttpRequest",
     "AppEngineRouting",
+    "HttpMethod",
     "Queue",
     "RateLimits",
     "RetryConfig",

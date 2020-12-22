@@ -21,6 +21,7 @@ from .target import (
     AppEngineRouting,
     OAuthToken,
     OidcToken,
+    HttpMethod,
 )
 from .queue import (
     Queue,
@@ -50,13 +51,13 @@ from .cloudtasks import (
     RunTaskRequest,
 )
 
-
 __all__ = (
     "HttpRequest",
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "OAuthToken",
     "OidcToken",
+    "HttpMethod",
     "Queue",
     "RateLimits",
     "RetryConfig",
