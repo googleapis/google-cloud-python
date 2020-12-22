@@ -39,7 +39,6 @@ from .service import (
     DestroySecretVersionRequest,
 )
 
-
 __all__ = (
     "Secret",
     "SecretVersion",

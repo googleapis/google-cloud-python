@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-secret-manager.git",
-        "sha": "8d02b18a31fa4b878cf9608aed8814d437d753dc"
+        "sha": "fafd37588c8509efd926d8d7529965ac4246fbb4"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dabe30b45bc86fdaf4126f26cbcfd73babbfa3fe",
-        "internalRef": "345194337"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {
@@ -143,7 +143,6 @@
     "renovate.json",
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
-    "samples/snippets/README.rst",
     "samples/snippets/noxfile.py",
     "scripts/decrypt-secrets.sh",
     "scripts/fixup_secretmanager_v1_keywords.py",
