@@ -71,8 +71,11 @@ from .video_intelligence import (
     StreamingAutomlClassificationConfig,
     StreamingAutomlObjectTrackingConfig,
     StreamingStorageConfig,
+    LabelDetectionMode,
+    Likelihood,
+    StreamingFeature,
+    Feature,
 )
-
 
 __all__ = (
     "AnnotateVideoRequest",
@@ -130,4 +133,8 @@ __all__ = (
     "StreamingAutomlClassificationConfig",
     "StreamingAutomlObjectTrackingConfig",
     "StreamingStorageConfig",
+    "LabelDetectionMode",
+    "Likelihood",
+    "StreamingFeature",
+    "Feature",
 )

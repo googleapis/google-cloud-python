@@ -37,8 +37,10 @@ from .video_intelligence import (
     SpeechTranscription,
     SpeechRecognitionAlternative,
     WordInfo,
+    Feature,
+    LabelDetectionMode,
+    Likelihood,
 )
-
 
 __all__ = (
     "AnnotateVideoRequest",
@@ -62,4 +64,7 @@ __all__ = (
     "SpeechTranscription",
     "SpeechRecognitionAlternative",
     "WordInfo",
+    "Feature",
+    "LabelDetectionMode",
+    "Likelihood",
 )

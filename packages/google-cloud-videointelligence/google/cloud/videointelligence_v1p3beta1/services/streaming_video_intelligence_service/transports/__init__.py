@@ -32,7 +32,6 @@ _transport_registry[
     "grpc_asyncio"
 ] = StreamingVideoIntelligenceServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "StreamingVideoIntelligenceServiceTransport",
     "StreamingVideoIntelligenceServiceGrpcTransport",

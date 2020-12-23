@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = VideoIntelligenceServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = VideoIntelligenceServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "VideoIntelligenceServiceTransport",
     "VideoIntelligenceServiceGrpcTransport",

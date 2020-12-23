@@ -59,8 +59,10 @@ from .video_intelligence import (
     ObjectTrackingFrame,
     ObjectTrackingAnnotation,
     LogoRecognitionAnnotation,
+    Feature,
+    LabelDetectionMode,
+    Likelihood,
 )
-
 
 __all__ = (
     "AnnotateVideoRequest",
@@ -106,4 +108,7 @@ __all__ = (
     "ObjectTrackingFrame",
     "ObjectTrackingAnnotation",
     "LogoRecognitionAnnotation",
+    "Feature",
+    "LabelDetectionMode",
+    "Likelihood",
 )
