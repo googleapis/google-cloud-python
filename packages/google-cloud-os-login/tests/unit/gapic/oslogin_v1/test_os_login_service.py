@@ -95,12 +95,12 @@ def test_os_login_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "oslogin.googleapis.com:443"
+        assert client.transport._host == "oslogin.googleapis.com:443"
 
 
 def test_os_login_service_client_get_transport_class():
@@ -451,7 +451,7 @@ def test_delete_posix_account(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_posix_account), "__call__"
+        type(client.transport.delete_posix_account), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -473,18 +473,20 @@ def test_delete_posix_account_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_posix_account_async(transport: str = "grpc_asyncio"):
+async def test_delete_posix_account_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.DeletePosixAccountRequest
+):
     client = OsLoginServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = oslogin.DeletePosixAccountRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_posix_account), "__call__"
+        type(client.transport.delete_posix_account), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -495,10 +497,15 @@ async def test_delete_posix_account_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == oslogin.DeletePosixAccountRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_posix_account_async_from_dict():
+    await test_delete_posix_account_async(request_type=dict)
 
 
 def test_delete_posix_account_field_headers():
@@ -511,7 +518,7 @@ def test_delete_posix_account_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_posix_account), "__call__"
+        type(client.transport.delete_posix_account), "__call__"
     ) as call:
         call.return_value = None
 
@@ -538,7 +545,7 @@ async def test_delete_posix_account_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_posix_account), "__call__"
+        type(client.transport.delete_posix_account), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -559,7 +566,7 @@ def test_delete_posix_account_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_posix_account), "__call__"
+        type(client.transport.delete_posix_account), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -593,7 +600,7 @@ async def test_delete_posix_account_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_posix_account), "__call__"
+        type(client.transport.delete_posix_account), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -636,7 +643,7 @@ def test_delete_ssh_public_key(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_ssh_public_key), "__call__"
+        type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -658,18 +665,20 @@ def test_delete_ssh_public_key_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_ssh_public_key_async(transport: str = "grpc_asyncio"):
+async def test_delete_ssh_public_key_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.DeleteSshPublicKeyRequest
+):
     client = OsLoginServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = oslogin.DeleteSshPublicKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_ssh_public_key), "__call__"
+        type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -680,10 +689,15 @@ async def test_delete_ssh_public_key_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == oslogin.DeleteSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_public_key_async_from_dict():
+    await test_delete_ssh_public_key_async(request_type=dict)
 
 
 def test_delete_ssh_public_key_field_headers():
@@ -696,7 +710,7 @@ def test_delete_ssh_public_key_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_ssh_public_key), "__call__"
+        type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         call.return_value = None
 
@@ -723,7 +737,7 @@ async def test_delete_ssh_public_key_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_ssh_public_key), "__call__"
+        type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -744,7 +758,7 @@ def test_delete_ssh_public_key_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_ssh_public_key), "__call__"
+        type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -778,7 +792,7 @@ async def test_delete_ssh_public_key_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_ssh_public_key), "__call__"
+        type(client.transport.delete_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -821,7 +835,7 @@ def test_get_login_profile(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_login_profile), "__call__"
+        type(client.transport.get_login_profile), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = oslogin.LoginProfile(name="name_value",)
@@ -835,6 +849,7 @@ def test_get_login_profile(
         assert args[0] == oslogin.GetLoginProfileRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, oslogin.LoginProfile)
 
     assert response.name == "name_value"
@@ -845,18 +860,20 @@ def test_get_login_profile_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_login_profile_async(transport: str = "grpc_asyncio"):
+async def test_get_login_profile_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.GetLoginProfileRequest
+):
     client = OsLoginServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = oslogin.GetLoginProfileRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_login_profile), "__call__"
+        type(client.transport.get_login_profile), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -869,12 +886,17 @@ async def test_get_login_profile_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == oslogin.GetLoginProfileRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.LoginProfile)
 
     assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_login_profile_async_from_dict():
+    await test_get_login_profile_async(request_type=dict)
 
 
 def test_get_login_profile_field_headers():
@@ -887,7 +909,7 @@ def test_get_login_profile_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_login_profile), "__call__"
+        type(client.transport.get_login_profile), "__call__"
     ) as call:
         call.return_value = oslogin.LoginProfile()
 
@@ -914,7 +936,7 @@ async def test_get_login_profile_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_login_profile), "__call__"
+        type(client.transport.get_login_profile), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             oslogin.LoginProfile()
@@ -937,7 +959,7 @@ def test_get_login_profile_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_login_profile), "__call__"
+        type(client.transport.get_login_profile), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = oslogin.LoginProfile()
@@ -971,7 +993,7 @@ async def test_get_login_profile_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_login_profile), "__call__"
+        type(client.transport.get_login_profile), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = oslogin.LoginProfile()
@@ -1016,7 +1038,7 @@ def test_get_ssh_public_key(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_ssh_public_key), "__call__"
+        type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SshPublicKey(
@@ -1035,6 +1057,7 @@ def test_get_ssh_public_key(
         assert args[0] == oslogin.GetSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, common.SshPublicKey)
 
     assert response.key == "key_value"
@@ -1051,18 +1074,20 @@ def test_get_ssh_public_key_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_ssh_public_key_async(transport: str = "grpc_asyncio"):
+async def test_get_ssh_public_key_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.GetSshPublicKeyRequest
+):
     client = OsLoginServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = oslogin.GetSshPublicKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_ssh_public_key), "__call__"
+        type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1080,7 +1105,7 @@ async def test_get_ssh_public_key_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == oslogin.GetSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -1094,6 +1119,11 @@ async def test_get_ssh_public_key_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
 
+@pytest.mark.asyncio
+async def test_get_ssh_public_key_async_from_dict():
+    await test_get_ssh_public_key_async(request_type=dict)
+
+
 def test_get_ssh_public_key_field_headers():
     client = OsLoginServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1104,7 +1134,7 @@ def test_get_ssh_public_key_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_ssh_public_key), "__call__"
+        type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         call.return_value = common.SshPublicKey()
 
@@ -1131,7 +1161,7 @@ async def test_get_ssh_public_key_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_ssh_public_key), "__call__"
+        type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SshPublicKey())
 
@@ -1152,7 +1182,7 @@ def test_get_ssh_public_key_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_ssh_public_key), "__call__"
+        type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SshPublicKey()
@@ -1186,7 +1216,7 @@ async def test_get_ssh_public_key_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_ssh_public_key), "__call__"
+        type(client.transport.get_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SshPublicKey()
@@ -1229,7 +1259,7 @@ def test_import_ssh_public_key(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.import_ssh_public_key), "__call__"
+        type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = oslogin.ImportSshPublicKeyResponse()
@@ -1243,6 +1273,7 @@ def test_import_ssh_public_key(
         assert args[0] == oslogin.ImportSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
 
 
@@ -1251,18 +1282,20 @@ def test_import_ssh_public_key_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_import_ssh_public_key_async(transport: str = "grpc_asyncio"):
+async def test_import_ssh_public_key_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.ImportSshPublicKeyRequest
+):
     client = OsLoginServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = oslogin.ImportSshPublicKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.import_ssh_public_key), "__call__"
+        type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1275,10 +1308,15 @@ async def test_import_ssh_public_key_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == oslogin.ImportSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, oslogin.ImportSshPublicKeyResponse)
+
+
+@pytest.mark.asyncio
+async def test_import_ssh_public_key_async_from_dict():
+    await test_import_ssh_public_key_async(request_type=dict)
 
 
 def test_import_ssh_public_key_field_headers():
@@ -1291,7 +1329,7 @@ def test_import_ssh_public_key_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.import_ssh_public_key), "__call__"
+        type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         call.return_value = oslogin.ImportSshPublicKeyResponse()
 
@@ -1318,7 +1356,7 @@ async def test_import_ssh_public_key_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.import_ssh_public_key), "__call__"
+        type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             oslogin.ImportSshPublicKeyResponse()
@@ -1341,7 +1379,7 @@ def test_import_ssh_public_key_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.import_ssh_public_key), "__call__"
+        type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = oslogin.ImportSshPublicKeyResponse()
@@ -1386,7 +1424,7 @@ async def test_import_ssh_public_key_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.import_ssh_public_key), "__call__"
+        type(client.transport.import_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = oslogin.ImportSshPublicKeyResponse()
@@ -1442,7 +1480,7 @@ def test_update_ssh_public_key(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_ssh_public_key), "__call__"
+        type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SshPublicKey(
@@ -1461,6 +1499,7 @@ def test_update_ssh_public_key(
         assert args[0] == oslogin.UpdateSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, common.SshPublicKey)
 
     assert response.key == "key_value"
@@ -1477,18 +1516,20 @@ def test_update_ssh_public_key_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_ssh_public_key_async(transport: str = "grpc_asyncio"):
+async def test_update_ssh_public_key_async(
+    transport: str = "grpc_asyncio", request_type=oslogin.UpdateSshPublicKeyRequest
+):
     client = OsLoginServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = oslogin.UpdateSshPublicKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_ssh_public_key), "__call__"
+        type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1506,7 +1547,7 @@ async def test_update_ssh_public_key_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == oslogin.UpdateSshPublicKeyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, common.SshPublicKey)
@@ -1520,6 +1561,11 @@ async def test_update_ssh_public_key_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
 
+@pytest.mark.asyncio
+async def test_update_ssh_public_key_async_from_dict():
+    await test_update_ssh_public_key_async(request_type=dict)
+
+
 def test_update_ssh_public_key_field_headers():
     client = OsLoginServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1530,7 +1576,7 @@ def test_update_ssh_public_key_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_ssh_public_key), "__call__"
+        type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         call.return_value = common.SshPublicKey()
 
@@ -1557,7 +1603,7 @@ async def test_update_ssh_public_key_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_ssh_public_key), "__call__"
+        type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(common.SshPublicKey())
 
@@ -1578,7 +1624,7 @@ def test_update_ssh_public_key_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_ssh_public_key), "__call__"
+        type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SshPublicKey()
@@ -1623,7 +1669,7 @@ async def test_update_ssh_public_key_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_ssh_public_key), "__call__"
+        type(client.transport.update_ssh_public_key), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = common.SshPublicKey()
@@ -1700,7 +1746,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = OsLoginServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1736,7 +1782,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = OsLoginServiceClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.OsLoginServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.OsLoginServiceGrpcTransport,)
 
 
 def test_os_login_service_base_transport_error():
@@ -1844,7 +1890,7 @@ def test_os_login_service_host_no_port():
             api_endpoint="oslogin.googleapis.com"
         ),
     )
-    assert client._transport._host == "oslogin.googleapis.com:443"
+    assert client.transport._host == "oslogin.googleapis.com:443"
 
 
 def test_os_login_service_host_with_port():
@@ -1854,7 +1900,7 @@ def test_os_login_service_host_with_port():
             api_endpoint="oslogin.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "oslogin.googleapis.com:8000"
+    assert client.transport._host == "oslogin.googleapis.com:8000"
 
 
 def test_os_login_service_grpc_transport_channel():
@@ -1866,6 +1912,7 @@ def test_os_login_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_os_login_service_grpc_asyncio_transport_channel():
@@ -1877,6 +1924,7 @@ def test_os_login_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -1925,8 +1973,13 @@ def test_os_login_service_transport_channel_mtls_with_client_cert_source(
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -1968,13 +2021,38 @@ def test_os_login_service_transport_channel_mtls_with_adc(transport_class):
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_ssh_public_key_path():
+def test_posix_account_path():
     user = "squid"
-    fingerprint = "clam"
+    project = "clam"
+
+    expected = "users/{user}/projects/{project}".format(user=user, project=project,)
+    actual = OsLoginServiceClient.posix_account_path(user, project)
+    assert expected == actual
+
+
+def test_parse_posix_account_path():
+    expected = {
+        "user": "whelk",
+        "project": "octopus",
+    }
+    path = OsLoginServiceClient.posix_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsLoginServiceClient.parse_posix_account_path(path)
+    assert expected == actual
+
+
+def test_ssh_public_key_path():
+    user = "oyster"
+    fingerprint = "nudibranch"
 
     expected = "users/{user}/sshPublicKeys/{fingerprint}".format(
         user=user, fingerprint=fingerprint,
@@ -1985,13 +2063,114 @@ def test_ssh_public_key_path():
 
 def test_parse_ssh_public_key_path():
     expected = {
-        "user": "whelk",
-        "fingerprint": "octopus",
+        "user": "cuttlefish",
+        "fingerprint": "mussel",
     }
     path = OsLoginServiceClient.ssh_public_key_path(**expected)
 
     # Check that the path construction is reversible.
     actual = OsLoginServiceClient.parse_ssh_public_key_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "winkle"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = OsLoginServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "nautilus",
+    }
+    path = OsLoginServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsLoginServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "scallop"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = OsLoginServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "abalone",
+    }
+    path = OsLoginServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsLoginServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "squid"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = OsLoginServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "clam",
+    }
+    path = OsLoginServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsLoginServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "whelk"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = OsLoginServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "octopus",
+    }
+    path = OsLoginServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsLoginServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "oyster"
+    location = "nudibranch"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = OsLoginServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+    }
+    path = OsLoginServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = OsLoginServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 

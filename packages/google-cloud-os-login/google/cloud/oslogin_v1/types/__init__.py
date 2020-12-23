@@ -26,7 +26,6 @@ from .oslogin import (
     UpdateSshPublicKeyRequest,
 )
 
-
 __all__ = (
     "LoginProfile",
     "DeletePosixAccountRequest",

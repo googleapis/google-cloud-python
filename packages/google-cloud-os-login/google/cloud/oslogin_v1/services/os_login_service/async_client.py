@@ -49,13 +49,55 @@ class OsLoginServiceAsyncClient:
     DEFAULT_ENDPOINT = OsLoginServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = OsLoginServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    posix_account_path = staticmethod(OsLoginServiceClient.posix_account_path)
+    parse_posix_account_path = staticmethod(
+        OsLoginServiceClient.parse_posix_account_path
+    )
     ssh_public_key_path = staticmethod(OsLoginServiceClient.ssh_public_key_path)
     parse_ssh_public_key_path = staticmethod(
         OsLoginServiceClient.parse_ssh_public_key_path
     )
 
+    common_billing_account_path = staticmethod(
+        OsLoginServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        OsLoginServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(OsLoginServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        OsLoginServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        OsLoginServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        OsLoginServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(OsLoginServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        OsLoginServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(OsLoginServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        OsLoginServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = OsLoginServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> OsLoginServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            OsLoginServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(OsLoginServiceClient).get_transport_class, type(OsLoginServiceClient)
@@ -142,7 +184,8 @@ class OsLoginServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -216,7 +259,8 @@ class OsLoginServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -296,7 +340,8 @@ class OsLoginServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -377,7 +422,8 @@ class OsLoginServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -473,7 +519,8 @@ class OsLoginServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, ssh_public_key, project_id]):
+        has_flattened_params = any([parent, ssh_public_key, project_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -573,7 +620,8 @@ class OsLoginServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, ssh_public_key, update_mask]):
+        has_flattened_params = any([name, ssh_public_key, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

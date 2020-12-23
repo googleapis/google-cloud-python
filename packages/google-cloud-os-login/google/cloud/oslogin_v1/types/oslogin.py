@@ -158,7 +158,7 @@ class ImportSshPublicKeyResponse(proto.Message):
             The login profile information for the user.
     """
 
-    login_profile = proto.Field(proto.MESSAGE, number=1, message=LoginProfile,)
+    login_profile = proto.Field(proto.MESSAGE, number=1, message="LoginProfile",)
 
 
 class UpdateSshPublicKeyRequest(proto.Message):

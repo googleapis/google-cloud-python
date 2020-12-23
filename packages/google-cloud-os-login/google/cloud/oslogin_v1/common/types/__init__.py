@@ -18,10 +18,11 @@
 from .common import (
     PosixAccount,
     SshPublicKey,
+    OperatingSystemType,
 )
-
 
 __all__ = (
     "PosixAccount",
     "SshPublicKey",
+    "OperatingSystemType",
 )
