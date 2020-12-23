@@ -43,7 +43,6 @@ from .registration_service import (
     DeleteEndpointRequest,
 )
 
-
 __all__ = (
     "Endpoint",
     "Service",
