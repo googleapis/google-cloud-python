@@ -55,8 +55,40 @@ class WorkflowsAsyncClient:
     workflow_path = staticmethod(WorkflowsClient.workflow_path)
     parse_workflow_path = staticmethod(WorkflowsClient.parse_workflow_path)
 
+    common_billing_account_path = staticmethod(
+        WorkflowsClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        WorkflowsClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(WorkflowsClient.common_folder_path)
+    parse_common_folder_path = staticmethod(WorkflowsClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(WorkflowsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        WorkflowsClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(WorkflowsClient.common_project_path)
+    parse_common_project_path = staticmethod(WorkflowsClient.parse_common_project_path)
+
+    common_location_path = staticmethod(WorkflowsClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        WorkflowsClient.parse_common_location_path
+    )
+
     from_service_account_file = WorkflowsClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> WorkflowsTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            WorkflowsTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(WorkflowsClient).get_transport_class, type(WorkflowsClient)
@@ -155,7 +187,8 @@ class WorkflowsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -234,7 +267,8 @@ class WorkflowsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -336,7 +370,8 @@ class WorkflowsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, workflow, workflow_id]):
+        has_flattened_params = any([parent, workflow, workflow_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -438,7 +473,8 @@ class WorkflowsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -533,7 +569,8 @@ class WorkflowsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([workflow, update_mask]):
+        has_flattened_params = any([workflow, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

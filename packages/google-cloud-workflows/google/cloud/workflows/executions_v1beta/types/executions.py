@@ -176,7 +176,7 @@ class ListExecutionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    executions = proto.RepeatedField(proto.MESSAGE, number=1, message=Execution,)
+    executions = proto.RepeatedField(proto.MESSAGE, number=1, message="Execution",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -199,7 +199,7 @@ class CreateExecutionRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    execution = proto.Field(proto.MESSAGE, number=2, message=Execution,)
+    execution = proto.Field(proto.MESSAGE, number=2, message="Execution",)
 
 
 class GetExecutionRequest(proto.Message):

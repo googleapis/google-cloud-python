@@ -26,7 +26,6 @@ from .workflows import (
     OperationMetadata,
 )
 
-
 __all__ = (
     "Workflow",
     "ListWorkflowsRequest",

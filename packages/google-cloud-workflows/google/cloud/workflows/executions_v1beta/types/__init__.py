@@ -22,8 +22,8 @@ from .executions import (
     CreateExecutionRequest,
     GetExecutionRequest,
     CancelExecutionRequest,
+    ExecutionView,
 )
-
 
 __all__ = (
     "Execution",
@@ -32,4 +32,5 @@ __all__ = (
     "CreateExecutionRequest",
     "GetExecutionRequest",
     "CancelExecutionRequest",
+    "ExecutionView",
 )

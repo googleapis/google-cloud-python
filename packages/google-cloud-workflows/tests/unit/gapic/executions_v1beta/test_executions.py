@@ -94,12 +94,12 @@ def test_executions_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "workflowexecutions.googleapis.com:443"
+        assert client.transport._host == "workflowexecutions.googleapis.com:443"
 
 
 def test_executions_client_get_transport_class():
@@ -443,7 +443,7 @@ def test_list_executions(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_executions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.ListExecutionsResponse(
             next_page_token="next_page_token_value",
@@ -458,6 +458,7 @@ def test_list_executions(
         assert args[0] == executions.ListExecutionsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListExecutionsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -468,19 +469,19 @@ def test_list_executions_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_executions_async(transport: str = "grpc_asyncio"):
+async def test_list_executions_async(
+    transport: str = "grpc_asyncio", request_type=executions.ListExecutionsRequest
+):
     client = ExecutionsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = executions.ListExecutionsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_executions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.ListExecutionsResponse(next_page_token="next_page_token_value",)
@@ -492,12 +493,17 @@ async def test_list_executions_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == executions.ListExecutionsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExecutionsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_executions_async_from_dict():
+    await test_list_executions_async(request_type=dict)
 
 
 def test_list_executions_field_headers():
@@ -509,7 +515,7 @@ def test_list_executions_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_executions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         call.return_value = executions.ListExecutionsResponse()
 
         client.list_executions(request)
@@ -534,9 +540,7 @@ async def test_list_executions_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_executions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.ListExecutionsResponse()
         )
@@ -557,7 +561,7 @@ def test_list_executions_flattened():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_executions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.ListExecutionsResponse()
 
@@ -589,9 +593,7 @@ async def test_list_executions_flattened_async():
     client = ExecutionsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_executions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.ListExecutionsResponse()
 
@@ -626,7 +628,7 @@ def test_list_executions_pager():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_executions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             executions.ListExecutionsResponse(
@@ -664,7 +666,7 @@ def test_list_executions_pages():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_executions), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_executions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             executions.ListExecutionsResponse(
@@ -695,9 +697,7 @@ async def test_list_executions_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_executions),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_executions), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -734,9 +734,7 @@ async def test_list_executions_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_executions),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_executions), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -776,9 +774,7 @@ def test_create_execution(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.create_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution(
             name="name_value",
@@ -797,6 +793,7 @@ def test_create_execution(
         assert args[0] == executions.CreateExecutionRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, executions.Execution)
 
     assert response.name == "name_value"
@@ -815,19 +812,19 @@ def test_create_execution_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_execution_async(transport: str = "grpc_asyncio"):
+async def test_create_execution_async(
+    transport: str = "grpc_asyncio", request_type=executions.CreateExecutionRequest
+):
     client = ExecutionsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = executions.CreateExecutionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.Execution(
@@ -845,7 +842,7 @@ async def test_create_execution_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == executions.CreateExecutionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, executions.Execution)
@@ -861,6 +858,11 @@ async def test_create_execution_async(transport: str = "grpc_asyncio"):
     assert response.workflow_revision_id == "workflow_revision_id_value"
 
 
+@pytest.mark.asyncio
+async def test_create_execution_async_from_dict():
+    await test_create_execution_async(request_type=dict)
+
+
 def test_create_execution_field_headers():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -870,9 +872,7 @@ def test_create_execution_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.create_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
         call.return_value = executions.Execution()
 
         client.create_execution(request)
@@ -897,9 +897,7 @@ async def test_create_execution_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.Execution()
         )
@@ -920,9 +918,7 @@ def test_create_execution_flattened():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.create_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution()
 
@@ -960,9 +956,7 @@ async def test_create_execution_flattened_async():
     client = ExecutionsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution()
 
@@ -1011,7 +1005,7 @@ def test_get_execution(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_execution), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution(
             name="name_value",
@@ -1030,6 +1024,7 @@ def test_get_execution(
         assert args[0] == executions.GetExecutionRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, executions.Execution)
 
     assert response.name == "name_value"
@@ -1048,19 +1043,19 @@ def test_get_execution_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_execution_async(transport: str = "grpc_asyncio"):
+async def test_get_execution_async(
+    transport: str = "grpc_asyncio", request_type=executions.GetExecutionRequest
+):
     client = ExecutionsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = executions.GetExecutionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.Execution(
@@ -1078,7 +1073,7 @@ async def test_get_execution_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == executions.GetExecutionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, executions.Execution)
@@ -1094,6 +1089,11 @@ async def test_get_execution_async(transport: str = "grpc_asyncio"):
     assert response.workflow_revision_id == "workflow_revision_id_value"
 
 
+@pytest.mark.asyncio
+async def test_get_execution_async_from_dict():
+    await test_get_execution_async(request_type=dict)
+
+
 def test_get_execution_field_headers():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1103,7 +1103,7 @@ def test_get_execution_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_execution), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         call.return_value = executions.Execution()
 
         client.get_execution(request)
@@ -1128,9 +1128,7 @@ async def test_get_execution_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.Execution()
         )
@@ -1151,7 +1149,7 @@ def test_get_execution_flattened():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_execution), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution()
 
@@ -1183,9 +1181,7 @@ async def test_get_execution_flattened_async():
     client = ExecutionsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution()
 
@@ -1228,9 +1224,7 @@ def test_cancel_execution(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.cancel_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution(
             name="name_value",
@@ -1249,6 +1243,7 @@ def test_cancel_execution(
         assert args[0] == executions.CancelExecutionRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, executions.Execution)
 
     assert response.name == "name_value"
@@ -1267,19 +1262,19 @@ def test_cancel_execution_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_cancel_execution_async(transport: str = "grpc_asyncio"):
+async def test_cancel_execution_async(
+    transport: str = "grpc_asyncio", request_type=executions.CancelExecutionRequest
+):
     client = ExecutionsAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = executions.CancelExecutionRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.cancel_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.Execution(
@@ -1297,7 +1292,7 @@ async def test_cancel_execution_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == executions.CancelExecutionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, executions.Execution)
@@ -1313,6 +1308,11 @@ async def test_cancel_execution_async(transport: str = "grpc_asyncio"):
     assert response.workflow_revision_id == "workflow_revision_id_value"
 
 
+@pytest.mark.asyncio
+async def test_cancel_execution_async_from_dict():
+    await test_cancel_execution_async(request_type=dict)
+
+
 def test_cancel_execution_field_headers():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1322,9 +1322,7 @@ def test_cancel_execution_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.cancel_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         call.return_value = executions.Execution()
 
         client.cancel_execution(request)
@@ -1349,9 +1347,7 @@ async def test_cancel_execution_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.cancel_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             executions.Execution()
         )
@@ -1372,9 +1368,7 @@ def test_cancel_execution_flattened():
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.cancel_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution()
 
@@ -1406,9 +1400,7 @@ async def test_cancel_execution_flattened_async():
     client = ExecutionsAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.cancel_execution), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.cancel_execution), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = executions.Execution()
 
@@ -1475,7 +1467,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = ExecutionsClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1508,7 +1500,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ExecutionsClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.ExecutionsGrpcTransport,)
+    assert isinstance(client.transport, transports.ExecutionsGrpcTransport,)
 
 
 def test_executions_base_transport_error():
@@ -1605,7 +1597,7 @@ def test_executions_host_no_port():
             api_endpoint="workflowexecutions.googleapis.com"
         ),
     )
-    assert client._transport._host == "workflowexecutions.googleapis.com:443"
+    assert client.transport._host == "workflowexecutions.googleapis.com:443"
 
 
 def test_executions_host_with_port():
@@ -1615,7 +1607,7 @@ def test_executions_host_with_port():
             api_endpoint="workflowexecutions.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "workflowexecutions.googleapis.com:8000"
+    assert client.transport._host == "workflowexecutions.googleapis.com:8000"
 
 
 def test_executions_grpc_transport_channel():
@@ -1627,6 +1619,7 @@ def test_executions_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_executions_grpc_asyncio_transport_channel():
@@ -1638,6 +1631,7 @@ def test_executions_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -1678,8 +1672,13 @@ def test_executions_transport_channel_mtls_with_client_cert_source(transport_cla
                 scopes=("https://www.googleapis.com/auth/cloud-platform",),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -1715,6 +1714,10 @@ def test_executions_transport_channel_mtls_with_adc(transport_class):
                 scopes=("https://www.googleapis.com/auth/cloud-platform",),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -1743,6 +1746,132 @@ def test_parse_execution_path():
 
     # Check that the path construction is reversible.
     actual = ExecutionsClient.parse_execution_path(path)
+    assert expected == actual
+
+
+def test_workflow_path():
+    project = "winkle"
+    location = "nautilus"
+    workflow = "scallop"
+
+    expected = "projects/{project}/locations/{location}/workflows/{workflow}".format(
+        project=project, location=location, workflow=workflow,
+    )
+    actual = ExecutionsClient.workflow_path(project, location, workflow)
+    assert expected == actual
+
+
+def test_parse_workflow_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "workflow": "clam",
+    }
+    path = ExecutionsClient.workflow_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ExecutionsClient.parse_workflow_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "whelk"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = ExecutionsClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "octopus",
+    }
+    path = ExecutionsClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ExecutionsClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "oyster"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = ExecutionsClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nudibranch",
+    }
+    path = ExecutionsClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ExecutionsClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "cuttlefish"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = ExecutionsClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "mussel",
+    }
+    path = ExecutionsClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ExecutionsClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "winkle"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = ExecutionsClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nautilus",
+    }
+    path = ExecutionsClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ExecutionsClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "scallop"
+    location = "abalone"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = ExecutionsClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+    }
+    path = ExecutionsClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ExecutionsClient.parse_common_location_path(path)
     assert expected == actual
 
 

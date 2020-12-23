@@ -197,7 +197,7 @@ class ListWorkflowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflows = proto.RepeatedField(proto.MESSAGE, number=1, message=Workflow,)
+    workflows = proto.RepeatedField(proto.MESSAGE, number=1, message="Workflow",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -245,7 +245,7 @@ class CreateWorkflowRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    workflow = proto.Field(proto.MESSAGE, number=2, message=Workflow,)
+    workflow = proto.Field(proto.MESSAGE, number=2, message="Workflow",)
 
     workflow_id = proto.Field(proto.STRING, number=3)
 
@@ -278,7 +278,7 @@ class UpdateWorkflowRequest(proto.Message):
             the entire workflow will be updated.
     """
 
-    workflow = proto.Field(proto.MESSAGE, number=1, message=Workflow,)
+    workflow = proto.Field(proto.MESSAGE, number=1, message="Workflow",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
