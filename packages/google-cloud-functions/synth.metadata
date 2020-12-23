@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-functions.git",
-        "sha": "6ef79767921676ef825fbac52fee5fdbec75d5e1"
+        "sha": "bdb2f5093ed82a88ce769d72a1c6bc0643f3644c"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "3f87da2ed1ddc3566ef0810c4fc06a2682cc9f5f",
-        "internalRef": "343022252"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {

@@ -33,9 +33,12 @@ from .functions import (
     GenerateUploadUrlResponse,
     GenerateDownloadUrlRequest,
     GenerateDownloadUrlResponse,
+    CloudFunctionStatus,
 )
-from .operations import OperationMetadataV1
-
+from .operations import (
+    OperationMetadataV1,
+    OperationType,
+)
 
 __all__ = (
     "CloudFunction",
@@ -55,5 +58,7 @@ __all__ = (
     "GenerateUploadUrlResponse",
     "GenerateDownloadUrlRequest",
     "GenerateDownloadUrlResponse",
+    "CloudFunctionStatus",
     "OperationMetadataV1",
+    "OperationType",
 )
