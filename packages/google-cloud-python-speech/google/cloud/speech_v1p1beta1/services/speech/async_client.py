@@ -18,7 +18,16 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, AsyncIterable, AsyncIterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    AsyncIterable,
+    Awaitable,
+    AsyncIterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -51,8 +60,36 @@ class SpeechAsyncClient:
     phrase_set_path = staticmethod(SpeechClient.phrase_set_path)
     parse_phrase_set_path = staticmethod(SpeechClient.parse_phrase_set_path)
 
+    common_billing_account_path = staticmethod(SpeechClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(
+        SpeechClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(SpeechClient.common_folder_path)
+    parse_common_folder_path = staticmethod(SpeechClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(SpeechClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        SpeechClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(SpeechClient.common_project_path)
+    parse_common_project_path = staticmethod(SpeechClient.parse_common_project_path)
+
+    common_location_path = staticmethod(SpeechClient.common_location_path)
+    parse_common_location_path = staticmethod(SpeechClient.parse_common_location_path)
+
     from_service_account_file = SpeechClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> SpeechTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            SpeechTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(SpeechClient).get_transport_class, type(SpeechClient)
@@ -153,7 +190,8 @@ class SpeechAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([config, audio]):
+        has_flattened_params = any([config, audio])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -178,7 +216,7 @@ class SpeechAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=5000.0,
@@ -250,7 +288,8 @@ class SpeechAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([config, audio]):
+        has_flattened_params = any([config, audio])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -295,7 +334,7 @@ class SpeechAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> AsyncIterable[cloud_speech.StreamingRecognizeResponse]:
+    ) -> Awaitable[AsyncIterable[cloud_speech.StreamingRecognizeResponse]]:
         r"""Performs bidirectional streaming speech recognition:
         receive results while sending audio. This method is only
         available via the gRPC API (not REST).
@@ -388,7 +427,7 @@ class SpeechAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=5000.0,

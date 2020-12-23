@@ -40,7 +40,6 @@ from .cloud_speech import (
     WordInfo,
 )
 
-
 __all__ = (
     "CustomClass",
     "PhraseSet",

@@ -149,9 +149,11 @@ class SpeechAdaptation(proto.Message):
             ``custom_class_id``.
     """
 
-    phrase_sets = proto.RepeatedField(proto.MESSAGE, number=1, message=PhraseSet,)
+    phrase_sets = proto.RepeatedField(proto.MESSAGE, number=1, message="PhraseSet",)
 
-    custom_classes = proto.RepeatedField(proto.MESSAGE, number=2, message=CustomClass,)
+    custom_classes = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="CustomClass",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
