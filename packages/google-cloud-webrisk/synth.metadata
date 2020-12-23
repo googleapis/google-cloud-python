@@ -11,8 +11,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "50ae1c72fd94a3ae4269394b09e4b7fbb9251146",
-        "internalRef": "320484049"
+        "sha": "57fc4a8a94a5bd015a83fb0f0a1707f62254b2cd",
+        "internalRef": "348813319"
       }
     },
     {
@@ -137,7 +137,9 @@
     "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
     "setup.cfg",
     "testing/.gitignore",
+    "tests/unit/gapic/webrisk_v1/__init__.py",
     "tests/unit/gapic/webrisk_v1/test_web_risk_service.py",
-    "tests/unit/gapic/webrisk_v1beta1/test_web_risk_service_v1_beta1.py"
+    "tests/unit/gapic/webrisk_v1beta1/__init__.py",
+    "tests/unit/gapic/webrisk_v1beta1/test_web_risk_service_v1_beta1.py",
   ]
 }

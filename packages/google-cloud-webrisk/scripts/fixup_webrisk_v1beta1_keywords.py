@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -43,6 +44,7 @@ class webriskCallTransformer(cst.CSTTransformer):
     'compute_threat_list_diff': ('threat_type', 'constraints', 'version_token', ),
     'search_hashes': ('threat_types', 'hash_prefix', ),
     'search_uris': ('uri', 'threat_types', ),
+
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

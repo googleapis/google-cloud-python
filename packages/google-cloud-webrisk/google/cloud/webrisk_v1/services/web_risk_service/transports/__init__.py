@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[WebRiskServiceTransp
 _transport_registry["grpc"] = WebRiskServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = WebRiskServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "WebRiskServiceTransport",
     "WebRiskServiceGrpcTransport",

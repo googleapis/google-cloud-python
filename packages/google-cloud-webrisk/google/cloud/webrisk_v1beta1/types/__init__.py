@@ -27,8 +27,9 @@ from .webrisk import (
     RawIndices,
     RawHashes,
     RiceDeltaEncoding,
+    ThreatType,
+    CompressionType,
 )
-
 
 __all__ = (
     "ComputeThreatListDiffRequest",
@@ -42,4 +43,6 @@ __all__ = (
     "RawIndices",
     "RawHashes",
     "RiceDeltaEncoding",
+    "ThreatType",
+    "CompressionType",
 )

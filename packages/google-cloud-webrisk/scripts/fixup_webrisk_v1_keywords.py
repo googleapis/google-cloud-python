@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -44,6 +45,7 @@ class webriskCallTransformer(cst.CSTTransformer):
     'create_submission': ('parent', 'submission', ),
     'search_hashes': ('threat_types', 'hash_prefix', ),
     'search_uris': ('uri', 'threat_types', ),
+
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = WebRiskServiceV1Beta1GrpcTransport
 _transport_registry["grpc_asyncio"] = WebRiskServiceV1Beta1GrpcAsyncIOTransport
 
-
 __all__ = (
     "WebRiskServiceV1Beta1Transport",
     "WebRiskServiceV1Beta1GrpcTransport",

@@ -265,7 +265,7 @@ class SearchHashesResponse(proto.Message):
             threat_types (Sequence[~.webrisk.ThreatType]):
                 The ThreatList this threat belongs to.
                 This must contain at least one entry.
-            hash (bytes):
+            hash_ (bytes):
                 A 32 byte SHA256 hash. This field is in
                 binary format. For JSON requests, hashes are
                 base64-encoded.
@@ -277,7 +277,7 @@ class SearchHashesResponse(proto.Message):
 
         threat_types = proto.RepeatedField(proto.ENUM, number=1, enum="ThreatType",)
 
-        hash = proto.Field(proto.BYTES, number=2)
+        hash_ = proto.Field(proto.BYTES, number=2)
 
         expire_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
 
@@ -429,7 +429,7 @@ class CreateSubmissionRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    submission = proto.Field(proto.MESSAGE, number=2, message=Submission,)
+    submission = proto.Field(proto.MESSAGE, number=2, message="Submission",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

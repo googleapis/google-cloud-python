@@ -17,10 +17,10 @@ The 2.0.0 release requires Python 3.6+.
 
 Methods expect request objects. We provide a script that will convert most common use cases.
 
-* Install the library
+* Install the library and `libcst >= 0.2.5`.
 
 ```py
-python3 -m pip install google-cloud-webrisk
+python3 -m pip install google-cloud-webrisk libcst >= 0.2.5
 ```
 
 * The scripts `fixup_webrisk_v1_keywords.py` and  `fixup_webrisk_v1beta1_keywords.py` shipped with the library. It expects

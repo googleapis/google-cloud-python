@@ -22,10 +22,12 @@ import grpc
 from grpc.experimental import aio
 import math
 import pytest
+from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from google import auth
 from google.api_core import client_options
 from google.api_core import exceptions
+from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials
@@ -44,6 +46,17 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return (
+        "foo.googleapis.com"
+        if ("localhost" in client.DEFAULT_ENDPOINT)
+        else client.DEFAULT_ENDPOINT
+    )
 
 
 def test__get_default_mtls_endpoint():
@@ -86,12 +99,12 @@ def test_web_risk_service_v1_beta1_client_from_service_account_file(client_class
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "webrisk.googleapis.com:443"
+        assert client.transport._host == "webrisk.googleapis.com:443"
 
 
 def test_web_risk_service_v1_beta1_client_get_transport_class():
@@ -117,6 +130,16 @@ def test_web_risk_service_v1_beta1_client_get_transport_class():
         ),
     ],
 )
+@mock.patch.object(
+    WebRiskServiceV1Beta1Client,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(WebRiskServiceV1Beta1Client),
+)
+@mock.patch.object(
+    WebRiskServiceV1Beta1AsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(WebRiskServiceV1Beta1AsyncClient),
+)
 def test_web_risk_service_v1_beta1_client_client_options(
     client_class, transport_class, transport_name
 ):
@@ -141,85 +164,15 @@ def test_web_risk_service_v1_beta1_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    os.environ["GOOGLE_API_USE_MTLS"] = "never"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        patched.return_value = None
-        client = client_class()
-        patched.assert_called_once_with(
-            credentials=None,
-            credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
-            scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
-        )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
-    # "always".
-    os.environ["GOOGLE_API_USE_MTLS"] = "always"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        patched.return_value = None
-        client = client_class()
-        patched.assert_called_once_with(
-            credentials=None,
-            credentials_file=None,
-            host=client.DEFAULT_MTLS_ENDPOINT,
-            scopes=None,
-            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-            client_cert_source=None,
-        )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
-    options = client_options.ClientOptions(
-        client_cert_source=client_cert_source_callback
-    )
-    with mock.patch.object(transport_class, "__init__") as patched:
-        patched.return_value = None
-        client = client_class(client_options=options)
-        patched.assert_called_once_with(
-            credentials=None,
-            credentials_file=None,
-            host=client.DEFAULT_MTLS_ENDPOINT,
-            scopes=None,
-            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-            client_cert_source=client_cert_source_callback,
-        )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            patched.return_value = None
-            client = client_class()
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    os.environ["GOOGLE_API_USE_MTLS"] = "auto"
-    with mock.patch.object(transport_class, "__init__") as patched:
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
             patched.assert_called_once_with(
@@ -227,17 +180,201 @@ def test_web_risk_service_v1_beta1_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
-    # unsupported value.
-    os.environ["GOOGLE_API_USE_MTLS"] = "Unsupported"
-    with pytest.raises(MutualTLSChannelError):
-        client = client_class()
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
+    # "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class()
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+                scopes=None,
+                ssl_channel_credentials=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
-    del os.environ["GOOGLE_API_USE_MTLS"]
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
+            client = client_class()
+
+    # Check the case quota_project_id is provided
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            ssl_channel_credentials=None,
+            quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1GrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            WebRiskServiceV1Beta1AsyncClient,
+            transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (
+            WebRiskServiceV1Beta1Client,
+            transports.WebRiskServiceV1Beta1GrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            WebRiskServiceV1Beta1AsyncClient,
+            transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    WebRiskServiceV1Beta1Client,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(WebRiskServiceV1Beta1Client),
+)
+@mock.patch.object(
+    WebRiskServiceV1Beta1AsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(WebRiskServiceV1Beta1AsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_web_risk_service_v1_beta1_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -268,8 +405,9 @@ def test_web_risk_service_v1_beta1_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -301,8 +439,9 @@ def test_web_risk_service_v1_beta1_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -319,23 +458,26 @@ def test_web_risk_service_v1_beta1_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
-def test_compute_threat_list_diff(transport: str = "grpc"):
+def test_compute_threat_list_diff(
+    transport: str = "grpc", request_type=webrisk.ComputeThreatListDiffRequest
+):
     client = WebRiskServiceV1Beta1Client(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = webrisk.ComputeThreatListDiffRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.compute_threat_list_diff), "__call__"
+        type(client.transport.compute_threat_list_diff), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.ComputeThreatListDiffResponse(
@@ -349,9 +491,10 @@ def test_compute_threat_list_diff(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == webrisk.ComputeThreatListDiffRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, webrisk.ComputeThreatListDiffResponse)
 
     assert (
@@ -362,19 +505,25 @@ def test_compute_threat_list_diff(transport: str = "grpc"):
     assert response.new_version_token == b"new_version_token_blob"
 
 
+def test_compute_threat_list_diff_from_dict():
+    test_compute_threat_list_diff(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_compute_threat_list_diff_async(transport: str = "grpc_asyncio"):
+async def test_compute_threat_list_diff_async(
+    transport: str = "grpc_asyncio", request_type=webrisk.ComputeThreatListDiffRequest
+):
     client = WebRiskServiceV1Beta1AsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = webrisk.ComputeThreatListDiffRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.compute_threat_list_diff), "__call__"
+        type(client.transport.compute_threat_list_diff), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -390,7 +539,7 @@ async def test_compute_threat_list_diff_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == webrisk.ComputeThreatListDiffRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.ComputeThreatListDiffResponse)
@@ -403,6 +552,11 @@ async def test_compute_threat_list_diff_async(transport: str = "grpc_asyncio"):
     assert response.new_version_token == b"new_version_token_blob"
 
 
+@pytest.mark.asyncio
+async def test_compute_threat_list_diff_async_from_dict():
+    await test_compute_threat_list_diff_async(request_type=dict)
+
+
 def test_compute_threat_list_diff_flattened():
     client = WebRiskServiceV1Beta1Client(
         credentials=credentials.AnonymousCredentials(),
@@ -410,7 +564,7 @@ def test_compute_threat_list_diff_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.compute_threat_list_diff), "__call__"
+        type(client.transport.compute_threat_list_diff), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.ComputeThreatListDiffResponse()
@@ -429,8 +583,11 @@ def test_compute_threat_list_diff_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+
         assert args[0].threat_type == webrisk.ThreatType.MALWARE
+
         assert args[0].version_token == b"version_token_blob"
+
         assert args[0].constraints == webrisk.ComputeThreatListDiffRequest.Constraints(
             max_diff_entries=1687
         )
@@ -462,7 +619,7 @@ async def test_compute_threat_list_diff_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.compute_threat_list_diff), "__call__"
+        type(client.transport.compute_threat_list_diff), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.ComputeThreatListDiffResponse()
@@ -484,8 +641,11 @@ async def test_compute_threat_list_diff_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
+
         assert args[0].threat_type == webrisk.ThreatType.MALWARE
+
         assert args[0].version_token == b"version_token_blob"
+
         assert args[0].constraints == webrisk.ComputeThreatListDiffRequest.Constraints(
             max_diff_entries=1687
         )
@@ -510,17 +670,17 @@ async def test_compute_threat_list_diff_flattened_error_async():
         )
 
 
-def test_search_uris(transport: str = "grpc"):
+def test_search_uris(transport: str = "grpc", request_type=webrisk.SearchUrisRequest):
     client = WebRiskServiceV1Beta1Client(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = webrisk.SearchUrisRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_uris), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.SearchUrisResponse()
 
@@ -530,26 +690,31 @@ def test_search_uris(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == webrisk.SearchUrisRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, webrisk.SearchUrisResponse)
 
 
+def test_search_uris_from_dict():
+    test_search_uris(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_search_uris_async(transport: str = "grpc_asyncio"):
+async def test_search_uris_async(
+    transport: str = "grpc_asyncio", request_type=webrisk.SearchUrisRequest
+):
     client = WebRiskServiceV1Beta1AsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = webrisk.SearchUrisRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.search_uris), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             webrisk.SearchUrisResponse()
@@ -561,10 +726,15 @@ async def test_search_uris_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == webrisk.SearchUrisRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchUrisResponse)
+
+
+@pytest.mark.asyncio
+async def test_search_uris_async_from_dict():
+    await test_search_uris_async(request_type=dict)
 
 
 def test_search_uris_flattened():
@@ -573,7 +743,7 @@ def test_search_uris_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_uris), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.SearchUrisResponse()
 
@@ -587,7 +757,9 @@ def test_search_uris_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+
         assert args[0].uri == "uri_value"
+
         assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
 
 
@@ -613,9 +785,7 @@ async def test_search_uris_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.search_uris), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.SearchUrisResponse()
 
@@ -632,7 +802,9 @@ async def test_search_uris_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
+
         assert args[0].uri == "uri_value"
+
         assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
 
 
@@ -652,17 +824,19 @@ async def test_search_uris_flattened_error_async():
         )
 
 
-def test_search_hashes(transport: str = "grpc"):
+def test_search_hashes(
+    transport: str = "grpc", request_type=webrisk.SearchHashesRequest
+):
     client = WebRiskServiceV1Beta1Client(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = webrisk.SearchHashesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_hashes), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.SearchHashesResponse()
 
@@ -672,26 +846,31 @@ def test_search_hashes(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == webrisk.SearchHashesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, webrisk.SearchHashesResponse)
 
 
+def test_search_hashes_from_dict():
+    test_search_hashes(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_search_hashes_async(transport: str = "grpc_asyncio"):
+async def test_search_hashes_async(
+    transport: str = "grpc_asyncio", request_type=webrisk.SearchHashesRequest
+):
     client = WebRiskServiceV1Beta1AsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = webrisk.SearchHashesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.search_hashes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             webrisk.SearchHashesResponse()
@@ -703,10 +882,15 @@ async def test_search_hashes_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == webrisk.SearchHashesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchHashesResponse)
+
+
+@pytest.mark.asyncio
+async def test_search_hashes_async_from_dict():
+    await test_search_hashes_async(request_type=dict)
 
 
 def test_search_hashes_flattened():
@@ -715,7 +899,7 @@ def test_search_hashes_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.search_hashes), "__call__") as call:
+    with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.SearchHashesResponse()
 
@@ -729,7 +913,9 @@ def test_search_hashes_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+
         assert args[0].hash_prefix == b"hash_prefix_blob"
+
         assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
 
 
@@ -755,9 +941,7 @@ async def test_search_hashes_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.search_hashes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = webrisk.SearchHashesResponse()
 
@@ -774,7 +958,9 @@ async def test_search_hashes_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
+
         assert args[0].hash_prefix == b"hash_prefix_blob"
+
         assert args[0].threat_types == [webrisk.ThreatType.MALWARE]
 
 
@@ -830,7 +1016,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = WebRiskServiceV1Beta1Client(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -848,12 +1034,27 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.WebRiskServiceV1Beta1GrpcTransport,
+        transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = WebRiskServiceV1Beta1Client(
         credentials=credentials.AnonymousCredentials(),
     )
-    assert isinstance(client._transport, transports.WebRiskServiceV1Beta1GrpcTransport,)
+    assert isinstance(client.transport, transports.WebRiskServiceV1Beta1GrpcTransport,)
 
 
 def test_web_risk_service_v1_beta1_base_transport_error():
@@ -867,9 +1068,13 @@ def test_web_risk_service_v1_beta1_base_transport_error():
 
 def test_web_risk_service_v1_beta1_base_transport():
     # Instantiate the base transport.
-    transport = transports.WebRiskServiceV1Beta1Transport(
-        credentials=credentials.AnonymousCredentials(),
-    )
+    with mock.patch(
+        "google.cloud.webrisk_v1beta1.services.web_risk_service_v1_beta1.transports.WebRiskServiceV1Beta1Transport.__init__"
+    ) as Transport:
+        Transport.return_value = None
+        transport = transports.WebRiskServiceV1Beta1Transport(
+            credentials=credentials.AnonymousCredentials(),
+        )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
@@ -885,15 +1090,32 @@ def test_web_risk_service_v1_beta1_base_transport():
 
 def test_web_risk_service_v1_beta1_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(auth, "load_credentials_from_file") as load_creds:
+    with mock.patch.object(
+        auth, "load_credentials_from_file"
+    ) as load_creds, mock.patch(
+        "google.cloud.webrisk_v1beta1.services.web_risk_service_v1_beta1.transports.WebRiskServiceV1Beta1Transport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
         transport = transports.WebRiskServiceV1Beta1Transport(
-            credentials_file="credentials.json",
+            credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
         )
+
+
+def test_web_risk_service_v1_beta1_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.webrisk_v1beta1.services.web_risk_service_v1_beta1.transports.WebRiskServiceV1Beta1Transport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.WebRiskServiceV1Beta1Transport()
+        adc.assert_called_once()
 
 
 def test_web_risk_service_v1_beta1_auth_adc():
@@ -902,7 +1124,8 @@ def test_web_risk_service_v1_beta1_auth_adc():
         adc.return_value = (credentials.AnonymousCredentials(), None)
         WebRiskServiceV1Beta1Client()
         adc.assert_called_once_with(
-            scopes=("https://www.googleapis.com/auth/cloud-platform",)
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id=None,
         )
 
 
@@ -911,9 +1134,12 @@ def test_web_risk_service_v1_beta1_transport_auth_adc():
     # ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.WebRiskServiceV1Beta1GrpcTransport(host="squid.clam.whelk")
+        transports.WebRiskServiceV1Beta1GrpcTransport(
+            host="squid.clam.whelk", quota_project_id="octopus"
+        )
         adc.assert_called_once_with(
-            scopes=("https://www.googleapis.com/auth/cloud-platform",)
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
         )
 
 
@@ -924,7 +1150,7 @@ def test_web_risk_service_v1_beta1_host_no_port():
             api_endpoint="webrisk.googleapis.com"
         ),
     )
-    assert client._transport._host == "webrisk.googleapis.com:443"
+    assert client.transport._host == "webrisk.googleapis.com:443"
 
 
 def test_web_risk_service_v1_beta1_host_with_port():
@@ -934,178 +1160,246 @@ def test_web_risk_service_v1_beta1_host_with_port():
             api_endpoint="webrisk.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "webrisk.googleapis.com:8000"
+    assert client.transport._host == "webrisk.googleapis.com:8000"
 
 
 def test_web_risk_service_v1_beta1_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.WebRiskServiceV1Beta1GrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
 def test_web_risk_service_v1_beta1_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_web_risk_service_v1_beta1_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.WebRiskServiceV1Beta1GrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_web_risk_service_v1_beta1_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [
+        transports.WebRiskServiceV1Beta1GrpcTransport,
+        transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+    ],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_web_risk_service_v1_beta1_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
+def test_web_risk_service_v1_beta1_transport_channel_mtls_with_client_cert_source(
+    transport_class,
 ):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.WebRiskServiceV1Beta1GrpcTransport,
+        transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport,
+    ],
+)
+def test_web_risk_service_v1_beta1_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.WebRiskServiceV1Beta1GrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_web_risk_service_v1_beta1_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+def test_common_billing_account_path():
+    billing_account = "squid"
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.WebRiskServiceV1Beta1GrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = WebRiskServiceV1Beta1Client.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "clam",
+    }
+    path = WebRiskServiceV1Beta1Client.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WebRiskServiceV1Beta1Client.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "whelk"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = WebRiskServiceV1Beta1Client.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "octopus",
+    }
+    path = WebRiskServiceV1Beta1Client.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WebRiskServiceV1Beta1Client.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "oyster"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = WebRiskServiceV1Beta1Client.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nudibranch",
+    }
+    path = WebRiskServiceV1Beta1Client.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WebRiskServiceV1Beta1Client.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "cuttlefish"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = WebRiskServiceV1Beta1Client.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "mussel",
+    }
+    path = WebRiskServiceV1Beta1Client.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WebRiskServiceV1Beta1Client.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "winkle"
+    location = "nautilus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = WebRiskServiceV1Beta1Client.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+    }
+    path = WebRiskServiceV1Beta1Client.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = WebRiskServiceV1Beta1Client.parse_common_location_path(path)
+    assert expected == actual
+
+
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(
+        transports.WebRiskServiceV1Beta1Transport, "_prep_wrapped_messages"
+    ) as prep:
+        client = WebRiskServiceV1Beta1Client(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.WebRiskServiceV1Beta1Transport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = WebRiskServiceV1Beta1Client.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
         )
-        assert transport.grpc_channel == mock_grpc_channel
+        prep.assert_called_once_with(client_info)

@@ -29,8 +29,9 @@ from .webrisk import (
     RiceDeltaEncoding,
     Submission,
     CreateSubmissionRequest,
+    ThreatType,
+    CompressionType,
 )
-
 
 __all__ = (
     "ComputeThreatListDiffRequest",
@@ -46,4 +47,6 @@ __all__ = (
     "RiceDeltaEncoding",
     "Submission",
     "CreateSubmissionRequest",
+    "ThreatType",
+    "CompressionType",
 )
