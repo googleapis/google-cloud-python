@@ -45,8 +45,46 @@ class LanguageServiceAsyncClient:
     DEFAULT_ENDPOINT = LanguageServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = LanguageServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    common_billing_account_path = staticmethod(
+        LanguageServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        LanguageServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(LanguageServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        LanguageServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        LanguageServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        LanguageServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(LanguageServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        LanguageServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(LanguageServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        LanguageServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = LanguageServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> LanguageServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            LanguageServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(LanguageServiceClient).get_transport_class, type(LanguageServiceClient)
@@ -144,7 +182,8 @@ class LanguageServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document, encoding_type]):
+        has_flattened_params = any([document, encoding_type])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -169,7 +208,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -225,7 +264,8 @@ class LanguageServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document, encoding_type]):
+        has_flattened_params = any([document, encoding_type])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -250,7 +290,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -309,7 +349,8 @@ class LanguageServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document, encoding_type]):
+        has_flattened_params = any([document, encoding_type])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -334,7 +375,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -389,7 +430,8 @@ class LanguageServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document, encoding_type]):
+        has_flattened_params = any([document, encoding_type])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -414,7 +456,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -463,7 +505,8 @@ class LanguageServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document]):
+        has_flattened_params = any([document])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -486,7 +529,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -551,7 +594,8 @@ class LanguageServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([document, features, encoding_type]):
+        has_flattened_params = any([document, features, encoding_type])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -578,7 +622,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,

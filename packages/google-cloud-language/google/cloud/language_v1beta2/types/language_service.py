@@ -561,7 +561,7 @@ class EntityMention(proto.Message):
 
     type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
 
-    sentiment = proto.Field(proto.MESSAGE, number=3, message=Sentiment,)
+    sentiment = proto.Field(proto.MESSAGE, number=3, message="Sentiment",)
 
 
 class TextSpan(proto.Message):
@@ -613,7 +613,7 @@ class AnalyzeSentimentRequest(proto.Message):
             sentiment.
     """
 
-    document = proto.Field(proto.MESSAGE, number=1, message=Document,)
+    document = proto.Field(proto.MESSAGE, number=1, message="Document",)
 
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
@@ -635,11 +635,11 @@ class AnalyzeSentimentResponse(proto.Message):
             document.
     """
 
-    document_sentiment = proto.Field(proto.MESSAGE, number=1, message=Sentiment,)
+    document_sentiment = proto.Field(proto.MESSAGE, number=1, message="Sentiment",)
 
     language = proto.Field(proto.STRING, number=2)
 
-    sentences = proto.RepeatedField(proto.MESSAGE, number=3, message=Sentence,)
+    sentences = proto.RepeatedField(proto.MESSAGE, number=3, message="Sentence",)
 
 
 class AnalyzeEntitySentimentRequest(proto.Message):
@@ -653,7 +653,7 @@ class AnalyzeEntitySentimentRequest(proto.Message):
             calculate offsets.
     """
 
-    document = proto.Field(proto.MESSAGE, number=1, message=Document,)
+    document = proto.Field(proto.MESSAGE, number=1, message="Document",)
 
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
@@ -673,7 +673,7 @@ class AnalyzeEntitySentimentResponse(proto.Message):
             field for more details.
     """
 
-    entities = proto.RepeatedField(proto.MESSAGE, number=1, message=Entity,)
+    entities = proto.RepeatedField(proto.MESSAGE, number=1, message="Entity",)
 
     language = proto.Field(proto.STRING, number=2)
 
@@ -689,7 +689,7 @@ class AnalyzeEntitiesRequest(proto.Message):
             calculate offsets.
     """
 
-    document = proto.Field(proto.MESSAGE, number=1, message=Document,)
+    document = proto.Field(proto.MESSAGE, number=1, message="Document",)
 
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
@@ -709,7 +709,7 @@ class AnalyzeEntitiesResponse(proto.Message):
             field for more details.
     """
 
-    entities = proto.RepeatedField(proto.MESSAGE, number=1, message=Entity,)
+    entities = proto.RepeatedField(proto.MESSAGE, number=1, message="Entity",)
 
     language = proto.Field(proto.STRING, number=2)
 
@@ -725,7 +725,7 @@ class AnalyzeSyntaxRequest(proto.Message):
             calculate offsets.
     """
 
-    document = proto.Field(proto.MESSAGE, number=1, message=Document,)
+    document = proto.Field(proto.MESSAGE, number=1, message="Document",)
 
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
@@ -747,9 +747,9 @@ class AnalyzeSyntaxResponse(proto.Message):
             field for more details.
     """
 
-    sentences = proto.RepeatedField(proto.MESSAGE, number=1, message=Sentence,)
+    sentences = proto.RepeatedField(proto.MESSAGE, number=1, message="Sentence",)
 
-    tokens = proto.RepeatedField(proto.MESSAGE, number=2, message=Token,)
+    tokens = proto.RepeatedField(proto.MESSAGE, number=2, message="Token",)
 
     language = proto.Field(proto.STRING, number=3)
 
@@ -762,7 +762,7 @@ class ClassifyTextRequest(proto.Message):
             Required. Input document.
     """
 
-    document = proto.Field(proto.MESSAGE, number=1, message=Document,)
+    document = proto.Field(proto.MESSAGE, number=1, message="Document",)
 
 
 class ClassifyTextResponse(proto.Message):
@@ -774,7 +774,7 @@ class ClassifyTextResponse(proto.Message):
     """
 
     categories = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ClassificationCategory,
+        proto.MESSAGE, number=1, message="ClassificationCategory",
     )
 
 
@@ -825,7 +825,7 @@ class AnnotateTextRequest(proto.Message):
 
         classify_text = proto.Field(proto.BOOL, number=6)
 
-    document = proto.Field(proto.MESSAGE, number=1, message=Document,)
+    document = proto.Field(proto.MESSAGE, number=1, message="Document",)
 
     features = proto.Field(proto.MESSAGE, number=2, message=Features,)
 
@@ -862,18 +862,18 @@ class AnnotateTextResponse(proto.Message):
             Categories identified in the input document.
     """
 
-    sentences = proto.RepeatedField(proto.MESSAGE, number=1, message=Sentence,)
+    sentences = proto.RepeatedField(proto.MESSAGE, number=1, message="Sentence",)
 
-    tokens = proto.RepeatedField(proto.MESSAGE, number=2, message=Token,)
+    tokens = proto.RepeatedField(proto.MESSAGE, number=2, message="Token",)
 
-    entities = proto.RepeatedField(proto.MESSAGE, number=3, message=Entity,)
+    entities = proto.RepeatedField(proto.MESSAGE, number=3, message="Entity",)
 
-    document_sentiment = proto.Field(proto.MESSAGE, number=4, message=Sentiment,)
+    document_sentiment = proto.Field(proto.MESSAGE, number=4, message="Sentiment",)
 
     language = proto.Field(proto.STRING, number=5)
 
     categories = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=ClassificationCategory,
+        proto.MESSAGE, number=6, message="ClassificationCategory",
     )
 
 
