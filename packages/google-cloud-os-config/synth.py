@@ -19,17 +19,22 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate OS Config GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    "osconfig", "v1"
-)
+versions = ["v1"]
 
-s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
+for version in versions:
+    library = gapic.py_library(
+        service="osconfig",
+        version=version,
+        bazel_target=f"//google/cloud/osconfig/{version}/:osconfig-{version}-py"
+    )
+
+    s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
 # rename to google-cloud-os-config
 s.replace(["google/**/*.py", "tests/**/*.py"], "google-cloud-osconfig", "google-cloud-os-config")
@@ -46,6 +51,7 @@ s.replace("google/cloud/**/*client.py",
 templated_files = common.py_library(
     samples=False,
     microgenerator=True,
+    cov_level=99,
 )
 s.move(
     templated_files, excludes=[".coveragerc"]
