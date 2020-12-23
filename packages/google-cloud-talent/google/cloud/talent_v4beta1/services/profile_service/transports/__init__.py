@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[ProfileServiceTransp
 _transport_registry["grpc"] = ProfileServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ProfileServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "ProfileServiceTransport",
     "ProfileServiceGrpcTransport",

@@ -106,12 +106,12 @@ def test_application_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "jobs.googleapis.com:443"
+        assert client.transport._host == "jobs.googleapis.com:443"
 
 
 def test_application_service_client_get_transport_class():
@@ -472,7 +472,7 @@ def test_create_application(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_application), "__call__"
+        type(client.transport.create_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_application.Application(
@@ -497,6 +497,7 @@ def test_create_application(
         assert args[0] == application_service.CreateApplicationRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gct_application.Application)
 
     assert response.name == "name_value"
@@ -525,18 +526,21 @@ def test_create_application_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_application_async(transport: str = "grpc_asyncio"):
+async def test_create_application_async(
+    transport: str = "grpc_asyncio",
+    request_type=application_service.CreateApplicationRequest,
+):
     client = ApplicationServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = application_service.CreateApplicationRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_application), "__call__"
+        type(client.transport.create_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -560,7 +564,7 @@ async def test_create_application_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == application_service.CreateApplicationRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_application.Application)
@@ -586,6 +590,11 @@ async def test_create_application_async(transport: str = "grpc_asyncio"):
     assert response.job_title_snippet == "job_title_snippet_value"
 
 
+@pytest.mark.asyncio
+async def test_create_application_async_from_dict():
+    await test_create_application_async(request_type=dict)
+
+
 def test_create_application_field_headers():
     client = ApplicationServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -596,7 +605,7 @@ def test_create_application_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_application), "__call__"
+        type(client.transport.create_application), "__call__"
     ) as call:
         call.return_value = gct_application.Application()
 
@@ -625,7 +634,7 @@ async def test_create_application_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_application), "__call__"
+        type(client.transport.create_application), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gct_application.Application()
@@ -648,7 +657,7 @@ def test_create_application_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_application), "__call__"
+        type(client.transport.create_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_application.Application()
@@ -691,7 +700,7 @@ async def test_create_application_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_application), "__call__"
+        type(client.transport.create_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_application.Application()
@@ -744,7 +753,7 @@ def test_get_application(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_application), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = application.Application(
             name="name_value",
@@ -768,6 +777,7 @@ def test_get_application(
         assert args[0] == application_service.GetApplicationRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, application.Application)
 
     assert response.name == "name_value"
@@ -796,19 +806,20 @@ def test_get_application_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_application_async(transport: str = "grpc_asyncio"):
+async def test_get_application_async(
+    transport: str = "grpc_asyncio",
+    request_type=application_service.GetApplicationRequest,
+):
     client = ApplicationServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = application_service.GetApplicationRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_application), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             application.Application(
@@ -831,7 +842,7 @@ async def test_get_application_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == application_service.GetApplicationRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, application.Application)
@@ -857,6 +868,11 @@ async def test_get_application_async(transport: str = "grpc_asyncio"):
     assert response.job_title_snippet == "job_title_snippet_value"
 
 
+@pytest.mark.asyncio
+async def test_get_application_async_from_dict():
+    await test_get_application_async(request_type=dict)
+
+
 def test_get_application_field_headers():
     client = ApplicationServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -866,7 +882,7 @@ def test_get_application_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_application), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         call.return_value = application.Application()
 
         client.get_application(request)
@@ -893,9 +909,7 @@ async def test_get_application_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_application), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             application.Application()
         )
@@ -916,7 +930,7 @@ def test_get_application_flattened():
     client = ApplicationServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_application), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = application.Application()
 
@@ -950,9 +964,7 @@ async def test_get_application_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_application), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_application), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = application.Application()
 
@@ -998,7 +1010,7 @@ def test_update_application(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_application), "__call__"
+        type(client.transport.update_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_application.Application(
@@ -1023,6 +1035,7 @@ def test_update_application(
         assert args[0] == application_service.UpdateApplicationRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gct_application.Application)
 
     assert response.name == "name_value"
@@ -1051,18 +1064,21 @@ def test_update_application_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_application_async(transport: str = "grpc_asyncio"):
+async def test_update_application_async(
+    transport: str = "grpc_asyncio",
+    request_type=application_service.UpdateApplicationRequest,
+):
     client = ApplicationServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = application_service.UpdateApplicationRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_application), "__call__"
+        type(client.transport.update_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1086,7 +1102,7 @@ async def test_update_application_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == application_service.UpdateApplicationRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_application.Application)
@@ -1112,6 +1128,11 @@ async def test_update_application_async(transport: str = "grpc_asyncio"):
     assert response.job_title_snippet == "job_title_snippet_value"
 
 
+@pytest.mark.asyncio
+async def test_update_application_async_from_dict():
+    await test_update_application_async(request_type=dict)
+
+
 def test_update_application_field_headers():
     client = ApplicationServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1122,7 +1143,7 @@ def test_update_application_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_application), "__call__"
+        type(client.transport.update_application), "__call__"
     ) as call:
         call.return_value = gct_application.Application()
 
@@ -1153,7 +1174,7 @@ async def test_update_application_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_application), "__call__"
+        type(client.transport.update_application), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gct_application.Application()
@@ -1178,7 +1199,7 @@ def test_update_application_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_application), "__call__"
+        type(client.transport.update_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_application.Application()
@@ -1217,7 +1238,7 @@ async def test_update_application_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_application), "__call__"
+        type(client.transport.update_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gct_application.Application()
@@ -1267,7 +1288,7 @@ def test_delete_application(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_application), "__call__"
+        type(client.transport.delete_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1289,18 +1310,21 @@ def test_delete_application_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_application_async(transport: str = "grpc_asyncio"):
+async def test_delete_application_async(
+    transport: str = "grpc_asyncio",
+    request_type=application_service.DeleteApplicationRequest,
+):
     client = ApplicationServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = application_service.DeleteApplicationRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_application), "__call__"
+        type(client.transport.delete_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -1311,10 +1335,15 @@ async def test_delete_application_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == application_service.DeleteApplicationRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_application_async_from_dict():
+    await test_delete_application_async(request_type=dict)
 
 
 def test_delete_application_field_headers():
@@ -1327,7 +1356,7 @@ def test_delete_application_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_application), "__call__"
+        type(client.transport.delete_application), "__call__"
     ) as call:
         call.return_value = None
 
@@ -1356,7 +1385,7 @@ async def test_delete_application_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_application), "__call__"
+        type(client.transport.delete_application), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1377,7 +1406,7 @@ def test_delete_application_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_application), "__call__"
+        type(client.transport.delete_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1413,7 +1442,7 @@ async def test_delete_application_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_application), "__call__"
+        type(client.transport.delete_application), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1458,7 +1487,7 @@ def test_list_applications(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = application_service.ListApplicationsResponse(
@@ -1474,6 +1503,7 @@ def test_list_applications(
         assert args[0] == application_service.ListApplicationsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListApplicationsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -1484,18 +1514,21 @@ def test_list_applications_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_applications_async(transport: str = "grpc_asyncio"):
+async def test_list_applications_async(
+    transport: str = "grpc_asyncio",
+    request_type=application_service.ListApplicationsRequest,
+):
     client = ApplicationServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = application_service.ListApplicationsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1510,12 +1543,17 @@ async def test_list_applications_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == application_service.ListApplicationsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApplicationsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_applications_async_from_dict():
+    await test_list_applications_async(request_type=dict)
 
 
 def test_list_applications_field_headers():
@@ -1528,7 +1566,7 @@ def test_list_applications_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         call.return_value = application_service.ListApplicationsResponse()
 
@@ -1557,7 +1595,7 @@ async def test_list_applications_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             application_service.ListApplicationsResponse()
@@ -1580,7 +1618,7 @@ def test_list_applications_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = application_service.ListApplicationsResponse()
@@ -1616,7 +1654,7 @@ async def test_list_applications_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = application_service.ListApplicationsResponse()
@@ -1655,7 +1693,7 @@ def test_list_applications_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1697,7 +1735,7 @@ def test_list_applications_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_applications), "__call__"
+        type(client.transport.list_applications), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1733,7 +1771,7 @@ async def test_list_applications_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_applications),
+        type(client.transport.list_applications),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1776,7 +1814,7 @@ async def test_list_applications_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_applications),
+        type(client.transport.list_applications),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1844,7 +1882,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = ApplicationServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1880,7 +1918,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ApplicationServiceClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.ApplicationServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.ApplicationServiceGrpcTransport,)
 
 
 def test_application_service_base_transport_error():
@@ -1985,7 +2023,7 @@ def test_application_service_host_no_port():
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint="jobs.googleapis.com"),
     )
-    assert client._transport._host == "jobs.googleapis.com:443"
+    assert client.transport._host == "jobs.googleapis.com:443"
 
 
 def test_application_service_host_with_port():
@@ -1995,7 +2033,7 @@ def test_application_service_host_with_port():
             api_endpoint="jobs.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "jobs.googleapis.com:8000"
+    assert client.transport._host == "jobs.googleapis.com:8000"
 
 
 def test_application_service_grpc_transport_channel():
@@ -2007,6 +2045,7 @@ def test_application_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_application_service_grpc_asyncio_transport_channel():
@@ -2018,6 +2057,7 @@ def test_application_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -2066,8 +2106,13 @@ def test_application_service_transport_channel_mtls_with_client_cert_source(
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2109,6 +2154,10 @@ def test_application_service_transport_channel_mtls_with_adc(transport_class):
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -2139,6 +2188,182 @@ def test_parse_application_path():
 
     # Check that the path construction is reversible.
     actual = ApplicationServiceClient.parse_application_path(path)
+    assert expected == actual
+
+
+def test_company_path():
+    project = "winkle"
+    tenant = "nautilus"
+    company = "scallop"
+
+    expected = "projects/{project}/tenants/{tenant}/companies/{company}".format(
+        project=project, tenant=tenant, company=company,
+    )
+    actual = ApplicationServiceClient.company_path(project, tenant, company)
+    assert expected == actual
+
+
+def test_parse_company_path():
+    expected = {
+        "project": "abalone",
+        "tenant": "squid",
+        "company": "clam",
+    }
+    path = ApplicationServiceClient.company_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_company_path(path)
+    assert expected == actual
+
+
+def test_job_path():
+    project = "whelk"
+    tenant = "octopus"
+    job = "oyster"
+
+    expected = "projects/{project}/tenants/{tenant}/jobs/{job}".format(
+        project=project, tenant=tenant, job=job,
+    )
+    actual = ApplicationServiceClient.job_path(project, tenant, job)
+    assert expected == actual
+
+
+def test_parse_job_path():
+    expected = {
+        "project": "nudibranch",
+        "tenant": "cuttlefish",
+        "job": "mussel",
+    }
+    path = ApplicationServiceClient.job_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_job_path(path)
+    assert expected == actual
+
+
+def test_profile_path():
+    project = "winkle"
+    tenant = "nautilus"
+    profile = "scallop"
+
+    expected = "projects/{project}/tenants/{tenant}/profiles/{profile}".format(
+        project=project, tenant=tenant, profile=profile,
+    )
+    actual = ApplicationServiceClient.profile_path(project, tenant, profile)
+    assert expected == actual
+
+
+def test_parse_profile_path():
+    expected = {
+        "project": "abalone",
+        "tenant": "squid",
+        "profile": "clam",
+    }
+    path = ApplicationServiceClient.profile_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_profile_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "whelk"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = ApplicationServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "octopus",
+    }
+    path = ApplicationServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "oyster"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = ApplicationServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nudibranch",
+    }
+    path = ApplicationServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "cuttlefish"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = ApplicationServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "mussel",
+    }
+    path = ApplicationServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "winkle"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = ApplicationServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nautilus",
+    }
+    path = ApplicationServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "scallop"
+    location = "abalone"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = ApplicationServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+    }
+    path = ApplicationServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ApplicationServiceClient.parse_common_location_path(path)
     assert expected == actual
 
 

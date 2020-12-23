@@ -44,8 +44,45 @@ class CompletionAsyncClient:
     DEFAULT_ENDPOINT = CompletionClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = CompletionClient.DEFAULT_MTLS_ENDPOINT
 
+    company_path = staticmethod(CompletionClient.company_path)
+    parse_company_path = staticmethod(CompletionClient.parse_company_path)
+    tenant_path = staticmethod(CompletionClient.tenant_path)
+    parse_tenant_path = staticmethod(CompletionClient.parse_tenant_path)
+
+    common_billing_account_path = staticmethod(
+        CompletionClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        CompletionClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(CompletionClient.common_folder_path)
+    parse_common_folder_path = staticmethod(CompletionClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(CompletionClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        CompletionClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(CompletionClient.common_project_path)
+    parse_common_project_path = staticmethod(CompletionClient.parse_common_project_path)
+
+    common_location_path = staticmethod(CompletionClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        CompletionClient.parse_common_location_path
+    )
+
     from_service_account_file = CompletionClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> CompletionTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            CompletionTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(CompletionClient).get_transport_class, type(CompletionClient)
@@ -138,7 +175,7 @@ class CompletionAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=30.0,

@@ -729,7 +729,7 @@ class EmploymentRecord(proto.Message):
 
     division_name = proto.Field(proto.STRING, number=4)
 
-    address = proto.Field(proto.MESSAGE, number=5, message=Address,)
+    address = proto.Field(proto.MESSAGE, number=5, message="Address",)
 
     job_title = proto.Field(proto.STRING, number=6)
 
@@ -802,7 +802,7 @@ class EducationRecord(proto.Message):
 
     school_name = proto.Field(proto.STRING, number=4)
 
-    address = proto.Field(proto.MESSAGE, number=5, message=Address,)
+    address = proto.Field(proto.MESSAGE, number=5, message="Address",)
 
     degree_description = proto.Field(proto.STRING, number=6, oneof="degree")
 

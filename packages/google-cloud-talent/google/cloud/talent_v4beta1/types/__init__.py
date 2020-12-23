@@ -29,6 +29,20 @@ from .common import (
     Interview,
     Rating,
     BatchOperationMetadata,
+    CompanySize,
+    JobBenefit,
+    DegreeType,
+    EmploymentType,
+    JobLevel,
+    JobCategory,
+    PostingRegion,
+    Visibility,
+    ContactInfoUsage,
+    HtmlSanitization,
+    CommuteMethod,
+    SkillProficiencyLevel,
+    Outcome,
+    AvailabilitySignalType,
 )
 from .application import Application
 from .application_service import (
@@ -95,6 +109,7 @@ from .job_service import (
     BatchCreateJobsRequest,
     BatchUpdateJobsRequest,
     JobOperationResult,
+    JobView,
 )
 from .profile import (
     Profile,
@@ -134,7 +149,6 @@ from .tenant_service import (
     ListTenantsResponse,
 )
 
-
 __all__ = (
     "TimestampRange",
     "Location",
@@ -149,6 +163,20 @@ __all__ = (
     "Interview",
     "Rating",
     "BatchOperationMetadata",
+    "CompanySize",
+    "JobBenefit",
+    "DegreeType",
+    "EmploymentType",
+    "JobLevel",
+    "JobCategory",
+    "PostingRegion",
+    "Visibility",
+    "ContactInfoUsage",
+    "HtmlSanitization",
+    "CommuteMethod",
+    "SkillProficiencyLevel",
+    "Outcome",
+    "AvailabilitySignalType",
     "Application",
     "CreateApplicationRequest",
     "GetApplicationRequest",
@@ -201,6 +229,7 @@ __all__ = (
     "BatchCreateJobsRequest",
     "BatchUpdateJobsRequest",
     "JobOperationResult",
+    "JobView",
     "Profile",
     "AvailabilitySignal",
     "Resume",

@@ -54,9 +54,49 @@ class ProfileServiceAsyncClient:
 
     profile_path = staticmethod(ProfileServiceClient.profile_path)
     parse_profile_path = staticmethod(ProfileServiceClient.parse_profile_path)
+    tenant_path = staticmethod(ProfileServiceClient.tenant_path)
+    parse_tenant_path = staticmethod(ProfileServiceClient.parse_tenant_path)
+
+    common_billing_account_path = staticmethod(
+        ProfileServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ProfileServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ProfileServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ProfileServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        ProfileServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ProfileServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(ProfileServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ProfileServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(ProfileServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ProfileServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = ProfileServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ProfileServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ProfileServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ProfileServiceClient).get_transport_class, type(ProfileServiceClient)
@@ -152,7 +192,8 @@ class ProfileServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -248,7 +289,8 @@ class ProfileServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, profile]):
+        has_flattened_params = any([parent, profile])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -325,7 +367,8 @@ class ProfileServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -405,7 +448,8 @@ class ProfileServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([profile]):
+        has_flattened_params = any([profile])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -476,7 +520,8 @@ class ProfileServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

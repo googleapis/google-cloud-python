@@ -143,7 +143,6 @@ __all__ = (
     "ApplicationDateFilter",
     "ApplicationJobFilter",
     "ApplicationOutcomeNotesFilter",
-    "ApplicationServiceClient",
     "AvailabilityFilter",
     "AvailabilitySignal",
     "AvailabilitySignalType",
@@ -244,6 +243,7 @@ __all__ = (
     "SpellingCorrection",
     "SummarizedProfile",
     "Tenant",
+    "TenantServiceClient",
     "TimeFilter",
     "TimestampRange",
     "UpdateApplicationRequest",
@@ -253,5 +253,5 @@ __all__ = (
     "UpdateTenantRequest",
     "Visibility",
     "WorkExperienceFilter",
-    "TenantServiceClient",
+    "ApplicationServiceClient",
 )

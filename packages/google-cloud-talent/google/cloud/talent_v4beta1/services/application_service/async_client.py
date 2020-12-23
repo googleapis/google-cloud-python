@@ -56,9 +56,53 @@ class ApplicationServiceAsyncClient:
     parse_application_path = staticmethod(
         ApplicationServiceClient.parse_application_path
     )
+    company_path = staticmethod(ApplicationServiceClient.company_path)
+    parse_company_path = staticmethod(ApplicationServiceClient.parse_company_path)
+    job_path = staticmethod(ApplicationServiceClient.job_path)
+    parse_job_path = staticmethod(ApplicationServiceClient.parse_job_path)
+    profile_path = staticmethod(ApplicationServiceClient.profile_path)
+    parse_profile_path = staticmethod(ApplicationServiceClient.parse_profile_path)
+
+    common_billing_account_path = staticmethod(
+        ApplicationServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        ApplicationServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ApplicationServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ApplicationServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        ApplicationServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        ApplicationServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(ApplicationServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        ApplicationServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(ApplicationServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        ApplicationServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = ApplicationServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ApplicationServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ApplicationServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ApplicationServiceClient).get_transport_class,
@@ -161,7 +205,8 @@ class ApplicationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, application]):
+        has_flattened_params = any([parent, application])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -239,7 +284,8 @@ class ApplicationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -319,7 +365,8 @@ class ApplicationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([application]):
+        has_flattened_params = any([application])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -390,7 +437,8 @@ class ApplicationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -475,7 +523,8 @@ class ApplicationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

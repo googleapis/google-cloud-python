@@ -121,7 +121,7 @@ class CompleteQueryResponse(proto.Message):
         suggestion = proto.Field(proto.STRING, number=1)
 
         type_ = proto.Field(
-            proto.ENUM, number=2, enum=CompleteQueryRequest.CompletionType,
+            proto.ENUM, number=2, enum="CompleteQueryRequest.CompletionType",
         )
 
         image_uri = proto.Field(proto.STRING, number=3)

@@ -25,6 +25,16 @@ from .common import (
     SpellingCorrection,
     CompensationInfo,
     BatchOperationMetadata,
+    CompanySize,
+    JobBenefit,
+    DegreeType,
+    EmploymentType,
+    JobLevel,
+    JobCategory,
+    PostingRegion,
+    Visibility,
+    HtmlSanitization,
+    CommuteMethod,
 )
 from .company import Company
 from .company_service import (
@@ -71,6 +81,7 @@ from .job_service import (
     BatchCreateJobsResponse,
     BatchUpdateJobsResponse,
     BatchDeleteJobsResponse,
+    JobView,
 )
 from .tenant import Tenant
 from .tenant_service import (
@@ -82,7 +93,6 @@ from .tenant_service import (
     ListTenantsResponse,
 )
 
-
 __all__ = (
     "TimestampRange",
     "Location",
@@ -93,6 +103,16 @@ __all__ = (
     "SpellingCorrection",
     "CompensationInfo",
     "BatchOperationMetadata",
+    "CompanySize",
+    "JobBenefit",
+    "DegreeType",
+    "EmploymentType",
+    "JobLevel",
+    "JobCategory",
+    "PostingRegion",
+    "Visibility",
+    "HtmlSanitization",
+    "CommuteMethod",
     "Company",
     "CreateCompanyRequest",
     "GetCompanyRequest",
@@ -127,6 +147,7 @@ __all__ = (
     "BatchCreateJobsResponse",
     "BatchUpdateJobsResponse",
     "BatchDeleteJobsResponse",
+    "JobView",
     "Tenant",
     "CreateTenantRequest",
     "GetTenantRequest",

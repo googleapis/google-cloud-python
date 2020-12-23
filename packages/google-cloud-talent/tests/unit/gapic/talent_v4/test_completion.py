@@ -89,12 +89,12 @@ def test_completion_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "jobs.googleapis.com:443"
+        assert client.transport._host == "jobs.googleapis.com:443"
 
 
 def test_completion_client_get_transport_class():
@@ -438,7 +438,7 @@ def test_complete_query(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.complete_query), "__call__") as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = completion_service.CompleteQueryResponse()
 
@@ -451,6 +451,7 @@ def test_complete_query(
         assert args[0] == completion_service.CompleteQueryRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, completion_service.CompleteQueryResponse)
 
 
@@ -459,19 +460,20 @@ def test_complete_query_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_complete_query_async(transport: str = "grpc_asyncio"):
+async def test_complete_query_async(
+    transport: str = "grpc_asyncio",
+    request_type=completion_service.CompleteQueryRequest,
+):
     client = CompletionAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = completion_service.CompleteQueryRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.complete_query), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             completion_service.CompleteQueryResponse()
@@ -483,10 +485,15 @@ async def test_complete_query_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == completion_service.CompleteQueryRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
+
+
+@pytest.mark.asyncio
+async def test_complete_query_async_from_dict():
+    await test_complete_query_async(request_type=dict)
 
 
 def test_complete_query_field_headers():
@@ -498,7 +505,7 @@ def test_complete_query_field_headers():
     request.tenant = "tenant/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.complete_query), "__call__") as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         call.return_value = completion_service.CompleteQueryResponse()
 
         client.complete_query(request)
@@ -523,9 +530,7 @@ async def test_complete_query_field_headers_async():
     request.tenant = "tenant/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.complete_query), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             completion_service.CompleteQueryResponse()
         )
@@ -578,7 +583,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = CompletionClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -611,7 +616,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CompletionClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.CompletionGrpcTransport,)
+    assert isinstance(client.transport, transports.CompletionGrpcTransport,)
 
 
 def test_completion_base_transport_error():
@@ -710,7 +715,7 @@ def test_completion_host_no_port():
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint="jobs.googleapis.com"),
     )
-    assert client._transport._host == "jobs.googleapis.com:443"
+    assert client.transport._host == "jobs.googleapis.com:443"
 
 
 def test_completion_host_with_port():
@@ -720,7 +725,7 @@ def test_completion_host_with_port():
             api_endpoint="jobs.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "jobs.googleapis.com:8000"
+    assert client.transport._host == "jobs.googleapis.com:8000"
 
 
 def test_completion_grpc_transport_channel():
@@ -732,6 +737,7 @@ def test_completion_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_completion_grpc_asyncio_transport_channel():
@@ -743,6 +749,7 @@ def test_completion_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -786,8 +793,13 @@ def test_completion_transport_channel_mtls_with_client_cert_source(transport_cla
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -826,8 +838,161 @@ def test_completion_transport_channel_mtls_with_adc(transport_class):
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+
+
+def test_company_path():
+    project = "squid"
+    tenant = "clam"
+    company = "whelk"
+
+    expected = "projects/{project}/tenants/{tenant}/companies/{company}".format(
+        project=project, tenant=tenant, company=company,
+    )
+    actual = CompletionClient.company_path(project, tenant, company)
+    assert expected == actual
+
+
+def test_parse_company_path():
+    expected = {
+        "project": "octopus",
+        "tenant": "oyster",
+        "company": "nudibranch",
+    }
+    path = CompletionClient.company_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_company_path(path)
+    assert expected == actual
+
+
+def test_tenant_path():
+    project = "cuttlefish"
+    tenant = "mussel"
+
+    expected = "projects/{project}/tenants/{tenant}".format(
+        project=project, tenant=tenant,
+    )
+    actual = CompletionClient.tenant_path(project, tenant)
+    assert expected == actual
+
+
+def test_parse_tenant_path():
+    expected = {
+        "project": "winkle",
+        "tenant": "nautilus",
+    }
+    path = CompletionClient.tenant_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_tenant_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "scallop"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = CompletionClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "abalone",
+    }
+    path = CompletionClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "squid"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = CompletionClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "clam",
+    }
+    path = CompletionClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "whelk"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = CompletionClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "octopus",
+    }
+    path = CompletionClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "oyster"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = CompletionClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nudibranch",
+    }
+    path = CompletionClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "cuttlefish"
+    location = "mussel"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = CompletionClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+    }
+    path = CompletionClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CompletionClient.parse_common_location_path(path)
+    assert expected == actual
 
 
 def test_client_withDEFAULT_CLIENT_INFO():

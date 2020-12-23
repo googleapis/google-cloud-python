@@ -52,9 +52,49 @@ class CompanyServiceAsyncClient:
 
     company_path = staticmethod(CompanyServiceClient.company_path)
     parse_company_path = staticmethod(CompanyServiceClient.parse_company_path)
+    tenant_path = staticmethod(CompanyServiceClient.tenant_path)
+    parse_tenant_path = staticmethod(CompanyServiceClient.parse_tenant_path)
+
+    common_billing_account_path = staticmethod(
+        CompanyServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        CompanyServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(CompanyServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        CompanyServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        CompanyServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        CompanyServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(CompanyServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        CompanyServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(CompanyServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        CompanyServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = CompanyServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> CompanyServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            CompanyServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(CompanyServiceClient).get_transport_class, type(CompanyServiceClient)
@@ -159,7 +199,8 @@ class CompanyServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, company]):
+        has_flattened_params = any([parent, company])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -241,7 +282,8 @@ class CompanyServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -264,7 +306,7 @@ class CompanyServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=30.0,
@@ -341,7 +383,8 @@ class CompanyServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([company, update_mask]):
+        has_flattened_params = any([company, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -415,7 +458,8 @@ class CompanyServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -438,7 +482,7 @@ class CompanyServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=30.0,
@@ -499,7 +543,8 @@ class CompanyServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -522,7 +567,7 @@ class CompanyServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=30.0,

@@ -883,7 +883,7 @@ class BatchCreateJobsResponse(proto.Message):
             status is FINISHED, FAILED or CANCELLED.
     """
 
-    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message=JobResult,)
+    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message="JobResult",)
 
 
 class BatchUpdateJobsResponse(proto.Message):
@@ -900,7 +900,7 @@ class BatchUpdateJobsResponse(proto.Message):
             status is FINISHED, FAILED or CANCELLED.
     """
 
-    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message=JobResult,)
+    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message="JobResult",)
 
 
 class BatchDeleteJobsResponse(proto.Message):
@@ -917,7 +917,7 @@ class BatchDeleteJobsResponse(proto.Message):
             status is FINISHED, FAILED or CANCELLED.
     """
 
-    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message=JobResult,)
+    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message="JobResult",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
