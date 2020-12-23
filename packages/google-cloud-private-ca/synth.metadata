@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-security-private-ca.git",
-        "sha": "bbe17c13e7af03c68f933bc2405522f227c0522e"
+        "sha": "c984a7868b5a990d7ef02fd3894aa94ca913a308"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dabe30b45bc86fdaf4126f26cbcfd73babbfa3fe",
-        "internalRef": "345194337"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {

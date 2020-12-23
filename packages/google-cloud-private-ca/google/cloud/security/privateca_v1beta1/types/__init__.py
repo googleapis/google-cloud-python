@@ -31,6 +31,7 @@ from .resources import (
     KeyUsage,
     Subject,
     SubjectAltNames,
+    RevocationReason,
 )
 from .service import (
     CreateCertificateRequest,
@@ -61,7 +62,6 @@ from .service import (
     OperationMetadata,
 )
 
-
 __all__ = (
     "CertificateAuthority",
     "CertificateRevocationList",
@@ -78,6 +78,7 @@ __all__ = (
     "KeyUsage",
     "Subject",
     "SubjectAltNames",
+    "RevocationReason",
     "CreateCertificateRequest",
     "GetCertificateRequest",
     "ListCertificatesRequest",
