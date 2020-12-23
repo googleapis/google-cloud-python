@@ -35,7 +35,6 @@ from .cloud_speech import (
     WordInfo,
 )
 
-
 __all__ = (
     "RecognizeRequest",
     "LongRunningRecognizeRequest",
