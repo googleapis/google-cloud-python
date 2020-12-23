@@ -129,7 +129,6 @@ __all__ = (
     "StreamingStorageConfig",
     "StreamingVideoAnnotationResults",
     "StreamingVideoConfig",
-    "StreamingVideoIntelligenceServiceClient",
     "TextAnnotation",
     "TextDetectionConfig",
     "TextFrame",
@@ -139,7 +138,8 @@ __all__ = (
     "VideoAnnotationProgress",
     "VideoAnnotationResults",
     "VideoContext",
+    "VideoIntelligenceServiceClient",
     "VideoSegment",
     "WordInfo",
-    "VideoIntelligenceServiceClient",
+    "StreamingVideoIntelligenceServiceClient",
 )
