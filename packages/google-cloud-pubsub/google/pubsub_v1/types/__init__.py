@@ -61,7 +61,6 @@ from .pubsub import (
     SeekResponse,
 )
 
-
 __all__ = (
     "MessageStoragePolicy",
     "Topic",
