@@ -95,12 +95,12 @@ def test_cloud_redis_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "redis.googleapis.com:443"
+        assert client.transport._host == "redis.googleapis.com:443"
 
 
 def test_cloud_redis_client_get_transport_class():
@@ -444,7 +444,7 @@ def test_list_instances(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.ListInstancesResponse(
             next_page_token="next_page_token_value", unreachable=["unreachable_value"],
@@ -459,6 +459,7 @@ def test_list_instances(
         assert args[0] == cloud_redis.ListInstancesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListInstancesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -471,19 +472,19 @@ def test_list_instances_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_instances_async(transport: str = "grpc_asyncio"):
+async def test_list_instances_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.ListInstancesRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.ListInstancesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_instances), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cloud_redis.ListInstancesResponse(
@@ -498,7 +499,7 @@ async def test_list_instances_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.ListInstancesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
@@ -506,6 +507,11 @@ async def test_list_instances_async(transport: str = "grpc_asyncio"):
     assert response.next_page_token == "next_page_token_value"
 
     assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_instances_async_from_dict():
+    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -517,7 +523,7 @@ def test_list_instances_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         call.return_value = cloud_redis.ListInstancesResponse()
 
         client.list_instances(request)
@@ -542,9 +548,7 @@ async def test_list_instances_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_instances), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cloud_redis.ListInstancesResponse()
         )
@@ -565,7 +569,7 @@ def test_list_instances_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.ListInstancesResponse()
 
@@ -597,9 +601,7 @@ async def test_list_instances_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_instances), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.ListInstancesResponse()
 
@@ -634,7 +636,7 @@ def test_list_instances_pager():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_redis.ListInstancesResponse(
@@ -672,7 +674,7 @@ def test_list_instances_pages():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_redis.ListInstancesResponse(
@@ -703,9 +705,7 @@ async def test_list_instances_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_instances),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_instances), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -742,9 +742,7 @@ async def test_list_instances_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_instances),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_instances), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -784,7 +782,7 @@ def test_get_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.Instance(
             name="name_value",
@@ -814,6 +812,7 @@ def test_get_instance(
         assert args[0] == cloud_redis.GetInstanceRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, cloud_redis.Instance)
 
     assert response.name == "name_value"
@@ -854,19 +853,19 @@ def test_get_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_instance_async(transport: str = "grpc_asyncio"):
+async def test_get_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.GetInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.GetInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cloud_redis.Instance(
@@ -895,7 +894,7 @@ async def test_get_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.GetInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloud_redis.Instance)
@@ -933,6 +932,11 @@ async def test_get_instance_async(transport: str = "grpc_asyncio"):
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
 
 
+@pytest.mark.asyncio
+async def test_get_instance_async_from_dict():
+    await test_get_instance_async(request_type=dict)
+
+
 def test_get_instance_field_headers():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -942,7 +946,7 @@ def test_get_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         call.return_value = cloud_redis.Instance()
 
         client.get_instance(request)
@@ -967,9 +971,7 @@ async def test_get_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             cloud_redis.Instance()
         )
@@ -990,7 +992,7 @@ def test_get_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.Instance()
 
@@ -1022,9 +1024,7 @@ async def test_get_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_redis.Instance()
 
@@ -1067,7 +1067,7 @@ def test_create_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1088,19 +1088,19 @@ def test_create_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_instance_async(transport: str = "grpc_asyncio"):
+async def test_create_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.CreateInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.CreateInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1112,10 +1112,15 @@ async def test_create_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.CreateInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_instance_async_from_dict():
+    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -1127,7 +1132,7 @@ def test_create_instance_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.create_instance(request)
@@ -1152,9 +1157,7 @@ async def test_create_instance_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1175,7 +1178,7 @@ def test_create_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1218,9 +1221,7 @@ async def test_create_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1274,7 +1275,7 @@ def test_update_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1295,19 +1296,19 @@ def test_update_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_instance_async(transport: str = "grpc_asyncio"):
+async def test_update_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.UpdateInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.UpdateInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1319,10 +1320,15 @@ async def test_update_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.UpdateInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_instance_async_from_dict():
+    await test_update_instance_async(request_type=dict)
 
 
 def test_update_instance_field_headers():
@@ -1334,7 +1340,7 @@ def test_update_instance_field_headers():
     request.instance.name = "instance.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.update_instance(request)
@@ -1361,9 +1367,7 @@ async def test_update_instance_field_headers_async():
     request.instance.name = "instance.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1386,7 +1390,7 @@ def test_update_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1425,9 +1429,7 @@ async def test_update_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1477,9 +1479,7 @@ def test_upgrade_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1500,19 +1500,19 @@ def test_upgrade_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_upgrade_instance_async(transport: str = "grpc_asyncio"):
+async def test_upgrade_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.UpgradeInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.UpgradeInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1524,10 +1524,15 @@ async def test_upgrade_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.UpgradeInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_async_from_dict():
+    await test_upgrade_instance_async(request_type=dict)
 
 
 def test_upgrade_instance_field_headers():
@@ -1539,9 +1544,7 @@ def test_upgrade_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.upgrade_instance(request)
@@ -1566,9 +1569,7 @@ async def test_upgrade_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1589,9 +1590,7 @@ def test_upgrade_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1629,9 +1628,7 @@ async def test_upgrade_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1680,7 +1677,7 @@ def test_import_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.import_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1701,19 +1698,19 @@ def test_import_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_import_instance_async(transport: str = "grpc_asyncio"):
+async def test_import_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.ImportInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.ImportInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.import_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1725,10 +1722,15 @@ async def test_import_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.ImportInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_import_instance_async_from_dict():
+    await test_import_instance_async(request_type=dict)
 
 
 def test_import_instance_field_headers():
@@ -1740,7 +1742,7 @@ def test_import_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.import_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.import_instance(request)
@@ -1765,9 +1767,7 @@ async def test_import_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.import_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1788,7 +1788,7 @@ def test_import_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.import_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1833,9 +1833,7 @@ async def test_import_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.import_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.import_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1891,7 +1889,7 @@ def test_export_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.export_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1912,19 +1910,19 @@ def test_export_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_export_instance_async(transport: str = "grpc_asyncio"):
+async def test_export_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.ExportInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.ExportInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.export_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1936,10 +1934,15 @@ async def test_export_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.ExportInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_export_instance_async_from_dict():
+    await test_export_instance_async(request_type=dict)
 
 
 def test_export_instance_field_headers():
@@ -1951,7 +1954,7 @@ def test_export_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.export_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.export_instance(request)
@@ -1976,9 +1979,7 @@ async def test_export_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.export_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1999,7 +2000,7 @@ def test_export_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.export_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2044,9 +2045,7 @@ async def test_export_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.export_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2103,7 +2102,7 @@ def test_failover_instance(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.failover_instance), "__call__"
+        type(client.transport.failover_instance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -2125,18 +2124,20 @@ def test_failover_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_failover_instance_async(transport: str = "grpc_asyncio"):
+async def test_failover_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.FailoverInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.FailoverInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.failover_instance), "__call__"
+        type(client.transport.failover_instance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2149,10 +2150,15 @@ async def test_failover_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.FailoverInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_failover_instance_async_from_dict():
+    await test_failover_instance_async(request_type=dict)
 
 
 def test_failover_instance_field_headers():
@@ -2165,7 +2171,7 @@ def test_failover_instance_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.failover_instance), "__call__"
+        type(client.transport.failover_instance), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2192,7 +2198,7 @@ async def test_failover_instance_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.failover_instance), "__call__"
+        type(client.transport.failover_instance), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -2215,7 +2221,7 @@ def test_failover_instance_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.failover_instance), "__call__"
+        type(client.transport.failover_instance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -2259,7 +2265,7 @@ async def test_failover_instance_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.failover_instance), "__call__"
+        type(client.transport.failover_instance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
@@ -2313,7 +2319,7 @@ def test_delete_instance(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -2334,19 +2340,19 @@ def test_delete_instance_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_instance_async(transport: str = "grpc_asyncio"):
+async def test_delete_instance_async(
+    transport: str = "grpc_asyncio", request_type=cloud_redis.DeleteInstanceRequest
+):
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = cloud_redis.DeleteInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -2358,10 +2364,15 @@ async def test_delete_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == cloud_redis.DeleteInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_instance_async_from_dict():
+    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -2373,7 +2384,7 @@ def test_delete_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.delete_instance(request)
@@ -2398,9 +2409,7 @@ async def test_delete_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -2421,7 +2430,7 @@ def test_delete_instance_flattened():
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2453,9 +2462,7 @@ async def test_delete_instance_flattened_async():
     client = CloudRedisAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2522,7 +2529,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = CloudRedisClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -2555,7 +2562,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CloudRedisClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.CloudRedisGrpcTransport,)
+    assert isinstance(client.transport, transports.CloudRedisGrpcTransport,)
 
 
 def test_cloud_redis_base_transport_error():
@@ -2662,7 +2669,7 @@ def test_cloud_redis_host_no_port():
             api_endpoint="redis.googleapis.com"
         ),
     )
-    assert client._transport._host == "redis.googleapis.com:443"
+    assert client.transport._host == "redis.googleapis.com:443"
 
 
 def test_cloud_redis_host_with_port():
@@ -2672,7 +2679,7 @@ def test_cloud_redis_host_with_port():
             api_endpoint="redis.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "redis.googleapis.com:8000"
+    assert client.transport._host == "redis.googleapis.com:8000"
 
 
 def test_cloud_redis_grpc_transport_channel():
@@ -2684,6 +2691,7 @@ def test_cloud_redis_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_cloud_redis_grpc_asyncio_transport_channel():
@@ -2695,6 +2703,7 @@ def test_cloud_redis_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -2735,8 +2744,13 @@ def test_cloud_redis_transport_channel_mtls_with_client_cert_source(transport_cl
                 scopes=("https://www.googleapis.com/auth/cloud-platform",),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2772,6 +2786,10 @@ def test_cloud_redis_transport_channel_mtls_with_adc(transport_class):
                 scopes=("https://www.googleapis.com/auth/cloud-platform",),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -2780,7 +2798,7 @@ def test_cloud_redis_grpc_lro_client():
     client = CloudRedisClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc",
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
@@ -2793,7 +2811,7 @@ def test_cloud_redis_grpc_lro_async_client():
     client = CloudRedisAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
-    transport = client._client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
@@ -2824,6 +2842,107 @@ def test_parse_instance_path():
 
     # Check that the path construction is reversible.
     actual = CloudRedisClient.parse_instance_path(path)
+    assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "cuttlefish"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = CloudRedisClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "mussel",
+    }
+    path = CloudRedisClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "winkle"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = CloudRedisClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "nautilus",
+    }
+    path = CloudRedisClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "scallop"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = CloudRedisClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "abalone",
+    }
+    path = CloudRedisClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "squid"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = CloudRedisClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "clam",
+    }
+    path = CloudRedisClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "whelk"
+    location = "octopus"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = CloudRedisClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+    }
+    path = CloudRedisClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudRedisClient.parse_common_location_path(path)
     assert expected == actual
 
 

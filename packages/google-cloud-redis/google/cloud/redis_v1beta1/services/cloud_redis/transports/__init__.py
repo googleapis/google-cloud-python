@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]
 _transport_registry["grpc"] = CloudRedisGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudRedisGrpcAsyncIOTransport
 
-
 __all__ = (
     "CloudRedisTransport",
     "CloudRedisGrpcTransport",

@@ -75,8 +75,40 @@ class CloudRedisAsyncClient:
     instance_path = staticmethod(CloudRedisClient.instance_path)
     parse_instance_path = staticmethod(CloudRedisClient.parse_instance_path)
 
+    common_billing_account_path = staticmethod(
+        CloudRedisClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        CloudRedisClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(CloudRedisClient.common_folder_path)
+    parse_common_folder_path = staticmethod(CloudRedisClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(CloudRedisClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        CloudRedisClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(CloudRedisClient.common_project_path)
+    parse_common_project_path = staticmethod(CloudRedisClient.parse_common_project_path)
+
+    common_location_path = staticmethod(CloudRedisClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        CloudRedisClient.parse_common_location_path
+    )
+
     from_service_account_file = CloudRedisClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> CloudRedisTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            CloudRedisTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(CloudRedisClient).get_transport_class, type(CloudRedisClient)
@@ -181,7 +213,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([parent]):
+        has_flattened_params = builtins.any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -257,7 +290,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([name]):
+        has_flattened_params = builtins.any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -366,7 +400,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([parent, instance_id, instance]):
+        has_flattened_params = builtins.any([parent, instance_id, instance])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -471,7 +506,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([update_mask, instance]):
+        has_flattened_params = builtins.any([update_mask, instance])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -566,7 +602,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([name, redis_version]):
+        has_flattened_params = builtins.any([name, redis_version])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -666,7 +703,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([name, input_config]):
+        has_flattened_params = builtins.any([name, input_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -762,7 +800,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([name, output_config]):
+        has_flattened_params = builtins.any([name, output_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -857,7 +896,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([name, data_protection_mode]):
+        has_flattened_params = builtins.any([name, data_protection_mode])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -955,7 +995,8 @@ class CloudRedisAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and builtins.any([name]):
+        has_flattened_params = builtins.any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

@@ -293,7 +293,7 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(proto.MESSAGE, number=1, message=Instance,)
+    instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -341,7 +341,7 @@ class CreateInstanceRequest(proto.Message):
 
     instance_id = proto.Field(proto.STRING, number=2)
 
-    instance = proto.Field(proto.MESSAGE, number=3, message=Instance,)
+    instance = proto.Field(proto.MESSAGE, number=3, message="Instance",)
 
 
 class UpdateInstanceRequest(proto.Message):
@@ -366,7 +366,7 @@ class UpdateInstanceRequest(proto.Message):
 
     update_mask = proto.Field(proto.MESSAGE, number=1, message=field_mask.FieldMask,)
 
-    instance = proto.Field(proto.MESSAGE, number=2, message=Instance,)
+    instance = proto.Field(proto.MESSAGE, number=2, message="Instance",)
 
 
 class UpgradeInstanceRequest(proto.Message):
@@ -424,7 +424,7 @@ class InputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message=GcsSource,
+        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
     )
 
 
@@ -443,7 +443,7 @@ class ImportInstanceRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    input_config = proto.Field(proto.MESSAGE, number=3, message=InputConfig,)
+    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig",)
 
 
 class GcsDestination(proto.Message):
@@ -469,7 +469,7 @@ class OutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message=GcsDestination,
+        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
     )
 
 
@@ -488,7 +488,7 @@ class ExportInstanceRequest(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    output_config = proto.Field(proto.MESSAGE, number=3, message=OutputConfig,)
+    output_config = proto.Field(proto.MESSAGE, number=3, message="OutputConfig",)
 
 
 class FailoverInstanceRequest(proto.Message):

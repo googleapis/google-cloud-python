@@ -35,7 +35,6 @@ from .cloud_redis import (
     ZoneMetadata,
 )
 
-
 __all__ = (
     "Instance",
     "ListInstancesRequest",
