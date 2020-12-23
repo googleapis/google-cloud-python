@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[IAMCredentialsTransp
 _transport_registry["grpc"] = IAMCredentialsGrpcTransport
 _transport_registry["grpc_asyncio"] = IAMCredentialsGrpcAsyncIOTransport
 
-
 __all__ = (
     "IAMCredentialsTransport",
     "IAMCredentialsGrpcTransport",

@@ -26,7 +26,6 @@ from .common import (
     GenerateIdTokenResponse,
 )
 
-
 __all__ = (
     "GenerateAccessTokenRequest",
     "GenerateAccessTokenResponse",
