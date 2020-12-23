@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-vision.git",
-        "sha": "c42a4e135a034a64c66522a56e1edc2eeda32ad4"
+        "sha": "eaf1621dc5a76e970e58d6366a80c1272be83ed2"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "18c5dbdb4ac8cf75d4d8174e7b4558f48e76f8a1"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "18c5dbdb4ac8cf75d4d8174e7b4558f48e76f8a1"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     }
   ],
