@@ -89,6 +89,7 @@ class OsConfigServiceAsyncClient:
         OsConfigServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = OsConfigServiceClient.from_service_account_info
     from_service_account_file = OsConfigServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 

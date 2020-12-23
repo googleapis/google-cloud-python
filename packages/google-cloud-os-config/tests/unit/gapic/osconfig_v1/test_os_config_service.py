@@ -93,6 +93,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
+def test_os_config_service_client_from_service_account_info():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = OsConfigServiceClient.from_service_account_info(info)
+        assert client.transport._credentials == creds
+
+        assert client.transport._host == "osconfig.googleapis.com:443"
+
+
 @pytest.mark.parametrize(
     "client_class", [OsConfigServiceClient, OsConfigServiceAsyncClient]
 )
