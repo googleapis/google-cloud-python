@@ -156,7 +156,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def create_assessment(
-        self
+        self,
     ) -> Callable[
         [recaptchaenterprise.CreateAssessmentRequest], recaptchaenterprise.Assessment
     ]:
@@ -185,7 +185,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def annotate_assessment(
-        self
+        self,
     ) -> Callable[
         [recaptchaenterprise.AnnotateAssessmentRequest],
         recaptchaenterprise.AnnotateAssessmentResponse,
@@ -216,7 +216,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def create_key(
-        self
+        self,
     ) -> Callable[[recaptchaenterprise.CreateKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the create key method over gRPC.
 
@@ -242,7 +242,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def list_keys(
-        self
+        self,
     ) -> Callable[
         [recaptchaenterprise.ListKeysRequest], recaptchaenterprise.ListKeysResponse
     ]:
@@ -271,7 +271,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def get_key(
-        self
+        self,
     ) -> Callable[[recaptchaenterprise.GetKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the get key method over gRPC.
 
@@ -297,7 +297,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def update_key(
-        self
+        self,
     ) -> Callable[[recaptchaenterprise.UpdateKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the update key method over gRPC.
 
@@ -323,7 +323,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
 
     @property
     def delete_key(
-        self
+        self,
     ) -> Callable[[recaptchaenterprise.DeleteKeyRequest], empty.Empty]:
         r"""Return a callable for the delete key method over gRPC.
 

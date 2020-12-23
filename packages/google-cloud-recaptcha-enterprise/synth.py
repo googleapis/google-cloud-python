@@ -19,19 +19,20 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate reCAPTCHA Enterprise GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("recaptchaenterprise", "v1")
+library = gapic.py_library(
+    service="recaptchaenterprise", 
+    version="v1",
+    bazel_target=f"//google/cloud/recaptchaenterprise/{version}:recaptchaenterprise-{version}-py",
+)
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
 
 # rename to google-cloud-recaptcha-enterprise
 s.replace(
@@ -43,19 +44,10 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(cov_level=100, microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc"]
 )  # the microgenerator has a good coveragerc file
 
-# Remove 2.7 and 3.5 tests from noxfile.py
-s.replace("noxfile.py", """\["2\.7", """, "[")
-s.replace("noxfile.py", """"3.5", """, "")
-
-# Expand flake errors permitted to accomodate the Microgenerator
-# TODO: remove extra error codes once issues below are resolved
-# F401: https://github.com/googleapis/gapic-generator-python/issues/324
-# F841: https://github.com/googleapis/gapic-generator-python/issues/323
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

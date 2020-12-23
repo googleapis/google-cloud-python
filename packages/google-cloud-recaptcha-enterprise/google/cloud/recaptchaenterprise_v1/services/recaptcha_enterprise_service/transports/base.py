@@ -61,7 +61,7 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
     @property
     def create_assessment(
-        self
+        self,
     ) -> typing.Callable[
         [recaptchaenterprise.CreateAssessmentRequest], recaptchaenterprise.Assessment
     ]:
@@ -69,7 +69,7 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
     @property
     def annotate_assessment(
-        self
+        self,
     ) -> typing.Callable[
         [recaptchaenterprise.AnnotateAssessmentRequest],
         recaptchaenterprise.AnnotateAssessmentResponse,
@@ -78,7 +78,7 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
     @property
     def create_key(
-        self
+        self,
     ) -> typing.Callable[
         [recaptchaenterprise.CreateKeyRequest], recaptchaenterprise.Key
     ]:
@@ -86,7 +86,7 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
     @property
     def list_keys(
-        self
+        self,
     ) -> typing.Callable[
         [recaptchaenterprise.ListKeysRequest], recaptchaenterprise.ListKeysResponse
     ]:
@@ -94,13 +94,13 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
     @property
     def get_key(
-        self
+        self,
     ) -> typing.Callable[[recaptchaenterprise.GetKeyRequest], recaptchaenterprise.Key]:
         raise NotImplementedError
 
     @property
     def update_key(
-        self
+        self,
     ) -> typing.Callable[
         [recaptchaenterprise.UpdateKeyRequest], recaptchaenterprise.Key
     ]:
@@ -108,7 +108,7 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
     @property
     def delete_key(
-        self
+        self,
     ) -> typing.Callable[[recaptchaenterprise.DeleteKeyRequest], empty.Empty]:
         raise NotImplementedError
 
