@@ -113,6 +113,7 @@ __all__ = (
     "DeleteTenantRequest",
     "DeviceInfo",
     "EmploymentType",
+    "EventServiceClient",
     "GetCompanyRequest",
     "GetJobRequest",
     "GetTenantRequest",
@@ -149,5 +150,4 @@ __all__ = (
     "UpdateJobRequest",
     "UpdateTenantRequest",
     "Visibility",
-    "EventServiceClient",
 )
