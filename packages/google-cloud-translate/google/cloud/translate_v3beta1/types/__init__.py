@@ -45,7 +45,6 @@ from .translation_service import (
     DeleteGlossaryResponse,
 )
 
-
 __all__ = (
     "TranslateTextGlossaryConfig",
     "TranslateTextRequest",

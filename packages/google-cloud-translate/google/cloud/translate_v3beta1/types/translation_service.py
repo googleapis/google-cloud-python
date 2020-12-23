@@ -165,7 +165,7 @@ class TranslateTextRequest(proto.Message):
     model = proto.Field(proto.STRING, number=6)
 
     glossary_config = proto.Field(
-        proto.MESSAGE, number=7, message=TranslateTextGlossaryConfig,
+        proto.MESSAGE, number=7, message="TranslateTextGlossaryConfig",
     )
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=10)
@@ -221,7 +221,7 @@ class Translation(proto.Message):
     detected_language_code = proto.Field(proto.STRING, number=4)
 
     glossary_config = proto.Field(
-        proto.MESSAGE, number=3, message=TranslateTextGlossaryConfig,
+        proto.MESSAGE, number=3, message="TranslateTextGlossaryConfig",
     )
 
 
@@ -311,7 +311,9 @@ class DetectLanguageResponse(proto.Message):
             most probable language first.
     """
 
-    languages = proto.RepeatedField(proto.MESSAGE, number=1, message=DetectedLanguage,)
+    languages = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="DetectedLanguage",
+    )
 
 
 class GetSupportedLanguagesRequest(proto.Message):
@@ -454,7 +456,7 @@ class InputConfig(proto.Message):
     mime_type = proto.Field(proto.STRING, number=1)
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message=GcsSource,
+        proto.MESSAGE, number=2, oneof="source", message="GcsSource",
     )
 
 
@@ -551,7 +553,7 @@ class OutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message=GcsDestination,
+        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
     )
 
 
@@ -628,12 +630,12 @@ class BatchTranslateTextRequest(proto.Message):
 
     models = proto.MapField(proto.STRING, proto.STRING, number=4)
 
-    input_configs = proto.RepeatedField(proto.MESSAGE, number=5, message=InputConfig,)
+    input_configs = proto.RepeatedField(proto.MESSAGE, number=5, message="InputConfig",)
 
-    output_config = proto.Field(proto.MESSAGE, number=6, message=OutputConfig,)
+    output_config = proto.Field(proto.MESSAGE, number=6, message="OutputConfig",)
 
     glossaries = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=TranslateTextGlossaryConfig,
+        proto.STRING, proto.MESSAGE, number=7, message="TranslateTextGlossaryConfig",
     )
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=9)
@@ -749,7 +751,7 @@ class GlossaryInputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message=GcsSource,
+        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
     )
 
 
@@ -820,7 +822,7 @@ class Glossary(proto.Message):
         proto.MESSAGE, number=4, oneof="languages", message=LanguageCodesSet,
     )
 
-    input_config = proto.Field(proto.MESSAGE, number=5, message=GlossaryInputConfig,)
+    input_config = proto.Field(proto.MESSAGE, number=5, message="GlossaryInputConfig",)
 
     entry_count = proto.Field(proto.INT32, number=6)
 
@@ -841,7 +843,7 @@ class CreateGlossaryRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    glossary = proto.Field(proto.MESSAGE, number=2, message=Glossary,)
+    glossary = proto.Field(proto.MESSAGE, number=2, message="Glossary",)
 
 
 class GetGlossaryRequest(proto.Message):
@@ -918,7 +920,7 @@ class ListGlossariesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    glossaries = proto.RepeatedField(proto.MESSAGE, number=1, message=Glossary,)
+    glossaries = proto.RepeatedField(proto.MESSAGE, number=1, message="Glossary",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 

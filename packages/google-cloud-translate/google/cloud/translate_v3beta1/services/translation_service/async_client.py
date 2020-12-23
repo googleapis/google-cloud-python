@@ -50,8 +50,46 @@ class TranslationServiceAsyncClient:
     glossary_path = staticmethod(TranslationServiceClient.glossary_path)
     parse_glossary_path = staticmethod(TranslationServiceClient.parse_glossary_path)
 
+    common_billing_account_path = staticmethod(
+        TranslationServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        TranslationServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(TranslationServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        TranslationServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        TranslationServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        TranslationServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(TranslationServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        TranslationServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(TranslationServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        TranslationServiceClient.parse_common_location_path
+    )
+
     from_service_account_file = TranslationServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> TranslationServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            TranslationServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(TranslationServiceClient).get_transport_class,
@@ -228,7 +266,8 @@ class TranslationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, model, mime_type]):
+        has_flattened_params = any([parent, model, mime_type])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -346,7 +385,8 @@ class TranslationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, display_language_code, model]):
+        has_flattened_params = any([parent, display_language_code, model])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -373,7 +413,7 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -509,7 +549,8 @@ class TranslationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, glossary]):
+        has_flattened_params = any([parent, glossary])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -603,7 +644,8 @@ class TranslationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, filter]):
+        has_flattened_params = any([parent, filter])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -628,7 +670,7 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -690,7 +732,8 @@ class TranslationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -713,7 +756,7 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
@@ -775,7 +818,8 @@ class TranslationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -798,7 +842,7 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.ServiceUnavailable, exceptions.DeadlineExceeded,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
             ),
             default_timeout=600.0,
