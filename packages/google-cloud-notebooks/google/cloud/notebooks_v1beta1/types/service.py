@@ -77,6 +77,8 @@ class OperationMetadata(proto.Message):
             corresponding to ``Code.CANCELLED``.
         api_version (str):
             API version used to start the operation.
+        endpoint (str):
+            API endpoint name of this operation.
     """
 
     create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
@@ -92,6 +94,8 @@ class OperationMetadata(proto.Message):
     requested_cancellation = proto.Field(proto.BOOL, number=6)
 
     api_version = proto.Field(proto.STRING, number=7)
+
+    endpoint = proto.Field(proto.STRING, number=8)
 
 
 class ListInstancesRequest(proto.Message):
@@ -204,19 +208,19 @@ class SetInstanceAcceleratorRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        type (~.gcn_instance.Instance.AcceleratorType):
+        type_ (~.gcn_instance.Instance.AcceleratorType):
             Required. Type of this accelerator.
         core_count (int):
             Required. Count of cores of this accelerator. Note that not
             all combinations of ``type`` and ``core_count`` are valid.
             Check `GPUs on Compute
-            Engine </compute/docs/gpus/#gpus-list>`__ to find a valid
-            combination. TPUs are not supported.
+            Engine <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__
+            to find a valid combination. TPUs are not supported.
     """
 
     name = proto.Field(proto.STRING, number=1)
 
-    type = proto.Field(
+    type_ = proto.Field(
         proto.ENUM, number=2, enum=gcn_instance.Instance.AcceleratorType,
     )
 
@@ -232,7 +236,7 @@ class SetInstanceMachineTypeRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         machine_type (str):
             Required. The `Compute Engine machine
-            type </compute/docs/machine-types>`__.
+            type <https://cloud.google.com/compute/docs/machine-types>`__.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -353,11 +357,15 @@ class IsInstanceUpgradeableResponse(proto.Message):
             The version this instance will be upgraded to
             if calling the upgrade endpoint. This field will
             only be populated if field upgradeable is true.
+        upgrade_info (str):
+            Additional information about upgrade.
     """
 
     upgradeable = proto.Field(proto.BOOL, number=1)
 
     upgrade_version = proto.Field(proto.STRING, number=2)
+
+    upgrade_info = proto.Field(proto.STRING, number=3)
 
 
 class UpgradeInstanceRequest(proto.Message):

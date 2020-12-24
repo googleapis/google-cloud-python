@@ -28,8 +28,8 @@ from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation
-from google.api_core import operation_async
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.notebooks_v1beta1.services.notebook_service import pagers
 from google.cloud.notebooks_v1beta1.types import environment
 from google.cloud.notebooks_v1beta1.types import instance
@@ -37,13 +37,13 @@ from google.cloud.notebooks_v1beta1.types import service
 from google.protobuf import empty_pb2 as empty  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import NotebookServiceTransport
+from .transports.base import NotebookServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import NotebookServiceGrpcAsyncIOTransport
 from .client import NotebookServiceClient
 
 
 class NotebookServiceAsyncClient:
-    """API service for Cloud AI Platform Notebooks."""
+    """API v1beta1 service for Cloud AI Platform Notebooks."""
 
     _client: NotebookServiceClient
 
@@ -51,11 +51,50 @@ class NotebookServiceAsyncClient:
     DEFAULT_MTLS_ENDPOINT = NotebookServiceClient.DEFAULT_MTLS_ENDPOINT
 
     environment_path = staticmethod(NotebookServiceClient.environment_path)
-
+    parse_environment_path = staticmethod(NotebookServiceClient.parse_environment_path)
     instance_path = staticmethod(NotebookServiceClient.instance_path)
+    parse_instance_path = staticmethod(NotebookServiceClient.parse_instance_path)
+
+    common_billing_account_path = staticmethod(
+        NotebookServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        NotebookServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(NotebookServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        NotebookServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        NotebookServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        NotebookServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(NotebookServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        NotebookServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(NotebookServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        NotebookServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = NotebookServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> NotebookServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            NotebookServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(NotebookServiceClient).get_transport_class, type(NotebookServiceClient)
@@ -67,6 +106,7 @@ class NotebookServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, NotebookServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the notebook service client.
 
@@ -82,16 +122,19 @@ class NotebookServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -99,7 +142,10 @@ class NotebookServiceAsyncClient:
         """
 
         self._client = NotebookServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def list_instances(
@@ -141,7 +187,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_instances,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -198,7 +244,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -253,7 +299,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -320,7 +366,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.register_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -382,7 +428,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_instance_accelerator,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -444,7 +490,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_instance_machine_type,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -505,7 +551,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.set_instance_labels,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -579,7 +625,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -641,7 +687,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.start_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -703,7 +749,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.stop_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -765,7 +811,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.reset_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -831,7 +877,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.report_instance_info,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -890,7 +936,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.is_instance_upgradeable,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -946,7 +992,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.upgrade_instance,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1010,7 +1056,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.upgrade_instance_internal,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1070,7 +1116,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_environments,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1128,7 +1174,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_environment,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1183,7 +1229,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_environment,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1257,7 +1303,7 @@ class NotebookServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_environment,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1282,11 +1328,11 @@ class NotebookServiceAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-notebooks",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("NotebookServiceAsyncClient",)

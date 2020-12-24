@@ -167,12 +167,16 @@ class Instance(proto.Message):
         STOPPING = 4
         STOPPED = 5
         DELETED = 6
+        UPGRADING = 7
+        INITIALIZING = 8
+        REGISTERING = 9
 
     class DiskType(proto.Enum):
         r"""Possible disk types for notebook instances."""
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
+        PD_BALANCED = 3
 
     class DiskEncryption(proto.Enum):
         r"""Definition of the disk encryption options."""
@@ -187,13 +191,13 @@ class Instance(proto.Message):
         combination. TPUs are not supported.
 
         Attributes:
-            type (~.instance.Instance.AcceleratorType):
+            type_ (~.instance.Instance.AcceleratorType):
                 Type of this accelerator.
             core_count (int):
                 Count of cores of this accelerator.
         """
 
-        type = proto.Field(proto.ENUM, number=1, enum="Instance.AcceleratorType",)
+        type_ = proto.Field(proto.ENUM, number=1, enum="Instance.AcceleratorType",)
 
         core_count = proto.Field(proto.INT64, number=2)
 

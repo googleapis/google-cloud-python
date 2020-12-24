@@ -31,7 +31,7 @@ from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.api_core import operation_async
+from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -53,6 +53,17 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return (
+        "foo.googleapis.com"
+        if ("localhost" in client.DEFAULT_ENDPOINT)
+        else client.DEFAULT_ENDPOINT
+    )
 
 
 def test__get_default_mtls_endpoint():
@@ -94,12 +105,12 @@ def test_notebook_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "notebooks.googleapis.com:443"
+        assert client.transport._host == "notebooks.googleapis.com:443"
 
 
 def test_notebook_service_client_get_transport_class():
@@ -120,6 +131,16 @@ def test_notebook_service_client_get_transport_class():
             "grpc_asyncio",
         ),
     ],
+)
+@mock.patch.object(
+    NotebookServiceClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(NotebookServiceClient),
+)
+@mock.patch.object(
+    NotebookServiceAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(NotebookServiceAsyncClient),
 )
 def test_notebook_service_client_client_options(
     client_class, transport_class, transport_name
@@ -145,14 +166,14 @@ def test_notebook_service_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "never".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "never"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -161,14 +182,14 @@ def test_notebook_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS is
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
     # "always".
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "always"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class()
@@ -177,74 +198,22 @@ def test_notebook_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=None,
+                ssl_channel_credentials=None,
                 quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
 
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
-        with mock.patch.object(transport_class, "__init__") as patched:
-            patched.return_value = None
-            client = client_class(client_options=options)
-            patched.assert_called_once_with(
-                credentials=None,
-                credentials_file=None,
-                host=client.DEFAULT_MTLS_ENDPOINT,
-                scopes=None,
-                api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                client_cert_source=client_cert_source_callback,
-                quota_project_id=None,
-            )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", and default_client_cert_source is provided.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_MTLS_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                )
-
-    # Check the case api_endpoint is not provided, GOOGLE_API_USE_MTLS is
-    # "auto", but client_cert_source and default_client_cert_source are None.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "auto"}):
-        with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
-                patched.return_value = None
-                client = client_class()
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
-                    scopes=None,
-                    api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-                    client_cert_source=None,
-                    quota_project_id=None,
-                )
-
-    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS has
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
-    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS": "Unsupported"}):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
             client = client_class()
 
     # Check the case quota_project_id is provided
@@ -257,10 +226,157 @@ def test_notebook_service_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (
+            NotebookServiceClient,
+            transports.NotebookServiceGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            NotebookServiceAsyncClient,
+            transports.NotebookServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (
+            NotebookServiceClient,
+            transports.NotebookServiceGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            NotebookServiceAsyncClient,
+            transports.NotebookServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    NotebookServiceClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(NotebookServiceClient),
+)
+@mock.patch.object(
+    NotebookServiceAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(NotebookServiceAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_notebook_service_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
 
 @pytest.mark.parametrize(
@@ -287,9 +403,9 @@ def test_notebook_service_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -317,9 +433,9 @@ def test_notebook_service_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            api_mtls_endpoint=client.DEFAULT_ENDPOINT,
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -336,23 +452,25 @@ def test_notebook_service_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=None,
+            ssl_channel_credentials=None,
             quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
-def test_list_instances(transport: str = "grpc"):
+def test_list_instances(
+    transport: str = "grpc", request_type=service.ListInstancesRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ListInstancesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInstancesResponse(
             next_page_token="next_page_token_value", unreachable=["unreachable_value"],
@@ -364,9 +482,10 @@ def test_list_instances(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ListInstancesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListInstancesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -374,20 +493,24 @@ def test_list_instances(transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
+def test_list_instances_from_dict():
+    test_list_instances(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_list_instances_async(transport: str = "grpc_asyncio"):
+async def test_list_instances_async(
+    transport: str = "grpc_asyncio", request_type=service.ListInstancesRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ListInstancesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_instances), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListInstancesResponse(
@@ -402,7 +525,7 @@ async def test_list_instances_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ListInstancesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstancesAsyncPager)
@@ -410,6 +533,11 @@ async def test_list_instances_async(transport: str = "grpc_asyncio"):
     assert response.next_page_token == "next_page_token_value"
 
     assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_instances_async_from_dict():
+    await test_list_instances_async(request_type=dict)
 
 
 def test_list_instances_field_headers():
@@ -421,7 +549,7 @@ def test_list_instances_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         call.return_value = service.ListInstancesResponse()
 
         client.list_instances(request)
@@ -446,9 +574,7 @@ async def test_list_instances_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_instances), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListInstancesResponse()
         )
@@ -469,7 +595,7 @@ def test_list_instances_pager():
     client = NotebookServiceClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInstancesResponse(
@@ -507,7 +633,7 @@ def test_list_instances_pages():
     client = NotebookServiceClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_instances), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInstancesResponse(
@@ -528,8 +654,8 @@ def test_list_instances_pages():
             RuntimeError,
         )
         pages = list(client.list_instances(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -538,9 +664,7 @@ async def test_list_instances_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_instances),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_instances), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -577,9 +701,7 @@ async def test_list_instances_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_instances),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_instances), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -601,23 +723,23 @@ async def test_list_instances_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_instances(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_instances(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
-def test_get_instance(transport: str = "grpc"):
+def test_get_instance(transport: str = "grpc", request_type=service.GetInstanceRequest):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.GetInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = instance.Instance(
             name="name_value",
@@ -649,9 +771,10 @@ def test_get_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.GetInstanceRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, instance.Instance)
 
     assert response.name == "name_value"
@@ -695,20 +818,24 @@ def test_get_instance(transport: str = "grpc"):
     assert response.subnet == "subnet_value"
 
 
+def test_get_instance_from_dict():
+    test_get_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_get_instance_async(transport: str = "grpc_asyncio"):
+async def test_get_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.GetInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.GetInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             instance.Instance(
@@ -741,7 +868,7 @@ async def test_get_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.GetInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, instance.Instance)
@@ -787,6 +914,11 @@ async def test_get_instance_async(transport: str = "grpc_asyncio"):
     assert response.subnet == "subnet_value"
 
 
+@pytest.mark.asyncio
+async def test_get_instance_async_from_dict():
+    await test_get_instance_async(request_type=dict)
+
+
 def test_get_instance_field_headers():
     client = NotebookServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -796,7 +928,7 @@ def test_get_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         call.return_value = instance.Instance()
 
         client.get_instance(request)
@@ -821,9 +953,7 @@ async def test_get_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(instance.Instance())
 
         await client.get_instance(request)
@@ -838,17 +968,19 @@ async def test_get_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_instance(transport: str = "grpc"):
+def test_create_instance(
+    transport: str = "grpc", request_type=service.CreateInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.CreateInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -858,26 +990,30 @@ def test_create_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.CreateInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_create_instance_from_dict():
+    test_create_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_create_instance_async(transport: str = "grpc_asyncio"):
+async def test_create_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.CreateInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.CreateInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -889,10 +1025,15 @@ async def test_create_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.CreateInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_instance_async_from_dict():
+    await test_create_instance_async(request_type=dict)
 
 
 def test_create_instance_field_headers():
@@ -904,7 +1045,7 @@ def test_create_instance_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.create_instance(request)
@@ -929,9 +1070,7 @@ async def test_create_instance_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -948,18 +1087,20 @@ async def test_create_instance_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_register_instance(transport: str = "grpc"):
+def test_register_instance(
+    transport: str = "grpc", request_type=service.RegisterInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.RegisterInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.register_instance), "__call__"
+        type(client.transport.register_instance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -970,25 +1111,31 @@ def test_register_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.RegisterInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_register_instance_from_dict():
+    test_register_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_register_instance_async(transport: str = "grpc_asyncio"):
+async def test_register_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.RegisterInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.RegisterInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.register_instance), "__call__"
+        type(client.transport.register_instance), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1001,10 +1148,15 @@ async def test_register_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.RegisterInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_register_instance_async_from_dict():
+    await test_register_instance_async(request_type=dict)
 
 
 def test_register_instance_field_headers():
@@ -1017,7 +1169,7 @@ def test_register_instance_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.register_instance), "__call__"
+        type(client.transport.register_instance), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1044,7 +1196,7 @@ async def test_register_instance_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.register_instance), "__call__"
+        type(client.transport.register_instance), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -1062,18 +1214,20 @@ async def test_register_instance_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_set_instance_accelerator(transport: str = "grpc"):
+def test_set_instance_accelerator(
+    transport: str = "grpc", request_type=service.SetInstanceAcceleratorRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.SetInstanceAcceleratorRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.set_instance_accelerator), "__call__"
+        type(client.transport.set_instance_accelerator), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -1084,25 +1238,31 @@ def test_set_instance_accelerator(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.SetInstanceAcceleratorRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_set_instance_accelerator_from_dict():
+    test_set_instance_accelerator(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_set_instance_accelerator_async(transport: str = "grpc_asyncio"):
+async def test_set_instance_accelerator_async(
+    transport: str = "grpc_asyncio", request_type=service.SetInstanceAcceleratorRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.SetInstanceAcceleratorRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.set_instance_accelerator), "__call__"
+        type(client.transport.set_instance_accelerator), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1115,10 +1275,15 @@ async def test_set_instance_accelerator_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.SetInstanceAcceleratorRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_set_instance_accelerator_async_from_dict():
+    await test_set_instance_accelerator_async(request_type=dict)
 
 
 def test_set_instance_accelerator_field_headers():
@@ -1131,7 +1296,7 @@ def test_set_instance_accelerator_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.set_instance_accelerator), "__call__"
+        type(client.transport.set_instance_accelerator), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1158,7 +1323,7 @@ async def test_set_instance_accelerator_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.set_instance_accelerator), "__call__"
+        type(client.transport.set_instance_accelerator), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -1176,18 +1341,20 @@ async def test_set_instance_accelerator_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_instance_machine_type(transport: str = "grpc"):
+def test_set_instance_machine_type(
+    transport: str = "grpc", request_type=service.SetInstanceMachineTypeRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.SetInstanceMachineTypeRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.set_instance_machine_type), "__call__"
+        type(client.transport.set_instance_machine_type), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -1198,25 +1365,31 @@ def test_set_instance_machine_type(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.SetInstanceMachineTypeRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_set_instance_machine_type_from_dict():
+    test_set_instance_machine_type(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_set_instance_machine_type_async(transport: str = "grpc_asyncio"):
+async def test_set_instance_machine_type_async(
+    transport: str = "grpc_asyncio", request_type=service.SetInstanceMachineTypeRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.SetInstanceMachineTypeRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.set_instance_machine_type), "__call__"
+        type(client.transport.set_instance_machine_type), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1229,10 +1402,15 @@ async def test_set_instance_machine_type_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.SetInstanceMachineTypeRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_set_instance_machine_type_async_from_dict():
+    await test_set_instance_machine_type_async(request_type=dict)
 
 
 def test_set_instance_machine_type_field_headers():
@@ -1245,7 +1423,7 @@ def test_set_instance_machine_type_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.set_instance_machine_type), "__call__"
+        type(client.transport.set_instance_machine_type), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1272,7 +1450,7 @@ async def test_set_instance_machine_type_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.set_instance_machine_type), "__call__"
+        type(client.transport.set_instance_machine_type), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -1290,18 +1468,20 @@ async def test_set_instance_machine_type_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_set_instance_labels(transport: str = "grpc"):
+def test_set_instance_labels(
+    transport: str = "grpc", request_type=service.SetInstanceLabelsRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.SetInstanceLabelsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.set_instance_labels), "__call__"
+        type(client.transport.set_instance_labels), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -1312,25 +1492,31 @@ def test_set_instance_labels(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.SetInstanceLabelsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_set_instance_labels_from_dict():
+    test_set_instance_labels(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_set_instance_labels_async(transport: str = "grpc_asyncio"):
+async def test_set_instance_labels_async(
+    transport: str = "grpc_asyncio", request_type=service.SetInstanceLabelsRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.SetInstanceLabelsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.set_instance_labels), "__call__"
+        type(client.transport.set_instance_labels), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1343,10 +1529,15 @@ async def test_set_instance_labels_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.SetInstanceLabelsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_set_instance_labels_async_from_dict():
+    await test_set_instance_labels_async(request_type=dict)
 
 
 def test_set_instance_labels_field_headers():
@@ -1359,7 +1550,7 @@ def test_set_instance_labels_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.set_instance_labels), "__call__"
+        type(client.transport.set_instance_labels), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1386,7 +1577,7 @@ async def test_set_instance_labels_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.set_instance_labels), "__call__"
+        type(client.transport.set_instance_labels), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -1404,17 +1595,19 @@ async def test_set_instance_labels_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_delete_instance(transport: str = "grpc"):
+def test_delete_instance(
+    transport: str = "grpc", request_type=service.DeleteInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.DeleteInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1424,26 +1617,30 @@ def test_delete_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.DeleteInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_delete_instance_from_dict():
+    test_delete_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_delete_instance_async(transport: str = "grpc_asyncio"):
+async def test_delete_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.DeleteInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.DeleteInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1455,10 +1652,15 @@ async def test_delete_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.DeleteInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_instance_async_from_dict():
+    await test_delete_instance_async(request_type=dict)
 
 
 def test_delete_instance_field_headers():
@@ -1470,7 +1672,7 @@ def test_delete_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.delete_instance(request)
@@ -1495,9 +1697,7 @@ async def test_delete_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1514,17 +1714,19 @@ async def test_delete_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_start_instance(transport: str = "grpc"):
+def test_start_instance(
+    transport: str = "grpc", request_type=service.StartInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.StartInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.start_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1534,26 +1736,30 @@ def test_start_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.StartInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_start_instance_from_dict():
+    test_start_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_start_instance_async(transport: str = "grpc_asyncio"):
+async def test_start_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.StartInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.StartInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.start_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1565,10 +1771,15 @@ async def test_start_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.StartInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_start_instance_async_from_dict():
+    await test_start_instance_async(request_type=dict)
 
 
 def test_start_instance_field_headers():
@@ -1580,7 +1791,7 @@ def test_start_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.start_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.start_instance(request)
@@ -1605,9 +1816,7 @@ async def test_start_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.start_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1624,17 +1833,19 @@ async def test_start_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_stop_instance(transport: str = "grpc"):
+def test_stop_instance(
+    transport: str = "grpc", request_type=service.StopInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.StopInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.stop_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1644,26 +1855,30 @@ def test_stop_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.StopInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_stop_instance_from_dict():
+    test_stop_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_stop_instance_async(transport: str = "grpc_asyncio"):
+async def test_stop_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.StopInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.StopInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.stop_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1675,10 +1890,15 @@ async def test_stop_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.StopInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_stop_instance_async_from_dict():
+    await test_stop_instance_async(request_type=dict)
 
 
 def test_stop_instance_field_headers():
@@ -1690,7 +1910,7 @@ def test_stop_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.stop_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.stop_instance(request)
@@ -1715,9 +1935,7 @@ async def test_stop_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.stop_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.stop_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1734,17 +1952,19 @@ async def test_stop_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_reset_instance(transport: str = "grpc"):
+def test_reset_instance(
+    transport: str = "grpc", request_type=service.ResetInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ResetInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.reset_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.reset_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -1754,26 +1974,30 @@ def test_reset_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ResetInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_reset_instance_from_dict():
+    test_reset_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_reset_instance_async(transport: str = "grpc_asyncio"):
+async def test_reset_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.ResetInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ResetInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.reset_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.reset_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -1785,10 +2009,15 @@ async def test_reset_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ResetInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_reset_instance_async_from_dict():
+    await test_reset_instance_async(request_type=dict)
 
 
 def test_reset_instance_field_headers():
@@ -1800,7 +2029,7 @@ def test_reset_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.reset_instance), "__call__") as call:
+    with mock.patch.object(type(client.transport.reset_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.reset_instance(request)
@@ -1825,9 +2054,7 @@ async def test_reset_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.reset_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.reset_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -1844,18 +2071,20 @@ async def test_reset_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_report_instance_info(transport: str = "grpc"):
+def test_report_instance_info(
+    transport: str = "grpc", request_type=service.ReportInstanceInfoRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ReportInstanceInfoRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.report_instance_info), "__call__"
+        type(client.transport.report_instance_info), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -1866,25 +2095,31 @@ def test_report_instance_info(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ReportInstanceInfoRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_report_instance_info_from_dict():
+    test_report_instance_info(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_report_instance_info_async(transport: str = "grpc_asyncio"):
+async def test_report_instance_info_async(
+    transport: str = "grpc_asyncio", request_type=service.ReportInstanceInfoRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ReportInstanceInfoRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.report_instance_info), "__call__"
+        type(client.transport.report_instance_info), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1897,10 +2132,15 @@ async def test_report_instance_info_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ReportInstanceInfoRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_report_instance_info_async_from_dict():
+    await test_report_instance_info_async(request_type=dict)
 
 
 def test_report_instance_info_field_headers():
@@ -1913,7 +2153,7 @@ def test_report_instance_info_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.report_instance_info), "__call__"
+        type(client.transport.report_instance_info), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -1940,7 +2180,7 @@ async def test_report_instance_info_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.report_instance_info), "__call__"
+        type(client.transport.report_instance_info), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -1958,22 +2198,26 @@ async def test_report_instance_info_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_is_instance_upgradeable(transport: str = "grpc"):
+def test_is_instance_upgradeable(
+    transport: str = "grpc", request_type=service.IsInstanceUpgradeableRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.IsInstanceUpgradeableRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.is_instance_upgradeable), "__call__"
+        type(client.transport.is_instance_upgradeable), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.IsInstanceUpgradeableResponse(
-            upgradeable=True, upgrade_version="upgrade_version_value",
+            upgradeable=True,
+            upgrade_version="upgrade_version_value",
+            upgrade_info="upgrade_info_value",
         )
 
         response = client.is_instance_upgradeable(request)
@@ -1982,34 +2226,45 @@ def test_is_instance_upgradeable(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.IsInstanceUpgradeableRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, service.IsInstanceUpgradeableResponse)
 
     assert response.upgradeable is True
 
     assert response.upgrade_version == "upgrade_version_value"
 
+    assert response.upgrade_info == "upgrade_info_value"
+
+
+def test_is_instance_upgradeable_from_dict():
+    test_is_instance_upgradeable(request_type=dict)
+
 
 @pytest.mark.asyncio
-async def test_is_instance_upgradeable_async(transport: str = "grpc_asyncio"):
+async def test_is_instance_upgradeable_async(
+    transport: str = "grpc_asyncio", request_type=service.IsInstanceUpgradeableRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.IsInstanceUpgradeableRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.is_instance_upgradeable), "__call__"
+        type(client.transport.is_instance_upgradeable), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.IsInstanceUpgradeableResponse(
-                upgradeable=True, upgrade_version="upgrade_version_value",
+                upgradeable=True,
+                upgrade_version="upgrade_version_value",
+                upgrade_info="upgrade_info_value",
             )
         )
 
@@ -2019,7 +2274,7 @@ async def test_is_instance_upgradeable_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.IsInstanceUpgradeableRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.IsInstanceUpgradeableResponse)
@@ -2027,6 +2282,13 @@ async def test_is_instance_upgradeable_async(transport: str = "grpc_asyncio"):
     assert response.upgradeable is True
 
     assert response.upgrade_version == "upgrade_version_value"
+
+    assert response.upgrade_info == "upgrade_info_value"
+
+
+@pytest.mark.asyncio
+async def test_is_instance_upgradeable_async_from_dict():
+    await test_is_instance_upgradeable_async(request_type=dict)
 
 
 def test_is_instance_upgradeable_field_headers():
@@ -2039,7 +2301,7 @@ def test_is_instance_upgradeable_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.is_instance_upgradeable), "__call__"
+        type(client.transport.is_instance_upgradeable), "__call__"
     ) as call:
         call.return_value = service.IsInstanceUpgradeableResponse()
 
@@ -2069,7 +2331,7 @@ async def test_is_instance_upgradeable_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.is_instance_upgradeable), "__call__"
+        type(client.transport.is_instance_upgradeable), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.IsInstanceUpgradeableResponse()
@@ -2090,19 +2352,19 @@ async def test_is_instance_upgradeable_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_upgrade_instance(transport: str = "grpc"):
+def test_upgrade_instance(
+    transport: str = "grpc", request_type=service.UpgradeInstanceRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.UpgradeInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
 
@@ -2112,26 +2374,30 @@ def test_upgrade_instance(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.UpgradeInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_upgrade_instance_from_dict():
+    test_upgrade_instance(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_upgrade_instance_async(transport: str = "grpc_asyncio"):
+async def test_upgrade_instance_async(
+    transport: str = "grpc_asyncio", request_type=service.UpgradeInstanceRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.UpgradeInstanceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
@@ -2143,10 +2409,15 @@ async def test_upgrade_instance_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.UpgradeInstanceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_async_from_dict():
+    await test_upgrade_instance_async(request_type=dict)
 
 
 def test_upgrade_instance_field_headers():
@@ -2158,9 +2429,7 @@ def test_upgrade_instance_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
         client.upgrade_instance(request)
@@ -2185,9 +2454,7 @@ async def test_upgrade_instance_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.upgrade_instance), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.upgrade_instance), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
@@ -2204,18 +2471,20 @@ async def test_upgrade_instance_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_upgrade_instance_internal(transport: str = "grpc"):
+def test_upgrade_instance_internal(
+    transport: str = "grpc", request_type=service.UpgradeInstanceInternalRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.UpgradeInstanceInternalRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.upgrade_instance_internal), "__call__"
+        type(client.transport.upgrade_instance_internal), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -2226,25 +2495,31 @@ def test_upgrade_instance_internal(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.UpgradeInstanceInternalRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_upgrade_instance_internal_from_dict():
+    test_upgrade_instance_internal(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_upgrade_instance_internal_async(transport: str = "grpc_asyncio"):
+async def test_upgrade_instance_internal_async(
+    transport: str = "grpc_asyncio", request_type=service.UpgradeInstanceInternalRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.UpgradeInstanceInternalRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.upgrade_instance_internal), "__call__"
+        type(client.transport.upgrade_instance_internal), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2257,10 +2532,15 @@ async def test_upgrade_instance_internal_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.UpgradeInstanceInternalRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_upgrade_instance_internal_async_from_dict():
+    await test_upgrade_instance_internal_async(request_type=dict)
 
 
 def test_upgrade_instance_internal_field_headers():
@@ -2273,7 +2553,7 @@ def test_upgrade_instance_internal_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.upgrade_instance_internal), "__call__"
+        type(client.transport.upgrade_instance_internal), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2300,7 +2580,7 @@ async def test_upgrade_instance_internal_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.upgrade_instance_internal), "__call__"
+        type(client.transport.upgrade_instance_internal), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -2318,18 +2598,20 @@ async def test_upgrade_instance_internal_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_list_environments(transport: str = "grpc"):
+def test_list_environments(
+    transport: str = "grpc", request_type=service.ListEnvironmentsRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ListEnvironmentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_environments), "__call__"
+        type(client.transport.list_environments), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListEnvironmentsResponse(
@@ -2342,9 +2624,10 @@ def test_list_environments(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ListEnvironmentsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListEnvironmentsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -2352,19 +2635,25 @@ def test_list_environments(transport: str = "grpc"):
     assert response.unreachable == ["unreachable_value"]
 
 
+def test_list_environments_from_dict():
+    test_list_environments(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_list_environments_async(transport: str = "grpc_asyncio"):
+async def test_list_environments_async(
+    transport: str = "grpc_asyncio", request_type=service.ListEnvironmentsRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.ListEnvironmentsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_environments), "__call__"
+        type(client.transport.list_environments), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2380,7 +2669,7 @@ async def test_list_environments_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.ListEnvironmentsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEnvironmentsAsyncPager)
@@ -2388,6 +2677,11 @@ async def test_list_environments_async(transport: str = "grpc_asyncio"):
     assert response.next_page_token == "next_page_token_value"
 
     assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_environments_async_from_dict():
+    await test_list_environments_async(request_type=dict)
 
 
 def test_list_environments_field_headers():
@@ -2400,7 +2694,7 @@ def test_list_environments_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_environments), "__call__"
+        type(client.transport.list_environments), "__call__"
     ) as call:
         call.return_value = service.ListEnvironmentsResponse()
 
@@ -2427,7 +2721,7 @@ async def test_list_environments_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_environments), "__call__"
+        type(client.transport.list_environments), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListEnvironmentsResponse()
@@ -2450,7 +2744,7 @@ def test_list_environments_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_environments), "__call__"
+        type(client.transport.list_environments), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -2490,7 +2784,7 @@ def test_list_environments_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_environments), "__call__"
+        type(client.transport.list_environments), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -2512,8 +2806,8 @@ def test_list_environments_pages():
             RuntimeError,
         )
         pages = list(client.list_environments(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
@@ -2522,7 +2816,7 @@ async def test_list_environments_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_environments),
+        type(client.transport.list_environments),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -2561,7 +2855,7 @@ async def test_list_environments_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_environments),
+        type(client.transport.list_environments),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -2585,23 +2879,25 @@ async def test_list_environments_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page in (await client.list_environments(request={})).pages:
-            pages.append(page)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        async for page_ in (await client.list_environments(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
-def test_get_environment(transport: str = "grpc"):
+def test_get_environment(
+    transport: str = "grpc", request_type=service.GetEnvironmentRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.GetEnvironmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_environment), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = environment.Environment(
             name="name_value",
@@ -2617,9 +2913,10 @@ def test_get_environment(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.GetEnvironmentRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, environment.Environment)
 
     assert response.name == "name_value"
@@ -2631,20 +2928,24 @@ def test_get_environment(transport: str = "grpc"):
     assert response.post_startup_script == "post_startup_script_value"
 
 
+def test_get_environment_from_dict():
+    test_get_environment(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_get_environment_async(transport: str = "grpc_asyncio"):
+async def test_get_environment_async(
+    transport: str = "grpc_asyncio", request_type=service.GetEnvironmentRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.GetEnvironmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_environment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             environment.Environment(
@@ -2661,7 +2962,7 @@ async def test_get_environment_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.GetEnvironmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, environment.Environment)
@@ -2675,6 +2976,11 @@ async def test_get_environment_async(transport: str = "grpc_asyncio"):
     assert response.post_startup_script == "post_startup_script_value"
 
 
+@pytest.mark.asyncio
+async def test_get_environment_async_from_dict():
+    await test_get_environment_async(request_type=dict)
+
+
 def test_get_environment_field_headers():
     client = NotebookServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -2684,7 +2990,7 @@ def test_get_environment_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_environment), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
         call.return_value = environment.Environment()
 
         client.get_environment(request)
@@ -2709,9 +3015,7 @@ async def test_get_environment_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_environment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             environment.Environment()
         )
@@ -2728,18 +3032,20 @@ async def test_get_environment_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_create_environment(transport: str = "grpc"):
+def test_create_environment(
+    transport: str = "grpc", request_type=service.CreateEnvironmentRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.CreateEnvironmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_environment), "__call__"
+        type(client.transport.create_environment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -2750,25 +3056,31 @@ def test_create_environment(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.CreateEnvironmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_create_environment_from_dict():
+    test_create_environment(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_create_environment_async(transport: str = "grpc_asyncio"):
+async def test_create_environment_async(
+    transport: str = "grpc_asyncio", request_type=service.CreateEnvironmentRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.CreateEnvironmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_environment), "__call__"
+        type(client.transport.create_environment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2781,10 +3093,15 @@ async def test_create_environment_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.CreateEnvironmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_environment_async_from_dict():
+    await test_create_environment_async(request_type=dict)
 
 
 def test_create_environment_field_headers():
@@ -2797,7 +3114,7 @@ def test_create_environment_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_environment), "__call__"
+        type(client.transport.create_environment), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2824,7 +3141,7 @@ async def test_create_environment_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_environment), "__call__"
+        type(client.transport.create_environment), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -2842,18 +3159,20 @@ async def test_create_environment_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
-def test_delete_environment(transport: str = "grpc"):
+def test_delete_environment(
+    transport: str = "grpc", request_type=service.DeleteEnvironmentRequest
+):
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.DeleteEnvironmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_environment), "__call__"
+        type(client.transport.delete_environment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
@@ -2864,25 +3183,31 @@ def test_delete_environment(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.DeleteEnvironmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
+def test_delete_environment_from_dict():
+    test_delete_environment(request_type=dict)
+
+
 @pytest.mark.asyncio
-async def test_delete_environment_async(transport: str = "grpc_asyncio"):
+async def test_delete_environment_async(
+    transport: str = "grpc_asyncio", request_type=service.DeleteEnvironmentRequest
+):
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service.DeleteEnvironmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_environment), "__call__"
+        type(client.transport.delete_environment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2895,10 +3220,15 @@ async def test_delete_environment_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service.DeleteEnvironmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_environment_async_from_dict():
+    await test_delete_environment_async(request_type=dict)
 
 
 def test_delete_environment_field_headers():
@@ -2911,7 +3241,7 @@ def test_delete_environment_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_environment), "__call__"
+        type(client.transport.delete_environment), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -2938,7 +3268,7 @@ async def test_delete_environment_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_environment), "__call__"
+        type(client.transport.delete_environment), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
@@ -2992,7 +3322,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = NotebookServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -3010,10 +3340,25 @@ def test_transport_get_channel():
     assert channel
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.NotebookServiceGrpcTransport,
+        transports.NotebookServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = NotebookServiceClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.NotebookServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.NotebookServiceGrpcTransport,)
 
 
 def test_notebook_service_base_transport_error():
@@ -3027,9 +3372,13 @@ def test_notebook_service_base_transport_error():
 
 def test_notebook_service_base_transport():
     # Instantiate the base transport.
-    transport = transports.NotebookServiceTransport(
-        credentials=credentials.AnonymousCredentials(),
-    )
+    with mock.patch(
+        "google.cloud.notebooks_v1beta1.services.notebook_service.transports.NotebookServiceTransport.__init__"
+    ) as Transport:
+        Transport.return_value = None
+        transport = transports.NotebookServiceTransport(
+            credentials=credentials.AnonymousCredentials(),
+        )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
@@ -3066,7 +3415,12 @@ def test_notebook_service_base_transport():
 
 def test_notebook_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(auth, "load_credentials_from_file") as load_creds:
+    with mock.patch.object(
+        auth, "load_credentials_from_file"
+    ) as load_creds, mock.patch(
+        "google.cloud.notebooks_v1beta1.services.notebook_service.transports.NotebookServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
         transport = transports.NotebookServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
@@ -3076,6 +3430,17 @@ def test_notebook_service_base_transport_with_credentials_file():
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id="octopus",
         )
+
+
+def test_notebook_service_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.notebooks_v1beta1.services.notebook_service.transports.NotebookServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.NotebookServiceTransport()
+        adc.assert_called_once()
 
 
 def test_notebook_service_auth_adc():
@@ -3110,7 +3475,7 @@ def test_notebook_service_host_no_port():
             api_endpoint="notebooks.googleapis.com"
         ),
     )
-    assert client._transport._host == "notebooks.googleapis.com:443"
+    assert client.transport._host == "notebooks.googleapis.com:443"
 
 
 def test_notebook_service_host_with_port():
@@ -3120,192 +3485,126 @@ def test_notebook_service_host_with_port():
             api_endpoint="notebooks.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "notebooks.googleapis.com:8000"
+    assert client.transport._host == "notebooks.googleapis.com:8000"
 
 
 def test_notebook_service_grpc_transport_channel():
     channel = grpc.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.NotebookServiceGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
 def test_notebook_service_grpc_asyncio_transport_channel():
     channel = aio.insecure_channel("http://localhost/")
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.NotebookServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_notebook_service_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.NotebookServiceGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
-
-
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_notebook_service_grpc_asyncio_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
-
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.NotebookServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
-    )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        credentials_file=None,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        ssl_credentials=mock_ssl_cred,
-        quota_project_id=None,
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [
+        transports.NotebookServiceGrpcTransport,
+        transports.NotebookServiceGrpcAsyncIOTransport,
+    ],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_notebook_service_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
+def test_notebook_service_transport_channel_mtls_with_client_cert_source(
+    transport_class,
 ):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.NotebookServiceGrpcTransport,
+        transports.NotebookServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_notebook_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.NotebookServiceGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel", autospec=True
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
 
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
 
-@pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
-)
-@mock.patch("google.api_core.grpc_helpers_async.create_channel", autospec=True)
-def test_notebook_service_grpc_asyncio_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
-):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    # Mock google.auth.transport.grpc.SslCredentials class.
-    mock_ssl_cred = mock.Mock()
-    with mock.patch.multiple(
-        "google.auth.transport.grpc.SslCredentials",
-        __init__=mock.Mock(return_value=None),
-        ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
-    ):
-        mock_cred = mock.Mock()
-        transport = transports.NotebookServiceGrpcAsyncIOTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=mock_ssl_cred,
-            quota_project_id=None,
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_notebook_service_grpc_lro_client():
     client = NotebookServiceClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc",
     )
-    transport = client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
@@ -3318,7 +3617,7 @@ def test_notebook_service_grpc_lro_async_client():
     client = NotebookServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
-    transport = client._client._transport
+    transport = client.transport
 
     # Ensure that we have a api-core operations client.
     assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
@@ -3351,8 +3650,8 @@ def test_parse_environment_path():
 
 
 def test_instance_path():
-    project = "squid"
-    instance = "clam"
+    project = "oyster"
+    instance = "nudibranch"
 
     expected = "projects/{project}/instances/{instance}".format(
         project=project, instance=instance,
@@ -3363,11 +3662,133 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "whelk",
-        "instance": "octopus",
+        "project": "cuttlefish",
+        "instance": "mussel",
     }
     path = NotebookServiceClient.instance_path(**expected)
 
     # Check that the path construction is reversible.
     actual = NotebookServiceClient.parse_instance_path(path)
     assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "winkle"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = NotebookServiceClient.common_billing_account_path(billing_account)
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "nautilus",
+    }
+    path = NotebookServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotebookServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "scallop"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = NotebookServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "abalone",
+    }
+    path = NotebookServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotebookServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "squid"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = NotebookServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "clam",
+    }
+    path = NotebookServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotebookServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "whelk"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = NotebookServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "octopus",
+    }
+    path = NotebookServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotebookServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "oyster"
+    location = "nudibranch"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = NotebookServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+    }
+    path = NotebookServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotebookServiceClient.parse_common_location_path(path)
+    assert expected == actual
+
+
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(
+        transports.NotebookServiceTransport, "_prep_wrapped_messages"
+    ) as prep:
+        client = NotebookServiceClient(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.NotebookServiceTransport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = NotebookServiceClient.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
