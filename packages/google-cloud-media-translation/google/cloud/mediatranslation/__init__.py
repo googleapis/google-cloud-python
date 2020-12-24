@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.async_client import (
+    SpeechTranslationServiceAsyncClient,
+)
 from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.client import (
     SpeechTranslationServiceClient,
 )
@@ -36,6 +38,7 @@ from google.cloud.mediatranslation_v1beta1.types.media_translation import (
 )
 
 __all__ = (
+    "SpeechTranslationServiceAsyncClient",
     "SpeechTranslationServiceClient",
     "StreamingTranslateSpeechConfig",
     "StreamingTranslateSpeechRequest",

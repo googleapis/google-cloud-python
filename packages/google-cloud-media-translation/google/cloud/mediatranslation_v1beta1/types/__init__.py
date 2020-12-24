@@ -23,7 +23,6 @@ from .media_translation import (
     StreamingTranslateSpeechResponse,
 )
 
-
 __all__ = (
     "TranslateSpeechConfig",
     "StreamingTranslateSpeechConfig",

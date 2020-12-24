@@ -3,23 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-media-translation.git",
-        "sha": "892b2b881cae15dc84a85904cb699445525e7a6d"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "eafa840ceec23b44a5c21670288107c661252711",
-        "internalRef": "313488995"
+        "remote": "git@github.com:googleapis/python-media-translation",
+        "sha": "55eb3dc6052f53a4d192cc4b6fd41bc415c9d304"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "71b8a272549c06b5768d00fa48d3ae990e871bec"
+        "sha": "6b026e1443948dcfc0b9e3289c85e940eb70f694"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "6b026e1443948dcfc0b9e3289c85e940eb70f694"
       }
     }
   ],
@@ -30,7 +29,7 @@
         "apiName": "mediatranslation",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     }
   ]

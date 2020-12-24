@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.speech_translation_service import SpeechTranslationServiceClient
 from .types.media_translation import StreamingTranslateSpeechConfig
 from .types.media_translation import StreamingTranslateSpeechRequest
