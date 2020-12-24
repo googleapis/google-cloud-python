@@ -51,7 +51,6 @@ from .services import (
     ListJobTemplatesResponse,
 )
 
-
 __all__ = (
     "Job",
     "JobTemplate",
