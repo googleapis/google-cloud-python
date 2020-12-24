@@ -29,7 +29,7 @@ class Text(proto.Message):
     Attributes:
         content (str):
             The text content to be displayed.
-        format (~.text.Text.Format):
+        format_ (~.text.Text.Format):
             How the text content is formatted.
     """
 
@@ -41,7 +41,7 @@ class Text(proto.Message):
 
     content = proto.Field(proto.STRING, number=1)
 
-    format = proto.Field(proto.ENUM, number=2, enum=Format,)
+    format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
