@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-automl.git",
-        "sha": "c1329dbb9f18f517f99f267d13db030abb820477"
+        "sha": "df22fd569124dfc3f9b2568656fb6cddc4bcb07b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "53eb2512a55caabcbad1898225080a2a3dfcb6aa",
-        "internalRef": "346818879"
+        "sha": "6dae98144d466d4f985b926baec6208b01572f55",
+        "internalRef": "347459563"
       }
     },
     {

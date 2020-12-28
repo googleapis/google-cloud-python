@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[AutoMlTransport]]
 _transport_registry["grpc"] = AutoMlGrpcTransport
 _transport_registry["grpc_asyncio"] = AutoMlGrpcAsyncIOTransport
 
-
 __all__ = (
     "AutoMlTransport",
     "AutoMlGrpcTransport",

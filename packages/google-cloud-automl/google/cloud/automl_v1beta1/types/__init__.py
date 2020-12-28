@@ -20,6 +20,7 @@ from .classification import (
     ClassificationAnnotation,
     VideoClassificationAnnotation,
     ClassificationEvaluationMetrics,
+    ClassificationType,
 )
 from .geometry import (
     NormalizedVertex,
@@ -45,6 +46,7 @@ from .data_stats import (
 from .data_types import (
     DataType,
     StructType,
+    TypeCode,
 )
 from .column_spec import ColumnSpec
 from .io import (
@@ -170,12 +172,12 @@ from .service import (
     ListModelEvaluationsResponse,
 )
 
-
 __all__ = (
     "TimeSegment",
     "ClassificationAnnotation",
     "VideoClassificationAnnotation",
     "ClassificationEvaluationMetrics",
+    "ClassificationType",
     "NormalizedVertex",
     "BoundingPoly",
     "ImageObjectDetectionAnnotation",
@@ -193,6 +195,7 @@ __all__ = (
     "CorrelationStats",
     "DataType",
     "StructType",
+    "TypeCode",
     "ColumnSpec",
     "InputConfig",
     "BatchPredictInputConfig",

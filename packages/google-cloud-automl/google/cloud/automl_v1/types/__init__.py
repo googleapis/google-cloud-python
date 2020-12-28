@@ -18,6 +18,7 @@
 from .classification import (
     ClassificationAnnotation,
     ClassificationEvaluationMetrics,
+    ClassificationType,
 )
 from .geometry import (
     NormalizedVertex,
@@ -123,10 +124,10 @@ from .service import (
     ListModelEvaluationsResponse,
 )
 
-
 __all__ = (
     "ClassificationAnnotation",
     "ClassificationEvaluationMetrics",
+    "ClassificationType",
     "NormalizedVertex",
     "BoundingPoly",
     "ImageObjectDetectionAnnotation",

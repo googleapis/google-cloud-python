@@ -149,7 +149,6 @@ __all__ = (
     "AnnotationPayload",
     "AnnotationSpec",
     "ArrayStats",
-    "AutoMlClient",
     "BatchPredictInputConfig",
     "BatchPredictOperationMetadata",
     "BatchPredictOutputConfig",
@@ -228,6 +227,7 @@ __all__ = (
     "OutputConfig",
     "PredictRequest",
     "PredictResponse",
+    "PredictionServiceClient",
     "RegressionEvaluationMetrics",
     "Row",
     "StringStats",
@@ -269,5 +269,5 @@ __all__ = (
     "VideoObjectTrackingDatasetMetadata",
     "VideoObjectTrackingEvaluationMetrics",
     "VideoObjectTrackingModelMetadata",
-    "PredictionServiceClient",
+    "AutoMlClient",
 )
