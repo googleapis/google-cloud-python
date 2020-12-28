@@ -42,6 +42,9 @@ from .annotation import (
     VideoEventAnnotation,
     AnnotationMetadata,
     OperatorMetadata,
+    AnnotationSource,
+    AnnotationSentiment,
+    AnnotationType,
 )
 from .data_payloads import (
     ImagePayload,
@@ -62,6 +65,7 @@ from .human_annotation_config import (
     TextClassificationConfig,
     SentimentConfig,
     TextEntityExtractionConfig,
+    StringAggregationType,
 )
 from .dataset import (
     Dataset,
@@ -78,6 +82,7 @@ from .dataset import (
     LabelStats,
     AnnotatedDatasetMetadata,
     Example,
+    DataType,
 )
 from .evaluation import (
     Evaluation,
@@ -166,7 +171,6 @@ from .operations import (
     CreateInstructionMetadata,
 )
 
-
 __all__ = (
     "AnnotationSpecSet",
     "AnnotationSpec",
@@ -192,6 +196,9 @@ __all__ = (
     "VideoEventAnnotation",
     "AnnotationMetadata",
     "OperatorMetadata",
+    "AnnotationSource",
+    "AnnotationSentiment",
+    "AnnotationType",
     "ImagePayload",
     "TextPayload",
     "VideoThumbnail",
@@ -208,6 +215,7 @@ __all__ = (
     "TextClassificationConfig",
     "SentimentConfig",
     "TextEntityExtractionConfig",
+    "StringAggregationType",
     "Dataset",
     "InputConfig",
     "TextMetadata",
@@ -222,6 +230,7 @@ __all__ = (
     "LabelStats",
     "AnnotatedDatasetMetadata",
     "Example",
+    "DataType",
     "Evaluation",
     "EvaluationConfig",
     "BoundingBoxEvaluationOptions",

@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = DataLabelingServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataLabelingServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "DataLabelingServiceTransport",
     "DataLabelingServiceGrpcTransport",
