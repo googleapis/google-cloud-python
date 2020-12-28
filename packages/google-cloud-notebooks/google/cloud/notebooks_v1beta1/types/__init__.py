@@ -47,7 +47,6 @@ from .service import (
     DeleteEnvironmentRequest,
 )
 
-
 __all__ = (
     "Environment",
     "VmImage",
