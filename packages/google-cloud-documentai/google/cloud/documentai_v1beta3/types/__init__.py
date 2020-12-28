@@ -32,7 +32,6 @@ from .document_processor_service import (
     ReviewDocumentOperationMetadata,
 )
 
-
 __all__ = (
     "Vertex",
     "NormalizedVertex",

@@ -40,7 +40,6 @@ from .document_understanding import (
     OperationMetadata,
 )
 
-
 __all__ = (
     "Vertex",
     "NormalizedVertex",
