@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery-datatransfer.git",
-        "sha": "cd519709228cda3bbcf2fd978d37ccd04ef27c82"
+        "sha": "c0ec0191ddc6f17b063685beb437b81590fee5cc"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "aa255b15d52b6d8950cca48cfdf58f7d27a60c8a"
+        "sha": "b670a77a454f415d247907908e8ee7943e06d718"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "aa255b15d52b6d8950cca48cfdf58f7d27a60c8a"
+        "sha": "b670a77a454f415d247907908e8ee7943e06d718"
       }
     }
   ],
@@ -120,7 +120,6 @@
     "renovate.json",
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
-    "samples/noxfile.py",
     "samples/snippets/noxfile.py",
     "scripts/decrypt-secrets.sh",
     "scripts/fixup_bigquery_datatransfer_v1_keywords.py",
