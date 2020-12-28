@@ -27,9 +27,8 @@ class Component(proto.Enum):
     r"""Cluster components that can be activated."""
     COMPONENT_UNSPECIFIED = 0
     ANACONDA = 5
-    DOCKER = 13
     DRUID = 9
-    FLINK = 14
+    HBASE = 11
     HIVE_WEBHCAT = 3
     JUPYTER = 1
     KERBEROS = 7

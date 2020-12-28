@@ -174,15 +174,14 @@ class SparkJob(proto.Message):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATHs of the Spark driver and tasks.
         file_uris (Sequence[str]):
-            Optional. HCFS URIs of files to be copied to
-            the working directory of Spark drivers and
-            distributed tasks. Useful for naively parallel
-            tasks.
+            Optional. HCFS URIs of files to be placed in
+            the working directory of each executor. Useful
+            for naively parallel tasks.
         archive_uris (Sequence[str]):
             Optional. HCFS URIs of archives to be
-            extracted in the working directory of Spark
-            drivers and tasks. Supported file types: .jar,
-            .tar, .tar.gz, .tgz, and .zip.
+            extracted into the working directory of each
+            executor. Supported file types: .jar, .tar,
+            .tar.gz, .tgz, and .zip.
         properties (Sequence[~.gcd_jobs.SparkJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure Spark. Properties that
@@ -234,14 +233,14 @@ class PySparkJob(proto.Message):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATHs of the Python driver and tasks.
         file_uris (Sequence[str]):
-            Optional. HCFS URIs of files to be copied to
-            the working directory of Python drivers and
-            distributed tasks. Useful for naively parallel
-            tasks.
+            Optional. HCFS URIs of files to be placed in
+            the working directory of each executor. Useful
+            for naively parallel tasks.
         archive_uris (Sequence[str]):
             Optional. HCFS URIs of archives to be
-            extracted in the working directory of .jar,
-            .tar, .tar.gz, .tgz, and .zip.
+            extracted into the working directory of each
+            executor. Supported file types: .jar, .tar,
+            .tar.gz, .tgz, and .zip.
         properties (Sequence[~.gcd_jobs.PySparkJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure PySpark. Properties
@@ -450,15 +449,14 @@ class SparkRJob(proto.Message):
             job properties, since a collision may occur that causes an
             incorrect job submission.
         file_uris (Sequence[str]):
-            Optional. HCFS URIs of files to be copied to
-            the working directory of R drivers and
-            distributed tasks. Useful for naively parallel
-            tasks.
+            Optional. HCFS URIs of files to be placed in
+            the working directory of each executor. Useful
+            for naively parallel tasks.
         archive_uris (Sequence[str]):
             Optional. HCFS URIs of archives to be
-            extracted in the working directory of Spark
-            drivers and tasks. Supported file types: .jar,
-            .tar, .tar.gz, .tgz, and .zip.
+            extracted into the working directory of each
+            executor. Supported file types: .jar, .tar,
+            .tar.gz, .tgz, and .zip.
         properties (Sequence[~.gcd_jobs.SparkRJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure SparkR. Properties
@@ -608,8 +606,9 @@ class JobReference(proto.Message):
 
     Attributes:
         project_id (str):
-            Required. The ID of the Google Cloud Platform
-            project that the job belongs to.
+            Optional. The ID of the Google Cloud Platform
+            project that the job belongs to. If specified,
+            must match the request project ID.
         job_id (str):
             Optional. The job ID, which must be unique within the
             project. The ID must contain only letters (a-z, A-Z),

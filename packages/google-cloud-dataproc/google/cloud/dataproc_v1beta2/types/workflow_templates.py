@@ -20,6 +20,7 @@ import proto  # type: ignore
 
 from google.cloud.dataproc_v1beta2.types import clusters
 from google.cloud.dataproc_v1beta2.types import jobs as gcd_jobs
+from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
@@ -118,6 +119,17 @@ class WorkflowTemplate(proto.Message):
             are substituted into the template. Values for
             parameters must be provided when the template is
             instantiated.
+        dag_timeout (~.duration.Duration):
+            Optional. Timeout duration for the DAG of jobs. You can use
+            "s", "m", "h", and "d" suffixes for second, minute, hour,
+            and day duration values, respectively. The timeout duration
+            must be from 10 minutes ("10m") to 24 hours ("24h" or "1d").
+            The timer begins when the first job is submitted. If the
+            workflow is running at the end of the timeout period, any
+            remaining jobs are cancelled, the workflow is terminated,
+            and if the workflow was running on a `managed
+            cluster <https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster>`__,
+            the cluster is deleted.
     """
 
     id = proto.Field(proto.STRING, number=2)
@@ -141,6 +153,8 @@ class WorkflowTemplate(proto.Message):
     parameters = proto.RepeatedField(
         proto.MESSAGE, number=9, message="TemplateParameter",
     )
+
+    dag_timeout = proto.Field(proto.MESSAGE, number=10, message=duration.Duration,)
 
 
 class WorkflowTemplatePlacement(proto.Message):
@@ -245,21 +259,21 @@ class OrderedJob(proto.Message):
             underscore or hyphen. Must consist of between 3 and 50
             characters.
         hadoop_job (~.gcd_jobs.HadoopJob):
-
+            Optional. Job is a Hadoop job.
         spark_job (~.gcd_jobs.SparkJob):
-
+            Optional. Job is a Spark job.
         pyspark_job (~.gcd_jobs.PySparkJob):
-
+            Optional. Job is a PySpark job.
         hive_job (~.gcd_jobs.HiveJob):
-
+            Optional. Job is a Hive job.
         pig_job (~.gcd_jobs.PigJob):
-
+            Optional. Job is a Pig job.
         spark_r_job (~.gcd_jobs.SparkRJob):
-            Spark R job
+            Optional. Job is a SparkR job.
         spark_sql_job (~.gcd_jobs.SparkSqlJob):
-
+            Optional. Job is a SparkSql job.
         presto_job (~.gcd_jobs.PrestoJob):
-            Presto job
+            Optional. Job is a Presto job.
         labels (Sequence[~.workflow_templates.OrderedJob.LabelsEntry]):
             Optional. The labels to associate with this job.
 
@@ -494,6 +508,22 @@ class WorkflowMetadata(proto.Message):
             Output only. Workflow end time.
         cluster_uuid (str):
             Output only. The UUID of target cluster.
+        dag_timeout (~.duration.Duration):
+            Output only. The timeout duration for the DAG of jobs.
+            Minimum timeout duration is 10 minutes and maximum is 24
+            hours, expressed as a
+            [google.protobuf.Duration][https://developers.google.com/protocol-buffers/docs/proto3#json_mapping].
+            For example, "1800" = 1800 seconds/30 minutes duration.
+        dag_start_time (~.timestamp.Timestamp):
+            Output only. DAG start time, which is only set for workflows
+            with
+            [dag_timeout][google.cloud.dataproc.v1beta2.WorkflowMetadata.dag_timeout]
+            when the DAG begins.
+        dag_end_time (~.timestamp.Timestamp):
+            Output only. DAG end time, which is only set for workflows
+            with
+            [dag_timeout][google.cloud.dataproc.v1beta2.WorkflowMetadata.dag_timeout]
+            when the DAG ends.
     """
 
     class State(proto.Enum):
@@ -524,6 +554,12 @@ class WorkflowMetadata(proto.Message):
     end_time = proto.Field(proto.MESSAGE, number=10, message=timestamp.Timestamp,)
 
     cluster_uuid = proto.Field(proto.STRING, number=11)
+
+    dag_timeout = proto.Field(proto.MESSAGE, number=12, message=duration.Duration,)
+
+    dag_start_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
+
+    dag_end_time = proto.Field(proto.MESSAGE, number=14, message=timestamp.Timestamp,)
 
 
 class ClusterOperation(proto.Message):

@@ -131,6 +131,18 @@ class ClusterConfig(proto.Message):
             and manage this project-level, per-location bucket (see
             `Dataproc staging
             bucket <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>`__).
+        temp_bucket (str):
+            Optional. A Cloud Storage bucket used to
+            store ephemeral cluster and jobs data, such as
+            Spark and MapReduce history files. If you do not
+            specify a temp bucket,
+            Dataproc will determine a Cloud Storage location
+            (US, ASIA, or EU) for your cluster's temp bucket
+            according to the Compute Engine zone where your
+            cluster is deployed, and then create and manage
+            this project-level, per-location bucket. The
+            default bucket has a TTL of 90 days, but you can
+            use any TTL (or none) if you specify a bucket.
         gce_cluster_config (~.gcd_clusters.GceClusterConfig):
             Optional. The shared Compute Engine config
             settings for all instances in a cluster.
@@ -187,6 +199,8 @@ class ClusterConfig(proto.Message):
     """
 
     config_bucket = proto.Field(proto.STRING, number=1)
+
+    temp_bucket = proto.Field(proto.STRING, number=2)
 
     gce_cluster_config = proto.Field(
         proto.MESSAGE, number=8, message="GceClusterConfig",
@@ -360,7 +374,7 @@ class GceClusterConfig(proto.Message):
             external IP addresses.
         service_account (str):
             Optional. The `Dataproc service
-            account <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_cloud_dataproc>`__
+            account <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc>`__
             (also see `VM Data Plane
             identity <https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity>`__)
             used by Dataproc cluster VM instances to access Google Cloud
@@ -472,6 +486,15 @@ class InstanceGroupConfig(proto.Message):
         is_preemptible (bool):
             Output only. Specifies that this instance
             group contains preemptible instances.
+        preemptibility (~.gcd_clusters.InstanceGroupConfig.Preemptibility):
+            Optional. Specifies the preemptibility of the instance
+            group.
+
+            The default value for master and worker groups is
+            ``NON_PREEMPTIBLE``. This default cannot be changed.
+
+            The default value for secondary instances is
+            ``PREEMPTIBLE``.
         managed_group_config (~.gcd_clusters.ManagedGroupConfig):
             Output only. The config for Compute Engine
             Instance Group Manager that manages this group.
@@ -486,6 +509,15 @@ class InstanceGroupConfig(proto.Message):
             Platform <https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu>`__.
     """
 
+    class Preemptibility(proto.Enum):
+        r"""Controls the use of [preemptible instances]
+        (https://cloud.google.com/compute/docs/instances/preemptible) within
+        the group.
+        """
+        PREEMPTIBILITY_UNSPECIFIED = 0
+        NON_PREEMPTIBLE = 1
+        PREEMPTIBLE = 2
+
     num_instances = proto.Field(proto.INT32, number=1)
 
     instance_names = proto.RepeatedField(proto.STRING, number=2)
@@ -497,6 +529,8 @@ class InstanceGroupConfig(proto.Message):
     disk_config = proto.Field(proto.MESSAGE, number=5, message="DiskConfig",)
 
     is_preemptible = proto.Field(proto.BOOL, number=6)
+
+    preemptibility = proto.Field(proto.ENUM, number=10, enum=Preemptibility,)
 
     managed_group_config = proto.Field(
         proto.MESSAGE, number=7, message="ManagedGroupConfig",
@@ -827,7 +861,7 @@ class SoftwareConfig(proto.Message):
         image_version (str):
             Optional. The version of software inside the cluster. It
             must be one of the supported `Dataproc
-            Versions <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_cloud_dataproc_versions>`__,
+            Versions <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions>`__,
             such as "1.2" (including a subminor version, such as
             "1.2.29"), or the `"preview"
             version <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>`__.
