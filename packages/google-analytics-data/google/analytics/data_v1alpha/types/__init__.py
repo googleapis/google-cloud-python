@@ -43,6 +43,8 @@ from .data import (
     QuotaStatus,
     DimensionMetadata,
     MetricMetadata,
+    MetricAggregation,
+    MetricType,
 )
 from .analytics_data_api import (
     Metadata,
@@ -58,7 +60,6 @@ from .analytics_data_api import (
     RunRealtimeReportRequest,
     RunRealtimeReportResponse,
 )
-
 
 __all__ = (
     "DateRange",
@@ -88,6 +89,8 @@ __all__ = (
     "QuotaStatus",
     "DimensionMetadata",
     "MetricMetadata",
+    "MetricAggregation",
+    "MetricType",
     "Metadata",
     "RunReportRequest",
     "RunReportResponse",

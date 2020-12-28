@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = AlphaAnalyticsDataGrpcTransport
 _transport_registry["grpc_asyncio"] = AlphaAnalyticsDataGrpcAsyncIOTransport
 
-
 __all__ = (
     "AlphaAnalyticsDataTransport",
     "AlphaAnalyticsDataGrpcTransport",
