@@ -196,6 +196,10 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
                 ssl_credentials=ssl_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             self._ssl_channel_credentials = ssl_credentials
         else:
@@ -214,6 +218,10 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
                 ssl_credentials=ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
 
         # Run the base constructor.
@@ -227,6 +235,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         )
 
         self._stubs = {}
+        self._operations_client = None
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -246,13 +255,13 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         client.
         """
         # Sanity check: Only create a new client if we do not already have one.
-        if "operations_client" not in self.__dict__:
-            self.__dict__["operations_client"] = operations_v1.OperationsAsyncClient(
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
                 self.grpc_channel
             )
 
         # Return the client from cache.
-        return self.__dict__["operations_client"]
+        return self._operations_client
 
     @property
     def list_versions(

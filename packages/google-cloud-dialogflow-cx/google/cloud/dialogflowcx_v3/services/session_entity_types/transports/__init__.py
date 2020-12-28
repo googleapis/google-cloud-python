@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = SessionEntityTypesGrpcTransport
 _transport_registry["grpc_asyncio"] = SessionEntityTypesGrpcAsyncIOTransport
 
-
 __all__ = (
     "SessionEntityTypesTransport",
     "SessionEntityTypesGrpcTransport",

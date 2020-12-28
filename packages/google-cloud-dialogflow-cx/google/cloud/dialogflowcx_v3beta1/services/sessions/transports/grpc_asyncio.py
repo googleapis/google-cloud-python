@@ -194,6 +194,10 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
                 ssl_credentials=ssl_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             self._ssl_channel_credentials = ssl_credentials
         else:
@@ -212,6 +216,10 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
                 ssl_credentials=ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
 
         # Run the base constructor.
@@ -244,11 +252,14 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
     ]:
         r"""Return a callable for the detect intent method over gRPC.
 
-        Processes a natural language query and returns
-        structured, actionable data as a result. This method is
-        not idempotent, because it may cause session entity
-        types to be updated, which in turn might affect results
-        of future queries.
+        Processes a natural language query and returns structured,
+        actionable data as a result. This method is not idempotent,
+        because it may cause session entity types to be updated, which
+        in turn might affect results of future queries.
+
+        Note: Always use agent versions for production traffic. See
+        `Versions and
+        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Returns:
             Callable[[~.DetectIntentRequest],
@@ -277,10 +288,14 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
     ]:
         r"""Return a callable for the streaming detect intent method over gRPC.
 
-        Processes a natural language query in audio format in
-        a streaming fashion and returns structured, actionable
-        data as a result. This method is only available via the
-        gRPC API (not REST).
+        Processes a natural language query in audio format in a
+        streaming fashion and returns structured, actionable data as a
+        result. This method is only available via the gRPC API (not
+        REST).
+
+        Note: Always use agent versions for production traffic. See
+        `Versions and
+        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Returns:
             Callable[[~.StreamingDetectIntentRequest],

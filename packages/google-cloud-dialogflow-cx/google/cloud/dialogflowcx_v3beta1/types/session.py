@@ -73,6 +73,10 @@ class DetectIntentRequest(proto.Message):
 
             For more information, see the `sessions
             guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
+
+            Note: Always use agent versions for production traffic. See
+            `Versions and
+            environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
         query_params (~.gcdc_session.QueryParameters):
             The parameters of this query.
         query_input (~.gcdc_session.QueryInput):
@@ -185,6 +189,10 @@ class StreamingDetectIntentRequest(proto.Message):
 
             For more information, see the `sessions
             guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
+
+            Note: Always use agent versions for production traffic. See
+            `Versions and
+            environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
         query_params (~.gcdc_session.QueryParameters):
             The parameters of this query.
         query_input (~.gcdc_session.QueryInput):
@@ -386,6 +394,19 @@ class QueryParameters(proto.Message):
             Configures whether sentiment analysis should
             be performed. If not provided, sentiment
             analysis is not performed.
+        webhook_headers (Sequence[~.gcdc_session.QueryParameters.WebhookHeadersEntry]):
+            This field can be used to pass HTTP headers
+            for a webhook call. These headers will be sent
+            to webhook along with the headers that have been
+            configured through Dialogflow web console. The
+            headers defined within this field will overwrite
+            the headers configured through Dialogflow
+            console if there is a conflict. Header names are
+            case-insensitive. Google's specified headers are
+            not allowed. Including: "Host", "Content-
+            Length", "Connection", "From", "User-Agent",
+            "Accept-Encoding", "If-Modified-Since", "If-
+            None-Match", "X-Forwarded-For", etc.
     """
 
     time_zone = proto.Field(proto.STRING, number=1)
@@ -401,6 +422,8 @@ class QueryParameters(proto.Message):
     parameters = proto.Field(proto.MESSAGE, number=5, message=struct.Struct,)
 
     analyze_query_text_sentiment = proto.Field(proto.BOOL, number=8)
+
+    webhook_headers = proto.MapField(proto.STRING, proto.STRING, number=10)
 
 
 class QueryInput(proto.Message):

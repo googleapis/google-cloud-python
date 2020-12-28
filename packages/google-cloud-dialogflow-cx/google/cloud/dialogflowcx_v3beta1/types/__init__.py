@@ -59,6 +59,10 @@ from .audio_config import (
     VoiceSelectionParams,
     SynthesizeSpeechConfig,
     OutputAudioConfig,
+    AudioEncoding,
+    SpeechModelVariant,
+    SsmlVoiceGender,
+    OutputAudioEncoding,
 )
 from .entity_type import (
     EntityType,
@@ -88,6 +92,7 @@ from .intent import (
     CreateIntentRequest,
     UpdateIntentRequest,
     DeleteIntentRequest,
+    IntentView,
 )
 from .session_entity_type import (
     SessionEntityType,
@@ -153,7 +158,6 @@ from .webhook import (
     SessionInfo,
 )
 
-
 __all__ = (
     "ResponseMessage",
     "Fulfillment",
@@ -192,6 +196,10 @@ __all__ = (
     "VoiceSelectionParams",
     "SynthesizeSpeechConfig",
     "OutputAudioConfig",
+    "AudioEncoding",
+    "SpeechModelVariant",
+    "SsmlVoiceGender",
+    "OutputAudioEncoding",
     "EntityType",
     "ListEntityTypesRequest",
     "ListEntityTypesResponse",
@@ -215,6 +223,7 @@ __all__ = (
     "CreateIntentRequest",
     "UpdateIntentRequest",
     "DeleteIntentRequest",
+    "IntentView",
     "SessionEntityType",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",

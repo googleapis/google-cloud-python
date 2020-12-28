@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[WebhooksTransport]]
 _transport_registry["grpc"] = WebhooksGrpcTransport
 _transport_registry["grpc_asyncio"] = WebhooksGrpcAsyncIOTransport
 
-
 __all__ = (
     "WebhooksTransport",
     "WebhooksGrpcTransport",

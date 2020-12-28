@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = SecuritySettingsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SecuritySettingsServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "SecuritySettingsServiceTransport",
     "SecuritySettingsServiceGrpcTransport",
