@@ -127,8 +127,9 @@ from .cluster_service import (
     NotificationConfig,
     ConfidentialNodes,
     UpgradeEvent,
+    DatapathProvider,
+    UpgradeResourceType,
 )
-
 
 __all__ = (
     "LinuxNodeConfig",
@@ -242,4 +243,6 @@ __all__ = (
     "NotificationConfig",
     "ConfidentialNodes",
     "UpgradeEvent",
+    "DatapathProvider",
+    "UpgradeResourceType",
 )

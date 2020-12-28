@@ -113,7 +113,6 @@ from .cluster_service import (
     ShieldedNodes,
 )
 
-
 __all__ = (
     "NodeConfig",
     "ShieldedInstanceConfig",
