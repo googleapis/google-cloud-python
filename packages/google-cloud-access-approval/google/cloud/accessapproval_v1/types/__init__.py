@@ -32,8 +32,8 @@ from .accessapproval import (
     GetAccessApprovalSettingsMessage,
     UpdateAccessApprovalSettingsMessage,
     DeleteAccessApprovalSettingsMessage,
+    EnrollmentLevel,
 )
-
 
 __all__ = (
     "AccessLocations",
@@ -52,4 +52,5 @@ __all__ = (
     "GetAccessApprovalSettingsMessage",
     "UpdateAccessApprovalSettingsMessage",
     "DeleteAccessApprovalSettingsMessage",
+    "EnrollmentLevel",
 )
