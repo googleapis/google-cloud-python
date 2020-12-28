@@ -32,8 +32,8 @@ from .tables import (
     Table,
     ColumnDescription,
     Row,
+    View,
 )
-
 
 __all__ = (
     "GetTableRequest",
@@ -52,4 +52,5 @@ __all__ = (
     "Table",
     "ColumnDescription",
     "Row",
+    "View",
 )

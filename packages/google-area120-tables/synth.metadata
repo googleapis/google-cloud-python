@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-area120-tables.git",
-        "sha": "e2367d0be19e5e8e353ad9757a5b2ba730168b4c"
+        "sha": "a77e7c3bf60a89c4327a4c998160290233776a0c"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6a69c750c3f01a69017662395f90515bbf1fe1ff",
-        "internalRef": "342721036"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {
