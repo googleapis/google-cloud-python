@@ -38,8 +38,8 @@ from .language_service import (
     ClassifyTextResponse,
     AnnotateTextRequest,
     AnnotateTextResponse,
+    EncodingType,
 )
-
 
 __all__ = (
     "Document",
@@ -64,4 +64,5 @@ __all__ = (
     "ClassifyTextResponse",
     "AnnotateTextRequest",
     "AnnotateTextResponse",
+    "EncodingType",
 )
