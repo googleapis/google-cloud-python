@@ -39,13 +39,14 @@ from .error_stats_service import (
     ServiceContextFilter,
     DeleteEventsRequest,
     DeleteEventsResponse,
+    TimedCountAlignment,
+    ErrorGroupOrder,
 )
 from .report_errors_service import (
     ReportErrorEventRequest,
     ReportErrorEventResponse,
     ReportedErrorEvent,
 )
-
 
 __all__ = (
     "ErrorGroup",
@@ -67,6 +68,8 @@ __all__ = (
     "ServiceContextFilter",
     "DeleteEventsRequest",
     "DeleteEventsResponse",
+    "TimedCountAlignment",
+    "ErrorGroupOrder",
     "ReportErrorEventRequest",
     "ReportErrorEventResponse",
     "ReportedErrorEvent",

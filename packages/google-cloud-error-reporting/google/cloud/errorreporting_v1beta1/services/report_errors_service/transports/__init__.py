@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = ReportErrorsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ReportErrorsServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "ReportErrorsServiceTransport",
     "ReportErrorsServiceGrpcTransport",
