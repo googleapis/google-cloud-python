@@ -20,7 +20,6 @@ from .containeranalysis import (
     VulnerabilityOccurrencesSummary,
 )
 
-
 __all__ = (
     "GetVulnerabilityOccurrencesSummaryRequest",
     "VulnerabilityOccurrencesSummary",
