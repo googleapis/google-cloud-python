@@ -32,7 +32,6 @@ from .budget_service import (
     DeleteBudgetRequest,
 )
 
-
 __all__ = (
     "Budget",
     "BudgetAmount",
