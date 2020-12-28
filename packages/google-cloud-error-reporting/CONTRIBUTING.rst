@@ -111,6 +111,16 @@ Coding Style
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
+- This repository contains configuration for the
+  `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
+  our linters during a commit.  If you have it installed on your ``$PATH``,
+  you can enable enforcing those checks via:
+
+.. code-block:: bash
+
+   $ pre-commit install
+   pre-commit installed at .git/hooks/pre-commit
+
 Exceptions to PEP8:
 
 - Many unit tests use a helper method, ``_call_fut`` ("FUT" is short for
