@@ -1,6 +1,6 @@
-Client for Google Cloud Memcache API
-====================================
+Services for Google Cloud Memcache v1beta2 API
+==============================================
 
-.. automodule:: google.cloud.memcache_v1beta2
+.. automodule:: google.cloud.memcache_v1beta2.services.cloud_memcache
     :members:
     :inherited-members:

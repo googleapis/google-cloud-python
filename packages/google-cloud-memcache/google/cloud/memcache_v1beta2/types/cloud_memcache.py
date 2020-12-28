@@ -75,8 +75,8 @@ class Instance(proto.Message):
             resources
         authorized_network (str):
             Optional. The full name of the Google Compute Engine
-            `network </compute/docs/networks-and-firewalls#networks>`__
-            to which the instance is connected. If left unspecified, the
+            `network <https://cloud.google.com/vpc/docs/vpc>`__ to which
+            the instance is connected. If left unspecified, the
             ``default`` network will be used.
         zones (Sequence[str]):
             Optional. Zones where Memcached nodes should
@@ -148,6 +148,7 @@ class Instance(proto.Message):
         """
 
         cpu_count = proto.Field(proto.INT32, number=1)
+
         memory_size_mb = proto.Field(proto.INT32, number=2)
 
     class Node(proto.Message):
@@ -187,11 +188,16 @@ class Instance(proto.Message):
             UPDATING = 4
 
         node_id = proto.Field(proto.STRING, number=1)
+
         zone = proto.Field(proto.STRING, number=2)
-        state = proto.Field(proto.ENUM, number=3, enum="Instance.Node.State")
+
+        state = proto.Field(proto.ENUM, number=3, enum="Instance.Node.State",)
+
         host = proto.Field(proto.STRING, number=4)
+
         port = proto.Field(proto.INT32, number=5)
-        parameters = proto.Field(proto.MESSAGE, number=6, message="MemcacheParameters")
+
+        parameters = proto.Field(proto.MESSAGE, number=6, message="MemcacheParameters",)
 
     class InstanceMessage(proto.Message):
         r"""
@@ -210,26 +216,42 @@ class Instance(proto.Message):
             CODE_UNSPECIFIED = 0
             ZONE_DISTRIBUTION_UNBALANCED = 1
 
-        code = proto.Field(proto.ENUM, number=1, enum="Instance.InstanceMessage.Code")
+        code = proto.Field(proto.ENUM, number=1, enum="Instance.InstanceMessage.Code",)
+
         message = proto.Field(proto.STRING, number=2)
 
     name = proto.Field(proto.STRING, number=1)
+
     display_name = proto.Field(proto.STRING, number=2)
+
     labels = proto.MapField(proto.STRING, proto.STRING, number=3)
+
     authorized_network = proto.Field(proto.STRING, number=4)
+
     zones = proto.RepeatedField(proto.STRING, number=5)
+
     node_count = proto.Field(proto.INT32, number=6)
-    node_config = proto.Field(proto.MESSAGE, number=7, message=NodeConfig)
-    memcache_version = proto.Field(proto.ENUM, number=9, enum="MemcacheVersion")
-    parameters = proto.Field(proto.MESSAGE, number=11, message="MemcacheParameters")
-    memcache_nodes = proto.RepeatedField(proto.MESSAGE, number=12, message=Node)
-    create_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp)
-    update_time = proto.Field(proto.MESSAGE, number=14, message=timestamp.Timestamp)
-    state = proto.Field(proto.ENUM, number=15, enum=State)
+
+    node_config = proto.Field(proto.MESSAGE, number=7, message=NodeConfig,)
+
+    memcache_version = proto.Field(proto.ENUM, number=9, enum="MemcacheVersion",)
+
+    parameters = proto.Field(proto.MESSAGE, number=11, message="MemcacheParameters",)
+
+    memcache_nodes = proto.RepeatedField(proto.MESSAGE, number=12, message=Node,)
+
+    create_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
+
+    update_time = proto.Field(proto.MESSAGE, number=14, message=timestamp.Timestamp,)
+
+    state = proto.Field(proto.ENUM, number=15, enum=State,)
+
     memcache_full_version = proto.Field(proto.STRING, number=18)
+
     instance_messages = proto.RepeatedField(
-        proto.MESSAGE, number=19, message=InstanceMessage
+        proto.MESSAGE, number=19, message=InstanceMessage,
     )
+
     discovery_endpoint = proto.Field(proto.STRING, number=20)
 
 
@@ -264,9 +286,13 @@ class ListInstancesRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
+
     filter = proto.Field(proto.STRING, number=4)
+
     order_by = proto.Field(proto.STRING, number=5)
 
 
@@ -294,8 +320,10 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources = proto.RepeatedField(proto.MESSAGE, number=1, message=Instance)
+    resources = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
+
     next_page_token = proto.Field(proto.STRING, number=2)
+
     unreachable = proto.RepeatedField(proto.STRING, number=3)
 
 
@@ -337,8 +365,10 @@ class CreateInstanceRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     instance_id = proto.Field(proto.STRING, number=2)
-    resource = proto.Field(proto.MESSAGE, number=3, message=Instance)
+
+    resource = proto.Field(proto.MESSAGE, number=3, message="Instance",)
 
 
 class UpdateInstanceRequest(proto.Message):
@@ -355,8 +385,9 @@ class UpdateInstanceRequest(proto.Message):
             specified in update_mask are updated.
     """
 
-    update_mask = proto.Field(proto.MESSAGE, number=1, message=field_mask.FieldMask)
-    resource = proto.Field(proto.MESSAGE, number=2, message=Instance)
+    update_mask = proto.Field(proto.MESSAGE, number=1, message=field_mask.FieldMask,)
+
+    resource = proto.Field(proto.MESSAGE, number=2, message="Instance",)
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -394,7 +425,9 @@ class ApplyParametersRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     node_ids = proto.RepeatedField(proto.STRING, number=2)
+
     apply_all = proto.Field(proto.BOOL, number=3)
 
 
@@ -414,8 +447,10 @@ class UpdateParametersRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask)
-    parameters = proto.Field(proto.MESSAGE, number=3, message="MemcacheParameters")
+
+    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+
+    parameters = proto.Field(proto.MESSAGE, number=3, message="MemcacheParameters",)
 
 
 class MemcacheParameters(proto.Message):
@@ -435,6 +470,7 @@ class MemcacheParameters(proto.Message):
     """
 
     id = proto.Field(proto.STRING, number=1)
+
     params = proto.MapField(proto.STRING, proto.STRING, number=3)
 
 
@@ -464,12 +500,18 @@ class OperationMetadata(proto.Message):
             API version used to start the operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp)
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
+
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+
     target = proto.Field(proto.STRING, number=3)
+
     verb = proto.Field(proto.STRING, number=4)
+
     status_detail = proto.Field(proto.STRING, number=5)
+
     cancel_requested = proto.Field(proto.BOOL, number=6)
+
     api_version = proto.Field(proto.STRING, number=7)
 
 
@@ -486,7 +528,7 @@ class LocationMetadata(proto.Message):
     """
 
     available_zones = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message="ZoneMetadata"
+        proto.STRING, proto.MESSAGE, number=1, message="ZoneMetadata",
     )
 
 

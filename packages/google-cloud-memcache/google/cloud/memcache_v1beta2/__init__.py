@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.cloud_memcache import CloudMemcacheClient
 from .types.cloud_memcache import ApplyParametersRequest
 from .types.cloud_memcache import CreateInstanceRequest

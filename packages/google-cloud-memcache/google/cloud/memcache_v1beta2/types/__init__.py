@@ -29,8 +29,8 @@ from .cloud_memcache import (
     OperationMetadata,
     LocationMetadata,
     ZoneMetadata,
+    MemcacheVersion,
 )
-
 
 __all__ = (
     "Instance",
@@ -46,4 +46,5 @@ __all__ = (
     "OperationMetadata",
     "LocationMetadata",
     "ZoneMetadata",
+    "MemcacheVersion",
 )

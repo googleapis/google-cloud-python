@@ -19,53 +19,38 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICMicrogenerator()
+gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
+
+versions = ["v1beta2"]
 
 # ----------------------------------------------------------------------------
 # Generate memcache GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library("memcache", "v1beta2")
+for version in versions:
+    library = gapic.py_library(
+        service="memcache",
+        version=version,
+        bazel_target=f"//google/cloud/memcache/{version}:memcache-{version}-py")
 
-# TODO: remove /docs/memcache_v1beta2/*.rst files after fix is released in 
-# gapic-generator-python 0.19.0
-excludes = [
-    "setup.py",
-    "docs/index.rst",
-    "docs/memcache_v1beta2/services.rst",
-    "docs/memcache_v1beta2/types.rst",
-]
-s.move(library, excludes=excludes)
+    excludes = [
+        "setup.py",
+        "docs/index.rst",
+    ]
+    s.move(library, excludes=excludes)
 
 # Add extra linebreak after bulleted list to appease sphinx
-s.replace("google/**/client.py", """-  Must be unique within the user project / location""",
+s.replace("google/**/*client.py", """-  Must be unique within the user project / location""",
 """-  Must be unique within the user project / location\n""")
-s.replace("google/**/client.py", "-  ``displayName``", "-  ``displayName``\n")
+s.replace("google/**/*client.py", "-  ``displayName``", "-  ``displayName``\n")
 
-# correct license headers
-python.fix_pb2_headers()
-python.fix_pb2_grpc_headers()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100)
+templated_files = common.py_library(cov_level=100, microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc"]
 )  # the microgenerator has a good coveragerc file
-s.replace(
-    ".gitignore", "bigquery/docs/generated", "htmlcov"
-)  # temporary hack to ignore htmlcov
-
-# Remove 2.7 and 3.5 tests from noxfile.py
-s.replace("noxfile.py", """\["2\.7", """, "[")
-s.replace("noxfile.py", """"3.5", """, "")
-
-# Expand flake errors permitted to accomodate the Microgenerator
-# TODO: remove extra error codes once issues below are resolved
-# E712: https://github.com/googleapis/gapic-generator-python/issues/322
-# F401: https://github.com/googleapis/gapic-generator-python/issues/324
-# F841: https://github.com/googleapis/gapic-generator-python/issues/323
-s.replace(".flake8", "ignore = .*", "ignore = E203, E266, E501, W503, F401, F841, E712")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

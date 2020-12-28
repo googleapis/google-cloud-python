@@ -16,5 +16,9 @@
 #
 
 from .client import CloudMemcacheClient
+from .async_client import CloudMemcacheAsyncClient
 
-__all__ = ("CloudMemcacheClient",)
+__all__ = (
+    "CloudMemcacheClient",
+    "CloudMemcacheAsyncClient",
+)
