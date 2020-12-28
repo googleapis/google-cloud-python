@@ -38,6 +38,8 @@ from .storage import (
     BigQueryField,
     EntityId,
     TableOptions,
+    Likelihood,
+    FileType,
 )
 from .dlp import (
     ExcludeInfoTypes,
@@ -164,8 +166,14 @@ from .dlp import (
     HybridContentItem,
     HybridFindingDetails,
     HybridInspectResponse,
+    RelationalOperator,
+    MatchingType,
+    ContentOption,
+    MetadataType,
+    InfoTypeSupportedBy,
+    DlpJobType,
+    StoredInfoTypeState,
 )
-
 
 __all__ = (
     "InfoType",
@@ -190,6 +198,8 @@ __all__ = (
     "BigQueryField",
     "EntityId",
     "TableOptions",
+    "Likelihood",
+    "FileType",
     "ExcludeInfoTypes",
     "ExclusionRule",
     "InspectionRule",
@@ -314,4 +324,11 @@ __all__ = (
     "HybridContentItem",
     "HybridFindingDetails",
     "HybridInspectResponse",
+    "RelationalOperator",
+    "MatchingType",
+    "ContentOption",
+    "MetadataType",
+    "InfoTypeSupportedBy",
+    "DlpJobType",
+    "StoredInfoTypeState",
 )

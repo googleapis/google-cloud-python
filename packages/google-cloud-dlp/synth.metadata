@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-dlp.git",
-        "sha": "908a8d3e2ee741ebdbc78359a18c7e8a1255c5ea"
+        "sha": "fc7290c6340e213dc5134434e33afe84cbeae9d3"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "3f87da2ed1ddc3566ef0810c4fc06a2682cc9f5f",
-        "internalRef": "343022252"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {
@@ -119,7 +119,6 @@
     "renovate.json",
     "samples/AUTHORING_GUIDE.md",
     "samples/CONTRIBUTING.md",
-    "samples/snippets/README.rst",
     "samples/snippets/noxfile.py",
     "scripts/decrypt-secrets.sh",
     "scripts/fixup_dlp_v2_keywords.py",
