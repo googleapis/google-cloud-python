@@ -26,7 +26,6 @@ from .assuredworkloads_v1beta1 import (
     CreateWorkloadOperationMetadata,
 )
 
-
 __all__ = (
     "CreateWorkloadRequest",
     "UpdateWorkloadRequest",

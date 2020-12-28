@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-assured-workloads.git",
-        "sha": "c1542b2ca4b224fdeb8baea8a7f0ec206db3d1aa"
+        "sha": "f996e932f4cfc5749e7d6c3367fd9e98edaa9990"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "3ac5ef0436d8dfeb2ca0091dc7fa8012da1c85af",
-        "internalRef": "342835449"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {
