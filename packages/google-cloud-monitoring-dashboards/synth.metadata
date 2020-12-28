@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-monitoring-dashboards.git",
-        "sha": "cb6a89f29579af6e03c34e9594d3d15d2439c716"
+        "sha": "8e00d80b19618d42e79833cff20e2f62c08fcede"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "07d41a7e5cade45aba6f0d277c89722b48f2c956",
-        "internalRef": "339292950"
+        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
+        "internalRef": "347055288"
       }
     },
     {

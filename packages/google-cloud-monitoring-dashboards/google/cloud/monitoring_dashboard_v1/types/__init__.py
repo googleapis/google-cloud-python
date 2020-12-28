@@ -25,6 +25,7 @@ from .metrics import (
     TimeSeriesFilter,
     TimeSeriesFilterRatio,
     Threshold,
+    SparkChartType,
 )
 from .scorecard import Scorecard
 from .text import Text
@@ -48,7 +49,6 @@ from .dashboards_service import (
     UpdateDashboardRequest,
 )
 
-
 __all__ = (
     "Aggregation",
     "PickTimeSeriesFilter",
@@ -57,6 +57,7 @@ __all__ = (
     "TimeSeriesFilter",
     "TimeSeriesFilterRatio",
     "Threshold",
+    "SparkChartType",
     "Scorecard",
     "Text",
     "XyChart",
