@@ -21,12 +21,14 @@ import proto  # type: ignore
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.pubsub_v1.types import schema as gp_schema
 
 
 __protobuf__ = proto.module(
     package="google.pubsub.v1",
     manifest={
         "MessageStoragePolicy",
+        "SchemaSettings",
         "Topic",
         "PubsubMessage",
         "GetTopicRequest",
@@ -92,6 +94,25 @@ class MessageStoragePolicy(proto.Message):
     allowed_persistence_regions = proto.RepeatedField(proto.STRING, number=1)
 
 
+class SchemaSettings(proto.Message):
+    r"""Settings for validating messages published against a schema.
+
+    Attributes:
+        schema (str):
+            Required. The name of the schema that messages published
+            should be validated against. Format is
+            ``projects/{project}/schemas/{schema}``. The value of this
+            field will be ``_deleted-schema_`` if the schema has been
+            deleted.
+        encoding (~.gp_schema.Encoding):
+            The encoding of messages validated against ``schema``.
+    """
+
+    schema = proto.Field(proto.STRING, number=1)
+
+    encoding = proto.Field(proto.ENUM, number=2, enum=gp_schema.Encoding,)
+
+
 class Topic(proto.Message):
     r"""A topic resource.
 
@@ -119,6 +140,15 @@ class Topic(proto.Message):
 
             The expected format is
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+        schema_settings (~.pubsub.SchemaSettings):
+            Settings for validating messages published
+            against a schema.
+            EXPERIMENTAL: Schema support is in development
+            and may not work yet.
+        satisfies_pzs (bool):
+            Reserved for future use. This field is set
+            only in responses from the server; it is ignored
+            if it is set in any requests.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -130,6 +160,10 @@ class Topic(proto.Message):
     )
 
     kms_key_name = proto.Field(proto.STRING, number=5)
+
+    schema_settings = proto.Field(proto.MESSAGE, number=6, message="SchemaSettings",)
+
+    satisfies_pzs = proto.Field(proto.BOOL, number=7)
 
 
 class PubsubMessage(proto.Message):

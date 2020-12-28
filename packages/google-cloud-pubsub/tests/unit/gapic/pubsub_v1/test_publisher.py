@@ -43,6 +43,7 @@ from google.pubsub_v1.services.publisher import PublisherClient
 from google.pubsub_v1.services.publisher import pagers
 from google.pubsub_v1.services.publisher import transports
 from google.pubsub_v1.types import pubsub
+from google.pubsub_v1.types import schema
 
 
 def client_cert_source_callback():
@@ -440,7 +441,7 @@ def test_create_topic(transport: str = "grpc", request_type=pubsub.Topic):
     with mock.patch.object(type(client.transport.create_topic), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = pubsub.Topic(
-            name="name_value", kms_key_name="kms_key_name_value",
+            name="name_value", kms_key_name="kms_key_name_value", satisfies_pzs=True,
         )
 
         response = client.create_topic(request)
@@ -458,6 +459,8 @@ def test_create_topic(transport: str = "grpc", request_type=pubsub.Topic):
     assert response.name == "name_value"
 
     assert response.kms_key_name == "kms_key_name_value"
+
+    assert response.satisfies_pzs is True
 
 
 def test_create_topic_from_dict():
@@ -480,7 +483,11 @@ async def test_create_topic_async(
     with mock.patch.object(type(client.transport.create_topic), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.Topic(name="name_value", kms_key_name="kms_key_name_value",)
+            pubsub.Topic(
+                name="name_value",
+                kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+            )
         )
 
         response = await client.create_topic(request)
@@ -497,6 +504,8 @@ async def test_create_topic_async(
     assert response.name == "name_value"
 
     assert response.kms_key_name == "kms_key_name_value"
+
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -631,7 +640,7 @@ def test_update_topic(transport: str = "grpc", request_type=pubsub.UpdateTopicRe
     with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = pubsub.Topic(
-            name="name_value", kms_key_name="kms_key_name_value",
+            name="name_value", kms_key_name="kms_key_name_value", satisfies_pzs=True,
         )
 
         response = client.update_topic(request)
@@ -649,6 +658,8 @@ def test_update_topic(transport: str = "grpc", request_type=pubsub.UpdateTopicRe
     assert response.name == "name_value"
 
     assert response.kms_key_name == "kms_key_name_value"
+
+    assert response.satisfies_pzs is True
 
 
 def test_update_topic_from_dict():
@@ -671,7 +682,11 @@ async def test_update_topic_async(
     with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.Topic(name="name_value", kms_key_name="kms_key_name_value",)
+            pubsub.Topic(
+                name="name_value",
+                kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+            )
         )
 
         response = await client.update_topic(request)
@@ -688,6 +703,8 @@ async def test_update_topic_async(
     assert response.name == "name_value"
 
     assert response.kms_key_name == "kms_key_name_value"
+
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -958,7 +975,7 @@ def test_get_topic(transport: str = "grpc", request_type=pubsub.GetTopicRequest)
     with mock.patch.object(type(client.transport.get_topic), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = pubsub.Topic(
-            name="name_value", kms_key_name="kms_key_name_value",
+            name="name_value", kms_key_name="kms_key_name_value", satisfies_pzs=True,
         )
 
         response = client.get_topic(request)
@@ -976,6 +993,8 @@ def test_get_topic(transport: str = "grpc", request_type=pubsub.GetTopicRequest)
     assert response.name == "name_value"
 
     assert response.kms_key_name == "kms_key_name_value"
+
+    assert response.satisfies_pzs is True
 
 
 def test_get_topic_from_dict():
@@ -998,7 +1017,11 @@ async def test_get_topic_async(
     with mock.patch.object(type(client.transport.get_topic), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.Topic(name="name_value", kms_key_name="kms_key_name_value",)
+            pubsub.Topic(
+                name="name_value",
+                kms_key_name="kms_key_name_value",
+                satisfies_pzs=True,
+            )
         )
 
         response = await client.get_topic(request)
@@ -1015,6 +1038,8 @@ async def test_get_topic_async(
     assert response.name == "name_value"
 
     assert response.kms_key_name == "kms_key_name_value"
+
+    assert response.satisfies_pzs is True
 
 
 @pytest.mark.asyncio
@@ -2675,6 +2700,7 @@ def test_publisher_transport_channel_mtls_with_client_cert_source(transport_clas
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 30000),
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel
@@ -2720,14 +2746,38 @@ def test_publisher_transport_channel_mtls_with_adc(transport_class):
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 30000),
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_subscription_path():
+def test_schema_path():
     project = "squid"
-    subscription = "clam"
+    schema = "clam"
+
+    expected = "projects/{project}/schemas/{schema}".format(
+        project=project, schema=schema,
+    )
+    actual = PublisherClient.schema_path(project, schema)
+    assert expected == actual
+
+
+def test_parse_schema_path():
+    expected = {
+        "project": "whelk",
+        "schema": "octopus",
+    }
+    path = PublisherClient.schema_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PublisherClient.parse_schema_path(path)
+    assert expected == actual
+
+
+def test_subscription_path():
+    project = "oyster"
+    subscription = "nudibranch"
 
     expected = "projects/{project}/subscriptions/{subscription}".format(
         project=project, subscription=subscription,
@@ -2738,8 +2788,8 @@ def test_subscription_path():
 
 def test_parse_subscription_path():
     expected = {
-        "project": "whelk",
-        "subscription": "octopus",
+        "project": "cuttlefish",
+        "subscription": "mussel",
     }
     path = PublisherClient.subscription_path(**expected)
 
@@ -2749,8 +2799,8 @@ def test_parse_subscription_path():
 
 
 def test_topic_path():
-    project = "oyster"
-    topic = "nudibranch"
+    project = "winkle"
+    topic = "nautilus"
 
     expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
     actual = PublisherClient.topic_path(project, topic)
@@ -2759,8 +2809,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "cuttlefish",
-        "topic": "mussel",
+        "project": "scallop",
+        "topic": "abalone",
     }
     path = PublisherClient.topic_path(**expected)
 
@@ -2770,7 +2820,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "squid"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -2781,7 +2831,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "clam",
     }
     path = PublisherClient.common_billing_account_path(**expected)
 
@@ -2791,7 +2841,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "whelk"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = PublisherClient.common_folder_path(folder)
@@ -2800,7 +2850,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "octopus",
     }
     path = PublisherClient.common_folder_path(**expected)
 
@@ -2810,7 +2860,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "oyster"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = PublisherClient.common_organization_path(organization)
@@ -2819,7 +2869,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nudibranch",
     }
     path = PublisherClient.common_organization_path(**expected)
 
@@ -2829,7 +2879,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "cuttlefish"
 
     expected = "projects/{project}".format(project=project,)
     actual = PublisherClient.common_project_path(project)
@@ -2838,7 +2888,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "mussel",
     }
     path = PublisherClient.common_project_path(**expected)
 
@@ -2848,8 +2898,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -2860,8 +2910,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = PublisherClient.common_location_path(**expected)
 

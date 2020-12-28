@@ -91,7 +91,7 @@ def test_init_client_options_pass_through():
 
 
 def test_init_emulator(monkeypatch):
-    monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/baz/bacon/")
+    monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/baz/bacon:123")
     # NOTE: When the emulator host is set, a custom channel will be used, so
     #       no credentials (mock ot otherwise) can be passed in.
     client = subscriber.Client()
@@ -101,7 +101,7 @@ def test_init_emulator(monkeypatch):
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
     channel = client.api._transport.pull._channel
-    assert channel.target().decode("utf8") == "/baz/bacon/"
+    assert channel.target().decode("utf8") == "/baz/bacon:123"
 
 
 def test_class_method_factory():

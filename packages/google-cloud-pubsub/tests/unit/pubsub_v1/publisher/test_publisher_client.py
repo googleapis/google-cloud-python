@@ -130,7 +130,7 @@ def test_init_client_options_pass_through():
 
 
 def test_init_emulator(monkeypatch):
-    monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/foo/bar/")
+    monkeypatch.setenv("PUBSUB_EMULATOR_HOST", "/foo/bar:123")
     # NOTE: When the emulator host is set, a custom channel will be used, so
     #       no credentials (mock ot otherwise) can be passed in.
     client = publisher.Client()
@@ -140,7 +140,7 @@ def test_init_emulator(monkeypatch):
     # Sadly, there seems to be no good way to do this without poking at
     # the private API of gRPC.
     channel = client.api._transport.publish._channel
-    assert channel.target().decode("utf8") == "/foo/bar/"
+    assert channel.target().decode("utf8") == "/foo/bar:123"
 
 
 def test_message_ordering_enabled():

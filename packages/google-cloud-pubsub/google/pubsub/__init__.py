@@ -17,6 +17,10 @@
 
 from google.pubsub_v1.services.publisher.async_client import PublisherAsyncClient
 from google.pubsub_v1.services.publisher.client import PublisherClient
+from google.pubsub_v1.services.schema_service.async_client import (
+    SchemaServiceAsyncClient,
+)
+from google.pubsub_v1.services.schema_service.client import SchemaServiceClient
 from google.pubsub_v1.services.subscriber.async_client import SubscriberAsyncClient
 from google.pubsub_v1.services.subscriber.client import SubscriberClient
 from google.pubsub_v1.types.pubsub import AcknowledgeRequest
@@ -52,6 +56,7 @@ from google.pubsub_v1.types.pubsub import PullResponse
 from google.pubsub_v1.types.pubsub import PushConfig
 from google.pubsub_v1.types.pubsub import ReceivedMessage
 from google.pubsub_v1.types.pubsub import RetryPolicy
+from google.pubsub_v1.types.pubsub import SchemaSettings
 from google.pubsub_v1.types.pubsub import SeekRequest
 from google.pubsub_v1.types.pubsub import SeekResponse
 from google.pubsub_v1.types.pubsub import Snapshot
@@ -62,20 +67,38 @@ from google.pubsub_v1.types.pubsub import Topic
 from google.pubsub_v1.types.pubsub import UpdateSnapshotRequest
 from google.pubsub_v1.types.pubsub import UpdateSubscriptionRequest
 from google.pubsub_v1.types.pubsub import UpdateTopicRequest
+from google.pubsub_v1.types.schema import CreateSchemaRequest
+from google.pubsub_v1.types.schema import DeleteSchemaRequest
+from google.pubsub_v1.types.schema import Encoding
+from google.pubsub_v1.types.schema import GetSchemaRequest
+from google.pubsub_v1.types.schema import ListSchemasRequest
+from google.pubsub_v1.types.schema import ListSchemasResponse
+from google.pubsub_v1.types.schema import Schema
+from google.pubsub_v1.types.schema import SchemaView
+from google.pubsub_v1.types.schema import ValidateMessageRequest
+from google.pubsub_v1.types.schema import ValidateMessageResponse
+from google.pubsub_v1.types.schema import ValidateSchemaRequest
+from google.pubsub_v1.types.schema import ValidateSchemaResponse
 
 __all__ = (
     "AcknowledgeRequest",
+    "CreateSchemaRequest",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",
+    "DeleteSchemaRequest",
     "DeleteSnapshotRequest",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "DetachSubscriptionRequest",
     "DetachSubscriptionResponse",
+    "Encoding",
     "ExpirationPolicy",
+    "GetSchemaRequest",
     "GetSnapshotRequest",
     "GetSubscriptionRequest",
     "GetTopicRequest",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
     "ListSnapshotsRequest",
     "ListSnapshotsResponse",
     "ListSubscriptionsRequest",
@@ -99,6 +122,11 @@ __all__ = (
     "PushConfig",
     "ReceivedMessage",
     "RetryPolicy",
+    "Schema",
+    "SchemaServiceAsyncClient",
+    "SchemaServiceClient",
+    "SchemaSettings",
+    "SchemaView",
     "SeekRequest",
     "SeekResponse",
     "Snapshot",
@@ -111,4 +139,8 @@ __all__ = (
     "UpdateSnapshotRequest",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
+    "ValidateMessageRequest",
+    "ValidateMessageResponse",
+    "ValidateSchemaRequest",
+    "ValidateSchemaResponse",
 )

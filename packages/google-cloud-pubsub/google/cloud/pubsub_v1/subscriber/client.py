@@ -17,9 +17,6 @@ from __future__ import absolute_import
 import os
 import pkg_resources
 
-import grpc
-
-from google.api_core import grpc_helpers
 from google.auth.credentials import AnonymousCredentials
 from google.oauth2 import service_account
 
@@ -28,9 +25,6 @@ from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
 from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.pubsub_v1.services.subscriber import client as subscriber_client
-from google.pubsub_v1.services.subscriber.transports import (
-    grpc as subscriber_grpc_transport,
-)
 
 
 __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
@@ -78,52 +72,14 @@ class Client(object):
         # If so, create a grpc insecure channel with the emulator host
         # as the target.
         if os.environ.get("PUBSUB_EMULATOR_HOST"):
-            kwargs["channel"] = grpc.insecure_channel(
-                target=os.environ.get("PUBSUB_EMULATOR_HOST")
-            )
+            kwargs["client_options"] = {
+                "api_endpoint": os.environ.get("PUBSUB_EMULATOR_HOST")
+            }
             kwargs["credentials"] = AnonymousCredentials()
 
-        # The GAPIC client has mTLS logic to determine the api endpoint and the
-        # ssl credentials to use. Here we create a GAPIC client to help compute the
-        # api endpoint and ssl credentials. The api endpoint will be used to set
-        # `self._target`, and ssl credentials will be passed to
-        # `grpc_helpers.create_channel` to establish a mTLS channel (if ssl
-        # credentials is not None).
-        client_options = kwargs.get("client_options", None)
-        credentials = kwargs.get("credentials", None)
-        client_for_mtls_info = subscriber_client.SubscriberClient(
-            credentials=credentials, client_options=client_options
-        )
-
-        self._target = client_for_mtls_info._transport._host
-
-        # Use a custom channel.
-        # We need this in order to set appropriate default message size and
-        # keepalive options.
-        if "transport" not in kwargs:
-            channel = kwargs.pop("channel", None)
-            if channel is None:
-                channel = grpc_helpers.create_channel(
-                    credentials=kwargs.pop("credentials", None),
-                    target=self.target,
-                    ssl_credentials=client_for_mtls_info._transport._ssl_channel_credentials,
-                    scopes=subscriber_client.SubscriberClient._DEFAULT_SCOPES,
-                    options={
-                        "grpc.max_send_message_length": -1,
-                        "grpc.max_receive_message_length": -1,
-                        "grpc.keepalive_time_ms": 30000,
-                    }.items(),
-                )
-            # cannot pass both 'channel' and 'credentials'
-            kwargs.pop("credentials", None)
-            transport = subscriber_grpc_transport.SubscriberGrpcTransport(
-                channel=channel
-            )
-            kwargs["transport"] = transport
-
-        # Add the metrics headers, and instantiate the underlying GAPIC
-        # client.
+        # Instantiate the underlying GAPIC client.
         self._api = subscriber_client.SubscriberClient(**kwargs)
+        self._target = self._api._transport._host
 
     @classmethod
     def from_service_account_file(cls, filename, **kwargs):

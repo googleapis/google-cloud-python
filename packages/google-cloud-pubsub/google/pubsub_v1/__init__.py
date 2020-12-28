@@ -16,6 +16,7 @@
 #
 
 from .services.publisher import PublisherClient
+from .services.schema_service import SchemaServiceClient
 from .services.subscriber import SubscriberClient
 from .types.pubsub import AcknowledgeRequest
 from .types.pubsub import CreateSnapshotRequest
@@ -50,6 +51,7 @@ from .types.pubsub import PullResponse
 from .types.pubsub import PushConfig
 from .types.pubsub import ReceivedMessage
 from .types.pubsub import RetryPolicy
+from .types.pubsub import SchemaSettings
 from .types.pubsub import SeekRequest
 from .types.pubsub import SeekResponse
 from .types.pubsub import Snapshot
@@ -60,21 +62,39 @@ from .types.pubsub import Topic
 from .types.pubsub import UpdateSnapshotRequest
 from .types.pubsub import UpdateSubscriptionRequest
 from .types.pubsub import UpdateTopicRequest
+from .types.schema import CreateSchemaRequest
+from .types.schema import DeleteSchemaRequest
+from .types.schema import Encoding
+from .types.schema import GetSchemaRequest
+from .types.schema import ListSchemasRequest
+from .types.schema import ListSchemasResponse
+from .types.schema import Schema
+from .types.schema import SchemaView
+from .types.schema import ValidateMessageRequest
+from .types.schema import ValidateMessageResponse
+from .types.schema import ValidateSchemaRequest
+from .types.schema import ValidateSchemaResponse
 
 
 __all__ = (
     "AcknowledgeRequest",
+    "CreateSchemaRequest",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",
+    "DeleteSchemaRequest",
     "DeleteSnapshotRequest",
     "DeleteSubscriptionRequest",
     "DeleteTopicRequest",
     "DetachSubscriptionRequest",
     "DetachSubscriptionResponse",
+    "Encoding",
     "ExpirationPolicy",
+    "GetSchemaRequest",
     "GetSnapshotRequest",
     "GetSubscriptionRequest",
     "GetTopicRequest",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
     "ListSnapshotsRequest",
     "ListSnapshotsResponse",
     "ListSubscriptionsRequest",
@@ -96,6 +116,10 @@ __all__ = (
     "PushConfig",
     "ReceivedMessage",
     "RetryPolicy",
+    "Schema",
+    "SchemaServiceClient",
+    "SchemaSettings",
+    "SchemaView",
     "SeekRequest",
     "SeekResponse",
     "Snapshot",
@@ -107,5 +131,9 @@ __all__ = (
     "UpdateSnapshotRequest",
     "UpdateSubscriptionRequest",
     "UpdateTopicRequest",
+    "ValidateMessageRequest",
+    "ValidateMessageResponse",
+    "ValidateSchemaRequest",
+    "ValidateSchemaResponse",
     "PublisherClient",
 )

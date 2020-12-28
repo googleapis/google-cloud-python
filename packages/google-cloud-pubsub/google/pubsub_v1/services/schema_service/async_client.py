@@ -30,79 +30,83 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.pubsub_v1.services.publisher import pagers
-from google.pubsub_v1.types import pubsub
+from google.pubsub_v1.services.schema_service import pagers
+from google.pubsub_v1.types import schema
+from google.pubsub_v1.types import schema as gp_schema
 
-from .transports.base import PublisherTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import PublisherGrpcAsyncIOTransport
-from .client import PublisherClient
+from .transports.base import SchemaServiceTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc_asyncio import SchemaServiceGrpcAsyncIOTransport
+from .client import SchemaServiceClient
 
 
-class PublisherAsyncClient:
-    """The service that an application uses to manipulate topics,
-    and to send messages to a topic.
+class SchemaServiceAsyncClient:
+    """ Service for doing schema-related operations.
+    EXPERIMENTAL: The Schema service is in development and may not
+    work yet.
     """
 
-    _client: PublisherClient
+    _client: SchemaServiceClient
 
-    DEFAULT_ENDPOINT = PublisherClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = PublisherClient.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT = SchemaServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = SchemaServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    schema_path = staticmethod(PublisherClient.schema_path)
-    parse_schema_path = staticmethod(PublisherClient.parse_schema_path)
-    subscription_path = staticmethod(PublisherClient.subscription_path)
-    parse_subscription_path = staticmethod(PublisherClient.parse_subscription_path)
-    topic_path = staticmethod(PublisherClient.topic_path)
-    parse_topic_path = staticmethod(PublisherClient.parse_topic_path)
+    schema_path = staticmethod(SchemaServiceClient.schema_path)
+    parse_schema_path = staticmethod(SchemaServiceClient.parse_schema_path)
 
     common_billing_account_path = staticmethod(
-        PublisherClient.common_billing_account_path
+        SchemaServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        PublisherClient.parse_common_billing_account_path
+        SchemaServiceClient.parse_common_billing_account_path
     )
 
-    common_folder_path = staticmethod(PublisherClient.common_folder_path)
-    parse_common_folder_path = staticmethod(PublisherClient.parse_common_folder_path)
+    common_folder_path = staticmethod(SchemaServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        SchemaServiceClient.parse_common_folder_path
+    )
 
-    common_organization_path = staticmethod(PublisherClient.common_organization_path)
+    common_organization_path = staticmethod(
+        SchemaServiceClient.common_organization_path
+    )
     parse_common_organization_path = staticmethod(
-        PublisherClient.parse_common_organization_path
+        SchemaServiceClient.parse_common_organization_path
     )
 
-    common_project_path = staticmethod(PublisherClient.common_project_path)
-    parse_common_project_path = staticmethod(PublisherClient.parse_common_project_path)
+    common_project_path = staticmethod(SchemaServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        SchemaServiceClient.parse_common_project_path
+    )
 
-    common_location_path = staticmethod(PublisherClient.common_location_path)
+    common_location_path = staticmethod(SchemaServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
-        PublisherClient.parse_common_location_path
+        SchemaServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = PublisherClient.from_service_account_file
+    from_service_account_file = SchemaServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> PublisherTransport:
+    def transport(self) -> SchemaServiceTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            PublisherTransport: The transport used by the client instance.
+            SchemaServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
     get_transport_class = functools.partial(
-        type(PublisherClient).get_transport_class, type(PublisherClient)
+        type(SchemaServiceClient).get_transport_class, type(SchemaServiceClient)
     )
 
     def __init__(
         self,
         *,
         credentials: credentials.Credentials = None,
-        transport: Union[str, PublisherTransport] = "grpc_asyncio",
+        transport: Union[str, SchemaServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the publisher client.
+        """Instantiate the schema service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -110,7 +114,7 @@ class PublisherAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PublisherTransport]): The
+            transport (Union[str, ~.SchemaServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (ClientOptions): Custom options for the client. It
@@ -135,38 +139,124 @@ class PublisherAsyncClient:
                 creation failed for any reason.
         """
 
-        self._client = PublisherClient(
+        self._client = SchemaServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def create_topic(
+    async def create_schema(
         self,
-        request: pubsub.Topic = None,
+        request: gp_schema.CreateSchemaRequest = None,
+        *,
+        parent: str = None,
+        schema: gp_schema.Schema = None,
+        schema_id: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gp_schema.Schema:
+        r"""Creates a schema.
+
+        Args:
+            request (:class:`~.gp_schema.CreateSchemaRequest`):
+                The request object. Request for the CreateSchema method.
+            parent (:class:`str`):
+                Required. The name of the project in which to create the
+                schema. Format is ``projects/{project-id}``.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schema (:class:`~.gp_schema.Schema`):
+                Required. The schema object to create.
+
+                This schema's ``name`` parameter is ignored. The schema
+                object returned by CreateSchema will have a ``name``
+                made using the given ``parent`` and ``schema_id``.
+                This corresponds to the ``schema`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schema_id (:class:`str`):
+                The ID to use for the schema, which will become the
+                final component of the schema's resource name.
+
+                See
+                https://cloud.google.com/pubsub/docs/admin#resource_names
+                for resource name constraints.
+                This corresponds to the ``schema_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.gp_schema.Schema:
+                A schema resource.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, schema, schema_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = gp_schema.CreateSchemaRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+
+        if parent is not None:
+            request.parent = parent
+        if schema is not None:
+            request.schema = schema
+        if schema_id is not None:
+            request.schema_id = schema_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_schema,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def get_schema(
+        self,
+        request: schema.GetSchemaRequest = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.Topic:
-        r"""Creates the given topic with the given name. See the [resource
-        name rules]
-        (https://cloud.google.com/pubsub/docs/admin#resource_names).
+    ) -> schema.Schema:
+        r"""Gets a schema.
 
         Args:
-            request (:class:`~.pubsub.Topic`):
-                The request object. A topic resource.
+            request (:class:`~.schema.GetSchemaRequest`):
+                The request object. Request for the GetSchema method.
             name (:class:`str`):
-                Required. The name of the topic. It must have the format
-                ``"projects/{project}/topics/{topic}"``. ``{topic}``
-                must start with a letter, and contain only letters
-                (``[A-Za-z]``), numbers (``[0-9]``), dashes (``-``),
-                underscores (``_``), periods (``.``), tildes (``~``),
-                plus (``+``) or percent signs (``%``). It must be
-                between 3 and 255 characters in length, and it must not
-                start with ``"goog"``.
+                Required. The name of the schema to get. Format is
+                ``projects/{project}/schemas/{schema}``.
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -178,8 +268,8 @@ class PublisherAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Topic:
-                A topic resource.
+            ~.schema.Schema:
+                A schema resource.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -191,7 +281,7 @@ class PublisherAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = pubsub.Topic(request)
+        request = schema.GetSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -202,14 +292,8 @@ class PublisherAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_topic,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
-            ),
-            default_timeout=60.0,
+            self._client._transport.get_schema,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -225,442 +309,25 @@ class PublisherAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_topic(
+    async def list_schemas(
         self,
-        request: pubsub.UpdateTopicRequest = None,
+        request: schema.ListSchemasRequest = None,
         *,
+        parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.Topic:
-        r"""Updates an existing topic. Note that certain
-        properties of a topic are not modifiable.
+    ) -> pagers.ListSchemasAsyncPager:
+        r"""Lists schemas in a project.
 
         Args:
-            request (:class:`~.pubsub.UpdateTopicRequest`):
-                The request object. Request for the UpdateTopic method.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.pubsub.Topic:
-                A topic resource.
-        """
-        # Create or coerce a protobuf request object.
-
-        request = pubsub.UpdateTopicRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_topic,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("topic.name", request.topic.name),)
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def publish(
-        self,
-        request: pubsub.PublishRequest = None,
-        *,
-        topic: str = None,
-        messages: Sequence[pubsub.PubsubMessage] = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.PublishResponse:
-        r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
-        the topic does not exist.
-
-        Args:
-            request (:class:`~.pubsub.PublishRequest`):
-                The request object. Request for the Publish method.
-            topic (:class:`str`):
-                Required. The messages in the request will be published
-                on this topic. Format is
-                ``projects/{project}/topics/{topic}``.
-                This corresponds to the ``topic`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            messages (:class:`Sequence[~.pubsub.PubsubMessage]`):
-                Required. The messages to publish.
-                This corresponds to the ``messages`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.pubsub.PublishResponse:
-                Response for the ``Publish`` method.
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([topic, messages])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = pubsub.PublishRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-
-        if topic is not None:
-            request.topic = topic
-
-        if messages:
-            request.messages.extend(messages)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.publish,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.Cancelled,
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ResourceExhausted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
-                ),
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def get_topic(
-        self,
-        request: pubsub.GetTopicRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.Topic:
-        r"""Gets the configuration of a topic.
-
-        Args:
-            request (:class:`~.pubsub.GetTopicRequest`):
-                The request object. Request for the GetTopic method.
-            topic (:class:`str`):
-                Required. The name of the topic to get. Format is
-                ``projects/{project}/topics/{topic}``.
-                This corresponds to the ``topic`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.pubsub.Topic:
-                A topic resource.
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([topic])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = pubsub.GetTopicRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-
-        if topic is not None:
-            request.topic = topic
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_topic,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
-                ),
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    async def list_topics(
-        self,
-        request: pubsub.ListTopicsRequest = None,
-        *,
-        project: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListTopicsAsyncPager:
-        r"""Lists matching topics.
-
-        Args:
-            request (:class:`~.pubsub.ListTopicsRequest`):
-                The request object. Request for the `ListTopics` method.
-            project (:class:`str`):
-                Required. The name of the project in which to list
-                topics. Format is ``projects/{project-id}``.
-                This corresponds to the ``project`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.pagers.ListTopicsAsyncPager:
-                Response for the ``ListTopics`` method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([project])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = pubsub.ListTopicsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-
-        if project is not None:
-            request.project = project
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_topics,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
-                ),
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("project", request.project),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListTopicsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_topic_subscriptions(
-        self,
-        request: pubsub.ListTopicSubscriptionsRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListTopicSubscriptionsAsyncPager:
-        r"""Lists the names of the attached subscriptions on this
-        topic.
-
-        Args:
-            request (:class:`~.pubsub.ListTopicSubscriptionsRequest`):
-                The request object. Request for the
-                `ListTopicSubscriptions` method.
-            topic (:class:`str`):
-                Required. The name of the topic that subscriptions are
-                attached to. Format is
-                ``projects/{project}/topics/{topic}``.
-                This corresponds to the ``topic`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            ~.pagers.ListTopicSubscriptionsAsyncPager:
-                Response for the ``ListTopicSubscriptions`` method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([topic])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = pubsub.ListTopicSubscriptionsRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-
-        if topic is not None:
-            request.topic = topic
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_topic_subscriptions,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
-                ),
-            ),
-            default_timeout=60.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.ListTopicSubscriptionsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def list_topic_snapshots(
-        self,
-        request: pubsub.ListTopicSnapshotsRequest = None,
-        *,
-        topic: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListTopicSnapshotsAsyncPager:
-        r"""Lists the names of the snapshots on this topic. Snapshots are
-        used in
-        `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-        operations, which allow you to manage message acknowledgments in
-        bulk. That is, you can set the acknowledgment state of messages
-        in an existing subscription to the state captured by a snapshot.
-
-        Args:
-            request (:class:`~.pubsub.ListTopicSnapshotsRequest`):
-                The request object. Request for the `ListTopicSnapshots`
+            request (:class:`~.schema.ListSchemasRequest`):
+                The request object. Request for the `ListSchemas`
                 method.
-            topic (:class:`str`):
-                Required. The name of the topic that snapshots are
-                attached to. Format is
-                ``projects/{project}/topics/{topic}``.
-                This corresponds to the ``topic`` field
+            parent (:class:`str`):
+                Required. The name of the project in which to list
+                schemas. Format is ``projects/{project-id}``.
+                This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -671,8 +338,8 @@ class PublisherAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTopicSnapshotsAsyncPager:
-                Response for the ``ListTopicSnapshots`` method.
+            ~.pagers.ListSchemasAsyncPager:
+                Response for the ``ListSchemas`` method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -681,43 +348,33 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([topic])
+        has_flattened_params = any([parent])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = pubsub.ListTopicSnapshotsRequest(request)
+        request = schema.ListSchemasRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if topic is not None:
-            request.topic = topic
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_topic_snapshots,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
-                ),
-            ),
-            default_timeout=60.0,
+            self._client._transport.list_schemas,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -725,37 +382,32 @@ class PublisherAsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers.ListTopicSnapshotsAsyncPager(
+        response = pagers.ListSchemasAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    async def delete_topic(
+    async def delete_schema(
         self,
-        request: pubsub.DeleteTopicRequest = None,
+        request: schema.DeleteSchemaRequest = None,
         *,
-        topic: str = None,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes the topic with the given name. Returns ``NOT_FOUND`` if
-        the topic does not exist. After a topic is deleted, a new topic
-        may be created with the same name; this is an entirely new topic
-        with none of the old configuration or subscriptions. Existing
-        subscriptions to this topic are not deleted, but their ``topic``
-        field is set to ``_deleted-topic_``.
+        r"""Deletes a schema.
 
         Args:
-            request (:class:`~.pubsub.DeleteTopicRequest`):
-                The request object. Request for the `DeleteTopic`
+            request (:class:`~.schema.DeleteSchemaRequest`):
+                The request object. Request for the `DeleteSchema`
                 method.
-            topic (:class:`str`):
-                Required. Name of the topic to delete. Format is
-                ``projects/{project}/topics/{topic}``.
-                This corresponds to the ``topic`` field
+            name (:class:`str`):
+                Required. Name of the schema to delete. Format is
+                ``projects/{project}/schemas/{schema}``.
+                This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -768,39 +420,33 @@ class PublisherAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([topic])
+        has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = pubsub.DeleteTopicRequest(request)
+        request = schema.DeleteSchemaRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
-        if topic is not None:
-            request.topic = topic
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_topic,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
-            ),
-            default_timeout=60.0,
+            self._client._transport.delete_schema,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("topic", request.topic),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -808,23 +454,98 @@ class PublisherAsyncClient:
             request, retry=retry, timeout=timeout, metadata=metadata,
         )
 
-    async def detach_subscription(
+    async def validate_schema(
         self,
-        request: pubsub.DetachSubscriptionRequest = None,
+        request: gp_schema.ValidateSchemaRequest = None,
+        *,
+        parent: str = None,
+        schema: gp_schema.Schema = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gp_schema.ValidateSchemaResponse:
+        r"""Validates a schema.
+
+        Args:
+            request (:class:`~.gp_schema.ValidateSchemaRequest`):
+                The request object. Request for the `ValidateSchema`
+                method.
+            parent (:class:`str`):
+                Required. The name of the project in which to validate
+                schemas. Format is ``projects/{project-id}``.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schema (:class:`~.gp_schema.Schema`):
+                Required. The schema object to
+                validate.
+                This corresponds to the ``schema`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.gp_schema.ValidateSchemaResponse:
+                Response for the ``ValidateSchema`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, schema])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = gp_schema.ValidateSchemaRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+
+        if parent is not None:
+            request.parent = parent
+        if schema is not None:
+            request.schema = schema
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.validate_schema,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def validate_message(
+        self,
+        request: schema.ValidateMessageRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pubsub.DetachSubscriptionResponse:
-        r"""Detaches a subscription from this topic. All messages retained
-        in the subscription are dropped. Subsequent ``Pull`` and
-        ``StreamingPull`` requests will return FAILED_PRECONDITION. If
-        the subscription is a push subscription, pushes to the endpoint
-        will stop.
+    ) -> schema.ValidateMessageResponse:
+        r"""Validates a message against a schema.
 
         Args:
-            request (:class:`~.pubsub.DetachSubscriptionRequest`):
-                The request object. Request for the DetachSubscription
+            request (:class:`~.schema.ValidateMessageRequest`):
+                The request object. Request for the `ValidateMessage`
                 method.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -834,35 +555,25 @@ class PublisherAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.DetachSubscriptionResponse:
-                Response for the DetachSubscription
-                method. Reserved for future use.
-
+            ~.schema.ValidateMessageResponse:
+                Response for the ``ValidateMessage`` method.
         """
         # Create or coerce a protobuf request object.
 
-        request = pubsub.DetachSubscriptionRequest(request)
+        request = schema.ValidateMessageRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.detach_subscription,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
-            ),
-            default_timeout=60.0,
+            self._client._transport.validate_message,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("subscription", request.subscription),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -1144,4 +855,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("PublisherAsyncClient",)
+__all__ = ("SchemaServiceAsyncClient",)

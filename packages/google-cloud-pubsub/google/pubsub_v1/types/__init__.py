@@ -15,8 +15,23 @@
 # limitations under the License.
 #
 
+from .schema import (
+    Schema,
+    CreateSchemaRequest,
+    GetSchemaRequest,
+    ListSchemasRequest,
+    ListSchemasResponse,
+    DeleteSchemaRequest,
+    ValidateSchemaRequest,
+    ValidateSchemaResponse,
+    ValidateMessageRequest,
+    ValidateMessageResponse,
+    SchemaView,
+    Encoding,
+)
 from .pubsub import (
     MessageStoragePolicy,
+    SchemaSettings,
     Topic,
     PubsubMessage,
     GetTopicRequest,
@@ -62,7 +77,20 @@ from .pubsub import (
 )
 
 __all__ = (
+    "Schema",
+    "CreateSchemaRequest",
+    "GetSchemaRequest",
+    "ListSchemasRequest",
+    "ListSchemasResponse",
+    "DeleteSchemaRequest",
+    "ValidateSchemaRequest",
+    "ValidateSchemaResponse",
+    "ValidateMessageRequest",
+    "ValidateMessageResponse",
+    "SchemaView",
+    "Encoding",
     "MessageStoragePolicy",
+    "SchemaSettings",
     "Topic",
     "PubsubMessage",
     "GetTopicRequest",

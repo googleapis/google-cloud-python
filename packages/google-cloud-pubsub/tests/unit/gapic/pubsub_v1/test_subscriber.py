@@ -3969,6 +3969,7 @@ def test_subscriber_transport_channel_mtls_with_client_cert_source(transport_cla
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 30000),
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel
@@ -4014,6 +4015,7 @@ def test_subscriber_transport_channel_mtls_with_adc(transport_class):
                 options=[
                     ("grpc.max_send_message_length", -1),
                     ("grpc.max_receive_message_length", -1),
+                    ("grpc.keepalive_time_ms", 30000),
                 ],
             )
             assert transport.grpc_channel == mock_grpc_channel

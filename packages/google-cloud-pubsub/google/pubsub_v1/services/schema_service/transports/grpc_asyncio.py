@@ -30,17 +30,19 @@ from grpc.experimental import aio  # type: ignore
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.pubsub_v1.types import pubsub
+from google.pubsub_v1.types import schema
+from google.pubsub_v1.types import schema as gp_schema
 
-from .base import PublisherTransport, DEFAULT_CLIENT_INFO
-from .grpc import PublisherGrpcTransport
+from .base import SchemaServiceTransport, DEFAULT_CLIENT_INFO
+from .grpc import SchemaServiceGrpcTransport
 
 
-class PublisherGrpcAsyncIOTransport(PublisherTransport):
-    """gRPC AsyncIO backend transport for Publisher.
+class SchemaServiceGrpcAsyncIOTransport(SchemaServiceTransport):
+    """gRPC AsyncIO backend transport for SchemaService.
 
-    The service that an application uses to manipulate topics,
-    and to send messages to a topic.
+     Service for doing schema-related operations.
+    EXPERIMENTAL: The Schema service is in development and may not
+    work yet.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -248,43 +250,16 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         return self._grpc_channel
 
     @property
-    def create_topic(self) -> Callable[[pubsub.Topic], Awaitable[pubsub.Topic]]:
-        r"""Return a callable for the create topic method over gRPC.
-
-        Creates the given topic with the given name. See the [resource
-        name rules]
-        (https://cloud.google.com/pubsub/docs/admin#resource_names).
-
-        Returns:
-            Callable[[~.Topic],
-                    Awaitable[~.Topic]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_topic" not in self._stubs:
-            self._stubs["create_topic"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/CreateTopic",
-                request_serializer=pubsub.Topic.serialize,
-                response_deserializer=pubsub.Topic.deserialize,
-            )
-        return self._stubs["create_topic"]
-
-    @property
-    def update_topic(
+    def create_schema(
         self,
-    ) -> Callable[[pubsub.UpdateTopicRequest], Awaitable[pubsub.Topic]]:
-        r"""Return a callable for the update topic method over gRPC.
+    ) -> Callable[[gp_schema.CreateSchemaRequest], Awaitable[gp_schema.Schema]]:
+        r"""Return a callable for the create schema method over gRPC.
 
-        Updates an existing topic. Note that certain
-        properties of a topic are not modifiable.
+        Creates a schema.
 
         Returns:
-            Callable[[~.UpdateTopicRequest],
-                    Awaitable[~.Topic]]:
+            Callable[[~.CreateSchemaRequest],
+                    Awaitable[~.Schema]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -292,26 +267,25 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_topic" not in self._stubs:
-            self._stubs["update_topic"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/UpdateTopic",
-                request_serializer=pubsub.UpdateTopicRequest.serialize,
-                response_deserializer=pubsub.Topic.deserialize,
+        if "create_schema" not in self._stubs:
+            self._stubs["create_schema"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/CreateSchema",
+                request_serializer=gp_schema.CreateSchemaRequest.serialize,
+                response_deserializer=gp_schema.Schema.deserialize,
             )
-        return self._stubs["update_topic"]
+        return self._stubs["create_schema"]
 
     @property
-    def publish(
+    def get_schema(
         self,
-    ) -> Callable[[pubsub.PublishRequest], Awaitable[pubsub.PublishResponse]]:
-        r"""Return a callable for the publish method over gRPC.
+    ) -> Callable[[schema.GetSchemaRequest], Awaitable[schema.Schema]]:
+        r"""Return a callable for the get schema method over gRPC.
 
-        Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
-        the topic does not exist.
+        Gets a schema.
 
         Returns:
-            Callable[[~.PublishRequest],
-                    Awaitable[~.PublishResponse]]:
+            Callable[[~.GetSchemaRequest],
+                    Awaitable[~.Schema]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -319,49 +293,25 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "publish" not in self._stubs:
-            self._stubs["publish"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/Publish",
-                request_serializer=pubsub.PublishRequest.serialize,
-                response_deserializer=pubsub.PublishResponse.deserialize,
+        if "get_schema" not in self._stubs:
+            self._stubs["get_schema"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/GetSchema",
+                request_serializer=schema.GetSchemaRequest.serialize,
+                response_deserializer=schema.Schema.deserialize,
             )
-        return self._stubs["publish"]
+        return self._stubs["get_schema"]
 
     @property
-    def get_topic(self) -> Callable[[pubsub.GetTopicRequest], Awaitable[pubsub.Topic]]:
-        r"""Return a callable for the get topic method over gRPC.
-
-        Gets the configuration of a topic.
-
-        Returns:
-            Callable[[~.GetTopicRequest],
-                    Awaitable[~.Topic]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_topic" not in self._stubs:
-            self._stubs["get_topic"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/GetTopic",
-                request_serializer=pubsub.GetTopicRequest.serialize,
-                response_deserializer=pubsub.Topic.deserialize,
-            )
-        return self._stubs["get_topic"]
-
-    @property
-    def list_topics(
+    def list_schemas(
         self,
-    ) -> Callable[[pubsub.ListTopicsRequest], Awaitable[pubsub.ListTopicsResponse]]:
-        r"""Return a callable for the list topics method over gRPC.
+    ) -> Callable[[schema.ListSchemasRequest], Awaitable[schema.ListSchemasResponse]]:
+        r"""Return a callable for the list schemas method over gRPC.
 
-        Lists matching topics.
+        Lists schemas in a project.
 
         Returns:
-            Callable[[~.ListTopicsRequest],
-                    Awaitable[~.ListTopicsResponse]]:
+            Callable[[~.ListSchemasRequest],
+                    Awaitable[~.ListSchemasResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -369,92 +319,24 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_topics" not in self._stubs:
-            self._stubs["list_topics"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/ListTopics",
-                request_serializer=pubsub.ListTopicsRequest.serialize,
-                response_deserializer=pubsub.ListTopicsResponse.deserialize,
+        if "list_schemas" not in self._stubs:
+            self._stubs["list_schemas"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/ListSchemas",
+                request_serializer=schema.ListSchemasRequest.serialize,
+                response_deserializer=schema.ListSchemasResponse.deserialize,
             )
-        return self._stubs["list_topics"]
+        return self._stubs["list_schemas"]
 
     @property
-    def list_topic_subscriptions(
+    def delete_schema(
         self,
-    ) -> Callable[
-        [pubsub.ListTopicSubscriptionsRequest],
-        Awaitable[pubsub.ListTopicSubscriptionsResponse],
-    ]:
-        r"""Return a callable for the list topic subscriptions method over gRPC.
+    ) -> Callable[[schema.DeleteSchemaRequest], Awaitable[empty.Empty]]:
+        r"""Return a callable for the delete schema method over gRPC.
 
-        Lists the names of the attached subscriptions on this
-        topic.
+        Deletes a schema.
 
         Returns:
-            Callable[[~.ListTopicSubscriptionsRequest],
-                    Awaitable[~.ListTopicSubscriptionsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_topic_subscriptions" not in self._stubs:
-            self._stubs["list_topic_subscriptions"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/ListTopicSubscriptions",
-                request_serializer=pubsub.ListTopicSubscriptionsRequest.serialize,
-                response_deserializer=pubsub.ListTopicSubscriptionsResponse.deserialize,
-            )
-        return self._stubs["list_topic_subscriptions"]
-
-    @property
-    def list_topic_snapshots(
-        self,
-    ) -> Callable[
-        [pubsub.ListTopicSnapshotsRequest], Awaitable[pubsub.ListTopicSnapshotsResponse]
-    ]:
-        r"""Return a callable for the list topic snapshots method over gRPC.
-
-        Lists the names of the snapshots on this topic. Snapshots are
-        used in
-        `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-        operations, which allow you to manage message acknowledgments in
-        bulk. That is, you can set the acknowledgment state of messages
-        in an existing subscription to the state captured by a snapshot.
-
-        Returns:
-            Callable[[~.ListTopicSnapshotsRequest],
-                    Awaitable[~.ListTopicSnapshotsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_topic_snapshots" not in self._stubs:
-            self._stubs["list_topic_snapshots"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/ListTopicSnapshots",
-                request_serializer=pubsub.ListTopicSnapshotsRequest.serialize,
-                response_deserializer=pubsub.ListTopicSnapshotsResponse.deserialize,
-            )
-        return self._stubs["list_topic_snapshots"]
-
-    @property
-    def delete_topic(
-        self,
-    ) -> Callable[[pubsub.DeleteTopicRequest], Awaitable[empty.Empty]]:
-        r"""Return a callable for the delete topic method over gRPC.
-
-        Deletes the topic with the given name. Returns ``NOT_FOUND`` if
-        the topic does not exist. After a topic is deleted, a new topic
-        may be created with the same name; this is an entirely new topic
-        with none of the old configuration or subscriptions. Existing
-        subscriptions to this topic are not deleted, but their ``topic``
-        field is set to ``_deleted-topic_``.
-
-        Returns:
-            Callable[[~.DeleteTopicRequest],
+            Callable[[~.DeleteSchemaRequest],
                     Awaitable[~.Empty]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -463,31 +345,27 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_topic" not in self._stubs:
-            self._stubs["delete_topic"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/DeleteTopic",
-                request_serializer=pubsub.DeleteTopicRequest.serialize,
+        if "delete_schema" not in self._stubs:
+            self._stubs["delete_schema"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/DeleteSchema",
+                request_serializer=schema.DeleteSchemaRequest.serialize,
                 response_deserializer=empty.Empty.FromString,
             )
-        return self._stubs["delete_topic"]
+        return self._stubs["delete_schema"]
 
     @property
-    def detach_subscription(
+    def validate_schema(
         self,
     ) -> Callable[
-        [pubsub.DetachSubscriptionRequest], Awaitable[pubsub.DetachSubscriptionResponse]
+        [gp_schema.ValidateSchemaRequest], Awaitable[gp_schema.ValidateSchemaResponse]
     ]:
-        r"""Return a callable for the detach subscription method over gRPC.
+        r"""Return a callable for the validate schema method over gRPC.
 
-        Detaches a subscription from this topic. All messages retained
-        in the subscription are dropped. Subsequent ``Pull`` and
-        ``StreamingPull`` requests will return FAILED_PRECONDITION. If
-        the subscription is a push subscription, pushes to the endpoint
-        will stop.
+        Validates a schema.
 
         Returns:
-            Callable[[~.DetachSubscriptionRequest],
-                    Awaitable[~.DetachSubscriptionResponse]]:
+            Callable[[~.ValidateSchemaRequest],
+                    Awaitable[~.ValidateSchemaResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -495,13 +373,41 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "detach_subscription" not in self._stubs:
-            self._stubs["detach_subscription"] = self.grpc_channel.unary_unary(
-                "/google.pubsub.v1.Publisher/DetachSubscription",
-                request_serializer=pubsub.DetachSubscriptionRequest.serialize,
-                response_deserializer=pubsub.DetachSubscriptionResponse.deserialize,
+        if "validate_schema" not in self._stubs:
+            self._stubs["validate_schema"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/ValidateSchema",
+                request_serializer=gp_schema.ValidateSchemaRequest.serialize,
+                response_deserializer=gp_schema.ValidateSchemaResponse.deserialize,
             )
-        return self._stubs["detach_subscription"]
+        return self._stubs["validate_schema"]
+
+    @property
+    def validate_message(
+        self,
+    ) -> Callable[
+        [schema.ValidateMessageRequest], Awaitable[schema.ValidateMessageResponse]
+    ]:
+        r"""Return a callable for the validate message method over gRPC.
+
+        Validates a message against a schema.
+
+        Returns:
+            Callable[[~.ValidateMessageRequest],
+                    Awaitable[~.ValidateMessageResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "validate_message" not in self._stubs:
+            self._stubs["validate_message"] = self.grpc_channel.unary_unary(
+                "/google.pubsub.v1.SchemaService/ValidateMessage",
+                request_serializer=schema.ValidateMessageRequest.serialize,
+                response_deserializer=schema.ValidateMessageResponse.deserialize,
+            )
+        return self._stubs["validate_message"]
 
     @property
     def set_iam_policy(
@@ -584,4 +490,4 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
         return self._stubs["test_iam_permissions"]
 
 
-__all__ = ("PublisherGrpcAsyncIOTransport",)
+__all__ = ("SchemaServiceGrpcAsyncIOTransport",)
