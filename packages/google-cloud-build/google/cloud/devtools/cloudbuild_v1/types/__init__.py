@@ -61,7 +61,6 @@ from .cloudbuild import (
     ListWorkerPoolsResponse,
 )
 
-
 __all__ = (
     "RetryBuildRequest",
     "RunBuildTriggerRequest",
