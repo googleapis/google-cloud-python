@@ -89,23 +89,21 @@ def docs(session):
         os.path.join("docs", "_build", "html", ""),
     )
 
-
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
-    session.install("-e", ".")
+    session.install("asyncmock", "pytest-asyncio")
 
-    # Install this library
-    # This *must* be the last install command to get the package from source.
-    session.install("..")
+    session.install(
+        "mock", "pytest", "pytest-cov",
+    )
+    session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.cloudasset",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
+        "--cov=google/cloud",
+        "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
@@ -124,8 +122,12 @@ def system(session):
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
+
+    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
+    if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
+        session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
     # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS", ""):
+    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
 
     system_test_exists = os.path.exists(system_test_path)
@@ -139,22 +141,19 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install("mock", "pytest")
-
+    session.install(
+        "mock", "pytest", "google-cloud-testutils",
+    )
     session.install("-e", ".")
-
-    # Install this library
-    # This *must* be the last install command to get the package from source.
-    session.install("..")
 
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--verbose", system_test_path, *session.posargs)
+        session.run("py.test", "--quiet", system_test_path, *session.posargs)
     if system_test_folder_exists:
-        session.run("py.test", "--verbose", system_test_folder_path, *session.posargs)
+        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
 
 
-@nox.session(python=["2.7", "3.5", "3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 @nox.parametrize(
     "library",
     ["python-asset"],
@@ -181,5 +180,5 @@ def test(session, library):
     session.cd(library)
     unit(session)
     # system tests are run on 2.7 and 3.7 only
-    if session.python == "2.7" or session.python == "3.7":
+    if session.python == "3.7":
         system(session)
