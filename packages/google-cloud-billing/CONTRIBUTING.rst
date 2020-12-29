@@ -21,8 +21,8 @@ In order to add a feature:
 - The feature must be documented in both the API and narrative
   documentation.
 
-- The feature must work fully on the following CPython versions:  2.7,
-  3.5, 3.6, 3.7 and 3.8 on both UNIX and Windows.
+- The feature must work fully on the following CPython versions:
+  3.6, 3.7, 3.8 and 3.9 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -111,6 +111,16 @@ Coding Style
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
+- This repository contains configuration for the
+  `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
+  our linters during a commit.  If you have it installed on your ``$PATH``,
+  you can enable enforcing those checks via:
+
+.. code-block:: bash
+
+   $ pre-commit install
+   pre-commit installed at .git/hooks/pre-commit
+
 Exceptions to PEP8:
 
 - Many unit tests use a helper method, ``_call_fut`` ("FUT" is short for
@@ -192,25 +202,24 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.5`_
 -  `Python 3.6`_
 -  `Python 3.7`_
 -  `Python 3.8`_
+-  `Python 3.9`_
 
-.. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
+.. _Python 3.9: https://docs.python.org/3.9/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
 .. _config: https://github.com/googleapis/python-billing/blob/master/noxfile.py
 
-Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
 We also explicitly decided to support Python 3 beginning with version
-3.5. Reasons for this include:
+3.6. Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_

@@ -105,10 +105,10 @@ class CloudCatalogTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_services: gapic_v1.method.wrap_method(
-                self.list_services, default_timeout=None, client_info=client_info,
+                self.list_services, default_timeout=60.0, client_info=client_info,
             ),
             self.list_skus: gapic_v1.method.wrap_method(
-                self.list_skus, default_timeout=None, client_info=client_info,
+                self.list_skus, default_timeout=60.0, client_info=client_info,
             ),
         }
 

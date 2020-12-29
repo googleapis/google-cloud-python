@@ -44,7 +44,7 @@ __all__ = (
     "AggregationInfo",
     "BillingAccount",
     "Category",
-    "CloudCatalogClient",
+    "CloudBillingClient",
     "CreateBillingAccountRequest",
     "GetBillingAccountRequest",
     "GetProjectBillingInfoRequest",
@@ -63,5 +63,5 @@ __all__ = (
     "Sku",
     "UpdateBillingAccountRequest",
     "UpdateProjectBillingInfoRequest",
-    "CloudBillingClient",
+    "CloudCatalogClient",
 )

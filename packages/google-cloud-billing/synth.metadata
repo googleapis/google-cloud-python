@@ -3,23 +3,139 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-billing",
-        "sha": "a9da72a796559ba13b95104cb719ba04300375ac"
+        "remote": "https://github.com/googleapis/python-billing.git",
+        "sha": "e7f139f44b6d5fc8f77b8a321bea39261edeb7f3"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "69697504d9eba1d064820c3085b4750767be6d08",
+        "internalRef": "348952930"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d5fc0bcf9ea9789c5b0e3154a9e3b29e5cea6116"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "billing",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ],
+  "generatedFiles": [
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/billing_v1/services.rst",
+    "docs/billing_v1/types.rst",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "google/cloud/billing/__init__.py",
+    "google/cloud/billing/py.typed",
+    "google/cloud/billing_v1/__init__.py",
+    "google/cloud/billing_v1/py.typed",
+    "google/cloud/billing_v1/services/__init__.py",
+    "google/cloud/billing_v1/services/cloud_billing/__init__.py",
+    "google/cloud/billing_v1/services/cloud_billing/async_client.py",
+    "google/cloud/billing_v1/services/cloud_billing/client.py",
+    "google/cloud/billing_v1/services/cloud_billing/pagers.py",
+    "google/cloud/billing_v1/services/cloud_billing/transports/__init__.py",
+    "google/cloud/billing_v1/services/cloud_billing/transports/base.py",
+    "google/cloud/billing_v1/services/cloud_billing/transports/grpc.py",
+    "google/cloud/billing_v1/services/cloud_billing/transports/grpc_asyncio.py",
+    "google/cloud/billing_v1/services/cloud_catalog/__init__.py",
+    "google/cloud/billing_v1/services/cloud_catalog/async_client.py",
+    "google/cloud/billing_v1/services/cloud_catalog/client.py",
+    "google/cloud/billing_v1/services/cloud_catalog/pagers.py",
+    "google/cloud/billing_v1/services/cloud_catalog/transports/__init__.py",
+    "google/cloud/billing_v1/services/cloud_catalog/transports/base.py",
+    "google/cloud/billing_v1/services/cloud_catalog/transports/grpc.py",
+    "google/cloud/billing_v1/services/cloud_catalog/transports/grpc_asyncio.py",
+    "google/cloud/billing_v1/types/__init__.py",
+    "google/cloud/billing_v1/types/cloud_billing.py",
+    "google/cloud/billing_v1/types/cloud_catalog.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_billing_v1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/billing_v1/__init__.py",
+    "tests/unit/gapic/billing_v1/test_cloud_billing.py",
+    "tests/unit/gapic/billing_v1/test_cloud_catalog.py"
   ]
 }

@@ -15,18 +15,6 @@
 # limitations under the License.
 #
 
-from .cloud_catalog import (
-    Service,
-    Sku,
-    Category,
-    PricingInfo,
-    PricingExpression,
-    AggregationInfo,
-    ListServicesRequest,
-    ListServicesResponse,
-    ListSkusRequest,
-    ListSkusResponse,
-)
 from .cloud_billing import (
     BillingAccount,
     ProjectBillingInfo,
@@ -40,18 +28,20 @@ from .cloud_billing import (
     GetProjectBillingInfoRequest,
     UpdateProjectBillingInfoRequest,
 )
+from .cloud_catalog import (
+    Service,
+    Sku,
+    Category,
+    PricingInfo,
+    PricingExpression,
+    AggregationInfo,
+    ListServicesRequest,
+    ListServicesResponse,
+    ListSkusRequest,
+    ListSkusResponse,
+)
 
 __all__ = (
-    "Service",
-    "Sku",
-    "Category",
-    "PricingInfo",
-    "PricingExpression",
-    "AggregationInfo",
-    "ListServicesRequest",
-    "ListServicesResponse",
-    "ListSkusRequest",
-    "ListSkusResponse",
     "BillingAccount",
     "ProjectBillingInfo",
     "GetBillingAccountRequest",
@@ -63,4 +53,14 @@ __all__ = (
     "ListProjectBillingInfoResponse",
     "GetProjectBillingInfoRequest",
     "UpdateProjectBillingInfoRequest",
+    "Service",
+    "Sku",
+    "Category",
+    "PricingInfo",
+    "PricingExpression",
+    "AggregationInfo",
+    "ListServicesRequest",
+    "ListServicesResponse",
+    "ListSkusRequest",
+    "ListSkusResponse",
 )
