@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-container.git",
-        "sha": "11e4b6aec2ace1f8129cf694d10d3edeb90029a5"
+        "sha": "9207193fbaae7c6d91d87ffb9db57223f02544d6"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "aa255b15d52b6d8950cca48cfdf58f7d27a60c8a"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     }
   ],
