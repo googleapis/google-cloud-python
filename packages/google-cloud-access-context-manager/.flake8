@@ -21,9 +21,12 @@ exclude =
   # Exclude generated code.
   **/proto/**
   **/gapic/**
+  **/services/**
+  **/types/**
   *_pb2.py
 
   # Standard linting exemptions.
+  **/.nox/**
   __pycache__,
   .git,
   *.pyc,
