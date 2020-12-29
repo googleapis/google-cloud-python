@@ -24,12 +24,16 @@ from .schema import (
     Schema,
     ColumnSchema,
 )
-from .search import SearchCatalogResult
+from .search import (
+    SearchCatalogResult,
+    SearchResultType,
+)
 from .table_spec import (
     BigQueryTableSpec,
     ViewSpec,
     TableSpec,
     BigQueryDateShardedSpec,
+    TableSourceType,
 )
 from .tags import (
     Tag,
@@ -69,6 +73,7 @@ from .datacatalog import (
     ListTagsResponse,
     ListEntriesRequest,
     ListEntriesResponse,
+    EntryType,
 )
 from .policytagmanager import (
     Taxonomy,
@@ -96,18 +101,20 @@ from .policytagmanagerserialization import (
     ExportTaxonomiesResponse,
 )
 
-
 __all__ = (
+    "IntegratedSystem",
     "SystemTimestamps",
     "GcsFilesetSpec",
     "GcsFileSpec",
     "Schema",
     "ColumnSchema",
     "SearchCatalogResult",
+    "SearchResultType",
     "BigQueryTableSpec",
     "ViewSpec",
     "TableSpec",
     "BigQueryDateShardedSpec",
+    "TableSourceType",
     "Tag",
     "TagField",
     "TagTemplate",
@@ -143,6 +150,7 @@ __all__ = (
     "ListTagsResponse",
     "ListEntriesRequest",
     "ListEntriesResponse",
+    "EntryType",
     "Taxonomy",
     "PolicyTag",
     "CreateTaxonomyRequest",

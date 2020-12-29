@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[PolicyTagManagerTran
 _transport_registry["grpc"] = PolicyTagManagerGrpcTransport
 _transport_registry["grpc_asyncio"] = PolicyTagManagerGrpcAsyncIOTransport
 
-
 __all__ = (
     "PolicyTagManagerTransport",
     "PolicyTagManagerGrpcTransport",

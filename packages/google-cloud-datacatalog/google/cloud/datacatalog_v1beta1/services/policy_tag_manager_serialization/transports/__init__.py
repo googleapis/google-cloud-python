@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = PolicyTagManagerSerializationGrpcTransport
 _transport_registry["grpc_asyncio"] = PolicyTagManagerSerializationGrpcAsyncIOTransport
 
-
 __all__ = (
     "PolicyTagManagerSerializationTransport",
     "PolicyTagManagerSerializationGrpcTransport",
