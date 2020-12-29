@@ -85,6 +85,8 @@ __protobuf__ = proto.module(
         "ListGoogleAdsLinksRequest",
         "ListGoogleAdsLinksResponse",
         "GetDataSharingSettingsRequest",
+        "ListAccountSummariesRequest",
+        "ListAccountSummariesResponse",
     },
 )
 
@@ -236,12 +238,13 @@ class ListPropertiesRequest(proto.Message):
             ``firebase_project:``\ (The id or number of the linked
             firebase project). Some examples of filters:
 
-            -  ``parent:accounts/123`` : The account with account id:
-               123.
-            -  ``firebase_project:project-id`` : The firebase project
-               with id: project-id.
-            -  ``firebase_project:123`` : The firebase project with
-               number: 123.
+            ::
+
+               | Filter                      | Description                               |
+               |-----------------------------|-------------------------------------------|
+               | parent:accounts/123         | The account with account id: 123.         |
+               | firebase_project:project-id | The firebase project with id: project-id. |
+               | firebase_project:123        | The firebase project with number: 123.    |
         page_size (int):
             The maximum number of resources to return.
             The service may return fewer than this value,
@@ -500,8 +503,9 @@ class CreateUserLinkRequest(proto.Message):
         parent (str):
             Required. Example format: accounts/1234
         notify_new_user (bool):
-            Optional. If notify_new_user is set, then email new user
-            that they've been given permissions on the resource.
+            Optional. If set, then email the new user
+            notifying them that they've been granted
+            permissions to the resource.
         user_link (~.resources.UserLink):
             Required. The user link to create.
     """
@@ -525,12 +529,14 @@ class BatchCreateUserLinksRequest(proto.Message):
             empty or match this field. Example format:
             accounts/1234
         notify_new_users (bool):
-            Optional. If notify_new_users is set, then email new users
-            that they've been given permissions on the resource.
+            Optional. If set, then email the new users notifying them
+            that they've been granted permissions to the resource.
+            Regardless of whether this is set or not, notify_new_user
+            field inside each individual request is ignored.
         requests (Sequence[~.analytics_admin.CreateUserLinkRequest]):
-            The requests specifying the user links to
-            create. A maximum of 1000 user links can be
-            created in a batch.
+            Required. The requests specifying the user
+            links to create. A maximum of 1000 user links
+            can be created in a batch.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -538,7 +544,7 @@ class BatchCreateUserLinksRequest(proto.Message):
     notify_new_users = proto.Field(proto.BOOL, number=2)
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=CreateUserLinkRequest,
+        proto.MESSAGE, number=3, message="CreateUserLinkRequest",
     )
 
 
@@ -577,15 +583,15 @@ class BatchUpdateUserLinksRequest(proto.Message):
             either be empty or match this field.
             Example format: accounts/1234
         requests (Sequence[~.analytics_admin.UpdateUserLinkRequest]):
-            The requests specifying the user links to
-            update. A maximum of 1000 user links can be
-            updated in a batch.
+            Required. The requests specifying the user
+            links to update. A maximum of 1000 user links
+            can be updated in a batch.
     """
 
     parent = proto.Field(proto.STRING, number=1)
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=UpdateUserLinkRequest,
+        proto.MESSAGE, number=2, message="UpdateUserLinkRequest",
     )
 
 
@@ -625,15 +631,15 @@ class BatchDeleteUserLinksRequest(proto.Message):
             match this field.
             Example format: accounts/1234
         requests (Sequence[~.analytics_admin.DeleteUserLinkRequest]):
-            The requests specifying the user links to
-            update. A maximum of 1000 user links can be
-            updated in a batch.
+            Required. The requests specifying the user
+            links to update. A maximum of 1000 user links
+            can be updated in a batch.
     """
 
     parent = proto.Field(proto.STRING, number=1)
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=DeleteUserLinkRequest,
+        proto.MESSAGE, number=2, message="DeleteUserLinkRequest",
     )
 
 
@@ -995,6 +1001,7 @@ class GetEnhancedMeasurementSettingsRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the settings to lookup. Format:
+
             properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
             Example:
             "properties/1000/webDataStreams/2000/enhancedMeasurementSettings".
@@ -1220,6 +1227,55 @@ class GetDataSharingSettingsRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
+
+class ListAccountSummariesRequest(proto.Message):
+    r"""Request message for ListAccountSummaries RPC.
+
+    Attributes:
+        page_size (int):
+            The maximum number of AccountSummary
+            resources to return. The service may return
+            fewer than this value, even if there are
+            additional pages. If unspecified, at most 50
+            resources will be returned. The maximum value is
+            200; (higher values will be coerced to the
+            maximum)
+        page_token (str):
+            A page token, received from a previous
+            ``ListAccountSummaries`` call. Provide this to retrieve the
+            subsequent page. When paginating, all other parameters
+            provided to ``ListAccountSummaries`` must match the call
+            that provided the page token.
+    """
+
+    page_size = proto.Field(proto.INT32, number=1)
+
+    page_token = proto.Field(proto.STRING, number=2)
+
+
+class ListAccountSummariesResponse(proto.Message):
+    r"""Response message for ListAccountSummaries RPC.
+
+    Attributes:
+        account_summaries (Sequence[~.resources.AccountSummary]):
+            Account summaries of all accounts the caller
+            has access to.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    account_summaries = proto.RepeatedField(
+        proto.MESSAGE, number=1, message=resources.AccountSummary,
+    )
+
+    next_page_token = proto.Field(proto.STRING, number=2)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright 2020 Google LLC
@@ -41,7 +42,7 @@ class adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'audit_user_links': ('parent', 'page_size', 'page_token', ),
-    'batch_create_user_links': ('parent', 'notify_new_users', 'requests', ),
+    'batch_create_user_links': ('parent', 'requests', 'notify_new_users', ),
     'batch_delete_user_links': ('parent', 'requests', ),
     'batch_get_user_links': ('parent', 'names', ),
     'batch_update_user_links': ('parent', 'requests', ),
@@ -70,6 +71,7 @@ class adminCallTransformer(cst.CSTTransformer):
     'get_user_link': ('name', ),
     'get_web_data_stream': ('name', ),
     'list_accounts': ('page_size', 'page_token', 'show_deleted', ),
+    'list_account_summaries': ('page_size', 'page_token', ),
     'list_android_app_data_streams': ('parent', 'page_size', 'page_token', ),
     'list_firebase_links': ('parent', ),
     'list_google_ads_links': ('parent', 'page_size', 'page_token', ),

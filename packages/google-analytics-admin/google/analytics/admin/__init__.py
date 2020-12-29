@@ -96,6 +96,12 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
 from google.analytics.admin_v1alpha.types.analytics_admin import GetPropertyRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import GetUserLinkRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import GetWebDataStreamRequest
+from google.analytics.admin_v1alpha.types.analytics_admin import (
+    ListAccountSummariesRequest,
+)
+from google.analytics.admin_v1alpha.types.analytics_admin import (
+    ListAccountSummariesResponse,
+)
 from google.analytics.admin_v1alpha.types.analytics_admin import ListAccountsRequest
 from google.analytics.admin_v1alpha.types.analytics_admin import ListAccountsResponse
 from google.analytics.admin_v1alpha.types.analytics_admin import (
@@ -160,6 +166,7 @@ from google.analytics.admin_v1alpha.types.analytics_admin import (
     UpdateWebDataStreamRequest,
 )
 from google.analytics.admin_v1alpha.types.resources import Account
+from google.analytics.admin_v1alpha.types.resources import AccountSummary
 from google.analytics.admin_v1alpha.types.resources import AndroidAppDataStream
 from google.analytics.admin_v1alpha.types.resources import AuditUserLink
 from google.analytics.admin_v1alpha.types.resources import DataSharingSettings
@@ -171,11 +178,13 @@ from google.analytics.admin_v1alpha.types.resources import IndustryCategory
 from google.analytics.admin_v1alpha.types.resources import IosAppDataStream
 from google.analytics.admin_v1alpha.types.resources import MaximumUserAccess
 from google.analytics.admin_v1alpha.types.resources import Property
+from google.analytics.admin_v1alpha.types.resources import PropertySummary
 from google.analytics.admin_v1alpha.types.resources import UserLink
 from google.analytics.admin_v1alpha.types.resources import WebDataStream
 
 __all__ = (
     "Account",
+    "AccountSummary",
     "AnalyticsAdminServiceAsyncClient",
     "AnalyticsAdminServiceClient",
     "AndroidAppDataStream",
@@ -220,6 +229,8 @@ __all__ = (
     "GoogleAdsLink",
     "IndustryCategory",
     "IosAppDataStream",
+    "ListAccountSummariesRequest",
+    "ListAccountSummariesResponse",
     "ListAccountsRequest",
     "ListAccountsResponse",
     "ListAndroidAppDataStreamsRequest",
@@ -238,6 +249,7 @@ __all__ = (
     "ListWebDataStreamsResponse",
     "MaximumUserAccess",
     "Property",
+    "PropertySummary",
     "ProvisionAccountTicketRequest",
     "ProvisionAccountTicketResponse",
     "UpdateAccountRequest",

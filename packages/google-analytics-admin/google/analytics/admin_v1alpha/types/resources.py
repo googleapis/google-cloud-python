@@ -25,8 +25,8 @@ from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 __protobuf__ = proto.module(
     package="google.analytics.admin.v1alpha",
     manifest={
-        "IndustryCategory",
         "MaximumUserAccess",
+        "IndustryCategory",
         "Account",
         "Property",
         "AndroidAppDataStream",
@@ -39,8 +39,21 @@ __protobuf__ = proto.module(
         "GlobalSiteTag",
         "GoogleAdsLink",
         "DataSharingSettings",
+        "AccountSummary",
+        "PropertySummary",
     },
 )
+
+
+class MaximumUserAccess(proto.Enum):
+    r"""Maximum access settings that Firebase user receive on the
+    linked Analytics property.
+    """
+    MAXIMUM_USER_ACCESS_UNSPECIFIED = 0
+    NO_ACCESS = 1
+    READ_AND_ANALYZE = 2
+    EDITOR_WITHOUT_LINK_MANAGEMENT = 3
+    EDITOR_INCLUDING_LINK_MANAGEMENT = 4
 
 
 class IndustryCategory(proto.Enum):
@@ -76,17 +89,6 @@ class IndustryCategory(proto.Enum):
     SHOPPING = 26
 
 
-class MaximumUserAccess(proto.Enum):
-    r"""Maximum access settings that Firebase user receive on the
-    linked Analytics property.
-    """
-    MAXIMUM_USER_ACCESS_UNSPECIFIED = 0
-    NO_ACCESS = 1
-    READ_AND_ANALYZE = 2
-    EDITOR_WITHOUT_LINK_MANAGEMENT = 3
-    EDITOR_INCLUDING_LINK_MANAGEMENT = 4
-
-
 class Account(proto.Message):
     r"""A resource message representing a Google Analytics account.
 
@@ -107,7 +109,9 @@ class Account(proto.Message):
         country_code (str):
             Country of business. Must be a non-deprecated code for a UN
             M.49 region.
-            https://unicode.org/cldr/charts/latest/supplemental/territory_containment_un_m_49.html
+
+            https: //unicode.org/cldr/charts/latest/supplem //
+            ental/territory_containment_un_m_49.html
         deleted (bool):
             Output only. Indicates whether this Account
             is soft-deleted or not. Deleted accounts are
@@ -129,7 +133,7 @@ class Account(proto.Message):
 
 
 class Property(proto.Message):
-    r"""A resource message representing a Google Analytics App+Web
+    r"""A resource message representing a Google Analytics GA4
     property.
 
     Attributes:
@@ -406,6 +410,7 @@ class EnhancedMeasurementSettings(proto.Message):
     Attributes:
         name (str):
             Output only. Resource name of this Data Stream. Format:
+
             properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
             Example:
             "properties/1000/webDataStreams/2000/enhancedMeasurementSettings".
@@ -518,7 +523,7 @@ class EnhancedMeasurementSettings(proto.Message):
 
 
 class FirebaseLink(proto.Message):
-    r"""A link between an App+Web property and a Firebase project.
+    r"""A link between an GA4 property and a Firebase project.
 
     Attributes:
         name (str):
@@ -536,7 +541,7 @@ class FirebaseLink(proto.Message):
             Output only. Time when this FirebaseLink was
             originally created.
         maximum_user_access (~.resources.MaximumUserAccess):
-            Maximum user access to the App + Web property
+            Maximum user access to the GA4 property
             allowed to admins of the linked Firebase
             project.
     """
@@ -559,13 +564,17 @@ class GlobalSiteTag(proto.Message):
             Immutable. JavaScript code snippet to be
             pasted as the first item into the head tag of
             every webpage to measure.
+        name (str):
+            The resource name of this tag.
     """
 
     snippet = proto.Field(proto.STRING, number=1)
 
+    name = proto.Field(proto.STRING, number=2)
+
 
 class GoogleAdsLink(proto.Message):
-    r"""A link between an App+Web property and a Google Ads account.
+    r"""A link between an GA4 property and a Google Ads account.
 
     Attributes:
         name (str):
@@ -661,6 +670,55 @@ class DataSharingSettings(proto.Message):
     sharing_with_google_products_enabled = proto.Field(proto.BOOL, number=5)
 
     sharing_with_others_enabled = proto.Field(proto.BOOL, number=6)
+
+
+class AccountSummary(proto.Message):
+    r"""A virtual resource representing an overview of an account and
+    all its child GA4 properties.
+
+    Attributes:
+        name (str):
+            Resource name for this account summary. Format:
+            accountSummaries/{account_id} Example:
+            "accountSummaries/1000".
+        account (str):
+            Resource name of account referred to by this account summary
+            Format: accounts/{account_id} Example: "accounts/1000".
+        display_name (str):
+            Display name for the account referred to in
+            this account summary.
+        property_summaries (Sequence[~.resources.PropertySummary]):
+            List of summaries for child accounts of this
+            account.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
+
+    account = proto.Field(proto.STRING, number=2)
+
+    display_name = proto.Field(proto.STRING, number=3)
+
+    property_summaries = proto.RepeatedField(
+        proto.MESSAGE, number=4, message="PropertySummary",
+    )
+
+
+class PropertySummary(proto.Message):
+    r"""A virtual resource representing metadata for an GA4 property.
+
+    Attributes:
+        property (str):
+            Resource name of property referred to by this property
+            summary Format: properties/{property_id} Example:
+            "properties/1000".
+        display_name (str):
+            Display name for the property referred to in
+            this account summary.
+    """
+
+    property = proto.Field(proto.STRING, number=1)
+
+    display_name = proto.Field(proto.STRING, number=2)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

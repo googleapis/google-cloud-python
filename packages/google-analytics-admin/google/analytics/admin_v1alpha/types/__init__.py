@@ -28,6 +28,10 @@ from .resources import (
     GlobalSiteTag,
     GoogleAdsLink,
     DataSharingSettings,
+    AccountSummary,
+    PropertySummary,
+    MaximumUserAccess,
+    IndustryCategory,
 )
 from .analytics_admin import (
     GetAccountRequest,
@@ -90,8 +94,9 @@ from .analytics_admin import (
     ListGoogleAdsLinksRequest,
     ListGoogleAdsLinksResponse,
     GetDataSharingSettingsRequest,
+    ListAccountSummariesRequest,
+    ListAccountSummariesResponse,
 )
-
 
 __all__ = (
     "Account",
@@ -106,6 +111,10 @@ __all__ = (
     "GlobalSiteTag",
     "GoogleAdsLink",
     "DataSharingSettings",
+    "AccountSummary",
+    "PropertySummary",
+    "MaximumUserAccess",
+    "IndustryCategory",
     "GetAccountRequest",
     "ListAccountsRequest",
     "ListAccountsResponse",
@@ -166,4 +175,6 @@ __all__ = (
     "ListGoogleAdsLinksRequest",
     "ListGoogleAdsLinksResponse",
     "GetDataSharingSettingsRequest",
+    "ListAccountSummariesRequest",
+    "ListAccountSummariesResponse",
 )

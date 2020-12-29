@@ -149,6 +149,136 @@ class ListAccountsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListAccountSummariesPager:
+    """A pager for iterating through ``list_account_summaries`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.analytics_admin.ListAccountSummariesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``account_summaries`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListAccountSummaries`` requests and continue to iterate
+    through the ``account_summaries`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.analytics_admin.ListAccountSummariesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListAccountSummariesResponse],
+        request: analytics_admin.ListAccountSummariesRequest,
+        response: analytics_admin.ListAccountSummariesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.analytics_admin.ListAccountSummariesRequest`):
+                The initial request object.
+            response (:class:`~.analytics_admin.ListAccountSummariesResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListAccountSummariesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[analytics_admin.ListAccountSummariesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[resources.AccountSummary]:
+        for page in self.pages:
+            yield from page.account_summaries
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListAccountSummariesAsyncPager:
+    """A pager for iterating through ``list_account_summaries`` requests.
+
+    This class thinly wraps an initial
+    :class:`~.analytics_admin.ListAccountSummariesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``account_summaries`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListAccountSummaries`` requests and continue to iterate
+    through the ``account_summaries`` field on the
+    corresponding responses.
+
+    All the usual :class:`~.analytics_admin.ListAccountSummariesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListAccountSummariesResponse]],
+        request: analytics_admin.ListAccountSummariesRequest,
+        response: analytics_admin.ListAccountSummariesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (:class:`~.analytics_admin.ListAccountSummariesRequest`):
+                The initial request object.
+            response (:class:`~.analytics_admin.ListAccountSummariesResponse`):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListAccountSummariesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterable[analytics_admin.ListAccountSummariesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[resources.AccountSummary]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.account_summaries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListPropertiesPager:
     """A pager for iterating through ``list_properties`` requests.
 

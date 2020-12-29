@@ -35,49 +35,122 @@ from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
-from .transports.base import AnalyticsAdminServiceTransport
+from .transports.base import AnalyticsAdminServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AnalyticsAdminServiceGrpcAsyncIOTransport
 from .client import AnalyticsAdminServiceClient
 
 
 class AnalyticsAdminServiceAsyncClient:
-    """Service Interface for the Analytics Admin API (App+Web)."""
+    """Service Interface for the Analytics Admin API (GA4)."""
 
     _client: AnalyticsAdminServiceClient
 
     DEFAULT_ENDPOINT = AnalyticsAdminServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AnalyticsAdminServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    account_path = staticmethod(AnalyticsAdminServiceClient.account_path)
+    parse_account_path = staticmethod(AnalyticsAdminServiceClient.parse_account_path)
+    account_summary_path = staticmethod(
+        AnalyticsAdminServiceClient.account_summary_path
+    )
+    parse_account_summary_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_account_summary_path
+    )
     android_app_data_stream_path = staticmethod(
         AnalyticsAdminServiceClient.android_app_data_stream_path
     )
-
-    property_path = staticmethod(AnalyticsAdminServiceClient.property_path)
-
-    user_link_path = staticmethod(AnalyticsAdminServiceClient.user_link_path)
-
+    parse_android_app_data_stream_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_android_app_data_stream_path
+    )
+    data_sharing_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.data_sharing_settings_path
+    )
+    parse_data_sharing_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_data_sharing_settings_path
+    )
     enhanced_measurement_settings_path = staticmethod(
         AnalyticsAdminServiceClient.enhanced_measurement_settings_path
     )
-
+    parse_enhanced_measurement_settings_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_enhanced_measurement_settings_path
+    )
+    firebase_link_path = staticmethod(AnalyticsAdminServiceClient.firebase_link_path)
+    parse_firebase_link_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_firebase_link_path
+    )
+    global_site_tag_path = staticmethod(
+        AnalyticsAdminServiceClient.global_site_tag_path
+    )
+    parse_global_site_tag_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_global_site_tag_path
+    )
     google_ads_link_path = staticmethod(
         AnalyticsAdminServiceClient.google_ads_link_path
     )
-
-    firebase_link_path = staticmethod(AnalyticsAdminServiceClient.firebase_link_path)
-
-    web_data_stream_path = staticmethod(
-        AnalyticsAdminServiceClient.web_data_stream_path
+    parse_google_ads_link_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_google_ads_link_path
     )
-
     ios_app_data_stream_path = staticmethod(
         AnalyticsAdminServiceClient.ios_app_data_stream_path
     )
+    parse_ios_app_data_stream_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_ios_app_data_stream_path
+    )
+    property_path = staticmethod(AnalyticsAdminServiceClient.property_path)
+    parse_property_path = staticmethod(AnalyticsAdminServiceClient.parse_property_path)
+    user_link_path = staticmethod(AnalyticsAdminServiceClient.user_link_path)
+    parse_user_link_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_user_link_path
+    )
+    web_data_stream_path = staticmethod(
+        AnalyticsAdminServiceClient.web_data_stream_path
+    )
+    parse_web_data_stream_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_web_data_stream_path
+    )
 
-    account_path = staticmethod(AnalyticsAdminServiceClient.account_path)
+    common_billing_account_path = staticmethod(
+        AnalyticsAdminServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(AnalyticsAdminServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        AnalyticsAdminServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(AnalyticsAdminServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(
+        AnalyticsAdminServiceClient.common_location_path
+    )
+    parse_common_location_path = staticmethod(
+        AnalyticsAdminServiceClient.parse_common_location_path
+    )
 
     from_service_account_file = AnalyticsAdminServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> AnalyticsAdminServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            AnalyticsAdminServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(AnalyticsAdminServiceClient).get_transport_class,
@@ -90,6 +163,7 @@ class AnalyticsAdminServiceAsyncClient:
         credentials: credentials.Credentials = None,
         transport: Union[str, AnalyticsAdminServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the analytics admin service client.
 
@@ -105,16 +179,19 @@ class AnalyticsAdminServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -122,7 +199,10 @@ class AnalyticsAdminServiceAsyncClient:
         """
 
         self._client = AnalyticsAdminServiceClient(
-            credentials=credentials, transport=transport, client_options=client_options,
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
     async def get_account(
@@ -164,7 +244,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -183,7 +264,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_account,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -207,10 +288,10 @@ class AnalyticsAdminServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAccountsAsyncPager:
         r"""Returns all accounts accessible by the caller.
-        Note that these accounts might not currently have
-        App+Web properties. Soft-deleted (ie: "trashed")
-        accounts are excluded by default. Returns an empty list
-        if no relevant accounts are found.
+        Note that these accounts might not currently have GA4
+        properties. Soft-deleted (ie: "trashed") accounts are
+        excluded by default. Returns an empty list if no
+        relevant accounts are found.
 
         Args:
             request (:class:`~.analytics_admin.ListAccountsRequest`):
@@ -240,7 +321,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_accounts,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -297,7 +378,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -316,7 +398,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_account,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -374,7 +456,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([account, update_mask]):
+        has_flattened_params = any([account, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -395,7 +478,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_account,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -448,11 +531,66 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.provision_account_ticket,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def list_account_summaries(
+        self,
+        request: analytics_admin.ListAccountSummariesRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAccountSummariesAsyncPager:
+        r"""Returns summaries of all accounts accessible by the
+        caller.
+
+        Args:
+            request (:class:`~.analytics_admin.ListAccountSummariesRequest`):
+                The request object. Request message for
+                ListAccountSummaries RPC.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.pagers.ListAccountSummariesAsyncPager:
+                Response message for
+                ListAccountSummaries RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = analytics_admin.ListAccountSummariesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_account_summaries,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAccountSummariesAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -466,10 +604,10 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Property:
-        r"""Lookup for a single "App+Web" Property.
+        r"""Lookup for a single "GA4" Property.
         Throws "Target not found" if no such property found, if
-        property is not of the type "App+Web", or if caller does
-        not have permissions to access it.
+        property is not of the type "GA4", or if caller does not
+        have permissions to access it.
 
         Args:
             request (:class:`~.analytics_admin.GetPropertyRequest`):
@@ -490,13 +628,14 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             ~.resources.Property:
                 A resource message representing a
-                Google Analytics App+Web property.
+                Google Analytics GA4 property.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -515,7 +654,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_property,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -540,7 +679,7 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.ListPropertiesAsyncPager:
         r"""Returns child Properties under the specified parent
         Account.
-        Only "App+Web" properties will be returned.
+        Only "GA4" properties will be returned.
         Properties will be excluded if the caller does not have
         access. Soft-deleted (ie: "trashed") properties are
         excluded by default. Returns an empty list if no
@@ -575,7 +714,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_properties,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -599,8 +738,8 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.Property:
-        r"""Creates an "App+Web" property with the specified
-        location and attributes.
+        r"""Creates an "GA4" property with the specified location
+        and attributes.
 
         Args:
             request (:class:`~.analytics_admin.CreatePropertyRequest`):
@@ -623,13 +762,14 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             ~.resources.Property:
                 A resource message representing a
-                Google Analytics App+Web property.
+                Google Analytics GA4 property.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([property]):
+        has_flattened_params = any([property])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -648,7 +788,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_property,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Send the request.
@@ -677,7 +817,7 @@ class AnalyticsAdminServiceAsyncClient:
         purged.
         https://support.google.com/analytics/answer/6154772
         Returns an error if the target is not found, or is not
-        an App+Web Property.
+        an GA4 Property.
 
         Args:
             request (:class:`~.analytics_admin.DeletePropertyRequest`):
@@ -700,7 +840,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -719,7 +860,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_property,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -772,13 +913,14 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             ~.resources.Property:
                 A resource message representing a
-                Google Analytics App+Web property.
+                Google Analytics GA4 property.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([property, update_mask]):
+        has_flattened_params = any([property, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -799,7 +941,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_property,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -854,7 +996,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -873,7 +1016,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_user_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -925,7 +1068,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_get_user_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -980,7 +1123,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -999,7 +1143,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_user_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1069,7 +1213,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.audit_user_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1146,7 +1290,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, user_link]):
+        has_flattened_params = any([parent, user_link])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1167,7 +1312,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_user_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1221,7 +1366,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_create_user_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1273,7 +1418,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([user_link]):
+        has_flattened_params = any([user_link])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1292,7 +1438,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_user_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1346,7 +1492,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_update_user_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1392,7 +1538,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1411,7 +1558,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_user_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1456,7 +1603,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_delete_user_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1512,7 +1659,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1531,7 +1679,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_web_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1579,7 +1727,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1598,7 +1747,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_web_data_stream,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1656,7 +1805,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([web_data_stream, update_mask]):
+        has_flattened_params = any([web_data_stream, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1677,7 +1827,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_web_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1739,7 +1889,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, web_data_stream]):
+        has_flattened_params = any([parent, web_data_stream])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1760,7 +1911,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_web_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1821,7 +1972,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1840,7 +1992,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_web_data_streams,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1903,7 +2055,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1922,7 +2075,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_ios_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1970,7 +2123,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1989,7 +2143,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_ios_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2048,7 +2202,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([ios_app_data_stream, update_mask]):
+        has_flattened_params = any([ios_app_data_stream, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2069,7 +2224,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_ios_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2132,7 +2287,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, ios_app_data_stream]):
+        has_flattened_params = any([parent, ios_app_data_stream])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2153,7 +2309,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_ios_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2214,7 +2370,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2233,7 +2390,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_ios_app_data_streams,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2296,7 +2453,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2315,7 +2473,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_android_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2363,7 +2521,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2382,7 +2541,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_android_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2441,7 +2600,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([android_app_data_stream, update_mask]):
+        has_flattened_params = any([android_app_data_stream, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2462,7 +2622,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_android_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2530,7 +2690,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, android_app_data_stream]):
+        has_flattened_params = any([parent, android_app_data_stream])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2551,7 +2712,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_android_app_data_stream,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2612,7 +2773,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2631,7 +2793,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_android_app_data_streams,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2671,6 +2833,7 @@ class AnalyticsAdminServiceAsyncClient:
                 GetEnhancedMeasurementSettings RPC.
             name (:class:`str`):
                 Required. The name of the settings to lookup. Format:
+
                 properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
                 Example:
                 "properties/1000/webDataStreams/2000/enhancedMeasurementSettings".
@@ -2695,7 +2858,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2714,7 +2878,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_enhanced_measurement_settings,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2777,7 +2941,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([enhanced_measurement_settings, update_mask]):
+        has_flattened_params = any([enhanced_measurement_settings, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2798,7 +2963,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_enhanced_measurement_settings,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2858,14 +3023,15 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             ~.resources.FirebaseLink:
-                A link between an App+Web property
-                and a Firebase project.
+                A link between an GA4 property and a
+                Firebase project.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, firebase_link]):
+        has_flattened_params = any([parent, firebase_link])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2886,7 +3052,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_firebase_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -2938,14 +3104,15 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             ~.resources.FirebaseLink:
-                A link between an App+Web property
-                and a Firebase project.
+                A link between an GA4 property and a
+                Firebase project.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([firebase_link, update_mask]):
+        has_flattened_params = any([firebase_link, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2966,7 +3133,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_firebase_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3015,7 +3182,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3034,7 +3202,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_firebase_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3086,7 +3254,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3105,7 +3274,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_firebase_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3163,7 +3332,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3182,7 +3352,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_global_site_tag,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3234,14 +3404,15 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             ~.resources.GoogleAdsLink:
-                A link between an App+Web property
-                and a Google Ads account.
+                A link between an GA4 property and a
+                Google Ads account.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, google_ads_link]):
+        has_flattened_params = any([parent, google_ads_link])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3262,7 +3433,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_google_ads_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3313,14 +3484,15 @@ class AnalyticsAdminServiceAsyncClient:
 
         Returns:
             ~.resources.GoogleAdsLink:
-                A link between an App+Web property
-                and a Google Ads account.
+                A link between an GA4 property and a
+                Google Ads account.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([google_ads_link, update_mask]):
+        has_flattened_params = any([google_ads_link, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3341,7 +3513,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_google_ads_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3389,7 +3561,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3408,7 +3581,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_google_ads_link,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3462,7 +3635,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3481,7 +3655,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_google_ads_links,
             default_timeout=60.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3544,7 +3718,8 @@ class AnalyticsAdminServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -3563,7 +3738,7 @@ class AnalyticsAdminServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_data_sharing_settings,
             default_timeout=None,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -3580,11 +3755,11 @@ class AnalyticsAdminServiceAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-analytics-admin",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("AnalyticsAdminServiceAsyncClient",)
