@@ -32,6 +32,7 @@ from .transaction import (
 from .type import (
     Type,
     StructType,
+    TypeCode,
 )
 from .result_set import (
     ResultSet,
@@ -63,7 +64,6 @@ from .spanner import (
     RollbackRequest,
 )
 
-
 __all__ = (
     "KeyRange",
     "KeySet",
@@ -75,6 +75,7 @@ __all__ = (
     "TransactionSelector",
     "Type",
     "StructType",
+    "TypeCode",
     "ResultSet",
     "PartialResultSet",
     "ResultSetMetadata",

@@ -32,7 +32,6 @@ from .spanner_instance_admin import (
     UpdateInstanceMetadata,
 )
 
-
 __all__ = (
     "ReplicaInfo",
     "InstanceConfig",

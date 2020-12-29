@@ -47,8 +47,8 @@ from .spanner_database_admin import (
     RestoreDatabaseRequest,
     RestoreDatabaseMetadata,
     OptimizeRestoredDatabaseMetadata,
+    RestoreSourceType,
 )
-
 
 __all__ = (
     "OperationProgress",
@@ -80,4 +80,5 @@ __all__ = (
     "RestoreDatabaseRequest",
     "RestoreDatabaseMetadata",
     "OptimizeRestoredDatabaseMetadata",
+    "RestoreSourceType",
 )
