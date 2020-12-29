@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-datalabeling.git",
-        "sha": "3d643383e481fa22093756343bdf50eba002b1f8"
+        "sha": "19e8f0c1a82d6b096e0787c1249a2e0cbdf5e429"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "7fcc405a579d5d53a726ff3da1b7c8c08f0f2d58"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     }
   ],
@@ -85,6 +85,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
