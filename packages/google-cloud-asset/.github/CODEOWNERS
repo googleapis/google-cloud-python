@@ -8,4 +8,4 @@
 *               @googleapis/yoshi-python
 
 
-/samples/**/*.py                           @DanSanche @googleapis/python-samples-owners
+/samples/**/*.py                           @googleapis/python-samples-owners
