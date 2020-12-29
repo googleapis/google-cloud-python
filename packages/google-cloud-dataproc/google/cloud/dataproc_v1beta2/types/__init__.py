@@ -110,7 +110,6 @@ from .workflow_templates import (
     DeleteWorkflowTemplateRequest,
 )
 
-
 __all__ = (
     "AutoscalingPolicy",
     "BasicAutoscalingAlgorithm",
@@ -122,6 +121,7 @@ __all__ = (
     "DeleteAutoscalingPolicyRequest",
     "ListAutoscalingPoliciesRequest",
     "ListAutoscalingPoliciesResponse",
+    "Component",
     "Cluster",
     "ClusterConfig",
     "GkeClusterConfig",

@@ -149,6 +149,22 @@ class ClusterControllerClient(metaclass=ClusterControllerClientMeta):
         return self._transport
 
     @staticmethod
+    def cluster_path(project: str, location: str, cluster: str,) -> str:
+        """Return a fully-qualified cluster string."""
+        return "projects/{project}/locations/{location}/clusters/{cluster}".format(
+            project=project, location=location, cluster=cluster,
+        )
+
+    @staticmethod
+    def parse_cluster_path(path: str) -> Dict[str, str]:
+        """Parse a cluster path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/clusters/(?P<cluster>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Return a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(

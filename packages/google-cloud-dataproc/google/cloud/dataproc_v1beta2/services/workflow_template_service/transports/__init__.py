@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = WorkflowTemplateServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = WorkflowTemplateServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "WorkflowTemplateServiceTransport",
     "WorkflowTemplateServiceGrpcTransport",
