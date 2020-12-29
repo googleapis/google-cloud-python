@@ -81,9 +81,8 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.billing.budgets",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
+        "--cov=google/cloud",
+        "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
