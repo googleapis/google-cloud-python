@@ -135,7 +135,7 @@ class TimeSeries(proto.Message):
         proto.ENUM, number=4, enum=ga_metric.MetricDescriptor.ValueType,
     )
 
-    points = proto.RepeatedField(proto.MESSAGE, number=5, message=Point,)
+    points = proto.RepeatedField(proto.MESSAGE, number=5, message="Point",)
 
 
 class TimeSeriesDescriptor(proto.Message):

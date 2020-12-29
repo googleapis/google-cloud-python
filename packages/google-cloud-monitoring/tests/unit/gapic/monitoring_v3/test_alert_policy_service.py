@@ -44,7 +44,6 @@ from google.cloud.monitoring_v3.types import alert
 from google.cloud.monitoring_v3.types import alert_service
 from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import mutation_record
-from google.cloud.monitoring_v3.types import mutation_record as gm_mutation_record
 from google.oauth2 import service_account
 from google.protobuf import any_pb2 as gp_any  # type: ignore
 from google.protobuf import duration_pb2 as duration  # type: ignore
@@ -109,12 +108,12 @@ def test_alert_policy_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "monitoring.googleapis.com:443"
+        assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_alert_policy_service_client_get_transport_class():
@@ -475,7 +474,7 @@ def test_list_alert_policies(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert_service.ListAlertPoliciesResponse(
@@ -491,6 +490,7 @@ def test_list_alert_policies(
         assert args[0] == alert_service.ListAlertPoliciesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListAlertPoliciesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -501,18 +501,20 @@ def test_list_alert_policies_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_alert_policies_async(transport: str = "grpc_asyncio"):
+async def test_list_alert_policies_async(
+    transport: str = "grpc_asyncio", request_type=alert_service.ListAlertPoliciesRequest
+):
     client = AlertPolicyServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = alert_service.ListAlertPoliciesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -527,12 +529,17 @@ async def test_list_alert_policies_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == alert_service.ListAlertPoliciesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAlertPoliciesAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_alert_policies_async_from_dict():
+    await test_list_alert_policies_async(request_type=dict)
 
 
 def test_list_alert_policies_field_headers():
@@ -545,7 +552,7 @@ def test_list_alert_policies_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         call.return_value = alert_service.ListAlertPoliciesResponse()
 
@@ -574,7 +581,7 @@ async def test_list_alert_policies_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             alert_service.ListAlertPoliciesResponse()
@@ -597,7 +604,7 @@ def test_list_alert_policies_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert_service.ListAlertPoliciesResponse()
@@ -633,7 +640,7 @@ async def test_list_alert_policies_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert_service.ListAlertPoliciesResponse()
@@ -672,7 +679,7 @@ def test_list_alert_policies_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -714,7 +721,7 @@ def test_list_alert_policies_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_alert_policies), "__call__"
+        type(client.transport.list_alert_policies), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -750,7 +757,7 @@ async def test_list_alert_policies_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_alert_policies),
+        type(client.transport.list_alert_policies),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -793,7 +800,7 @@ async def test_list_alert_policies_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_alert_policies),
+        type(client.transport.list_alert_policies),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -837,9 +844,7 @@ def test_get_alert_policy(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.get_alert_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy(
             name="name_value",
@@ -857,6 +862,7 @@ def test_get_alert_policy(
         assert args[0] == alert_service.GetAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, alert.AlertPolicy)
 
     assert response.name == "name_value"
@@ -873,19 +879,19 @@ def test_get_alert_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_alert_policy_async(transport: str = "grpc_asyncio"):
+async def test_get_alert_policy_async(
+    transport: str = "grpc_asyncio", request_type=alert_service.GetAlertPolicyRequest
+):
     client = AlertPolicyServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = alert_service.GetAlertPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_alert_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             alert.AlertPolicy(
@@ -902,7 +908,7 @@ async def test_get_alert_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == alert_service.GetAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, alert.AlertPolicy)
@@ -916,6 +922,11 @@ async def test_get_alert_policy_async(transport: str = "grpc_asyncio"):
     assert response.notification_channels == ["notification_channels_value"]
 
 
+@pytest.mark.asyncio
+async def test_get_alert_policy_async_from_dict():
+    await test_get_alert_policy_async(request_type=dict)
+
+
 def test_get_alert_policy_field_headers():
     client = AlertPolicyServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -925,9 +936,7 @@ def test_get_alert_policy_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.get_alert_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
         call.return_value = alert.AlertPolicy()
 
         client.get_alert_policy(request)
@@ -954,9 +963,7 @@ async def test_get_alert_policy_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_alert_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(alert.AlertPolicy())
 
         await client.get_alert_policy(request)
@@ -975,9 +982,7 @@ def test_get_alert_policy_flattened():
     client = AlertPolicyServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._transport.get_alert_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy()
 
@@ -1011,9 +1016,7 @@ async def test_get_alert_policy_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_alert_policy), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_alert_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy()
 
@@ -1057,7 +1060,7 @@ def test_create_alert_policy(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_alert_policy), "__call__"
+        type(client.transport.create_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy(
@@ -1076,6 +1079,7 @@ def test_create_alert_policy(
         assert args[0] == alert_service.CreateAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, alert.AlertPolicy)
 
     assert response.name == "name_value"
@@ -1092,18 +1096,20 @@ def test_create_alert_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_alert_policy_async(transport: str = "grpc_asyncio"):
+async def test_create_alert_policy_async(
+    transport: str = "grpc_asyncio", request_type=alert_service.CreateAlertPolicyRequest
+):
     client = AlertPolicyServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = alert_service.CreateAlertPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_alert_policy), "__call__"
+        type(client.transport.create_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1121,7 +1127,7 @@ async def test_create_alert_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == alert_service.CreateAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, alert.AlertPolicy)
@@ -1135,6 +1141,11 @@ async def test_create_alert_policy_async(transport: str = "grpc_asyncio"):
     assert response.notification_channels == ["notification_channels_value"]
 
 
+@pytest.mark.asyncio
+async def test_create_alert_policy_async_from_dict():
+    await test_create_alert_policy_async(request_type=dict)
+
+
 def test_create_alert_policy_field_headers():
     client = AlertPolicyServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1145,7 +1156,7 @@ def test_create_alert_policy_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_alert_policy), "__call__"
+        type(client.transport.create_alert_policy), "__call__"
     ) as call:
         call.return_value = alert.AlertPolicy()
 
@@ -1174,7 +1185,7 @@ async def test_create_alert_policy_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_alert_policy), "__call__"
+        type(client.transport.create_alert_policy), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(alert.AlertPolicy())
 
@@ -1195,7 +1206,7 @@ def test_create_alert_policy_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_alert_policy), "__call__"
+        type(client.transport.create_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy()
@@ -1237,7 +1248,7 @@ async def test_create_alert_policy_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_alert_policy), "__call__"
+        type(client.transport.create_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy()
@@ -1288,7 +1299,7 @@ def test_delete_alert_policy(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_alert_policy), "__call__"
+        type(client.transport.delete_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1310,18 +1321,20 @@ def test_delete_alert_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_alert_policy_async(transport: str = "grpc_asyncio"):
+async def test_delete_alert_policy_async(
+    transport: str = "grpc_asyncio", request_type=alert_service.DeleteAlertPolicyRequest
+):
     client = AlertPolicyServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = alert_service.DeleteAlertPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_alert_policy), "__call__"
+        type(client.transport.delete_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -1332,10 +1345,15 @@ async def test_delete_alert_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == alert_service.DeleteAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_alert_policy_async_from_dict():
+    await test_delete_alert_policy_async(request_type=dict)
 
 
 def test_delete_alert_policy_field_headers():
@@ -1348,7 +1366,7 @@ def test_delete_alert_policy_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_alert_policy), "__call__"
+        type(client.transport.delete_alert_policy), "__call__"
     ) as call:
         call.return_value = None
 
@@ -1377,7 +1395,7 @@ async def test_delete_alert_policy_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_alert_policy), "__call__"
+        type(client.transport.delete_alert_policy), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1398,7 +1416,7 @@ def test_delete_alert_policy_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_alert_policy), "__call__"
+        type(client.transport.delete_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1434,7 +1452,7 @@ async def test_delete_alert_policy_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_alert_policy), "__call__"
+        type(client.transport.delete_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -1479,7 +1497,7 @@ def test_update_alert_policy(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_alert_policy), "__call__"
+        type(client.transport.update_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy(
@@ -1498,6 +1516,7 @@ def test_update_alert_policy(
         assert args[0] == alert_service.UpdateAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, alert.AlertPolicy)
 
     assert response.name == "name_value"
@@ -1514,18 +1533,20 @@ def test_update_alert_policy_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_alert_policy_async(transport: str = "grpc_asyncio"):
+async def test_update_alert_policy_async(
+    transport: str = "grpc_asyncio", request_type=alert_service.UpdateAlertPolicyRequest
+):
     client = AlertPolicyServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = alert_service.UpdateAlertPolicyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_alert_policy), "__call__"
+        type(client.transport.update_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1543,7 +1564,7 @@ async def test_update_alert_policy_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == alert_service.UpdateAlertPolicyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, alert.AlertPolicy)
@@ -1557,6 +1578,11 @@ async def test_update_alert_policy_async(transport: str = "grpc_asyncio"):
     assert response.notification_channels == ["notification_channels_value"]
 
 
+@pytest.mark.asyncio
+async def test_update_alert_policy_async_from_dict():
+    await test_update_alert_policy_async(request_type=dict)
+
+
 def test_update_alert_policy_field_headers():
     client = AlertPolicyServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1567,7 +1593,7 @@ def test_update_alert_policy_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_alert_policy), "__call__"
+        type(client.transport.update_alert_policy), "__call__"
     ) as call:
         call.return_value = alert.AlertPolicy()
 
@@ -1599,7 +1625,7 @@ async def test_update_alert_policy_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_alert_policy), "__call__"
+        type(client.transport.update_alert_policy), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(alert.AlertPolicy())
 
@@ -1623,7 +1649,7 @@ def test_update_alert_policy_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_alert_policy), "__call__"
+        type(client.transport.update_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy()
@@ -1666,7 +1692,7 @@ async def test_update_alert_policy_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_alert_policy), "__call__"
+        type(client.transport.update_alert_policy), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = alert.AlertPolicy()
@@ -1741,7 +1767,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = AlertPolicyServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -1777,7 +1803,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = AlertPolicyServiceClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.AlertPolicyServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.AlertPolicyServiceGrpcTransport,)
 
 
 def test_alert_policy_service_base_transport_error():
@@ -1887,7 +1913,7 @@ def test_alert_policy_service_host_no_port():
             api_endpoint="monitoring.googleapis.com"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:443"
+    assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_alert_policy_service_host_with_port():
@@ -1897,7 +1923,7 @@ def test_alert_policy_service_host_with_port():
             api_endpoint="monitoring.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:8000"
+    assert client.transport._host == "monitoring.googleapis.com:8000"
 
 
 def test_alert_policy_service_grpc_transport_channel():
@@ -1909,6 +1935,7 @@ def test_alert_policy_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_alert_policy_service_grpc_asyncio_transport_channel():
@@ -1920,6 +1947,7 @@ def test_alert_policy_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -1969,8 +1997,13 @@ def test_alert_policy_service_transport_channel_mtls_with_client_cert_source(
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2013,6 +2046,10 @@ def test_alert_policy_service_transport_channel_mtls_with_adc(transport_class):
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -2067,65 +2104,8 @@ def test_parse_alert_policy_condition_path():
     assert expected == actual
 
 
-def test_common_project_path():
-    project = "scallop"
-
-    expected = "projects/{project}".format(project=project,)
-    actual = AlertPolicyServiceClient.common_project_path(project)
-    assert expected == actual
-
-
-def test_parse_common_project_path():
-    expected = {
-        "project": "abalone",
-    }
-    path = AlertPolicyServiceClient.common_project_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AlertPolicyServiceClient.parse_common_project_path(path)
-    assert expected == actual
-
-
-def test_common_organization_path():
-    organization = "squid"
-
-    expected = "organizations/{organization}".format(organization=organization,)
-    actual = AlertPolicyServiceClient.common_organization_path(organization)
-    assert expected == actual
-
-
-def test_parse_common_organization_path():
-    expected = {
-        "organization": "clam",
-    }
-    path = AlertPolicyServiceClient.common_organization_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AlertPolicyServiceClient.parse_common_organization_path(path)
-    assert expected == actual
-
-
-def test_common_folder_path():
-    folder = "whelk"
-
-    expected = "folders/{folder}".format(folder=folder,)
-    actual = AlertPolicyServiceClient.common_folder_path(folder)
-    assert expected == actual
-
-
-def test_parse_common_folder_path():
-    expected = {
-        "folder": "octopus",
-    }
-    path = AlertPolicyServiceClient.common_folder_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = AlertPolicyServiceClient.parse_common_folder_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -2136,12 +2116,69 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = AlertPolicyServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
     actual = AlertPolicyServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "squid"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = AlertPolicyServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "clam",
+    }
+    path = AlertPolicyServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlertPolicyServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "whelk"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = AlertPolicyServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "octopus",
+    }
+    path = AlertPolicyServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlertPolicyServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "oyster"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = AlertPolicyServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nudibranch",
+    }
+    path = AlertPolicyServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AlertPolicyServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 

@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = UptimeCheckServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = UptimeCheckServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "UptimeCheckServiceTransport",
     "UptimeCheckServiceGrpcTransport",

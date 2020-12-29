@@ -62,24 +62,24 @@ class GroupServiceAsyncClient:
     group_path = staticmethod(GroupServiceClient.group_path)
     parse_group_path = staticmethod(GroupServiceClient.parse_group_path)
 
-    common_project_path = staticmethod(GroupServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        GroupServiceClient.parse_common_project_path
+    common_billing_account_path = staticmethod(
+        GroupServiceClient.common_billing_account_path
     )
+    parse_common_billing_account_path = staticmethod(
+        GroupServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(GroupServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(GroupServiceClient.parse_common_folder_path)
 
     common_organization_path = staticmethod(GroupServiceClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         GroupServiceClient.parse_common_organization_path
     )
 
-    common_folder_path = staticmethod(GroupServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(GroupServiceClient.parse_common_folder_path)
-
-    common_billing_account_path = staticmethod(
-        GroupServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        GroupServiceClient.parse_common_billing_account_path
+    common_project_path = staticmethod(GroupServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        GroupServiceClient.parse_common_project_path
     )
 
     common_location_path = staticmethod(GroupServiceClient.common_location_path)
@@ -89,6 +89,15 @@ class GroupServiceAsyncClient:
 
     from_service_account_file = GroupServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> GroupServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            GroupServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(GroupServiceClient).get_transport_class, type(GroupServiceClient)
@@ -184,7 +193,8 @@ class GroupServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -302,7 +312,8 @@ class GroupServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -422,7 +433,8 @@ class GroupServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, group]):
+        has_flattened_params = any([name, group])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -527,7 +539,8 @@ class GroupServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([group]):
+        has_flattened_params = any([group])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -606,7 +619,8 @@ class GroupServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -690,7 +704,8 @@ class GroupServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

@@ -52,21 +52,13 @@ class MetricServiceAsyncClient:
     DEFAULT_ENDPOINT = MetricServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = MetricServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    common_project_path = staticmethod(MetricServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        MetricServiceClient.parse_common_project_path
+    """metric_descriptor_path = staticmethod(MetricServiceClient.metric_descriptor_path)
+    parse_metric_descriptor_path = staticmethod(MetricServiceClient.parse_metric_descriptor_path)"""
+    monitored_resource_descriptor_path = staticmethod(
+        MetricServiceClient.monitored_resource_descriptor_path
     )
-
-    common_organization_path = staticmethod(
-        MetricServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        MetricServiceClient.parse_common_organization_path
-    )
-
-    common_folder_path = staticmethod(MetricServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        MetricServiceClient.parse_common_folder_path
+    parse_monitored_resource_descriptor_path = staticmethod(
+        MetricServiceClient.parse_monitored_resource_descriptor_path
     )
 
     common_billing_account_path = staticmethod(
@@ -76,6 +68,23 @@ class MetricServiceAsyncClient:
         MetricServiceClient.parse_common_billing_account_path
     )
 
+    common_folder_path = staticmethod(MetricServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        MetricServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        MetricServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        MetricServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(MetricServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        MetricServiceClient.parse_common_project_path
+    )
+
     common_location_path = staticmethod(MetricServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         MetricServiceClient.parse_common_location_path
@@ -83,6 +92,15 @@ class MetricServiceAsyncClient:
 
     from_service_account_file = MetricServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> MetricServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            MetricServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(MetricServiceClient).get_transport_class, type(MetricServiceClient)
@@ -180,7 +198,8 @@ class MetricServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -274,33 +293,17 @@ class MetricServiceAsyncClient:
                 specifies the use of the labels ``"instance_id"`` and
                 ``"zone"`` to identify particular VM instances.
 
-                Different services can support different monitored
-                resource types.
-
-                The following are specific rules to service defined
-                monitored resources for Monitoring and Logging:
-
-                -  The ``type``, ``display_name``, ``description``,
-                   ``labels`` and ``launch_stage`` fields are all
-                   required.
-                -  The first label of the monitored resource descriptor
-                   must be ``resource_container``. There are legacy
-                   monitored resource descritptors start with
-                   ``project_id``.
-                -  It must include a ``location`` label.
-                -  Maximum of default 5 service defined monitored
-                   resource descriptors is allowed per service.
-                -  Maximum of default 10 labels per monitored resource
-                   is allowed.
-
-                The default maximum limit can be overridden. Please
-                follow https://cloud.google.com/monitoring/quotas
+                Different APIs can support different monitored resource
+                types. APIs generally provide a ``list`` method that
+                returns the monitored resource descriptors used by the
+                API.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -385,7 +388,8 @@ class MetricServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -470,32 +474,18 @@ class MetricServiceAsyncClient:
 
         Returns:
             ~.ga_metric.MetricDescriptor:
-                Defines a metric type and its schema. Once a metric
-                descriptor is created, deleting or altering it stops
-                data collection and makes the metric type's existing
-                data unusable.
-
-                The following are specific rules for service defined
-                Monitoring metric descriptors:
-
-                -  ``type``, ``metric_kind``, ``value_type``,
-                   ``description``, ``display_name``, ``launch_stage``
-                   fields are all required. The ``unit`` field must be
-                   specified if the ``value_type`` is any of DOUBLE,
-                   INT64, DISTRIBUTION.
-                -  Maximum of default 500 metric descriptors per service
-                   is allowed.
-                -  Maximum of default 10 labels per metric descriptor is
-                   allowed.
-
-                The default maximum limit can be overridden. Please
-                follow https://cloud.google.com/monitoring/quotas
+                Defines a metric type and its schema.
+                Once a metric descriptor is created,
+                deleting or altering it stops data
+                collection and makes the metric type's
+                existing data unusable.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -581,32 +571,18 @@ class MetricServiceAsyncClient:
 
         Returns:
             ~.ga_metric.MetricDescriptor:
-                Defines a metric type and its schema. Once a metric
-                descriptor is created, deleting or altering it stops
-                data collection and makes the metric type's existing
-                data unusable.
-
-                The following are specific rules for service defined
-                Monitoring metric descriptors:
-
-                -  ``type``, ``metric_kind``, ``value_type``,
-                   ``description``, ``display_name``, ``launch_stage``
-                   fields are all required. The ``unit`` field must be
-                   specified if the ``value_type`` is any of DOUBLE,
-                   INT64, DISTRIBUTION.
-                -  Maximum of default 500 metric descriptors per service
-                   is allowed.
-                -  Maximum of default 10 labels per metric descriptor is
-                   allowed.
-
-                The default maximum limit can be overridden. Please
-                follow https://cloud.google.com/monitoring/quotas
+                Defines a metric type and its schema.
+                Once a metric descriptor is created,
+                deleting or altering it stops data
+                collection and makes the metric type's
+                existing data unusable.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, metric_descriptor]):
+        has_flattened_params = any([name, metric_descriptor])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -682,7 +658,8 @@ class MetricServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -799,7 +776,8 @@ class MetricServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, filter, interval, view]):
+        has_flattened_params = any([name, filter, interval, view])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -906,7 +884,8 @@ class MetricServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, time_series]):
+        has_flattened_params = any([name, time_series])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -919,8 +898,9 @@ class MetricServiceAsyncClient:
 
         if name is not None:
             request.name = name
-        if time_series is not None:
-            request.time_series = time_series
+
+        if time_series:
+            request.time_series.extend(time_series)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

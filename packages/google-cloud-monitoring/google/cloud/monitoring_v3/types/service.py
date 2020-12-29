@@ -479,7 +479,7 @@ class DistributionCut(proto.Message):
 
     distribution_filter = proto.Field(proto.STRING, number=4)
 
-    range_ = proto.Field(proto.MESSAGE, number=5, message=Range,)
+    range_ = proto.Field(proto.MESSAGE, number=5, message="Range",)
 
 
 class WindowsBasedSli(proto.Message):
@@ -522,11 +522,11 @@ class WindowsBasedSli(proto.Message):
         """
 
         performance = proto.Field(
-            proto.MESSAGE, number=1, oneof="type", message=RequestBasedSli,
+            proto.MESSAGE, number=1, oneof="type", message="RequestBasedSli",
         )
 
         basic_sli_performance = proto.Field(
-            proto.MESSAGE, number=3, oneof="type", message=BasicSli,
+            proto.MESSAGE, number=3, oneof="type", message="BasicSli",
         )
 
         threshold = proto.Field(proto.DOUBLE, number=2)
@@ -550,7 +550,7 @@ class WindowsBasedSli(proto.Message):
 
         time_series = proto.Field(proto.STRING, number=1)
 
-        range_ = proto.Field(proto.MESSAGE, number=4, message=Range,)
+        range_ = proto.Field(proto.MESSAGE, number=4, message="Range",)
 
     good_bad_metric_filter = proto.Field(
         proto.STRING, number=5, oneof="window_criterion"

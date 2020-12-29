@@ -66,18 +66,11 @@ class NotificationChannelServiceAsyncClient:
         NotificationChannelServiceClient.parse_notification_channel_descriptor_path
     )
 
-    common_project_path = staticmethod(
-        NotificationChannelServiceClient.common_project_path
+    common_billing_account_path = staticmethod(
+        NotificationChannelServiceClient.common_billing_account_path
     )
-    parse_common_project_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_project_path
-    )
-
-    common_organization_path = staticmethod(
-        NotificationChannelServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_organization_path
+    parse_common_billing_account_path = staticmethod(
+        NotificationChannelServiceClient.parse_common_billing_account_path
     )
 
     common_folder_path = staticmethod(
@@ -87,11 +80,18 @@ class NotificationChannelServiceAsyncClient:
         NotificationChannelServiceClient.parse_common_folder_path
     )
 
-    common_billing_account_path = staticmethod(
-        NotificationChannelServiceClient.common_billing_account_path
+    common_organization_path = staticmethod(
+        NotificationChannelServiceClient.common_organization_path
     )
-    parse_common_billing_account_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_billing_account_path
+    parse_common_organization_path = staticmethod(
+        NotificationChannelServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(
+        NotificationChannelServiceClient.common_project_path
+    )
+    parse_common_project_path = staticmethod(
+        NotificationChannelServiceClient.parse_common_project_path
     )
 
     common_location_path = staticmethod(
@@ -105,6 +105,15 @@ class NotificationChannelServiceAsyncClient:
         NotificationChannelServiceClient.from_service_account_file
     )
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> NotificationChannelServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            NotificationChannelServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(NotificationChannelServiceClient).get_transport_class,
@@ -211,7 +220,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -307,7 +317,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -400,7 +411,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -499,7 +511,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -602,7 +615,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, notification_channel]):
+        has_flattened_params = any([name, notification_channel])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -689,7 +703,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([update_mask, notification_channel]):
+        has_flattened_params = any([update_mask, notification_channel])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -775,7 +790,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, force]):
+        has_flattened_params = any([name, force])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -851,7 +867,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -952,7 +969,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1053,7 +1071,8 @@ class NotificationChannelServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, code]):
+        has_flattened_params = any([name, code])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

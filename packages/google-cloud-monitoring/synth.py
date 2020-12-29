@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """This script is used to synthesize generated parts of this library."""
+import re
 
 import synthtool as s
 import synthtool.gcp as gcp
@@ -61,6 +62,30 @@ for file in ["test_uptime_check_service.py", "test_metric_service.py"]:
         "type_",
         "type"
     )
+
+# Comment out broken path helper 'metric_descriptor_path'
+# https://github.com/googleapis/gapic-generator-python/issues/701
+s.replace(
+    "google/cloud/**/metric_service/client.py",
+    "(@staticmethod\n\s+def metric_descriptor_path.*?return m\.groupdict\(\) if m else \{\})",
+    """'''\g<1>'''""",
+    re.MULTILINE| re.DOTALL
+)
+
+s.replace(
+    "google/cloud/**/metric_service/async_client.py",
+    """(metric_descriptor_path =.*?
+    parse_metric_descriptor_path = staticmethod\(.*?\))""",
+    '''"""\g<1>"""''',
+    re.MULTILINE| re.DOTALL
+)
+
+s.replace(
+    "tests/**/test_metric_service.py",
+    "(def test_metric_descriptor_path.*?def test_parse_metric_descriptor_path.*?)def",
+    '''"""\g<1>"""\ndef''',
+    re.MULTILINE| re.DOTALL
+)
 
 # ----------------------------------------------------------------------------
 # Add templated files

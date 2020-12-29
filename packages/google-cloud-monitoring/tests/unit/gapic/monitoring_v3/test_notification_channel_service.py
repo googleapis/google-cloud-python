@@ -109,12 +109,12 @@ def test_notification_channel_service_client_from_service_account_file(client_cl
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "monitoring.googleapis.com:443"
+        assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_notification_channel_service_client_get_transport_class():
@@ -492,7 +492,7 @@ def test_list_notification_channel_descriptors(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channel_descriptors), "__call__"
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification_service.ListNotificationChannelDescriptorsResponse(
@@ -510,6 +510,7 @@ def test_list_notification_channel_descriptors(
         )
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListNotificationChannelDescriptorsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -522,6 +523,7 @@ def test_list_notification_channel_descriptors_from_dict():
 @pytest.mark.asyncio
 async def test_list_notification_channel_descriptors_async(
     transport: str = "grpc_asyncio",
+    request_type=notification_service.ListNotificationChannelDescriptorsRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
@@ -529,12 +531,11 @@ async def test_list_notification_channel_descriptors_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.ListNotificationChannelDescriptorsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channel_descriptors),
-        "__call__",
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -549,12 +550,19 @@ async def test_list_notification_channel_descriptors_async(
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert (
+            args[0] == notification_service.ListNotificationChannelDescriptorsRequest()
+        )
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotificationChannelDescriptorsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_notification_channel_descriptors_async_from_dict():
+    await test_list_notification_channel_descriptors_async(request_type=dict)
 
 
 def test_list_notification_channel_descriptors_field_headers():
@@ -569,7 +577,7 @@ def test_list_notification_channel_descriptors_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channel_descriptors), "__call__"
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         call.return_value = (
             notification_service.ListNotificationChannelDescriptorsResponse()
@@ -600,8 +608,7 @@ async def test_list_notification_channel_descriptors_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channel_descriptors),
-        "__call__",
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification_service.ListNotificationChannelDescriptorsResponse()
@@ -626,7 +633,7 @@ def test_list_notification_channel_descriptors_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channel_descriptors), "__call__"
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = (
@@ -667,8 +674,7 @@ async def test_list_notification_channel_descriptors_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channel_descriptors),
-        "__call__",
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = (
@@ -714,7 +720,7 @@ def test_list_notification_channel_descriptors_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channel_descriptors), "__call__"
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -764,7 +770,7 @@ def test_list_notification_channel_descriptors_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channel_descriptors), "__call__"
+        type(client.transport.list_notification_channel_descriptors), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -804,7 +810,7 @@ async def test_list_notification_channel_descriptors_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channel_descriptors),
+        type(client.transport.list_notification_channel_descriptors),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -853,7 +859,7 @@ async def test_list_notification_channel_descriptors_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channel_descriptors),
+        type(client.transport.list_notification_channel_descriptors),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -905,7 +911,7 @@ def test_get_notification_channel_descriptor(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel_descriptor), "__call__"
+        type(client.transport.get_notification_channel_descriptor), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannelDescriptor(
@@ -925,6 +931,7 @@ def test_get_notification_channel_descriptor(
         assert args[0] == notification_service.GetNotificationChannelDescriptorRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, notification.NotificationChannelDescriptor)
 
     assert response.name == "name_value"
@@ -945,6 +952,7 @@ def test_get_notification_channel_descriptor_from_dict():
 @pytest.mark.asyncio
 async def test_get_notification_channel_descriptor_async(
     transport: str = "grpc_asyncio",
+    request_type=notification_service.GetNotificationChannelDescriptorRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
@@ -952,11 +960,11 @@ async def test_get_notification_channel_descriptor_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.GetNotificationChannelDescriptorRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel_descriptor), "__call__"
+        type(client.transport.get_notification_channel_descriptor), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -975,7 +983,7 @@ async def test_get_notification_channel_descriptor_async(
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.GetNotificationChannelDescriptorRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, notification.NotificationChannelDescriptor)
@@ -991,6 +999,11 @@ async def test_get_notification_channel_descriptor_async(
     assert response.supported_tiers == [common.ServiceTier.SERVICE_TIER_BASIC]
 
 
+@pytest.mark.asyncio
+async def test_get_notification_channel_descriptor_async_from_dict():
+    await test_get_notification_channel_descriptor_async(request_type=dict)
+
+
 def test_get_notification_channel_descriptor_field_headers():
     client = NotificationChannelServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -1003,7 +1016,7 @@ def test_get_notification_channel_descriptor_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel_descriptor), "__call__"
+        type(client.transport.get_notification_channel_descriptor), "__call__"
     ) as call:
         call.return_value = notification.NotificationChannelDescriptor()
 
@@ -1032,7 +1045,7 @@ async def test_get_notification_channel_descriptor_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel_descriptor), "__call__"
+        type(client.transport.get_notification_channel_descriptor), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification.NotificationChannelDescriptor()
@@ -1057,7 +1070,7 @@ def test_get_notification_channel_descriptor_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel_descriptor), "__call__"
+        type(client.transport.get_notification_channel_descriptor), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannelDescriptor()
@@ -1096,7 +1109,7 @@ async def test_get_notification_channel_descriptor_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel_descriptor), "__call__"
+        type(client.transport.get_notification_channel_descriptor), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannelDescriptor()
@@ -1145,7 +1158,7 @@ def test_list_notification_channels(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification_service.ListNotificationChannelsResponse(
@@ -1161,6 +1174,7 @@ def test_list_notification_channels(
         assert args[0] == notification_service.ListNotificationChannelsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListNotificationChannelsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -1171,18 +1185,21 @@ def test_list_notification_channels_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_notification_channels_async(transport: str = "grpc_asyncio"):
+async def test_list_notification_channels_async(
+    transport: str = "grpc_asyncio",
+    request_type=notification_service.ListNotificationChannelsRequest,
+):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.ListNotificationChannelsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1197,12 +1214,17 @@ async def test_list_notification_channels_async(transport: str = "grpc_asyncio")
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.ListNotificationChannelsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotificationChannelsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_notification_channels_async_from_dict():
+    await test_list_notification_channels_async(request_type=dict)
 
 
 def test_list_notification_channels_field_headers():
@@ -1217,7 +1239,7 @@ def test_list_notification_channels_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         call.return_value = notification_service.ListNotificationChannelsResponse()
 
@@ -1246,7 +1268,7 @@ async def test_list_notification_channels_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification_service.ListNotificationChannelsResponse()
@@ -1271,7 +1293,7 @@ def test_list_notification_channels_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification_service.ListNotificationChannelsResponse()
@@ -1309,7 +1331,7 @@ async def test_list_notification_channels_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification_service.ListNotificationChannelsResponse()
@@ -1350,7 +1372,7 @@ def test_list_notification_channels_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1398,7 +1420,7 @@ def test_list_notification_channels_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_notification_channels), "__call__"
+        type(client.transport.list_notification_channels), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1438,7 +1460,7 @@ async def test_list_notification_channels_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channels),
+        type(client.transport.list_notification_channels),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1485,7 +1507,7 @@ async def test_list_notification_channels_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_notification_channels),
+        type(client.transport.list_notification_channels),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1535,7 +1557,7 @@ def test_get_notification_channel(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel), "__call__"
+        type(client.transport.get_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel(
@@ -1555,6 +1577,7 @@ def test_get_notification_channel(
         assert args[0] == notification_service.GetNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, notification.NotificationChannel)
 
     assert response.type_ == "type__value"
@@ -1576,18 +1599,21 @@ def test_get_notification_channel_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_notification_channel_async(transport: str = "grpc_asyncio"):
+async def test_get_notification_channel_async(
+    transport: str = "grpc_asyncio",
+    request_type=notification_service.GetNotificationChannelRequest,
+):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.GetNotificationChannelRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel), "__call__"
+        type(client.transport.get_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1606,7 +1632,7 @@ async def test_get_notification_channel_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.GetNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, notification.NotificationChannel)
@@ -1625,6 +1651,11 @@ async def test_get_notification_channel_async(transport: str = "grpc_asyncio"):
     )
 
 
+@pytest.mark.asyncio
+async def test_get_notification_channel_async_from_dict():
+    await test_get_notification_channel_async(request_type=dict)
+
+
 def test_get_notification_channel_field_headers():
     client = NotificationChannelServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -1637,7 +1668,7 @@ def test_get_notification_channel_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel), "__call__"
+        type(client.transport.get_notification_channel), "__call__"
     ) as call:
         call.return_value = notification.NotificationChannel()
 
@@ -1666,7 +1697,7 @@ async def test_get_notification_channel_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel), "__call__"
+        type(client.transport.get_notification_channel), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification.NotificationChannel()
@@ -1691,7 +1722,7 @@ def test_get_notification_channel_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel), "__call__"
+        type(client.transport.get_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -1729,7 +1760,7 @@ async def test_get_notification_channel_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel), "__call__"
+        type(client.transport.get_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -1777,7 +1808,7 @@ def test_create_notification_channel(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_notification_channel), "__call__"
+        type(client.transport.create_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel(
@@ -1797,6 +1828,7 @@ def test_create_notification_channel(
         assert args[0] == notification_service.CreateNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, notification.NotificationChannel)
 
     assert response.type_ == "type__value"
@@ -1818,18 +1850,21 @@ def test_create_notification_channel_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_notification_channel_async(transport: str = "grpc_asyncio"):
+async def test_create_notification_channel_async(
+    transport: str = "grpc_asyncio",
+    request_type=notification_service.CreateNotificationChannelRequest,
+):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.CreateNotificationChannelRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_notification_channel), "__call__"
+        type(client.transport.create_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1848,7 +1883,7 @@ async def test_create_notification_channel_async(transport: str = "grpc_asyncio"
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.CreateNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, notification.NotificationChannel)
@@ -1867,6 +1902,11 @@ async def test_create_notification_channel_async(transport: str = "grpc_asyncio"
     )
 
 
+@pytest.mark.asyncio
+async def test_create_notification_channel_async_from_dict():
+    await test_create_notification_channel_async(request_type=dict)
+
+
 def test_create_notification_channel_field_headers():
     client = NotificationChannelServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -1879,7 +1919,7 @@ def test_create_notification_channel_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_notification_channel), "__call__"
+        type(client.transport.create_notification_channel), "__call__"
     ) as call:
         call.return_value = notification.NotificationChannel()
 
@@ -1908,7 +1948,7 @@ async def test_create_notification_channel_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_notification_channel), "__call__"
+        type(client.transport.create_notification_channel), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification.NotificationChannel()
@@ -1933,7 +1973,7 @@ def test_create_notification_channel_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_notification_channel), "__call__"
+        type(client.transport.create_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -1980,7 +2020,7 @@ async def test_create_notification_channel_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_notification_channel), "__call__"
+        type(client.transport.create_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -2037,7 +2077,7 @@ def test_update_notification_channel(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_notification_channel), "__call__"
+        type(client.transport.update_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel(
@@ -2057,6 +2097,7 @@ def test_update_notification_channel(
         assert args[0] == notification_service.UpdateNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, notification.NotificationChannel)
 
     assert response.type_ == "type__value"
@@ -2078,18 +2119,21 @@ def test_update_notification_channel_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_notification_channel_async(transport: str = "grpc_asyncio"):
+async def test_update_notification_channel_async(
+    transport: str = "grpc_asyncio",
+    request_type=notification_service.UpdateNotificationChannelRequest,
+):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.UpdateNotificationChannelRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_notification_channel), "__call__"
+        type(client.transport.update_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2108,7 +2152,7 @@ async def test_update_notification_channel_async(transport: str = "grpc_asyncio"
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.UpdateNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, notification.NotificationChannel)
@@ -2127,6 +2171,11 @@ async def test_update_notification_channel_async(transport: str = "grpc_asyncio"
     )
 
 
+@pytest.mark.asyncio
+async def test_update_notification_channel_async_from_dict():
+    await test_update_notification_channel_async(request_type=dict)
+
+
 def test_update_notification_channel_field_headers():
     client = NotificationChannelServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -2139,7 +2188,7 @@ def test_update_notification_channel_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_notification_channel), "__call__"
+        type(client.transport.update_notification_channel), "__call__"
     ) as call:
         call.return_value = notification.NotificationChannel()
 
@@ -2171,7 +2220,7 @@ async def test_update_notification_channel_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_notification_channel), "__call__"
+        type(client.transport.update_notification_channel), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification.NotificationChannel()
@@ -2199,7 +2248,7 @@ def test_update_notification_channel_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_notification_channel), "__call__"
+        type(client.transport.update_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -2246,7 +2295,7 @@ async def test_update_notification_channel_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_notification_channel), "__call__"
+        type(client.transport.update_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -2303,7 +2352,7 @@ def test_delete_notification_channel(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_notification_channel), "__call__"
+        type(client.transport.delete_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2325,18 +2374,21 @@ def test_delete_notification_channel_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_notification_channel_async(transport: str = "grpc_asyncio"):
+async def test_delete_notification_channel_async(
+    transport: str = "grpc_asyncio",
+    request_type=notification_service.DeleteNotificationChannelRequest,
+):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.DeleteNotificationChannelRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_notification_channel), "__call__"
+        type(client.transport.delete_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -2347,10 +2399,15 @@ async def test_delete_notification_channel_async(transport: str = "grpc_asyncio"
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.DeleteNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_notification_channel_async_from_dict():
+    await test_delete_notification_channel_async(request_type=dict)
 
 
 def test_delete_notification_channel_field_headers():
@@ -2365,7 +2422,7 @@ def test_delete_notification_channel_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_notification_channel), "__call__"
+        type(client.transport.delete_notification_channel), "__call__"
     ) as call:
         call.return_value = None
 
@@ -2394,7 +2451,7 @@ async def test_delete_notification_channel_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_notification_channel), "__call__"
+        type(client.transport.delete_notification_channel), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -2417,7 +2474,7 @@ def test_delete_notification_channel_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_notification_channel), "__call__"
+        type(client.transport.delete_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2461,7 +2518,7 @@ async def test_delete_notification_channel_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_notification_channel), "__call__"
+        type(client.transport.delete_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2513,7 +2570,7 @@ def test_send_notification_channel_verification_code(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.send_notification_channel_verification_code), "__call__"
+        type(client.transport.send_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2540,6 +2597,7 @@ def test_send_notification_channel_verification_code_from_dict():
 @pytest.mark.asyncio
 async def test_send_notification_channel_verification_code_async(
     transport: str = "grpc_asyncio",
+    request_type=notification_service.SendNotificationChannelVerificationCodeRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
@@ -2547,12 +2605,11 @@ async def test_send_notification_channel_verification_code_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.SendNotificationChannelVerificationCodeRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.send_notification_channel_verification_code),
-        "__call__",
+        type(client.transport.send_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -2563,10 +2620,18 @@ async def test_send_notification_channel_verification_code_async(
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert (
+            args[0]
+            == notification_service.SendNotificationChannelVerificationCodeRequest()
+        )
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_send_notification_channel_verification_code_async_from_dict():
+    await test_send_notification_channel_verification_code_async(request_type=dict)
 
 
 def test_send_notification_channel_verification_code_field_headers():
@@ -2581,7 +2646,7 @@ def test_send_notification_channel_verification_code_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.send_notification_channel_verification_code), "__call__"
+        type(client.transport.send_notification_channel_verification_code), "__call__"
     ) as call:
         call.return_value = None
 
@@ -2610,8 +2675,7 @@ async def test_send_notification_channel_verification_code_field_headers_async()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.send_notification_channel_verification_code),
-        "__call__",
+        type(client.transport.send_notification_channel_verification_code), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -2634,7 +2698,7 @@ def test_send_notification_channel_verification_code_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.send_notification_channel_verification_code), "__call__"
+        type(client.transport.send_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2673,8 +2737,7 @@ async def test_send_notification_channel_verification_code_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.send_notification_channel_verification_code),
-        "__call__",
+        type(client.transport.send_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2723,7 +2786,7 @@ def test_get_notification_channel_verification_code(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel_verification_code), "__call__"
+        type(client.transport.get_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification_service.GetNotificationChannelVerificationCodeResponse(
@@ -2742,6 +2805,7 @@ def test_get_notification_channel_verification_code(
         )
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(
         response, notification_service.GetNotificationChannelVerificationCodeResponse
     )
@@ -2756,6 +2820,7 @@ def test_get_notification_channel_verification_code_from_dict():
 @pytest.mark.asyncio
 async def test_get_notification_channel_verification_code_async(
     transport: str = "grpc_asyncio",
+    request_type=notification_service.GetNotificationChannelVerificationCodeRequest,
 ):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
@@ -2763,12 +2828,11 @@ async def test_get_notification_channel_verification_code_async(
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.GetNotificationChannelVerificationCodeRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel_verification_code),
-        "__call__",
+        type(client.transport.get_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2783,7 +2847,10 @@ async def test_get_notification_channel_verification_code_async(
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert (
+            args[0]
+            == notification_service.GetNotificationChannelVerificationCodeRequest()
+        )
 
     # Establish that the response is the type that we expect.
     assert isinstance(
@@ -2791,6 +2858,11 @@ async def test_get_notification_channel_verification_code_async(
     )
 
     assert response.code == "code_value"
+
+
+@pytest.mark.asyncio
+async def test_get_notification_channel_verification_code_async_from_dict():
+    await test_get_notification_channel_verification_code_async(request_type=dict)
 
 
 def test_get_notification_channel_verification_code_field_headers():
@@ -2805,7 +2877,7 @@ def test_get_notification_channel_verification_code_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel_verification_code), "__call__"
+        type(client.transport.get_notification_channel_verification_code), "__call__"
     ) as call:
         call.return_value = (
             notification_service.GetNotificationChannelVerificationCodeResponse()
@@ -2836,8 +2908,7 @@ async def test_get_notification_channel_verification_code_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel_verification_code),
-        "__call__",
+        type(client.transport.get_notification_channel_verification_code), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification_service.GetNotificationChannelVerificationCodeResponse()
@@ -2862,7 +2933,7 @@ def test_get_notification_channel_verification_code_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_notification_channel_verification_code), "__call__"
+        type(client.transport.get_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = (
@@ -2903,8 +2974,7 @@ async def test_get_notification_channel_verification_code_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_notification_channel_verification_code),
-        "__call__",
+        type(client.transport.get_notification_channel_verification_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = (
@@ -2957,7 +3027,7 @@ def test_verify_notification_channel(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.verify_notification_channel), "__call__"
+        type(client.transport.verify_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel(
@@ -2977,6 +3047,7 @@ def test_verify_notification_channel(
         assert args[0] == notification_service.VerifyNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, notification.NotificationChannel)
 
     assert response.type_ == "type__value"
@@ -2998,18 +3069,21 @@ def test_verify_notification_channel_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_verify_notification_channel_async(transport: str = "grpc_asyncio"):
+async def test_verify_notification_channel_async(
+    transport: str = "grpc_asyncio",
+    request_type=notification_service.VerifyNotificationChannelRequest,
+):
     client = NotificationChannelServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = notification_service.VerifyNotificationChannelRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.verify_notification_channel), "__call__"
+        type(client.transport.verify_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -3028,7 +3102,7 @@ async def test_verify_notification_channel_async(transport: str = "grpc_asyncio"
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == notification_service.VerifyNotificationChannelRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, notification.NotificationChannel)
@@ -3047,6 +3121,11 @@ async def test_verify_notification_channel_async(transport: str = "grpc_asyncio"
     )
 
 
+@pytest.mark.asyncio
+async def test_verify_notification_channel_async_from_dict():
+    await test_verify_notification_channel_async(request_type=dict)
+
+
 def test_verify_notification_channel_field_headers():
     client = NotificationChannelServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -3059,7 +3138,7 @@ def test_verify_notification_channel_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.verify_notification_channel), "__call__"
+        type(client.transport.verify_notification_channel), "__call__"
     ) as call:
         call.return_value = notification.NotificationChannel()
 
@@ -3088,7 +3167,7 @@ async def test_verify_notification_channel_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.verify_notification_channel), "__call__"
+        type(client.transport.verify_notification_channel), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             notification.NotificationChannel()
@@ -3113,7 +3192,7 @@ def test_verify_notification_channel_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.verify_notification_channel), "__call__"
+        type(client.transport.verify_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -3157,7 +3236,7 @@ async def test_verify_notification_channel_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.verify_notification_channel), "__call__"
+        type(client.transport.verify_notification_channel), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = notification.NotificationChannel()
@@ -3233,7 +3312,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = NotificationChannelServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -3272,7 +3351,7 @@ def test_transport_grpc_default():
         credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client._transport, transports.NotificationChannelServiceGrpcTransport,
+        client.transport, transports.NotificationChannelServiceGrpcTransport,
     )
 
 
@@ -3388,7 +3467,7 @@ def test_notification_channel_service_host_no_port():
             api_endpoint="monitoring.googleapis.com"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:443"
+    assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_notification_channel_service_host_with_port():
@@ -3398,7 +3477,7 @@ def test_notification_channel_service_host_with_port():
             api_endpoint="monitoring.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:8000"
+    assert client.transport._host == "monitoring.googleapis.com:8000"
 
 
 def test_notification_channel_service_grpc_transport_channel():
@@ -3410,6 +3489,7 @@ def test_notification_channel_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_notification_channel_service_grpc_asyncio_transport_channel():
@@ -3421,6 +3501,7 @@ def test_notification_channel_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -3470,8 +3551,13 @@ def test_notification_channel_service_transport_channel_mtls_with_client_cert_so
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -3514,6 +3600,10 @@ def test_notification_channel_service_transport_channel_mtls_with_adc(transport_
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -3572,65 +3662,8 @@ def test_parse_notification_channel_descriptor_path():
     assert expected == actual
 
 
-def test_common_project_path():
-    project = "winkle"
-
-    expected = "projects/{project}".format(project=project,)
-    actual = NotificationChannelServiceClient.common_project_path(project)
-    assert expected == actual
-
-
-def test_parse_common_project_path():
-    expected = {
-        "project": "nautilus",
-    }
-    path = NotificationChannelServiceClient.common_project_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = NotificationChannelServiceClient.parse_common_project_path(path)
-    assert expected == actual
-
-
-def test_common_organization_path():
-    organization = "scallop"
-
-    expected = "organizations/{organization}".format(organization=organization,)
-    actual = NotificationChannelServiceClient.common_organization_path(organization)
-    assert expected == actual
-
-
-def test_parse_common_organization_path():
-    expected = {
-        "organization": "abalone",
-    }
-    path = NotificationChannelServiceClient.common_organization_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = NotificationChannelServiceClient.parse_common_organization_path(path)
-    assert expected == actual
-
-
-def test_common_folder_path():
-    folder = "squid"
-
-    expected = "folders/{folder}".format(folder=folder,)
-    actual = NotificationChannelServiceClient.common_folder_path(folder)
-    assert expected == actual
-
-
-def test_parse_common_folder_path():
-    expected = {
-        "folder": "clam",
-    }
-    path = NotificationChannelServiceClient.common_folder_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = NotificationChannelServiceClient.parse_common_folder_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -3643,12 +3676,69 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = NotificationChannelServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
     actual = NotificationChannelServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "scallop"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = NotificationChannelServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "abalone",
+    }
+    path = NotificationChannelServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotificationChannelServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "squid"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = NotificationChannelServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "clam",
+    }
+    path = NotificationChannelServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotificationChannelServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "whelk"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = NotificationChannelServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "octopus",
+    }
+    path = NotificationChannelServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotificationChannelServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 

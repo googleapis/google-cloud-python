@@ -412,7 +412,7 @@ class UptimeCheckConfig(proto.Message):
     is_internal = proto.Field(proto.BOOL, number=15)
 
     internal_checkers = proto.RepeatedField(
-        proto.MESSAGE, number=14, message=InternalChecker,
+        proto.MESSAGE, number=14, message="InternalChecker",
     )
 
 

@@ -103,10 +103,10 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
                 for grpc channel. It is ignored if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -115,6 +115,8 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -122,6 +124,7 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
             warnings.warn(
                 "api_mtls_endpoint and client_cert_source are deprecated",
@@ -157,7 +160,12 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
                 ssl_credentials=ssl_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
+            self._ssl_channel_credentials = ssl_credentials
         else:
             host = host if ":" in host else host + ":443"
 
@@ -174,6 +182,10 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
                 ssl_credentials=ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
 
         self._stubs = {}  # type: Dict[str, Callable]
@@ -200,7 +212,7 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optionsl[str]): The host for the channel to use.
+            address (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -235,12 +247,8 @@ class GroupServiceGrpcTransport(GroupServiceTransport):
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+        """Return the channel designed to connect to this service.
         """
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property

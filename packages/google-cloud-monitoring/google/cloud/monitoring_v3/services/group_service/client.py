@@ -143,6 +143,15 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> GroupServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            GroupServiceTransport: The transport used by the client instance.
+        """
+        return self._transport
+
     @staticmethod
     def group_path(project: str, group: str,) -> str:
         """Return a fully-qualified group string."""
@@ -248,10 +257,10 @@ class GroupServiceClient(metaclass=GroupServiceClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:

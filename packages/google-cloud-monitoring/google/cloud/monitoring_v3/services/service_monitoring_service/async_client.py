@@ -61,11 +61,16 @@ class ServiceMonitoringServiceAsyncClient:
         ServiceMonitoringServiceClient.parse_service_level_objective_path
     )
 
-    common_project_path = staticmethod(
-        ServiceMonitoringServiceClient.common_project_path
+    common_billing_account_path = staticmethod(
+        ServiceMonitoringServiceClient.common_billing_account_path
     )
-    parse_common_project_path = staticmethod(
-        ServiceMonitoringServiceClient.parse_common_project_path
+    parse_common_billing_account_path = staticmethod(
+        ServiceMonitoringServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(ServiceMonitoringServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        ServiceMonitoringServiceClient.parse_common_folder_path
     )
 
     common_organization_path = staticmethod(
@@ -75,16 +80,11 @@ class ServiceMonitoringServiceAsyncClient:
         ServiceMonitoringServiceClient.parse_common_organization_path
     )
 
-    common_folder_path = staticmethod(ServiceMonitoringServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ServiceMonitoringServiceClient.parse_common_folder_path
+    common_project_path = staticmethod(
+        ServiceMonitoringServiceClient.common_project_path
     )
-
-    common_billing_account_path = staticmethod(
-        ServiceMonitoringServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ServiceMonitoringServiceClient.parse_common_billing_account_path
+    parse_common_project_path = staticmethod(
+        ServiceMonitoringServiceClient.parse_common_project_path
     )
 
     common_location_path = staticmethod(
@@ -96,6 +96,15 @@ class ServiceMonitoringServiceAsyncClient:
 
     from_service_account_file = ServiceMonitoringServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> ServiceMonitoringServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            ServiceMonitoringServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(ServiceMonitoringServiceClient).get_transport_class,
@@ -201,7 +210,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, service]):
+        has_flattened_params = any([parent, service])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -282,7 +292,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -368,7 +379,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -457,7 +469,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([service]):
+        has_flattened_params = any([service])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -527,7 +540,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -628,7 +642,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, service_level_objective]):
+        has_flattened_params = any([parent, service_level_objective])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -716,7 +731,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -803,7 +819,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -900,7 +917,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([service_level_objective]):
+        has_flattened_params = any([service_level_objective])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -976,7 +994,8 @@ class ServiceMonitoringServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

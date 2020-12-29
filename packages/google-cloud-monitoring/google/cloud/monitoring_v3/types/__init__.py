@@ -19,6 +19,8 @@ from .common import (
     TypedValue,
     TimeInterval,
     Aggregation,
+    ComparisonType,
+    ServiceTier,
 )
 from .mutation_record import MutationRecord
 from .alert import AlertPolicy
@@ -118,6 +120,8 @@ from .uptime import (
     InternalChecker,
     UptimeCheckConfig,
     UptimeCheckIp,
+    UptimeCheckRegion,
+    GroupResourceType,
 )
 from .uptime_service import (
     ListUptimeCheckConfigsRequest,
@@ -130,11 +134,12 @@ from .uptime_service import (
     ListUptimeCheckIpsResponse,
 )
 
-
 __all__ = (
     "TypedValue",
     "TimeInterval",
     "Aggregation",
+    "ComparisonType",
+    "ServiceTier",
     "MutationRecord",
     "AlertPolicy",
     "CreateAlertPolicyRequest",
@@ -216,6 +221,8 @@ __all__ = (
     "InternalChecker",
     "UptimeCheckConfig",
     "UptimeCheckIp",
+    "UptimeCheckRegion",
+    "GroupResourceType",
     "ListUptimeCheckConfigsRequest",
     "ListUptimeCheckConfigsResponse",
     "GetUptimeCheckConfigRequest",

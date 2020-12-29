@@ -136,6 +136,45 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> MetricServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            MetricServiceTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    '''@staticmethod
+    def metric_descriptor_path(project: str,) -> str:
+        """Return a fully-qualified metric_descriptor string."""
+        return "projects/{project}/metricDescriptors/{metric_descriptor=**}".format(project=project, )
+
+    @staticmethod
+    def parse_metric_descriptor_path(path: str) -> Dict[str,str]:
+        """Parse a metric_descriptor path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/metricDescriptors/{metric_descriptor=**}$", path)
+        return m.groupdict() if m else {}'''
+
+    @staticmethod
+    def monitored_resource_descriptor_path(
+        project: str, monitored_resource_descriptor: str,
+    ) -> str:
+        """Return a fully-qualified monitored_resource_descriptor string."""
+        return "projects/{project}/monitoredResourceDescriptors/{monitored_resource_descriptor}".format(
+            project=project,
+            monitored_resource_descriptor=monitored_resource_descriptor,
+        )
+
+    @staticmethod
+    def parse_monitored_resource_descriptor_path(path: str) -> Dict[str, str]:
+        """Parse a monitored_resource_descriptor path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/monitoredResourceDescriptors/(?P<monitored_resource_descriptor>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Return a fully-qualified billing_account string."""
@@ -230,10 +269,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -448,27 +487,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 specifies the use of the labels ``"instance_id"`` and
                 ``"zone"`` to identify particular VM instances.
 
-                Different services can support different monitored
-                resource types.
-
-                The following are specific rules to service defined
-                monitored resources for Monitoring and Logging:
-
-                -  The ``type``, ``display_name``, ``description``,
-                   ``labels`` and ``launch_stage`` fields are all
-                   required.
-                -  The first label of the monitored resource descriptor
-                   must be ``resource_container``. There are legacy
-                   monitored resource descritptors start with
-                   ``project_id``.
-                -  It must include a ``location`` label.
-                -  Maximum of default 5 service defined monitored
-                   resource descriptors is allowed per service.
-                -  Maximum of default 10 labels per monitored resource
-                   is allowed.
-
-                The default maximum limit can be overridden. Please
-                follow https://cloud.google.com/monitoring/quotas
+                Different APIs can support different monitored resource
+                types. APIs generally provide a ``list`` method that
+                returns the monitored resource descriptors used by the
+                API.
 
         """
         # Create or coerce a protobuf request object.
@@ -636,26 +658,11 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Returns:
             ~.ga_metric.MetricDescriptor:
-                Defines a metric type and its schema. Once a metric
-                descriptor is created, deleting or altering it stops
-                data collection and makes the metric type's existing
-                data unusable.
-
-                The following are specific rules for service defined
-                Monitoring metric descriptors:
-
-                -  ``type``, ``metric_kind``, ``value_type``,
-                   ``description``, ``display_name``, ``launch_stage``
-                   fields are all required. The ``unit`` field must be
-                   specified if the ``value_type`` is any of DOUBLE,
-                   INT64, DISTRIBUTION.
-                -  Maximum of default 500 metric descriptors per service
-                   is allowed.
-                -  Maximum of default 10 labels per metric descriptor is
-                   allowed.
-
-                The default maximum limit can be overridden. Please
-                follow https://cloud.google.com/monitoring/quotas
+                Defines a metric type and its schema.
+                Once a metric descriptor is created,
+                deleting or altering it stops data
+                collection and makes the metric type's
+                existing data unusable.
 
         """
         # Create or coerce a protobuf request object.
@@ -741,26 +748,11 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         Returns:
             ~.ga_metric.MetricDescriptor:
-                Defines a metric type and its schema. Once a metric
-                descriptor is created, deleting or altering it stops
-                data collection and makes the metric type's existing
-                data unusable.
-
-                The following are specific rules for service defined
-                Monitoring metric descriptors:
-
-                -  ``type``, ``metric_kind``, ``value_type``,
-                   ``description``, ``display_name``, ``launch_stage``
-                   fields are all required. The ``unit`` field must be
-                   specified if the ``value_type`` is any of DOUBLE,
-                   INT64, DISTRIBUTION.
-                -  Maximum of default 500 metric descriptors per service
-                   is allowed.
-                -  Maximum of default 10 labels per metric descriptor is
-                   allowed.
-
-                The default maximum limit can be overridden. Please
-                follow https://cloud.google.com/monitoring/quotas
+                Defines a metric type and its schema.
+                Once a metric descriptor is created,
+                deleting or altering it stops data
+                collection and makes the metric type's
+                existing data unusable.
 
         """
         # Create or coerce a protobuf request object.

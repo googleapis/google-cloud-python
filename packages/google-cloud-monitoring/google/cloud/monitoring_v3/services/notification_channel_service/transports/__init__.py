@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = NotificationChannelServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = NotificationChannelServiceGrpcAsyncIOTransport
 
-
 __all__ = (
     "NotificationChannelServiceTransport",
     "NotificationChannelServiceGrpcTransport",

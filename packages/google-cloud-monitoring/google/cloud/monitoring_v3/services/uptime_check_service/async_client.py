@@ -62,9 +62,16 @@ class UptimeCheckServiceAsyncClient:
         UptimeCheckServiceClient.parse_uptime_check_config_path
     )
 
-    common_project_path = staticmethod(UptimeCheckServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_project_path
+    common_billing_account_path = staticmethod(
+        UptimeCheckServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        UptimeCheckServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(UptimeCheckServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        UptimeCheckServiceClient.parse_common_folder_path
     )
 
     common_organization_path = staticmethod(
@@ -74,16 +81,9 @@ class UptimeCheckServiceAsyncClient:
         UptimeCheckServiceClient.parse_common_organization_path
     )
 
-    common_folder_path = staticmethod(UptimeCheckServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_folder_path
-    )
-
-    common_billing_account_path = staticmethod(
-        UptimeCheckServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_billing_account_path
+    common_project_path = staticmethod(UptimeCheckServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        UptimeCheckServiceClient.parse_common_project_path
     )
 
     common_location_path = staticmethod(UptimeCheckServiceClient.common_location_path)
@@ -93,6 +93,15 @@ class UptimeCheckServiceAsyncClient:
 
     from_service_account_file = UptimeCheckServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> UptimeCheckServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            UptimeCheckServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(UptimeCheckServiceClient).get_transport_class,
@@ -193,7 +202,8 @@ class UptimeCheckServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -283,7 +293,8 @@ class UptimeCheckServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -374,7 +385,8 @@ class UptimeCheckServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, uptime_check_config]):
+        has_flattened_params = any([parent, uptime_check_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -463,7 +475,8 @@ class UptimeCheckServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([uptime_check_config]):
+        has_flattened_params = any([uptime_check_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -537,7 +550,8 @@ class UptimeCheckServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."

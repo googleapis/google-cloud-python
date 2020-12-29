@@ -94,12 +94,12 @@ def test_group_service_client_from_service_account_file(client_class):
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "monitoring.googleapis.com:443"
+        assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_group_service_client_get_transport_class():
@@ -443,7 +443,7 @@ def test_list_groups(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_groups), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = group_service.ListGroupsResponse(
             next_page_token="next_page_token_value",
@@ -458,6 +458,7 @@ def test_list_groups(
         assert args[0] == group_service.ListGroupsRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListGroupsPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -468,19 +469,19 @@ def test_list_groups_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_groups_async(transport: str = "grpc_asyncio"):
+async def test_list_groups_async(
+    transport: str = "grpc_asyncio", request_type=group_service.ListGroupsRequest
+):
     client = GroupServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = group_service.ListGroupsRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_groups), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             group_service.ListGroupsResponse(next_page_token="next_page_token_value",)
@@ -492,12 +493,17 @@ async def test_list_groups_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == group_service.ListGroupsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupsAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_groups_async_from_dict():
+    await test_list_groups_async(request_type=dict)
 
 
 def test_list_groups_field_headers():
@@ -509,7 +515,7 @@ def test_list_groups_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_groups), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         call.return_value = group_service.ListGroupsResponse()
 
         client.list_groups(request)
@@ -534,9 +540,7 @@ async def test_list_groups_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_groups), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             group_service.ListGroupsResponse()
         )
@@ -557,7 +561,7 @@ def test_list_groups_flattened():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_groups), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = group_service.ListGroupsResponse()
 
@@ -589,9 +593,7 @@ async def test_list_groups_flattened_async():
     client = GroupServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_groups), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = group_service.ListGroupsResponse()
 
@@ -626,7 +628,7 @@ def test_list_groups_pager():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_groups), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             group_service.ListGroupsResponse(
@@ -658,7 +660,7 @@ def test_list_groups_pages():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_groups), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             group_service.ListGroupsResponse(
@@ -683,9 +685,7 @@ async def test_list_groups_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_groups),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_groups), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -716,9 +716,7 @@ async def test_list_groups_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_groups),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_groups), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -750,7 +748,7 @@ def test_get_group(transport: str = "grpc", request_type=group_service.GetGroupR
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = group.Group(
             name="name_value",
@@ -769,6 +767,7 @@ def test_get_group(transport: str = "grpc", request_type=group_service.GetGroupR
         assert args[0] == group_service.GetGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, group.Group)
 
     assert response.name == "name_value"
@@ -787,19 +786,19 @@ def test_get_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_group_async(transport: str = "grpc_asyncio"):
+async def test_get_group_async(
+    transport: str = "grpc_asyncio", request_type=group_service.GetGroupRequest
+):
     client = GroupServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = group_service.GetGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             group.Group(
@@ -817,7 +816,7 @@ async def test_get_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == group_service.GetGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, group.Group)
@@ -833,6 +832,11 @@ async def test_get_group_async(transport: str = "grpc_asyncio"):
     assert response.is_cluster is True
 
 
+@pytest.mark.asyncio
+async def test_get_group_async_from_dict():
+    await test_get_group_async(request_type=dict)
+
+
 def test_get_group_field_headers():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -842,7 +846,7 @@ def test_get_group_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         call.return_value = group.Group()
 
         client.get_group(request)
@@ -867,9 +871,7 @@ async def test_get_group_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(group.Group())
 
         await client.get_group(request)
@@ -888,7 +890,7 @@ def test_get_group_flattened():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = group.Group()
 
@@ -920,9 +922,7 @@ async def test_get_group_flattened_async():
     client = GroupServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = group.Group()
 
@@ -963,7 +963,7 @@ def test_create_group(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_group.Group(
             name="name_value",
@@ -982,6 +982,7 @@ def test_create_group(
         assert args[0] == group_service.CreateGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gm_group.Group)
 
     assert response.name == "name_value"
@@ -1000,19 +1001,19 @@ def test_create_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_group_async(transport: str = "grpc_asyncio"):
+async def test_create_group_async(
+    transport: str = "grpc_asyncio", request_type=group_service.CreateGroupRequest
+):
     client = GroupServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = group_service.CreateGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gm_group.Group(
@@ -1030,7 +1031,7 @@ async def test_create_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == group_service.CreateGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_group.Group)
@@ -1046,6 +1047,11 @@ async def test_create_group_async(transport: str = "grpc_asyncio"):
     assert response.is_cluster is True
 
 
+@pytest.mark.asyncio
+async def test_create_group_async_from_dict():
+    await test_create_group_async(request_type=dict)
+
+
 def test_create_group_field_headers():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1055,7 +1061,7 @@ def test_create_group_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         call.return_value = gm_group.Group()
 
         client.create_group(request)
@@ -1080,9 +1086,7 @@ async def test_create_group_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gm_group.Group())
 
         await client.create_group(request)
@@ -1101,7 +1105,7 @@ def test_create_group_flattened():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_group.Group()
 
@@ -1139,9 +1143,7 @@ async def test_create_group_flattened_async():
     client = GroupServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_group.Group()
 
@@ -1188,7 +1190,7 @@ def test_update_group(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_group.Group(
             name="name_value",
@@ -1207,6 +1209,7 @@ def test_update_group(
         assert args[0] == group_service.UpdateGroupRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gm_group.Group)
 
     assert response.name == "name_value"
@@ -1225,19 +1228,19 @@ def test_update_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_group_async(transport: str = "grpc_asyncio"):
+async def test_update_group_async(
+    transport: str = "grpc_asyncio", request_type=group_service.UpdateGroupRequest
+):
     client = GroupServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = group_service.UpdateGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gm_group.Group(
@@ -1255,7 +1258,7 @@ async def test_update_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == group_service.UpdateGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_group.Group)
@@ -1271,6 +1274,11 @@ async def test_update_group_async(transport: str = "grpc_asyncio"):
     assert response.is_cluster is True
 
 
+@pytest.mark.asyncio
+async def test_update_group_async_from_dict():
+    await test_update_group_async(request_type=dict)
+
+
 def test_update_group_field_headers():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
@@ -1280,7 +1288,7 @@ def test_update_group_field_headers():
     request.group.name = "group.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         call.return_value = gm_group.Group()
 
         client.update_group(request)
@@ -1305,9 +1313,7 @@ async def test_update_group_field_headers_async():
     request.group.name = "group.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gm_group.Group())
 
         await client.update_group(request)
@@ -1326,7 +1332,7 @@ def test_update_group_flattened():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_group.Group()
 
@@ -1358,9 +1364,7 @@ async def test_update_group_flattened_async():
     client = GroupServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_group.Group()
 
@@ -1401,7 +1405,7 @@ def test_delete_group(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1422,19 +1426,19 @@ def test_delete_group_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_group_async(transport: str = "grpc_asyncio"):
+async def test_delete_group_async(
+    transport: str = "grpc_asyncio", request_type=group_service.DeleteGroupRequest
+):
     client = GroupServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = group_service.DeleteGroupRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1444,10 +1448,15 @@ async def test_delete_group_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == group_service.DeleteGroupRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_group_async_from_dict():
+    await test_delete_group_async(request_type=dict)
 
 
 def test_delete_group_field_headers():
@@ -1459,7 +1468,7 @@ def test_delete_group_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         call.return_value = None
 
         client.delete_group(request)
@@ -1484,9 +1493,7 @@ async def test_delete_group_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_group(request)
@@ -1505,7 +1512,7 @@ def test_delete_group_flattened():
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_group), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1537,9 +1544,7 @@ async def test_delete_group_flattened_async():
     client = GroupServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_group), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1581,7 +1586,7 @@ def test_list_group_members(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = group_service.ListGroupMembersResponse(
@@ -1597,6 +1602,7 @@ def test_list_group_members(
         assert args[0] == group_service.ListGroupMembersRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListGroupMembersPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -1609,18 +1615,20 @@ def test_list_group_members_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_group_members_async(transport: str = "grpc_asyncio"):
+async def test_list_group_members_async(
+    transport: str = "grpc_asyncio", request_type=group_service.ListGroupMembersRequest
+):
     client = GroupServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = group_service.ListGroupMembersRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1635,7 +1643,7 @@ async def test_list_group_members_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == group_service.ListGroupMembersRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGroupMembersAsyncPager)
@@ -1643,6 +1651,11 @@ async def test_list_group_members_async(transport: str = "grpc_asyncio"):
     assert response.next_page_token == "next_page_token_value"
 
     assert response.total_size == 1086
+
+
+@pytest.mark.asyncio
+async def test_list_group_members_async_from_dict():
+    await test_list_group_members_async(request_type=dict)
 
 
 def test_list_group_members_field_headers():
@@ -1655,7 +1668,7 @@ def test_list_group_members_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         call.return_value = group_service.ListGroupMembersResponse()
 
@@ -1682,7 +1695,7 @@ async def test_list_group_members_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             group_service.ListGroupMembersResponse()
@@ -1705,7 +1718,7 @@ def test_list_group_members_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = group_service.ListGroupMembersResponse()
@@ -1739,7 +1752,7 @@ async def test_list_group_members_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = group_service.ListGroupMembersResponse()
@@ -1776,7 +1789,7 @@ def test_list_group_members_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1820,7 +1833,7 @@ def test_list_group_members_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_group_members), "__call__"
+        type(client.transport.list_group_members), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1856,7 +1869,7 @@ async def test_list_group_members_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_group_members),
+        type(client.transport.list_group_members),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1901,7 +1914,7 @@ async def test_list_group_members_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_group_members),
+        type(client.transport.list_group_members),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -1971,7 +1984,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = GroupServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -2004,7 +2017,7 @@ def test_transport_adc(transport_class):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = GroupServiceClient(credentials=credentials.AnonymousCredentials(),)
-    assert isinstance(client._transport, transports.GroupServiceGrpcTransport,)
+    assert isinstance(client.transport, transports.GroupServiceGrpcTransport,)
 
 
 def test_group_service_base_transport_error():
@@ -2115,7 +2128,7 @@ def test_group_service_host_no_port():
             api_endpoint="monitoring.googleapis.com"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:443"
+    assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_group_service_host_with_port():
@@ -2125,7 +2138,7 @@ def test_group_service_host_with_port():
             api_endpoint="monitoring.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:8000"
+    assert client.transport._host == "monitoring.googleapis.com:8000"
 
 
 def test_group_service_grpc_transport_channel():
@@ -2137,6 +2150,7 @@ def test_group_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_group_service_grpc_asyncio_transport_channel():
@@ -2148,6 +2162,7 @@ def test_group_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -2192,8 +2207,13 @@ def test_group_service_transport_channel_mtls_with_client_cert_source(transport_
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -2233,6 +2253,10 @@ def test_group_service_transport_channel_mtls_with_adc(transport_class):
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -2258,65 +2282,8 @@ def test_parse_group_path():
     assert expected == actual
 
 
-def test_common_project_path():
-    project = "oyster"
-
-    expected = "projects/{project}".format(project=project,)
-    actual = GroupServiceClient.common_project_path(project)
-    assert expected == actual
-
-
-def test_parse_common_project_path():
-    expected = {
-        "project": "nudibranch",
-    }
-    path = GroupServiceClient.common_project_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = GroupServiceClient.parse_common_project_path(path)
-    assert expected == actual
-
-
-def test_common_organization_path():
-    organization = "cuttlefish"
-
-    expected = "organizations/{organization}".format(organization=organization,)
-    actual = GroupServiceClient.common_organization_path(organization)
-    assert expected == actual
-
-
-def test_parse_common_organization_path():
-    expected = {
-        "organization": "mussel",
-    }
-    path = GroupServiceClient.common_organization_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = GroupServiceClient.parse_common_organization_path(path)
-    assert expected == actual
-
-
-def test_common_folder_path():
-    folder = "winkle"
-
-    expected = "folders/{folder}".format(folder=folder,)
-    actual = GroupServiceClient.common_folder_path(folder)
-    assert expected == actual
-
-
-def test_parse_common_folder_path():
-    expected = {
-        "folder": "nautilus",
-    }
-    path = GroupServiceClient.common_folder_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = GroupServiceClient.parse_common_folder_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -2327,12 +2294,69 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = GroupServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
     actual = GroupServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "cuttlefish"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = GroupServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "mussel",
+    }
+    path = GroupServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GroupServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "winkle"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = GroupServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "nautilus",
+    }
+    path = GroupServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GroupServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "scallop"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = GroupServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "abalone",
+    }
+    path = GroupServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GroupServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 

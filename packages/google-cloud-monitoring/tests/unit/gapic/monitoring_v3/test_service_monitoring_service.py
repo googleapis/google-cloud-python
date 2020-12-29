@@ -47,7 +47,6 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.type import calendar_period_pb2 as calendar_period  # type: ignore
-from google.type import calendar_period_pb2 as gt_calendar_period  # type: ignore
 
 
 def client_cert_source_callback():
@@ -106,12 +105,12 @@ def test_service_monitoring_service_client_from_service_account_file(client_clas
     ) as factory:
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
         client = client_class.from_service_account_json("dummy/file/path.json")
-        assert client._transport._credentials == creds
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "monitoring.googleapis.com:443"
+        assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_service_monitoring_service_client_get_transport_class():
@@ -487,7 +486,7 @@ def test_create_service(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service(
             name="name_value", display_name="display_name_value", custom=None,
@@ -502,6 +501,7 @@ def test_create_service(
         assert args[0] == service_service.CreateServiceRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gm_service.Service)
 
     assert response.name == "name_value"
@@ -514,19 +514,19 @@ def test_create_service_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_service_async(transport: str = "grpc_asyncio"):
+async def test_create_service_async(
+    transport: str = "grpc_asyncio", request_type=service_service.CreateServiceRequest
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.CreateServiceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gm_service.Service(name="name_value", display_name="display_name_value",)
@@ -538,7 +538,7 @@ async def test_create_service_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.CreateServiceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_service.Service)
@@ -546,6 +546,11 @@ async def test_create_service_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_service_async_from_dict():
+    await test_create_service_async(request_type=dict)
 
 
 def test_create_service_field_headers():
@@ -559,7 +564,7 @@ def test_create_service_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         call.return_value = gm_service.Service()
 
         client.create_service(request)
@@ -586,9 +591,7 @@ async def test_create_service_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gm_service.Service())
 
         await client.create_service(request)
@@ -609,7 +612,7 @@ def test_create_service_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service()
 
@@ -651,9 +654,7 @@ async def test_create_service_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.create_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service()
 
@@ -702,7 +703,7 @@ def test_get_service(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.Service(
             name="name_value", display_name="display_name_value", custom=None,
@@ -717,6 +718,7 @@ def test_get_service(
         assert args[0] == service_service.GetServiceRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, service.Service)
 
     assert response.name == "name_value"
@@ -729,19 +731,19 @@ def test_get_service_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_service_async(transport: str = "grpc_asyncio"):
+async def test_get_service_async(
+    transport: str = "grpc_asyncio", request_type=service_service.GetServiceRequest
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.GetServiceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.Service(name="name_value", display_name="display_name_value",)
@@ -753,7 +755,7 @@ async def test_get_service_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.GetServiceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
@@ -761,6 +763,11 @@ async def test_get_service_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_service_async_from_dict():
+    await test_get_service_async(request_type=dict)
 
 
 def test_get_service_field_headers():
@@ -774,7 +781,7 @@ def test_get_service_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         call.return_value = service.Service()
 
         client.get_service(request)
@@ -801,9 +808,7 @@ async def test_get_service_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Service())
 
         await client.get_service(request)
@@ -824,7 +829,7 @@ def test_get_service_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.Service()
 
@@ -860,9 +865,7 @@ async def test_get_service_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.get_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.Service()
 
@@ -905,7 +908,7 @@ def test_list_services(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service_service.ListServicesResponse(
             next_page_token="next_page_token_value",
@@ -920,6 +923,7 @@ def test_list_services(
         assert args[0] == service_service.ListServicesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListServicesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -930,19 +934,19 @@ def test_list_services_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_services_async(transport: str = "grpc_asyncio"):
+async def test_list_services_async(
+    transport: str = "grpc_asyncio", request_type=service_service.ListServicesRequest
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.ListServicesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service_service.ListServicesResponse(
@@ -956,12 +960,17 @@ async def test_list_services_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.ListServicesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServicesAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_services_async_from_dict():
+    await test_list_services_async(request_type=dict)
 
 
 def test_list_services_field_headers():
@@ -975,7 +984,7 @@ def test_list_services_field_headers():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         call.return_value = service_service.ListServicesResponse()
 
         client.list_services(request)
@@ -1002,9 +1011,7 @@ async def test_list_services_field_headers_async():
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service_service.ListServicesResponse()
         )
@@ -1027,7 +1034,7 @@ def test_list_services_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service_service.ListServicesResponse()
 
@@ -1063,9 +1070,7 @@ async def test_list_services_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.list_services), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service_service.ListServicesResponse()
 
@@ -1104,7 +1109,7 @@ def test_list_services_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service_service.ListServicesResponse(
@@ -1140,7 +1145,7 @@ def test_list_services_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_services), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_services), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             service_service.ListServicesResponse(
@@ -1169,9 +1174,7 @@ async def test_list_services_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_services),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_services), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1206,9 +1209,7 @@ async def test_list_services_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_services),
-        "__call__",
-        new_callable=mock.AsyncMock,
+        type(client.transport.list_services), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -1244,7 +1245,7 @@ def test_update_service(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service(
             name="name_value", display_name="display_name_value", custom=None,
@@ -1259,6 +1260,7 @@ def test_update_service(
         assert args[0] == service_service.UpdateServiceRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, gm_service.Service)
 
     assert response.name == "name_value"
@@ -1271,19 +1273,19 @@ def test_update_service_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_service_async(transport: str = "grpc_asyncio"):
+async def test_update_service_async(
+    transport: str = "grpc_asyncio", request_type=service_service.UpdateServiceRequest
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.UpdateServiceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gm_service.Service(name="name_value", display_name="display_name_value",)
@@ -1295,7 +1297,7 @@ async def test_update_service_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.UpdateServiceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gm_service.Service)
@@ -1303,6 +1305,11 @@ async def test_update_service_async(transport: str = "grpc_asyncio"):
     assert response.name == "name_value"
 
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_service_async_from_dict():
+    await test_update_service_async(request_type=dict)
 
 
 def test_update_service_field_headers():
@@ -1316,7 +1323,7 @@ def test_update_service_field_headers():
     request.service.name = "service.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         call.return_value = gm_service.Service()
 
         client.update_service(request)
@@ -1345,9 +1352,7 @@ async def test_update_service_field_headers_async():
     request.service.name = "service.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gm_service.Service())
 
         await client.update_service(request)
@@ -1370,7 +1375,7 @@ def test_update_service_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service()
 
@@ -1407,9 +1412,7 @@ async def test_update_service_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.update_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gm_service.Service()
 
@@ -1455,7 +1458,7 @@ def test_delete_service(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1476,19 +1479,19 @@ def test_delete_service_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_async(transport: str = "grpc_asyncio"):
+async def test_delete_service_async(
+    transport: str = "grpc_asyncio", request_type=service_service.DeleteServiceRequest
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.DeleteServiceRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -1498,10 +1501,15 @@ async def test_delete_service_async(transport: str = "grpc_asyncio"):
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.DeleteServiceRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_service_async_from_dict():
+    await test_delete_service_async(request_type=dict)
 
 
 def test_delete_service_field_headers():
@@ -1515,7 +1523,7 @@ def test_delete_service_field_headers():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         call.return_value = None
 
         client.delete_service(request)
@@ -1542,9 +1550,7 @@ async def test_delete_service_field_headers_async():
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
         await client.delete_service(request)
@@ -1565,7 +1571,7 @@ def test_delete_service_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_service), "__call__") as call:
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1601,9 +1607,7 @@ async def test_delete_service_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client._client._transport.delete_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_service), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -1648,7 +1652,7 @@ def test_create_service_level_objective(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_service_level_objective), "__call__"
+        type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective(
@@ -1667,6 +1671,7 @@ def test_create_service_level_objective(
         assert args[0] == service_service.CreateServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, service.ServiceLevelObjective)
 
     assert response.name == "name_value"
@@ -1681,18 +1686,21 @@ def test_create_service_level_objective_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_create_service_level_objective_async(transport: str = "grpc_asyncio"):
+async def test_create_service_level_objective_async(
+    transport: str = "grpc_asyncio",
+    request_type=service_service.CreateServiceLevelObjectiveRequest,
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.CreateServiceLevelObjectiveRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_service_level_objective), "__call__"
+        type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1707,7 +1715,7 @@ async def test_create_service_level_objective_async(transport: str = "grpc_async
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.CreateServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -1717,6 +1725,11 @@ async def test_create_service_level_objective_async(transport: str = "grpc_async
     assert response.display_name == "display_name_value"
 
     assert math.isclose(response.goal, 0.419, rel_tol=1e-6)
+
+
+@pytest.mark.asyncio
+async def test_create_service_level_objective_async_from_dict():
+    await test_create_service_level_objective_async(request_type=dict)
 
 
 def test_create_service_level_objective_field_headers():
@@ -1731,7 +1744,7 @@ def test_create_service_level_objective_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_service_level_objective), "__call__"
+        type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         call.return_value = service.ServiceLevelObjective()
 
@@ -1760,7 +1773,7 @@ async def test_create_service_level_objective_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_service_level_objective), "__call__"
+        type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ServiceLevelObjective()
@@ -1785,7 +1798,7 @@ def test_create_service_level_objective_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_service_level_objective), "__call__"
+        type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective()
@@ -1832,7 +1845,7 @@ async def test_create_service_level_objective_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.create_service_level_objective), "__call__"
+        type(client.transport.create_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective()
@@ -1889,7 +1902,7 @@ def test_get_service_level_objective(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_service_level_objective), "__call__"
+        type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective(
@@ -1908,6 +1921,7 @@ def test_get_service_level_objective(
         assert args[0] == service_service.GetServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, service.ServiceLevelObjective)
 
     assert response.name == "name_value"
@@ -1922,18 +1936,21 @@ def test_get_service_level_objective_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_get_service_level_objective_async(transport: str = "grpc_asyncio"):
+async def test_get_service_level_objective_async(
+    transport: str = "grpc_asyncio",
+    request_type=service_service.GetServiceLevelObjectiveRequest,
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.GetServiceLevelObjectiveRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_service_level_objective), "__call__"
+        type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -1948,7 +1965,7 @@ async def test_get_service_level_objective_async(transport: str = "grpc_asyncio"
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.GetServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -1958,6 +1975,11 @@ async def test_get_service_level_objective_async(transport: str = "grpc_asyncio"
     assert response.display_name == "display_name_value"
 
     assert math.isclose(response.goal, 0.419, rel_tol=1e-6)
+
+
+@pytest.mark.asyncio
+async def test_get_service_level_objective_async_from_dict():
+    await test_get_service_level_objective_async(request_type=dict)
 
 
 def test_get_service_level_objective_field_headers():
@@ -1972,7 +1994,7 @@ def test_get_service_level_objective_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_service_level_objective), "__call__"
+        type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         call.return_value = service.ServiceLevelObjective()
 
@@ -2001,7 +2023,7 @@ async def test_get_service_level_objective_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_service_level_objective), "__call__"
+        type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ServiceLevelObjective()
@@ -2026,7 +2048,7 @@ def test_get_service_level_objective_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.get_service_level_objective), "__call__"
+        type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective()
@@ -2064,7 +2086,7 @@ async def test_get_service_level_objective_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.get_service_level_objective), "__call__"
+        type(client.transport.get_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective()
@@ -2112,7 +2134,7 @@ def test_list_service_level_objectives(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service_service.ListServiceLevelObjectivesResponse(
@@ -2128,6 +2150,7 @@ def test_list_service_level_objectives(
         assert args[0] == service_service.ListServiceLevelObjectivesRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListServiceLevelObjectivesPager)
 
     assert response.next_page_token == "next_page_token_value"
@@ -2138,18 +2161,21 @@ def test_list_service_level_objectives_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_list_service_level_objectives_async(transport: str = "grpc_asyncio"):
+async def test_list_service_level_objectives_async(
+    transport: str = "grpc_asyncio",
+    request_type=service_service.ListServiceLevelObjectivesRequest,
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.ListServiceLevelObjectivesRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2164,12 +2190,17 @@ async def test_list_service_level_objectives_async(transport: str = "grpc_asynci
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.ListServiceLevelObjectivesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServiceLevelObjectivesAsyncPager)
 
     assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_service_level_objectives_async_from_dict():
+    await test_list_service_level_objectives_async(request_type=dict)
 
 
 def test_list_service_level_objectives_field_headers():
@@ -2184,7 +2215,7 @@ def test_list_service_level_objectives_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         call.return_value = service_service.ListServiceLevelObjectivesResponse()
 
@@ -2213,7 +2244,7 @@ async def test_list_service_level_objectives_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service_service.ListServiceLevelObjectivesResponse()
@@ -2238,7 +2269,7 @@ def test_list_service_level_objectives_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service_service.ListServiceLevelObjectivesResponse()
@@ -2276,7 +2307,7 @@ async def test_list_service_level_objectives_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service_service.ListServiceLevelObjectivesResponse()
@@ -2317,7 +2348,7 @@ def test_list_service_level_objectives_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -2365,7 +2396,7 @@ def test_list_service_level_objectives_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.list_service_level_objectives), "__call__"
+        type(client.transport.list_service_level_objectives), "__call__"
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
@@ -2405,7 +2436,7 @@ async def test_list_service_level_objectives_async_pager():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_service_level_objectives),
+        type(client.transport.list_service_level_objectives),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -2452,7 +2483,7 @@ async def test_list_service_level_objectives_async_pages():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.list_service_level_objectives),
+        type(client.transport.list_service_level_objectives),
         "__call__",
         new_callable=mock.AsyncMock,
     ) as call:
@@ -2504,7 +2535,7 @@ def test_update_service_level_objective(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_service_level_objective), "__call__"
+        type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective(
@@ -2523,6 +2554,7 @@ def test_update_service_level_objective(
         assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, service.ServiceLevelObjective)
 
     assert response.name == "name_value"
@@ -2537,18 +2569,21 @@ def test_update_service_level_objective_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_update_service_level_objective_async(transport: str = "grpc_asyncio"):
+async def test_update_service_level_objective_async(
+    transport: str = "grpc_asyncio",
+    request_type=service_service.UpdateServiceLevelObjectiveRequest,
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.UpdateServiceLevelObjectiveRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_service_level_objective), "__call__"
+        type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
@@ -2563,7 +2598,7 @@ async def test_update_service_level_objective_async(transport: str = "grpc_async
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.UpdateServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.ServiceLevelObjective)
@@ -2573,6 +2608,11 @@ async def test_update_service_level_objective_async(transport: str = "grpc_async
     assert response.display_name == "display_name_value"
 
     assert math.isclose(response.goal, 0.419, rel_tol=1e-6)
+
+
+@pytest.mark.asyncio
+async def test_update_service_level_objective_async_from_dict():
+    await test_update_service_level_objective_async(request_type=dict)
 
 
 def test_update_service_level_objective_field_headers():
@@ -2587,7 +2627,7 @@ def test_update_service_level_objective_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_service_level_objective), "__call__"
+        type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         call.return_value = service.ServiceLevelObjective()
 
@@ -2619,7 +2659,7 @@ async def test_update_service_level_objective_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_service_level_objective), "__call__"
+        type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ServiceLevelObjective()
@@ -2647,7 +2687,7 @@ def test_update_service_level_objective_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.update_service_level_objective), "__call__"
+        type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective()
@@ -2690,7 +2730,7 @@ async def test_update_service_level_objective_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.update_service_level_objective), "__call__"
+        type(client.transport.update_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ServiceLevelObjective()
@@ -2743,7 +2783,7 @@ def test_delete_service_level_objective(
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_service_level_objective), "__call__"
+        type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2765,18 +2805,21 @@ def test_delete_service_level_objective_from_dict():
 
 
 @pytest.mark.asyncio
-async def test_delete_service_level_objective_async(transport: str = "grpc_asyncio"):
+async def test_delete_service_level_objective_async(
+    transport: str = "grpc_asyncio",
+    request_type=service_service.DeleteServiceLevelObjectiveRequest,
+):
     client = ServiceMonitoringServiceAsyncClient(
         credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = service_service.DeleteServiceLevelObjectiveRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_service_level_objective), "__call__"
+        type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
@@ -2787,10 +2830,15 @@ async def test_delete_service_level_objective_async(transport: str = "grpc_async
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == service_service.DeleteServiceLevelObjectiveRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_service_level_objective_async_from_dict():
+    await test_delete_service_level_objective_async(request_type=dict)
 
 
 def test_delete_service_level_objective_field_headers():
@@ -2805,7 +2853,7 @@ def test_delete_service_level_objective_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_service_level_objective), "__call__"
+        type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         call.return_value = None
 
@@ -2834,7 +2882,7 @@ async def test_delete_service_level_objective_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_service_level_objective), "__call__"
+        type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
 
@@ -2857,7 +2905,7 @@ def test_delete_service_level_objective_flattened():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.delete_service_level_objective), "__call__"
+        type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2895,7 +2943,7 @@ async def test_delete_service_level_objective_flattened_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._client._transport.delete_service_level_objective), "__call__"
+        type(client.transport.delete_service_level_objective), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
@@ -2963,7 +3011,7 @@ def test_transport_instance():
         credentials=credentials.AnonymousCredentials(),
     )
     client = ServiceMonitoringServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
 
 
 def test_transport_get_channel():
@@ -3002,7 +3050,7 @@ def test_transport_grpc_default():
         credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client._transport, transports.ServiceMonitoringServiceGrpcTransport,
+        client.transport, transports.ServiceMonitoringServiceGrpcTransport,
     )
 
 
@@ -3118,7 +3166,7 @@ def test_service_monitoring_service_host_no_port():
             api_endpoint="monitoring.googleapis.com"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:443"
+    assert client.transport._host == "monitoring.googleapis.com:443"
 
 
 def test_service_monitoring_service_host_with_port():
@@ -3128,7 +3176,7 @@ def test_service_monitoring_service_host_with_port():
             api_endpoint="monitoring.googleapis.com:8000"
         ),
     )
-    assert client._transport._host == "monitoring.googleapis.com:8000"
+    assert client.transport._host == "monitoring.googleapis.com:8000"
 
 
 def test_service_monitoring_service_grpc_transport_channel():
@@ -3140,6 +3188,7 @@ def test_service_monitoring_service_grpc_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 def test_service_monitoring_service_grpc_asyncio_transport_channel():
@@ -3151,6 +3200,7 @@ def test_service_monitoring_service_grpc_asyncio_transport_channel():
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
@@ -3200,8 +3250,13 @@ def test_service_monitoring_service_transport_channel_mtls_with_client_cert_sour
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
 @pytest.mark.parametrize(
@@ -3244,6 +3299,10 @@ def test_service_monitoring_service_transport_channel_mtls_with_adc(transport_cl
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
             )
             assert transport.grpc_channel == mock_grpc_channel
 
@@ -3300,65 +3359,8 @@ def test_parse_service_level_objective_path():
     assert expected == actual
 
 
-def test_common_project_path():
-    project = "scallop"
-
-    expected = "projects/{project}".format(project=project,)
-    actual = ServiceMonitoringServiceClient.common_project_path(project)
-    assert expected == actual
-
-
-def test_parse_common_project_path():
-    expected = {
-        "project": "abalone",
-    }
-    path = ServiceMonitoringServiceClient.common_project_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ServiceMonitoringServiceClient.parse_common_project_path(path)
-    assert expected == actual
-
-
-def test_common_organization_path():
-    organization = "squid"
-
-    expected = "organizations/{organization}".format(organization=organization,)
-    actual = ServiceMonitoringServiceClient.common_organization_path(organization)
-    assert expected == actual
-
-
-def test_parse_common_organization_path():
-    expected = {
-        "organization": "clam",
-    }
-    path = ServiceMonitoringServiceClient.common_organization_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ServiceMonitoringServiceClient.parse_common_organization_path(path)
-    assert expected == actual
-
-
-def test_common_folder_path():
-    folder = "whelk"
-
-    expected = "folders/{folder}".format(folder=folder,)
-    actual = ServiceMonitoringServiceClient.common_folder_path(folder)
-    assert expected == actual
-
-
-def test_parse_common_folder_path():
-    expected = {
-        "folder": "octopus",
-    }
-    path = ServiceMonitoringServiceClient.common_folder_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ServiceMonitoringServiceClient.parse_common_folder_path(path)
-    assert expected == actual
-
-
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -3369,12 +3371,69 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = ServiceMonitoringServiceClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
     actual = ServiceMonitoringServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "squid"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = ServiceMonitoringServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "clam",
+    }
+    path = ServiceMonitoringServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServiceMonitoringServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "whelk"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = ServiceMonitoringServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "octopus",
+    }
+    path = ServiceMonitoringServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServiceMonitoringServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "oyster"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = ServiceMonitoringServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "nudibranch",
+    }
+    path = ServiceMonitoringServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ServiceMonitoringServiceClient.parse_common_project_path(path)
     assert expected == actual
 
 
