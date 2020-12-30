@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-securitycenter.git",
-        "sha": "e5d1aab799bc0c6f0f29eb26b3fdbd44aafe31a7"
+        "sha": "7656848e706166a8e3b43a78b860a5979e3524e6"
       }
     },
     {
@@ -227,6 +227,7 @@
     "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
     "scripts/readme-gen/templates/install_deps.tmpl.rst",
     "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "securitycenter-v1beta1-py.tar.gz",
     "setup.cfg",
     "testing/.gitignore",
     "tests/unit/gapic/securitycenter_v1/__init__.py",
