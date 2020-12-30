@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-oslogin.git",
-        "sha": "35be5121fa02af7fdb15e809e5b0f368e4a9dbcb"
+        "sha": "ed84bb127eac218e845468d5d07a476af410ce71"
       }
     },
     {
