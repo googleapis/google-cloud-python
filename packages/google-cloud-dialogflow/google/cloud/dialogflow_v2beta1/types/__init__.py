@@ -23,6 +23,11 @@ from .audio_config import (
     SynthesizeSpeechConfig,
     OutputAudioConfig,
     TelephonyDtmfEvents,
+    AudioEncoding,
+    SpeechModelVariant,
+    SsmlVoiceGender,
+    OutputAudioEncoding,
+    TelephonyDtmf,
 )
 from .environment import (
     Environment,
@@ -98,6 +103,7 @@ from .intent import (
     BatchUpdateIntentsResponse,
     BatchDeleteIntentsRequest,
     IntentBatch,
+    IntentView,
 )
 from .knowledge_base import (
     KnowledgeBase,
@@ -139,7 +145,6 @@ from .webhook import (
     OriginalDetectIntentRequest,
 )
 
-
 __all__ = (
     "SpeechContext",
     "SpeechWordInfo",
@@ -148,6 +153,11 @@ __all__ = (
     "SynthesizeSpeechConfig",
     "OutputAudioConfig",
     "TelephonyDtmfEvents",
+    "AudioEncoding",
+    "SpeechModelVariant",
+    "SsmlVoiceGender",
+    "OutputAudioEncoding",
+    "TelephonyDtmf",
     "Environment",
     "ListEnvironmentsRequest",
     "ListEnvironmentsResponse",
@@ -209,6 +219,7 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "BatchDeleteIntentsRequest",
     "IntentBatch",
+    "IntentView",
     "KnowledgeBase",
     "ListKnowledgeBasesRequest",
     "ListKnowledgeBasesResponse",

@@ -40,6 +40,10 @@ from .audio_config import (
     VoiceSelectionParams,
     SynthesizeSpeechConfig,
     OutputAudioConfig,
+    AudioEncoding,
+    SpeechModelVariant,
+    SsmlVoiceGender,
+    OutputAudioEncoding,
 )
 from .context import (
     Context,
@@ -84,6 +88,7 @@ from .intent import (
     BatchUpdateIntentsResponse,
     BatchDeleteIntentsRequest,
     IntentBatch,
+    IntentView,
 )
 from .session_entity_type import (
     SessionEntityType,
@@ -115,7 +120,6 @@ from .webhook import (
     OriginalDetectIntentRequest,
 )
 
-
 __all__ = (
     "ValidationError",
     "ValidationResult",
@@ -137,6 +141,10 @@ __all__ = (
     "VoiceSelectionParams",
     "SynthesizeSpeechConfig",
     "OutputAudioConfig",
+    "AudioEncoding",
+    "SpeechModelVariant",
+    "SsmlVoiceGender",
+    "OutputAudioEncoding",
     "Context",
     "ListContextsRequest",
     "ListContextsResponse",
@@ -173,6 +181,7 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "BatchDeleteIntentsRequest",
     "IntentBatch",
+    "IntentView",
     "SessionEntityType",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",

@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[KnowledgeBasesTransp
 _transport_registry["grpc"] = KnowledgeBasesGrpcTransport
 _transport_registry["grpc_asyncio"] = KnowledgeBasesGrpcAsyncIOTransport
 
-
 __all__ = (
     "KnowledgeBasesTransport",
     "KnowledgeBasesGrpcTransport",

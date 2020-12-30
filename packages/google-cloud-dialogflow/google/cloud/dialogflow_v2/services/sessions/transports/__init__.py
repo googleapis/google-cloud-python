@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
 _transport_registry["grpc"] = SessionsGrpcTransport
 _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
 
-
 __all__ = (
     "SessionsTransport",
     "SessionsGrpcTransport",
