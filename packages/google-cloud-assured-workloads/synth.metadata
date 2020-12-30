@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-assured-workloads.git",
-        "sha": "f996e932f4cfc5749e7d6c3367fd9e98edaa9990"
+        "sha": "2f833d21fcee8a5c8ab402d39a2e06aa6e34e24b"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6542bd723403513626f61642fc02ddca528409aa"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6542bd723403513626f61642fc02ddca528409aa"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     }
   ],
@@ -85,6 +85,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
