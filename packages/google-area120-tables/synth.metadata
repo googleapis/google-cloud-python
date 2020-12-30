@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-area120-tables.git",
-        "sha": "a77e7c3bf60a89c4327a4c998160290233776a0c"
+        "sha": "231da88d1fce7836b307874f418739b4e717ac47"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "32af6da519a6b042e3da62008e2a75e991efb6b4"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "32af6da519a6b042e3da62008e2a75e991efb6b4"
+        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
       }
     }
   ],
