@@ -78,7 +78,13 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
                 Generally, you only need to set this if you're developing	
                 your own client library.
         """
-        super().__init__(host=host, credentials=credentials)
+        # Run the base constructor
+        # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
+        super().__init__(
+            host=host,
+            credentials=credentials,
+            client_info=client_info,
+        )
         self._session = AuthorizedSession(self._credentials)
         {%- if service.has_lro %}
         self._operations_client = None
@@ -163,7 +169,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
             {%- for field in method.path_params %}
-            {{ field }}=request.{{ field }},
+            {{ field }}=request.{{ method.input.get_field(field).name }},
             {%- endfor %}
         )
 
@@ -180,10 +186,8 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ((k, v) for k, v in query_params.items() if v)
-        for i, (param_name, param_value) in enumerate(query_params):
-            q = '?' if i == 0 else '&'
-            url += "{q}{name}={value}".format(q=q, name=param_name, value=param_value.replace(' ', '+'))
+        query_params = ['{k}={v}'.format(k=k, v=v) for k, v in query_params.items() if v]
+        url += '?{}'.format('&'.join(query_params)).replace(' ', '+')
 
         # Send the request
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(

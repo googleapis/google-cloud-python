@@ -10,6 +10,11 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
+{%- if 'rest' in opts.transport %}
+from requests import Response
+from requests.sessions import Session
+{%- endif %}
+
 {# Import the service itself as well as every proto module that it imports. -#}
 {% filter sort_lines -%}
 from google import auth
@@ -17,7 +22,9 @@ from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
+{%- if 'grpc' in opts.transport %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.async_client_name }}
+{%- endif %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 from google.api_core import client_options
 from google.api_core import exceptions
@@ -81,7 +88,12 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info():
         {% if service.host %}assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
 
 
-@pytest.mark.parametrize("client_class", [{{ service.client_name }}, {{ service.async_client_name }}])
+@pytest.mark.parametrize("client_class", [
+    {{ service.client_name }},
+    {%- if 'grpc' in opts.transport %}
+    {{ service.async_client_name }},
+    {%- endif %}
+])
 def test_{{ service.client_name|snake_case }}_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
@@ -97,18 +109,29 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file(client_c
 
 def test_{{ service.client_name|snake_case }}_get_transport_class():
     transport = {{ service.client_name }}.get_transport_class()
-    assert transport == transports.{{ service.name }}GrpcTransport
+    available_transports = [
+        {%- for transport_name in opts.transport %}
+        transports.{{ service.name }}{{ transport_name.capitalize() }}Transport,
+        {%- endfor %}
+    ]
+    assert transport in available_transports
 
-    transport = {{ service.client_name }}.get_transport_class("grpc")
-    assert transport == transports.{{ service.name }}GrpcTransport
+    transport = {{ service.client_name }}.get_transport_class("{{ opts.transport[0] }}")
+    assert transport == transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    {%- if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
-    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio")
+    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
+    {%- elif 'rest' in opts.transport %}
+    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
+    {%- endif %}
 ])
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
+{%- if 'grpc' in opts.transport %}
 @mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
+{%- endif %}
 def test_{{ service.client_name|snake_case }}_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object({{ service.client_name }}, 'get_transport_class') as gtc:
@@ -197,13 +220,20 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name,use_client_cert_env", [
+    {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", "true"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "true"),
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc", "false"),
-    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "false")
+    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio", "false"),
+    {% elif 'rest' in opts.transport %}
+    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "true"),
+    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "false"),
+    {%- endif %}
 ])
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
+{%- if 'grpc' in opts.transport %}
 @mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
+{%- endif %}
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -286,8 +316,12 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    {%- if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
-    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio")
+    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
+    {%- elif 'rest' in opts.transport %}
+    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
+    {%- endif %}
 ])
 def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
@@ -308,8 +342,12 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
+    {%- if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
-    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio")
+    ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
+    {%- elif 'rest' in opts.transport %}
+    ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
+    {%- endif %}
 ])
 def test_{{ service.client_name|snake_case }}_client_options_credentials_file(client_class, transport_class, transport_name):
     # Check the case credentials file is provided.
@@ -328,6 +366,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+{%- if 'grpc' in opts.transport %}
 
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
@@ -345,9 +384,10 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
+{%- endif %}
 
 
-{% for method in service.methods.values() -%}
+{% for method in service.methods.values() if 'grpc' in opts.transport -%}
 def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
@@ -991,9 +1031,148 @@ def test_{{ method.name|snake_case }}_raw_page_lro():
 
 {% endfor -%} {#- method in methods #}
 
+{% for method in service.methods.values() if 'rest' in opts.transport -%}
+def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    {% if method.client_streaming %}
+    requests = [request]
+    {% endif %}
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        {% if method.void -%}
+        return_value = None
+        {% elif method.lro -%}
+        return_value = operations_pb2.Operation(name='operations/spam')
+        {% elif method.server_streaming -%}
+        return_value = iter([{{ method.output.ident }}()])
+        {% else -%}
+        return_value = {{ method.output.ident }}(
+            {%- for field in method.output.fields.values() %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+        )
+        {% endif -%}
+
+        # Wrap the value into a proper Response obj
+        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        response_value = Response()
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        {% if method.client_streaming %}
+        response = client.{{ method.name|snake_case }}(iter(requests))
+        {% else %}
+        response = client.{{ method.name|snake_case }}(request)
+        {% endif %}
+
+    {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
+    {# Cheeser assertion to force code coverage for bad paginated methods #}
+    assert response.raw_page is response
+    {% endif %}
+
+    # Establish that the response is the type that we expect.
+    {% if method.void -%}
+    assert response is None
+    {% else %}
+    assert isinstance(response, {{ method.client_output.ident }})
+    {% for field in method.output.fields.values() -%}
+    {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
+    assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
+    {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
+    assert response.{{ field.name }} is {{ field.mock_value }}
+    {% else -%}
+    assert response.{{ field.name }} == {{ field.mock_value }}
+    {% endif -%}
+    {% endfor %}
+    {% endif %}
+
+
+def test_{{ method.name|snake_case }}_rest_from_dict():
+    test_{{ method.name|snake_case }}_rest(request_type=dict)
+
+
+def test_{{ method.name|snake_case }}_rest_flattened():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Designate an appropriate value for the returned response.
+        {% if method.void -%}
+        return_value = None
+        {% elif method.lro -%}
+        return_value = operations_pb2.Operation(name='operations/spam')
+        {% elif method.server_streaming -%}
+        return_value = iter([{{ method.output.ident }}()])
+        {% else -%}
+        return_value = {{ method.output.ident }}()
+        {% endif %}
+
+        # Wrap the value into a proper Response obj
+        json_return_value = {{ method.output.ident }}.to_json(return_value)
+        response_value = Response()
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        {%- for field in method.flattened_fields.values() if field.field_pb is msg_field_pb %}
+        {{ field.name }} = {{ field.mock_value }}
+        {% endfor %}
+        client.{{ method.name|snake_case }}(
+            {%- for field in method.flattened_fields.values() %}
+            {% if field.field_pb is msg_field_pb %}{{ field.name }}={{ field.name }},{% else %}{{ field.name }}={{ field.mock_value }},{% endif %}
+            {%- endfor %}
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get('json')
+        {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
+        {% if field.ident|string() == 'timestamp.Timestamp' -%}
+        assert TimestampRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
+        {% elif field.ident|string() == 'duration.Duration' -%}
+        assert DurationRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
+        {% else -%}
+        assert {% if field.field_pb is msg_field_pb %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False)
+               {%- elif field.field_pb is str_field_pb %}{{ field.mock_value }}
+               {%- else %}str({{ field.mock_value }})
+               {%- endif %} in http_call[1] + str(body)
+        {% endif %}
+        {% endif %}{% endfor %}
+
+
+def test_{{ method.name|snake_case }}_rest_flattened_error():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.{{ method.name|snake_case }}(
+            {{ method.input.ident }}(),
+            {%- for field in method.flattened_fields.values() %}
+            {{ field.name }}={{ field.mock_value }},
+            {%- endfor %}
+        )
+
+
+{% endfor -%}
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.{{ service.name }}GrpcTransport(
+    transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
@@ -1003,7 +1182,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.{{ service.name }}GrpcTransport(
+    transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
@@ -1013,7 +1192,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.{{ service.name }}GrpcTransport(
+    transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
         credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
@@ -1023,16 +1202,15 @@ def test_credentials_transport_error():
         )
 
 
-
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.{{ service.name }}GrpcTransport(
+    transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
         credentials=credentials.AnonymousCredentials(),
     )
     client = {{ service.client_name }}(transport=transport)
     assert client.transport is transport
 
-
+{% if 'grpc' in opts.transport %}
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.{{ service.name }}GrpcTransport(
@@ -1046,11 +1224,15 @@ def test_transport_get_channel():
     )
     channel = transport.grpc_channel
     assert channel
-
+{% endif %}
 
 @pytest.mark.parametrize("transport_class", [
+    {%- if 'grpc' in opts.transport %}
     transports.{{ service.grpc_transport_name }},
-    transports.{{ service.grpc_asyncio_transport_name }}
+    transports.{{ service.grpc_asyncio_transport_name }},
+    {%- elif 'rest' in opts.transport %}
+    transports.{{ service.rest_transport_name }},
+    {%- endif %}
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1059,7 +1241,7 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
-
+{% if 'grpc' in opts.transport %}
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = {{ service.client_name }}(
@@ -1069,7 +1251,7 @@ def test_transport_grpc_default():
         client.transport,
         transports.{{ service.name }}GrpcTransport,
     )
-
+{% endif %}
 
 def test_{{ service.name|snake_case }}_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
@@ -1151,7 +1333,7 @@ def test_{{ service.name|snake_case }}_auth_adc():
             quota_project_id=None,
         )
 
-
+{% if 'grpc' in opts.transport %}
 def test_{{ service.name|snake_case }}_transport_auth_adc():
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
@@ -1164,6 +1346,7 @@ def test_{{ service.name|snake_case }}_transport_auth_adc():
             {%- endfor %}),
             quota_project_id="octopus",
         )
+{% endif %}
 
 def test_{{ service.name|snake_case }}_host_no_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
@@ -1184,7 +1367,7 @@ def test_{{ service.name|snake_case }}_host_with_port():
     assert client.transport._host == '{{ host }}:8000'
     {% endwith %}
 
-
+{% if 'grpc' in opts.transport %}
 def test_{{ service.name|snake_case }}_grpc_transport_channel():
     channel = grpc.insecure_channel('http://localhost/')
 
@@ -1334,6 +1517,7 @@ def test_{{ service.name|snake_case }}_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 {% endif -%}
+{% endif %} {# if grpc in opts #}
 
 {% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle", "nautilus", "scallop", "abalone") -%}
 {% for message in service.resource_messages|sort(attribute="resource_type") -%}
@@ -1404,7 +1588,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         prep.assert_called_once_with(client_info)
 
 
-{% if opts.add_iam_methods %}
+{% if opts.add_iam_methods and 'grpc' in opts.transport %}
 def test_set_iam_policy(transport: str = "grpc"):
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(), transport=transport,

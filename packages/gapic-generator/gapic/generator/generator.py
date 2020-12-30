@@ -59,6 +59,10 @@ class Generator:
         self._env.filters["wrap"] = utils.wrap
         self._env.filters["coerce_response_name"] = coerce_response_name
 
+        # Add tests to determine type of expressions stored in strings
+        self._env.tests["str_field_pb"] = utils.is_str_field_pb
+        self._env.tests["msg_field_pb"] = utils.is_msg_field_pb
+
         self._sample_configs = opts.sample_configs
 
     def get_response(
@@ -278,6 +282,10 @@ class Generator:
                         or
                         ('transport' in template_name
                         and not self._is_desired_transport(template_name, opts))
+                        or
+                        # TODO(yon-mg) - remove when rest async implementation resolved
+                        # temporarily stop async client gen while rest async is unkown
+                        ('async' in template_name and 'grpc' not in opts.transport)
                 ):
                     continue
 

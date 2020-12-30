@@ -21,7 +21,7 @@ def to_snake_case(s: str) -> str:
     This is provided to templates as the ``snake_case`` filter.
 
     Args:
-        s (str): The input string, provided in any sane case system.
+        s (str): The input string, provided in any sane case system without spaces.
 
     Returns:
         str: The string in snake case (and all lower-cased).
@@ -53,7 +53,7 @@ def to_camel_case(s: str) -> str:
     This is provided to templates as the ``camel_case`` filter.
 
     Args:
-        s (str): The input string, provided in any sane case system
+        s (str): The input string, provided in any sane case system without spaces.
 
     Returns:
         str: The string in lower camel case.

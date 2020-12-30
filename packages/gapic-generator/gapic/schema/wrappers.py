@@ -411,7 +411,9 @@ class MessageType:
         collisions = collisions or self.meta.address.collisions
 
         # Get the first field in the path.
-        cursor = self.fields[field_path[0]]
+        first_field = field_path[0]
+        cursor = self.fields[first_field +
+            ('_' if first_field in utils.RESERVED_NAMES else '')]
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
@@ -805,6 +807,7 @@ class Method:
                     continue
                 name = f.strip()
                 field = self.input.get_field(*name.split('.'))
+                name += '_' if field.field_pb.name in utils.RESERVED_NAMES else ''
                 if cross_pkg_request and not field.is_primitive:
                     # This is not a proto-plus wrapped message type,
                     # and setting a non-primitive field directly is verboten.

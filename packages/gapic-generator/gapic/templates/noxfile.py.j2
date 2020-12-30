@@ -7,7 +7,7 @@ import shutil
 import nox  # type: ignore
 
 
-@nox.session(python=['3.6', '3.7'])
+@nox.session(python=['3.6', '3.7', '3.8', '3.9'])
 def unit(session):
     """Run the unit test suite."""
 
@@ -21,7 +21,7 @@ def unit(session):
         '--cov-config=.coveragerc',
         '--cov-report=term',
         '--cov-report=html',
-        os.path.join('tests', 'unit',)
+        os.path.join('tests', 'unit', ''.join(session.posargs))
     )
 
 
