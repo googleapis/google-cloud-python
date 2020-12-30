@@ -18,6 +18,7 @@
 from .services.agents import AgentsClient
 from .services.entity_types import EntityTypesClient
 from .services.environments import EnvironmentsClient
+from .services.experiments import ExperimentsClient
 from .services.flows import FlowsClient
 from .services.intents import IntentsClient
 from .services.pages import PagesClient
@@ -63,6 +64,17 @@ from .types.environment import ListEnvironmentsResponse
 from .types.environment import LookupEnvironmentHistoryRequest
 from .types.environment import LookupEnvironmentHistoryResponse
 from .types.environment import UpdateEnvironmentRequest
+from .types.experiment import CreateExperimentRequest
+from .types.experiment import DeleteExperimentRequest
+from .types.experiment import Experiment
+from .types.experiment import GetExperimentRequest
+from .types.experiment import ListExperimentsRequest
+from .types.experiment import ListExperimentsResponse
+from .types.experiment import StartExperimentRequest
+from .types.experiment import StopExperimentRequest
+from .types.experiment import UpdateExperimentRequest
+from .types.experiment import VariantsHistory
+from .types.experiment import VersionVariants
 from .types.flow import CreateFlowRequest
 from .types.flow import DeleteFlowRequest
 from .types.flow import Flow
@@ -162,6 +174,7 @@ __all__ = (
     "CreateAgentRequest",
     "CreateEntityTypeRequest",
     "CreateEnvironmentRequest",
+    "CreateExperimentRequest",
     "CreateFlowRequest",
     "CreateIntentRequest",
     "CreatePageRequest",
@@ -174,6 +187,7 @@ __all__ = (
     "DeleteAgentRequest",
     "DeleteEntityTypeRequest",
     "DeleteEnvironmentRequest",
+    "DeleteExperimentRequest",
     "DeleteFlowRequest",
     "DeleteIntentRequest",
     "DeletePageRequest",
@@ -186,11 +200,12 @@ __all__ = (
     "DetectIntentResponse",
     "DtmfInput",
     "EntityType",
-    "EntityTypesClient",
     "Environment",
     "EnvironmentsClient",
     "EventHandler",
     "EventInput",
+    "Experiment",
+    "ExperimentsClient",
     "ExportAgentRequest",
     "ExportAgentResponse",
     "Flow",
@@ -202,6 +217,7 @@ __all__ = (
     "GetAgentRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
+    "GetExperimentRequest",
     "GetFlowRequest",
     "GetIntentRequest",
     "GetPageRequest",
@@ -221,6 +237,8 @@ __all__ = (
     "ListEntityTypesResponse",
     "ListEnvironmentsRequest",
     "ListEnvironmentsResponse",
+    "ListExperimentsRequest",
+    "ListExperimentsResponse",
     "ListFlowsRequest",
     "ListFlowsResponse",
     "ListIntentsRequest",
@@ -265,6 +283,8 @@ __all__ = (
     "SpeechToTextSettings",
     "SpeechWordInfo",
     "SsmlVoiceGender",
+    "StartExperimentRequest",
+    "StopExperimentRequest",
     "StreamingDetectIntentRequest",
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
@@ -276,6 +296,7 @@ __all__ = (
     "UpdateAgentRequest",
     "UpdateEntityTypeRequest",
     "UpdateEnvironmentRequest",
+    "UpdateExperimentRequest",
     "UpdateFlowRequest",
     "UpdateIntentRequest",
     "UpdatePageRequest",
@@ -284,12 +305,15 @@ __all__ = (
     "UpdateTransitionRouteGroupRequest",
     "UpdateVersionRequest",
     "UpdateWebhookRequest",
+    "VariantsHistory",
     "Version",
+    "VersionVariants",
     "VersionsClient",
     "VoiceSelectionParams",
     "Webhook",
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
+    "EntityTypesClient",
     "TransitionRouteGroupsClient",
 )

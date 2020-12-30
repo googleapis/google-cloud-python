@@ -18,9 +18,11 @@
 from .services.agents import AgentsClient
 from .services.entity_types import EntityTypesClient
 from .services.environments import EnvironmentsClient
+from .services.experiments import ExperimentsClient
 from .services.flows import FlowsClient
 from .services.intents import IntentsClient
 from .services.pages import PagesClient
+from .services.security_settings_service import SecuritySettingsServiceClient
 from .services.session_entity_types import SessionEntityTypesClient
 from .services.sessions import SessionsClient
 from .services.transition_route_groups import TransitionRouteGroupsClient
@@ -62,6 +64,17 @@ from .types.environment import ListEnvironmentsResponse
 from .types.environment import LookupEnvironmentHistoryRequest
 from .types.environment import LookupEnvironmentHistoryResponse
 from .types.environment import UpdateEnvironmentRequest
+from .types.experiment import CreateExperimentRequest
+from .types.experiment import DeleteExperimentRequest
+from .types.experiment import Experiment
+from .types.experiment import GetExperimentRequest
+from .types.experiment import ListExperimentsRequest
+from .types.experiment import ListExperimentsResponse
+from .types.experiment import StartExperimentRequest
+from .types.experiment import StopExperimentRequest
+from .types.experiment import UpdateExperimentRequest
+from .types.experiment import VariantsHistory
+from .types.experiment import VersionVariants
 from .types.flow import CreateFlowRequest
 from .types.flow import DeleteFlowRequest
 from .types.flow import Flow
@@ -91,6 +104,13 @@ from .types.page import Page
 from .types.page import TransitionRoute
 from .types.page import UpdatePageRequest
 from .types.response_message import ResponseMessage
+from .types.security_settings import CreateSecuritySettingsRequest
+from .types.security_settings import DeleteSecuritySettingsRequest
+from .types.security_settings import GetSecuritySettingsRequest
+from .types.security_settings import ListSecuritySettingsRequest
+from .types.security_settings import ListSecuritySettingsResponse
+from .types.security_settings import SecuritySettings
+from .types.security_settings import UpdateSecuritySettingsRequest
 from .types.session import AudioInput
 from .types.session import DetectIntentRequest
 from .types.session import DetectIntentResponse
@@ -148,15 +168,16 @@ from .types.webhook import WebhookResponse
 
 __all__ = (
     "Agent",
-    "AgentsClient",
     "AudioEncoding",
     "AudioInput",
     "CreateAgentRequest",
     "CreateEntityTypeRequest",
     "CreateEnvironmentRequest",
+    "CreateExperimentRequest",
     "CreateFlowRequest",
     "CreateIntentRequest",
     "CreatePageRequest",
+    "CreateSecuritySettingsRequest",
     "CreateSessionEntityTypeRequest",
     "CreateTransitionRouteGroupRequest",
     "CreateVersionOperationMetadata",
@@ -165,9 +186,11 @@ __all__ = (
     "DeleteAgentRequest",
     "DeleteEntityTypeRequest",
     "DeleteEnvironmentRequest",
+    "DeleteExperimentRequest",
     "DeleteFlowRequest",
     "DeleteIntentRequest",
     "DeletePageRequest",
+    "DeleteSecuritySettingsRequest",
     "DeleteSessionEntityTypeRequest",
     "DeleteTransitionRouteGroupRequest",
     "DeleteVersionRequest",
@@ -180,6 +203,8 @@ __all__ = (
     "EnvironmentsClient",
     "EventHandler",
     "EventInput",
+    "Experiment",
+    "ExperimentsClient",
     "ExportAgentRequest",
     "ExportAgentResponse",
     "Flow",
@@ -191,9 +216,11 @@ __all__ = (
     "GetAgentRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
+    "GetExperimentRequest",
     "GetFlowRequest",
     "GetIntentRequest",
     "GetPageRequest",
+    "GetSecuritySettingsRequest",
     "GetSessionEntityTypeRequest",
     "GetTransitionRouteGroupRequest",
     "GetVersionRequest",
@@ -209,12 +236,16 @@ __all__ = (
     "ListEntityTypesResponse",
     "ListEnvironmentsRequest",
     "ListEnvironmentsResponse",
+    "ListExperimentsRequest",
+    "ListExperimentsResponse",
     "ListFlowsRequest",
     "ListFlowsResponse",
     "ListIntentsRequest",
     "ListIntentsResponse",
     "ListPagesRequest",
     "ListPagesResponse",
+    "ListSecuritySettingsRequest",
+    "ListSecuritySettingsResponse",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",
     "ListTransitionRouteGroupsRequest",
@@ -240,6 +271,8 @@ __all__ = (
     "QueryResult",
     "ResponseMessage",
     "RestoreAgentRequest",
+    "SecuritySettings",
+    "SecuritySettingsServiceClient",
     "SentimentAnalysisResult",
     "SessionEntityType",
     "SessionEntityTypesClient",
@@ -249,6 +282,8 @@ __all__ = (
     "SpeechToTextSettings",
     "SpeechWordInfo",
     "SsmlVoiceGender",
+    "StartExperimentRequest",
+    "StopExperimentRequest",
     "StreamingDetectIntentRequest",
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
@@ -261,19 +296,24 @@ __all__ = (
     "UpdateAgentRequest",
     "UpdateEntityTypeRequest",
     "UpdateEnvironmentRequest",
+    "UpdateExperimentRequest",
     "UpdateFlowRequest",
     "UpdateIntentRequest",
     "UpdatePageRequest",
+    "UpdateSecuritySettingsRequest",
     "UpdateSessionEntityTypeRequest",
     "UpdateTransitionRouteGroupRequest",
     "UpdateVersionRequest",
     "UpdateWebhookRequest",
+    "VariantsHistory",
     "Version",
+    "VersionVariants",
     "VersionsClient",
     "VoiceSelectionParams",
     "Webhook",
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
+    "AgentsClient",
     "EntityTypesClient",
 )

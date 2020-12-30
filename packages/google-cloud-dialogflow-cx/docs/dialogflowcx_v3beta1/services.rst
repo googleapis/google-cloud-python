@@ -10,6 +10,9 @@ Services for Google Cloud Dialogflowcx v3beta1 API
 .. automodule:: google.cloud.dialogflowcx_v3beta1.services.environments
     :members:
     :inherited-members:
+.. automodule:: google.cloud.dialogflowcx_v3beta1.services.experiments
+    :members:
+    :inherited-members:
 .. automodule:: google.cloud.dialogflowcx_v3beta1.services.flows
     :members:
     :inherited-members:
@@ -17,6 +20,9 @@ Services for Google Cloud Dialogflowcx v3beta1 API
     :members:
     :inherited-members:
 .. automodule:: google.cloud.dialogflowcx_v3beta1.services.pages
+    :members:
+    :inherited-members:
+.. automodule:: google.cloud.dialogflowcx_v3beta1.services.security_settings_service
     :members:
     :inherited-members:
 .. automodule:: google.cloud.dialogflowcx_v3beta1.services.session_entity_types

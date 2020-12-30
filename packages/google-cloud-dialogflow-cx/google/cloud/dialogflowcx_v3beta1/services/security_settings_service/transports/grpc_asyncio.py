@@ -27,19 +27,20 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import session
+from google.cloud.dialogflowcx_v3beta1.types import security_settings
+from google.cloud.dialogflowcx_v3beta1.types import (
+    security_settings as gcdc_security_settings,
+)
+from google.protobuf import empty_pb2 as empty  # type: ignore
 
-from .base import SessionsTransport, DEFAULT_CLIENT_INFO
-from .grpc import SessionsGrpcTransport
+from .base import SecuritySettingsServiceTransport, DEFAULT_CLIENT_INFO
+from .grpc import SecuritySettingsServiceGrpcTransport
 
 
-class SessionsGrpcAsyncIOTransport(SessionsTransport):
-    """gRPC AsyncIO backend transport for Sessions.
+class SecuritySettingsServiceGrpcAsyncIOTransport(SecuritySettingsServiceTransport):
+    """gRPC AsyncIO backend transport for SecuritySettingsService.
 
-    A session represents an interaction with a user. You retrieve user
-    input and pass it to the
-    [DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-    method to determine user intent and respond.
+    Service for managing security settings for Dialogflow.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -245,25 +246,19 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
         return self._grpc_channel
 
     @property
-    def detect_intent(
+    def create_security_settings(
         self,
     ) -> Callable[
-        [session.DetectIntentRequest], Awaitable[session.DetectIntentResponse]
+        [gcdc_security_settings.CreateSecuritySettingsRequest],
+        Awaitable[gcdc_security_settings.SecuritySettings],
     ]:
-        r"""Return a callable for the detect intent method over gRPC.
+        r"""Return a callable for the create security settings method over gRPC.
 
-        Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause session entity types to be updated, which
-        in turn might affect results of future queries.
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Create security settings in the specified location.
 
         Returns:
-            Callable[[~.DetectIntentRequest],
-                    Awaitable[~.DetectIntentResponse]]:
+            Callable[[~.CreateSecuritySettingsRequest],
+                    Awaitable[~.SecuritySettings]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -271,35 +266,30 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "detect_intent" not in self._stubs:
-            self._stubs["detect_intent"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.Sessions/DetectIntent",
-                request_serializer=session.DetectIntentRequest.serialize,
-                response_deserializer=session.DetectIntentResponse.deserialize,
+        if "create_security_settings" not in self._stubs:
+            self._stubs["create_security_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/CreateSecuritySettings",
+                request_serializer=gcdc_security_settings.CreateSecuritySettingsRequest.serialize,
+                response_deserializer=gcdc_security_settings.SecuritySettings.deserialize,
             )
-        return self._stubs["detect_intent"]
+        return self._stubs["create_security_settings"]
 
     @property
-    def streaming_detect_intent(
+    def get_security_settings(
         self,
     ) -> Callable[
-        [session.StreamingDetectIntentRequest],
-        Awaitable[session.StreamingDetectIntentResponse],
+        [security_settings.GetSecuritySettingsRequest],
+        Awaitable[security_settings.SecuritySettings],
     ]:
-        r"""Return a callable for the streaming detect intent method over gRPC.
+        r"""Return a callable for the get security settings method over gRPC.
 
-        Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Retrieves the specified
+        [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
+        The returned settings may be stale by up to 1 minute.
 
         Returns:
-            Callable[[~.StreamingDetectIntentRequest],
-                    Awaitable[~.StreamingDetectIntentResponse]]:
+            Callable[[~.GetSecuritySettingsRequest],
+                    Awaitable[~.SecuritySettings]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -307,60 +297,29 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "streaming_detect_intent" not in self._stubs:
-            self._stubs["streaming_detect_intent"] = self.grpc_channel.stream_stream(
-                "/google.cloud.dialogflow.cx.v3.Sessions/StreamingDetectIntent",
-                request_serializer=session.StreamingDetectIntentRequest.serialize,
-                response_deserializer=session.StreamingDetectIntentResponse.deserialize,
+        if "get_security_settings" not in self._stubs:
+            self._stubs["get_security_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/GetSecuritySettings",
+                request_serializer=security_settings.GetSecuritySettingsRequest.serialize,
+                response_deserializer=security_settings.SecuritySettings.deserialize,
             )
-        return self._stubs["streaming_detect_intent"]
+        return self._stubs["get_security_settings"]
 
     @property
-    def match_intent(
-        self,
-    ) -> Callable[[session.MatchIntentRequest], Awaitable[session.MatchIntentResponse]]:
-        r"""Return a callable for the match intent method over gRPC.
-
-        Returns preliminary intent match results, doesn't
-        change the session status.
-
-        Returns:
-            Callable[[~.MatchIntentRequest],
-                    Awaitable[~.MatchIntentResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "match_intent" not in self._stubs:
-            self._stubs["match_intent"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.Sessions/MatchIntent",
-                request_serializer=session.MatchIntentRequest.serialize,
-                response_deserializer=session.MatchIntentResponse.deserialize,
-            )
-        return self._stubs["match_intent"]
-
-    @property
-    def fulfill_intent(
+    def update_security_settings(
         self,
     ) -> Callable[
-        [session.FulfillIntentRequest], Awaitable[session.FulfillIntentResponse]
+        [gcdc_security_settings.UpdateSecuritySettingsRequest],
+        Awaitable[gcdc_security_settings.SecuritySettings],
     ]:
-        r"""Return a callable for the fulfill intent method over gRPC.
+        r"""Return a callable for the update security settings method over gRPC.
 
-        Fulfills a matched intent returned by
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent].
-        Must be called after
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent],
-        with input from
-        [MatchIntentResponse][google.cloud.dialogflow.cx.v3.MatchIntentResponse].
-        Otherwise, the behavior is undefined.
+        Updates the specified
+        [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
 
         Returns:
-            Callable[[~.FulfillIntentRequest],
-                    Awaitable[~.FulfillIntentResponse]]:
+            Callable[[~.UpdateSecuritySettingsRequest],
+                    Awaitable[~.SecuritySettings]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -368,13 +327,72 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "fulfill_intent" not in self._stubs:
-            self._stubs["fulfill_intent"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.Sessions/FulfillIntent",
-                request_serializer=session.FulfillIntentRequest.serialize,
-                response_deserializer=session.FulfillIntentResponse.deserialize,
+        if "update_security_settings" not in self._stubs:
+            self._stubs["update_security_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/UpdateSecuritySettings",
+                request_serializer=gcdc_security_settings.UpdateSecuritySettingsRequest.serialize,
+                response_deserializer=gcdc_security_settings.SecuritySettings.deserialize,
             )
-        return self._stubs["fulfill_intent"]
+        return self._stubs["update_security_settings"]
+
+    @property
+    def list_security_settings(
+        self,
+    ) -> Callable[
+        [security_settings.ListSecuritySettingsRequest],
+        Awaitable[security_settings.ListSecuritySettingsResponse],
+    ]:
+        r"""Return a callable for the list security settings method over gRPC.
+
+        Returns the list of all security settings in the
+        specified location.
+
+        Returns:
+            Callable[[~.ListSecuritySettingsRequest],
+                    Awaitable[~.ListSecuritySettingsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_security_settings" not in self._stubs:
+            self._stubs["list_security_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/ListSecuritySettings",
+                request_serializer=security_settings.ListSecuritySettingsRequest.serialize,
+                response_deserializer=security_settings.ListSecuritySettingsResponse.deserialize,
+            )
+        return self._stubs["list_security_settings"]
+
+    @property
+    def delete_security_settings(
+        self,
+    ) -> Callable[
+        [security_settings.DeleteSecuritySettingsRequest], Awaitable[empty.Empty]
+    ]:
+        r"""Return a callable for the delete security settings method over gRPC.
+
+        Deletes the specified
+        [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
+
+        Returns:
+            Callable[[~.DeleteSecuritySettingsRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_security_settings" not in self._stubs:
+            self._stubs["delete_security_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService/DeleteSecuritySettings",
+                request_serializer=security_settings.DeleteSecuritySettingsRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_security_settings"]
 
 
-__all__ = ("SessionsGrpcAsyncIOTransport",)
+__all__ = ("SecuritySettingsServiceGrpcAsyncIOTransport",)

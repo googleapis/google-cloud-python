@@ -26,18 +26,18 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import session
+from google.cloud.dialogflowcx_v3beta1.types import experiment
+from google.cloud.dialogflowcx_v3beta1.types import experiment as gcdc_experiment
+from google.protobuf import empty_pb2 as empty  # type: ignore
 
-from .base import SessionsTransport, DEFAULT_CLIENT_INFO
+from .base import ExperimentsTransport, DEFAULT_CLIENT_INFO
 
 
-class SessionsGrpcTransport(SessionsTransport):
-    """gRPC backend transport for Sessions.
+class ExperimentsGrpcTransport(ExperimentsTransport):
+    """gRPC backend transport for Experiments.
 
-    A session represents an interaction with a user. You retrieve user
-    input and pass it to the
-    [DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-    method to determine user intent and respond.
+    Service for managing
+    [Experiments][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -241,58 +241,19 @@ class SessionsGrpcTransport(SessionsTransport):
         return self._grpc_channel
 
     @property
-    def detect_intent(
-        self,
-    ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
-        r"""Return a callable for the detect intent method over gRPC.
-
-        Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause session entity types to be updated, which
-        in turn might affect results of future queries.
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
-
-        Returns:
-            Callable[[~.DetectIntentRequest],
-                    ~.DetectIntentResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "detect_intent" not in self._stubs:
-            self._stubs["detect_intent"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.Sessions/DetectIntent",
-                request_serializer=session.DetectIntentRequest.serialize,
-                response_deserializer=session.DetectIntentResponse.deserialize,
-            )
-        return self._stubs["detect_intent"]
-
-    @property
-    def streaming_detect_intent(
+    def list_experiments(
         self,
     ) -> Callable[
-        [session.StreamingDetectIntentRequest], session.StreamingDetectIntentResponse
+        [experiment.ListExperimentsRequest], experiment.ListExperimentsResponse
     ]:
-        r"""Return a callable for the streaming detect intent method over gRPC.
+        r"""Return a callable for the list experiments method over gRPC.
 
-        Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Returns the list of all experiments in the specified
+        [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Returns:
-            Callable[[~.StreamingDetectIntentRequest],
-                    ~.StreamingDetectIntentResponse]:
+            Callable[[~.ListExperimentsRequest],
+                    ~.ListExperimentsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -300,26 +261,26 @@ class SessionsGrpcTransport(SessionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "streaming_detect_intent" not in self._stubs:
-            self._stubs["streaming_detect_intent"] = self.grpc_channel.stream_stream(
-                "/google.cloud.dialogflow.cx.v3.Sessions/StreamingDetectIntent",
-                request_serializer=session.StreamingDetectIntentRequest.serialize,
-                response_deserializer=session.StreamingDetectIntentResponse.deserialize,
+        if "list_experiments" not in self._stubs:
+            self._stubs["list_experiments"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/ListExperiments",
+                request_serializer=experiment.ListExperimentsRequest.serialize,
+                response_deserializer=experiment.ListExperimentsResponse.deserialize,
             )
-        return self._stubs["streaming_detect_intent"]
+        return self._stubs["list_experiments"]
 
     @property
-    def match_intent(
+    def get_experiment(
         self,
-    ) -> Callable[[session.MatchIntentRequest], session.MatchIntentResponse]:
-        r"""Return a callable for the match intent method over gRPC.
+    ) -> Callable[[experiment.GetExperimentRequest], experiment.Experiment]:
+        r"""Return a callable for the get experiment method over gRPC.
 
-        Returns preliminary intent match results, doesn't
-        change the session status.
+        Retrieves the specified
+        [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
         Returns:
-            Callable[[~.MatchIntentRequest],
-                    ~.MatchIntentResponse]:
+            Callable[[~.GetExperimentRequest],
+                    ~.Experiment]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -327,31 +288,30 @@ class SessionsGrpcTransport(SessionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "match_intent" not in self._stubs:
-            self._stubs["match_intent"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.Sessions/MatchIntent",
-                request_serializer=session.MatchIntentRequest.serialize,
-                response_deserializer=session.MatchIntentResponse.deserialize,
+        if "get_experiment" not in self._stubs:
+            self._stubs["get_experiment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/GetExperiment",
+                request_serializer=experiment.GetExperimentRequest.serialize,
+                response_deserializer=experiment.Experiment.deserialize,
             )
-        return self._stubs["match_intent"]
+        return self._stubs["get_experiment"]
 
     @property
-    def fulfill_intent(
+    def create_experiment(
         self,
-    ) -> Callable[[session.FulfillIntentRequest], session.FulfillIntentResponse]:
-        r"""Return a callable for the fulfill intent method over gRPC.
+    ) -> Callable[
+        [gcdc_experiment.CreateExperimentRequest], gcdc_experiment.Experiment
+    ]:
+        r"""Return a callable for the create experiment method over gRPC.
 
-        Fulfills a matched intent returned by
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent].
-        Must be called after
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent],
-        with input from
-        [MatchIntentResponse][google.cloud.dialogflow.cx.v3.MatchIntentResponse].
-        Otherwise, the behavior is undefined.
+        Creates an
+        [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment] in
+        the specified
+        [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
         Returns:
-            Callable[[~.FulfillIntentRequest],
-                    ~.FulfillIntentResponse]:
+            Callable[[~.CreateExperimentRequest],
+                    ~.Experiment]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -359,13 +319,127 @@ class SessionsGrpcTransport(SessionsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "fulfill_intent" not in self._stubs:
-            self._stubs["fulfill_intent"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3.Sessions/FulfillIntent",
-                request_serializer=session.FulfillIntentRequest.serialize,
-                response_deserializer=session.FulfillIntentResponse.deserialize,
+        if "create_experiment" not in self._stubs:
+            self._stubs["create_experiment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/CreateExperiment",
+                request_serializer=gcdc_experiment.CreateExperimentRequest.serialize,
+                response_deserializer=gcdc_experiment.Experiment.deserialize,
             )
-        return self._stubs["fulfill_intent"]
+        return self._stubs["create_experiment"]
+
+    @property
+    def update_experiment(
+        self,
+    ) -> Callable[
+        [gcdc_experiment.UpdateExperimentRequest], gcdc_experiment.Experiment
+    ]:
+        r"""Return a callable for the update experiment method over gRPC.
+
+        Updates the specified
+        [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
+
+        Returns:
+            Callable[[~.UpdateExperimentRequest],
+                    ~.Experiment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_experiment" not in self._stubs:
+            self._stubs["update_experiment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/UpdateExperiment",
+                request_serializer=gcdc_experiment.UpdateExperimentRequest.serialize,
+                response_deserializer=gcdc_experiment.Experiment.deserialize,
+            )
+        return self._stubs["update_experiment"]
+
+    @property
+    def delete_experiment(
+        self,
+    ) -> Callable[[experiment.DeleteExperimentRequest], empty.Empty]:
+        r"""Return a callable for the delete experiment method over gRPC.
+
+        Deletes the specified
+        [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
+
+        Returns:
+            Callable[[~.DeleteExperimentRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_experiment" not in self._stubs:
+            self._stubs["delete_experiment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/DeleteExperiment",
+                request_serializer=experiment.DeleteExperimentRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_experiment"]
+
+    @property
+    def start_experiment(
+        self,
+    ) -> Callable[[experiment.StartExperimentRequest], experiment.Experiment]:
+        r"""Return a callable for the start experiment method over gRPC.
+
+        Starts the specified
+        [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
+        This rpc only changes the state of experiment from PENDING to
+        RUNNING.
+
+        Returns:
+            Callable[[~.StartExperimentRequest],
+                    ~.Experiment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "start_experiment" not in self._stubs:
+            self._stubs["start_experiment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/StartExperiment",
+                request_serializer=experiment.StartExperimentRequest.serialize,
+                response_deserializer=experiment.Experiment.deserialize,
+            )
+        return self._stubs["start_experiment"]
+
+    @property
+    def stop_experiment(
+        self,
+    ) -> Callable[[experiment.StopExperimentRequest], experiment.Experiment]:
+        r"""Return a callable for the stop experiment method over gRPC.
+
+        Stops the specified
+        [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
+        This rpc only changes the state of experiment from RUNNING to
+        DONE.
+
+        Returns:
+            Callable[[~.StopExperimentRequest],
+                    ~.Experiment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "stop_experiment" not in self._stubs:
+            self._stubs["stop_experiment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Experiments/StopExperiment",
+                request_serializer=experiment.StopExperimentRequest.serialize,
+                response_deserializer=experiment.Experiment.deserialize,
+            )
+        return self._stubs["stop_experiment"]
 
 
-__all__ = ("SessionsGrpcTransport",)
+__all__ = ("ExperimentsGrpcTransport",)

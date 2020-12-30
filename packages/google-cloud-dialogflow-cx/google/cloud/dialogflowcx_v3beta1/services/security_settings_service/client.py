@@ -19,17 +19,7 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Optional,
-    Iterable,
-    Iterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -42,28 +32,35 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import audio_config
-from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import session
+from google.cloud.dialogflowcx_v3beta1.services.security_settings_service import pagers
+from google.cloud.dialogflowcx_v3beta1.types import security_settings
+from google.cloud.dialogflowcx_v3beta1.types import (
+    security_settings as gcdc_security_settings,
+)
+from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 
-from .transports.base import SessionsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import SessionsGrpcTransport
-from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
+from .transports.base import SecuritySettingsServiceTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import SecuritySettingsServiceGrpcTransport
+from .transports.grpc_asyncio import SecuritySettingsServiceGrpcAsyncIOTransport
 
 
-class SessionsClientMeta(type):
-    """Metaclass for the Sessions client.
+class SecuritySettingsServiceClientMeta(type):
+    """Metaclass for the SecuritySettingsService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[SessionsTransport]]
-    _transport_registry["grpc"] = SessionsGrpcTransport
-    _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
+    _transport_registry = (
+        OrderedDict()
+    )  # type: Dict[str, Type[SecuritySettingsServiceTransport]]
+    _transport_registry["grpc"] = SecuritySettingsServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = SecuritySettingsServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[SessionsTransport]:
+    def get_transport_class(
+        cls, label: str = None,
+    ) -> Type[SecuritySettingsServiceTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -82,12 +79,8 @@ class SessionsClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class SessionsClient(metaclass=SessionsClientMeta):
-    """A session represents an interaction with a user. You retrieve user
-    input and pass it to the
-    [DetectIntent][google.cloud.dialogflow.cx.v3.Sessions.DetectIntent]
-    method to determine user intent and respond.
-    """
+class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta):
+    """Service for managing security settings for Dialogflow."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -144,154 +137,28 @@ class SessionsClient(metaclass=SessionsClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> SessionsTransport:
+    def transport(self) -> SecuritySettingsServiceTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            SessionsTransport: The transport used by the client instance.
+            SecuritySettingsServiceTransport: The transport used by the client instance.
         """
         return self._transport
 
     @staticmethod
-    def entity_type_path(
-        project: str, location: str, agent: str, entity_type: str,
+    def security_settings_path(
+        project: str, location: str, security_settings: str,
     ) -> str:
-        """Return a fully-qualified entity_type string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
-            project=project, location=location, agent=agent, entity_type=entity_type,
+        """Return a fully-qualified security_settings string."""
+        return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+            project=project, location=location, security_settings=security_settings,
         )
 
     @staticmethod
-    def parse_entity_type_path(path: str) -> Dict[str, str]:
-        """Parse a entity_type path into its component segments."""
+    def parse_security_settings_path(path: str) -> Dict[str, str]:
+        """Parse a security_settings path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/entityTypes/(?P<entity_type>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def flow_path(project: str, location: str, agent: str, flow: str,) -> str:
-        """Return a fully-qualified flow string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-            project=project, location=location, agent=agent, flow=flow,
-        )
-
-    @staticmethod
-    def parse_flow_path(path: str) -> Dict[str, str]:
-        """Parse a flow path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def intent_path(project: str, location: str, agent: str, intent: str,) -> str:
-        """Return a fully-qualified intent string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
-            project=project, location=location, agent=agent, intent=intent,
-        )
-
-    @staticmethod
-    def parse_intent_path(path: str) -> Dict[str, str]:
-        """Parse a intent path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/intents/(?P<intent>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def page_path(
-        project: str, location: str, agent: str, flow: str, page: str,
-    ) -> str:
-        """Return a fully-qualified page string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
-            project=project, location=location, agent=agent, flow=flow, page=page,
-        )
-
-    @staticmethod
-    def parse_page_path(path: str) -> Dict[str, str]:
-        """Parse a page path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/pages/(?P<page>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def session_path(project: str, location: str, agent: str, session: str,) -> str:
-        """Return a fully-qualified session string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}".format(
-            project=project, location=location, agent=agent, session=session,
-        )
-
-    @staticmethod
-    def parse_session_path(path: str) -> Dict[str, str]:
-        """Parse a session path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/sessions/(?P<session>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def session_entity_type_path(
-        project: str, location: str, agent: str, session: str, entity_type: str,
-    ) -> str:
-        """Return a fully-qualified session_entity_type string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}/entityTypes/{entity_type}".format(
-            project=project,
-            location=location,
-            agent=agent,
-            session=session,
-            entity_type=entity_type,
-        )
-
-    @staticmethod
-    def parse_session_entity_type_path(path: str) -> Dict[str, str]:
-        """Parse a session_entity_type path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/sessions/(?P<session>.+?)/entityTypes/(?P<entity_type>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def transition_route_group_path(
-        project: str, location: str, agent: str, flow: str, transition_route_group: str,
-    ) -> str:
-        """Return a fully-qualified transition_route_group string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
-            project=project,
-            location=location,
-            agent=agent,
-            flow=flow,
-            transition_route_group=transition_route_group,
-        )
-
-    @staticmethod
-    def parse_transition_route_group_path(path: str) -> Dict[str, str]:
-        """Parse a transition_route_group path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/transitionRouteGroups/(?P<transition_route_group>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def webhook_path(project: str, location: str, agent: str, webhook: str,) -> str:
-        """Return a fully-qualified webhook string."""
-        return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-            project=project, location=location, agent=agent, webhook=webhook,
-        )
-
-    @staticmethod
-    def parse_webhook_path(path: str) -> Dict[str, str]:
-        """Parse a webhook path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/webhooks/(?P<webhook>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/securitySettings/(?P<security_settings>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -359,11 +226,11 @@ class SessionsClient(metaclass=SessionsClientMeta):
         self,
         *,
         credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, SessionsTransport, None] = None,
+        transport: Union[str, SecuritySettingsServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the sessions client.
+        """Instantiate the security settings service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -371,7 +238,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SessionsTransport]): The
+            transport (Union[str, ~.SecuritySettingsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (client_options_lib.ClientOptions): Custom options for the
@@ -447,8 +314,8 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, SessionsTransport):
-            # transport is a SessionsTransport instance.
+        if isinstance(transport, SecuritySettingsServiceTransport):
+            # transport is a SecuritySettingsServiceTransport instance.
             if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -472,26 +339,36 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 client_info=client_info,
             )
 
-    def detect_intent(
+    def create_security_settings(
         self,
-        request: session.DetectIntentRequest = None,
+        request: gcdc_security_settings.CreateSecuritySettingsRequest = None,
         *,
+        parent: str = None,
+        security_settings: gcdc_security_settings.SecuritySettings = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> session.DetectIntentResponse:
-        r"""Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause session entity types to be updated, which
-        in turn might affect results of future queries.
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+    ) -> gcdc_security_settings.SecuritySettings:
+        r"""Create security settings in the specified location.
 
         Args:
-            request (:class:`~.session.DetectIntentRequest`):
-                The request object. The request to detect user's intent.
+            request (:class:`~.gcdc_security_settings.CreateSecuritySettingsRequest`):
+                The request object. The request message for
+                [SecuritySettings.CreateSecuritySettings][].
+            parent (:class:`str`):
+                Required. The location to create an
+                [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
+                for. Format:
+                ``projects/<Project ID>/locations/<Location ID>``.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            security_settings (:class:`~.gcdc_security_settings.SecuritySettings`):
+                Required. The security settings to
+                create.
+                This corresponds to the ``security_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -500,28 +377,50 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.session.DetectIntentResponse:
-                The message returned from the
-                DetectIntent method.
+            ~.gcdc_security_settings.SecuritySettings:
+                Represents the settings related to
+                security issues, such as data redaction
+                and data retention. It may take hours
+                for updates on the settings to propagate
+                to all the related components and take
+                effect.
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, security_settings])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a session.DetectIntentRequest.
+        # in a gcdc_security_settings.CreateSecuritySettingsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, session.DetectIntentRequest):
-            request = session.DetectIntentRequest(request)
+        if not isinstance(
+            request, gcdc_security_settings.CreateSecuritySettingsRequest
+        ):
+            request = gcdc_security_settings.CreateSecuritySettingsRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if parent is not None:
+                request.parent = parent
+            if security_settings is not None:
+                request.security_settings = security_settings
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.detect_intent]
+        rpc = self._transport._wrapped_methods[self._transport.create_security_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
@@ -530,107 +429,29 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Done; return the response.
         return response
 
-    def streaming_detect_intent(
+    def get_security_settings(
         self,
-        requests: Iterator[session.StreamingDetectIntentRequest] = None,
+        request: security_settings.GetSecuritySettingsRequest = None,
         *,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Iterable[session.StreamingDetectIntentResponse]:
-        r"""Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
-
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+    ) -> security_settings.SecuritySettings:
+        r"""Retrieves the specified
+        [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
+        The returned settings may be stale by up to 1 minute.
 
         Args:
-            requests (Iterator[`~.session.StreamingDetectIntentRequest`]):
-                The request object iterator. The top-level message sent by the
-                client to the
-                [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
-                method.
-                Multiple request messages should be sent in order:
-
-                1.  The first message must contain
-                [session][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.session],
-                [query_input][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input]
-                plus optionally
-                [query_params][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_params].
-                If the client     wants to receive an audio response, it
-                should also contain
-                [output_audio_config][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.output_audio_config].
-                2.  If
-                [query_input][google.cloud.dialogflow.cx.v3.StreamingDetectIntentRequest.query_input]
-                was set to
-                [query_input.audio.config][google.cloud.dialogflow.cx.v3.AudioInput.config],
-                all subsequent messages     must contain
-                [query_input.audio.audio][google.cloud.dialogflow.cx.v3.AudioInput.audio]
-                to continue with     Speech recognition.
-                    If you decide to rather detect an intent from text
-                input after you already started Speech recognition,
-                please send a message     with
-                [query_input.text][google.cloud.dialogflow.cx.v3.QueryInput.text].
-                    However, note that:
-
-                    * Dialogflow will bill you for the audio duration so
-                far.     * Dialogflow discards all Speech recognition
-                results in favor of the       input text.
-                    * Dialogflow will use the language code from the
-                first message.
-                After you sent all input, you must half-close or abort
-                the request stream.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            Iterable[~.session.StreamingDetectIntentResponse]:
-                The top-level message returned from the
-                ``StreamingDetectIntent`` method.
-
-                Multiple response messages can be returned in order:
-
-                1. If the input was set to streaming audio, the first
-                   one or more messages contain ``recognition_result``.
-                   Each ``recognition_result`` represents a more
-                   complete transcript of what the user said. The last
-                   ``recognition_result`` has ``is_final`` set to
-                   ``true``.
-
-                2. The last message contains ``detect_intent_response``.
-
-        """
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.streaming_detect_intent]
-
-        # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def match_intent(
-        self,
-        request: session.MatchIntentRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> session.MatchIntentResponse:
-        r"""Returns preliminary intent match results, doesn't
-        change the session status.
-
-        Args:
-            request (:class:`~.session.MatchIntentRequest`):
-                The request object. Request of [MatchIntent][].
+            request (:class:`~.security_settings.GetSecuritySettingsRequest`):
+                The request object. The request message for
+                [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.GetSecuritySettings].
+            name (:class:`str`):
+                Required. Resource name of the settings. Format:
+                ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -639,26 +460,46 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.session.MatchIntentResponse:
-                Response of [MatchIntent][].
+            ~.security_settings.SecuritySettings:
+                Represents the settings related to
+                security issues, such as data redaction
+                and data retention. It may take hours
+                for updates on the settings to propagate
+                to all the related components and take
+                effect.
+
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a session.MatchIntentRequest.
+        # in a security_settings.GetSecuritySettingsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, session.MatchIntentRequest):
-            request = session.MatchIntentRequest(request)
+        if not isinstance(request, security_settings.GetSecuritySettingsRequest):
+            request = security_settings.GetSecuritySettingsRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.match_intent]
+        rpc = self._transport._wrapped_methods[self._transport.get_security_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -667,25 +508,36 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Done; return the response.
         return response
 
-    def fulfill_intent(
+    def update_security_settings(
         self,
-        request: session.FulfillIntentRequest = None,
+        request: gcdc_security_settings.UpdateSecuritySettingsRequest = None,
         *,
+        security_settings: gcdc_security_settings.SecuritySettings = None,
+        update_mask: field_mask.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> session.FulfillIntentResponse:
-        r"""Fulfills a matched intent returned by
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent].
-        Must be called after
-        [MatchIntent][google.cloud.dialogflow.cx.v3.Sessions.MatchIntent],
-        with input from
-        [MatchIntentResponse][google.cloud.dialogflow.cx.v3.MatchIntentResponse].
-        Otherwise, the behavior is undefined.
+    ) -> gcdc_security_settings.SecuritySettings:
+        r"""Updates the specified
+        [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
 
         Args:
-            request (:class:`~.session.FulfillIntentRequest`):
-                The request object. Request of [FulfillIntent][]
+            request (:class:`~.gcdc_security_settings.UpdateSecuritySettingsRequest`):
+                The request object. The request message for
+                [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettingsService.UpdateSecuritySettings].
+            security_settings (:class:`~.gcdc_security_settings.SecuritySettings`):
+                Required. [SecuritySettings] object that contains values
+                for each of the fields to update.
+                This corresponds to the ``security_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`~.field_mask.FieldMask`):
+                Required. The mask to control which
+                fields get updated. If the mask is not
+                present, all fields will be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -694,32 +546,51 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.session.FulfillIntentResponse:
-                Response of [FulfillIntent][]
+            ~.gcdc_security_settings.SecuritySettings:
+                Represents the settings related to
+                security issues, such as data redaction
+                and data retention. It may take hours
+                for updates on the settings to propagate
+                to all the related components and take
+                effect.
+
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([security_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a session.FulfillIntentRequest.
+        # in a gcdc_security_settings.UpdateSecuritySettingsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, session.FulfillIntentRequest):
-            request = session.FulfillIntentRequest(request)
+        if not isinstance(
+            request, gcdc_security_settings.UpdateSecuritySettingsRequest
+        ):
+            request = gcdc_security_settings.UpdateSecuritySettingsRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if security_settings is not None:
+                request.security_settings = security_settings
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.fulfill_intent]
+        rpc = self._transport._wrapped_methods[self._transport.update_security_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "match_intent_request.session",
-                        request.match_intent_request.session,
-                    ),
-                )
+                (("security_settings.name", request.security_settings.name),)
             ),
         )
 
@@ -728,6 +599,159 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
         # Done; return the response.
         return response
+
+    def list_security_settings(
+        self,
+        request: security_settings.ListSecuritySettingsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSecuritySettingsPager:
+        r"""Returns the list of all security settings in the
+        specified location.
+
+        Args:
+            request (:class:`~.security_settings.ListSecuritySettingsRequest`):
+                The request object. The request message for
+                [SecuritySettings.ListSecuritySettings][].
+            parent (:class:`str`):
+                Required. The location to list all security settings
+                for. Format:
+                ``projects/<Project ID>/locations/<Location ID>``.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            ~.pagers.ListSecuritySettingsPager:
+                The response message for
+                [SecuritySettings.ListSecuritySettings][].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a security_settings.ListSecuritySettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, security_settings.ListSecuritySettingsRequest):
+            request = security_settings.ListSecuritySettingsRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_security_settings]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSecuritySettingsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_security_settings(
+        self,
+        request: security_settings.DeleteSecuritySettingsRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the specified
+        [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
+
+        Args:
+            request (:class:`~.security_settings.DeleteSecuritySettingsRequest`):
+                The request object. The request message for
+                [SecuritySettings.DeleteSecuritySettings][].
+            name (:class:`str`):
+                Required. The name of the
+                [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
+                to delete. Format:
+                ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a security_settings.DeleteSecuritySettingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, security_settings.DeleteSecuritySettingsRequest):
+            request = security_settings.DeleteSecuritySettingsRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_security_settings]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
 
 
 try:
@@ -740,4 +764,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("SessionsClient",)
+__all__ = ("SecuritySettingsServiceClient",)
