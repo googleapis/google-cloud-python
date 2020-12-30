@@ -42,7 +42,7 @@ from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
 _UNSET_COUNT = -1
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
-Statement = namedtuple("Statement", "sql, params, param_types, checksum")
+Statement = namedtuple("Statement", "sql, params, param_types, checksum, is_insert")
 
 
 class Cursor(object):
@@ -95,9 +95,9 @@ class Cursor(object):
         for field in row_type.fields:
             column_info = ColumnInfo(
                 name=field.name,
-                type_code=field.type.code,
+                type_code=field.type_.code,
                 # Size of the SQL type of the column.
-                display_size=code_to_display_size.get(field.type.code),
+                display_size=code_to_display_size.get(field.type_.code),
                 # Client perceived size of the column.
                 internal_size=field.ByteSize(),
             )
@@ -172,10 +172,20 @@ class Cursor(object):
             self.connection.run_prior_DDL_statements()
 
             if not self.connection.autocommit:
-                sql, params = sql_pyformat_args_to_spanner(sql, args)
+                if classification == parse_utils.STMT_UPDATING:
+                    sql = parse_utils.ensure_where_clause(sql)
+
+                if classification != parse_utils.STMT_INSERT:
+                    sql, args = sql_pyformat_args_to_spanner(sql, args or None)
 
                 statement = Statement(
-                    sql, params, get_param_types(params), ResultsChecksum(),
+                    sql,
+                    args,
+                    get_param_types(args or None)
+                    if classification != parse_utils.STMT_INSERT
+                    else {},
+                    ResultsChecksum(),
+                    classification == parse_utils.STMT_INSERT,
                 )
                 (self._result_set, self._checksum,) = self.connection.run_statement(
                     statement
@@ -233,7 +243,8 @@ class Cursor(object):
 
         try:
             res = next(self)
-            self._checksum.consume_result(res)
+            if not self.connection.autocommit:
+                self._checksum.consume_result(res)
             return res
         except StopIteration:
             return
@@ -250,7 +261,8 @@ class Cursor(object):
         res = []
         try:
             for row in self:
-                self._checksum.consume_result(row)
+                if not self.connection.autocommit:
+                    self._checksum.consume_result(row)
                 res.append(row)
         except Aborted:
             self._connection.retry_transaction()
@@ -278,7 +290,8 @@ class Cursor(object):
         for i in range(size):
             try:
                 res = next(self)
-                self._checksum.consume_result(res)
+                if not self.connection.autocommit:
+                    self._checksum.consume_result(res)
                 items.append(res)
             except StopIteration:
                 break

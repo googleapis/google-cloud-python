@@ -22,6 +22,9 @@ from google.api_core.gapic_v1.client_info import ClientInfo
 from google.cloud import spanner_v1 as spanner
 from google.cloud.spanner_v1.session import _get_retry_delay
 
+from google.cloud.spanner_dbapi._helpers import _execute_insert_heterogenous
+from google.cloud.spanner_dbapi._helpers import _execute_insert_homogenous
+from google.cloud.spanner_dbapi._helpers import parse_insert
 from google.cloud.spanner_dbapi.checksum import _compare_checksums
 from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 from google.cloud.spanner_dbapi.cursor import Cursor
@@ -82,7 +85,7 @@ class Connection:
         :type value: bool
         :param value: New autocommit mode state.
         """
-        if value and not self._autocommit:
+        if value and not self._autocommit and self.inside_transaction:
             self.commit()
 
         self._autocommit = value
@@ -95,6 +98,19 @@ class Connection:
         :returns: The related database object.
         """
         return self._database
+
+    @property
+    def inside_transaction(self):
+        """Flag: transaction is started.
+
+        Returns:
+            bool: True if transaction begun, False otherwise.
+        """
+        return (
+            self._transaction
+            and not self._transaction.committed
+            and not self._transaction.rolled_back
+        )
 
     @property
     def instance(self):
@@ -191,11 +207,7 @@ class Connection:
         :returns: A Cloud Spanner transaction object, ready to use.
         """
         if not self.autocommit:
-            if (
-                not self._transaction
-                or self._transaction.committed
-                or self._transaction.rolled_back
-            ):
+            if not self.inside_transaction:
                 self._transaction = self._session_checkout().transaction()
                 self._transaction.begin()
 
@@ -216,11 +228,7 @@ class Connection:
         The connection will be unusable from this point forward. If the
         connection has an active transaction, it will be rolled back.
         """
-        if (
-            self._transaction
-            and not self._transaction.committed
-            and not self._transaction.rolled_back
-        ):
+        if self.inside_transaction:
             self._transaction.rollback()
 
         if self._own_pool:
@@ -235,7 +243,7 @@ class Connection:
         """
         if self._autocommit:
             warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
-        elif self._transaction:
+        elif self.inside_transaction:
             try:
                 self._transaction.commit()
                 self._release_session()
@@ -290,6 +298,24 @@ class Connection:
         transaction = self.transaction_checkout()
         if not retried:
             self._statements.append(statement)
+
+        if statement.is_insert:
+            parts = parse_insert(statement.sql, statement.params)
+
+            if parts.get("homogenous"):
+                _execute_insert_homogenous(transaction, parts)
+                return (
+                    iter(()),
+                    ResultsChecksum() if retried else statement.checksum,
+                )
+            else:
+                _execute_insert_heterogenous(
+                    transaction, parts.get("sql_params_list"),
+                )
+                return (
+                    iter(()),
+                    ResultsChecksum() if retried else statement.checksum,
+                )
 
         return (
             transaction.execute_sql(

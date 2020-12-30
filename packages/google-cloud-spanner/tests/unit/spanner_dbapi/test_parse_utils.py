@@ -391,7 +391,6 @@ class TestParseUtils(unittest.TestCase):
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_ensure_where_clause(self):
-        from google.cloud.spanner_dbapi.exceptions import ProgrammingError
         from google.cloud.spanner_dbapi.parse_utils import ensure_where_clause
 
         cases = (
@@ -409,8 +408,7 @@ class TestParseUtils(unittest.TestCase):
 
         for sql in err_cases:
             with self.subTest(sql=sql):
-                with self.assertRaises(ProgrammingError):
-                    ensure_where_clause(sql)
+                self.assertEqual(ensure_where_clause(sql), sql + " WHERE 1=1")
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_escape_name(self):

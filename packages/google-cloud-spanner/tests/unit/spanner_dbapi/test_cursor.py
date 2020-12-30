@@ -126,7 +126,7 @@ class TestCursor(unittest.TestCase):
         cursor = self._make_one(connection)
 
         with self.assertRaises(AttributeError):
-            cursor.execute(sql="")
+            cursor.execute(sql="SELECT 1")
 
     def test_execute_autocommit_off(self):
         from google.cloud.spanner_dbapi.utils import PeekIterator
@@ -531,7 +531,7 @@ class TestCursor(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum,)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
         connection._statements.append(statement)
 
         with mock.patch(
@@ -570,7 +570,7 @@ class TestCursor(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum,)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
         connection._statements.append(statement)
 
         with mock.patch(

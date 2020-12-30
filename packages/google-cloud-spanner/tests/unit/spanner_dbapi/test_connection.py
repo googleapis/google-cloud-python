@@ -15,7 +15,6 @@
 """Cloud Spanner DB-API Connection class unit tests."""
 
 import mock
-import sys
 import unittest
 import warnings
 
@@ -51,25 +50,57 @@ class TestConnection(unittest.TestCase):
         database = instance.database(self.DATABASE)
         return Connection(instance, database)
 
-    @unittest.skipIf(sys.version_info[0] < 3, "Python 2 patching is outdated")
-    def test_property_autocommit_setter(self):
-        from google.cloud.spanner_dbapi import Connection
-
-        connection = Connection(self.INSTANCE, self.DATABASE)
+    def test_autocommit_setter_transaction_not_started(self):
+        connection = self._make_connection()
 
         with mock.patch(
             "google.cloud.spanner_dbapi.connection.Connection.commit"
         ) as mock_commit:
             connection.autocommit = True
-            mock_commit.assert_called_once_with()
-            self.assertEqual(connection._autocommit, True)
+            mock_commit.assert_not_called()
+            self.assertTrue(connection._autocommit)
 
         with mock.patch(
             "google.cloud.spanner_dbapi.connection.Connection.commit"
         ) as mock_commit:
             connection.autocommit = False
             mock_commit.assert_not_called()
-            self.assertEqual(connection._autocommit, False)
+            self.assertFalse(connection._autocommit)
+
+    def test_autocommit_setter_transaction_started(self):
+        connection = self._make_connection()
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.connection.Connection.commit"
+        ) as mock_commit:
+            connection._transaction = mock.Mock(committed=False, rolled_back=False)
+
+            connection.autocommit = True
+            mock_commit.assert_called_once()
+            self.assertTrue(connection._autocommit)
+
+    def test_autocommit_setter_transaction_started_commited_rolled_back(self):
+        connection = self._make_connection()
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.connection.Connection.commit"
+        ) as mock_commit:
+            connection._transaction = mock.Mock(committed=True, rolled_back=False)
+
+            connection.autocommit = True
+            mock_commit.assert_not_called()
+            self.assertTrue(connection._autocommit)
+
+        connection.autocommit = False
+
+        with mock.patch(
+            "google.cloud.spanner_dbapi.connection.Connection.commit"
+        ) as mock_commit:
+            connection._transaction = mock.Mock(committed=False, rolled_back=True)
+
+            connection.autocommit = True
+            mock_commit.assert_not_called()
+            self.assertTrue(connection._autocommit)
 
     def test_property_database(self):
         from google.cloud.spanner_v1.database import Database
@@ -166,7 +197,9 @@ class TestConnection(unittest.TestCase):
             connection.commit()
             mock_release.assert_not_called()
 
-        connection._transaction = mock_transaction = mock.MagicMock()
+        connection._transaction = mock_transaction = mock.MagicMock(
+            rolled_back=False, committed=False
+        )
         mock_transaction.commit = mock_commit = mock.MagicMock()
 
         with mock.patch(
@@ -316,7 +349,7 @@ class TestConnection(unittest.TestCase):
 
         connection = self._make_connection()
 
-        statement = Statement(sql, params, param_types, ResultsChecksum(),)
+        statement = Statement(sql, params, param_types, ResultsChecksum(), False)
         with mock.patch(
             "google.cloud.spanner_dbapi.connection.Connection.transaction_checkout"
         ):
@@ -338,7 +371,7 @@ class TestConnection(unittest.TestCase):
 
         connection = self._make_connection()
 
-        statement = Statement(sql, params, param_types, ResultsChecksum(),)
+        statement = Statement(sql, params, param_types, ResultsChecksum(), False)
         with mock.patch(
             "google.cloud.spanner_dbapi.connection.Connection.transaction_checkout"
         ):
@@ -352,7 +385,7 @@ class TestConnection(unittest.TestCase):
         cleared, when the transaction is commited.
         """
         connection = self._make_connection()
-        connection._transaction = mock.Mock()
+        connection._transaction = mock.Mock(rolled_back=False, committed=False)
         connection._statements = [{}, {}]
 
         self.assertEqual(len(connection._statements), 2)
@@ -390,7 +423,7 @@ class TestConnection(unittest.TestCase):
         checksum.consume_result(row)
         retried_checkum = ResultsChecksum()
 
-        statement = Statement("SELECT 1", [], {}, checksum,)
+        statement = Statement("SELECT 1", [], {}, checksum, False)
         connection._statements.append(statement)
 
         with mock.patch(
@@ -423,7 +456,7 @@ class TestConnection(unittest.TestCase):
         checksum.consume_result(row)
         retried_checkum = ResultsChecksum()
 
-        statement = Statement("SELECT 1", [], {}, checksum,)
+        statement = Statement("SELECT 1", [], {}, checksum, False)
         connection._statements.append(statement)
 
         with mock.patch(
@@ -453,9 +486,9 @@ class TestConnection(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum,)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
         connection._statements.append(statement)
-        connection._transaction = mock.Mock()
+        connection._transaction = mock.Mock(rolled_back=False, committed=False)
 
         with mock.patch.object(
             connection._transaction, "commit", side_effect=(Aborted("Aborted"), None),
@@ -507,7 +540,7 @@ class TestConnection(unittest.TestCase):
         cursor._checksum = ResultsChecksum()
         cursor._checksum.consume_result(row)
 
-        statement = Statement("SELECT 1", [], {}, cursor._checksum,)
+        statement = Statement("SELECT 1", [], {}, cursor._checksum, False)
         connection._statements.append(statement)
 
         metadata_mock = mock.Mock()
