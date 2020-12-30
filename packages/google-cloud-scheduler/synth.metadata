@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-scheduler.git",
-        "sha": "b6a9feb31aec9ee1aa4eb46ccd44dcc8e6cc27a7"
+        "sha": "224d15a02023706fd26251f395f69ecf666ac82a"
       }
     },
     {
