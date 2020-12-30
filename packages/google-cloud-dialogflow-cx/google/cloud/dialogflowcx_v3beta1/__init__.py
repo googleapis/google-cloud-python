@@ -176,7 +176,6 @@ __all__ = (
     "DetectIntentResponse",
     "DtmfInput",
     "EntityType",
-    "EntityTypesClient",
     "Environment",
     "EnvironmentsClient",
     "EventHandler",
@@ -245,6 +244,7 @@ __all__ = (
     "SessionEntityType",
     "SessionEntityTypesClient",
     "SessionInfo",
+    "SessionsClient",
     "SpeechModelVariant",
     "SpeechToTextSettings",
     "SpeechWordInfo",
@@ -275,5 +275,5 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
-    "SessionsClient",
+    "EntityTypesClient",
 )

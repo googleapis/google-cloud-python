@@ -194,6 +194,7 @@ __all__ = (
     "ExportAgentRequest",
     "ExportAgentResponse",
     "Flow",
+    "FlowsClient",
     "Form",
     "FulfillIntentRequest",
     "FulfillIntentResponse",
@@ -272,7 +273,6 @@ __all__ = (
     "TrainFlowRequest",
     "TransitionRoute",
     "TransitionRouteGroup",
-    "TransitionRouteGroupsClient",
     "UpdateAgentRequest",
     "UpdateEntityTypeRequest",
     "UpdateEnvironmentRequest",
@@ -291,5 +291,5 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
-    "FlowsClient",
+    "TransitionRouteGroupsClient",
 )
