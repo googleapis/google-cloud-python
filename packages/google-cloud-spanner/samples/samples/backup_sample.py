@@ -57,7 +57,6 @@ def create_backup(instance_id, database_id, backup_id):
 
 
 # [START spanner_restore_backup]
-# [START spanner_restore_database]
 def restore_database(instance_id, new_database_id, backup_id):
     """Restores a database from a backup."""
     spanner_client = spanner.Client()
@@ -84,12 +83,10 @@ def restore_database(instance_id, new_database_id, backup_id):
     )
 
 
-# [END spanner_restore_database]
 # [END spanner_restore_backup]
 
 
 # [START spanner_cancel_backup_create]
-# [START spanner_cancel_backup]
 def cancel_backup(instance_id, database_id, backup_id):
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
@@ -118,7 +115,6 @@ def cancel_backup(instance_id, database_id, backup_id):
         print("Backup creation was successfully cancelled.")
 
 
-# [END spanner_cancel_backup]
 # [END spanner_cancel_backup_create]
 
 
