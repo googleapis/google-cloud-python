@@ -52,7 +52,7 @@ toolchain(
 py_binary(
     name = "gapic_plugin",
     srcs = glob(["gapic/**/*.py"]),
-    data = [":pandoc_binary"] + glob(["gapic/**/*.j2"]),
+    data = [":pandoc_binary"] + glob(["gapic/**/*.j2", "gapic/**/.*.j2"]),
     main = "gapic/cli/generate_with_pandoc.py",
     python_version = "PY3",
     visibility = ["//visibility:public"],

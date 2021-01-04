@@ -9,13 +9,9 @@ http_archive(
 
 http_archive(
     name = "rules_python",
-    strip_prefix = "rules_python-0.1.0,
+    strip_prefix = "rules_python-0.1.0",
     url = "https://github.com/bazelbuild/rules_python/archive/0.1.0.tar.gz",
 )
-
-load("@rules_python//python:repositories.bzl", "py_repositories")
-
-py_repositories()
 
 load("@rules_python//python:pip.bzl", "pip_repositories")
 
@@ -24,18 +20,15 @@ pip_repositories()
 #
 # Import gapic-generator-python specific dependencies
 #
-load("//:repositories.bzl",
+load(
+    "//:repositories.bzl",
     "gapic_generator_python",
-    "gapic_generator_register_toolchains"
+    "gapic_generator_register_toolchains",
 )
 
 gapic_generator_python()
 
 gapic_generator_register_toolchains()
-
-load("@gapic_generator_python_pip_deps//:requirements.bzl", "pip_install")
-
-pip_install()
 
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
