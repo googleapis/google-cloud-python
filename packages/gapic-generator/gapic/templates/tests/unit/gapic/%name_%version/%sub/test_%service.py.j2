@@ -1369,7 +1369,7 @@ def test_{{ service.name|snake_case }}_host_with_port():
 
 {% if 'grpc' in opts.transport %}
 def test_{{ service.name|snake_case }}_grpc_transport_channel():
-    channel = grpc.insecure_channel('http://localhost/')
+    channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.{{ service.name }}GrpcTransport(
@@ -1382,7 +1382,7 @@ def test_{{ service.name|snake_case }}_grpc_transport_channel():
 
 
 def test_{{ service.name|snake_case }}_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel('http://localhost/')
+    channel = aio.secure_channel('http://localhost/', grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.{{ service.name }}GrpcAsyncIOTransport(
@@ -1399,7 +1399,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
     transport_class
 ):
     with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
-        with mock.patch.object(transport_class, "create_channel", autospec=True) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -1450,7 +1450,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(transport_class, "create_channel", autospec=True) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
