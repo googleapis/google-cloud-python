@@ -21,6 +21,7 @@ from .auto_suggestion_service import (
     Suggestion,
     SuggestionInfo,
     SuggestQueriesResponse,
+    SuggestionType,
 )
 from .question import (
     Question,
@@ -32,6 +33,7 @@ from .question import (
     HumanReadable,
     InterpretationStructure,
     DebugFlags,
+    InterpretEntity,
 )
 from .user_feedback import UserFeedback
 from .question_service import (
@@ -42,13 +44,13 @@ from .question_service import (
     UpdateUserFeedbackRequest,
 )
 
-
 __all__ = (
     "AnnotatedString",
     "SuggestQueriesRequest",
     "Suggestion",
     "SuggestionInfo",
     "SuggestQueriesResponse",
+    "SuggestionType",
     "Question",
     "InterpretError",
     "ExecutionInfo",
@@ -58,6 +60,7 @@ __all__ = (
     "HumanReadable",
     "InterpretationStructure",
     "DebugFlags",
+    "InterpretEntity",
     "UserFeedback",
     "GetQuestionRequest",
     "CreateQuestionRequest",
