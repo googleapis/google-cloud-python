@@ -300,7 +300,7 @@ class MessageMeta(type):
         """
         # Optimized fast path.
         instance = cls.__new__(cls)
-        instance.__dict__["_pb"] = pb
+        super(cls, instance).__setattr__("_pb", pb)
         return instance
 
     def serialize(cls, instance) -> bytes:
@@ -414,7 +414,7 @@ class Message(metaclass=MessageMeta):
         if mapping is None:
             if not kwargs:
                 # Special fast path for empty construction.
-                self.__dict__["_pb"] = self._meta.pb()
+                super().__setattr__("_pb", self._meta.pb())
                 return
 
             mapping = kwargs
@@ -430,7 +430,7 @@ class Message(metaclass=MessageMeta):
             if kwargs:
                 mapping.MergeFrom(self._meta.pb(**kwargs))
 
-            self.__dict__["_pb"] = mapping
+            super().__setattr__("_pb", mapping)
             return
         elif isinstance(mapping, type(self)):
             # Just use the above logic on mapping's underlying pb.
@@ -468,7 +468,7 @@ class Message(metaclass=MessageMeta):
                 params[key] = pb_value
 
         # Create the internal protocol buffer.
-        self.__dict__["_pb"] = self._meta.pb(**params)
+        super().__setattr__("_pb", self._meta.pb(**params))
 
     def __bool__(self):
         """Return True if any field is truthy, False otherwise."""
