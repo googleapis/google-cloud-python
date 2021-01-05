@@ -1178,11 +1178,12 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
+        client = self._require_client(client)
         try:
             with open(filename, "wb") as file_obj:
-                self.download_to_file(
+                client.download_blob_to_file(
+                    self,
                     file_obj,
-                    client=client,
                     start=start,
                     end=end,
                     raw_download=raw_download,
@@ -1285,10 +1286,11 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
+        client = self._require_client(client)
         string_buffer = BytesIO()
-        self.download_to_file(
+        client.download_blob_to_file(
+            self,
             string_buffer,
-            client=client,
             start=start,
             end=end,
             raw_download=raw_download,

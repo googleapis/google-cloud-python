@@ -63,9 +63,9 @@ retry_429_503 = RetryErrors(
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
 
 
-def _empty_bucket(bucket):
+def _empty_bucket(client, bucket):
     """Empty a bucket of all existing blobs (including multiple versions)."""
-    for blob in list(bucket.list_blobs(versions=True)):
+    for blob in list(client.list_blobs(bucket, versions=True)):
         try:
             blob.delete()
         except exceptions.NotFound:
@@ -96,7 +96,7 @@ def setUpModule():
 def tearDownModule():
     errors = (exceptions.Conflict, exceptions.TooManyRequests)
     retry = RetryErrors(errors, max_tries=15)
-    retry(_empty_bucket)(Config.TEST_BUCKET)
+    retry(_empty_bucket)(Config.CLIENT, Config.TEST_BUCKET)
     retry(Config.TEST_BUCKET.delete)(force=True)
 
 
@@ -622,7 +622,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
         with tempfile.NamedTemporaryFile() as temp_f:
             with open(temp_f.name, "wb") as file_obj:
-                blob.download_to_file(file_obj)
+                Config.CLIENT.download_blob_to_file(blob, file_obj)
 
             with open(temp_f.name, "rb") as file_obj:
                 md5_temp_hash = _base64_md5hash(file_obj)
@@ -718,11 +718,15 @@ class TestStorageWriteFiles(TestStorageFiles):
             self.assertIsNone(blob1.metadata)
         finally:
             # Exercise 'objects.delete' (metadata) w/ userProject.
-            blobs = with_user_project.list_blobs(prefix=blob.name, versions=True)
+            blobs = Config.CLIENT.list_blobs(
+                with_user_project, prefix=blob.name, versions=True
+            )
             self.assertEqual([each.generation for each in blobs], [gen0, gen1])
 
             blob0.delete()
-            blobs = with_user_project.list_blobs(prefix=blob.name, versions=True)
+            blobs = Config.CLIENT.list_blobs(
+                with_user_project, prefix=blob.name, versions=True
+            )
             self.assertEqual([each.generation for each in blobs], [gen1])
 
             blob1.delete()
@@ -859,7 +863,7 @@ class TestStorageWriteFiles(TestStorageFiles):
         with tempfile.NamedTemporaryFile() as temp_f:
 
             with open(temp_f.name, "wb") as file_obj:
-                same_blob.download_to_file(file_obj)
+                Config.CLIENT.download_blob_to_file(same_blob, file_obj)
 
             with open(temp_f.name, "rb") as file_obj:
                 stored_contents = file_obj.read()
@@ -881,11 +885,12 @@ class TestStorageWriteFiles(TestStorageFiles):
 
             with open(temp_f.name, "wb") as file_obj:
                 with self.assertRaises(google.api_core.exceptions.PreconditionFailed):
-                    same_blob.download_to_file(
-                        file_obj, if_generation_match=WRONG_GENERATION_NUMBER
+                    Config.CLIENT.download_blob_to_file(
+                        same_blob, file_obj, if_generation_match=WRONG_GENERATION_NUMBER
                     )
 
-                same_blob.download_to_file(
+                Config.CLIENT.download_blob_to_file(
+                    same_blob,
                     file_obj,
                     if_generation_match=blob.generation,
                     if_metageneration_match=blob.metageneration,
@@ -1068,7 +1073,7 @@ class TestStorageListFiles(TestStorageFiles):
     def setUpClass(cls):
         super(TestStorageListFiles, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        _empty_bucket(cls.bucket)
+        _empty_bucket(Config.CLIENT, cls.bucket)
 
         logo_path = cls.FILES["logo"]["path"]
         blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
@@ -1089,7 +1094,7 @@ class TestStorageListFiles(TestStorageFiles):
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_list_files(self):
-        all_blobs = list(self.bucket.list_blobs())
+        all_blobs = list(Config.CLIENT.list_blobs(self.bucket))
         self.assertEqual(
             sorted(blob.name for blob in all_blobs), sorted(self.FILENAMES)
         )
@@ -1100,7 +1105,7 @@ class TestStorageListFiles(TestStorageFiles):
         with_user_project = Config.CLIENT.bucket(
             self.bucket.name, user_project=USER_PROJECT
         )
-        all_blobs = list(with_user_project.list_blobs())
+        all_blobs = list(Config.CLIENT.list_blobs(with_user_project))
         self.assertEqual(
             sorted(blob.name for blob in all_blobs), sorted(self.FILENAMES)
         )
@@ -1109,7 +1114,7 @@ class TestStorageListFiles(TestStorageFiles):
     def test_paginate_files(self):
         truncation_size = 1
         count = len(self.FILENAMES) - truncation_size
-        iterator = self.bucket.list_blobs(max_results=count)
+        iterator = Config.CLIENT.list_blobs(self.bucket, max_results=count)
         page_iter = iterator.pages
 
         page1 = six.next(page_iter)
@@ -1133,7 +1138,8 @@ class TestStorageListFiles(TestStorageFiles):
         exclusive_end_offset = self.FILENAMES[-1]
         desired_files = self.FILENAMES[1:-1]
         count = len(desired_files) - truncation_size
-        iterator = self.bucket.list_blobs(
+        iterator = Config.CLIENT.list_blobs(
+            self.bucket,
             max_results=count,
             start_offset=inclusive_start_offset,
             end_offset=exclusive_end_offset,
@@ -1173,7 +1179,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def setUpClass(cls):
         super(TestStoragePseudoHierarchy, cls).setUpClass()
         # Make sure bucket empty before beginning.
-        _empty_bucket(cls.bucket)
+        _empty_bucket(Config.CLIENT, cls.bucket)
 
         cls.suite_blobs_to_delete = []
         simple_path = cls.FILES["simple"]["path"]
@@ -1197,7 +1203,7 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_root_level_w_delimiter(self):
-        iterator = self.bucket.list_blobs(delimiter="/")
+        iterator = Config.CLIENT.list_blobs(self.bucket, delimiter="/")
         page = six.next(iterator.pages)
         blobs = list(page)
         self.assertEqual([blob.name for blob in blobs], ["file01.txt"])
@@ -1206,7 +1212,9 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_first_level(self):
-        iterator = self.bucket.list_blobs(delimiter="/", prefix="parent/")
+        iterator = Config.CLIENT.list_blobs(
+            self.bucket, delimiter="/", prefix="parent/"
+        )
         page = six.next(iterator.pages)
         blobs = list(page)
         self.assertEqual(
@@ -1219,7 +1227,9 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
     def test_second_level(self):
         expected_names = ["parent/child/file21.txt", "parent/child/file22.txt"]
 
-        iterator = self.bucket.list_blobs(delimiter="/", prefix="parent/child/")
+        iterator = Config.CLIENT.list_blobs(
+            self.bucket, delimiter="/", prefix="parent/child/"
+        )
         page = six.next(iterator.pages)
         blobs = list(page)
         self.assertEqual([blob.name for blob in blobs], expected_names)
@@ -1234,7 +1244,9 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         # of 1024 characters in the UTF-8 encoded name:
         # https://cloud.google.com/storage/docs/bucketnaming#objectnames
         # Exercise a layer deeper to illustrate this.
-        iterator = self.bucket.list_blobs(delimiter="/", prefix="parent/child/grand/")
+        iterator = Config.CLIENT.list_blobs(
+            self.bucket, delimiter="/", prefix="parent/child/grand/"
+        )
         page = six.next(iterator.pages)
         blobs = list(page)
         self.assertEqual(
@@ -1245,8 +1257,8 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
 
     @RetryErrors(unittest.TestCase.failureException)
     def test_include_trailing_delimiter(self):
-        iterator = self.bucket.list_blobs(
-            delimiter="/", include_trailing_delimiter=True
+        iterator = Config.CLIENT.list_blobs(
+            self.bucket, delimiter="/", include_trailing_delimiter=True
         )
         page = six.next(iterator.pages)
         blobs = list(page)
@@ -1273,7 +1285,7 @@ class TestStorageSignURLs(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        _empty_bucket(cls.bucket)
+        _empty_bucket(Config.CLIENT, cls.bucket)
         errors = (exceptions.Conflict, exceptions.TooManyRequests)
         retry = RetryErrors(errors, max_tries=6)
         retry(cls.bucket.delete)(force=True)
@@ -1961,7 +1973,7 @@ class TestAnonymousClient(unittest.TestCase):
     def test_access_to_public_bucket(self):
         anonymous = storage.Client.create_anonymous_client()
         bucket = anonymous.bucket(self.PUBLIC_BUCKET)
-        (blob,) = retry_429_503(bucket.list_blobs)(max_results=1)
+        (blob,) = retry_429_503(anonymous.list_blobs)(bucket, max_results=1)
         with tempfile.TemporaryFile() as stream:
             retry_429_503(blob.download_to_file)(stream)
 
@@ -1988,7 +2000,7 @@ class TestKMSIntegration(TestStorageFiles):
     @classmethod
     def setUpClass(cls):
         super(TestKMSIntegration, cls).setUpClass()
-        _empty_bucket(cls.bucket)
+        _empty_bucket(Config.CLIENT, cls.bucket)
 
     def setUp(self):
         super(TestKMSIntegration, self).setUp()
@@ -2048,7 +2060,7 @@ class TestKMSIntegration(TestStorageFiles):
         # We don't know the current version of the key.
         self.assertTrue(blob.kms_key_name.startswith(kms_key_name))
 
-        (listed,) = list(self.bucket.list_blobs())
+        (listed,) = list(Config.CLIENT.list_blobs(self.bucket))
         self.assertTrue(listed.kms_key_name.startswith(kms_key_name))
 
     @RetryErrors(unittest.TestCase.failureException)

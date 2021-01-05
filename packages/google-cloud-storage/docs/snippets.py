@@ -95,7 +95,7 @@ def download_to_file(to_delete):
     blob = Blob("secure-data", bucket, encryption_key=encryption_key)
     blob.upload_from_string("my secret message.")
     with open("/tmp/my-secure-file", "wb") as file_obj:
-        blob.download_to_file(file_obj)
+        client.download_to_file(blob, file_obj)
     # [END download_to_file]
 
     to_delete.append(blob)
@@ -140,7 +140,7 @@ def delete_blob(to_delete):
 
     client = storage.Client()
     bucket = client.get_bucket("my-bucket")
-    blobs = list(bucket.list_blobs())
+    blobs = list(client.list_blobs(bucket))
     assert len(blobs) > 0
     # [<Blob: my-bucket, my-file.txt>]
     bucket.delete_blob("my-file.txt")
