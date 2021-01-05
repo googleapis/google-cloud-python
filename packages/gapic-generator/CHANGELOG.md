@@ -1,5 +1,14 @@
 # Changelog
 
+### [0.39.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.39.0...v0.39.1) (2021-01-05)
+
+
+### Bug Fixes
+
+* fix missing .coveragerc and the broken bazel build ([#723](https://www.github.com/googleapis/gapic-generator-python/issues/723)) ([7f8235f](https://www.github.com/googleapis/gapic-generator-python/commit/7f8235f6dfbd309a879895701aeb5e73c6425483))
+* Update gapic-generator-python to gracefully handle internal google inconsistencies ([#721](https://www.github.com/googleapis/gapic-generator-python/issues/721)) ([b984295](https://www.github.com/googleapis/gapic-generator-python/commit/b9842952433924a1d8de4ef9cc3ea9e7fa91c01a))
+* updating testing, rest-only generation, & minor bug-fixes ([#716](https://www.github.com/googleapis/gapic-generator-python/issues/716)) ([56c31de](https://www.github.com/googleapis/gapic-generator-python/commit/56c31de4a9f661e3d69b52e19c9a28dddfe9d7dc))
+
 ## [0.39.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.38.0...v0.39.0) (2020-12-22)
 
 
