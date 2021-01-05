@@ -33,8 +33,19 @@ def project_id():
 
 
 @pytest.fixture(scope="session")
-def credentials():
+def use_mtls():
+    return "always" == os.environ.get("GOOGLE_API_USE_MTLS_ENDPOINT", "never")
+
+
+@pytest.fixture(scope="session")
+def credentials(use_mtls):
+    import google.auth
     from google.oauth2 import service_account
+
+    if use_mtls:
+        # mTLS test uses user credentials instead of service account credentials
+        creds, _ = google.auth.default()
+        return creds
 
     # NOTE: the test config in noxfile checks that the env variable is indeed set
     filename = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
@@ -59,7 +70,11 @@ def small_table_reference():
 
 
 @pytest.fixture(scope="session")
-def local_shakespeare_table_reference(project_id):
+def local_shakespeare_table_reference(project_id, use_mtls):
+    if use_mtls:
+        pytest.skip(
+            "Skip it for mTLS testing since the table does not exist for mTLS project"
+        )
     return _TABLE_FORMAT.format(project_id, "public_samples_copy", "shakespeare")
 
 
@@ -100,7 +115,9 @@ def table(project_id, dataset, bq_client):
 
 
 @pytest.fixture(scope="session")
-def bq_client(credentials):
+def bq_client(credentials, use_mtls):
+    if use_mtls:
+        pytest.skip("Skip it for mTLS testing since bigquery does not support mTLS")
     from google.cloud import bigquery
 
     return bigquery.Client(credentials=credentials)
