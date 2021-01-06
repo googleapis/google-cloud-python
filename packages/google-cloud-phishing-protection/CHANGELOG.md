@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.1.0](https://www.github.com/googleapis/python-phishingprotection/compare/v1.0.0...v1.1.0) (2021-01-06)
+
+
+### Features
+
+* add from_service_account_info factory and fix sphinx identifiers  ([#46](https://www.github.com/googleapis/python-phishingprotection/issues/46)) ([8938b54](https://www.github.com/googleapis/python-phishingprotection/commit/8938b54d590753ae25213945be3764e90d4bb327))
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([197a753](https://www.github.com/googleapis/python-phishingprotection/commit/197a75346252441e5a5cb5eee982e7cb64a20299))
+
 ## [1.0.0](https://www.github.com/googleapis/python-phishingprotection/compare/v0.4.0...v1.0.0) (2020-12-04)
 
 
