@@ -116,6 +116,22 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            OsLoginServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -127,7 +143,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            OsLoginServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -243,10 +259,10 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.OsLoginServiceTransport]): The
+            transport (Union[str, OsLoginServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -356,14 +372,15 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         r"""Deletes a POSIX account.
 
         Args:
-            request (:class:`~.oslogin.DeletePosixAccountRequest`):
+            request (google.cloud.oslogin_v1.types.DeletePosixAccountRequest):
                 The request object. A request message for deleting a
                 POSIX account entry.
-            name (:class:`str`):
+            name (str):
                 Required. A reference to the POSIX account to update.
                 POSIX accounts are identified by the project ID they are
                 associated with. A reference to the POSIX account is in
                 format ``users/{user}/projects/{project}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -424,14 +441,15 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         r"""Deletes an SSH public key.
 
         Args:
-            request (:class:`~.oslogin.DeleteSshPublicKeyRequest`):
+            request (google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest):
                 The request object. A request message for deleting an
                 SSH public key.
-            name (:class:`str`):
+            name (str):
                 Required. The fingerprint of the public key to update.
                 Public keys are identified by their SHA-256 fingerprint.
                 The fingerprint of the public key is in format
                 ``users/{user}/sshPublicKeys/{fingerprint}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -493,12 +511,13 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         to a virtual machine on Google Compute Engine.
 
         Args:
-            request (:class:`~.oslogin.GetLoginProfileRequest`):
+            request (google.cloud.oslogin_v1.types.GetLoginProfileRequest):
                 The request object. A request message for retrieving the
                 login profile information for a user.
-            name (:class:`str`):
+            name (str):
                 Required. The unique ID for the user in format
                 ``users/{user}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -510,7 +529,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.oslogin.LoginProfile:
+            google.cloud.oslogin_v1.types.LoginProfile:
                 The user profile information used for
                 logging in to a virtual machine on
                 Google Compute Engine.
@@ -567,14 +586,15 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         r"""Retrieves an SSH public key.
 
         Args:
-            request (:class:`~.oslogin.GetSshPublicKeyRequest`):
+            request (google.cloud.oslogin_v1.types.GetSshPublicKeyRequest):
                 The request object. A request message for retrieving an
                 SSH public key.
-            name (:class:`str`):
+            name (str):
                 Required. The fingerprint of the public key to retrieve.
                 Public keys are identified by their SHA-256 fingerprint.
                 The fingerprint of the public key is in format
                 ``users/{user}/sshPublicKeys/{fingerprint}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -586,7 +606,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SshPublicKey:
+            google.cloud.oslogin.v1.common_pb2.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -647,24 +667,27 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         profile.
 
         Args:
-            request (:class:`~.oslogin.ImportSshPublicKeyRequest`):
+            request (google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest):
                 The request object. A request message for importing an
                 SSH public key.
-            parent (:class:`str`):
+            parent (str):
                 Required. The unique ID for the user in format
                 ``users/{user}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (:class:`~.common.SshPublicKey`):
+            ssh_public_key (google.cloud.oslogin.v1.common_pb2.SshPublicKey):
                 Optional. The SSH public key and
                 expiration time.
+
                 This corresponds to the ``ssh_public_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            project_id (:class:`str`):
+            project_id (str):
                 The project ID of the Google Cloud
                 Platform project.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -676,7 +699,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.oslogin.ImportSshPublicKeyResponse:
+            google.cloud.oslogin_v1.types.ImportSshPublicKeyResponse:
                 A response message for importing an
                 SSH public key.
 
@@ -739,26 +762,29 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         information. This method supports patch semantics.
 
         Args:
-            request (:class:`~.oslogin.UpdateSshPublicKeyRequest`):
+            request (google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest):
                 The request object. A request message for updating an
                 SSH public key.
-            name (:class:`str`):
+            name (str):
                 Required. The fingerprint of the public key to update.
                 Public keys are identified by their SHA-256 fingerprint.
                 The fingerprint of the public key is in format
                 ``users/{user}/sshPublicKeys/{fingerprint}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (:class:`~.common.SshPublicKey`):
+            ssh_public_key (google.cloud.oslogin.v1.common_pb2.SshPublicKey):
                 Required. The SSH public key and
                 expiration time.
+
                 This corresponds to the ``ssh_public_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Mask to control which fields get
                 updated. Updates all if not present.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -770,7 +796,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SshPublicKey:
+            google.cloud.oslogin.v1.common_pb2.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 

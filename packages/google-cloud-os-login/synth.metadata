@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-oslogin.git",
-        "sha": "ed84bb127eac218e845468d5d07a476af410ce71"
+        "sha": "0c70391551868ff8f8a2ee63ce9ec6548ef2517a"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "520682435235d9c503983a360a2090025aa47cd1",
+        "internalRef": "350246057"
       }
     },
     {
@@ -89,6 +89,7 @@
     "docs/conf.py",
     "docs/multiprocessing.rst",
     "docs/oslogin_v1/common/types.rst",
+    "docs/oslogin_v1/os_login_service.rst",
     "docs/oslogin_v1/services.rst",
     "docs/oslogin_v1/types.rst",
     "google/cloud/oslogin/__init__.py",

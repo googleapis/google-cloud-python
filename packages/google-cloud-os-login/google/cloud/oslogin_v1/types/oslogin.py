@@ -44,10 +44,10 @@ class LoginProfile(proto.Message):
     Attributes:
         name (str):
             Required. A unique user ID.
-        posix_accounts (Sequence[~.common.PosixAccount]):
+        posix_accounts (Sequence[google.cloud.oslogin.v1.common_pb2.PosixAccount]):
             The list of POSIX accounts associated with
             the user.
-        ssh_public_keys (Sequence[~.oslogin.LoginProfile.SshPublicKeysEntry]):
+        ssh_public_keys (Sequence[google.cloud.oslogin_v1.types.LoginProfile.SshPublicKeysEntry]):
             A map from SSH public key fingerprint to the
             associated key object.
     """
@@ -135,7 +135,7 @@ class ImportSshPublicKeyRequest(proto.Message):
         parent (str):
             Required. The unique ID for the user in format
             ``users/{user}``.
-        ssh_public_key (~.common.SshPublicKey):
+        ssh_public_key (google.cloud.oslogin.v1.common_pb2.SshPublicKey):
             Optional. The SSH public key and expiration
             time.
         project_id (str):
@@ -154,7 +154,7 @@ class ImportSshPublicKeyResponse(proto.Message):
     r"""A response message for importing an SSH public key.
 
     Attributes:
-        login_profile (~.oslogin.LoginProfile):
+        login_profile (google.cloud.oslogin_v1.types.LoginProfile):
             The login profile information for the user.
     """
 
@@ -170,10 +170,10 @@ class UpdateSshPublicKeyRequest(proto.Message):
             Public keys are identified by their SHA-256 fingerprint. The
             fingerprint of the public key is in format
             ``users/{user}/sshPublicKeys/{fingerprint}``.
-        ssh_public_key (~.common.SshPublicKey):
+        ssh_public_key (google.cloud.oslogin.v1.common_pb2.SshPublicKey):
             Required. The SSH public key and expiration
             time.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask to control which fields get updated.
             Updates all if not present.
     """

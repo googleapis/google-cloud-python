@@ -87,6 +87,7 @@ class OsLoginServiceAsyncClient:
         OsLoginServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = OsLoginServiceClient.from_service_account_info
     from_service_account_file = OsLoginServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -163,7 +164,7 @@ class OsLoginServiceAsyncClient:
         r"""Deletes a POSIX account.
 
         Args:
-            request (:class:`~.oslogin.DeletePosixAccountRequest`):
+            request (:class:`google.cloud.oslogin_v1.types.DeletePosixAccountRequest`):
                 The request object. A request message for deleting a
                 POSIX account entry.
             name (:class:`str`):
@@ -171,6 +172,7 @@ class OsLoginServiceAsyncClient:
                 POSIX accounts are identified by the project ID they are
                 associated with. A reference to the POSIX account is in
                 format ``users/{user}/projects/{project}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -238,7 +240,7 @@ class OsLoginServiceAsyncClient:
         r"""Deletes an SSH public key.
 
         Args:
-            request (:class:`~.oslogin.DeleteSshPublicKeyRequest`):
+            request (:class:`google.cloud.oslogin_v1.types.DeleteSshPublicKeyRequest`):
                 The request object. A request message for deleting an
                 SSH public key.
             name (:class:`str`):
@@ -246,6 +248,7 @@ class OsLoginServiceAsyncClient:
                 Public keys are identified by their SHA-256 fingerprint.
                 The fingerprint of the public key is in format
                 ``users/{user}/sshPublicKeys/{fingerprint}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -314,12 +317,13 @@ class OsLoginServiceAsyncClient:
         to a virtual machine on Google Compute Engine.
 
         Args:
-            request (:class:`~.oslogin.GetLoginProfileRequest`):
+            request (:class:`google.cloud.oslogin_v1.types.GetLoginProfileRequest`):
                 The request object. A request message for retrieving the
                 login profile information for a user.
             name (:class:`str`):
                 Required. The unique ID for the user in format
                 ``users/{user}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -331,7 +335,7 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.oslogin.LoginProfile:
+            google.cloud.oslogin_v1.types.LoginProfile:
                 The user profile information used for
                 logging in to a virtual machine on
                 Google Compute Engine.
@@ -395,7 +399,7 @@ class OsLoginServiceAsyncClient:
         r"""Retrieves an SSH public key.
 
         Args:
-            request (:class:`~.oslogin.GetSshPublicKeyRequest`):
+            request (:class:`google.cloud.oslogin_v1.types.GetSshPublicKeyRequest`):
                 The request object. A request message for retrieving an
                 SSH public key.
             name (:class:`str`):
@@ -403,6 +407,7 @@ class OsLoginServiceAsyncClient:
                 Public keys are identified by their SHA-256 fingerprint.
                 The fingerprint of the public key is in format
                 ``users/{user}/sshPublicKeys/{fingerprint}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -414,7 +419,7 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SshPublicKey:
+            google.cloud.oslogin.v1.common_pb2.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -482,24 +487,27 @@ class OsLoginServiceAsyncClient:
         profile.
 
         Args:
-            request (:class:`~.oslogin.ImportSshPublicKeyRequest`):
+            request (:class:`google.cloud.oslogin_v1.types.ImportSshPublicKeyRequest`):
                 The request object. A request message for importing an
                 SSH public key.
             parent (:class:`str`):
                 Required. The unique ID for the user in format
                 ``users/{user}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (:class:`~.common.SshPublicKey`):
+            ssh_public_key (:class:`google.cloud.oslogin.v1.common_pb2.SshPublicKey`):
                 Optional. The SSH public key and
                 expiration time.
+
                 This corresponds to the ``ssh_public_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             project_id (:class:`str`):
                 The project ID of the Google Cloud
                 Platform project.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -511,7 +519,7 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.oslogin.ImportSshPublicKeyResponse:
+            google.cloud.oslogin_v1.types.ImportSshPublicKeyResponse:
                 A response message for importing an
                 SSH public key.
 
@@ -581,7 +589,7 @@ class OsLoginServiceAsyncClient:
         information. This method supports patch semantics.
 
         Args:
-            request (:class:`~.oslogin.UpdateSshPublicKeyRequest`):
+            request (:class:`google.cloud.oslogin_v1.types.UpdateSshPublicKeyRequest`):
                 The request object. A request message for updating an
                 SSH public key.
             name (:class:`str`):
@@ -589,18 +597,21 @@ class OsLoginServiceAsyncClient:
                 Public keys are identified by their SHA-256 fingerprint.
                 The fingerprint of the public key is in format
                 ``users/{user}/sshPublicKeys/{fingerprint}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (:class:`~.common.SshPublicKey`):
+            ssh_public_key (:class:`google.cloud.oslogin.v1.common_pb2.SshPublicKey`):
                 Required. The SSH public key and
                 expiration time.
+
                 This corresponds to the ``ssh_public_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Mask to control which fields get
                 updated. Updates all if not present.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -612,7 +623,7 @@ class OsLoginServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SshPublicKey:
+            google.cloud.oslogin.v1.common_pb2.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 

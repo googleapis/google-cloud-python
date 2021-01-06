@@ -59,7 +59,7 @@ class PosixAccount(proto.Message):
             empty value is used.
         account_id (str):
             Output only. A POSIX account identifier.
-        operating_system_type (~.common.OperatingSystemType):
+        operating_system_type (google.cloud.oslogin.v1.types.OperatingSystemType):
             The operating system type where this account
             applies.
         name (str):

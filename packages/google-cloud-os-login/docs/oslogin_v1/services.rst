@@ -1,6 +1,6 @@
 Services for Google Cloud Oslogin v1 API
 ========================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.oslogin_v1.services.os_login_service
-    :members:
-    :inherited-members:
+    os_login_service
