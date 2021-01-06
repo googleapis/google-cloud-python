@@ -133,6 +133,22 @@ class BinauthzManagementServiceV1Beta1Client(
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            BinauthzManagementServiceV1Beta1Client: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -144,7 +160,7 @@ class BinauthzManagementServiceV1Beta1Client(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            BinauthzManagementServiceV1Beta1Client: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -260,10 +276,10 @@ class BinauthzManagementServiceV1Beta1Client(
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BinauthzManagementServiceV1Beta1Transport]): The
+            transport (Union[str, BinauthzManagementServiceV1Beta1Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -385,13 +401,14 @@ class BinauthzManagementServiceV1Beta1Client(
         project does not have one.
 
         Args:
-            request (:class:`~.service.GetPolicyRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.GetPolicyRequest):
                 The request object. Request message for
                 [BinauthzManagementService.GetPolicy][].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [policy][google.cloud.binaryauthorization.v1beta1.Policy]
                 to retrieve, in the format ``projects/*/policy``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -403,7 +420,7 @@ class BinauthzManagementServiceV1Beta1Client(
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Policy:
+            google.cloud.binaryauthorization_v1beta1.types.Policy:
                 A
                 [policy][google.cloud.binaryauthorization.v1beta1.Policy]
                 for container image binary authorization.
@@ -467,16 +484,17 @@ class BinauthzManagementServiceV1Beta1Client(
         INVALID_ARGUMENT if the request is malformed.
 
         Args:
-            request (:class:`~.service.UpdatePolicyRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.UpdatePolicyRequest):
                 The request object. Request message for
                 [BinauthzManagementService.UpdatePolicy][].
-            policy (:class:`~.resources.Policy`):
+            policy (google.cloud.binaryauthorization_v1beta1.types.Policy):
                 Required. A new or updated
                 [policy][google.cloud.binaryauthorization.v1beta1.Policy]
                 value. The service will overwrite the [policy
                 name][google.cloud.binaryauthorization.v1beta1.Policy.name]
                 field with the resource name in the request URL, in the
                 format ``projects/*/policy``.
+
                 This corresponds to the ``policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -488,7 +506,7 @@ class BinauthzManagementServiceV1Beta1Client(
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Policy:
+            google.cloud.binaryauthorization_v1beta1.types.Policy:
                 A
                 [policy][google.cloud.binaryauthorization.v1beta1.Policy]
                 for container image binary authorization.
@@ -557,29 +575,32 @@ class BinauthzManagementServiceV1Beta1Client(
         already exists.
 
         Args:
-            request (:class:`~.service.CreateAttestorRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.CreateAttestorRequest):
                 The request object. Request message for
                 [BinauthzManagementService.CreateAttestor][].
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent of this
                 [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            attestor_id (:class:`str`):
+            attestor_id (str):
                 Required. The
                 [attestors][google.cloud.binaryauthorization.v1beta1.Attestor]
                 ID.
+
                 This corresponds to the ``attestor_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            attestor (:class:`~.resources.Attestor`):
+            attestor (google.cloud.binaryauthorization_v1beta1.types.Attestor):
                 Required. The initial
                 [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
                 value. The service will overwrite the [attestor
                 name][google.cloud.binaryauthorization.v1beta1.Attestor.name]
                 field with the resource name, in the format
                 ``projects/*/attestors/*``.
+
                 This corresponds to the ``attestor`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -591,11 +612,10 @@ class BinauthzManagementServiceV1Beta1Client(
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Attestor:
-                An
-                [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
-                that attests to container image artifacts. An existing
-                attestor cannot be modified except where indicated.
+            google.cloud.binaryauthorization_v1beta1.types.Attestor:
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
+                   artifacts. An existing attestor cannot be modified
+                   except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -657,13 +677,14 @@ class BinauthzManagementServiceV1Beta1Client(
         does not exist.
 
         Args:
-            request (:class:`~.service.GetAttestorRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.GetAttestorRequest):
                 The request object. Request message for
                 [BinauthzManagementService.GetAttestor][].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the
                 [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
                 to retrieve, in the format ``projects/*/attestors/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -675,11 +696,10 @@ class BinauthzManagementServiceV1Beta1Client(
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Attestor:
-                An
-                [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
-                that attests to container image artifacts. An existing
-                attestor cannot be modified except where indicated.
+            google.cloud.binaryauthorization_v1beta1.types.Attestor:
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
+                   artifacts. An existing attestor cannot be modified
+                   except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -737,16 +757,17 @@ class BinauthzManagementServiceV1Beta1Client(
         does not exist.
 
         Args:
-            request (:class:`~.service.UpdateAttestorRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.UpdateAttestorRequest):
                 The request object. Request message for
                 [BinauthzManagementService.UpdateAttestor][].
-            attestor (:class:`~.resources.Attestor`):
+            attestor (google.cloud.binaryauthorization_v1beta1.types.Attestor):
                 Required. The updated
                 [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
                 value. The service will overwrite the [attestor
                 name][google.cloud.binaryauthorization.v1beta1.Attestor.name]
                 field with the resource name in the request URL, in the
                 format ``projects/*/attestors/*``.
+
                 This corresponds to the ``attestor`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -758,11 +779,10 @@ class BinauthzManagementServiceV1Beta1Client(
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Attestor:
-                An
-                [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
-                that attests to container image artifacts. An existing
-                attestor cannot be modified except where indicated.
+            google.cloud.binaryauthorization_v1beta1.types.Attestor:
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
+                   artifacts. An existing attestor cannot be modified
+                   except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -820,14 +840,15 @@ class BinauthzManagementServiceV1Beta1Client(
         Returns INVALID_ARGUMENT if the project does not exist.
 
         Args:
-            request (:class:`~.service.ListAttestorsRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.ListAttestorsRequest):
                 The request object. Request message for
                 [BinauthzManagementService.ListAttestors][].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the project associated
                 with the
                 [attestors][google.cloud.binaryauthorization.v1beta1.Attestor],
                 in the format ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -839,7 +860,7 @@ class BinauthzManagementServiceV1Beta1Client(
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListAttestorsPager:
+            google.cloud.binaryauthorization_v1beta1.services.binauthz_management_service_v1_beta1.pagers.ListAttestorsPager:
                 Response message for
                 [BinauthzManagementService.ListAttestors][].
 
@@ -908,13 +929,14 @@ class BinauthzManagementServiceV1Beta1Client(
         does not exist.
 
         Args:
-            request (:class:`~.service.DeleteAttestorRequest`):
+            request (google.cloud.binaryauthorization_v1beta1.types.DeleteAttestorRequest):
                 The request object. Request message for
                 [BinauthzManagementService.DeleteAttestor][].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the
                 [attestors][google.cloud.binaryauthorization.v1beta1.Attestor]
                 to delete, in the format ``projects/*/attestors/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

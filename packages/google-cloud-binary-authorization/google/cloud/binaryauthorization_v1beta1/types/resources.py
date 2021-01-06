@@ -46,7 +46,7 @@ class Policy(proto.Message):
             project.
         description (str):
             Optional. A descriptive comment.
-        global_policy_evaluation_mode (~.resources.Policy.GlobalPolicyEvaluationMode):
+        global_policy_evaluation_mode (google.cloud.binaryauthorization_v1beta1.types.Policy.GlobalPolicyEvaluationMode):
             Optional. Controls the evaluation of a
             Google-maintained global admission policy for
             common system-level images. Images not covered
@@ -54,25 +54,25 @@ class Policy(proto.Message):
             project admission policy. This setting has no
             effect when specified inside a global admission
             policy.
-        admission_whitelist_patterns (Sequence[~.resources.AdmissionWhitelistPattern]):
+        admission_whitelist_patterns (Sequence[google.cloud.binaryauthorization_v1beta1.types.AdmissionWhitelistPattern]):
             Optional. Admission policy whitelisting. A
             matching admission request will always be
             permitted. This feature is typically used to
             exclude Google or third-party infrastructure
             images from Binary Authorization policies.
-        cluster_admission_rules (Sequence[~.resources.Policy.ClusterAdmissionRulesEntry]):
+        cluster_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.ClusterAdmissionRulesEntry]):
             Optional. Per-cluster admission rules. Cluster spec format:
             ``location.clusterId``. There can be at most one admission
             rule per cluster spec. A ``location`` is either a compute
             zone (e.g. us-central1-a) or a region (e.g. us-central1).
             For ``clusterId`` syntax restrictions see
             https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
-        default_admission_rule (~.resources.AdmissionRule):
+        default_admission_rule (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule):
             Required. Default admission rule for a
             cluster without a per-cluster, per- kubernetes-
             service-account, or per-istio-service-identity
             admission rule.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the policy was last
             updated.
     """
@@ -138,7 +138,7 @@ class AdmissionRule(proto.Message):
     creation.
 
     Attributes:
-        evaluation_mode (~.resources.AdmissionRule.EvaluationMode):
+        evaluation_mode (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule.EvaluationMode):
             Required. How this admission rule will be
             evaluated.
         require_attestations_by (Sequence[str]):
@@ -152,7 +152,7 @@ class AdmissionRule(proto.Message):
             Note: this field must be non-empty when the evaluation_mode
             field specifies REQUIRE_ATTESTATION, otherwise it must be
             empty.
-        enforcement_mode (~.resources.AdmissionRule.EnforcementMode):
+        enforcement_mode (google.cloud.binaryauthorization_v1beta1.types.AdmissionRule.EnforcementMode):
             Required. The action when a pod creation is
             denied by the admission rule.
     """
@@ -192,9 +192,9 @@ class Attestor(proto.Message):
             Optional. A descriptive comment.  This field
             may be updated. The field may be displayed in
             chooser dialogs.
-        user_owned_drydock_note (~.resources.UserOwnedDrydockNote):
+        user_owned_drydock_note (google.cloud.binaryauthorization_v1beta1.types.UserOwnedDrydockNote):
             A Drydock ATTESTATION_AUTHORITY Note, created by the user.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the attestor was last
             updated.
     """
@@ -226,7 +226,7 @@ class UserOwnedDrydockNote(proto.Message):
             ATTESTATION_AUTHORITY Occurrence that names a container
             image and that links to this Note. Drydock is an external
             dependency.
-        public_keys (Sequence[~.resources.AttestorPublicKey]):
+        public_keys (Sequence[google.cloud.binaryauthorization_v1beta1.types.AttestorPublicKey]):
             Optional. Public keys that verify
             attestations signed by this attestor.  This
             field may be updated.
@@ -270,7 +270,7 @@ class PkixPublicKey(proto.Message):
         public_key_pem (str):
             A PEM-encoded public key, as described in
             https://tools.ietf.org/html/rfc7468#section-13
-        signature_algorithm (~.resources.PkixPublicKey.SignatureAlgorithm):
+        signature_algorithm (google.cloud.binaryauthorization_v1beta1.types.PkixPublicKey.SignatureAlgorithm):
             The signature algorithm used to verify a message against a
             signature using this key. These signature algorithm must
             match the structure and any object identifiers encoded in
@@ -331,7 +331,7 @@ class AttestorPublicKey(proto.Message):
             OpenPGP RFC4880 V4 fingerprint, represented as upper-case
             hex. If ``id`` is provided by the caller, it will be
             overwritten by the API-calculated ID.
-        pkix_public_key (~.resources.PkixPublicKey):
+        pkix_public_key (google.cloud.binaryauthorization_v1beta1.types.PkixPublicKey):
             A raw PKIX SubjectPublicKeyInfo format public key.
 
             NOTE: ``id`` may be explicitly provided by the caller when

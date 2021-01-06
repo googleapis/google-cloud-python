@@ -40,7 +40,7 @@ s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 s.replace(
     ["google/**/*.py", "tests/**/*.py"],
     "google-cloud-binaryauthorization",
-    "google-cloud-binary-authorization"
+    "google-cloud-binary-authorization",
 )
 
 # ----------------------------------------------------------------------------
@@ -49,7 +49,8 @@ s.replace(
 
 templated_files = common.py_library(cov_level=99, microgenerator=True)
 s.move(
-    templated_files, excludes=[".coveragerc"]  # the microgenerator has a goodcoveragerc file
-) 
+    templated_files,
+    excludes=[".coveragerc"],  # the microgenerator has a goodcoveragerc file
+)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

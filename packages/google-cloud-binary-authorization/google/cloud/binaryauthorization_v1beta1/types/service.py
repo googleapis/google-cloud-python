@@ -53,7 +53,7 @@ class UpdatePolicyRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.UpdatePolicy][].
 
     Attributes:
-        policy (~.resources.Policy):
+        policy (google.cloud.binaryauthorization_v1beta1.types.Policy):
             Required. A new or updated
             [policy][google.cloud.binaryauthorization.v1beta1.Policy]
             value. The service will overwrite the [policy
@@ -76,7 +76,7 @@ class CreateAttestorRequest(proto.Message):
             Required. The
             [attestors][google.cloud.binaryauthorization.v1beta1.Attestor]
             ID.
-        attestor (~.resources.Attestor):
+        attestor (google.cloud.binaryauthorization_v1beta1.types.Attestor):
             Required. The initial
             [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
             value. The service will overwrite the [attestor
@@ -109,7 +109,7 @@ class UpdateAttestorRequest(proto.Message):
     r"""Request message for [BinauthzManagementService.UpdateAttestor][].
 
     Attributes:
-        attestor (~.resources.Attestor):
+        attestor (google.cloud.binaryauthorization_v1beta1.types.Attestor):
             Required. The updated
             [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
             value. The service will overwrite the [attestor
@@ -153,7 +153,7 @@ class ListAttestorsResponse(proto.Message):
     r"""Response message for [BinauthzManagementService.ListAttestors][].
 
     Attributes:
-        attestors (Sequence[~.resources.Attestor]):
+        attestors (Sequence[google.cloud.binaryauthorization_v1beta1.types.Attestor]):
             The list of
             [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].
         next_page_token (str):

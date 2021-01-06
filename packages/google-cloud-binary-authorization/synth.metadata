@@ -3,29 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-binary-authorization"
+        "remote": "sso://devrel/cloud/libraries/python/python-binary-authorization",
+        "sha": "06c43f24701da8f301be5bc04a6ec83a25edc41f"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6dae98144d466d4f985b926baec6208b01572f55",
-        "internalRef": "347459563"
+        "sha": "700afd1f0bafc2155bc5e891504c53d4ac9166f5",
+        "internalRef": "350414815"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "996775eca5fd934edac3c2ae34b80ff0395b1717"
+        "sha": "a3e990f3545dc8ccd384a75d20ce9cb185ca6a28"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "996775eca5fd934edac3c2ae34b80ff0395b1717"
+        "sha": "a3e990f3545dc8ccd384a75d20ce9cb185ca6a28"
       }
     }
   ],
