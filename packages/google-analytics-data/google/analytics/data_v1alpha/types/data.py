@@ -147,7 +147,7 @@ class Dimension(proto.Message):
             Dimensions are referenced by ``name`` in
             ``dimensionFilter``, ``orderBys``, ``dimensionExpression``,
             and ``pivots``.
-        dimension_expression (~.data.DimensionExpression):
+        dimension_expression (google.analytics.data_v1alpha.types.DimensionExpression):
             One dimension can be the result of an
             expression of multiple dimensions. For example,
             dimension "country, city": concatenate(country,
@@ -169,13 +169,13 @@ class DimensionExpression(proto.Message):
     2) concatenate(dimension1, symbol, dimension2).
 
     Attributes:
-        lower_case (~.data.DimensionExpression.CaseExpression):
+        lower_case (google.analytics.data_v1alpha.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to lower
             case.
-        upper_case (~.data.DimensionExpression.CaseExpression):
+        upper_case (google.analytics.data_v1alpha.types.DimensionExpression.CaseExpression):
             Used to convert a dimension value to upper
             case.
-        concatenate (~.data.DimensionExpression.ConcatenateExpression):
+        concatenate (google.analytics.data_v1alpha.types.DimensionExpression.ConcatenateExpression):
             Used to combine dimension values to a single
             dimension. For example, dimension "country,
             city": concatenate(country, ", ", city).
@@ -270,13 +270,13 @@ class FilterExpression(proto.Message):
     dimensions or all metrics.
 
     Attributes:
-        and_group (~.data.FilterExpressionList):
+        and_group (google.analytics.data_v1alpha.types.FilterExpressionList):
             The FilterExpressions in and_group have an AND relationship.
-        or_group (~.data.FilterExpressionList):
+        or_group (google.analytics.data_v1alpha.types.FilterExpressionList):
             The FilterExpressions in or_group have an OR relationship.
-        not_expression (~.data.FilterExpression):
+        not_expression (google.analytics.data_v1alpha.types.FilterExpression):
             The FilterExpression is NOT of not_expression.
-        filter (~.data.Filter):
+        filter (google.analytics.data_v1alpha.types.Filter):
             A primitive filter.
             All fields in filter in same FilterExpression
             needs to be either all dimensions or metrics.
@@ -301,7 +301,7 @@ class FilterExpressionList(proto.Message):
     r"""A list of filter expressions.
 
     Attributes:
-        expressions (Sequence[~.data.FilterExpression]):
+        expressions (Sequence[google.analytics.data_v1alpha.types.FilterExpression]):
             A list of filter expressions.
     """
 
@@ -324,13 +324,13 @@ class Filter(proto.Message):
             expression. For example, a NOT expression of a
             null filter removes rows when a dimension is
             null.
-        string_filter (~.data.Filter.StringFilter):
+        string_filter (google.analytics.data_v1alpha.types.Filter.StringFilter):
             Strings related filter.
-        in_list_filter (~.data.Filter.InListFilter):
+        in_list_filter (google.analytics.data_v1alpha.types.Filter.InListFilter):
             A filter for in list values.
-        numeric_filter (~.data.Filter.NumericFilter):
+        numeric_filter (google.analytics.data_v1alpha.types.Filter.NumericFilter):
             A filter for numeric or date values.
-        between_filter (~.data.Filter.BetweenFilter):
+        between_filter (google.analytics.data_v1alpha.types.Filter.BetweenFilter):
             A filter for two values.
     """
 
@@ -338,7 +338,7 @@ class Filter(proto.Message):
         r"""The filter for string
 
         Attributes:
-            match_type (~.data.Filter.StringFilter.MatchType):
+            match_type (google.analytics.data_v1alpha.types.Filter.StringFilter.MatchType):
                 The match type for this filter.
             value (str):
                 The string value used for the matching.
@@ -383,9 +383,9 @@ class Filter(proto.Message):
         r"""Filters for numeric or date values.
 
         Attributes:
-            operation (~.data.Filter.NumericFilter.Operation):
+            operation (google.analytics.data_v1alpha.types.Filter.NumericFilter.Operation):
                 The operation type for this filter.
-            value (~.data.NumericValue):
+            value (google.analytics.data_v1alpha.types.NumericValue):
                 A numeric value or a date value.
         """
 
@@ -409,9 +409,9 @@ class Filter(proto.Message):
         (inclusive).
 
         Attributes:
-            from_value (~.data.NumericValue):
+            from_value (google.analytics.data_v1alpha.types.NumericValue):
                 Begins with this number.
-            to_value (~.data.NumericValue):
+            to_value (google.analytics.data_v1alpha.types.NumericValue):
                 Ends with this number.
         """
 
@@ -444,11 +444,11 @@ class OrderBy(proto.Message):
     r"""The sort options.
 
     Attributes:
-        metric (~.data.OrderBy.MetricOrderBy):
+        metric (google.analytics.data_v1alpha.types.OrderBy.MetricOrderBy):
             Sorts results by a metric's values.
-        dimension (~.data.OrderBy.DimensionOrderBy):
+        dimension (google.analytics.data_v1alpha.types.OrderBy.DimensionOrderBy):
             Sorts results by a dimension's values.
-        pivot (~.data.OrderBy.PivotOrderBy):
+        pivot (google.analytics.data_v1alpha.types.OrderBy.PivotOrderBy):
             Sorts results by a metric's values within a
             pivot column group.
         desc (bool):
@@ -471,7 +471,7 @@ class OrderBy(proto.Message):
         Attributes:
             dimension_name (str):
                 A dimension name in the request to order by.
-            order_type (~.data.OrderBy.DimensionOrderBy.OrderType):
+            order_type (google.analytics.data_v1alpha.types.OrderBy.DimensionOrderBy.OrderType):
                 Controls the rule for dimension value
                 ordering.
         """
@@ -497,7 +497,7 @@ class OrderBy(proto.Message):
                 In the response to order by, order rows by
                 this column. Must be a metric name from the
                 request.
-            pivot_selections (Sequence[~.data.OrderBy.PivotOrderBy.PivotSelection]):
+            pivot_selections (Sequence[google.analytics.data_v1alpha.types.OrderBy.PivotOrderBy.PivotSelection]):
                 Used to select a dimension name and value
                 pivot. If multiple pivot selections are given,
                 the sort occurs on rows where all pivot
@@ -570,7 +570,7 @@ class Pivot(proto.Message):
             response, dimension values in the date range
             column will indicate the corresponding date
             range from the request.
-        order_bys (Sequence[~.data.OrderBy]):
+        order_bys (Sequence[google.analytics.data_v1alpha.types.OrderBy]):
             Specifies how dimensions are ordered in the pivot. In the
             first Pivot, the OrderBys determine Row and
             PivotDimensionHeader ordering; in subsequent Pivots, the
@@ -584,7 +584,7 @@ class Pivot(proto.Message):
             The number of rows to return in this pivot.
             If unspecified, 10 rows are returned. If -1, all
             rows are returned.
-        metric_aggregations (Sequence[~.data.MetricAggregation]):
+        metric_aggregations (Sequence[google.analytics.data_v1alpha.types.MetricAggregation]):
             Aggregate the metrics by dimensions in this pivot using the
             specified metric_aggregations.
     """
@@ -619,18 +619,18 @@ class CohortSpec(proto.Message):
     separate rows in the report.
 
     Attributes:
-        cohorts (Sequence[~.data.Cohort]):
+        cohorts (Sequence[google.analytics.data_v1alpha.types.Cohort]):
             Defines the selection criteria to group users
             into cohorts.
             Most cohort reports define only a single cohort.
             If multiple cohorts are specified, each cohort
             can be recognized in the report by their name.
-        cohorts_range (~.data.CohortsRange):
+        cohorts_range (google.analytics.data_v1alpha.types.CohortsRange):
             Cohort reports follow cohorts over an
             extended reporting date range. This range
             specifies an offset duration to follow the
             cohorts over.
-        cohort_report_settings (~.data.CohortReportSettings):
+        cohort_report_settings (google.analytics.data_v1alpha.types.CohortReportSettings):
             Optional settings for a cohort report.
     """
 
@@ -658,7 +658,7 @@ class Cohort(proto.Message):
         dimension (str):
             Dimension used by the cohort. Required and only supports
             ``firstTouchDate``.
-        date_range (~.data.DateRange):
+        date_range (google.analytics.data_v1alpha.types.DateRange):
             The cohort selects users whose first touch date is between
             start date and end date defined in the ``dateRange``. This
             ``dateRange`` does not specify the full date range of event
@@ -694,7 +694,7 @@ class CohortsRange(proto.Message):
     report. Specifies an offset duration to follow the cohorts over.
 
     Attributes:
-        granularity (~.data.CohortsRange.Granularity):
+        granularity (google.analytics.data_v1alpha.types.CohortsRange.Granularity):
             The granularity used to interpret the ``startOffset`` and
             ``endOffset`` for the extended reporting date range for a
             cohort report.
@@ -803,7 +803,7 @@ class MetricHeader(proto.Message):
     Attributes:
         name (str):
             The metric's name.
-        type_ (~.data.MetricType):
+        type_ (google.analytics.data_v1alpha.types.MetricType):
             The metric's data type.
     """
 
@@ -816,7 +816,7 @@ class PivotHeader(proto.Message):
     r"""Dimensions' values in a single pivot.
 
     Attributes:
-        pivot_dimension_headers (Sequence[~.data.PivotDimensionHeader]):
+        pivot_dimension_headers (Sequence[google.analytics.data_v1alpha.types.PivotDimensionHeader]):
             The size is the same as the cardinality of
             the corresponding dimension combinations.
         row_count (int):
@@ -838,7 +838,7 @@ class PivotDimensionHeader(proto.Message):
     r"""Summarizes dimension values from a row for this pivot.
 
     Attributes:
-        dimension_values (Sequence[~.data.DimensionValue]):
+        dimension_values (Sequence[google.analytics.data_v1alpha.types.DimensionValue]):
             Values of multiple dimensions in a pivot.
     """
 
@@ -886,11 +886,11 @@ class Row(proto.Message):
        ]
 
     Attributes:
-        dimension_values (Sequence[~.data.DimensionValue]):
+        dimension_values (Sequence[google.analytics.data_v1alpha.types.DimensionValue]):
             List of requested dimension values. In a PivotReport,
             dimension_values are only listed for dimensions included in
             a pivot.
-        metric_values (Sequence[~.data.MetricValue]):
+        metric_values (Sequence[google.analytics.data_v1alpha.types.MetricValue]):
             List of requested visible metric values.
     """
 
@@ -945,23 +945,23 @@ class PropertyQuota(proto.Message):
     property will return Resource Exhausted errors.
 
     Attributes:
-        tokens_per_day (~.data.QuotaStatus):
+        tokens_per_day (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can use up to
             25,000 tokens per day; Analytics 360 Properties
             can use 250,000 tokens per day. Most requests
             consume fewer than 10 tokens.
-        tokens_per_hour (~.data.QuotaStatus):
+        tokens_per_hour (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can use up to
             5,000 tokens per day; Analytics 360 Properties
             can use 50,000 tokens per day. An API request
             consumes a single number of tokens, and that
             number is deducted from both the hourly and
             daily quotas.
-        concurrent_requests (~.data.QuotaStatus):
+        concurrent_requests (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties can send up to
             10 concurrent requests; Analytics 360 Properties
             can use up to 50 concurrent requests.
-        server_errors_per_project_per_hour (~.data.QuotaStatus):
+        server_errors_per_project_per_hour (google.analytics.data_v1alpha.types.QuotaStatus):
             Standard Analytics Properties and cloud
             project pairs can have up to 10 server errors
             per hour; Analytics 360 Properties and cloud
@@ -1050,7 +1050,7 @@ class MetricMetadata(proto.Message):
             one of ``deprecatedApiNames`` for a period of time. After
             the deprecation period, the metric will be available only by
             ``apiName``.
-        type_ (~.data.MetricType):
+        type_ (google.analytics.data_v1alpha.types.MetricType):
             The type of this metric.
         expression (str):
             The mathematical expression for this derived metric. Can be

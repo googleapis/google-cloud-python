@@ -47,9 +47,9 @@ class Metadata(proto.Message):
     Attributes:
         name (str):
             Resource name of this metadata.
-        dimensions (Sequence[~.data.DimensionMetadata]):
+        dimensions (Sequence[google.analytics.data_v1alpha.types.DimensionMetadata]):
             The dimension descriptions.
-        metrics (Sequence[~.data.MetricMetadata]):
+        metrics (Sequence[google.analytics.data_v1alpha.types.MetricMetadata]):
             The metric descriptions.
     """
 
@@ -66,16 +66,16 @@ class RunReportRequest(proto.Message):
     r"""The request to generate a report.
 
     Attributes:
-        entity (~.data.Entity):
+        entity (google.analytics.data_v1alpha.types.Entity):
             A property whose events are tracked. Within a
             batch request, this entity should either be
             unspecified or consistent with the batch-level
             entity.
-        dimensions (Sequence[~.data.Dimension]):
+        dimensions (Sequence[google.analytics.data_v1alpha.types.Dimension]):
             The dimensions requested and displayed.
-        metrics (Sequence[~.data.Metric]):
+        metrics (Sequence[google.analytics.data_v1alpha.types.Metric]):
             The metrics requested and displayed.
-        date_ranges (Sequence[~.data.DateRange]):
+        date_ranges (Sequence[google.analytics.data_v1alpha.types.DateRange]):
             Date ranges of data to read. If multiple date ranges are
             requested, each response row will contain a zero based date
             range index. If two date ranges overlap, the event data for
@@ -94,28 +94,28 @@ class RunReportRequest(proto.Message):
 
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-        metric_aggregations (Sequence[~.data.MetricAggregation]):
+        metric_aggregations (Sequence[google.analytics.data_v1alpha.types.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
             "RESERVED_(MetricAggregation)".
-        dimension_filter (~.data.FilterExpression):
+        dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
             The filter clause of dimensions. Dimensions
             must be requested to be used in this filter.
             Metrics cannot be used in this filter.
-        metric_filter (~.data.FilterExpression):
+        metric_filter (google.analytics.data_v1alpha.types.FilterExpression):
             The filter clause of metrics. Applied at post
             aggregation phase, similar to SQL having-clause.
             Metrics must be requested to be used in this
             filter. Dimensions cannot be used in this
             filter.
-        order_bys (Sequence[~.data.OrderBy]):
+        order_bys (Sequence[google.analytics.data_v1alpha.types.OrderBy]):
             Specifies how rows are ordered in the
             response.
         currency_code (str):
             A currency code in ISO4217 format, such as
             "AED", "USD", "JPY". If the field is empty, the
             report uses the entity's default currency.
-        cohort_spec (~.data.CohortSpec):
+        cohort_spec (google.analytics.data_v1alpha.types.CohortSpec):
             Cohort group associated with this request. If
             there is a cohort group in the request the
             'cohort' dimension must be present.
@@ -167,23 +167,23 @@ class RunReportResponse(proto.Message):
     r"""The response report table corresponding to a request.
 
     Attributes:
-        dimension_headers (Sequence[~.data.DimensionHeader]):
+        dimension_headers (Sequence[google.analytics.data_v1alpha.types.DimensionHeader]):
             Describes dimension columns. The number of
             DimensionHeaders and ordering of
             DimensionHeaders matches the dimensions present
             in rows.
-        metric_headers (Sequence[~.data.MetricHeader]):
+        metric_headers (Sequence[google.analytics.data_v1alpha.types.MetricHeader]):
             Describes metric columns. The number of
             MetricHeaders and ordering of MetricHeaders
             matches the metrics present in rows.
-        rows (Sequence[~.data.Row]):
+        rows (Sequence[google.analytics.data_v1alpha.types.Row]):
             Rows of dimension value combinations and
             metric values in the report.
-        totals (Sequence[~.data.Row]):
+        totals (Sequence[google.analytics.data_v1alpha.types.Row]):
             If requested, the totaled values of metrics.
-        maximums (Sequence[~.data.Row]):
+        maximums (Sequence[google.analytics.data_v1alpha.types.Row]):
             If requested, the maximum values of metrics.
-        minimums (Sequence[~.data.Row]):
+        minimums (Sequence[google.analytics.data_v1alpha.types.Row]):
             If requested, the minimum values of metrics.
         row_count (int):
             The total number of rows in the query result, regardless of
@@ -194,9 +194,9 @@ class RunReportResponse(proto.Message):
 
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-        metadata (~.data.ResponseMetaData):
+        metadata (google.analytics.data_v1alpha.types.ResponseMetaData):
             Metadata for the report.
-        property_quota (~.data.PropertyQuota):
+        property_quota (google.analytics.data_v1alpha.types.PropertyQuota):
             This Analytics Property's quota state
             including this request.
     """
@@ -228,30 +228,30 @@ class RunPivotReportRequest(proto.Message):
     r"""The request to generate a pivot report.
 
     Attributes:
-        entity (~.data.Entity):
+        entity (google.analytics.data_v1alpha.types.Entity):
             A property whose events are tracked. Within a
             batch request, this entity should either be
             unspecified or consistent with the batch-level
             entity.
-        dimensions (Sequence[~.data.Dimension]):
+        dimensions (Sequence[google.analytics.data_v1alpha.types.Dimension]):
             The dimensions requested. All defined dimensions must be
             used by one of the following: dimension_expression,
             dimension_filter, pivots, order_bys.
-        metrics (Sequence[~.data.Metric]):
+        metrics (Sequence[google.analytics.data_v1alpha.types.Metric]):
             The metrics requested, at least one metric needs to be
             specified. All defined metrics must be used by one of the
             following: metric_expression, metric_filter, order_bys.
-        dimension_filter (~.data.FilterExpression):
+        dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
             The filter clause of dimensions. Dimensions
             must be requested to be used in this filter.
             Metrics cannot be used in this filter.
-        metric_filter (~.data.FilterExpression):
+        metric_filter (google.analytics.data_v1alpha.types.FilterExpression):
             The filter clause of metrics. Applied at post
             aggregation phase, similar to SQL having-clause.
             Metrics must be requested to be used in this
             filter. Dimensions cannot be used in this
             filter.
-        pivots (Sequence[~.data.Pivot]):
+        pivots (Sequence[google.analytics.data_v1alpha.types.Pivot]):
             Describes the visual format of the report's
             dimensions in columns or rows. The union of the
             fieldNames (dimension names) in all pivots must
@@ -259,7 +259,7 @@ class RunPivotReportRequest(proto.Message):
             Dimensions. No two pivots can share a dimension.
             A dimension is only visible if it appears in a
             pivot.
-        date_ranges (Sequence[~.data.DateRange]):
+        date_ranges (Sequence[google.analytics.data_v1alpha.types.DateRange]):
             The date range to retrieve event data for the report. If
             multiple date ranges are specified, event data from each
             date range is used in the report. A special dimension with
@@ -271,7 +271,7 @@ class RunPivotReportRequest(proto.Message):
             A currency code in ISO4217 format, such as
             "AED", "USD", "JPY". If the field is empty, the
             report uses the entity's default currency.
-        cohort_spec (~.data.CohortSpec):
+        cohort_spec (google.analytics.data_v1alpha.types.CohortSpec):
             Cohort group associated with this request. If
             there is a cohort group in the request the
             'cohort' dimension must be present.
@@ -316,7 +316,7 @@ class RunPivotReportResponse(proto.Message):
     request.
 
     Attributes:
-        pivot_headers (Sequence[~.data.PivotHeader]):
+        pivot_headers (Sequence[google.analytics.data_v1alpha.types.PivotHeader]):
             Summarizes the columns and rows created by a pivot. Each
             pivot in the request produces one header in the response. If
             we have a request like this:
@@ -357,27 +357,27 @@ class RunPivotReportResponse(proto.Message):
                     "dimensionValues": [{ "value": "scroll" }]
                   }]
                 }]
-        dimension_headers (Sequence[~.data.DimensionHeader]):
+        dimension_headers (Sequence[google.analytics.data_v1alpha.types.DimensionHeader]):
             Describes dimension columns. The number of
             DimensionHeaders and ordering of
             DimensionHeaders matches the dimensions present
             in rows.
-        metric_headers (Sequence[~.data.MetricHeader]):
+        metric_headers (Sequence[google.analytics.data_v1alpha.types.MetricHeader]):
             Describes metric columns. The number of
             MetricHeaders and ordering of MetricHeaders
             matches the metrics present in rows.
-        rows (Sequence[~.data.Row]):
+        rows (Sequence[google.analytics.data_v1alpha.types.Row]):
             Rows of dimension value combinations and
             metric values in the report.
-        aggregates (Sequence[~.data.Row]):
+        aggregates (Sequence[google.analytics.data_v1alpha.types.Row]):
             Aggregation of metric values. Can be totals, minimums, or
             maximums. The returned aggregations are controlled by the
             metric_aggregations in the pivot. The type of aggregation
             returned in each row is shown by the dimension_values which
             are set to "RESERVED\_".
-        metadata (~.data.ResponseMetaData):
+        metadata (google.analytics.data_v1alpha.types.ResponseMetaData):
             Metadata for the report.
-        property_quota (~.data.PropertyQuota):
+        property_quota (google.analytics.data_v1alpha.types.PropertyQuota):
             This Analytics Property's quota state
             including this request.
     """
@@ -407,12 +407,12 @@ class BatchRunReportsRequest(proto.Message):
     r"""The batch request containing multiple report requests.
 
     Attributes:
-        entity (~.data.Entity):
+        entity (google.analytics.data_v1alpha.types.Entity):
             A property whose events are tracked. This
             entity must be specified for the batch. The
             entity within RunReportRequest may either be
             unspecified or consistent with this entity.
-        requests (Sequence[~.analytics_data_api.RunReportRequest]):
+        requests (Sequence[google.analytics.data_v1alpha.types.RunReportRequest]):
             Individual requests. Each request has a
             separate report response. Each batch request is
             allowed up to 5 requests.
@@ -427,7 +427,7 @@ class BatchRunReportsResponse(proto.Message):
     r"""The batch response containing multiple reports.
 
     Attributes:
-        reports (Sequence[~.analytics_data_api.RunReportResponse]):
+        reports (Sequence[google.analytics.data_v1alpha.types.RunReportResponse]):
             Individual responses. Each response has a
             separate report request.
     """
@@ -439,12 +439,12 @@ class BatchRunPivotReportsRequest(proto.Message):
     r"""The batch request containing multiple pivot report requests.
 
     Attributes:
-        entity (~.data.Entity):
+        entity (google.analytics.data_v1alpha.types.Entity):
             A property whose events are tracked. This
             entity must be specified for the batch. The
             entity within RunPivotReportRequest may either
             be unspecified or consistent with this entity.
-        requests (Sequence[~.analytics_data_api.RunPivotReportRequest]):
+        requests (Sequence[google.analytics.data_v1alpha.types.RunPivotReportRequest]):
             Individual requests. Each request has a
             separate pivot report response. Each batch
             request is allowed up to 5 requests.
@@ -461,7 +461,7 @@ class BatchRunPivotReportsResponse(proto.Message):
     r"""The batch response containing multiple pivot reports.
 
     Attributes:
-        pivot_reports (Sequence[~.analytics_data_api.RunPivotReportResponse]):
+        pivot_reports (Sequence[google.analytics.data_v1alpha.types.RunPivotReportResponse]):
             Individual responses. Each response has a
             separate pivot report request.
     """
@@ -504,29 +504,29 @@ class RunRealtimeReportRequest(proto.Message):
             ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
             Example: properties/1234
-        dimensions (Sequence[~.data.Dimension]):
+        dimensions (Sequence[google.analytics.data_v1alpha.types.Dimension]):
             The dimensions requested and displayed.
-        metrics (Sequence[~.data.Metric]):
+        metrics (Sequence[google.analytics.data_v1alpha.types.Metric]):
             The metrics requested and displayed.
         limit (int):
             The number of rows to return. If unspecified,
             10 rows are returned. If -1, all rows are
             returned.
-        dimension_filter (~.data.FilterExpression):
+        dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
             The filter clause of dimensions. Dimensions
             must be requested to be used in this filter.
             Metrics cannot be used in this filter.
-        metric_filter (~.data.FilterExpression):
+        metric_filter (google.analytics.data_v1alpha.types.FilterExpression):
             The filter clause of metrics. Applied at post
             aggregation phase, similar to SQL having-clause.
             Metrics must be requested to be used in this
             filter. Dimensions cannot be used in this
             filter.
-        metric_aggregations (Sequence[~.data.MetricAggregation]):
+        metric_aggregations (Sequence[google.analytics.data_v1alpha.types.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
             "RESERVED_(MetricAggregation)".
-        order_bys (Sequence[~.data.OrderBy]):
+        order_bys (Sequence[google.analytics.data_v1alpha.types.OrderBy]):
             Specifies how rows are ordered in the
             response.
         return_property_quota (bool):
@@ -563,23 +563,23 @@ class RunRealtimeReportResponse(proto.Message):
     request.
 
     Attributes:
-        dimension_headers (Sequence[~.data.DimensionHeader]):
+        dimension_headers (Sequence[google.analytics.data_v1alpha.types.DimensionHeader]):
             Describes dimension columns. The number of
             DimensionHeaders and ordering of
             DimensionHeaders matches the dimensions present
             in rows.
-        metric_headers (Sequence[~.data.MetricHeader]):
+        metric_headers (Sequence[google.analytics.data_v1alpha.types.MetricHeader]):
             Describes metric columns. The number of
             MetricHeaders and ordering of MetricHeaders
             matches the metrics present in rows.
-        rows (Sequence[~.data.Row]):
+        rows (Sequence[google.analytics.data_v1alpha.types.Row]):
             Rows of dimension value combinations and
             metric values in the report.
-        totals (Sequence[~.data.Row]):
+        totals (Sequence[google.analytics.data_v1alpha.types.Row]):
             If requested, the totaled values of metrics.
-        maximums (Sequence[~.data.Row]):
+        maximums (Sequence[google.analytics.data_v1alpha.types.Row]):
             If requested, the maximum values of metrics.
-        minimums (Sequence[~.data.Row]):
+        minimums (Sequence[google.analytics.data_v1alpha.types.Row]):
             If requested, the minimum values of metrics.
         row_count (int):
             The total number of rows in the query result, regardless of
@@ -587,7 +587,7 @@ class RunRealtimeReportResponse(proto.Message):
             a query returns 175 rows and includes limit = 50 in the API
             request, the response will contain row_count = 175 but only
             50 rows.
-        property_quota (~.data.PropertyQuota):
+        property_quota (google.analytics.data_v1alpha.types.PropertyQuota):
             This Analytics Property's Realtime quota
             state including this request.
     """

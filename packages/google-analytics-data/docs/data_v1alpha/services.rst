@@ -1,6 +1,6 @@
 Services for Google Analytics Data v1alpha API
 ==============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.analytics.data_v1alpha.services.alpha_analytics_data
-    :members:
-    :inherited-members:
+    alpha_analytics_data

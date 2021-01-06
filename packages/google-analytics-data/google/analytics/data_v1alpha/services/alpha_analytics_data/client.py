@@ -113,6 +113,22 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AlphaAnalyticsDataClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -124,7 +140,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            AlphaAnalyticsDataClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -227,10 +243,10 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AlphaAnalyticsDataTransport]): The
+            transport (Union[str, AlphaAnalyticsDataTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -347,7 +363,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         criteria, such as country or event name.
 
         Args:
-            request (:class:`~.analytics_data_api.RunReportRequest`):
+            request (google.analytics.data_v1alpha.types.RunReportRequest):
                 The request object. The request to generate a report.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -357,7 +373,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.analytics_data_api.RunReportResponse:
+            google.analytics.data_v1alpha.types.RunReportResponse:
                 The response report table
                 corresponding to a request.
 
@@ -397,7 +413,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         dissect your data.
 
         Args:
-            request (:class:`~.analytics_data_api.RunPivotReportRequest`):
+            request (google.analytics.data_v1alpha.types.RunPivotReportRequest):
                 The request object. The request to generate a pivot
                 report.
 
@@ -408,7 +424,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.analytics_data_api.RunPivotReportResponse:
+            google.analytics.data_v1alpha.types.RunPivotReportResponse:
                 The response pivot report table
                 corresponding to a pivot request.
 
@@ -444,7 +460,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         be for the same Entity.
 
         Args:
-            request (:class:`~.analytics_data_api.BatchRunReportsRequest`):
+            request (google.analytics.data_v1alpha.types.BatchRunReportsRequest):
                 The request object. The batch request containing
                 multiple report requests.
 
@@ -455,7 +471,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.analytics_data_api.BatchRunReportsResponse:
+            google.analytics.data_v1alpha.types.BatchRunReportsResponse:
                 The batch response containing
                 multiple reports.
 
@@ -491,7 +507,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         reports must be for the same Entity.
 
         Args:
-            request (:class:`~.analytics_data_api.BatchRunPivotReportsRequest`):
+            request (google.analytics.data_v1alpha.types.BatchRunPivotReportsRequest):
                 The request object. The batch request containing
                 multiple pivot report requests.
 
@@ -502,7 +518,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.analytics_data_api.BatchRunPivotReportsResponse:
+            google.analytics.data_v1alpha.types.BatchRunPivotReportsResponse:
                 The batch response containing
                 multiple pivot reports.
 
@@ -548,10 +564,10 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         such as ``country`` and ``totalUsers``.
 
         Args:
-            request (:class:`~.analytics_data_api.GetMetadataRequest`):
+            request (google.analytics.data_v1alpha.types.GetMetadataRequest):
                 The request object. Request for a property's dimension
                 and metric metadata.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the metadata to retrieve.
                 This name field is specified in the URL path and not URL
                 parameters. Property is a numeric Google Analytics GA4
@@ -564,6 +580,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 Set the Property ID to 0 for dimensions and metrics
                 common to all properties. In this special mode, this
                 method will not return custom dimensions and metrics.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -575,7 +592,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.analytics_data_api.Metadata:
+            google.analytics.data_v1alpha.types.Metadata:
                 The dimensions and metrics currently
                 accepted in reporting methods.
 
@@ -633,7 +650,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         last 30 minutes.
 
         Args:
-            request (:class:`~.analytics_data_api.RunRealtimeReportRequest`):
+            request (google.analytics.data_v1alpha.types.RunRealtimeReportRequest):
                 The request object. The request to generate a realtime
                 report.
 
@@ -644,7 +661,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.analytics_data_api.RunRealtimeReportResponse:
+            google.analytics.data_v1alpha.types.RunRealtimeReportResponse:
                 The response realtime report table
                 corresponding to a request.
 
