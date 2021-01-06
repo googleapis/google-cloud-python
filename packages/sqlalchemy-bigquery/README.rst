@@ -5,8 +5,8 @@ Usage
 =====
 
 
-SQLAchemy
-_________
+SQLAlchemy
+__________
 
 .. code-block:: python
 
