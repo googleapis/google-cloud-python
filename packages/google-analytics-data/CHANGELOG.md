@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.2.0...v0.3.0) (2021-01-06)
+
+
+### Features
+
+* add custom_definition to DimensionMetadata object and MetricMetadata object ([9bd3477](https://www.github.com/googleapis/python-analytics-data/commit/9bd347737319ea5cae0cf6556d55cd8397a06811))
+* add from_service_account_info factory and fix sphinx identifiers  ([#27](https://www.github.com/googleapis/python-analytics-data/issues/27)) ([2775104](https://www.github.com/googleapis/python-analytics-data/commit/2775104b84dda7cccc0fe2813cb8fde5e8930ae8))
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([#22](https://www.github.com/googleapis/python-analytics-data/issues/22)) ([b3dc882](https://www.github.com/googleapis/python-analytics-data/commit/b3dc88221da924816f04e8c0ce716c0d45555d4c))
+
 ## [0.2.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.1.0...v0.2.0) (2020-11-16)
 
 
