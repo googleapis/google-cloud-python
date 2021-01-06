@@ -67,7 +67,7 @@ class GenerateAccessTokenRequest(proto.Message):
             https://developers.google.com/identity/protocols/googlescopes
             for more information.
             At least one value required.
-        lifetime (~.duration.Duration):
+        lifetime (google.protobuf.duration_pb2.Duration):
             The desired lifetime duration of the access
             token in seconds. Must be set to a value less
             than or equal to 3600 (1 hour). If a value is
@@ -90,7 +90,7 @@ class GenerateAccessTokenResponse(proto.Message):
     Attributes:
         access_token (str):
             The OAuth 2.0 access token.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Token expiration time.
             The expiration time is always set.
     """

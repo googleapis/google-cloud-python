@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-iam.git",
-        "sha": "6e527955a3432ddafa20e303551f4a60b3e44baf"
+        "sha": "197a016688157a2b5350c612694a87b682009c8a"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "bdab50fe10ce3190812697e06f2e860780e9095e",
-        "internalRef": "347327128"
+        "sha": "520682435235d9c503983a360a2090025aa47cd1",
+        "internalRef": "350246057"
       }
     },
     {
@@ -87,6 +87,7 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/credentials_v1/iam_credentials.rst",
     "docs/credentials_v1/services.rst",
     "docs/credentials_v1/types.rst",
     "docs/multiprocessing.rst",

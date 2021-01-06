@@ -89,6 +89,7 @@ class IAMCredentialsAsyncClient:
         IAMCredentialsClient.parse_common_location_path
     )
 
+    from_service_account_info = IAMCredentialsClient.from_service_account_info
     from_service_account_file = IAMCredentialsClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -169,7 +170,7 @@ class IAMCredentialsAsyncClient:
         account.
 
         Args:
-            request (:class:`~.common.GenerateAccessTokenRequest`):
+            request (:class:`google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest`):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -178,6 +179,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -195,6 +197,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -205,16 +208,18 @@ class IAMCredentialsAsyncClient:
                 https://developers.google.com/identity/protocols/googlescopes
                 for more information.
                 At least one value required.
+
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            lifetime (:class:`~.duration.Duration`):
+            lifetime (:class:`google.protobuf.duration_pb2.Duration`):
                 The desired lifetime duration of the
                 access token in seconds. Must be set to
                 a value less than or equal to 3600 (1
                 hour). If a value is not specified, the
                 token's lifetime will be set to a
                 default value of one hour.
+
                 This corresponds to the ``lifetime`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -226,7 +231,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.GenerateAccessTokenResponse:
+            google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -298,7 +303,7 @@ class IAMCredentialsAsyncClient:
         account.
 
         Args:
-            request (:class:`~.common.GenerateIdTokenRequest`):
+            request (:class:`google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest`):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -307,6 +312,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -324,6 +330,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -331,6 +338,7 @@ class IAMCredentialsAsyncClient:
                 Required. The audience for the token,
                 such as the API or account that this
                 token grants access to.
+
                 This corresponds to the ``audience`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -338,6 +346,7 @@ class IAMCredentialsAsyncClient:
                 Include the service account email in the token. If set
                 to ``true``, the token will contain ``email`` and
                 ``email_verified`` claims.
+
                 This corresponds to the ``include_email`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -349,7 +358,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.GenerateIdTokenResponse:
+            google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -420,7 +429,7 @@ class IAMCredentialsAsyncClient:
         private key.
 
         Args:
-            request (:class:`~.common.SignBlobRequest`):
+            request (:class:`google.cloud.iam_credentials_v1.types.SignBlobRequest`):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -429,6 +438,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -446,6 +456,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -462,7 +473,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SignBlobResponse:
+            google.cloud.iam_credentials_v1.types.SignBlobResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -531,7 +542,7 @@ class IAMCredentialsAsyncClient:
         private key.
 
         Args:
-            request (:class:`~.common.SignJwtRequest`):
+            request (:class:`google.cloud.iam_credentials_v1.types.SignJwtRequest`):
                 The request object.
             name (:class:`str`):
                 Required. The resource name of the service account for
@@ -540,6 +551,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -557,6 +569,7 @@ class IAMCredentialsAsyncClient:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -564,6 +577,7 @@ class IAMCredentialsAsyncClient:
                 Required. The JWT payload to sign: a
                 JSON object that contains a JWT Claims
                 Set.
+
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -575,7 +589,7 @@ class IAMCredentialsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SignJwtResponse:
+            google.cloud.iam_credentials_v1.types.SignJwtResponse:
 
         """
         # Create or coerce a protobuf request object.

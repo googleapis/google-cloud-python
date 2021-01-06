@@ -1,6 +1,6 @@
 Services for Google Iam Credentials v1 API
 ==========================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.iam_credentials_v1.services.iam_credentials
-    :members:
-    :inherited-members:
+    iam_credentials

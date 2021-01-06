@@ -122,6 +122,22 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            IAMCredentialsClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -133,7 +149,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            IAMCredentialsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -241,10 +257,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.IAMCredentialsTransport]): The
+            transport (Union[str, IAMCredentialsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -358,19 +374,20 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         account.
 
         Args:
-            request (:class:`~.common.GenerateAccessTokenRequest`):
+            request (google.cloud.iam_credentials_v1.types.GenerateAccessTokenRequest):
                 The request object.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the service account for
                 which the credentials are requested, in the following
                 format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (Sequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -384,26 +401,29 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            scope (:class:`Sequence[str]`):
+            scope (Sequence[str]):
                 Required. Code to identify the scopes
                 to be included in the OAuth 2.0 access
                 token. See
                 https://developers.google.com/identity/protocols/googlescopes
                 for more information.
                 At least one value required.
+
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            lifetime (:class:`~.duration.Duration`):
+            lifetime (google.protobuf.duration_pb2.Duration):
                 The desired lifetime duration of the
                 access token in seconds. Must be set to
                 a value less than or equal to 3600 (1
                 hour). If a value is not specified, the
                 token's lifetime will be set to a
                 default value of one hour.
+
                 This corresponds to the ``lifetime`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -415,7 +435,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.GenerateAccessTokenResponse:
+            google.cloud.iam_credentials_v1.types.GenerateAccessTokenResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -480,19 +500,20 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         account.
 
         Args:
-            request (:class:`~.common.GenerateIdTokenRequest`):
+            request (google.cloud.iam_credentials_v1.types.GenerateIdTokenRequest):
                 The request object.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the service account for
                 which the credentials are requested, in the following
                 format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (Sequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -506,20 +527,23 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            audience (:class:`str`):
+            audience (str):
                 Required. The audience for the token,
                 such as the API or account that this
                 token grants access to.
+
                 This corresponds to the ``audience`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            include_email (:class:`bool`):
+            include_email (bool):
                 Include the service account email in the token. If set
                 to ``true``, the token will contain ``email`` and
                 ``email_verified`` claims.
+
                 This corresponds to the ``include_email`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -531,7 +555,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.GenerateIdTokenResponse:
+            google.cloud.iam_credentials_v1.types.GenerateIdTokenResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -595,19 +619,20 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         private key.
 
         Args:
-            request (:class:`~.common.SignBlobRequest`):
+            request (google.cloud.iam_credentials_v1.types.SignBlobRequest):
                 The request object.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the service account for
                 which the credentials are requested, in the following
                 format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (Sequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -621,10 +646,11 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            payload (:class:`bytes`):
+            payload (bytes):
                 Required. The bytes to sign.
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -637,7 +663,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SignBlobResponse:
+            google.cloud.iam_credentials_v1.types.SignBlobResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -699,19 +725,20 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         private key.
 
         Args:
-            request (:class:`~.common.SignJwtRequest`):
+            request (google.cloud.iam_credentials_v1.types.SignJwtRequest):
                 The request object.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the service account for
                 which the credentials are requested, in the following
                 format:
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            delegates (:class:`Sequence[str]`):
+            delegates (Sequence[str]):
                 The sequence of service accounts in a delegation chain.
                 Each service account must be granted the
                 ``roles/iam.serviceAccountTokenCreator`` role on its
@@ -725,13 +752,15 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 ``projects/-/serviceAccounts/{ACCOUNT_EMAIL_OR_UNIQUEID}``.
                 The ``-`` wildcard character is required; replacing it
                 with a project ID is invalid.
+
                 This corresponds to the ``delegates`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            payload (:class:`str`):
+            payload (str):
                 Required. The JWT payload to sign: a
                 JSON object that contains a JWT Claims
                 Set.
+
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -743,7 +772,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.SignJwtResponse:
+            google.cloud.iam_credentials_v1.types.SignJwtResponse:
 
         """
         # Create or coerce a protobuf request object.
