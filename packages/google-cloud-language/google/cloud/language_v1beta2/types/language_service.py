@@ -65,7 +65,7 @@ class Document(proto.Message):
     r"""Represents the input to API methods.
 
     Attributes:
-        type_ (~.language_service.Document.Type):
+        type_ (google.cloud.language_v1beta2.types.Document.Type):
             Required. If the type is not set or is ``TYPE_UNSPECIFIED``,
             returns an ``INVALID_ARGUMENT`` error.
         content (str):
@@ -108,9 +108,9 @@ class Sentence(proto.Message):
     r"""Represents a sentence in the input document.
 
     Attributes:
-        text (~.language_service.TextSpan):
+        text (google.cloud.language_v1beta2.types.TextSpan):
             The sentence text.
-        sentiment (~.language_service.Sentiment):
+        sentiment (google.cloud.language_v1beta2.types.Sentiment):
             For calls to [AnalyzeSentiment][] or if
             [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_document_sentiment]
             is set to true, this field will contain the sentiment for
@@ -130,9 +130,9 @@ class Entity(proto.Message):
     Attributes:
         name (str):
             The representative name for the entity.
-        type_ (~.language_service.Entity.Type):
+        type_ (google.cloud.language_v1beta2.types.Entity.Type):
             The entity type.
-        metadata (Sequence[~.language_service.Entity.MetadataEntry]):
+        metadata (Sequence[google.cloud.language_v1beta2.types.Entity.MetadataEntry]):
             Metadata associated with the entity.
 
             For most entity types, the metadata is a Wikipedia URL
@@ -147,11 +147,11 @@ class Entity(proto.Message):
             the importance or centrality of that entity to the entire
             document text. Scores closer to 0 are less salient, while
             scores closer to 1.0 are highly salient.
-        mentions (Sequence[~.language_service.EntityMention]):
+        mentions (Sequence[google.cloud.language_v1beta2.types.EntityMention]):
             The mentions of this entity in the input
             document. The API currently supports proper noun
             mentions.
-        sentiment (~.language_service.Sentiment):
+        sentiment (google.cloud.language_v1beta2.types.Sentiment):
             For calls to [AnalyzeEntitySentiment][] or if
             [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entity_sentiment]
             is set to true, this field will contain the aggregate
@@ -196,11 +196,11 @@ class Token(proto.Message):
     r"""Represents the smallest syntactic building block of the text.
 
     Attributes:
-        text (~.language_service.TextSpan):
+        text (google.cloud.language_v1beta2.types.TextSpan):
             The token text.
-        part_of_speech (~.language_service.PartOfSpeech):
+        part_of_speech (google.cloud.language_v1beta2.types.PartOfSpeech):
             Parts of speech tag for this token.
-        dependency_edge (~.language_service.DependencyEdge):
+        dependency_edge (google.cloud.language_v1beta2.types.DependencyEdge):
             Dependency tree parse for this token.
         lemma (str):
             `Lemma <https://en.wikipedia.org/wiki/Lemma_%28morphology%29>`__
@@ -240,29 +240,29 @@ class PartOfSpeech(proto.Message):
     r"""Represents part of speech information for a token.
 
     Attributes:
-        tag (~.language_service.PartOfSpeech.Tag):
+        tag (google.cloud.language_v1beta2.types.PartOfSpeech.Tag):
             The part of speech tag.
-        aspect (~.language_service.PartOfSpeech.Aspect):
+        aspect (google.cloud.language_v1beta2.types.PartOfSpeech.Aspect):
             The grammatical aspect.
-        case (~.language_service.PartOfSpeech.Case):
+        case (google.cloud.language_v1beta2.types.PartOfSpeech.Case):
             The grammatical case.
-        form (~.language_service.PartOfSpeech.Form):
+        form (google.cloud.language_v1beta2.types.PartOfSpeech.Form):
             The grammatical form.
-        gender (~.language_service.PartOfSpeech.Gender):
+        gender (google.cloud.language_v1beta2.types.PartOfSpeech.Gender):
             The grammatical gender.
-        mood (~.language_service.PartOfSpeech.Mood):
+        mood (google.cloud.language_v1beta2.types.PartOfSpeech.Mood):
             The grammatical mood.
-        number (~.language_service.PartOfSpeech.Number):
+        number (google.cloud.language_v1beta2.types.PartOfSpeech.Number):
             The grammatical number.
-        person (~.language_service.PartOfSpeech.Person):
+        person (google.cloud.language_v1beta2.types.PartOfSpeech.Person):
             The grammatical person.
-        proper (~.language_service.PartOfSpeech.Proper):
+        proper (google.cloud.language_v1beta2.types.PartOfSpeech.Proper):
             The grammatical properness.
-        reciprocity (~.language_service.PartOfSpeech.Reciprocity):
+        reciprocity (google.cloud.language_v1beta2.types.PartOfSpeech.Reciprocity):
             The grammatical reciprocity.
-        tense (~.language_service.PartOfSpeech.Tense):
+        tense (google.cloud.language_v1beta2.types.PartOfSpeech.Tense):
             The grammatical tense.
-        voice (~.language_service.PartOfSpeech.Voice):
+        voice (google.cloud.language_v1beta2.types.PartOfSpeech.Voice):
             The grammatical voice.
     """
 
@@ -439,7 +439,7 @@ class DependencyEdge(proto.Message):
             array of tokens returned by the API method. If this token is
             a root token, then the ``head_token_index`` is its own
             index.
-        label (~.language_service.DependencyEdge.Label):
+        label (google.cloud.language_v1beta2.types.DependencyEdge.Label):
             The parse label for the token.
     """
 
@@ -539,11 +539,11 @@ class EntityMention(proto.Message):
     proper noun mentions are supported.
 
     Attributes:
-        text (~.language_service.TextSpan):
+        text (google.cloud.language_v1beta2.types.TextSpan):
             The mention text.
-        type_ (~.language_service.EntityMention.Type):
+        type_ (google.cloud.language_v1beta2.types.EntityMention.Type):
             The type of the entity mention.
-        sentiment (~.language_service.Sentiment):
+        sentiment (google.cloud.language_v1beta2.types.Sentiment):
             For calls to [AnalyzeEntitySentiment][] or if
             [AnnotateTextRequest.Features.extract_entity_sentiment][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entity_sentiment]
             is set to true, this field will contain the sentiment
@@ -605,9 +605,9 @@ class AnalyzeSentimentRequest(proto.Message):
     r"""The sentiment analysis request message.
 
     Attributes:
-        document (~.language_service.Document):
+        document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
-        encoding_type (~.language_service.EncodingType):
+        encoding_type (google.cloud.language_v1beta2.types.EncodingType):
             The encoding type used by the API to
             calculate sentence offsets for the sentence
             sentiment.
@@ -622,7 +622,7 @@ class AnalyzeSentimentResponse(proto.Message):
     r"""The sentiment analysis response message.
 
     Attributes:
-        document_sentiment (~.language_service.Sentiment):
+        document_sentiment (google.cloud.language_v1beta2.types.Sentiment):
             The overall sentiment of the input document.
         language (str):
             The language of the text, which will be the same as the
@@ -630,7 +630,7 @@ class AnalyzeSentimentResponse(proto.Message):
             automatically-detected language. See
             [Document.language][google.cloud.language.v1beta2.Document.language]
             field for more details.
-        sentences (Sequence[~.language_service.Sentence]):
+        sentences (Sequence[google.cloud.language_v1beta2.types.Sentence]):
             The sentiment for all the sentences in the
             document.
     """
@@ -646,9 +646,9 @@ class AnalyzeEntitySentimentRequest(proto.Message):
     r"""The entity-level sentiment analysis request message.
 
     Attributes:
-        document (~.language_service.Document):
+        document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
-        encoding_type (~.language_service.EncodingType):
+        encoding_type (google.cloud.language_v1beta2.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
     """
@@ -662,7 +662,7 @@ class AnalyzeEntitySentimentResponse(proto.Message):
     r"""The entity-level sentiment analysis response message.
 
     Attributes:
-        entities (Sequence[~.language_service.Entity]):
+        entities (Sequence[google.cloud.language_v1beta2.types.Entity]):
             The recognized entities in the input document
             with associated sentiments.
         language (str):
@@ -682,9 +682,9 @@ class AnalyzeEntitiesRequest(proto.Message):
     r"""The entity analysis request message.
 
     Attributes:
-        document (~.language_service.Document):
+        document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
-        encoding_type (~.language_service.EncodingType):
+        encoding_type (google.cloud.language_v1beta2.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
     """
@@ -698,7 +698,7 @@ class AnalyzeEntitiesResponse(proto.Message):
     r"""The entity analysis response message.
 
     Attributes:
-        entities (Sequence[~.language_service.Entity]):
+        entities (Sequence[google.cloud.language_v1beta2.types.Entity]):
             The recognized entities in the input
             document.
         language (str):
@@ -718,9 +718,9 @@ class AnalyzeSyntaxRequest(proto.Message):
     r"""The syntax analysis request message.
 
     Attributes:
-        document (~.language_service.Document):
+        document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
-        encoding_type (~.language_service.EncodingType):
+        encoding_type (google.cloud.language_v1beta2.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
     """
@@ -734,9 +734,9 @@ class AnalyzeSyntaxResponse(proto.Message):
     r"""The syntax analysis response message.
 
     Attributes:
-        sentences (Sequence[~.language_service.Sentence]):
+        sentences (Sequence[google.cloud.language_v1beta2.types.Sentence]):
             Sentences in the input document.
-        tokens (Sequence[~.language_service.Token]):
+        tokens (Sequence[google.cloud.language_v1beta2.types.Token]):
             Tokens, along with their syntactic
             information, in the input document.
         language (str):
@@ -758,7 +758,7 @@ class ClassifyTextRequest(proto.Message):
     r"""The document classification request message.
 
     Attributes:
-        document (~.language_service.Document):
+        document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
     """
 
@@ -769,7 +769,7 @@ class ClassifyTextResponse(proto.Message):
     r"""The document classification response message.
 
     Attributes:
-        categories (Sequence[~.language_service.ClassificationCategory]):
+        categories (Sequence[google.cloud.language_v1beta2.types.ClassificationCategory]):
             Categories representing the input document.
     """
 
@@ -784,11 +784,11 @@ class AnnotateTextRequest(proto.Message):
     syntax) in one call.
 
     Attributes:
-        document (~.language_service.Document):
+        document (google.cloud.language_v1beta2.types.Document):
             Required. Input document.
-        features (~.language_service.AnnotateTextRequest.Features):
+        features (google.cloud.language_v1beta2.types.AnnotateTextRequest.Features):
             Required. The enabled features.
-        encoding_type (~.language_service.EncodingType):
+        encoding_type (google.cloud.language_v1beta2.types.EncodingType):
             The encoding type used by the API to
             calculate offsets.
     """
@@ -836,19 +836,19 @@ class AnnotateTextResponse(proto.Message):
     r"""The text annotations response message.
 
     Attributes:
-        sentences (Sequence[~.language_service.Sentence]):
+        sentences (Sequence[google.cloud.language_v1beta2.types.Sentence]):
             Sentences in the input document. Populated if the user
             enables
             [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_syntax].
-        tokens (Sequence[~.language_service.Token]):
+        tokens (Sequence[google.cloud.language_v1beta2.types.Token]):
             Tokens, along with their syntactic information, in the input
             document. Populated if the user enables
             [AnnotateTextRequest.Features.extract_syntax][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_syntax].
-        entities (Sequence[~.language_service.Entity]):
+        entities (Sequence[google.cloud.language_v1beta2.types.Entity]):
             Entities, along with their semantic information, in the
             input document. Populated if the user enables
             [AnnotateTextRequest.Features.extract_entities][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_entities].
-        document_sentiment (~.language_service.Sentiment):
+        document_sentiment (google.cloud.language_v1beta2.types.Sentiment):
             The overall sentiment for the document. Populated if the
             user enables
             [AnnotateTextRequest.Features.extract_document_sentiment][google.cloud.language.v1beta2.AnnotateTextRequest.Features.extract_document_sentiment].
@@ -858,7 +858,7 @@ class AnnotateTextResponse(proto.Message):
             automatically-detected language. See
             [Document.language][google.cloud.language.v1beta2.Document.language]
             field for more details.
-        categories (Sequence[~.language_service.ClassificationCategory]):
+        categories (Sequence[google.cloud.language_v1beta2.types.ClassificationCategory]):
             Categories identified in the input document.
     """
 

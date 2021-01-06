@@ -1,6 +1,6 @@
 Services for Google Cloud Language v1beta2 API
 ==============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.language_v1beta2.services.language_service
-    :members:
-    :inherited-members:
+    language_service

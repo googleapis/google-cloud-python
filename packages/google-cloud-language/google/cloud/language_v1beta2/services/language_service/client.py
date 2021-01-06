@@ -112,6 +112,22 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            LanguageServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -123,7 +139,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            LanguageServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -215,10 +231,10 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.LanguageServiceTransport]): The
+            transport (Union[str, LanguageServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -329,18 +345,19 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         r"""Analyzes the sentiment of the provided text.
 
         Args:
-            request (:class:`~.language_service.AnalyzeSentimentRequest`):
+            request (google.cloud.language_v1beta2.types.AnalyzeSentimentRequest):
                 The request object. The sentiment analysis request
                 message.
-            document (:class:`~.language_service.Document`):
+            document (google.cloud.language_v1beta2.types.Document):
                 Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            encoding_type (:class:`~.language_service.EncodingType`):
+            encoding_type (google.cloud.language_v1beta2.types.EncodingType):
                 The encoding type used by the API to
                 calculate sentence offsets for the
                 sentence sentiment.
+
                 This corresponds to the ``encoding_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -352,7 +369,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.language_service.AnalyzeSentimentResponse:
+            google.cloud.language_v1beta2.types.AnalyzeSentimentResponse:
                 The sentiment analysis response
                 message.
 
@@ -408,16 +425,17 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         properties.
 
         Args:
-            request (:class:`~.language_service.AnalyzeEntitiesRequest`):
+            request (google.cloud.language_v1beta2.types.AnalyzeEntitiesRequest):
                 The request object. The entity analysis request message.
-            document (:class:`~.language_service.Document`):
+            document (google.cloud.language_v1beta2.types.Document):
                 Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            encoding_type (:class:`~.language_service.EncodingType`):
+            encoding_type (google.cloud.language_v1beta2.types.EncodingType):
                 The encoding type used by the API to
                 calculate offsets.
+
                 This corresponds to the ``encoding_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -429,7 +447,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.language_service.AnalyzeEntitiesResponse:
+            google.cloud.language_v1beta2.types.AnalyzeEntitiesResponse:
                 The entity analysis response message.
         """
         # Create or coerce a protobuf request object.
@@ -483,17 +501,18 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         and its mentions.
 
         Args:
-            request (:class:`~.language_service.AnalyzeEntitySentimentRequest`):
+            request (google.cloud.language_v1beta2.types.AnalyzeEntitySentimentRequest):
                 The request object. The entity-level sentiment analysis
                 request message.
-            document (:class:`~.language_service.Document`):
+            document (google.cloud.language_v1beta2.types.Document):
                 Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            encoding_type (:class:`~.language_service.EncodingType`):
+            encoding_type (google.cloud.language_v1beta2.types.EncodingType):
                 The encoding type used by the API to
                 calculate offsets.
+
                 This corresponds to the ``encoding_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -505,7 +524,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.language_service.AnalyzeEntitySentimentResponse:
+            google.cloud.language_v1beta2.types.AnalyzeEntitySentimentResponse:
                 The entity-level sentiment analysis
                 response message.
 
@@ -560,16 +579,17 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         tags, dependency trees, and other properties.
 
         Args:
-            request (:class:`~.language_service.AnalyzeSyntaxRequest`):
+            request (google.cloud.language_v1beta2.types.AnalyzeSyntaxRequest):
                 The request object. The syntax analysis request message.
-            document (:class:`~.language_service.Document`):
+            document (google.cloud.language_v1beta2.types.Document):
                 Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            encoding_type (:class:`~.language_service.EncodingType`):
+            encoding_type (google.cloud.language_v1beta2.types.EncodingType):
                 The encoding type used by the API to
                 calculate offsets.
+
                 This corresponds to the ``encoding_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -581,7 +601,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.language_service.AnalyzeSyntaxResponse:
+            google.cloud.language_v1beta2.types.AnalyzeSyntaxResponse:
                 The syntax analysis response message.
         """
         # Create or coerce a protobuf request object.
@@ -631,10 +651,10 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         r"""Classifies a document into categories.
 
         Args:
-            request (:class:`~.language_service.ClassifyTextRequest`):
+            request (google.cloud.language_v1beta2.types.ClassifyTextRequest):
                 The request object. The document classification request
                 message.
-            document (:class:`~.language_service.Document`):
+            document (google.cloud.language_v1beta2.types.Document):
                 Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -647,7 +667,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.language_service.ClassifyTextResponse:
+            google.cloud.language_v1beta2.types.ClassifyTextResponse:
                 The document classification response
                 message.
 
@@ -701,23 +721,24 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         call.
 
         Args:
-            request (:class:`~.language_service.AnnotateTextRequest`):
+            request (google.cloud.language_v1beta2.types.AnnotateTextRequest):
                 The request object. The request message for the text
                 annotation API, which can perform multiple analysis
                 types (sentiment, entities, and syntax) in one call.
-            document (:class:`~.language_service.Document`):
+            document (google.cloud.language_v1beta2.types.Document):
                 Required. Input document.
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            features (:class:`~.language_service.AnnotateTextRequest.Features`):
+            features (google.cloud.language_v1beta2.types.AnnotateTextRequest.Features):
                 Required. The enabled features.
                 This corresponds to the ``features`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            encoding_type (:class:`~.language_service.EncodingType`):
+            encoding_type (google.cloud.language_v1beta2.types.EncodingType):
                 The encoding type used by the API to
                 calculate offsets.
+
                 This corresponds to the ``encoding_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -729,7 +750,7 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.language_service.AnnotateTextResponse:
+            google.cloud.language_v1beta2.types.AnnotateTextResponse:
                 The text annotations response
                 message.
 
