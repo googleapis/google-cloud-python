@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-oslogin/compare/v2.0.0...v2.1.0) (2021-01-06)
+
+
+### Features
+
+* add common resource helpers, expose client transport, remove client side recv limit ([#41](https://www.github.com/googleapis/python-oslogin/issues/41)) ([ed84bb1](https://www.github.com/googleapis/python-oslogin/commit/ed84bb127eac218e845468d5d07a476af410ce71))
+* add from_service_account_info factory and fix sphinx identifiers  ([#46](https://www.github.com/googleapis/python-oslogin/issues/46)) ([36d488c](https://www.github.com/googleapis/python-oslogin/commit/36d488cd552cdfd11401d7090adf4ef9d1b01f61))
+
 ## [2.0.0](https://www.github.com/googleapis/python-oslogin/compare/v1.0.0...v2.0.0) (2020-09-30)
 
 
