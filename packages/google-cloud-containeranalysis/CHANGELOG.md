@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.1.0...v2.2.0) (2021-01-06)
+
+
+### Features
+
+* add from_service_account_info factory and fix sphinx identifiers  ([#74](https://www.github.com/googleapis/python-containeranalysis/issues/74)) ([7a87c41](https://www.github.com/googleapis/python-containeranalysis/commit/7a87c4115b15ccd42ccf0836ed62d663601720f7))
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([#68](https://www.github.com/googleapis/python-containeranalysis/issues/68)) ([77d47d3](https://www.github.com/googleapis/python-containeranalysis/commit/77d47d3efaceb30ed5952935a056229a960dc964))
+
 ## [2.1.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.0.0...v2.1.0) (2020-11-18)
 
 
