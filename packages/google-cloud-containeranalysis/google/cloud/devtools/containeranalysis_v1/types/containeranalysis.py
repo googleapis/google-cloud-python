@@ -52,7 +52,7 @@ class VulnerabilityOccurrencesSummary(proto.Message):
     resource and severity type.
 
     Attributes:
-        counts (Sequence[~.containeranalysis.VulnerabilityOccurrencesSummary.FixableTotalByDigest]):
+        counts (Sequence[google.cloud.devtools.containeranalysis_v1.types.VulnerabilityOccurrencesSummary.FixableTotalByDigest]):
             A listing by resource of the number of
             fixable and total vulnerabilities.
     """
@@ -64,7 +64,7 @@ class VulnerabilityOccurrencesSummary(proto.Message):
         Attributes:
             resource_uri (str):
                 The affected resource.
-            severity (~.vulnerability.Severity):
+            severity (grafeas.v1.vulnerability_pb2.Severity):
                 The severity for this count. SEVERITY_UNSPECIFIED indicates
                 total across all severities.
             fixable_count (int):

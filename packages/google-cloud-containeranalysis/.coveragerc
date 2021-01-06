@@ -4,7 +4,8 @@ branch = True
 [report]
 fail_under = 100
 show_missing = True
-omit = google/cloud/devtools/containeranalysis/__init__.py
+omit =
+    google/cloud/devtools/containeranalysis/__init__.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
