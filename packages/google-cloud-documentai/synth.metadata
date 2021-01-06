@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-documentai.git",
-        "sha": "c94afd55124b0abc8978bf86b84743dd4afb0778"
+        "sha": "33dc25806d5afd147c7cfb4b5f9c5505683b7ec4"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "520682435235d9c503983a360a2090025aa47cd1",
+        "internalRef": "350246057"
       }
     },
     {
@@ -51,6 +51,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -103,8 +104,10 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/documentai_v1beta2/document_understanding_service.rst",
     "docs/documentai_v1beta2/services.rst",
     "docs/documentai_v1beta2/types.rst",
+    "docs/documentai_v1beta3/document_processor_service.rst",
     "docs/documentai_v1beta3/services.rst",
     "docs/documentai_v1beta3/types.rst",
     "docs/multiprocessing.rst",

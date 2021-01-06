@@ -120,6 +120,22 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DocumentProcessorServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -131,7 +147,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            DocumentProcessorServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -255,10 +271,10 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DocumentProcessorServiceTransport]): The
+            transport (Union[str, DocumentProcessorServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -368,12 +384,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Processes a single document.
 
         Args:
-            request (:class:`~.document_processor_service.ProcessRequest`):
+            request (google.cloud.documentai_v1beta3.types.ProcessRequest):
                 The request object. Request message for the process
                 document method.
-            name (:class:`str`):
+            name (str):
                 Required. The processor resource
                 name.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -385,7 +402,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 sent along with the request as metadata.
 
         Returns:
-            ~.document_processor_service.ProcessResponse:
+            google.cloud.documentai_v1beta3.types.ProcessResponse:
                 Response message for the process
                 document method.
 
@@ -442,12 +459,13 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`~.document_processor_service.BatchProcessRequest`):
+            request (google.cloud.documentai_v1beta3.types.BatchProcessRequest):
                 The request object. Request message for batch process
                 document method.
-            name (:class:`str`):
+            name (str):
                 Required. The processor resource
                 name.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -459,11 +477,11 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.document_processor_service.BatchProcessResponse``:
+                :class:`google.cloud.documentai_v1beta3.types.BatchProcessResponse`
                 Response message for batch process document method.
 
         """
@@ -527,13 +545,14 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         should be processed by the specified processor.
 
         Args:
-            request (:class:`~.document_processor_service.ReviewDocumentRequest`):
+            request (google.cloud.documentai_v1beta3.types.ReviewDocumentRequest):
                 The request object. Request message for review document
                 method.
-            human_review_config (:class:`str`):
+            human_review_config (str):
                 Required. The resource name of the
                 HumanReviewConfig that the document will
                 be reviewed with.
+
                 This corresponds to the ``human_review_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -545,11 +564,11 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.document_processor_service.ReviewDocumentResponse``:
+                :class:`google.cloud.documentai_v1beta3.types.ReviewDocumentResponse`
                 Response message for review document method.
 
         """

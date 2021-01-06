@@ -44,7 +44,7 @@ class ProcessRequest(proto.Message):
     Attributes:
         name (str):
             Required. The processor resource name.
-        document (~.gcd_document.Document):
+        document (google.cloud.documentai_v1beta3.types.Document):
             The document payload, the [content] and [mime_type] fields
             must be set.
         skip_human_review (bool):
@@ -63,7 +63,7 @@ class ProcessResponse(proto.Message):
     r"""Response message for the process document method.
 
     Attributes:
-        document (~.gcd_document.Document):
+        document (google.cloud.documentai_v1beta3.types.Document):
             The document payload, will populate fields
             based on the processor's behavior.
         human_review_operation (str):
@@ -86,10 +86,10 @@ class BatchProcessRequest(proto.Message):
     Attributes:
         name (str):
             Required. The processor resource name.
-        input_configs (Sequence[~.document_processor_service.BatchProcessRequest.BatchInputConfig]):
+        input_configs (Sequence[google.cloud.documentai_v1beta3.types.BatchProcessRequest.BatchInputConfig]):
             The input config for each single document in
             the batch process.
-        output_config (~.document_processor_service.BatchProcessRequest.BatchOutputConfig):
+        output_config (google.cloud.documentai_v1beta3.types.BatchProcessRequest.BatchOutputConfig):
             The overall output config for batch process.
     """
 
@@ -139,17 +139,17 @@ class BatchProcessMetadata(proto.Message):
     r"""The long running operation metadata for batch process method.
 
     Attributes:
-        state (~.document_processor_service.BatchProcessMetadata.State):
+        state (google.cloud.documentai_v1beta3.types.BatchProcessMetadata.State):
             The state of the current batch processing.
         state_message (str):
             A message providing more details about the
             current state of processing. For example, the
             error message if the operation is failed.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The creation time of the operation.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the operation.
-        individual_process_statuses (Sequence[~.document_processor_service.BatchProcessMetadata.IndividualProcessStatus]):
+        individual_process_statuses (Sequence[google.cloud.documentai_v1beta3.types.BatchProcessMetadata.IndividualProcessStatus]):
             The list of response details of each
             document.
     """
@@ -175,7 +175,7 @@ class BatchProcessMetadata(proto.Message):
                 batch process is started by take snapshot of that document,
                 since a user can move or change that document during the
                 process.
-            status (~.gr_status.Status):
+            status (google.rpc.status_pb2.Status):
                 The status of the processing of the document.
             output_gcs_destination (str):
                 The output_gcs_destination (in the request as
@@ -219,7 +219,7 @@ class ReviewDocumentRequest(proto.Message):
             Required. The resource name of the
             HumanReviewConfig that the document will be
             reviewed with.
-        document (~.gcd_document.Document):
+        document (google.cloud.documentai_v1beta3.types.Document):
             The document that needs human review.
     """
 
@@ -245,15 +245,15 @@ class ReviewDocumentOperationMetadata(proto.Message):
     method.
 
     Attributes:
-        state (~.document_processor_service.ReviewDocumentOperationMetadata.State):
+        state (google.cloud.documentai_v1beta3.types.ReviewDocumentOperationMetadata.State):
             Used only when Operation.done is false.
         state_message (str):
             A message providing more details about the
             current state of processing. For example, the
             error message if the operation is failed.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The creation time of the operation.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the operation.
     """
 

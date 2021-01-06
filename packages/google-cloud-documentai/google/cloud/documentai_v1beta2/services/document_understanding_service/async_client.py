@@ -85,6 +85,9 @@ class DocumentUnderstandingServiceAsyncClient:
         DocumentUnderstandingServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = (
+        DocumentUnderstandingServiceClient.from_service_account_info
+    )
     from_service_account_file = (
         DocumentUnderstandingServiceClient.from_service_account_file
     )
@@ -165,13 +168,14 @@ class DocumentUnderstandingServiceAsyncClient:
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`~.document_understanding.BatchProcessDocumentsRequest`):
+            request (:class:`google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest`):
                 The request object. Request to batch process documents
                 as an asynchronous operation. The output is written to
                 Cloud Storage as JSON in the [Document] format.
-            requests (:class:`Sequence[~.document_understanding.ProcessDocumentRequest]`):
+            requests (:class:`Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]`):
                 Required. Individual requests for
                 each document.
+
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -183,14 +187,11 @@ class DocumentUnderstandingServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.document_understanding.BatchProcessDocumentsResponse``:
-                Response to an batch document processing request. This
-                is returned in the LRO Operation after the operation is
-                complete.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta2.types.BatchProcessDocumentsResponse` Response to an batch document processing request. This is returned in
+                   the LRO Operation after the operation is complete.
 
         """
         # Create or coerce a protobuf request object.
@@ -258,7 +259,7 @@ class DocumentUnderstandingServiceAsyncClient:
         r"""Processes a single document.
 
         Args:
-            request (:class:`~.document_understanding.ProcessDocumentRequest`):
+            request (:class:`google.cloud.documentai_v1beta2.types.ProcessDocumentRequest`):
                 The request object. Request to process one document.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -268,7 +269,7 @@ class DocumentUnderstandingServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.document.Document:
+            google.cloud.documentai_v1beta2.types.Document:
                 Document represents the canonical
                 document resource in Document
                 Understanding AI. It is an interchange

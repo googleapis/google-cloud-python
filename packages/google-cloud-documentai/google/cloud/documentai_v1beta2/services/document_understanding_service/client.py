@@ -123,6 +123,22 @@ class DocumentUnderstandingServiceClient(
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DocumentUnderstandingServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -134,7 +150,7 @@ class DocumentUnderstandingServiceClient(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            DocumentUnderstandingServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -226,10 +242,10 @@ class DocumentUnderstandingServiceClient(
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DocumentUnderstandingServiceTransport]): The
+            transport (Union[str, DocumentUnderstandingServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -340,13 +356,14 @@ class DocumentUnderstandingServiceClient(
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`~.document_understanding.BatchProcessDocumentsRequest`):
+            request (google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest):
                 The request object. Request to batch process documents
                 as an asynchronous operation. The output is written to
                 Cloud Storage as JSON in the [Document] format.
-            requests (:class:`Sequence[~.document_understanding.ProcessDocumentRequest]`):
+            requests (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
                 Required. Individual requests for
                 each document.
+
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -358,14 +375,11 @@ class DocumentUnderstandingServiceClient(
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.document_understanding.BatchProcessDocumentsResponse``:
-                Response to an batch document processing request. This
-                is returned in the LRO Operation after the operation is
-                complete.
+                The result type for the operation will be :class:`google.cloud.documentai_v1beta2.types.BatchProcessDocumentsResponse` Response to an batch document processing request. This is returned in
+                   the LRO Operation after the operation is complete.
 
         """
         # Create or coerce a protobuf request object.
@@ -426,7 +440,7 @@ class DocumentUnderstandingServiceClient(
         r"""Processes a single document.
 
         Args:
-            request (:class:`~.document_understanding.ProcessDocumentRequest`):
+            request (google.cloud.documentai_v1beta2.types.ProcessDocumentRequest):
                 The request object. Request to process one document.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -436,7 +450,7 @@ class DocumentUnderstandingServiceClient(
                 sent along with the request as metadata.
 
         Returns:
-            ~.document.Document:
+            google.cloud.documentai_v1beta2.types.Document:
                 Document represents the canonical
                 document resource in Document
                 Understanding AI. It is an interchange

@@ -50,7 +50,7 @@ class BatchProcessDocumentsRequest(proto.Message):
     output is written to Cloud Storage as JSON in the [Document] format.
 
     Attributes:
-        requests (Sequence[~.document_understanding.ProcessDocumentRequest]):
+        requests (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
             Required. Individual requests for each
             document.
         parent (str):
@@ -81,9 +81,9 @@ class ProcessDocumentRequest(proto.Message):
             If no location is specified, a region will be chosen
             automatically. This field is only populated when used in
             ProcessDocument method.
-        input_config (~.document_understanding.InputConfig):
+        input_config (google.cloud.documentai_v1beta2.types.InputConfig):
             Required. Information about the input file.
-        output_config (~.document_understanding.OutputConfig):
+        output_config (google.cloud.documentai_v1beta2.types.OutputConfig):
             Optional. The desired output location. This
             field is only needed in
             BatchProcessDocumentsRequest.
@@ -93,22 +93,22 @@ class ProcessDocumentRequest(proto.Message):
             "general" and "invoice". If not provided,
             "general"\ is used as default. If any other
             value is given, the request is rejected.
-        table_extraction_params (~.document_understanding.TableExtractionParams):
+        table_extraction_params (google.cloud.documentai_v1beta2.types.TableExtractionParams):
             Controls table extraction behavior. If not
             specified, the system will decide reasonable
             defaults.
-        form_extraction_params (~.document_understanding.FormExtractionParams):
+        form_extraction_params (google.cloud.documentai_v1beta2.types.FormExtractionParams):
             Controls form extraction behavior. If not
             specified, the system will decide reasonable
             defaults.
-        entity_extraction_params (~.document_understanding.EntityExtractionParams):
+        entity_extraction_params (google.cloud.documentai_v1beta2.types.EntityExtractionParams):
             Controls entity extraction behavior. If not
             specified, the system will decide reasonable
             defaults.
-        ocr_params (~.document_understanding.OcrParams):
+        ocr_params (google.cloud.documentai_v1beta2.types.OcrParams):
             Controls OCR behavior. If not specified, the
             system will decide reasonable defaults.
-        automl_params (~.document_understanding.AutoMlParams):
+        automl_params (google.cloud.documentai_v1beta2.types.AutoMlParams):
             Controls AutoML model prediction behavior.
             AutoMlParams cannot be used together with other
             Params.
@@ -144,7 +144,7 @@ class BatchProcessDocumentsResponse(proto.Message):
     returned in the LRO Operation after the operation is complete.
 
     Attributes:
-        responses (Sequence[~.document_understanding.ProcessDocumentResponse]):
+        responses (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentResponse]):
             Responses for each individual document.
     """
 
@@ -157,11 +157,11 @@ class ProcessDocumentResponse(proto.Message):
     r"""Response to a single document processing request.
 
     Attributes:
-        input_config (~.document_understanding.InputConfig):
+        input_config (google.cloud.documentai_v1beta2.types.InputConfig):
             Information about the input file. This is the
             same as the corresponding input config in the
             request.
-        output_config (~.document_understanding.OutputConfig):
+        output_config (google.cloud.documentai_v1beta2.types.OutputConfig):
             The output location of the parsed responses. The responses
             are written to this location as JSON-serialized ``Document``
             objects.
@@ -198,7 +198,7 @@ class TableExtractionParams(proto.Message):
     Attributes:
         enabled (bool):
             Whether to enable table extraction.
-        table_bound_hints (Sequence[~.document_understanding.TableBoundHint]):
+        table_bound_hints (Sequence[google.cloud.documentai_v1beta2.types.TableBoundHint]):
             Optional. Table bounding box hints that can
             be provided to complex cases which our algorithm
             cannot locate the table(s) in.
@@ -233,7 +233,7 @@ class TableBoundHint(proto.Message):
             this hint applies to. If not provided, this hint
             will apply to all pages by default. This value
             is 1-based.
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.documentai_v1beta2.types.BoundingPoly):
             Bounding box hint for a table on this page. The coordinates
             must be normalized to [0,1] and the bounding box must be an
             axis-aligned rectangle.
@@ -250,7 +250,7 @@ class FormExtractionParams(proto.Message):
     Attributes:
         enabled (bool):
             Whether to enable form extraction.
-        key_value_pair_hints (Sequence[~.document_understanding.KeyValuePairHint]):
+        key_value_pair_hints (Sequence[google.cloud.documentai_v1beta2.types.KeyValuePairHint]):
             User can provide pairs of (key text, value type) to improve
             the parsing result.
 
@@ -336,7 +336,7 @@ class InputConfig(proto.Message):
     r"""The desired input location and metadata.
 
     Attributes:
-        gcs_source (~.document_understanding.GcsSource):
+        gcs_source (google.cloud.documentai_v1beta2.types.GcsSource):
             The Google Cloud Storage location to read the
             input from. This must be a single file.
         contents (bytes):
@@ -369,7 +369,7 @@ class OutputConfig(proto.Message):
     r"""The desired output location and metadata.
 
     Attributes:
-        gcs_destination (~.document_understanding.GcsDestination):
+        gcs_destination (google.cloud.documentai_v1beta2.types.GcsDestination):
             The Google Cloud Storage location to write
             the output to.
         pages_per_shard (int):
@@ -427,14 +427,14 @@ class OperationMetadata(proto.Message):
     r"""Contains metadata for the BatchProcessDocuments operation.
 
     Attributes:
-        state (~.document_understanding.OperationMetadata.State):
+        state (google.cloud.documentai_v1beta2.types.OperationMetadata.State):
             The state of the current batch processing.
         state_message (str):
             A message providing more details about the
             current state of processing.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The creation time of the operation.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the operation.
     """
 

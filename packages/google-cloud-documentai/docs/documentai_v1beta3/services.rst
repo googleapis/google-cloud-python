@@ -1,6 +1,6 @@
 Services for Google Cloud Documentai v1beta3 API
 ================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.documentai_v1beta3.services.document_processor_service
-    :members:
-    :inherited-members:
+    document_processor_service

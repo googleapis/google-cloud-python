@@ -95,6 +95,7 @@ class DocumentProcessorServiceAsyncClient:
         DocumentProcessorServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = DocumentProcessorServiceClient.from_service_account_info
     from_service_account_file = DocumentProcessorServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -172,12 +173,13 @@ class DocumentProcessorServiceAsyncClient:
         r"""Processes a single document.
 
         Args:
-            request (:class:`~.document_processor_service.ProcessRequest`):
+            request (:class:`google.cloud.documentai_v1beta3.types.ProcessRequest`):
                 The request object. Request message for the process
                 document method.
             name (:class:`str`):
                 Required. The processor resource
                 name.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -189,7 +191,7 @@ class DocumentProcessorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.document_processor_service.ProcessResponse:
+            google.cloud.documentai_v1beta3.types.ProcessResponse:
                 Response message for the process
                 document method.
 
@@ -253,12 +255,13 @@ class DocumentProcessorServiceAsyncClient:
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`~.document_processor_service.BatchProcessRequest`):
+            request (:class:`google.cloud.documentai_v1beta3.types.BatchProcessRequest`):
                 The request object. Request message for batch process
                 document method.
             name (:class:`str`):
                 Required. The processor resource
                 name.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -270,11 +273,11 @@ class DocumentProcessorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.document_processor_service.BatchProcessResponse``:
+                :class:`google.cloud.documentai_v1beta3.types.BatchProcessResponse`
                 Response message for batch process document method.
 
         """
@@ -345,13 +348,14 @@ class DocumentProcessorServiceAsyncClient:
         should be processed by the specified processor.
 
         Args:
-            request (:class:`~.document_processor_service.ReviewDocumentRequest`):
+            request (:class:`google.cloud.documentai_v1beta3.types.ReviewDocumentRequest`):
                 The request object. Request message for review document
                 method.
             human_review_config (:class:`str`):
                 Required. The resource name of the
                 HumanReviewConfig that the document will
                 be reviewed with.
+
                 This corresponds to the ``human_review_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -363,11 +367,11 @@ class DocumentProcessorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.document_processor_service.ReviewDocumentResponse``:
+                :class:`google.cloud.documentai_v1beta3.types.ReviewDocumentResponse`
                 Response message for review document method.
 
         """
