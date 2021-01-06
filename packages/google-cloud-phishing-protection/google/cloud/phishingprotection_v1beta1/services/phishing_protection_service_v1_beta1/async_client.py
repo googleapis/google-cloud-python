@@ -83,6 +83,9 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         PhishingProtectionServiceV1Beta1Client.parse_common_location_path
     )
 
+    from_service_account_info = (
+        PhishingProtectionServiceV1Beta1Client.from_service_account_info
+    )
     from_service_account_file = (
         PhishingProtectionServiceV1Beta1Client.from_service_account_file
     )
@@ -173,12 +176,13 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         in the future.
 
         Args:
-            request (:class:`~.phishingprotection.ReportPhishingRequest`):
+            request (:class:`google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest`):
                 The request object. The ReportPhishing request message.
             parent (:class:`str`):
                 Required. The name of the project for which the report
                 will be created, in the format
                 "projects/{project_number}".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -186,6 +190,7 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
                 Required. The URI that is being
                 reported for phishing content to be
                 analyzed.
+
                 This corresponds to the ``uri`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -197,7 +202,7 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.phishingprotection.ReportPhishingResponse:
+            google.cloud.phishingprotection_v1beta1.types.ReportPhishingResponse:
                 The ReportPhishing (empty) response
                 message.
 

@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-phishingprotection.git",
-        "sha": "e587e30187c88b252664a0f39d1860cc9eed98ea"
+        "sha": "43b38b5e2001d22318ac2e5152d1ceeb38e28b3b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "520682435235d9c503983a360a2090025aa47cd1",
+        "internalRef": "350246057"
       }
     },
     {
@@ -35,6 +35,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -88,6 +89,7 @@
     "docs/_templates/layout.html",
     "docs/conf.py",
     "docs/multiprocessing.rst",
+    "docs/phishingprotection_v1beta1/phishing_protection_service_v1_beta1.rst",
     "docs/phishingprotection_v1beta1/services.rst",
     "docs/phishingprotection_v1beta1/types.rst",
     "google/cloud/phishingprotection/__init__.py",
