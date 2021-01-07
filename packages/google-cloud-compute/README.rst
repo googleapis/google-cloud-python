@@ -1,15 +1,15 @@
 Python Client for Compute Engine
 =================================================
 
-|beta| |pypi| |versions|
+|alpha| |pypi| |versions|
 
 `Compute Engine API`_: Create and runs virtual machines on Google Cloud Platform.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
    :target: https://pypi.org/project/google-cloud-compute/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-compute.svg
