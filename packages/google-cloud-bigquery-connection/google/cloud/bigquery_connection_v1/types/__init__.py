@@ -29,7 +29,6 @@ from .connection import (
     AwsCrossAccountRole,
 )
 
-
 __all__ = (
     "CreateConnectionRequest",
     "GetConnectionRequest",
