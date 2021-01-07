@@ -46,7 +46,6 @@ from .reservation import (
     UpdateBiReservationRequest,
 )
 
-
 __all__ = (
     "Reservation",
     "CapacityCommitment",
