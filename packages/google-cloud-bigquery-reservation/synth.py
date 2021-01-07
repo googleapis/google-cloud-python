@@ -43,10 +43,24 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100, microgenerator=True)
+templated_files = common.py_library(
+    cov_level=100,
+    microgenerator=True,
+    samples=True,
+)
 s.move(
     templated_files,
     excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
 )
+
+# ----------------------------------------------------------------------------
+# Samples templates
+# ----------------------------------------------------------------------------
+
+python.py_samples()
+
+# ----------------------------------------------------------------------------
+# Final cleanup
+# ----------------------------------------------------------------------------
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
