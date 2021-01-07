@@ -1,0 +1,12 @@
+{
+  "name": "compute",
+  "name_pretty": "Compute Engine",
+  "product_documentation": "https://cloud.google.com/compute/",
+  "client_documentation": "https://googleapis.dev/python/compute/latest",
+  "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/python-compute",
+  "distribution_name": "google-cloud-compute",
+  "api_id": "compute.googleapis.com"
+}

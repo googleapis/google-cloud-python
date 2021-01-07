@@ -1,0 +1,42 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-compute"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis-discovery",
+        "remote": "https://github.com/googleapis/googleapis-discovery.git",
+        "sha": "18ffd98bed11b88302a79b047e75262964a2b3ea"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "a3e990f3545dc8ccd384a75d20ce9cb185ca6a28"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "a3e990f3545dc8ccd384a75d20ce9cb185ca6a28"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis-discovery",
+        "apiName": "compute",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
