@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-error-reporting.git",
-        "sha": "95c6528e3f4fc688868ccd2d0db18be103db11fa"
+        "sha": "97444485ce9472df695ac999e04a3d3dca64ed61"
       }
     },
     {
