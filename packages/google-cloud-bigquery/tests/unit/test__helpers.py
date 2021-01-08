@@ -18,7 +18,6 @@ import decimal
 import unittest
 
 import mock
-import six
 
 
 class Test_not_null(unittest.TestCase):
@@ -894,7 +893,7 @@ class Test_record_field_to_json(unittest.TestCase):
         ]
         original = [42]
 
-        with six.assertRaisesRegex(self, ValueError, r".*not match schema length.*"):
+        with self.assertRaisesRegex(ValueError, r".*not match schema length.*"):
             self._call_fut(fields, original)
 
     def test_w_list_too_many_fields(self):
@@ -904,7 +903,7 @@ class Test_record_field_to_json(unittest.TestCase):
         ]
         original = [42, "two", "three"]
 
-        with six.assertRaisesRegex(self, ValueError, r".*not match schema length.*"):
+        with self.assertRaisesRegex(ValueError, r".*not match schema length.*"):
             self._call_fut(fields, original)
 
     def test_w_non_empty_dict(self):

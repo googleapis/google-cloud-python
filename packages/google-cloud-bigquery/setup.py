@@ -33,7 +33,6 @@ dependencies = [
     "proto-plus >= 1.10.0",
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "google-resumable-media >= 0.6.0, < 2.0dev",
-    "six >=1.13.0,< 2.0.0dev",
     "protobuf >= 3.12.0",
 ]
 extras = {

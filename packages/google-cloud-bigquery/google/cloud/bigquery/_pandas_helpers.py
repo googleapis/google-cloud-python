@@ -17,10 +17,9 @@
 import concurrent.futures
 import functools
 import logging
+import queue
 import warnings
 
-import six
-from six.moves import queue
 
 try:
     import pandas
@@ -738,7 +737,7 @@ def download_dataframe_bqstorage(
 def dataframe_to_json_generator(dataframe):
     for row in dataframe.itertuples(index=False, name=None):
         output = {}
-        for column, value in six.moves.zip(dataframe.columns, row):
+        for column, value in zip(dataframe.columns, row):
             # Omit NaN values.
             if value != value:
                 continue

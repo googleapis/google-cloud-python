@@ -23,8 +23,6 @@ try:
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 
-import six
-
 import google.cloud._helpers
 from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import _helpers
@@ -293,7 +291,7 @@ class TestRaiseOnClosedDecorator(unittest.TestCase):
         instance = decorated_class()
         instance._closed = True
 
-        with six.assertRaisesRegex(self, exceptions.ProgrammingError, "I'm closed!"):
+        with self.assertRaisesRegex(exceptions.ProgrammingError, "I'm closed!"):
             instance.instance_method()
 
     def test_methods_wo_public_instance_methods_on_closed_instance(self):
@@ -316,7 +314,7 @@ class TestRaiseOnClosedDecorator(unittest.TestCase):
         instance._closed = False
         instance._really_closed = True
 
-        with six.assertRaisesRegex(self, exceptions.ProgrammingError, "I'm closed!"):
+        with self.assertRaisesRegex(exceptions.ProgrammingError, "I'm closed!"):
             instance.instance_method()
 
     def test_custom_on_closed_error_type(self):
@@ -327,5 +325,5 @@ class TestRaiseOnClosedDecorator(unittest.TestCase):
         instance = decorated_class()
         instance._closed = True
 
-        with six.assertRaisesRegex(self, RuntimeError, "I'm closed!"):
+        with self.assertRaisesRegex(RuntimeError, "I'm closed!"):
             instance.instance_method()

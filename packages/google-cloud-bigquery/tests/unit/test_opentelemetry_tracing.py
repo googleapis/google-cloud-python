@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+import importlib
 import sys
 
 import mock
@@ -28,7 +29,6 @@ try:
 except ImportError:  # pragma: NO COVER
     opentelemetry = None
 import pytest
-from six.moves import reload_module
 
 from google.cloud.bigquery import opentelemetry_tracing
 
@@ -39,7 +39,7 @@ TEST_SPAN_ATTRIBUTES = {"foo": "baz"}
 @pytest.mark.skipif(opentelemetry is None, reason="Require `opentelemetry`")
 @pytest.fixture
 def setup():
-    reload_module(opentelemetry_tracing)
+    importlib.reload(opentelemetry_tracing)
     tracer_provider = TracerProvider()
     memory_exporter = InMemorySpanExporter()
     span_processor = SimpleExportSpanProcessor(memory_exporter)
@@ -51,7 +51,7 @@ def setup():
 @pytest.mark.skipif(opentelemetry is None, reason="Require `opentelemetry`")
 def test_opentelemetry_not_installed(setup, monkeypatch):
     monkeypatch.setitem(sys.modules, "opentelemetry", None)
-    reload_module(opentelemetry_tracing)
+    importlib.reload(opentelemetry_tracing)
     with opentelemetry_tracing.create_span("No-op for opentelemetry") as span:
         assert span is None
 

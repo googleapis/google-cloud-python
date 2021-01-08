@@ -15,11 +15,11 @@
 """Base classes and helpers for job classes."""
 
 import copy
+import http
 import threading
 
 from google.api_core import exceptions
 import google.api_core.future.polling
-from six.moves import http_client
 
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.retry import DEFAULT_RETRY
@@ -28,24 +28,24 @@ from google.cloud.bigquery.retry import DEFAULT_RETRY
 _DONE_STATE = "DONE"
 _STOPPED_REASON = "stopped"
 _ERROR_REASON_TO_EXCEPTION = {
-    "accessDenied": http_client.FORBIDDEN,
-    "backendError": http_client.INTERNAL_SERVER_ERROR,
-    "billingNotEnabled": http_client.FORBIDDEN,
-    "billingTierLimitExceeded": http_client.BAD_REQUEST,
-    "blocked": http_client.FORBIDDEN,
-    "duplicate": http_client.CONFLICT,
-    "internalError": http_client.INTERNAL_SERVER_ERROR,
-    "invalid": http_client.BAD_REQUEST,
-    "invalidQuery": http_client.BAD_REQUEST,
-    "notFound": http_client.NOT_FOUND,
-    "notImplemented": http_client.NOT_IMPLEMENTED,
-    "quotaExceeded": http_client.FORBIDDEN,
-    "rateLimitExceeded": http_client.FORBIDDEN,
-    "resourceInUse": http_client.BAD_REQUEST,
-    "resourcesExceeded": http_client.BAD_REQUEST,
-    "responseTooLarge": http_client.FORBIDDEN,
-    "stopped": http_client.OK,
-    "tableUnavailable": http_client.BAD_REQUEST,
+    "accessDenied": http.client.FORBIDDEN,
+    "backendError": http.client.INTERNAL_SERVER_ERROR,
+    "billingNotEnabled": http.client.FORBIDDEN,
+    "billingTierLimitExceeded": http.client.BAD_REQUEST,
+    "blocked": http.client.FORBIDDEN,
+    "duplicate": http.client.CONFLICT,
+    "internalError": http.client.INTERNAL_SERVER_ERROR,
+    "invalid": http.client.BAD_REQUEST,
+    "invalidQuery": http.client.BAD_REQUEST,
+    "notFound": http.client.NOT_FOUND,
+    "notImplemented": http.client.NOT_IMPLEMENTED,
+    "quotaExceeded": http.client.FORBIDDEN,
+    "rateLimitExceeded": http.client.FORBIDDEN,
+    "resourceInUse": http.client.BAD_REQUEST,
+    "resourcesExceeded": http.client.BAD_REQUEST,
+    "responseTooLarge": http.client.FORBIDDEN,
+    "stopped": http.client.OK,
+    "tableUnavailable": http.client.BAD_REQUEST,
 }
 
 
@@ -66,7 +66,7 @@ def _error_result_to_exception(error_result):
     """
     reason = error_result.get("reason")
     status_code = _ERROR_REASON_TO_EXCEPTION.get(
-        reason, http_client.INTERNAL_SERVER_ERROR
+        reason, http.client.INTERNAL_SERVER_ERROR
     )
     return exceptions.from_http_status(
         status_code, error_result.get("message", ""), errors=[error_result]

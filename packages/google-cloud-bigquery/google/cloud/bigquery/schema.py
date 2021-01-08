@@ -14,7 +14,7 @@
 
 """Schemas for BigQuery tables / queries."""
 
-from six.moves import collections_abc
+import collections
 
 from google.cloud.bigquery_v2 import types
 
@@ -318,7 +318,7 @@ def _to_schema_fields(schema):
         instance or a compatible mapping representation of the field.
     """
     for field in schema:
-        if not isinstance(field, (SchemaField, collections_abc.Mapping)):
+        if not isinstance(field, (SchemaField, collections.abc.Mapping)):
             raise ValueError(
                 "Schema items must either be fields or compatible "
                 "mapping representations."

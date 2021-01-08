@@ -18,7 +18,9 @@ import datetime
 import decimal
 import email
 import gzip
+import http.client
 import io
+import itertools
 import json
 import operator
 import unittest
@@ -26,8 +28,6 @@ import warnings
 
 import mock
 import requests
-import six
-from six.moves import http_client
 import pytest
 import pytz
 import pkg_resources
@@ -474,7 +474,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/projects"}, client, None)
         projects = list(page)
@@ -508,7 +508,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            six.next(iterator.pages)
+            next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/projects"}, client, None)
 
@@ -528,7 +528,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/projects"}, client, None)
         projects = list(page)
@@ -582,7 +582,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         datasets = list(page)
@@ -635,7 +635,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         datasets = list(page)
@@ -2919,7 +2919,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": path}, client, None)
         tables = list(page)
@@ -2942,7 +2942,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": path}, client, None)
         models = list(page)
@@ -2991,7 +2991,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         models = list(page)
@@ -3022,7 +3022,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with(
             {"path": "/projects/test-routines/datasets/test_routines/routines"},
@@ -3080,7 +3080,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": path}, client, None)
         routines = list(page)
@@ -3149,7 +3149,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         tables = list(page)
@@ -3213,7 +3213,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         tables = list(page)
@@ -4040,7 +4040,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         jobs = list(page)
@@ -4090,7 +4090,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         jobs = list(page)
@@ -4124,7 +4124,7 @@ class TestClient(unittest.TestCase):
         with mock.patch(
             "google.cloud.bigquery.opentelemetry_tracing._get_final_span_attributes"
         ) as final_attributes:
-            page = six.next(iterator.pages)
+            page = next(iterator.pages)
 
         final_attributes.assert_called_once_with({"path": "/%s" % PATH}, client, None)
         jobs = list(page)
@@ -4412,7 +4412,7 @@ class TestClient(unittest.TestCase):
         # Create mocks to be checked for doing transport.
         resumable_url = "http://test.invalid?upload_id=hey-you"
         response_headers = {"location": resumable_url}
-        fake_transport = self._mock_transport(http_client.OK, response_headers)
+        fake_transport = self._mock_transport(http.client.OK, response_headers)
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
         conn = client._connection = make_connection()
 
@@ -4479,7 +4479,7 @@ class TestClient(unittest.TestCase):
         from google.cloud.bigquery.job import LoadJobConfig
         from google.cloud.bigquery.job import SourceFormat
 
-        fake_transport = self._mock_transport(http_client.OK, {})
+        fake_transport = self._mock_transport(http.client.OK, {})
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
         conn = client._connection = make_connection()
 
@@ -5022,7 +5022,7 @@ class TestClient(unittest.TestCase):
         _, req = conn.api_request.call_args
         self.assertEqual(req["method"], "POST")
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
-        self.assertIsInstance(req["data"]["jobReference"]["jobId"], six.string_types)
+        self.assertIsInstance(req["data"]["jobReference"]["jobId"], str)
         self.assertIsNone(req["timeout"])
 
         # Check the job resource.
@@ -5227,7 +5227,7 @@ class TestClient(unittest.TestCase):
         job = client.query(QUERY)
 
         self.assertIsInstance(job, QueryJob)
-        self.assertIsInstance(job.job_id, six.string_types)
+        self.assertIsInstance(job.job_id, str)
         self.assertIs(job._client, client)
         self.assertEqual(job.query, QUERY)
         self.assertEqual(job.udf_resources, [])
@@ -5240,7 +5240,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
         self.assertIsNone(req["timeout"])
         sent = req["data"]
-        self.assertIsInstance(sent["jobReference"]["jobId"], six.string_types)
+        self.assertIsInstance(sent["jobReference"]["jobId"], str)
         sent_config = sent["configuration"]["query"]
         self.assertEqual(sent_config["query"], QUERY)
         self.assertFalse(sent_config["useLegacySql"])
@@ -5687,7 +5687,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req["path"], "/projects/PROJECT/jobs")
         self.assertIsNone(req["timeout"])
         sent = req["data"]
-        self.assertIsInstance(sent["jobReference"]["jobId"], six.string_types)
+        self.assertIsInstance(sent["jobReference"]["jobId"], str)
         sent_config = sent["configuration"]["query"]
         self.assertEqual(sent_config["query"], QUERY)
         self.assertTrue(sent_config["useLegacySql"])
@@ -6398,7 +6398,7 @@ class TestClient(unittest.TestCase):
 
         actual_calls = conn.api_request.call_args_list
 
-        for call, expected_data in six.moves.zip_longest(
+        for call, expected_data in itertools.zip_longest(
             actual_calls, EXPECTED_SENT_DATA
         ):
             expected_call = mock.call(
@@ -6466,7 +6466,7 @@ class TestClient(unittest.TestCase):
 
         actual_calls = conn.api_request.call_args_list
 
-        for call, expected_data in six.moves.zip_longest(
+        for call, expected_data in itertools.zip_longest(
             actual_calls, EXPECTED_SENT_DATA
         ):
             expected_call = mock.call(
@@ -6776,7 +6776,7 @@ class TestClient(unittest.TestCase):
 
         # Check that initial total_rows is populated from the table.
         self.assertEqual(iterator.total_rows, 7)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         rows = list(page)
 
         # Check that total_rows is updated based on API response.
@@ -6831,14 +6831,14 @@ class TestClient(unittest.TestCase):
         table = Table(self.TABLE_REF, schema=[full_name])
         iterator = client.list_rows(table, max_results=4, page_size=2, start_index=1)
         pages = iterator.pages
-        rows = list(six.next(pages))
+        rows = list(next(pages))
         extra_params = iterator.extra_params
         f2i = {"full_name": 0}
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0], Row(("Phred Phlyntstone",), f2i))
         self.assertEqual(rows[1], Row(("Bharney Rhubble",), f2i))
 
-        rows = list(six.next(pages))
+        rows = list(next(pages))
 
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0], Row(("Wylma Phlyntstone",), f2i))
@@ -6915,7 +6915,7 @@ class TestClient(unittest.TestCase):
         conn = client._connection = make_connection(*len(tests) * [{}])
         for i, test in enumerate(tests):
             iterator = client.list_rows(table, **test[0])
-            six.next(iterator.pages)
+            next(iterator.pages)
             req = conn.api_request.call_args_list[i]
             test[1]["formatOptions.useInt64Timestamp"] = True
             self.assertEqual(req[1]["query_params"], test[1], "for kwargs %s" % test[0])
@@ -7000,7 +7000,7 @@ class TestClient(unittest.TestCase):
         struct = SchemaField("struct", "RECORD", mode="REPEATED", fields=[index, score])
 
         iterator = client.list_rows(self.TABLE_REF, selected_fields=[color, struct])
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         rows = list(page)
         total_rows = iterator.total_rows
         page_token = iterator.next_page_token
@@ -7065,7 +7065,7 @@ class TestClient(unittest.TestCase):
         table = Table(self.TABLE_REF, schema=[full_name, phone])
 
         iterator = client.list_rows(table)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         rows = list(page)
         total_rows = iterator.total_rows
         page_token = iterator.next_page_token
@@ -7241,7 +7241,7 @@ class TestClientUpload(object):
         if side_effect is None:
             side_effect = [
                 cls._make_response(
-                    http_client.OK,
+                    http.client.OK,
                     json.dumps(resource),
                     {"Content-Type": "application/json"},
                 )
@@ -7522,7 +7522,7 @@ class TestClientUpload(object):
         file_obj = self._make_file_obj()
 
         response = self._make_response(
-            content="Someone is already in this spot.", status_code=http_client.CONFLICT
+            content="Someone is already in this spot.", status_code=http.client.CONFLICT
         )
 
         do_upload_patch = self._make_do_upload_patch(
@@ -8584,7 +8584,7 @@ class TestClientUpload(object):
 
         resumable_url = "http://test.invalid?upload_id=and-then-there-was-1"
         initial_response = cls._make_response(
-            http_client.OK, "", {"location": resumable_url}
+            http.client.OK, "", {"location": resumable_url}
         )
         data_response = cls._make_response(
             resumable_media.PERMANENT_REDIRECT,
@@ -8592,7 +8592,7 @@ class TestClientUpload(object):
             {"range": "bytes=0-{:d}".format(size - 1)},
         )
         final_response = cls._make_response(
-            http_client.OK,
+            http.client.OK,
             json.dumps({"size": size}),
             {"Content-Type": "application/json"},
         )
@@ -8634,7 +8634,7 @@ class TestClientUpload(object):
         )
 
     def test__do_multipart_upload(self):
-        transport = self._make_transport([self._make_response(http_client.OK)])
+        transport = self._make_transport([self._make_response(http.client.OK)])
         client = self._make_client(transport)
         file_obj = self._make_file_obj()
         file_obj_len = len(file_obj.getvalue())

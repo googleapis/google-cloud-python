@@ -18,6 +18,7 @@ import concurrent.futures
 import csv
 import datetime
 import decimal
+import io
 import json
 import operator
 import os
@@ -27,7 +28,6 @@ import uuid
 import re
 
 import requests
-import six
 import psutil
 import pytest
 import pytz
@@ -54,7 +54,7 @@ except ImportError:  # pragma: NO COVER
     pyarrow = None
 try:
     import IPython
-    from IPython.utils import io
+    from IPython.utils import io as ipython_io
     from IPython.testing import tools
     from IPython.terminal import interactiveshell
 except ImportError:  # pragma: NO COVER
@@ -219,7 +219,7 @@ class TestBigQuery(unittest.TestCase):
 
         got = client.get_service_account_email()
 
-        self.assertIsInstance(got, six.text_type)
+        self.assertIsInstance(got, str)
         self.assertIn("@", got)
 
     def _create_bucket(self, bucket_name, location=None):
@@ -598,7 +598,7 @@ class TestBigQuery(unittest.TestCase):
     @staticmethod
     def _fetch_single_page(table, selected_fields=None):
         iterator = Config.CLIENT.list_rows(table, selected_fields=selected_fields)
-        page = six.next(iterator.pages)
+        page = next(iterator.pages)
         return list(page)
 
     def _create_table_many_columns(self, rowcount):
@@ -1415,7 +1415,7 @@ class TestBigQuery(unittest.TestCase):
         self._create_bucket(bucket_name, location="eu")
 
         # Create a temporary dataset & table in the EU.
-        table_bytes = six.BytesIO(b"a,3\nb,2\nc,1\n")
+        table_bytes = io.BytesIO(b"a,3\nb,2\nc,1\n")
         client = Config.CLIENT
         dataset = self.temp_dataset(_make_dataset_id("eu_load_file"), location="EU")
         table_ref = dataset.table("letters")
@@ -2444,7 +2444,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(list(df), column_names)  # verify the column names
         exp_datatypes = {
             "id": int,
-            "author": six.text_type,
+            "author": str,
             "time_ts": pandas.Timestamp,
             "dead": bool,
         }
@@ -2477,7 +2477,7 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(list(df), column_names)
         exp_datatypes = {
             "id": int,
-            "author": six.text_type,
+            "author": str,
             "time_ts": pandas.Timestamp,
             "dead": bool,
         }
@@ -2572,9 +2572,7 @@ class TestBigQuery(unittest.TestCase):
         assert len(row_tuples) == len(expected)
 
         for row, expected_row in zip(row_tuples, expected):
-            six.assertCountEqual(
-                self, row, expected_row
-            )  # column order does not matter
+            self.assertCountEqual(row, expected_row)  # column order does not matter
 
     def test_insert_rows_nested_nested(self):
         # See #2951
@@ -2780,7 +2778,7 @@ class TestBigQuery(unittest.TestCase):
             {"string_col": "Some value", "record_col": record, "float_col": 3.14}
         ]
         rows = [json.dumps(row) for row in to_insert]
-        body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
+        body = io.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
         table_id = "test_table"
         dataset = self.temp_dataset(_make_dataset_id("nested_df"))
         table = dataset.table(table_id)
@@ -2858,7 +2856,7 @@ class TestBigQuery(unittest.TestCase):
             }
         ]
         rows = [json.dumps(row) for row in to_insert]
-        body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
+        body = io.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
         table_id = "test_table"
         dataset = self.temp_dataset(_make_dataset_id("nested_df"))
         table = dataset.table(table_id)
@@ -2923,7 +2921,7 @@ class TestBigQuery(unittest.TestCase):
         schema = [SF("string_col", "STRING", mode="NULLABLE")]
         to_insert = [{"string_col": "item%d" % i} for i in range(num_items)]
         rows = [json.dumps(row) for row in to_insert]
-        body = six.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
+        body = io.BytesIO("{}\n".format("\n".join(rows)).encode("ascii"))
 
         table_id = "test_table"
         dataset = self.temp_dataset(_make_dataset_id("nested_df"))
@@ -2997,7 +2995,7 @@ def test_bigquery_magic():
         ORDER BY view_count DESC
         LIMIT 10
     """
-    with io.capture_output() as captured:
+    with ipython_io.capture_output() as captured:
         result = ip.run_cell_magic("bigquery", "--use_rest_api", sql)
 
     conn_count_end = len(current_process.connections())

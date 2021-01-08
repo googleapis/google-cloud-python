@@ -16,7 +16,6 @@ import operator as op
 import unittest
 
 import mock
-import six
 
 try:
     import pyarrow
@@ -181,8 +180,8 @@ class TestCursor(unittest.TestCase):
         )
 
         for method in method_names:
-            with six.assertRaisesRegex(
-                self, ProgrammingError, r"Operating on a closed cursor\."
+            with self.assertRaisesRegex(
+                ProgrammingError, r"Operating on a closed cursor\."
             ):
                 getattr(cursor, method)()
 
@@ -375,7 +374,7 @@ class TestCursor(unittest.TestCase):
         cursor = connection.cursor()
         cursor.execute("SELECT foo, bar FROM some_table")
 
-        with six.assertRaisesRegex(self, exceptions.Forbidden, "invalid credentials"):
+        with self.assertRaisesRegex(exceptions.Forbidden, "invalid credentials"):
             cursor.fetchall()
 
         # the default client was not used

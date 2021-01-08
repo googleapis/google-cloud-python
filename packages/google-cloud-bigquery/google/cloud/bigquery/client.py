@@ -34,7 +34,6 @@ try:
     import pyarrow
 except ImportError:  # pragma: NO COVER
     pyarrow = None
-import six
 
 from google import resumable_media
 from google.resumable_media.requests import MultipartUpload
@@ -2017,7 +2016,7 @@ class Client(ClientWithProject):
 
         job_ref = job._JobReference(job_id, project=project, location=location)
 
-        if isinstance(source_uris, six.string_types):
+        if isinstance(source_uris, str):
             source_uris = [source_uris]
 
         destination = _table_arg_to_table_ref(destination, default_project=self.project)
@@ -2779,7 +2778,7 @@ class Client(ClientWithProject):
                 )
             )
 
-        if isinstance(destination_uris, six.string_types):
+        if isinstance(destination_uris, str):
             destination_uris = [destination_uris]
 
         if job_config:

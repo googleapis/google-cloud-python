@@ -19,8 +19,6 @@ import decimal
 import functools
 import numbers
 
-import six
-
 from google.cloud import bigquery
 from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import exceptions
@@ -132,7 +130,7 @@ def to_query_parameters_dict(parameters):
     """
     result = []
 
-    for name, value in six.iteritems(parameters):
+    for name, value in parameters.items():
         if isinstance(value, collections_abc.Mapping):
             raise NotImplementedError(
                 "STRUCT-like parameter values are not supported "
@@ -187,9 +185,9 @@ def bigquery_scalar_type(value):
         return "FLOAT64"
     elif isinstance(value, decimal.Decimal):
         return "NUMERIC"
-    elif isinstance(value, six.text_type):
+    elif isinstance(value, str):
         return "STRING"
-    elif isinstance(value, six.binary_type):
+    elif isinstance(value, bytes):
         return "BYTES"
     elif isinstance(value, datetime.datetime):
         return "DATETIME" if value.tzinfo is None else "TIMESTAMP"
@@ -215,7 +213,7 @@ def array_like(value):
         bool: ``True`` if the value is considered array-like, ``False`` otherwise.
     """
     return isinstance(value, collections_abc.Sequence) and not isinstance(
-        value, (six.text_type, six.binary_type, bytearray)
+        value, (str, bytes, bytearray)
     )
 
 

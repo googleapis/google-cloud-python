@@ -17,7 +17,6 @@
 """Define resources for the BigQuery Routines API."""
 
 from google.protobuf import json_format
-import six
 
 import google.cloud._helpers
 from google.cloud.bigquery import _helpers
@@ -54,7 +53,7 @@ class Routine(object):
     }
 
     def __init__(self, routine_ref, **kwargs):
-        if isinstance(routine_ref, six.string_types):
+        if isinstance(routine_ref, str):
             routine_ref = RoutineReference.from_string(routine_ref)
 
         self._properties = {"routineReference": routine_ref.to_api_repr()}

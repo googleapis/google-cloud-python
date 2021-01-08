@@ -24,8 +24,6 @@ import operator
 import pytz
 import warnings
 
-import six
-
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
@@ -657,7 +655,7 @@ class Table(object):
 
     @description.setter
     def description(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["description"] = value
 
@@ -694,7 +692,7 @@ class Table(object):
 
     @friendly_name.setter
     def friendly_name(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["friendlyName"] = value
 
@@ -721,7 +719,7 @@ class Table(object):
 
     @view_query.setter
     def view_query(self, value):
-        if not isinstance(value, six.string_types):
+        if not isinstance(value, str):
             raise ValueError("Pass a string")
         _helpers._set_sub_prop(self._properties, ["view", "query"], value)
         view = self._properties["view"]
@@ -1244,7 +1242,7 @@ class Row(object):
             >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).keys())
             ['x', 'y']
         """
-        return six.iterkeys(self._xxx_field_to_index)
+        return self._xxx_field_to_index.keys()
 
     def items(self):
         """Return items as ``(key, value)`` pairs.
@@ -1258,7 +1256,7 @@ class Row(object):
             >>> list(Row(('a', 'b'), {'x': 0, 'y': 1}).items())
             [('x', 'a'), ('y', 'b')]
         """
-        for key, index in six.iteritems(self._xxx_field_to_index):
+        for key, index in self._xxx_field_to_index.items():
             yield (key, copy.deepcopy(self._xxx_values[index]))
 
     def get(self, key, default=None):
@@ -1308,7 +1306,7 @@ class Row(object):
         return len(self._xxx_values)
 
     def __getitem__(self, key):
-        if isinstance(key, six.string_types):
+        if isinstance(key, str):
             value = self._xxx_field_to_index.get(key)
             if value is None:
                 raise KeyError("no row field {!r}".format(key))
@@ -2293,7 +2291,7 @@ def _table_arg_to_table_ref(value, default_project=None):
 
     This function keeps TableReference and other kinds of objects unchanged.
     """
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         value = TableReference.from_string(value, default_project=default_project)
     if isinstance(value, (Table, TableListItem)):
         value = value.reference
@@ -2305,7 +2303,7 @@ def _table_arg_to_table(value, default_project=None):
 
     This function keeps Table and other kinds of objects unchanged.
     """
-    if isinstance(value, six.string_types):
+    if isinstance(value, str):
         value = TableReference.from_string(value, default_project=default_project)
     if isinstance(value, TableReference):
         value = Table(value)

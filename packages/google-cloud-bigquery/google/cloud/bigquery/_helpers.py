@@ -18,7 +18,6 @@ import base64
 import datetime
 import decimal
 import re
-import six
 
 from google.cloud._helpers import UTC
 from google.cloud._helpers import _date_from_iso8601_date
@@ -451,7 +450,7 @@ def _record_field_to_json(fields, row_value):
         for field_name in not_processed:
             value = row_value[field_name]
             if value is not None:
-                record[field_name] = six.text_type(value)
+                record[field_name] = str(value)
 
     return record
 

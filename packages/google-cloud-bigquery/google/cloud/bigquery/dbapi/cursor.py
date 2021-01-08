@@ -19,8 +19,6 @@ from collections import abc as collections_abc
 import copy
 import logging
 
-import six
-
 from google.cloud.bigquery import job
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
@@ -289,7 +287,7 @@ class Cursor(object):
         """
         self._try_fetch()
         try:
-            return six.next(self._query_data)
+            return next(self._query_data)
         except StopIteration:
             return None
 

@@ -22,7 +22,6 @@ import mock
 import pkg_resources
 import pytest
 import pytz
-import six
 
 import google.api_core.exceptions
 
@@ -1674,16 +1673,16 @@ class TestRowIterator(unittest.TestCase):
 
         rows_iter = iter(row_iterator)
 
-        val1 = six.next(rows_iter)
+        val1 = next(rows_iter)
         self.assertEqual(val1.name, "Phred Phlyntstone")
         self.assertEqual(row_iterator.num_results, 1)
 
-        val2 = six.next(rows_iter)
+        val2 = next(rows_iter)
         self.assertEqual(val2.name, "Bharney Rhubble")
         self.assertEqual(row_iterator.num_results, 2)
 
         with self.assertRaises(StopIteration):
-            six.next(rows_iter)
+            next(rows_iter)
 
         api_request.assert_called_once_with(method="GET", path=path, query_params={})
 
@@ -2437,13 +2436,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df.name.dtype.name, "object")
         self.assertEqual(df.age.dtype.name, "int64")
 
-    @pytest.mark.xfail(
-        six.PY2,
-        reason=(
-            "Requires pyarrow>-1.0 to work, but the latter is not compatible "
-            "with Python 2 anymore."
-        ),
-    )
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_timestamp_out_of_pyarrow_bounds(self):
@@ -2475,13 +2467,6 @@ class TestRowIterator(unittest.TestCase):
             ],
         )
 
-    @pytest.mark.xfail(
-        six.PY2,
-        reason=(
-            "Requires pyarrow>-1.0 to work, but the latter is not compatible "
-            "with Python 2 anymore."
-        ),
-    )
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_datetime_out_of_pyarrow_bounds(self):
@@ -2697,7 +2682,7 @@ class TestRowIterator(unittest.TestCase):
             else:
                 self.assertIsInstance(row.start_timestamp, pandas.Timestamp)
                 self.assertIsInstance(row.seconds, float)
-                self.assertIsInstance(row.payment_type, six.string_types)
+                self.assertIsInstance(row.payment_type, str)
                 self.assertIsInstance(row.complete, bool)
                 self.assertIsInstance(row.date, datetime.date)
 
@@ -3542,7 +3527,7 @@ class TestPartitionRange(unittest.TestCase):
     def test_unhashable_object(self):
         object_under_test1 = self._make_one(start=1, end=10, interval=2)
 
-        with six.assertRaisesRegex(self, TypeError, r".*unhashable type.*"):
+        with self.assertRaisesRegex(TypeError, r".*unhashable type.*"):
             hash(object_under_test1)
 
     def test_repr(self):
@@ -3642,7 +3627,7 @@ class TestRangePartitioning(unittest.TestCase):
         object_under_test1 = self._make_one(
             range_=PartitionRange(start=1, end=10, interval=2), field="integer_col"
         )
-        with six.assertRaisesRegex(self, TypeError, r".*unhashable type.*"):
+        with self.assertRaisesRegex(TypeError, r".*unhashable type.*"):
             hash(object_under_test1)
 
     def test_repr(self):

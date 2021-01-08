@@ -13,12 +13,12 @@
 # limitations under the License.
 
 import copy
+import http
 import unittest
 
 from google.api_core import exceptions
 import google.api_core.retry
 import mock
-from six.moves import http_client
 
 from .helpers import _make_client
 from .helpers import _make_connection
@@ -35,14 +35,14 @@ class Test__error_result_to_exception(unittest.TestCase):
     def test_simple(self):
         error_result = {"reason": "invalid", "message": "bad request"}
         exception = self._call_fut(error_result)
-        self.assertEqual(exception.code, http_client.BAD_REQUEST)
+        self.assertEqual(exception.code, http.client.BAD_REQUEST)
         self.assertTrue(exception.message.startswith("bad request"))
         self.assertIn(error_result, exception.errors)
 
     def test_missing_reason(self):
         error_result = {}
         exception = self._call_fut(error_result)
-        self.assertEqual(exception.code, http_client.INTERNAL_SERVER_ERROR)
+        self.assertEqual(exception.code, http.client.INTERNAL_SERVER_ERROR)
 
 
 class Test_JobReference(unittest.TestCase):

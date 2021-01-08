@@ -153,8 +153,6 @@ try:
 except ImportError:  # pragma: NO COVER
     raise ImportError("This module can only be loaded in IPython.")
 
-import six
-
 from google.api_core import client_info
 from google.api_core import client_options
 from google.api_core.exceptions import NotFound
@@ -577,16 +575,16 @@ def _cell_magic(line, query):
             "--params is not a correctly formatted JSON string or a JSON "
             "serializable dictionary"
         )
-        six.raise_from(rebranded_error, exc)
+        raise rebranded_error from exc
     except lap.exceptions.DuplicateQueryParamsError as exc:
         rebranded_error = ValueError("Duplicate --params option.")
-        six.raise_from(rebranded_error, exc)
+        raise rebranded_error from exc
     except lap.exceptions.ParseError as exc:
         rebranded_error = ValueError(
             "Unrecognized input, are option values correct? "
             "Error details: {}".format(exc.args[0])
         )
-        six.raise_from(rebranded_error, exc)
+        raise rebranded_error from exc
 
     args = magic_arguments.parse_argstring(_cell_magic, rest_of_args)
 
@@ -768,7 +766,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials, client_options):
             "to use it. Alternatively, use the classic REST API by specifying "
             "the --use_rest_api magic option."
         )
-        six.raise_from(customized_error, err)
+        raise customized_error from err
 
     try:
         from google.api_core.gapic_v1 import client_info as gapic_client_info
@@ -776,7 +774,7 @@ def _make_bqstorage_client(use_bqstorage_api, credentials, client_options):
         customized_error = ImportError(
             "Install the grpcio package to use the BigQuery Storage API."
         )
-        six.raise_from(customized_error, err)
+        raise customized_error from err
 
     return bigquery_storage.BigQueryReadClient(
         credentials=credentials,

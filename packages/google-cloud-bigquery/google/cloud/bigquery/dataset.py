@@ -16,7 +16,6 @@
 
 from __future__ import absolute_import
 
-import six
 import copy
 
 import google.cloud._helpers
@@ -260,9 +259,9 @@ class DatasetReference(object):
     """
 
     def __init__(self, project, dataset_id):
-        if not isinstance(project, six.string_types):
+        if not isinstance(project, str):
             raise ValueError("Pass a string for project")
-        if not isinstance(dataset_id, six.string_types):
+        if not isinstance(dataset_id, str):
             raise ValueError("Pass a string for dataset_id")
         self._project = project
         self._dataset_id = dataset_id
@@ -407,7 +406,7 @@ class Dataset(object):
     }
 
     def __init__(self, dataset_ref):
-        if isinstance(dataset_ref, six.string_types):
+        if isinstance(dataset_ref, str):
             dataset_ref = DatasetReference.from_string(dataset_ref)
         self._properties = {"datasetReference": dataset_ref.to_api_repr(), "labels": {}}
 
@@ -544,7 +543,7 @@ class Dataset(object):
 
     @default_table_expiration_ms.setter
     def default_table_expiration_ms(self, value):
-        if not isinstance(value, six.integer_types) and value is not None:
+        if not isinstance(value, int) and value is not None:
             raise ValueError("Pass an integer, or None")
         self._properties["defaultTableExpirationMs"] = _helpers._str_or_none(value)
 
@@ -560,7 +559,7 @@ class Dataset(object):
 
     @description.setter
     def description(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["description"] = value
 
@@ -576,7 +575,7 @@ class Dataset(object):
 
     @friendly_name.setter
     def friendly_name(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["friendlyName"] = value
 
@@ -592,7 +591,7 @@ class Dataset(object):
 
     @location.setter
     def location(self, value):
-        if not isinstance(value, six.string_types) and value is not None:
+        if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
         self._properties["location"] = value
 

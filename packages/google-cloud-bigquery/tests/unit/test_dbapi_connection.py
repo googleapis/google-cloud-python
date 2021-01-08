@@ -16,7 +16,6 @@ import gc
 import unittest
 
 import mock
-import six
 
 try:
     from google.cloud import bigquery_storage
@@ -124,8 +123,8 @@ class TestConnection(unittest.TestCase):
         connection.close()
 
         for method in ("close", "commit", "cursor"):
-            with six.assertRaisesRegex(
-                self, ProgrammingError, r"Operating on a closed connection\."
+            with self.assertRaisesRegex(
+                ProgrammingError, r"Operating on a closed connection\."
             ):
                 getattr(connection, method)()
 

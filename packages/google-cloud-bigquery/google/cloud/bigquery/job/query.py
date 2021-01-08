@@ -20,7 +20,6 @@ import re
 
 from google.api_core import exceptions
 import requests
-import six
 
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
@@ -192,7 +191,7 @@ class QueryJobConfig(_JobConfig):
             self._set_sub_prop("defaultDataset", None)
             return
 
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             value = DatasetReference.from_string(value)
 
         if isinstance(value, (Dataset, DatasetListItem)):
@@ -1168,7 +1167,7 @@ class QueryJob(_AsyncJob):
             exc.query_job = self
             raise
         except requests.exceptions.Timeout as exc:
-            six.raise_from(concurrent.futures.TimeoutError, exc)
+            raise concurrent.futures.TimeoutError from exc
 
         # If the query job is complete but there are no query results, this was
         # special job, such as a DDL query. Return an empty result set to
