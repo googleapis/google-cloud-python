@@ -93,8 +93,8 @@ class AppProfile(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_app_profile_name]
-            :end-before: [END bigtable_app_profile_name]
+            :start-after: [START bigtable_api_app_profile_name]
+            :end-before: [END bigtable_api_app_profile_name]
             :dedent: 4
 
         The AppProfile name is of the form
@@ -237,8 +237,8 @@ class AppProfile(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_reload_app_profile]
-            :end-before: [END bigtable_reload_app_profile]
+            :start-after: [START bigtable_api_reload_app_profile]
+            :end-before: [END bigtable_api_reload_app_profile]
             :dedent: 4
         """
 
@@ -254,8 +254,8 @@ class AppProfile(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_app_profile_exists]
-            :end-before: [END bigtable_app_profile_exists]
+            :start-after: [START bigtable_api_app_profile_exists]
+            :end-before: [END bigtable_api_app_profile_exists]
             :dedent: 4
 
         :rtype: bool
@@ -281,8 +281,8 @@ class AppProfile(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_create_app_profile]
-            :end-before: [END bigtable_create_app_profile]
+            :start-after: [START bigtable_api_create_app_profile]
+            :end-before: [END bigtable_api_create_app_profile]
             :dedent: 4
 
         :type: ignore_warnings: bool
@@ -313,8 +313,8 @@ class AppProfile(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_update_app_profile]
-            :end-before: [END bigtable_update_app_profile]
+            :start-after: [START bigtable_api_update_app_profile]
+            :end-before: [END bigtable_api_update_app_profile]
             :dedent: 4
         """
         update_mask_pb = field_mask_pb2.FieldMask()
@@ -339,8 +339,8 @@ class AppProfile(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_delete_app_profile]
-            :end-before: [END bigtable_delete_app_profile]
+            :start-after: [START bigtable_api_delete_app_profile]
+            :end-before: [END bigtable_api_delete_app_profile]
             :dedent: 4
 
         :type: ignore_warnings: bool

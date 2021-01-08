@@ -104,8 +104,8 @@ class Policy(BasePolicy):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_admins_policy]
-            :end-before: [END bigtable_admins_policy]
+            :start-after: [START bigtable_api_admins_policy]
+            :end-before: [END bigtable_api_admins_policy]
             :dedent: 4
         """
         result = set()
@@ -122,8 +122,8 @@ class Policy(BasePolicy):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_readers_policy]
-            :end-before: [END bigtable_readers_policy]
+            :start-after: [START bigtable_api_readers_policy]
+            :end-before: [END bigtable_api_readers_policy]
             :dedent: 4
         """
         result = set()
@@ -140,8 +140,8 @@ class Policy(BasePolicy):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_users_policy]
-            :end-before: [END bigtable_users_policy]
+            :start-after: [START bigtable_api_users_policy]
+            :end-before: [END bigtable_api_users_policy]
             :dedent: 4
         """
         result = set()
@@ -158,8 +158,8 @@ class Policy(BasePolicy):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_viewers_policy]
-            :end-before: [END bigtable_viewers_policy]
+            :start-after: [START bigtable_api_viewers_policy]
+            :end-before: [END bigtable_api_viewers_policy]
             :dedent: 4
         """
         result = set()

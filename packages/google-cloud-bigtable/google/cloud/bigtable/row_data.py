@@ -182,8 +182,8 @@ class PartialRowData(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_data_cells]
-            :end-before: [END bigtable_row_data_cells]
+            :start-after: [START bigtable_api_row_data_cells]
+            :end-before: [END bigtable_api_row_data_cells]
             :dedent: 4
 
         :rtype: dict
@@ -209,8 +209,8 @@ class PartialRowData(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_find_cells]
-            :end-before: [END bigtable_row_find_cells]
+            :start-after: [START bigtable_api_row_find_cells]
+            :end-before: [END bigtable_api_row_find_cells]
             :dedent: 4
 
         Args:
@@ -247,8 +247,8 @@ class PartialRowData(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_cell_value]
-            :end-before: [END bigtable_row_cell_value]
+            :start-after: [START bigtable_api_row_cell_value]
+            :end-before: [END bigtable_api_row_cell_value]
             :dedent: 4
 
         Args:
@@ -289,8 +289,8 @@ class PartialRowData(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_cell_values]
-            :end-before: [END bigtable_row_cell_values]
+            :start-after: [START bigtable_api_row_cell_values]
+            :end-before: [END bigtable_api_row_cell_values]
             :dedent: 4
 
         Args:

@@ -59,8 +59,8 @@ class Row(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_row_key]
-            :end-before: [END bigtable_row_row_key]
+            :start-after: [START bigtable_api_row_row_key]
+            :end-before: [END bigtable_api_row_row_key]
             :dedent: 4
 
         :rtype: bytes
@@ -75,8 +75,8 @@ class Row(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_table]
-            :end-before: [END bigtable_row_table]
+            :start-after: [START bigtable_api_row_table]
+            :end-before: [END bigtable_api_row_table]
             :dedent: 4
 
         :rtype: table: :class:`Table <google.cloud.bigtable.table.Table>`
@@ -300,8 +300,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_get_mutations_size]
-            :end-before: [END bigtable_row_get_mutations_size]
+            :start-after: [START bigtable_api_row_get_mutations_size]
+            :end-before: [END bigtable_api_row_get_mutations_size]
             :dedent: 4
         """
 
@@ -328,8 +328,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_set_cell]
-            :end-before: [END bigtable_row_set_cell]
+            :start-after: [START bigtable_api_row_set_cell]
+            :end-before: [END bigtable_api_row_set_cell]
             :dedent: 4
 
         :type column_family_id: str
@@ -364,8 +364,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_delete]
-            :end-before: [END bigtable_row_delete]
+            :start-after: [START bigtable_api_row_delete]
+            :end-before: [END bigtable_api_row_delete]
             :dedent: 4
         """
         self._delete(state=None)
@@ -383,8 +383,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_delete_cell]
-            :end-before: [END bigtable_row_delete_cell]
+            :start-after: [START bigtable_api_row_delete_cell]
+            :end-before: [END bigtable_api_row_delete_cell]
             :dedent: 4
 
         :type column_family_id: str
@@ -417,8 +417,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_delete_cells]
-            :end-before: [END bigtable_row_delete_cells]
+            :start-after: [START bigtable_api_row_delete_cells]
+            :end-before: [END bigtable_api_row_delete_cells]
             :dedent: 4
 
         :type column_family_id: str
@@ -453,8 +453,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_commit]
-            :end-before: [END bigtable_row_commit]
+            :start-after: [START bigtable_api_row_commit]
+            :end-before: [END bigtable_api_row_commit]
             :dedent: 4
 
         :rtype: :class:`~google.rpc.status_pb2.Status`
@@ -475,8 +475,8 @@ class DirectRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_clear]
-            :end-before: [END bigtable_row_clear]
+            :start-after: [START bigtable_api_row_clear]
+            :end-before: [END bigtable_api_row_clear]
             :dedent: 4
         """
         del self._pb_mutations[:]
@@ -567,8 +567,8 @@ class ConditionalRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_commit]
-            :end-before: [END bigtable_row_commit]
+            :start-after: [START bigtable_api_row_commit]
+            :end-before: [END bigtable_api_row_commit]
             :dedent: 4
 
         :rtype: bool
@@ -621,8 +621,8 @@ class ConditionalRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_set_cell]
-            :end-before: [END bigtable_row_set_cell]
+            :start-after: [START bigtable_api_row_set_cell]
+            :end-before: [END bigtable_api_row_set_cell]
             :dedent: 4
 
         :type column_family_id: str
@@ -663,8 +663,8 @@ class ConditionalRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_delete]
-            :end-before: [END bigtable_row_delete]
+            :start-after: [START bigtable_api_row_delete]
+            :end-before: [END bigtable_api_row_delete]
             :dedent: 4
 
         :type state: bool
@@ -686,8 +686,8 @@ class ConditionalRow(_SetDeleteRow):
          For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_delete_cell]
-            :end-before: [END bigtable_row_delete_cell]
+            :start-after: [START bigtable_api_row_delete_cell]
+            :end-before: [END bigtable_api_row_delete_cell]
             :dedent: 4
 
         :type column_family_id: str
@@ -724,8 +724,8 @@ class ConditionalRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_delete_cells]
-            :end-before: [END bigtable_row_delete_cells]
+            :start-after: [START bigtable_api_row_delete_cells]
+            :end-before: [END bigtable_api_row_delete_cells]
             :dedent: 4
 
         :type column_family_id: str
@@ -759,8 +759,8 @@ class ConditionalRow(_SetDeleteRow):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_clear]
-            :end-before: [END bigtable_row_clear]
+            :start-after: [START bigtable_api_row_clear]
+            :end-before: [END bigtable_api_row_clear]
             :dedent: 4
         """
         del self._true_pb_mutations[:]
@@ -798,8 +798,8 @@ class AppendRow(Row):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_clear]
-            :end-before: [END bigtable_row_clear]
+            :start-after: [START bigtable_api_row_clear]
+            :end-before: [END bigtable_api_row_clear]
             :dedent: 4
         """
         del self._rule_pb_list[:]
@@ -817,8 +817,8 @@ class AppendRow(Row):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_append_cell_value]
-            :end-before: [END bigtable_row_append_cell_value]
+            :start-after: [START bigtable_api_row_append_cell_value]
+            :end-before: [END bigtable_api_row_append_cell_value]
             :dedent: 4
 
         :type column_family_id: str
@@ -858,8 +858,8 @@ class AppendRow(Row):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_increment_cell_value]
-            :end-before: [END bigtable_row_increment_cell_value]
+            :start-after: [START bigtable_api_row_increment_cell_value]
+            :end-before: [END bigtable_api_row_increment_cell_value]
             :dedent: 4
 
         :type column_family_id: str
@@ -905,8 +905,8 @@ class AppendRow(Row):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_commit]
-            :end-before: [END bigtable_row_commit]
+            :start-after: [START bigtable_api_row_commit]
+            :end-before: [END bigtable_api_row_commit]
             :dedent: 4
 
         :rtype: dict

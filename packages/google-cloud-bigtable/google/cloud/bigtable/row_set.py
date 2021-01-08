@@ -56,8 +56,8 @@ class RowSet(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_add_row_key]
-            :end-before: [END bigtable_add_row_key]
+            :start-after: [START bigtable_api_add_row_key]
+            :end-before: [END bigtable_api_add_row_key]
             :dedent: 4
 
         :type row_key: bytes
@@ -71,8 +71,8 @@ class RowSet(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_add_row_range]
-            :end-before: [END bigtable_add_row_range]
+            :start-after: [START bigtable_api_add_row_range]
+            :end-before: [END bigtable_api_add_row_range]
             :dedent: 4
 
         :type row_range: class:`RowRange`
@@ -88,8 +88,8 @@ class RowSet(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_row_range_from_keys]
-            :end-before: [END bigtable_row_range_from_keys]
+            :start-after: [START bigtable_api_row_range_from_keys]
+            :end-before: [END bigtable_api_row_range_from_keys]
             :dedent: 4
 
         :type start_key: bytes
@@ -118,8 +118,8 @@ class RowSet(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_add_row_range_with_prefix]
-            :end-before: [END bigtable_add_row_range_with_prefix]
+            :start-after: [START bigtable_api_add_row_range_with_prefix]
+            :end-before: [END bigtable_api_add_row_range_with_prefix]
 
         :type row_key_prefix: str
         :param row_key_prefix: To retrieve  all rows that start with this row key prefix.

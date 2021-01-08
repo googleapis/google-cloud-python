@@ -208,8 +208,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_project_path]
-            :end-before: [END bigtable_project_path]
+            :start-after: [START bigtable_api_project_path]
+            :end-before: [END bigtable_api_project_path]
             :dedent: 4
 
         The project name is of the form
@@ -228,8 +228,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_table_data_client]
-            :end-before: [END bigtable_table_data_client]
+            :start-after: [START bigtable_api_table_data_client]
+            :end-before: [END bigtable_api_table_data_client]
             :dedent: 4
 
         :rtype: :class:`.bigtable_v2.BigtableClient`
@@ -249,8 +249,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_table_admin_client]
-            :end-before: [END bigtable_table_admin_client]
+            :start-after: [START bigtable_api_table_admin_client]
+            :end-before: [END bigtable_api_table_admin_client]
             :dedent: 4
 
         :rtype: :class:`.bigtable_admin_pb2.BigtableTableAdmin`
@@ -276,8 +276,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_instance_admin_client]
-            :end-before: [END bigtable_instance_admin_client]
+            :start-after: [START bigtable_api_instance_admin_client]
+            :end-before: [END bigtable_api_instance_admin_client]
             :dedent: 4
 
         :rtype: :class:`.bigtable_admin_pb2.BigtableInstanceAdmin`
@@ -302,8 +302,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_create_prod_instance]
-            :end-before: [END bigtable_create_prod_instance]
+            :start-after: [START bigtable_api_create_prod_instance]
+            :end-before: [END bigtable_api_create_prod_instance]
             :dedent: 4
 
         :type instance_id: str
@@ -352,8 +352,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_list_instances]
-            :end-before: [END bigtable_list_instances]
+            :start-after: [START bigtable_api_list_instances]
+            :end-before: [END bigtable_api_list_instances]
             :dedent: 4
 
         :rtype: tuple
@@ -373,8 +373,8 @@ class Client(ClientWithProject):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_list_clusters_in_project]
-            :end-before: [END bigtable_list_clusters_in_project]
+            :start-after: [START bigtable_api_list_clusters_in_project]
+            :end-before: [END bigtable_api_list_clusters_in_project]
             :dedent: 4
 
         :rtype: tuple

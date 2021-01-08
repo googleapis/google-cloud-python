@@ -120,8 +120,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_name]
-            :end-before: [END bigtable_table_name]
+            :start-after: [START bigtable_api_table_name]
+            :end-before: [END bigtable_api_table_name]
             :dedent: 4
 
         .. note::
@@ -149,8 +149,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_get_iam_policy]
-            :end-before: [END bigtable_table_get_iam_policy]
+            :start-after: [START bigtable_api_table_get_iam_policy]
+            :end-before: [END bigtable_api_table_get_iam_policy]
             :dedent: 4
 
         :rtype: :class:`google.cloud.bigtable.policy.Policy`
@@ -170,8 +170,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_set_iam_policy]
-            :end-before: [END bigtable_table_set_iam_policy]
+            :start-after: [START bigtable_api_table_set_iam_policy]
+            :end-before: [END bigtable_api_table_set_iam_policy]
             :dedent: 4
 
         :type policy: :class:`google.cloud.bigtable.policy.Policy`
@@ -192,8 +192,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_test_iam_permissions]
-            :end-before: [END bigtable_table_test_iam_permissions]
+            :start-after: [START bigtable_api_table_test_iam_permissions]
+            :end-before: [END bigtable_api_table_test_iam_permissions]
             :dedent: 4
 
         :type permissions: list
@@ -220,8 +220,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_column_family]
-            :end-before: [END bigtable_table_column_family]
+            :start-after: [START bigtable_api_table_column_family]
+            :end-before: [END bigtable_api_table_column_family]
             :dedent: 4
 
         :type column_family_id: str
@@ -243,8 +243,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_row]
-            :end-before: [END bigtable_table_row]
+            :start-after: [START bigtable_api_table_row]
+            :end-before: [END bigtable_api_table_row]
             :dedent: 4
 
         .. warning::
@@ -291,8 +291,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_append_row]
-            :end-before: [END bigtable_table_append_row]
+            :start-after: [START bigtable_api_table_append_row]
+            :end-before: [END bigtable_api_table_append_row]
             :dedent: 4
 
         Args:
@@ -309,8 +309,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_direct_row]
-            :end-before: [END bigtable_table_direct_row]
+            :start-after: [START bigtable_api_table_direct_row]
+            :end-before: [END bigtable_api_table_direct_row]
             :dedent: 4
 
         Args:
@@ -327,8 +327,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_table_conditional_row]
-            :end-before: [END bigtable_table_conditional_row]
+            :start-after: [START bigtable_api_table_conditional_row]
+            :end-before: [END bigtable_api_table_conditional_row]
             :dedent: 4
 
         Args:
@@ -356,8 +356,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_create_table]
-            :end-before: [END bigtable_create_table]
+            :start-after: [START bigtable_api_create_table]
+            :end-before: [END bigtable_api_create_table]
             :dedent: 4
 
         .. note::
@@ -401,8 +401,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_check_table_exists]
-            :end-before: [END bigtable_check_table_exists]
+            :start-after: [START bigtable_api_check_table_exists]
+            :end-before: [END bigtable_api_check_table_exists]
             :dedent: 4
 
         :rtype: bool
@@ -421,8 +421,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_delete_table]
-            :end-before: [END bigtable_delete_table]
+            :start-after: [START bigtable_api_delete_table]
+            :end-before: [END bigtable_api_delete_table]
             :dedent: 4
         """
         table_client = self._instance._client.table_admin_client
@@ -434,8 +434,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_list_column_families]
-            :end-before: [END bigtable_list_column_families]
+            :start-after: [START bigtable_api_list_column_families]
+            :end-before: [END bigtable_api_list_column_families]
             :dedent: 4
 
         :rtype: dict
@@ -462,8 +462,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_get_cluster_states]
-            :end-before: [END bigtable_get_cluster_states]
+            :start-after: [START bigtable_api_get_cluster_states]
+            :end-before: [END bigtable_api_get_cluster_states]
             :dedent: 4
 
         :rtype: dict
@@ -487,8 +487,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_read_row]
-            :end-before: [END bigtable_read_row]
+            :start-after: [START bigtable_api_read_row]
+            :end-before: [END bigtable_api_read_row]
             :dedent: 4
 
         :type row_key: bytes
@@ -527,8 +527,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_read_rows]
-            :end-before: [END bigtable_read_rows]
+            :start-after: [START bigtable_api_read_rows]
+            :end-before: [END bigtable_api_read_rows]
             :dedent: 4
 
         :type start_key: bytes
@@ -631,8 +631,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_mutate_rows]
-            :end-before: [END bigtable_mutate_rows]
+            :start-after: [START bigtable_api_mutate_rows]
+            :end-before: [END bigtable_api_mutate_rows]
             :dedent: 4
 
         The method tries to update all specified rows.
@@ -682,8 +682,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_sample_row_keys]
-            :end-before: [END bigtable_sample_row_keys]
+            :start-after: [START bigtable_api_sample_row_keys]
+            :end-before: [END bigtable_api_sample_row_keys]
             :dedent: 4
 
         The returned row keys will delimit contiguous sections of the table of
@@ -727,8 +727,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_truncate_table]
-            :end-before: [END bigtable_truncate_table]
+            :start-after: [START bigtable_api_truncate_table]
+            :end-before: [END bigtable_api_truncate_table]
             :dedent: 4
 
         :type timeout: float
@@ -758,8 +758,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_drop_by_prefix]
-            :end-before: [END bigtable_drop_by_prefix]
+            :start-after: [START bigtable_api_drop_by_prefix]
+            :end-before: [END bigtable_api_drop_by_prefix]
             :dedent: 4
 
         :type row_key_prefix: bytes
@@ -793,8 +793,8 @@ class Table(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_mutations_batcher]
-            :end-before: [END bigtable_mutations_batcher]
+            :start-after: [START bigtable_api_mutations_batcher]
+            :end-before: [END bigtable_api_mutations_batcher]
             :dedent: 4
 
         :type flush_count: int

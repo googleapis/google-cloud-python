@@ -97,8 +97,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_cluster_from_pb]
-            :end-before: [END bigtable_cluster_from_pb]
+            :start-after: [START bigtable_api_cluster_from_pb]
+            :end-before: [END bigtable_api_cluster_from_pb]
             :dedent: 4
 
         :type cluster_pb: :class:`instance_pb2.Cluster`
@@ -158,8 +158,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_cluster_name]
-            :end-before: [END bigtable_cluster_name]
+            :start-after: [START bigtable_api_cluster_name]
+            :end-before: [END bigtable_api_cluster_name]
             :dedent: 4
 
         The cluster name is of the form
@@ -180,8 +180,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_cluster_state]
-            :end-before: [END bigtable_cluster_state]
+            :start-after: [START bigtable_api_cluster_state]
+            :end-before: [END bigtable_api_cluster_state]
             :dedent: 4
 
         """
@@ -207,8 +207,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_reload_cluster]
-            :end-before: [END bigtable_reload_cluster]
+            :start-after: [START bigtable_api_reload_cluster]
+            :end-before: [END bigtable_api_reload_cluster]
             :dedent: 4
         """
         cluster_pb = self._instance._client.instance_admin_client.get_cluster(self.name)
@@ -223,8 +223,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_check_cluster_exists]
-            :end-before: [END bigtable_check_cluster_exists]
+            :start-after: [START bigtable_api_check_cluster_exists]
+            :end-before: [END bigtable_api_check_cluster_exists]
             :dedent: 4
 
         :rtype: bool
@@ -244,8 +244,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_create_cluster]
-            :end-before: [END bigtable_create_cluster]
+            :start-after: [START bigtable_api_create_cluster]
+            :end-before: [END bigtable_api_create_cluster]
             :dedent: 4
 
         .. note::
@@ -278,8 +278,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_update_cluster]
-            :end-before: [END bigtable_update_cluster]
+            :start-after: [START bigtable_api_update_cluster]
+            :end-before: [END bigtable_api_update_cluster]
             :dedent: 4
 
         .. note::
@@ -311,8 +311,8 @@ class Cluster(object):
         For example:
 
         .. literalinclude:: snippets.py
-            :start-after: [START bigtable_delete_cluster]
-            :end-before: [END bigtable_delete_cluster]
+            :start-after: [START bigtable_api_delete_cluster]
+            :end-before: [END bigtable_api_delete_cluster]
             :dedent: 4
 
         Marks a cluster and all of its tables for permanent deletion in 7 days.

@@ -46,8 +46,8 @@ class MaxVersionsGCRule(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_family_gc_max_versions]
-        :end-before: [END bigtable_create_family_gc_max_versions]
+        :start-after: [START bigtable_api_create_family_gc_max_versions]
+        :end-before: [END bigtable_api_create_family_gc_max_versions]
         :dedent: 4
 
     :type max_num_versions: int
@@ -80,8 +80,8 @@ class MaxAgeGCRule(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_family_gc_max_age]
-        :end-before: [END bigtable_create_family_gc_max_age]
+        :start-after: [START bigtable_api_create_family_gc_max_age]
+        :end-before: [END bigtable_api_create_family_gc_max_age]
         :dedent: 4
 
     :type max_age: :class:`datetime.timedelta`
@@ -115,8 +115,8 @@ class GCRuleUnion(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_family_gc_union]
-        :end-before: [END bigtable_create_family_gc_union]
+        :start-after: [START bigtable_api_create_family_gc_union]
+        :end-before: [END bigtable_api_create_family_gc_union]
         :dedent: 4
 
     :type rules: list
@@ -150,8 +150,8 @@ class GCRuleIntersection(GarbageCollectionRule):
     For example:
 
     .. literalinclude:: snippets_table.py
-        :start-after: [START bigtable_create_family_gc_intersection]
-        :end-before: [END bigtable_create_family_gc_intersection]
+        :start-after: [START bigtable_api_create_family_gc_intersection]
+        :end-before: [END bigtable_api_create_family_gc_intersection]
         :dedent: 4
 
     :type rules: list
@@ -214,8 +214,8 @@ class ColumnFamily(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_column_family_name]
-            :end-before: [END bigtable_column_family_name]
+            :start-after: [START bigtable_api_column_family_name]
+            :end-before: [END bigtable_api_column_family_name]
             :dedent: 4
 
         .. note::
@@ -261,8 +261,8 @@ class ColumnFamily(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_create_column_family]
-            :end-before: [END bigtable_create_column_family]
+            :start-after: [START bigtable_api_create_column_family]
+            :end-before: [END bigtable_api_create_column_family]
             :dedent: 4
 
         """
@@ -284,8 +284,8 @@ class ColumnFamily(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_update_column_family]
-            :end-before: [END bigtable_update_column_family]
+            :start-after: [START bigtable_api_update_column_family]
+            :end-before: [END bigtable_api_update_column_family]
             :dedent: 4
 
         .. note::
@@ -311,8 +311,8 @@ class ColumnFamily(object):
         For example:
 
         .. literalinclude:: snippets_table.py
-            :start-after: [START bigtable_delete_column_family]
-            :end-before: [END bigtable_delete_column_family]
+            :start-after: [START bigtable_api_delete_column_family]
+            :end-before: [END bigtable_api_delete_column_family]
             :dedent: 4
 
         """
