@@ -1046,6 +1046,8 @@ class TestQueryJob(_Base):
         self.assertEqual(reload_request[1]["method"], "GET")
 
     def test_result_w_timeout(self):
+        import google.cloud.bigquery.client
+
         begun_resource = self._make_resource()
         query_resource = {
             "jobComplete": True,
@@ -1072,6 +1074,10 @@ class TestQueryJob(_Base):
             "/projects/{}/queries/{}".format(self.PROJECT, self.JOB_ID),
         )
         self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
+        self.assertEqual(
+            query_request[1]["timeout"],
+            google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
+        )
         self.assertEqual(reload_request[1]["method"], "GET")
 
     def test_result_w_page_size(self):

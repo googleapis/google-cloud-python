@@ -27,7 +27,6 @@ import unittest
 import uuid
 import re
 
-import requests
 import psutil
 import pytest
 import pytz
@@ -1798,14 +1797,24 @@ class TestBigQuery(unittest.TestCase):
             Config.CLIENT.query(good_query, job_config=bad_config).result()
 
     def test_query_w_timeout(self):
+        job_config = bigquery.QueryJobConfig()
+        job_config.use_query_cache = False
+
         query_job = Config.CLIENT.query(
             "SELECT * FROM `bigquery-public-data.github_repos.commits`;",
             job_id_prefix="test_query_w_timeout_",
+            location="US",
+            job_config=job_config,
         )
 
         with self.assertRaises(concurrent.futures.TimeoutError):
-            # 1 second is much too short for this query.
             query_job.result(timeout=1)
+
+        # Even though the query takes >1 second, the call to getQueryResults
+        # should succeed.
+        self.assertFalse(query_job.done(timeout=1))
+
+        Config.CLIENT.cancel_job(query_job.job_id, location=query_job.location)
 
     def test_query_w_page_size(self):
         page_size = 45
@@ -2407,26 +2416,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertIsInstance(iter(query_job), types.GeneratorType)
         row_tuples = [r.values() for r in query_job]
         self.assertEqual(row_tuples, [(1,)])
-
-    def test_querying_data_w_timeout(self):
-        job_config = bigquery.QueryJobConfig()
-        job_config.use_query_cache = False
-
-        query_job = Config.CLIENT.query(
-            """
-            SELECT COUNT(*)
-            FROM UNNEST(GENERATE_ARRAY(1,1000000)), UNNEST(GENERATE_ARRAY(1, 10000))
-            """,
-            location="US",
-            job_config=job_config,
-        )
-
-        # Specify a very tight deadline to demonstrate that the timeout
-        # actually has effect.
-        with self.assertRaises(requests.exceptions.Timeout):
-            query_job.done(timeout=0.1)
-
-        Config.CLIENT.cancel_job(query_job.job_id, location=query_job.location)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_query_results_to_dataframe(self):

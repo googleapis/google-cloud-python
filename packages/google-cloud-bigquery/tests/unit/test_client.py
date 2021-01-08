@@ -311,7 +311,7 @@ class TestClient(unittest.TestCase):
                     project="other-project",
                     location=self.LOCATION,
                     timeout_ms=500,
-                    timeout=42,
+                    timeout=420,
                 )
 
         final_attributes.assert_called_once_with({"path": path}, client, None)
@@ -320,7 +320,32 @@ class TestClient(unittest.TestCase):
             method="GET",
             path=path,
             query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
-            timeout=42,
+            timeout=420,
+        )
+
+    def test__get_query_results_miss_w_short_timeout(self):
+        import google.cloud.bigquery.client
+        from google.cloud.exceptions import NotFound
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection()
+        path = "/projects/other-project/queries/nothere"
+        with self.assertRaises(NotFound):
+            client._get_query_results(
+                "nothere",
+                None,
+                project="other-project",
+                location=self.LOCATION,
+                timeout_ms=500,
+                timeout=1,
+            )
+
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path=path,
+            query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
+            timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
         )
 
     def test__get_query_results_miss_w_client_location(self):
