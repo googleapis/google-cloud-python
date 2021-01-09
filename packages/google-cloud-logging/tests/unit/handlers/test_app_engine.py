@@ -118,7 +118,57 @@ class TestAppEngineHandler(unittest.TestCase):
                     gae_resource,
                     gae_labels,
                     expected_trace_id,
+                    None,
                     expected_http_request,
+                ),
+            )
+
+    def test_emit_manual_field_override(self):
+        from google.cloud.logging_v2.resource import Resource
+
+        inferred_http_request = {"request_url": "test"}
+        inferred_trace_id = "trace-test"
+        get_request_patch = mock.patch(
+            "google.cloud.logging_v2.handlers.app_engine.get_request_data",
+            return_value=(inferred_http_request, inferred_trace_id),
+        )
+        with get_request_patch:
+            # library integrations mocked to return test data
+            client = mock.Mock(project=self.PROJECT, spec=["project"])
+            handler = self._make_one(client, transport=_Transport)
+            gae_labels = handler.get_gae_labels()
+            logname = "app"
+            message = "hello world"
+            record = logging.LogRecord(
+                logname, logging, None, None, message, None, None
+            )
+            handler.project_id = self.PROJECT
+            # set attributes manually
+            expected_trace = "123"
+            setattr(record, "trace", expected_trace)
+            expected_span = "456"
+            setattr(record, "span_id", expected_span)
+            expected_http = {"reuqest_url": "manual"}
+            setattr(record, "http_request", expected_http)
+            expected_resource = Resource(type="test", labels={})
+            setattr(record, "resource", expected_resource)
+            additional_labels = {"test-label": "manual"}
+            expected_labels = dict(gae_labels)
+            expected_labels.update(additional_labels)
+            setattr(record, "labels", additional_labels)
+            handler.emit(record)
+            self.assertIs(handler.transport.client, client)
+            self.assertEqual(handler.transport.name, logname)
+            self.assertEqual(
+                handler.transport.send_called_with,
+                (
+                    record,
+                    message,
+                    expected_resource,
+                    expected_labels,
+                    expected_trace,
+                    expected_span,
+                    expected_http,
                 ),
             )
 
@@ -156,5 +206,13 @@ class _Transport(object):
         self.client = client
         self.name = name
 
-    def send(self, record, message, resource, labels, trace, http_request):
-        self.send_called_with = (record, message, resource, labels, trace, http_request)
+    def send(self, record, message, resource, labels, trace, span_id, http_request):
+        self.send_called_with = (
+            record,
+            message,
+            resource,
+            labels,
+            trace,
+            span_id,
+            http_request,
+        )

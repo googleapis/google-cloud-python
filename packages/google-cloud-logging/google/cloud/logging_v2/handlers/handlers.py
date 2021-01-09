@@ -87,6 +87,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         self.name = name
         self.client = client
         self.transport = transport(client, name)
+        self.project_id = client.project
         self.resource = resource
         self.labels = labels
 
@@ -101,7 +102,26 @@ class CloudLoggingHandler(logging.StreamHandler):
             record (logging.LogRecord): The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message, resource=self.resource, labels=self.labels)
+        trace_id = getattr(record, "trace", None)
+        span_id = getattr(record, "span_id", None)
+        http_request = getattr(record, "http_request", None)
+        resource = getattr(record, "resource", self.resource)
+        user_labels = getattr(record, "labels", {})
+        # merge labels
+        total_labels = self.labels if self.labels is not None else {}
+        total_labels.update(user_labels)
+        if len(total_labels) == 0:
+            total_labels = None
+        # send off request
+        self.transport.send(
+            record,
+            message,
+            resource=resource,
+            labels=(total_labels if total_labels else None),
+            trace=trace_id,
+            span_id=span_id,
+            http_request=http_request,
+        )
 
 
 def setup_logging(

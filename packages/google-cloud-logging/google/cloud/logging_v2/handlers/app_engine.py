@@ -113,15 +113,25 @@ class AppEngineHandler(logging.StreamHandler):
             record (logging.LogRecord): The record to be logged.
         """
         message = super(AppEngineHandler, self).format(record)
+        inferred_http, inferred_trace = get_request_data()
+        if inferred_trace is not None:
+            inferred_trace = f"projects/{self.project_id}/traces/{inferred_trace}"
+        # allow user overrides
+        trace = getattr(record, "trace", inferred_trace)
+        span_id = getattr(record, "span_id", None)
+        http_request = getattr(record, "http_request", inferred_http)
+        resource = getattr(record, "resource", self.resource)
+        user_labels = getattr(record, "labels", {})
+        # merge labels
         gae_labels = self.get_gae_labels()
-        http_request, trace_id = get_request_data()
-        if trace_id is not None:
-            trace_id = f"projects/{self.project_id}/traces/{trace_id}"
+        gae_labels.update(user_labels)
+        # send off request
         self.transport.send(
             record,
             message,
-            resource=self.resource,
+            resource=resource,
             labels=gae_labels,
-            trace=trace_id,
+            trace=trace,
+            span_id=span_id,
             http_request=http_request,
         )
