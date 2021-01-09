@@ -1,0 +1,43 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python-channel"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "b241bbc1ad920771707fe03e4cedd4e8c492e143",
+        "internalRef": "350670798"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "channel",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}

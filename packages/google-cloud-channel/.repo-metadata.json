@@ -1,0 +1,12 @@
+{
+    "name": "cloudchannel",
+    "name_pretty": "Channel Services",
+    "product_documentation": "https://cloud.google.com/channel/",
+    "client_documentation": "https://googleapis.dev/python/cloudchannel/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-channel",
+    "distribution_name": "google-cloud-channel",
+    "api_id": "cloudchannel.googleapis.com"
+  }
