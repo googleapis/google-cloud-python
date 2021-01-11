@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+### [2.6.2](https://www.github.com/googleapis/python-bigquery/compare/v2.6.1...v2.6.2) (2021-01-11)
+
+
+### Bug Fixes
+
+* add minimum timeout to getQueryResults API requests ([#444](https://www.github.com/googleapis/python-bigquery/issues/444)) ([015a73e](https://www.github.com/googleapis/python-bigquery/commit/015a73e1839e3427408ef6e0f879717d9ddbdb61))
+* use debug logging level for OpenTelemetry message ([#442](https://www.github.com/googleapis/python-bigquery/issues/442)) ([7ea6b7c](https://www.github.com/googleapis/python-bigquery/commit/7ea6b7c2469d2415192cfdacc379e38e49d24775))
+
+
+### Documentation
+
+* add GEOGRAPHY data type code samples ([#428](https://www.github.com/googleapis/python-bigquery/issues/428)) ([dbc68b3](https://www.github.com/googleapis/python-bigquery/commit/dbc68b3d1f325f80d24a2da5f028b0f653fb0317))
+* fix Shapely import in GEOGRAPHY sample ([#431](https://www.github.com/googleapis/python-bigquery/issues/431)) ([96a1c5b](https://www.github.com/googleapis/python-bigquery/commit/96a1c5b3c72855ba6ae8c88dfd0cdb02d2faf909))
+* move and refresh view samples ([#420](https://www.github.com/googleapis/python-bigquery/issues/420)) ([079b6a1](https://www.github.com/googleapis/python-bigquery/commit/079b6a162f6929bf801366d92f8daeb3318426c4))
+
 ### [2.6.1](https://www.github.com/googleapis/python-bigquery/compare/v2.6.0...v2.6.1) (2020-12-09)
 
 
