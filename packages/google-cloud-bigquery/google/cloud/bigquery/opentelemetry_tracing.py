@@ -23,16 +23,11 @@ try:
     from opentelemetry.trace.status import Status
 
     HAS_OPENTELEMETRY = True
+    _warned_telemetry = True
 
 except ImportError:
-    logger.info(
-        "This service is instrumented using OpenTelemetry. "
-        "OpenTelemetry could not be imported; please "
-        "add opentelemetry-api and opentelemetry-instrumentation "
-        "packages in order to get BigQuery Tracing data."
-    )
-
     HAS_OPENTELEMETRY = False
+    _warned_telemetry = False
 
 _default_attributes = {
     "db.system": "BigQuery"
@@ -64,8 +59,18 @@ def create_span(name, attributes=None, client=None, job_ref=None):
                     Raised if a span could not be yielded or issue with call to
                     OpenTelemetry.
             """
+    global _warned_telemetry
     final_attributes = _get_final_span_attributes(attributes, client, job_ref)
     if not HAS_OPENTELEMETRY:
+        if not _warned_telemetry:
+            logger.debug(
+                "This service is instrumented using OpenTelemetry. "
+                "OpenTelemetry could not be imported; please "
+                "add opentelemetry-api and opentelemetry-instrumentation "
+                "packages in order to get BigQuery Tracing data."
+            )
+            _warned_telemetry = True
+
         yield None
         return
     tracer = trace.get_tracer(__name__)
