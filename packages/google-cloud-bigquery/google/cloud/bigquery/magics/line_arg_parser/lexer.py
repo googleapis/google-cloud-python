@@ -136,40 +136,17 @@ token_types = OrderedDict(
 )
 
 
-# The _generate_next_value_() enum hook is only available in Python 3.6+, thus we
-# need to do some acrobatics to implement an "auto str enum" base class. Implementation
-# based on the recipe provided by the very author of the Enum library:
-# https://stackoverflow.com/a/32313954/5040035
-class StrEnumMeta(enum.EnumMeta):
-    @classmethod
-    def __prepare__(metacls, name, bases, **kwargs):
-        # Having deterministic enum members definition order is nice.
-        return OrderedDict()
+class AutoStrEnum(str, enum.Enum):
+    """Base enum class for for name=value str enums."""
 
-    def __new__(metacls, name, bases, oldclassdict):
-        # Scan through the declared enum members and convert any value that is a plain
-        # empty tuple into a `str` of the name instead.
-        newclassdict = enum._EnumDict()
-        for key, val in oldclassdict.items():
-            if val == ():
-                val = key
-            newclassdict[key] = val
-        return super(StrEnumMeta, metacls).__new__(metacls, name, bases, newclassdict)
+    def _generate_next_value_(name, start, count, last_values):
+        return name
 
-
-# The @six.add_metaclass decorator does not work, Enum complains about _sunder_ names,
-# and we cannot use class syntax directly, because the Python 3 version would cause
-# a syntax error under Python 2.
-AutoStrEnum = StrEnumMeta(
-    "AutoStrEnum",
-    (str, enum.Enum),
-    {"__doc__": "Base enum class for for name=value str enums."},
-)
 
 TokenType = AutoStrEnum(
     "TokenType",
     [
-        (name, name)
+        (name, enum.auto())
         for name in itertools.chain.from_iterable(token_types.values())
         if not name.startswith("GOTO_")
     ],
@@ -177,10 +154,10 @@ TokenType = AutoStrEnum(
 
 
 class LexerState(AutoStrEnum):
-    PARSE_POS_ARGS = ()  # parsing positional arguments
-    PARSE_NON_PARAMS_OPTIONS = ()  # parsing options other than "--params"
-    PARSE_PARAMS_OPTION = ()  # parsing the "--params" option
-    STATE_END = ()
+    PARSE_POS_ARGS = enum.auto()  # parsing positional arguments
+    PARSE_NON_PARAMS_OPTIONS = enum.auto()  # parsing options other than "--params"
+    PARSE_PARAMS_OPTION = enum.auto()  # parsing the "--params" option
+    STATE_END = enum.auto()
 
 
 class Lexer(object):
