@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/google-auth-library-python.git",
-        "sha": "9c4200dff31986b7ff300126e9aa35d14aa84dba"
+        "sha": "647290a2dfc797067f7966c1dae512359e6bb7e7"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "da5c6050d13b4950c82666a81d8acd25157664ae"
+        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
       }
     }
   ],
