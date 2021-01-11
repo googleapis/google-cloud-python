@@ -18,12 +18,14 @@
 required_envvars+=(
     "STAGING_BUCKET"
     "V2_STAGING_BUCKET"
+    "NOX_SESSION"
 )
 
 # Add env vars which are passed down into the container here.
 pass_down_envvars+=(
     "STAGING_BUCKET"
     "V2_STAGING_BUCKET"
+    "NOX_SESSION"
 )
 
 # Prevent unintentional override on the default image.
