@@ -28,7 +28,7 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -75,7 +75,10 @@ def default(session):
     session.install(
         "mock", "pytest", "pytest-cov",
     )
-    session.install("-e", ".[fastavro,pandas,pyarrow]")
+    extras = "fastavro,pandas,pyarrow"
+    if session.python == "3.9":
+        extras = "fastavro,pandas"
+    session.install("-e", f".[{extras}]")
 
     # Run py.test against the unit tests.
     session.run(
@@ -129,7 +132,10 @@ def system(session):
     session.install(
         "mock", "pytest", "google-cloud-testutils",
     )
-    session.install("-e", ".[fastavro,pandas,pyarrow]")
+    extras = "fastavro,pandas,pyarrow"
+    if session.python == "3.9":
+        extras = "fastavro,pandas"
+    session.install("-e", f".[{extras}]")
 
     # Run py.test against the system tests.
     if system_test_exists:
