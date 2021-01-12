@@ -27,6 +27,7 @@ from .stream import (
     DataFormat,
     ReadSession,
     ReadStream,
+    DataFormat,
 )
 from .storage import (
     CreateReadSessionRequest,
@@ -38,7 +39,6 @@ from .storage import (
     SplitReadStreamResponse,
 )
 
-
 __all__ = (
     "ArrowSchema",
     "ArrowRecordBatch",
@@ -47,6 +47,7 @@ __all__ = (
     "DataFormat",
     "ReadSession",
     "ReadStream",
+    "DataFormat",
     "CreateReadSessionRequest",
     "ReadRowsRequest",
     "ThrottleState",

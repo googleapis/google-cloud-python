@@ -44,7 +44,7 @@ class CreateReadSessionRequest(proto.Message):
         parent (str):
             Required. The request project that owns the session, in the
             form of ``projects/{project_id}``.
-        read_session (~.stream.ReadSession):
+        read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
             Required. Session to be created.
         max_stream_count (int):
             Max initial number of streams. If unset or
@@ -102,7 +102,7 @@ class StreamStats(proto.Message):
     r"""Estimated stream statistics for a given Stream.
 
     Attributes:
-        progress (~.storage.StreamStats.Progress):
+        progress (google.cloud.bigquery_storage_v1.types.StreamStats.Progress):
             Represents the progress of the current
             stream.
     """
@@ -141,16 +141,16 @@ class ReadRowsResponse(proto.Message):
     and throttling information.
 
     Attributes:
-        avro_rows (~.avro.AvroRows):
+        avro_rows (google.cloud.bigquery_storage_v1.types.AvroRows):
             Serialized row data in AVRO format.
-        arrow_record_batch (~.arrow.ArrowRecordBatch):
+        arrow_record_batch (google.cloud.bigquery_storage_v1.types.ArrowRecordBatch):
             Serialized row data in Arrow RecordBatch
             format.
         row_count (int):
             Number of serialized rows in the rows block.
-        stats (~.storage.StreamStats):
+        stats (google.cloud.bigquery_storage_v1.types.StreamStats):
             Statistics for the stream.
-        throttle_state (~.storage.ThrottleState):
+        throttle_state (google.cloud.bigquery_storage_v1.types.ThrottleState):
             Throttling state. If unset, the latest
             response still describes the current throttling
             status.
@@ -201,11 +201,11 @@ class SplitReadStreamResponse(proto.Message):
     r"""Response message for ``SplitReadStream``.
 
     Attributes:
-        primary_stream (~.stream.ReadStream):
+        primary_stream (google.cloud.bigquery_storage_v1.types.ReadStream):
             Primary stream, which contains the beginning portion of
             \|original_stream|. An empty value indicates that the
             original stream can no longer be split.
-        remainder_stream (~.stream.ReadStream):
+        remainder_stream (google.cloud.bigquery_storage_v1.types.ReadStream):
             Remainder stream, which contains the tail of
             \|original_stream|. An empty value indicates that the
             original stream can no longer be split.

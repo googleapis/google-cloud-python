@@ -1,6 +1,6 @@
 Services for Google Cloud Bigquery Storage v1 API
 =================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.bigquery_storage_v1.services.big_query_read
-    :members:
-    :inherited-members:
+    big_query_read

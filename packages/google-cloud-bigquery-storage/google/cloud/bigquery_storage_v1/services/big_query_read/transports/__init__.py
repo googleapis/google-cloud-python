@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[BigQueryReadTranspor
 _transport_registry["grpc"] = BigQueryReadGrpcTransport
 _transport_registry["grpc_asyncio"] = BigQueryReadGrpcAsyncIOTransport
 
-
 __all__ = (
     "BigQueryReadTransport",
     "BigQueryReadGrpcTransport",

@@ -114,6 +114,22 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            BigQueryReadClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -125,7 +141,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            BigQueryReadClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -267,10 +283,10 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BigQueryReadTransport]): The
+            transport (Union[str, BigQueryReadTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -404,21 +420,22 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         caller.
 
         Args:
-            request (:class:`~.storage.CreateReadSessionRequest`):
+            request (google.cloud.bigquery_storage_v1.types.CreateReadSessionRequest):
                 The request object. Request message for
                 `CreateReadSession`.
-            parent (:class:`str`):
+            parent (str):
                 Required. The request project that owns the session, in
                 the form of ``projects/{project_id}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            read_session (:class:`~.stream.ReadSession`):
+            read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
                 Required. Session to be created.
                 This corresponds to the ``read_session`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            max_stream_count (:class:`int`):
+            max_stream_count (int):
                 Max initial number of streams. If
                 unset or zero, the server will provide a
                 value of streams so as to produce
@@ -433,6 +450,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
 
                 Streams must be read starting from
                 offset 0.
+
                 This corresponds to the ``max_stream_count`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -444,7 +462,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.stream.ReadSession:
+            google.cloud.bigquery_storage_v1.types.ReadSession:
                 Information about the ReadSession.
         """
         # Create or coerce a protobuf request object.
@@ -512,19 +530,20 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         reflecting the current state of the stream.
 
         Args:
-            request (:class:`~.storage.ReadRowsRequest`):
+            request (google.cloud.bigquery_storage_v1.types.ReadRowsRequest):
                 The request object. Request message for `ReadRows`.
-            read_stream (:class:`str`):
+            read_stream (str):
                 Required. Stream to read rows from.
                 This corresponds to the ``read_stream`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            offset (:class:`int`):
+            offset (int):
                 The offset requested must be less
                 than the last row read from Read.
                 Requesting a larger offset is undefined.
                 If not specified, start reading from
                 offset zero.
+
                 This corresponds to the ``offset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -536,9 +555,9 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.storage.ReadRowsResponse]:
-                Response from calling ``ReadRows`` may include row data,
-                progress and throttling information.
+            Iterable[google.cloud.bigquery_storage_v1.types.ReadRowsResponse]:
+                Response from calling ReadRows may include row data, progress and
+                   throttling information.
 
         """
         # Create or coerce a protobuf request object.
@@ -607,7 +626,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         once the streams have been read to completion.
 
         Args:
-            request (:class:`~.storage.SplitReadStreamRequest`):
+            request (google.cloud.bigquery_storage_v1.types.SplitReadStreamRequest):
                 The request object. Request message for
                 `SplitReadStream`.
 
@@ -618,8 +637,8 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.storage.SplitReadStreamResponse:
-                Response message for ``SplitReadStream``.
+            google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse:
+                Response message for SplitReadStream.
         """
         # Create or coerce a protobuf request object.
 

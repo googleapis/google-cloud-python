@@ -81,6 +81,7 @@ class BigQueryReadAsyncClient:
         BigQueryReadClient.parse_common_location_path
     )
 
+    from_service_account_info = BigQueryReadClient.from_service_account_info
     from_service_account_file = BigQueryReadClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -181,16 +182,17 @@ class BigQueryReadAsyncClient:
         caller.
 
         Args:
-            request (:class:`~.storage.CreateReadSessionRequest`):
+            request (:class:`google.cloud.bigquery_storage_v1.types.CreateReadSessionRequest`):
                 The request object. Request message for
                 `CreateReadSession`.
             parent (:class:`str`):
                 Required. The request project that owns the session, in
                 the form of ``projects/{project_id}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            read_session (:class:`~.stream.ReadSession`):
+            read_session (:class:`google.cloud.bigquery_storage_v1.types.ReadSession`):
                 Required. Session to be created.
                 This corresponds to the ``read_session`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -210,6 +212,7 @@ class BigQueryReadAsyncClient:
 
                 Streams must be read starting from
                 offset 0.
+
                 This corresponds to the ``max_stream_count`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -221,7 +224,7 @@ class BigQueryReadAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.stream.ReadSession:
+            google.cloud.bigquery_storage_v1.types.ReadSession:
                 Information about the ReadSession.
         """
         # Create or coerce a protobuf request object.
@@ -296,7 +299,7 @@ class BigQueryReadAsyncClient:
         reflecting the current state of the stream.
 
         Args:
-            request (:class:`~.storage.ReadRowsRequest`):
+            request (:class:`google.cloud.bigquery_storage_v1.types.ReadRowsRequest`):
                 The request object. Request message for `ReadRows`.
             read_stream (:class:`str`):
                 Required. Stream to read rows from.
@@ -309,6 +312,7 @@ class BigQueryReadAsyncClient:
                 Requesting a larger offset is undefined.
                 If not specified, start reading from
                 offset zero.
+
                 This corresponds to the ``offset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -320,9 +324,9 @@ class BigQueryReadAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.storage.ReadRowsResponse]:
-                Response from calling ``ReadRows`` may include row data,
-                progress and throttling information.
+            AsyncIterable[google.cloud.bigquery_storage_v1.types.ReadRowsResponse]:
+                Response from calling ReadRows may include row data, progress and
+                   throttling information.
 
         """
         # Create or coerce a protobuf request object.
@@ -396,7 +400,7 @@ class BigQueryReadAsyncClient:
         once the streams have been read to completion.
 
         Args:
-            request (:class:`~.storage.SplitReadStreamRequest`):
+            request (:class:`google.cloud.bigquery_storage_v1.types.SplitReadStreamRequest`):
                 The request object. Request message for
                 `SplitReadStream`.
 
@@ -407,8 +411,8 @@ class BigQueryReadAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.storage.SplitReadStreamResponse:
-                Response message for ``SplitReadStream``.
+            google.cloud.bigquery_storage_v1.types.SplitReadStreamResponse:
+                Response message for SplitReadStream.
         """
         # Create or coerce a protobuf request object.
 

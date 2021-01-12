@@ -43,28 +43,28 @@ class ReadSession(proto.Message):
         name (str):
             Output only. Unique identifier for the session, in the form
             ``projects/{project_id}/locations/{location}/sessions/{session_id}``.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the session becomes invalid.
             After this time, subsequent requests to read this Session
             will return errors. The expire_time is automatically
             assigned and currently cannot be specified or updated.
-        data_format (~.stream.DataFormat):
+        data_format (google.cloud.bigquery_storage_v1.types.DataFormat):
             Immutable. Data format of the output data.
-        avro_schema (~.avro.AvroSchema):
+        avro_schema (google.cloud.bigquery_storage_v1.types.AvroSchema):
             Output only. Avro schema.
-        arrow_schema (~.arrow.ArrowSchema):
+        arrow_schema (google.cloud.bigquery_storage_v1.types.ArrowSchema):
             Output only. Arrow schema.
         table (str):
             Immutable. Table that this ReadSession is reading from, in
             the form
             ``projects/{project_id}/datasets/{dataset_id}/tables/{table_id}``
-        table_modifiers (~.stream.ReadSession.TableModifiers):
+        table_modifiers (google.cloud.bigquery_storage_v1.types.ReadSession.TableModifiers):
             Optional. Any modifiers which are applied
             when reading from the specified table.
-        read_options (~.stream.ReadSession.TableReadOptions):
+        read_options (google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions):
             Optional. Read options for this session (e.g.
             column selection, filters).
-        streams (Sequence[~.stream.ReadStream]):
+        streams (Sequence[google.cloud.bigquery_storage_v1.types.ReadStream]):
             Output only. A list of streams created with the session.
 
             At least one stream is created with the session. In the
@@ -78,7 +78,7 @@ class ReadSession(proto.Message):
         r"""Additional attributes when reading a table.
 
         Attributes:
-            snapshot_time (~.timestamp.Timestamp):
+            snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
                 The snapshot time of the table. If not set,
                 interpreted as now.
         """
