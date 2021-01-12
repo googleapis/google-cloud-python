@@ -99,7 +99,7 @@ class Cursor(object):
                 # Size of the SQL type of the column.
                 display_size=code_to_display_size.get(field.type_.code),
                 # Client perceived size of the column.
-                internal_size=field.ByteSize(),
+                internal_size=field._pb.ByteSize(),
             )
             columns.append(column_info)
 
