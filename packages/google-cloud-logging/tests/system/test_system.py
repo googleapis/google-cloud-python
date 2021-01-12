@@ -20,6 +20,7 @@ import unittest
 
 from google.api_core.exceptions import BadGateway
 from google.api_core.exceptions import Conflict
+from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import NotFound
 from google.api_core.exceptions import TooManyRequests
 from google.api_core.exceptions import ResourceExhausted
@@ -68,7 +69,9 @@ def _list_entries(logger):
     :returns: List of all entries consumed.
     """
     inner = RetryResult(_has_entries, max_tries=9)(_consume_entries)
-    outer = RetryErrors((ServiceUnavailable, ResourceExhausted), max_tries=9)(inner)
+    outer = RetryErrors(
+        (ServiceUnavailable, ResourceExhausted, InternalServerError), max_tries=9
+    )(inner)
     return outer(logger)
 
 
