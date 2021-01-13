@@ -76,7 +76,7 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
-from google.cloud.bigquery import dbapi
+from google.cloud.bigquery import dbapi, enums
 from google.cloud import storage
 
 from test_utils.retry import RetryErrors
@@ -1789,10 +1789,8 @@ class TestBigQuery(unittest.TestCase):
         rows = list(Config.CLIENT.query("SELECT 1;").result())
         assert rows[0][0] == 1
 
-        project = Config.CLIENT.project
-        dataset_ref = bigquery.DatasetReference(project, "dset")
         bad_config = LoadJobConfig()
-        bad_config.destination = dataset_ref.table("tbl")
+        bad_config.source_format = enums.SourceFormat.CSV
         with self.assertRaises(Exception):
             Config.CLIENT.query(good_query, job_config=bad_config).result()
 

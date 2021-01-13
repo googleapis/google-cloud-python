@@ -659,6 +659,14 @@ class _JobConfig(object):
         for prop, val in kwargs.items():
             setattr(self, prop, val)
 
+    def __setattr__(self, name, value):
+        """Override to be able to raise error if an unknown property is being set"""
+        if not name.startswith("_") and not hasattr(type(self), name):
+            raise AttributeError(
+                "Property {} is unknown for {}.".format(name, type(self))
+            )
+        super(_JobConfig, self).__setattr__(name, value)
+
     @property
     def labels(self):
         """Dict[str, str]: Labels for the job.
