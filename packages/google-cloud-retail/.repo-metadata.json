@@ -1,0 +1,12 @@
+{
+    "name": "retail",
+    "name_pretty": "Retail API",
+    "product_documentation": "https://cloud.google.com/retail/docs/",
+    "client_documentation": "https://googleapis.dev/python/retail/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-retail",
+    "distribution_name": "google-cloud-retail",
+    "api_id": "retail.googleapis.com"
+  }
