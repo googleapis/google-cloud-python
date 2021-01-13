@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import sys
 
 import pkg_resources
 
@@ -30,9 +31,12 @@ def modify_path():
     try:
         extra_dll_dir = pkg_resources.resource_filename("google_crc32c", "extra-dll")
         if os.path.isdir(extra_dll_dir):
+            # Python 3.6, 3.7 use path
             os.environ["PATH"] = path + os.pathsep + extra_dll_dir
+            # Python 3.8+ uses add_dll_directory.
+            if sys.version_info[0] == 3 and sys.version_info[1] >= 8:
+                os.add_dll_directory(extra_dll_dir)
     except ImportError:
         pass
-
 
 modify_path()
