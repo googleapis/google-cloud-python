@@ -63,12 +63,15 @@ def replace_content_in_readme(content_rows: List[str]) -> None:
             f.write(line)
 
 def client_row(client: CloudClient) -> str:
-    pypi_badge = f".. |PyPI-{client.distribution_name}| image:: https://img.shields.io/pypi/v/{client.distribution_name}.svg)\n        :target: https://pypi.org/project/{client.distribution_name}"
+    pypi_badge = f""".. |PyPI-{client.distribution_name}| image:: https://img.shields.io/pypi/v/{client.distribution_name}.svg)
+     :target: https://pypi.org/project/{client.distribution_name}\n"""
 
-    return [
+    content_row = [
         f"   * - `{client.title} <https://github.com/{client.repo}>`_\n",
         f"     - " + "|" + client.release_level + "|\n"
-        f"     - {pypi_badge}\n"]
+        f"     - |PyPI-{client.distribution_name}|\n"]
+
+    return (content_row, pypi_badge)
 
 def generate_table_contents(clients: List[CloudClient]) -> List[str]:
     content_rows = [
@@ -82,10 +85,13 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
         "     - Version\n",
     ]
 
+    pypi_links = ["\n"]
     for client in clients:
-        content_rows += client_row(client)
+        content_row, pypi_link = client_row(client)
+        content_rows += content_row
+        pypi_links.append(pypi_link)
 
-    return content_rows
+    return content_rows + pypi_links
 
 
 REPO_METADATA_URL_FORMAT = "https://raw.githubusercontent.com/{repo_slug}/master/.repo-metadata.json"
@@ -101,13 +107,15 @@ def client_for_repo(repo_slug) -> Optional[CloudClient]:
 REPO_LIST_JSON = "https://raw.githubusercontent.com/googleapis/sloth/master/repos.json"
 REPO_EXCLUSION = [
     # core libraries
-    "googleapis/python-api-core"
+    "googleapis/python-api-core",
     "googleapis/python-cloud-core",
     # proto only packages
     "googleapis/python-org-policy",
     "googleapis/python-os-config",
     "googleapis/python-access-context-manager",
     "googleapis/python-api-common-protos",
+    # testing utilities
+    "googleapis/python-test-utils"
 ]
 
 def allowed_repo(repo) -> bool:
