@@ -6,9 +6,6 @@ Python idiomatic clients for `Google Cloud Platform`_ services.
 .. _Google Cloud Platform: https://cloud.google.com/
 
 
-See a full list of published libraries at https://cloud.google.com/python/docs/reference.
-
-
 Stability levels
 *******************
 
@@ -60,8 +57,333 @@ If you need support for other Google APIs, check out the
 .. _Google APIs Python Client library: https://github.com/google/google-api-python-client
 
 
+.. API_TABLE_START
+
+.. list-table:: Libraries
+   :widths: 25 25 50
+   :header-rows: 1
+
+   * - Client
+     - Release Level
+     - Version
+   * - `API client core library <https://github.com/googleapis/python-api-core>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-api-core.svg)
+        :target: https://pypi.org/project/google-api-core
+   * - `API client core library <https://github.com/googleapis/python-cloud-core>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-core.svg)
+        :target: https://pypi.org/project/google-cloud-core
+   * - `Asset Inventory <https://github.com/googleapis/python-asset>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-asset.svg)
+        :target: https://pypi.org/project/google-cloud-asset
+   * - `AutoML <https://github.com/googleapis/python-automl>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-automl.svg)
+        :target: https://pypi.org/project/google-cloud-automl
+   * - `BigQuery <https://github.com/googleapis/python-bigquery>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-bigquery.svg)
+        :target: https://pypi.org/project/google-cloud-bigquery
+   * - `BigQuery Connection <https://github.com/googleapis/python-bigquery-connection>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-connection.svg)
+        :target: https://pypi.org/project/google-cloud-bigquery-connection
+   * - `BigQuery Data Transfer Service <https://github.com/googleapis/python-bigquery-datatransfer>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-datatransfer.svg)
+        :target: https://pypi.org/project/google-cloud-bigquery-datatransfer
+   * - `BigQuery Reservation <https://github.com/googleapis/python-bigquery-reservation>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-reservation.svg)
+        :target: https://pypi.org/project/google-cloud-bigquery-reservation
+   * - `BigQuery Storage <https://github.com/googleapis/python-bigquery-storage>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-bigquery-storage.svg)
+        :target: https://pypi.org/project/google-cloud-bigquery-storage
+   * - `Bigtable <https://github.com/googleapis/python-bigtable>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-bigtable.svg)
+        :target: https://pypi.org/project/google-cloud-bigtable
+   * - `Billing <https://github.com/googleapis/python-billing>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-billing.svg)
+        :target: https://pypi.org/project/google-cloud-billing
+   * - `Build <https://github.com/googleapis/python-cloudbuild>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-build.svg)
+        :target: https://pypi.org/project/google-cloud-build
+   * - `Container Analysis <https://github.com/googleapis/python-containeranalysis>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-containeranalysis.svg)
+        :target: https://pypi.org/project/google-cloud-containeranalysis
+   * - `Data Catalog <https://github.com/googleapis/python-datacatalog>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-datacatalog.svg)
+        :target: https://pypi.org/project/google-cloud-datacatalog
+   * - `Data Loss Prevention <https://github.com/googleapis/python-dlp>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-dlp.svg)
+        :target: https://pypi.org/project/google-cloud-dlp
+   * - `Dataproc <https://github.com/googleapis/python-dataproc>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-dataproc.svg)
+        :target: https://pypi.org/project/google-cloud-dataproc
+   * - `Datastore <https://github.com/googleapis/python-datastore>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-datastore.svg)
+        :target: https://pypi.org/project/google-cloud-datastore
+   * - `Firestore <https://github.com/googleapis/python-firestore>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg)
+        :target: https://pypi.org/project/google-cloud-firestore
+   * - `Identity and Access Management <https://github.com/googleapis/python-iam>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-iam.svg)
+        :target: https://pypi.org/project/google-cloud-iam
+   * - `Internet of Things (IoT) Core <https://github.com/googleapis/python-iot>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-iot.svg)
+        :target: https://pypi.org/project/google-cloud-iot
+   * - `Key Management Service <https://github.com/googleapis/python-kms>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-kms.svg)
+        :target: https://pypi.org/project/google-cloud-kms
+   * - `Kubernetes Engine <https://github.com/googleapis/python-container>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-container.svg)
+        :target: https://pypi.org/project/google-cloud-container
+   * - `Logging <https://github.com/googleapis/python-logging>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg)
+        :target: https://pypi.org/project/google-cloud-logging
+   * - `Monitoring Dashboards <https://github.com/googleapis/python-monitoring-dashboards>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-dashboards.svg)
+        :target: https://pypi.org/project/google-cloud-monitoring-dashboards
+   * - `NDB Client Library for Datastore <https://github.com/googleapis/python-ndb>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-ndb.svg)
+        :target: https://pypi.org/project/google-cloud-ndb
+   * - `Natural Language <https://github.com/googleapis/python-language>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-language.svg)
+        :target: https://pypi.org/project/google-cloud-language
+   * - `OS Login <https://github.com/googleapis/python-oslogin>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-os-login.svg)
+        :target: https://pypi.org/project/google-cloud-os-login
+   * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg)
+        :target: https://pypi.org/project/google-cloud-pubsub
+   * - `Recommender API <https://github.com/googleapis/python-recommender>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg)
+        :target: https://pypi.org/project/google-cloud-recommender
+   * - `Redis <https://github.com/googleapis/python-redis>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-redis.svg)
+        :target: https://pypi.org/project/google-cloud-redis
+   * - `Scheduler <https://github.com/googleapis/python-scheduler>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-scheduler.svg)
+        :target: https://pypi.org/project/google-cloud-scheduler
+   * - `Secret Manager <https://github.com/googleapis/python-secret-manager>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-secret-manager.svg)
+        :target: https://pypi.org/project/google-cloud-secret-manager
+   * - `Spanner <https://github.com/googleapis/python-spanner>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-spanner.svg)
+        :target: https://pypi.org/project/google-cloud-spanner
+   * - `Speech <https://github.com/googleapis/python-speech>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-speech.svg)
+        :target: https://pypi.org/project/google-cloud-speech
+   * - `Stackdriver Monitoring <https://github.com/googleapis/python-monitoring>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-monitoring.svg)
+        :target: https://pypi.org/project/google-cloud-monitoring
+   * - `Storage <https://github.com/googleapis/python-storage>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-storage.svg)
+        :target: https://pypi.org/project/google-cloud-storage
+   * - `Tasks <https://github.com/googleapis/python-tasks>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-tasks.svg)
+        :target: https://pypi.org/project/google-cloud-tasks
+   * - `Text-to-Speech <https://github.com/googleapis/python-texttospeech>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-texttospeech.svg)
+        :target: https://pypi.org/project/google-cloud-texttospeech
+   * - `Trace <https://github.com/googleapis/python-trace>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-trace.svg)
+        :target: https://pypi.org/project/google-cloud-trace
+   * - `Translation <https://github.com/googleapis/python-translate>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-translate.svg)
+        :target: https://pypi.org/project/google-cloud-translate
+   * - `Video Intelligence <https://github.com/googleapis/python-videointelligence>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-videointelligence.svg)
+        :target: https://pypi.org/project/google-cloud-videointelligence
+   * - `Vision <https://github.com/googleapis/python-vision>`_
+     - |ga|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-vision.svg)
+        :target: https://pypi.org/project/google-cloud-vision
+   * - `AI Platform Notebooks <https://github.com/googleapis/python-notebooks>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-notebooks.svg)
+        :target: https://pypi.org/project/google-cloud-notebooks
+   * - `Access Approval <https://github.com/googleapis/python-access-approval>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-access-approval.svg)
+        :target: https://pypi.org/project/google-cloud-access-approval
+   * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-assured-workflows.svg)
+        :target: https://pypi.org/project/google-cloud-assured-workflows
+   * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg)
+        :target: https://pypi.org/project/google-cloud-audit-log
+   * - `Billing Budget <https://github.com/googleapis/python-billingbudgets>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg)
+        :target: https://pypi.org/project/google-cloud-billing-budgets
+   * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg)
+        :target: https://pypi.org/project/google-cloud-binary-authorization
+   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg)
+        :target: https://pypi.org/project/google-cloud-compute
+   * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg)
+        :target: https://pypi.org/project/google-cloud-datalabeling
+   * - `Dialogflow CX <https://github.com/googleapis/python-dialogflow-cx>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow-cx.svg)
+        :target: https://pypi.org/project/google-cloud-dialogflow-cx
+   * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-documentai.svg)
+        :target: https://pypi.org/project/google-cloud-documentai
+   * - `Error Reporting <https://github.com/googleapis/python-error-reporting>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg)
+        :target: https://pypi.org/project/google-cloud-error-reporting
+   * - `Functions <https://github.com/googleapis/python-functions>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-functions.svg)
+        :target: https://pypi.org/project/google-cloud-functions
+   * - `Game Servers <https://github.com/googleapis/python-game-servers>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-game-servers.svg)
+        :target: https://pypi.org/project/google-cloud-game-servers
+   * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg)
+        :target: https://pypi.org/project/google-cloud-media-translation
+   * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-memcache.svg)
+        :target: https://pypi.org/project/google-cloud-memcache
+   * - `Phishing Protection <https://github.com/googleapis/python-phishingprotection>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-phishingprotection.svg)
+        :target: https://pypi.org/project/google-cloud-phishingprotection
+   * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-security-private-ca.svg)
+        :target: https://pypi.org/project/google-cloud-security-private-ca
+   * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg)
+        :target: https://pypi.org/project/google-cloud-pubsublite
+   * - `Python Test Utils for Cloud <https://github.com/googleapis/python-test-utils>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-testutils.svg)
+        :target: https://pypi.org/project/google-cloud-testutils
+   * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg)
+        :target: https://pypi.org/project/google-cloud-recommendations-ai
+   * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg)
+        :target: https://pypi.org/project/google-cloud-runtimeconfig
+   * - `Service Directory <https://github.com/googleapis/python-service-directory>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-service-directory.svg)
+        :target: https://pypi.org/project/google-cloud-service-directory
+   * - `Talent Solution <https://github.com/googleapis/python-talent>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg)
+        :target: https://pypi.org/project/google-cloud-talent
+   * - `Transcoder <https://github.com/googleapis/python-video-transcoder>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-video-transcoder.svg)
+        :target: https://pypi.org/project/google-cloud-video-transcoder
+   * - `Workflows <https://github.com/googleapis/python-workflows>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-workflows.svg)
+        :target: https://pypi.org/project/google-cloud-workflows
+   * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
+     - |beta|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-recpatcha-enterprise.svg)
+        :target: https://pypi.org/project/google-cloud-recpatcha-enterprise
+   * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg)
+        :target: https://pypi.org/project/google-analytics-admin
+   * - `Analytics Data API <https://github.com/googleapis/python-analytics-data>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-analytics-data.svg)
+        :target: https://pypi.org/project/google-analytics-data
+   * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-area120-tables.svg)
+        :target: https://pypi.org/project/google-area120-tables
+   * - `DNS <https://github.com/googleapis/python-dns>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg)
+        :target: https://pypi.org/project/google-cloud-dns
+   * - `Data QnA <https://github.com/googleapis/python-data-qna>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg)
+        :target: https://pypi.org/project/google-cloud-data-qna
+   * - `Grafeas <https://github.com/googleapis/python-grafeas>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/grafeas.svg)
+        :target: https://pypi.org/project/grafeas
+   * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg)
+        :target: https://pypi.org/project/google-cloud-resource-manager
+   * - `Security Command Center <https://github.com/googleapis/python-securitycenter>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-securitycenter.svg)
+        :target: https://pypi.org/project/google-cloud-securitycenter
+   * - `Security Scanner <https://github.com/googleapis/python-websecurityscanner>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-websecurityscanner.svg)
+        :target: https://pypi.org/project/google-cloud-websecurityscanner
+   * - `Web Risk <https://github.com/googleapis/python-webrisk>`_
+     - |alpha|
+     - .. |PyPI| image:: https://img.shields.io/pypi/v/google-cloud-webrisk.svg)
+        :target: https://pypi.org/project/google-cloud-webrisk
+
+.. API_TABLE_END
+
+
 Example Applications
---------------------
+********************
 
 -  `getting-started-python`_ - A sample and `tutorial`_ that demonstrates how to build a complete web application using Cloud Datastore, Cloud Storage, and Cloud Pub/Sub and deploy it to Google App Engine or Google Compute Engine.
 -  `google-cloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
@@ -72,7 +394,8 @@ Example Applications
 
 
 Authentication
---------------
+********************
+
 
 With ``google-cloud-python`` we try to make authentication as painless as possible.
 Check out the `Authentication section`_ in our documentation to learn more.
@@ -85,7 +408,8 @@ You may also find the `authentication document`_ shared by all the
 
 
 License
--------
+********************
+
 
 Apache 2.0 - See `the LICENSE`_ for more information.
 
