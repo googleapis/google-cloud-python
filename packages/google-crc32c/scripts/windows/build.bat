@@ -13,73 +13,60 @@
 @rem limitations under the License.
 
 
-@REM available windows versions on CI as of 2019-Nov-25
-@REM  -3.7-64
-@REM  -3.7-32
-@REM  -3.6-64
-@REM  -3.6-32
-@REM  -3.5-64
-@REM  -3.5-32
-@REM  -3.4-64
-@REM  -3.4-32
-@REM  -2.7-64
-@REM  -2.7-32
+setlocal ENABLEDELAYEDEXPANSION
 
-py -3.7 -m pip install cmake
+set CMAKE_GENERATOR="Visual Studio 16 2019"
+set CONFIGURATION=RelWithDebInfo
+set CRC32C_INSTALL_PREFIX=%cd%\build\%CONFIGURATION%
 
-@rem First, build libcrc32c
-set CRC32C_INSTALL_PREFIX=%KOKORO_ARTIFACTS_DIR%\bin_win64\
+@rem Path to cmake, env var to make it easier to point to a specific version
+set cmake=cmake
 
-echo %CRC32C_INSTALL_PREFIX%
+@rem python version should be set as an argument, if not, default to python 3.9
+set PYTHON_VERSION=%1
+if "%PYTHON_VERSION%"=="" (
+  echo "Python version was not provided, using Python 3.9"
+  set PYTHON_VERSION=3.9
+)
 
-pushd google_crc32c
+py -0
+py -%PYTHON_VERSION% -m pip install cmake
+
 git submodule update --init --recursive
-mkdir build
 
-@REM 64 Bit Builds.
-@REM removed -DCRC32C_BUILD_TESTS=no 
-set CMAKE_GENERATOR="Visual Studio 15 2017"
-C:\Python37\Scripts\cmake -G %CMAKE_GENERATOR% -A x64 -DCRC32C_BUILD_BENCHMARKS=no -DBUILD_SHARED_LIBS=yes ^
--DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% .
+FOR %%V IN (32,64) DO (
+    set TARGET_PLATFORM="x64"
 
-C:\Python37\Scripts\cmake --build . --config RelWithDebInfo --target install
-dir %CRC32C_INSTALL_PREFIX% /b /s
-popd
+    if "%%V"=="32" (
+        set TARGET_PLATFORM="Win32"
+    )
+    echo "Target Platform: !TARGET_PLATFORM!"
 
-copy %CRC32C_INSTALL_PREFIX%bin\google_crc32c.dll .
+    pushd google_crc32c
 
-@rem update python deps and build wheels (requires CRC32C_INSTALL_PREFIX is set)
-FOR %%V IN (3.6-64,3.7-64) DO (
-    py -%%V -m pip install --upgrade pip setuptools wheel
-    py -%%V -m pip wheel . --wheel-dir wheels/
+    @rem reset hard to cleanup any changes done by a previous build.
+    git reset --hard
+    git clean -fxd
+
+    del /s /q CMakeFiles\
+    del CMakeCache.txt
+
+    mkdir build
+    cd build
+
+    echo "Running cmake with Generator:  %CMAKE_GENERATOR%, Platform: !TARGET_PLATFORM!, Install Prefix: %CRC32C_INSTALL_PREFIX%"
+
+    %cmake% -G %CMAKE_GENERATOR% -A !TARGET_PLATFORM! -DCRC32C_BUILD_BENCHMARKS=no -DCRC32C_BUILD_TESTS=no -DBUILD_SHARED_LIBS=yes -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCRC32C_USE_GLOG=0 -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% ..
+
+    %cmake% --build . --config "%CONFIGURATION%" --target install
+
+    dir %CRC32C_INSTALL_PREFIX% /b /s
+    popd
+
+    dir  %CRC32C_INSTALL_PREFIX%\bin
+    echo "Copying Binary to root: %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll"
+    copy %CRC32C_INSTALL_PREFIX%\bin\crc32c.dll .
+
+    py -%PYTHON_VERSION%-%%V -m pip install --upgrade pip setuptools wheel
+    py -%PYTHON_VERSION%-%%V -m pip wheel . --wheel-dir wheels/
 )
-
-
-@REM 32 Bit Builds.
-@REM removed -DCRC32C_BUILD_TESTS=no 
-
-set CMAKE_GENERATOR="Visual Studio 15 2017"
-pushd google_crc32c
-@rem reset hard to cleanup any changes done by 64-bit build.
-git reset --hard
-
-del /s /q CMakeFiles\
-del CMakeCache.txt
-set CRC32C_INSTALL_PREFIX=%KOKORO_ARTIFACTS_DIR%\bin_win32\
-
-C:\Python37\Scripts\cmake -G %CMAKE_GENERATOR% -A Win32 -DCRC32C_BUILD_BENCHMARKS=no -DBUILD_SHARED_LIBS=yes ^
--DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=yes -DCMAKE_INSTALL_PREFIX:PATH=%CRC32C_INSTALL_PREFIX% .
-
-C:\Python37\Scripts\cmake --build . --config RelWithDebInfo --target install
-dir %CRC32C_INSTALL_PREFIX% /b /s
-popd
-
-copy %CRC32C_INSTALL_PREFIX%bin\google_crc32c.dll .
-
-@rem update python deps and build wheels (requires CRC32C_INSTALL_PREFIX is set)
-FOR %%V IN (3.6-32,3.7-32) DO (
-    py -%%V -m pip install --upgrade pip setuptools wheel
-    py -%%V -m pip wheel . --wheel-dir wheels/
-)
-
-

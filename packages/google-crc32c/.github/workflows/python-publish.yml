@@ -1,0 +1,146 @@
+
+name: Build binary wheels and upload to PyPI
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-source-distribution:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+    - name: Build
+      run: python setup.py sdist
+    - uses: actions/upload-artifact@v2
+      with:
+        name: python-package-distributions
+        path: dist
+
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
+    - name: Build
+      run: |
+        ./scripts/manylinux/build.sh
+    - name: Test Import
+      run: |
+        pip install cffi pycparser
+        pip install --no-index --find-links=wheels google-crc32c
+        python ./scripts/check_cffi_crc32c.py
+    - uses: actions/upload-artifact@v2
+      with:
+        name: python-package-distributions
+        path: ./wheels/google_crc32c*.whl
+
+  build-macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
+    - name: Build
+      run: |
+        ./scripts/osx/build_gh_action.sh
+    - name: Test Import
+      run: |
+        pip install cffi pycparser
+        pip install --no-index --find-links=wheels google-crc32c
+        python ./scripts/check_cffi_crc32c.py
+    - uses: actions/upload-artifact@v2
+      with:
+        name: python-package-distributions
+        path: ./wheels/google_crc32c*.whl
+
+  build-windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        # Use 16.x
+        vs-version: '[16.0, 17.0)'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
+    - name: Build
+      run: |
+        where python
+        ./scripts/windows/build.bat ${{ matrix.python }}
+    - name: Test Import
+      run: |
+        ./scripts/windows/test.bat ${{ matrix.python }}
+    - uses: actions/upload-artifact@v2
+      with:
+        name: python-package-distributions
+        path: ./wheels/google_crc32c*.whl
+
+
+  publish:
+    needs:
+      - build-linux
+      - build-macos
+      - build-windows
+      - build-source-distribution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v2
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Download all the wheels
+        uses: actions/download-artifact@v2
+        with:
+          name: python-package-distributions
+          path: wheels/
+      - name: What will we publish?
+        run: ls wheels
+      - name: Publish Source Distribution
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages_dir: dist
+          skip_existing: true
+          # repository_url: https://test.pypi.org/legacy/
+      - name: Publish Wheels
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          packages_dir: wheels
+          skip_existing: true
+          # repository_url: https://test.pypi.org/legacy/
