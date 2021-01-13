@@ -14,13 +14,15 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 import shutil
 
 # https://github.com/google/importlab/issues/25
 import nox  # pytype: disable=import-error
 
-_MINIMAL_ASYNCIO_SUPPORT_PYTHON_VERSION = [3, 6]
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
+_MINIMAL_ASYNCIO_SUPPORT_PYTHON_VERSION = [3, 6]
 
 def _greater_or_equal_than_36(version_string):
     tokens = version_string.split(".")
@@ -40,9 +42,13 @@ def default(session):
     Python corresponding to the ``nox`` binary the ``PATH`` can
     run the tests.
     """
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov", "grpcio >= 1.0.2")
-    session.install("-e", ".")
+    session.install("-e", ".", "-c", constraints_path)
 
     pytest_args = [
         "python",
@@ -80,9 +86,11 @@ def unit(session):
 @nox.session(python=["2.7", "3.6", "3.7", "3.8", "3.9"])
 def unit_grpc_gcp(session):
     """Run the unit test suite with grpcio-gcp installed."""
-
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     # Install grpcio-gcp
-    session.install("grpcio-gcp")
+    session.install("grpcio-gcp", "-c", constraints_path)
 
     default(session)
 

@@ -33,7 +33,7 @@ dependencies = [
     "protobuf >= 3.12.0",
     "google-auth >= 1.21.1, < 2.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
-    "setuptools >= 34.0.0",
+    "setuptools >= 40.3.0",
     "six >= 1.13.0",
     "pytz",
     'futures >= 3.2.0; python_version < "3.2"',

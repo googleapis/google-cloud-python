@@ -1,0 +1,16 @@
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+# List *all* library dependencies and extras in this file.
+# Pin the version to the lower bound.
+#
+# e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have foo==1.14.0
+googleapis-common-protos==1.6.0
+protobuf==3.12.0
+google-auth==1.21.1
+requests==2.18.0
+setuptools==40.3.0
+six==1.13.0
+grpcio==1.29.0
+grpcio-gcp==0.2.2
+grpcio-gcp==0.2.2
