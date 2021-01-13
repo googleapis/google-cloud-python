@@ -42,6 +42,10 @@ jobs:
         pip install cffi pycparser
         pip install --no-index --find-links=wheels google-crc32c
         python ./scripts/check_cffi_crc32c.py
+    - name: Run tests
+      run: |
+        pip install pytest
+        python -m pytest tests
     - uses: actions/upload-artifact@v2
       with:
         name: python-package-distributions
@@ -70,6 +74,10 @@ jobs:
         pip install cffi pycparser
         pip install --no-index --find-links=wheels google-crc32c
         python ./scripts/check_cffi_crc32c.py
+    - name: Run tests
+      run: |
+        pip install pytest
+        python -m pytest tests
     - uses: actions/upload-artifact@v2
       with:
         name: python-package-distributions
