@@ -60,10 +60,11 @@ If you need support for other Google APIs, check out the
 Libraries
 *********
 
+.. This table is generated, see synth.py for details.
+
 .. API_TABLE_START
 
 .. list-table:: Libraries
-   :widths: 25 25 50
    :header-rows: 1
 
    * - Client

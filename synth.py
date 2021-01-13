@@ -82,7 +82,6 @@ def generate_table_contents(clients: List[CloudClient]) -> List[str]:
     content_rows = [
         "\n",
         ".. list-table:: Libraries\n",
-        "   :widths: 25 25 50\n",
         "   :header-rows: 1\n",
         "\n",
         "   * - Client\n",
