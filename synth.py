@@ -63,7 +63,7 @@ def replace_content_in_readme(content_rows: List[str]) -> None:
             f.write(line)
 
 def client_row(client: CloudClient) -> str:
-    pypi_badge = f".. |PyPI| image:: https://img.shields.io/pypi/v/{client.distribution_name}.svg)\n        :target: https://pypi.org/project/{client.distribution_name}"
+    pypi_badge = f".. |PyPI-{client.distribution_name}| image:: https://img.shields.io/pypi/v/{client.distribution_name}.svg)\n        :target: https://pypi.org/project/{client.distribution_name}"
 
     return [
         f"   * - `{client.title} <https://github.com/{client.repo}>`_\n",
