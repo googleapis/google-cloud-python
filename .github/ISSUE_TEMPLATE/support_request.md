@@ -8,4 +8,4 @@ about: If you have a support contract with Google, please create an issue in the
 
 **NOTE**: [Google Cloud Python](https://cloud.google.com/python/docs/reference) client libraries are no longer maintained inside this repository. Please visit the python-API repository (e.g., https://github.com/googleapis/python-pubsub/issues) for faster response times.
 
-See all published libraries at https://cloud.google.com/python/docs/reference.
+See all published libraries in the [README](https://github.com/googleapis/google-cloud-python/blob/master/README.rst).
