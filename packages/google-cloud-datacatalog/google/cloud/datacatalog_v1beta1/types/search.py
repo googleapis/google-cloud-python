@@ -40,7 +40,7 @@ class SearchCatalogResult(proto.Message):
     search.
 
     Attributes:
-        search_result_type (~.search.SearchResultType):
+        search_result_type (google.cloud.datacatalog_v1beta1.types.SearchResultType):
             Type of the search result. This field can be
             used to determine which Get method to call to
             fetch the full resource.

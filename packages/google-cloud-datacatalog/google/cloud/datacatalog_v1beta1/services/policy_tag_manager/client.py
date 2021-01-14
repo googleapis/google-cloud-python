@@ -115,6 +115,22 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PolicyTagManagerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -126,7 +142,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            PolicyTagManagerClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -255,10 +271,10 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PolicyTagManagerTransport]): The
+            transport (Union[str, PolicyTagManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -369,17 +385,18 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Creates a taxonomy in the specified project.
 
         Args:
-            request (:class:`~.policytagmanager.CreateTaxonomyRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.CreateTaxonomyRequest):
                 The request object. Request message for
                 [CreateTaxonomy][google.cloud.datacatalog.v1beta1.PolicyTagManager.CreateTaxonomy].
-            parent (:class:`str`):
+            parent (str):
                 Required. Resource name of the
                 project that the taxonomy will belong
                 to.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            taxonomy (:class:`~.policytagmanager.Taxonomy`):
+            taxonomy (google.cloud.datacatalog_v1beta1.types.Taxonomy):
                 The taxonomy to be created.
                 This corresponds to the ``taxonomy`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -392,14 +409,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanager.Taxonomy:
-                A taxonomy is a collection of policy tags that classify
-                data along a common axis. For instance a data
-                *sensitivity* taxonomy could contain policy tags
-                denoting PII such as age, zipcode, and SSN. A data
-                *origin* taxonomy could contain policy tags to
-                distinguish user data, employee data, partner data,
-                public data.
+            google.cloud.datacatalog_v1beta1.types.Taxonomy:
+                A taxonomy is a collection of policy tags that classify data along a common
+                   axis. For instance a data *sensitivity* taxonomy
+                   could contain policy tags denoting PII such as age,
+                   zipcode, and SSN. A data *origin* taxonomy could
+                   contain policy tags to distinguish user data,
+                   employee data, partner data, public data.
 
         """
         # Create or coerce a protobuf request object.
@@ -457,13 +473,14 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         associated policies.
 
         Args:
-            request (:class:`~.policytagmanager.DeleteTaxonomyRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.DeleteTaxonomyRequest):
                 The request object. Request message for
                 [DeleteTaxonomy][google.cloud.datacatalog.v1beta1.PolicyTagManager.DeleteTaxonomy].
-            name (:class:`str`):
+            name (str):
                 Required. Resource name of the
                 taxonomy to be deleted. All policy tags
                 in this taxonomy will also be deleted.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -524,12 +541,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Updates a taxonomy.
 
         Args:
-            request (:class:`~.policytagmanager.UpdateTaxonomyRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.UpdateTaxonomyRequest):
                 The request object. Request message for
                 [UpdateTaxonomy][google.cloud.datacatalog.v1beta1.PolicyTagManager.UpdateTaxonomy].
-            taxonomy (:class:`~.policytagmanager.Taxonomy`):
+            taxonomy (google.cloud.datacatalog_v1beta1.types.Taxonomy):
                 The taxonomy to update. Only description, display_name,
                 and activated policy types can be updated.
+
                 This corresponds to the ``taxonomy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -541,14 +559,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanager.Taxonomy:
-                A taxonomy is a collection of policy tags that classify
-                data along a common axis. For instance a data
-                *sensitivity* taxonomy could contain policy tags
-                denoting PII such as age, zipcode, and SSN. A data
-                *origin* taxonomy could contain policy tags to
-                distinguish user data, employee data, partner data,
-                public data.
+            google.cloud.datacatalog_v1beta1.types.Taxonomy:
+                A taxonomy is a collection of policy tags that classify data along a common
+                   axis. For instance a data *sensitivity* taxonomy
+                   could contain policy tags denoting PII such as age,
+                   zipcode, and SSN. A data *origin* taxonomy could
+                   contain policy tags to distinguish user data,
+                   employee data, partner data, public data.
 
         """
         # Create or coerce a protobuf request object.
@@ -605,12 +622,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         location that the caller has permission to view.
 
         Args:
-            request (:class:`~.policytagmanager.ListTaxonomiesRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ListTaxonomiesRequest):
                 The request object. Request message for
                 [ListTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListTaxonomies].
-            parent (:class:`str`):
+            parent (str):
                 Required. Resource name of the
                 project to list the taxonomies of.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -622,9 +640,9 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTaxonomiesPager:
+            google.cloud.datacatalog_v1beta1.services.policy_tag_manager.pagers.ListTaxonomiesPager:
                 Response message for
-                [ListTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListTaxonomies].
+                   [ListTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListTaxonomies].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -687,12 +705,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Gets a taxonomy.
 
         Args:
-            request (:class:`~.policytagmanager.GetTaxonomyRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.GetTaxonomyRequest):
                 The request object. Request message for
                 [GetTaxonomy][google.cloud.datacatalog.v1beta1.PolicyTagManager.GetTaxonomy].
-            name (:class:`str`):
+            name (str):
                 Required. Resource name of the
                 requested taxonomy.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -704,14 +723,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanager.Taxonomy:
-                A taxonomy is a collection of policy tags that classify
-                data along a common axis. For instance a data
-                *sensitivity* taxonomy could contain policy tags
-                denoting PII such as age, zipcode, and SSN. A data
-                *origin* taxonomy could contain policy tags to
-                distinguish user data, employee data, partner data,
-                public data.
+            google.cloud.datacatalog_v1beta1.types.Taxonomy:
+                A taxonomy is a collection of policy tags that classify data along a common
+                   axis. For instance a data *sensitivity* taxonomy
+                   could contain policy tags denoting PII such as age,
+                   zipcode, and SSN. A data *origin* taxonomy could
+                   contain policy tags to distinguish user data,
+                   employee data, partner data, public data.
 
         """
         # Create or coerce a protobuf request object.
@@ -766,17 +784,18 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Creates a policy tag in the specified taxonomy.
 
         Args:
-            request (:class:`~.policytagmanager.CreatePolicyTagRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.CreatePolicyTagRequest):
                 The request object. Request message for
                 [CreatePolicyTag][google.cloud.datacatalog.v1beta1.PolicyTagManager.CreatePolicyTag].
-            parent (:class:`str`):
+            parent (str):
                 Required. Resource name of the
                 taxonomy that the policy tag will belong
                 to.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            policy_tag (:class:`~.policytagmanager.PolicyTag`):
+            policy_tag (google.cloud.datacatalog_v1beta1.types.PolicyTag):
                 The policy tag to be created.
                 This corresponds to the ``policy_tag`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -789,7 +808,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanager.PolicyTag:
+            google.cloud.datacatalog_v1beta1.types.PolicyTag:
                 Denotes one policy tag in a taxonomy
                 (e.g. ssn). Policy Tags can be defined
                 in a hierarchy. For example, consider
@@ -854,13 +873,14 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         descendant policy tags.
 
         Args:
-            request (:class:`~.policytagmanager.DeletePolicyTagRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.DeletePolicyTagRequest):
                 The request object. Request message for
                 [DeletePolicyTag][google.cloud.datacatalog.v1beta1.PolicyTagManager.DeletePolicyTag].
-            name (:class:`str`):
+            name (str):
                 Required. Resource name of the policy
                 tag to be deleted. All of its descendant
                 policy tags will also be deleted.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -921,13 +941,14 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Updates a policy tag.
 
         Args:
-            request (:class:`~.policytagmanager.UpdatePolicyTagRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.UpdatePolicyTagRequest):
                 The request object. Request message for
                 [UpdatePolicyTag][google.cloud.datacatalog.v1beta1.PolicyTagManager.UpdatePolicyTag].
-            policy_tag (:class:`~.policytagmanager.PolicyTag`):
+            policy_tag (google.cloud.datacatalog_v1beta1.types.PolicyTag):
                 The policy tag to update. Only the description,
                 display_name, and parent_policy_tag fields can be
                 updated.
+
                 This corresponds to the ``policy_tag`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -939,7 +960,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanager.PolicyTag:
+            google.cloud.datacatalog_v1beta1.types.PolicyTag:
                 Denotes one policy tag in a taxonomy
                 (e.g. ssn). Policy Tags can be defined
                 in a hierarchy. For example, consider
@@ -1003,12 +1024,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Lists all policy tags in a taxonomy.
 
         Args:
-            request (:class:`~.policytagmanager.ListPolicyTagsRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ListPolicyTagsRequest):
                 The request object. Request message for
                 [ListPolicyTags][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListPolicyTags].
-            parent (:class:`str`):
+            parent (str):
                 Required. Resource name of the
                 taxonomy to list the policy tags of.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1020,9 +1042,9 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPolicyTagsPager:
+            google.cloud.datacatalog_v1beta1.services.policy_tag_manager.pagers.ListPolicyTagsPager:
                 Response message for
-                [ListPolicyTags][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListPolicyTags].
+                   [ListPolicyTags][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListPolicyTags].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1085,12 +1107,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Gets a policy tag.
 
         Args:
-            request (:class:`~.policytagmanager.GetPolicyTagRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.GetPolicyTagRequest):
                 The request object. Request message for
                 [GetPolicyTag][google.cloud.datacatalog.v1beta1.PolicyTagManager.GetPolicyTag].
-            name (:class:`str`):
+            name (str):
                 Required. Resource name of the
                 requested policy tag.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1102,7 +1125,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanager.PolicyTag:
+            google.cloud.datacatalog_v1beta1.types.PolicyTag:
                 Denotes one policy tag in a taxonomy
                 (e.g. ssn). Policy Tags can be defined
                 in a hierarchy. For example, consider
@@ -1163,7 +1186,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Gets the IAM policy for a taxonomy or a policy tag.
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
 
@@ -1174,72 +1197,62 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1276,7 +1289,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         r"""Sets the IAM policy for a taxonomy or a policy tag.
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
 
@@ -1287,72 +1300,62 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1390,7 +1393,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         specified taxonomy or policy tag.
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
 
@@ -1401,8 +1404,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
 

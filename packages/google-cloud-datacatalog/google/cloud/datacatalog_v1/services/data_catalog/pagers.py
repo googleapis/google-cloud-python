@@ -26,7 +26,7 @@ class SearchCatalogPager:
     """A pager for iterating through ``search_catalog`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.SearchCatalogResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.SearchCatalogResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``results`` field.
 
@@ -35,7 +35,7 @@ class SearchCatalogPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.SearchCatalogResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.SearchCatalogResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +53,9 @@ class SearchCatalogPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.SearchCatalogRequest`):
+            request (google.cloud.datacatalog_v1.types.SearchCatalogRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.SearchCatalogResponse`):
+            response (google.cloud.datacatalog_v1.types.SearchCatalogResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +88,7 @@ class SearchCatalogAsyncPager:
     """A pager for iterating through ``search_catalog`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.SearchCatalogResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.SearchCatalogResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``results`` field.
 
@@ -97,7 +97,7 @@ class SearchCatalogAsyncPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.SearchCatalogResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.SearchCatalogResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +115,9 @@ class SearchCatalogAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.SearchCatalogRequest`):
+            request (google.cloud.datacatalog_v1.types.SearchCatalogRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.SearchCatalogResponse`):
+            response (google.cloud.datacatalog_v1.types.SearchCatalogResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -154,7 +154,7 @@ class ListEntryGroupsPager:
     """A pager for iterating through ``list_entry_groups`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.ListEntryGroupsResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.ListEntryGroupsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``entry_groups`` field.
 
@@ -163,7 +163,7 @@ class ListEntryGroupsPager:
     through the ``entry_groups`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.ListEntryGroupsResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.ListEntryGroupsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -181,9 +181,9 @@ class ListEntryGroupsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.ListEntryGroupsRequest`):
+            request (google.cloud.datacatalog_v1.types.ListEntryGroupsRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.ListEntryGroupsResponse`):
+            response (google.cloud.datacatalog_v1.types.ListEntryGroupsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -216,7 +216,7 @@ class ListEntryGroupsAsyncPager:
     """A pager for iterating through ``list_entry_groups`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.ListEntryGroupsResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.ListEntryGroupsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``entry_groups`` field.
 
@@ -225,7 +225,7 @@ class ListEntryGroupsAsyncPager:
     through the ``entry_groups`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.ListEntryGroupsResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.ListEntryGroupsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -243,9 +243,9 @@ class ListEntryGroupsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.ListEntryGroupsRequest`):
+            request (google.cloud.datacatalog_v1.types.ListEntryGroupsRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.ListEntryGroupsResponse`):
+            response (google.cloud.datacatalog_v1.types.ListEntryGroupsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -282,7 +282,7 @@ class ListEntriesPager:
     """A pager for iterating through ``list_entries`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.ListEntriesResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.ListEntriesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``entries`` field.
 
@@ -291,7 +291,7 @@ class ListEntriesPager:
     through the ``entries`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.ListEntriesResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.ListEntriesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -309,9 +309,9 @@ class ListEntriesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.ListEntriesRequest`):
+            request (google.cloud.datacatalog_v1.types.ListEntriesRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.ListEntriesResponse`):
+            response (google.cloud.datacatalog_v1.types.ListEntriesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -344,7 +344,7 @@ class ListEntriesAsyncPager:
     """A pager for iterating through ``list_entries`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.ListEntriesResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.ListEntriesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``entries`` field.
 
@@ -353,7 +353,7 @@ class ListEntriesAsyncPager:
     through the ``entries`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.ListEntriesResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.ListEntriesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -371,9 +371,9 @@ class ListEntriesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.ListEntriesRequest`):
+            request (google.cloud.datacatalog_v1.types.ListEntriesRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.ListEntriesResponse`):
+            response (google.cloud.datacatalog_v1.types.ListEntriesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -410,7 +410,7 @@ class ListTagsPager:
     """A pager for iterating through ``list_tags`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.ListTagsResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.ListTagsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``tags`` field.
 
@@ -419,7 +419,7 @@ class ListTagsPager:
     through the ``tags`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.ListTagsResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.ListTagsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -437,9 +437,9 @@ class ListTagsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.ListTagsRequest`):
+            request (google.cloud.datacatalog_v1.types.ListTagsRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.ListTagsResponse`):
+            response (google.cloud.datacatalog_v1.types.ListTagsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -472,7 +472,7 @@ class ListTagsAsyncPager:
     """A pager for iterating through ``list_tags`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datacatalog.ListTagsResponse` object, and
+    :class:`google.cloud.datacatalog_v1.types.ListTagsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``tags`` field.
 
@@ -481,7 +481,7 @@ class ListTagsAsyncPager:
     through the ``tags`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datacatalog.ListTagsResponse`
+    All the usual :class:`google.cloud.datacatalog_v1.types.ListTagsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -499,9 +499,9 @@ class ListTagsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datacatalog.ListTagsRequest`):
+            request (google.cloud.datacatalog_v1.types.ListTagsRequest):
                 The initial request object.
-            response (:class:`~.datacatalog.ListTagsResponse`):
+            response (google.cloud.datacatalog_v1.types.ListTagsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

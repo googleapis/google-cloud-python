@@ -67,7 +67,7 @@ class Taxonomy(proto.Message):
             be at most 2000 bytes long when encoded in
             UTF-8. If not set, defaults to an empty
             description.
-        activated_policy_types (Sequence[~.policytagmanager.Taxonomy.PolicyType]):
+        activated_policy_types (Sequence[google.cloud.datacatalog_v1beta1.types.Taxonomy.PolicyType]):
             Optional. A list of policy types that are
             activated for this taxonomy. If not set,
             defaults to an empty list.
@@ -146,7 +146,7 @@ class CreateTaxonomyRequest(proto.Message):
         parent (str):
             Required. Resource name of the project that
             the taxonomy will belong to.
-        taxonomy (~.policytagmanager.Taxonomy):
+        taxonomy (google.cloud.datacatalog_v1beta1.types.Taxonomy):
             The taxonomy to be created.
     """
 
@@ -174,10 +174,10 @@ class UpdateTaxonomyRequest(proto.Message):
     [UpdateTaxonomy][google.cloud.datacatalog.v1beta1.PolicyTagManager.UpdateTaxonomy].
 
     Attributes:
-        taxonomy (~.policytagmanager.Taxonomy):
+        taxonomy (google.cloud.datacatalog_v1beta1.types.Taxonomy):
             The taxonomy to update. Only description, display_name, and
             activated policy types can be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource. For the
             ``FieldMask`` definition, see
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
@@ -219,7 +219,7 @@ class ListTaxonomiesResponse(proto.Message):
     [ListTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListTaxonomies].
 
     Attributes:
-        taxonomies (Sequence[~.policytagmanager.Taxonomy]):
+        taxonomies (Sequence[google.cloud.datacatalog_v1beta1.types.Taxonomy]):
             Taxonomies that the project contains.
         next_page_token (str):
             Token used to retrieve the next page of
@@ -257,7 +257,7 @@ class CreatePolicyTagRequest(proto.Message):
         parent (str):
             Required. Resource name of the taxonomy that
             the policy tag will belong to.
-        policy_tag (~.policytagmanager.PolicyTag):
+        policy_tag (google.cloud.datacatalog_v1beta1.types.PolicyTag):
             The policy tag to be created.
     """
 
@@ -285,10 +285,10 @@ class UpdatePolicyTagRequest(proto.Message):
     [UpdatePolicyTag][google.cloud.datacatalog.v1beta1.PolicyTagManager.UpdatePolicyTag].
 
     Attributes:
-        policy_tag (~.policytagmanager.PolicyTag):
+        policy_tag (google.cloud.datacatalog_v1beta1.types.PolicyTag):
             The policy tag to update. Only the description,
             display_name, and parent_policy_tag fields can be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource. Only display_name,
             description and parent_policy_tag can be updated and thus
             can be listed in the mask. If update_mask is not provided,
@@ -334,7 +334,7 @@ class ListPolicyTagsResponse(proto.Message):
     [ListPolicyTags][google.cloud.datacatalog.v1beta1.PolicyTagManager.ListPolicyTags].
 
     Attributes:
-        policy_tags (Sequence[~.policytagmanager.PolicyTag]):
+        policy_tags (Sequence[google.cloud.datacatalog_v1beta1.types.PolicyTag]):
             The policy tags that are in the requested
             taxonomy.
         next_page_token (str):

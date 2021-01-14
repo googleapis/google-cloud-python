@@ -87,6 +87,9 @@ class PolicyTagManagerSerializationAsyncClient:
         PolicyTagManagerSerializationClient.parse_common_location_path
     )
 
+    from_service_account_info = (
+        PolicyTagManagerSerializationClient.from_service_account_info
+    )
     from_service_account_file = (
         PolicyTagManagerSerializationClient.from_service_account_file
     )
@@ -169,7 +172,7 @@ class PolicyTagManagerSerializationAsyncClient:
         creation using nested proto structure.
 
         Args:
-            request (:class:`~.policytagmanagerserialization.ImportTaxonomiesRequest`):
+            request (:class:`google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesRequest`):
                 The request object. Request message for
                 [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
 
@@ -180,9 +183,9 @@ class PolicyTagManagerSerializationAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanagerserialization.ImportTaxonomiesResponse:
+            google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesResponse:
                 Response message for
-                [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
+                   [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
 
         """
         # Create or coerce a protobuf request object.
@@ -224,7 +227,7 @@ class PolicyTagManagerSerializationAsyncClient:
         future ImportTaxonomies calls.
 
         Args:
-            request (:class:`~.policytagmanagerserialization.ExportTaxonomiesRequest`):
+            request (:class:`google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesRequest`):
                 The request object. Request message for
                 [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
 
@@ -235,9 +238,9 @@ class PolicyTagManagerSerializationAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanagerserialization.ExportTaxonomiesResponse:
+            google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesResponse:
                 Response message for
-                [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
+                   [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
 
         """
         # Create or coerce a protobuf request object.

@@ -94,6 +94,7 @@ class DataCatalogAsyncClient:
         DataCatalogClient.parse_common_location_path
     )
 
+    from_service_account_info = DataCatalogClient.from_service_account_info
     from_service_account_file = DataCatalogClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -187,15 +188,16 @@ class DataCatalogAsyncClient:
         for more information.
 
         Args:
-            request (:class:`~.datacatalog.SearchCatalogRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.SearchCatalogRequest`):
                 The request object. Request message for
                 [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
-            scope (:class:`~.datacatalog.SearchCatalogRequest.Scope`):
+            scope (:class:`google.cloud.datacatalog_v1.types.SearchCatalogRequest.Scope`):
                 Required. The scope of this search request. A ``scope``
                 that has empty ``include_org_ids``,
                 ``include_project_ids`` AND false
                 ``include_gcp_public_datasets`` is considered invalid.
                 Data Catalog will return an error in such a case.
+
                 This corresponds to the ``scope`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -214,6 +216,7 @@ class DataCatalogAsyncClient:
                 `Data Catalog Search
                 Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
                 for more information.
+
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -225,9 +228,9 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.SearchCatalogAsyncPager:
+            google.cloud.datacatalog_v1.services.data_catalog.pagers.SearchCatalogAsyncPager:
                 Response message for
-                [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
+                   [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -313,7 +316,7 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.CreateEntryGroupRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.CreateEntryGroupRequest`):
                 The request object. Request message for
                 [CreateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.CreateEntryGroup].
             parent (:class:`str`):
@@ -324,6 +327,7 @@ class DataCatalogAsyncClient:
 
                 Note that this EntryGroup and its child resources may
                 not actually be stored in the location in this name.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -334,12 +338,14 @@ class DataCatalogAsyncClient:
                 English letters, numbers and
                 underscores, and be at most 64
                 characters.
+
                 This corresponds to the ``entry_group_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entry_group (:class:`~.datacatalog.EntryGroup`):
+            entry_group (:class:`google.cloud.datacatalog_v1.types.EntryGroup`):
                 The entry group to create. Defaults
                 to an empty entry group.
+
                 This corresponds to the ``entry_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -351,10 +357,11 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.EntryGroup:
-                EntryGroup Metadata. An EntryGroup resource represents a
-                logical grouping of zero or more Data Catalog
-                [Entry][google.cloud.datacatalog.v1.Entry] resources.
+            google.cloud.datacatalog_v1.types.EntryGroup:
+                EntryGroup Metadata.
+                   An EntryGroup resource represents a logical grouping
+                   of zero or more Data Catalog
+                   [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -412,18 +419,20 @@ class DataCatalogAsyncClient:
         r"""Gets an EntryGroup.
 
         Args:
-            request (:class:`~.datacatalog.GetEntryGroupRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.GetEntryGroupRequest`):
                 The request object. Request message for
                 [GetEntryGroup][google.cloud.datacatalog.v1.DataCatalog.GetEntryGroup].
             name (:class:`str`):
                 Required. The name of the entry group. For example,
                 ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            read_mask (:class:`~.field_mask.FieldMask`):
+            read_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The fields to return. If not set or
                 empty, all fields are returned.
+
                 This corresponds to the ``read_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -435,10 +444,11 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.EntryGroup:
-                EntryGroup Metadata. An EntryGroup resource represents a
-                logical grouping of zero or more Data Catalog
-                [Entry][google.cloud.datacatalog.v1.Entry] resources.
+            google.cloud.datacatalog_v1.types.EntryGroup:
+                EntryGroup Metadata.
+                   An EntryGroup resource represents a logical grouping
+                   of zero or more Data Catalog
+                   [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -504,19 +514,21 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.UpdateEntryGroupRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.UpdateEntryGroupRequest`):
                 The request object. Request message for
                 [UpdateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.UpdateEntryGroup].
-            entry_group (:class:`~.datacatalog.EntryGroup`):
+            entry_group (:class:`google.cloud.datacatalog_v1.types.EntryGroup`):
                 Required. The updated entry group.
                 "name" field must be set.
+
                 This corresponds to the ``entry_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The fields to update on the entry
                 group. If absent or empty, all
                 modifiable fields are updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -528,10 +540,11 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.EntryGroup:
-                EntryGroup Metadata. An EntryGroup resource represents a
-                logical grouping of zero or more Data Catalog
-                [Entry][google.cloud.datacatalog.v1.Entry] resources.
+            google.cloud.datacatalog_v1.types.EntryGroup:
+                EntryGroup Metadata.
+                   An EntryGroup resource represents a logical grouping
+                   of zero or more Data Catalog
+                   [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -593,12 +606,13 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.DeleteEntryGroupRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.DeleteEntryGroupRequest`):
                 The request object. Request message for
                 [DeleteEntryGroup][google.cloud.datacatalog.v1.DataCatalog.DeleteEntryGroup].
             name (:class:`str`):
                 Required. The name of the entry group. For example,
                 ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -658,7 +672,7 @@ class DataCatalogAsyncClient:
         r"""Lists entry groups.
 
         Args:
-            request (:class:`~.datacatalog.ListEntryGroupsRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.ListEntryGroupsRequest`):
                 The request object. Request message for
                 [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
             parent (:class:`str`):
@@ -667,6 +681,7 @@ class DataCatalogAsyncClient:
                 Example:
 
                 -  projects/{project_id}/locations/{location}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -678,9 +693,9 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListEntryGroupsAsyncPager:
+            google.cloud.datacatalog_v1.services.data_catalog.pagers.ListEntryGroupsAsyncPager:
                 Response message for
-                [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
+                   [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -759,7 +774,7 @@ class DataCatalogAsyncClient:
         A maximum of 100,000 entries may be created per entry group.
 
         Args:
-            request (:class:`~.datacatalog.CreateEntryRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.CreateEntryRequest`):
                 The request object. Request message for
                 [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry].
             parent (:class:`str`):
@@ -770,16 +785,18 @@ class DataCatalogAsyncClient:
 
                 Note that this Entry and its child resources may not
                 actually be stored in the location in this name.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             entry_id (:class:`str`):
                 Required. The id of the entry to
                 create.
+
                 This corresponds to the ``entry_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entry (:class:`~.datacatalog.Entry`):
+            entry (:class:`google.cloud.datacatalog_v1.types.Entry`):
                 Required. The entry to create.
                 This corresponds to the ``entry`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -792,18 +809,19 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.Entry:
-                Entry Metadata. A Data Catalog Entry resource represents
-                another resource in Google Cloud Platform (such as a
-                BigQuery dataset or a Pub/Sub topic) or outside of
-                Google Cloud Platform. Clients can use the
-                ``linked_resource`` field in the Entry resource to refer
-                to the original resource ID of the source system.
+            google.cloud.datacatalog_v1.types.Entry:
+                Entry Metadata.
+                   A Data Catalog Entry resource represents another
+                   resource in Google Cloud Platform (such as a BigQuery
+                   dataset or a Pub/Sub topic) or outside of Google
+                   Cloud Platform. Clients can use the linked_resource
+                   field in the Entry resource to refer to the original
+                   resource ID of the source system.
 
-                An Entry resource contains resource details, such as its
-                schema. An Entry can also be used to attach flexible
-                metadata, such as a
-                [Tag][google.cloud.datacatalog.v1.Tag].
+                   An Entry resource contains resource details, such as
+                   its schema. An Entry can also be used to attach
+                   flexible metadata, such as a
+                   [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
         # Create or coerce a protobuf request object.
@@ -865,16 +883,17 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.UpdateEntryRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.UpdateEntryRequest`):
                 The request object. Request message for
                 [UpdateEntry][google.cloud.datacatalog.v1.DataCatalog.UpdateEntry].
-            entry (:class:`~.datacatalog.Entry`):
+            entry (:class:`google.cloud.datacatalog_v1.types.Entry`):
                 Required. The updated entry. The
                 "name" field must be set.
+
                 This corresponds to the ``entry`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The fields to update on the entry. If absent or empty,
                 all modifiable fields are updated.
 
@@ -901,6 +920,7 @@ class DataCatalogAsyncClient:
                    -  user_specified_system
                    -  linked_resource
                    -  source_system_timestamps
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -912,18 +932,19 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.Entry:
-                Entry Metadata. A Data Catalog Entry resource represents
-                another resource in Google Cloud Platform (such as a
-                BigQuery dataset or a Pub/Sub topic) or outside of
-                Google Cloud Platform. Clients can use the
-                ``linked_resource`` field in the Entry resource to refer
-                to the original resource ID of the source system.
+            google.cloud.datacatalog_v1.types.Entry:
+                Entry Metadata.
+                   A Data Catalog Entry resource represents another
+                   resource in Google Cloud Platform (such as a BigQuery
+                   dataset or a Pub/Sub topic) or outside of Google
+                   Cloud Platform. Clients can use the linked_resource
+                   field in the Entry resource to refer to the original
+                   resource ID of the source system.
 
-                An Entry resource contains resource details, such as its
-                schema. An Entry can also be used to attach flexible
-                metadata, such as a
-                [Tag][google.cloud.datacatalog.v1.Tag].
+                   An Entry resource contains resource details, such as
+                   its schema. An Entry can also be used to attach
+                   flexible metadata, such as a
+                   [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
         # Create or coerce a protobuf request object.
@@ -986,13 +1007,14 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.DeleteEntryRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.DeleteEntryRequest`):
                 The request object. Request message for
                 [DeleteEntry][google.cloud.datacatalog.v1.DataCatalog.DeleteEntry].
             name (:class:`str`):
                 Required. The name of the entry. Example:
 
                 -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1052,13 +1074,14 @@ class DataCatalogAsyncClient:
         r"""Gets an entry.
 
         Args:
-            request (:class:`~.datacatalog.GetEntryRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.GetEntryRequest`):
                 The request object. Request message for
                 [GetEntry][google.cloud.datacatalog.v1.DataCatalog.GetEntry].
             name (:class:`str`):
                 Required. The name of the entry. Example:
 
                 -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1070,18 +1093,19 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.Entry:
-                Entry Metadata. A Data Catalog Entry resource represents
-                another resource in Google Cloud Platform (such as a
-                BigQuery dataset or a Pub/Sub topic) or outside of
-                Google Cloud Platform. Clients can use the
-                ``linked_resource`` field in the Entry resource to refer
-                to the original resource ID of the source system.
+            google.cloud.datacatalog_v1.types.Entry:
+                Entry Metadata.
+                   A Data Catalog Entry resource represents another
+                   resource in Google Cloud Platform (such as a BigQuery
+                   dataset or a Pub/Sub topic) or outside of Google
+                   Cloud Platform. Clients can use the linked_resource
+                   field in the Entry resource to refer to the original
+                   resource ID of the source system.
 
-                An Entry resource contains resource details, such as its
-                schema. An Entry can also be used to attach flexible
-                metadata, such as a
-                [Tag][google.cloud.datacatalog.v1.Tag].
+                   An Entry resource contains resource details, such as
+                   its schema. An Entry can also be used to attach
+                   flexible metadata, such as a
+                   [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
         # Create or coerce a protobuf request object.
@@ -1142,7 +1166,7 @@ class DataCatalogAsyncClient:
         Entry.
 
         Args:
-            request (:class:`~.datacatalog.LookupEntryRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.LookupEntryRequest`):
                 The request object. Request message for
                 [LookupEntry][google.cloud.datacatalog.v1.DataCatalog.LookupEntry].
 
@@ -1153,18 +1177,19 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datacatalog.Entry:
-                Entry Metadata. A Data Catalog Entry resource represents
-                another resource in Google Cloud Platform (such as a
-                BigQuery dataset or a Pub/Sub topic) or outside of
-                Google Cloud Platform. Clients can use the
-                ``linked_resource`` field in the Entry resource to refer
-                to the original resource ID of the source system.
+            google.cloud.datacatalog_v1.types.Entry:
+                Entry Metadata.
+                   A Data Catalog Entry resource represents another
+                   resource in Google Cloud Platform (such as a BigQuery
+                   dataset or a Pub/Sub topic) or outside of Google
+                   Cloud Platform. Clients can use the linked_resource
+                   field in the Entry resource to refer to the original
+                   resource ID of the source system.
 
-                An Entry resource contains resource details, such as its
-                schema. An Entry can also be used to attach flexible
-                metadata, such as a
-                [Tag][google.cloud.datacatalog.v1.Tag].
+                   An Entry resource contains resource details, such as
+                   its schema. An Entry can also be used to attach
+                   flexible metadata, such as a
+                   [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
         # Create or coerce a protobuf request object.
@@ -1203,7 +1228,7 @@ class DataCatalogAsyncClient:
         r"""Lists entries.
 
         Args:
-            request (:class:`~.datacatalog.ListEntriesRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.ListEntriesRequest`):
                 The request object. Request message for
                 [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
             parent (:class:`str`):
@@ -1211,6 +1236,7 @@ class DataCatalogAsyncClient:
                 entries, which can be provided in URL format. Example:
 
                 -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1222,9 +1248,9 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListEntriesAsyncPager:
+            google.cloud.datacatalog_v1.services.data_catalog.pagers.ListEntriesAsyncPager:
                 Response message for
-                [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
+                   [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1298,7 +1324,7 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.CreateTagTemplateRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.CreateTagTemplateRequest`):
                 The request object. Request message for
                 [CreateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplate].
             parent (:class:`str`):
@@ -1309,16 +1335,18 @@ class DataCatalogAsyncClient:
                 Example:
 
                 -  projects/{project_id}/locations/us-central1
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             tag_template_id (:class:`str`):
                 Required. The id of the tag template
                 to create.
+
                 This corresponds to the ``tag_template_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            tag_template (:class:`~.tags.TagTemplate`):
+            tag_template (:class:`google.cloud.datacatalog_v1.types.TagTemplate`):
                 Required. The tag template to create.
                 This corresponds to the ``tag_template`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1331,16 +1359,16 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.TagTemplate:
-                A tag template defines a tag, which can have one or more
-                typed fields. The template is used to create and attach
-                the tag to GCP resources. `Tag template
-                roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
-                provide permissions to create, edit, and use the
-                template. See, for example, the `TagTemplate
-                User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
-                role, which includes permission to use the tag template
-                to tag resources.
+            google.cloud.datacatalog_v1.types.TagTemplate:
+                A tag template defines a tag, which can have one or more typed fields.
+                   The template is used to create and attach the tag to
+                   GCP resources. [Tag template
+                   roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                   provide permissions to create, edit, and use the
+                   template. See, for example, the [TagTemplate
+                   User](\ https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                   role, which includes permission to use the tag
+                   template to tag resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -1397,13 +1425,14 @@ class DataCatalogAsyncClient:
         r"""Gets a tag template.
 
         Args:
-            request (:class:`~.datacatalog.GetTagTemplateRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.GetTagTemplateRequest`):
                 The request object. Request message for
                 [GetTagTemplate][google.cloud.datacatalog.v1.DataCatalog.GetTagTemplate].
             name (:class:`str`):
                 Required. The name of the tag template. Example:
 
                 -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1415,16 +1444,16 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.TagTemplate:
-                A tag template defines a tag, which can have one or more
-                typed fields. The template is used to create and attach
-                the tag to GCP resources. `Tag template
-                roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
-                provide permissions to create, edit, and use the
-                template. See, for example, the `TagTemplate
-                User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
-                role, which includes permission to use the tag template
-                to tag resources.
+            google.cloud.datacatalog_v1.types.TagTemplate:
+                A tag template defines a tag, which can have one or more typed fields.
+                   The template is used to create and attach the tag to
+                   GCP resources. [Tag template
+                   roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                   provide permissions to create, edit, and use the
+                   template. See, for example, the [TagTemplate
+                   User](\ https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                   role, which includes permission to use the tag
+                   template to tag resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -1486,16 +1515,17 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.UpdateTagTemplateRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.UpdateTagTemplateRequest`):
                 The request object. Request message for
                 [UpdateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplate].
-            tag_template (:class:`~.tags.TagTemplate`):
+            tag_template (:class:`google.cloud.datacatalog_v1.types.TagTemplate`):
                 Required. The template to update. The
                 "name" field must be set.
+
                 This corresponds to the ``tag_template`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The field mask specifies the parts of the template to
                 overwrite.
 
@@ -1505,6 +1535,7 @@ class DataCatalogAsyncClient:
 
                 If absent or empty, all of the allowed fields above will
                 be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1516,16 +1547,16 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.TagTemplate:
-                A tag template defines a tag, which can have one or more
-                typed fields. The template is used to create and attach
-                the tag to GCP resources. `Tag template
-                roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
-                provide permissions to create, edit, and use the
-                template. See, for example, the `TagTemplate
-                User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
-                role, which includes permission to use the tag template
-                to tag resources.
+            google.cloud.datacatalog_v1.types.TagTemplate:
+                A tag template defines a tag, which can have one or more typed fields.
+                   The template is used to create and attach the tag to
+                   GCP resources. [Tag template
+                   roles](\ https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                   provide permissions to create, edit, and use the
+                   template. See, for example, the [TagTemplate
+                   User](\ https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                   role, which includes permission to use the tag
+                   template to tag resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -1587,7 +1618,7 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.DeleteTagTemplateRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.DeleteTagTemplateRequest`):
                 The request object. Request message for
                 [DeleteTagTemplate][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplate].
             name (:class:`str`):
@@ -1595,6 +1626,7 @@ class DataCatalogAsyncClient:
                 Example:
 
                 -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1603,6 +1635,7 @@ class DataCatalogAsyncClient:
                 ``true``. This confirms the deletion of any possible
                 tags using this template. ``force = false`` will be
                 supported in the future.
+
                 This corresponds to the ``force`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1670,7 +1703,7 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.CreateTagTemplateFieldRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.CreateTagTemplateFieldRequest`):
                 The request object. Request message for
                 [CreateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplateField].
             parent (:class:`str`):
@@ -1681,6 +1714,7 @@ class DataCatalogAsyncClient:
                 Example:
 
                 -  projects/{project_id}/locations/us-central1/tagTemplates/{tag_template_id}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1691,12 +1725,14 @@ class DataCatalogAsyncClient:
                 (-). Field IDs must be at least 1 character long and at
                 most 128 characters long. Field IDs must also be unique
                 within their template.
+
                 This corresponds to the ``tag_template_field_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            tag_template_field (:class:`~.tags.TagTemplateField`):
+            tag_template_field (:class:`google.cloud.datacatalog_v1.types.TagTemplateField`):
                 Required. The tag template field to
                 create.
+
                 This corresponds to the ``tag_template_field`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1708,7 +1744,7 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.TagTemplateField:
+            google.cloud.datacatalog_v1.types.TagTemplateField:
                 The template for an individual field
                 within a tag template.
 
@@ -1774,22 +1810,23 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.UpdateTagTemplateFieldRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.UpdateTagTemplateFieldRequest`):
                 The request object. Request message for
                 [UpdateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplateField].
             name (:class:`str`):
                 Required. The name of the tag template field. Example:
 
                 -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            tag_template_field (:class:`~.tags.TagTemplateField`):
+            tag_template_field (:class:`google.cloud.datacatalog_v1.types.TagTemplateField`):
                 Required. The template to update.
                 This corresponds to the ``tag_template_field`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The field mask specifies the parts of the
                 template to be updated. Allowed fields:
 
@@ -1805,6 +1842,7 @@ class DataCatalogAsyncClient:
                 can only be added, existing enum values cannot be
                 deleted nor renamed. Updating a template field from
                 optional to required is NOT allowed.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1816,7 +1854,7 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.TagTemplateField:
+            google.cloud.datacatalog_v1.types.TagTemplateField:
                 The template for an individual field
                 within a tag template.
 
@@ -1880,19 +1918,21 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.RenameTagTemplateFieldRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.RenameTagTemplateFieldRequest`):
                 The request object. Request message for
                 [RenameTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateField].
             name (:class:`str`):
                 Required. The name of the tag template. Example:
 
                 -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             new_tag_template_field_id (:class:`str`):
                 Required. The new ID of this tag template field. For
                 example, ``my_new_field``.
+
                 This corresponds to the ``new_tag_template_field_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1904,7 +1944,7 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.TagTemplateField:
+            google.cloud.datacatalog_v1.types.TagTemplateField:
                 The template for an individual field
                 within a tag template.
 
@@ -1967,7 +2007,7 @@ class DataCatalogAsyncClient:
         for more information).
 
         Args:
-            request (:class:`~.datacatalog.DeleteTagTemplateFieldRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.DeleteTagTemplateFieldRequest`):
                 The request object. Request message for
                 [DeleteTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplateField].
             name (:class:`str`):
@@ -1975,6 +2015,7 @@ class DataCatalogAsyncClient:
                 Example:
 
                 -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1983,6 +2024,7 @@ class DataCatalogAsyncClient:
                 ``true``. This confirms the deletion of this field from
                 any tags using this field. ``force = false`` will be
                 supported in the future.
+
                 This corresponds to the ``force`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2050,7 +2092,7 @@ class DataCatalogAsyncClient:
         used to create the tag must be from the same organization.
 
         Args:
-            request (:class:`~.datacatalog.CreateTagRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.CreateTagRequest`):
                 The request object. Request message for
                 [CreateTag][google.cloud.datacatalog.v1.DataCatalog.CreateTag].
             parent (:class:`str`):
@@ -2061,10 +2103,11 @@ class DataCatalogAsyncClient:
 
                 Note that this Tag and its child resources may not
                 actually be stored in the location in this name.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            tag (:class:`~.tags.Tag`):
+            tag (:class:`google.cloud.datacatalog_v1.types.Tag`):
                 Required. The tag to create.
                 This corresponds to the ``tag`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2077,15 +2120,15 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.Tag:
-                Tags are used to attach custom metadata to Data Catalog
-                resources. Tags conform to the specifications within
-                their tag template.
+            google.cloud.datacatalog_v1.types.Tag:
+                Tags are used to attach custom metadata to Data Catalog resources. Tags
+                   conform to the specifications within their tag
+                   template.
 
-                See `Data Catalog
-                IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__
-                for information on the permissions needed to create or
-                view tags.
+                   See [Data Catalog
+                   IAM](\ https://cloud.google.com/data-catalog/docs/concepts/iam)
+                   for information on the permissions needed to create
+                   or view tags.
 
         """
         # Create or coerce a protobuf request object.
@@ -2141,19 +2184,21 @@ class DataCatalogAsyncClient:
         r"""Updates an existing tag.
 
         Args:
-            request (:class:`~.datacatalog.UpdateTagRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.UpdateTagRequest`):
                 The request object. Request message for
                 [UpdateTag][google.cloud.datacatalog.v1.DataCatalog.UpdateTag].
-            tag (:class:`~.tags.Tag`):
+            tag (:class:`google.cloud.datacatalog_v1.types.Tag`):
                 Required. The updated tag. The "name"
                 field must be set.
+
                 This corresponds to the ``tag`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The fields to update on the Tag. If absent or empty, all
                 modifiable fields are updated. Currently the only
                 modifiable field is the field ``fields``.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2165,15 +2210,15 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tags.Tag:
-                Tags are used to attach custom metadata to Data Catalog
-                resources. Tags conform to the specifications within
-                their tag template.
+            google.cloud.datacatalog_v1.types.Tag:
+                Tags are used to attach custom metadata to Data Catalog resources. Tags
+                   conform to the specifications within their tag
+                   template.
 
-                See `Data Catalog
-                IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__
-                for information on the permissions needed to create or
-                view tags.
+                   See [Data Catalog
+                   IAM](\ https://cloud.google.com/data-catalog/docs/concepts/iam)
+                   for information on the permissions needed to create
+                   or view tags.
 
         """
         # Create or coerce a protobuf request object.
@@ -2228,13 +2273,14 @@ class DataCatalogAsyncClient:
         r"""Deletes a tag.
 
         Args:
-            request (:class:`~.datacatalog.DeleteTagRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.DeleteTagRequest`):
                 The request object. Request message for
                 [DeleteTag][google.cloud.datacatalog.v1.DataCatalog.DeleteTag].
             name (:class:`str`):
                 Required. The name of the tag to delete. Example:
 
                 -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2294,7 +2340,7 @@ class DataCatalogAsyncClient:
         r"""Lists the tags on an [Entry][google.cloud.datacatalog.v1.Entry].
 
         Args:
-            request (:class:`~.datacatalog.ListTagsRequest`):
+            request (:class:`google.cloud.datacatalog_v1.types.ListTagsRequest`):
                 The request object. Request message for
                 [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
             parent (:class:`str`):
@@ -2307,6 +2353,7 @@ class DataCatalogAsyncClient:
 
                 -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
                 -  projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2318,9 +2365,9 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTagsAsyncPager:
+            google.cloud.datacatalog_v1.services.data_catalog.pagers.ListTagsAsyncPager:
                 Response message for
-                [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
+                   [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2404,7 +2451,7 @@ class DataCatalogAsyncClient:
            entry groups.
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -2412,6 +2459,7 @@ class DataCatalogAsyncClient:
                 policy is being specified. See the
                 operation documentation for the
                 appropriate value for this field.
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2423,72 +2471,62 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -2561,7 +2599,7 @@ class DataCatalogAsyncClient:
            entry groups.
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
                 method.
             resource (:class:`str`):
@@ -2569,6 +2607,7 @@ class DataCatalogAsyncClient:
                 policy is being requested. See the
                 operation documentation for the
                 appropriate value for this field.
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2580,72 +2619,62 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -2716,7 +2745,7 @@ class DataCatalogAsyncClient:
         this request.
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
                 The request object. Request message for
                 `TestIamPermissions` method.
 
@@ -2727,8 +2756,8 @@ class DataCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
 

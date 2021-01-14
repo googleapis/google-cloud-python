@@ -48,7 +48,7 @@ class SerializedTaxonomy(proto.Message):
             length of the description is limited to 2000
             bytes when encoded in UTF-8. If not set,
             defaults to an empty description.
-        policy_tags (Sequence[~.policytagmanagerserialization.SerializedPolicyTag]):
+        policy_tags (Sequence[google.cloud.datacatalog_v1beta1.types.SerializedPolicyTag]):
             Top level policy tags associated with the
             taxonomy if any.
     """
@@ -75,7 +75,7 @@ class SerializedPolicyTag(proto.Message):
             length of the description is limited to 2000
             bytes when encoded in UTF-8. If not set,
             defaults to an empty description.
-        child_policy_tags (Sequence[~.policytagmanagerserialization.SerializedPolicyTag]):
+        child_policy_tags (Sequence[google.cloud.datacatalog_v1beta1.types.SerializedPolicyTag]):
             Children of the policy tag if any.
     """
 
@@ -96,7 +96,7 @@ class ImportTaxonomiesRequest(proto.Message):
         parent (str):
             Required. Resource name of project that the
             newly created taxonomies will belong to.
-        inline_source (~.policytagmanagerserialization.InlineSource):
+        inline_source (google.cloud.datacatalog_v1beta1.types.InlineSource):
             Inline source used for taxonomies import
     """
 
@@ -111,7 +111,7 @@ class InlineSource(proto.Message):
     r"""Inline source used for taxonomies import.
 
     Attributes:
-        taxonomies (Sequence[~.policytagmanagerserialization.SerializedTaxonomy]):
+        taxonomies (Sequence[google.cloud.datacatalog_v1beta1.types.SerializedTaxonomy]):
             Required. Taxonomies to be imported.
     """
 
@@ -125,7 +125,7 @@ class ImportTaxonomiesResponse(proto.Message):
     [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
 
     Attributes:
-        taxonomies (Sequence[~.policytagmanager.Taxonomy]):
+        taxonomies (Sequence[google.cloud.datacatalog_v1beta1.types.Taxonomy]):
             Taxonomies that were imported.
     """
 
@@ -161,7 +161,7 @@ class ExportTaxonomiesResponse(proto.Message):
     [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
 
     Attributes:
-        taxonomies (Sequence[~.policytagmanagerserialization.SerializedTaxonomy]):
+        taxonomies (Sequence[google.cloud.datacatalog_v1beta1.types.SerializedTaxonomy]):
             List of taxonomies and policy tags in a tree
             structure.
     """

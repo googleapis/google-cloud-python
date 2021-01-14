@@ -1,6 +1,6 @@
 Services for Google Cloud Datacatalog v1 API
 ============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.datacatalog_v1.services.data_catalog
-    :members:
-    :inherited-members:
+    data_catalog

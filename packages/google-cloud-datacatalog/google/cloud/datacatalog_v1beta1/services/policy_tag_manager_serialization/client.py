@@ -120,6 +120,22 @@ class PolicyTagManagerSerializationClient(
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PolicyTagManagerSerializationClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -131,7 +147,7 @@ class PolicyTagManagerSerializationClient(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            PolicyTagManagerSerializationClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -239,10 +255,10 @@ class PolicyTagManagerSerializationClient(
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PolicyTagManagerSerializationTransport]): The
+            transport (Union[str, PolicyTagManagerSerializationTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -355,7 +371,7 @@ class PolicyTagManagerSerializationClient(
         creation using nested proto structure.
 
         Args:
-            request (:class:`~.policytagmanagerserialization.ImportTaxonomiesRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesRequest):
                 The request object. Request message for
                 [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
 
@@ -366,9 +382,9 @@ class PolicyTagManagerSerializationClient(
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanagerserialization.ImportTaxonomiesResponse:
+            google.cloud.datacatalog_v1beta1.types.ImportTaxonomiesResponse:
                 Response message for
-                [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
+                   [ImportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ImportTaxonomies].
 
         """
         # Create or coerce a protobuf request object.
@@ -413,7 +429,7 @@ class PolicyTagManagerSerializationClient(
         future ImportTaxonomies calls.
 
         Args:
-            request (:class:`~.policytagmanagerserialization.ExportTaxonomiesRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesRequest):
                 The request object. Request message for
                 [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
 
@@ -424,9 +440,9 @@ class PolicyTagManagerSerializationClient(
                 sent along with the request as metadata.
 
         Returns:
-            ~.policytagmanagerserialization.ExportTaxonomiesResponse:
+            google.cloud.datacatalog_v1beta1.types.ExportTaxonomiesResponse:
                 Response message for
-                [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
+                   [ExportTaxonomies][google.cloud.datacatalog.v1beta1.PolicyTagManagerSerialization.ExportTaxonomies].
 
         """
         # Create or coerce a protobuf request object.

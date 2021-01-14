@@ -63,7 +63,7 @@ class Tag(proto.Message):
             separate the column names. Example:
 
             -  ``outer_column.inner_column``
-        fields (Sequence[~.tags.Tag.FieldsEntry]):
+        fields (Sequence[google.cloud.datacatalog_v1.types.Tag.FieldsEntry]):
             Required. This maps the ID of a tag field to
             the value of and additional information about
             that field. Valid field IDs are defined by the
@@ -98,10 +98,10 @@ class TagField(proto.Message):
         bool_value (bool):
             Holds the value for a tag field with boolean
             type.
-        timestamp_value (~.timestamp.Timestamp):
+        timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             Holds the value for a tag field with
             timestamp type.
-        enum_value (~.tags.TagField.EnumValue):
+        enum_value (google.cloud.datacatalog_v1.types.TagField.EnumValue):
             Holds the value for a tag field with enum
             type. This value must be one of the allowed
             values in the definition of this enum.
@@ -165,7 +165,7 @@ class TagTemplate(proto.Message):
         display_name (str):
             The display name for this template. Defaults
             to an empty string.
-        fields (Sequence[~.tags.TagTemplate.FieldsEntry]):
+        fields (Sequence[google.cloud.datacatalog_v1.types.TagTemplate.FieldsEntry]):
             Required. Map of tag template field IDs to the settings for
             the field. This map is an exhaustive list of the allowed
             fields. This map must contain at least one field and at most
@@ -202,7 +202,7 @@ class TagTemplateField(proto.Message):
         display_name (str):
             The display name for this field. Defaults to
             an empty string.
-        type_ (~.tags.FieldType):
+        type_ (google.cloud.datacatalog_v1.types.FieldType):
             Required. The type of value this tag field
             can contain.
         is_required (bool):
@@ -232,10 +232,10 @@ class FieldType(proto.Message):
     r"""
 
     Attributes:
-        primitive_type (~.tags.FieldType.PrimitiveType):
+        primitive_type (google.cloud.datacatalog_v1.types.FieldType.PrimitiveType):
             Represents primitive types - string, bool
             etc.
-        enum_type (~.tags.FieldType.EnumType):
+        enum_type (google.cloud.datacatalog_v1.types.FieldType.EnumType):
             Represents an enum type.
     """
 
@@ -251,7 +251,7 @@ class FieldType(proto.Message):
         r"""
 
         Attributes:
-            allowed_values (Sequence[~.tags.FieldType.EnumType.EnumValue]):
+            allowed_values (Sequence[google.cloud.datacatalog_v1.types.FieldType.EnumType.EnumValue]):
                 Required on create; optional on update. The
                 set of allowed values for this enum. This set
                 must not be empty, the display names of the

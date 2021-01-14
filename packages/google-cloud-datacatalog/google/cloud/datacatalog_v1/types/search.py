@@ -43,7 +43,7 @@ class SearchCatalogResult(proto.Message):
     search.
 
     Attributes:
-        search_result_type (~.search.SearchResultType):
+        search_result_type (google.cloud.datacatalog_v1.types.SearchResultType):
             Type of the search result. This field can be
             used to determine which Get method to call to
             fetch the full resource.
@@ -66,7 +66,7 @@ class SearchCatalogResult(proto.Message):
             Example:
 
             -  ``//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId``
-        integrated_system (~.common.IntegratedSystem):
+        integrated_system (google.cloud.datacatalog_v1.types.IntegratedSystem):
             Output only. This field indicates the entry's
             source system that Data Catalog integrates with,
             such as BigQuery or Cloud Pub/Sub.

@@ -41,12 +41,12 @@ class BigQueryTableSpec(proto.Message):
     r"""Describes a BigQuery table.
 
     Attributes:
-        table_source_type (~.gcd_table_spec.TableSourceType):
+        table_source_type (google.cloud.datacatalog_v1beta1.types.TableSourceType):
             Output only. The table source type.
-        view_spec (~.gcd_table_spec.ViewSpec):
+        view_spec (google.cloud.datacatalog_v1beta1.types.ViewSpec):
             Table view specification. This field should only be
             populated if ``table_source_type`` is ``BIGQUERY_VIEW``.
-        table_spec (~.gcd_table_spec.TableSpec):
+        table_spec (google.cloud.datacatalog_v1beta1.types.TableSpec):
             Spec of a BigQuery table. This field should only be
             populated if ``table_source_type`` is ``BIGQUERY_TABLE``.
     """

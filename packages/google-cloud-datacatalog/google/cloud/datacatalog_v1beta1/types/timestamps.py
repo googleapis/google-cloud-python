@@ -31,13 +31,13 @@ class SystemTimestamps(proto.Message):
     system.
 
     Attributes:
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The creation time of the resource within the
             given system.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last-modified time of the resource within
             the given system.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The expiration time of the
             resource within the given system. Currently only
             apllicable to BigQuery resources.

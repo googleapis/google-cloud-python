@@ -85,7 +85,7 @@ class SearchCatalogRequest(proto.Message):
     [SearchCatalog][google.cloud.datacatalog.v1beta1.DataCatalog.SearchCatalog].
 
     Attributes:
-        scope (~.datacatalog.SearchCatalogRequest.Scope):
+        scope (google.cloud.datacatalog_v1beta1.types.SearchCatalogRequest.Scope):
             Required. The scope of this search request. A ``scope`` that
             has empty ``include_org_ids``, ``include_project_ids`` AND
             false ``include_gcp_public_datasets`` is considered invalid.
@@ -172,7 +172,7 @@ class SearchCatalogResponse(proto.Message):
     [SearchCatalog][google.cloud.datacatalog.v1beta1.DataCatalog.SearchCatalog].
 
     Attributes:
-        results (Sequence[~.search.SearchCatalogResult]):
+        results (Sequence[google.cloud.datacatalog_v1beta1.types.SearchCatalogResult]):
             Search results.
         next_page_token (str):
             The token that can be used to retrieve the
@@ -209,7 +209,7 @@ class CreateEntryGroupRequest(proto.Message):
             underscore, contain only English letters,
             numbers and underscores, and be at most 64
             characters.
-        entry_group (~.datacatalog.EntryGroup):
+        entry_group (google.cloud.datacatalog_v1beta1.types.EntryGroup):
             The entry group to create. Defaults to an
             empty entry group.
     """
@@ -226,10 +226,10 @@ class UpdateEntryGroupRequest(proto.Message):
     [UpdateEntryGroup][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateEntryGroup].
 
     Attributes:
-        entry_group (~.datacatalog.EntryGroup):
+        entry_group (google.cloud.datacatalog_v1beta1.types.EntryGroup):
             Required. The updated entry group. "name"
             field must be set.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update on the entry group. If
             absent or empty, all modifiable fields are
             updated.
@@ -248,7 +248,7 @@ class GetEntryGroupRequest(proto.Message):
         name (str):
             Required. The name of the entry group. For example,
             ``projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}``.
-        read_mask (~.field_mask.FieldMask):
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to return. If not set or empty,
             all fields are returned.
     """
@@ -307,7 +307,7 @@ class ListEntryGroupsResponse(proto.Message):
     [ListEntryGroups][google.cloud.datacatalog.v1beta1.DataCatalog.ListEntryGroups].
 
     Attributes:
-        entry_groups (Sequence[~.datacatalog.EntryGroup]):
+        entry_groups (Sequence[google.cloud.datacatalog_v1beta1.types.EntryGroup]):
             EntryGroup details.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -339,7 +339,7 @@ class CreateEntryRequest(proto.Message):
             actually be stored in the location in this name.
         entry_id (str):
             Required. The id of the entry to create.
-        entry (~.datacatalog.Entry):
+        entry (google.cloud.datacatalog_v1beta1.types.Entry):
             Required. The entry to create.
     """
 
@@ -355,10 +355,10 @@ class UpdateEntryRequest(proto.Message):
     [UpdateEntry][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateEntry].
 
     Attributes:
-        entry (~.datacatalog.Entry):
+        entry (google.cloud.datacatalog_v1beta1.types.Entry):
             Required. The updated entry. The "name" field
             must be set.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update on the entry. If absent or empty, all
             modifiable fields are updated.
 
@@ -490,7 +490,7 @@ class Entry(proto.Message):
             Output only when Entry is of type in the EntryType enum. For
             entries with user_specified_type, this field is optional and
             defaults to an empty string.
-        type_ (~.datacatalog.EntryType):
+        type_ (google.cloud.datacatalog_v1beta1.types.EntryType):
             The type of the entry.
             Only used for Entries with types in the
             EntryType enum.
@@ -508,7 +508,7 @@ class Entry(proto.Message):
             Currently, only FILESET enum value is allowed. All other
             entries created through Data Catalog must use
             ``user_specified_type``.
-        integrated_system (~.common.IntegratedSystem):
+        integrated_system (google.cloud.datacatalog_v1beta1.types.IntegratedSystem):
             Output only. This field indicates the entry's
             source system that Data Catalog integrates with,
             such as BigQuery or Pub/Sub.
@@ -519,14 +519,14 @@ class Entry(proto.Message):
             contain letters, numbers, and underscores; are case
             insensitive; must be at least 1 character and at most 64
             characters long.
-        gcs_fileset_spec (~.gcd_gcs_fileset_spec.GcsFilesetSpec):
+        gcs_fileset_spec (google.cloud.datacatalog_v1beta1.types.GcsFilesetSpec):
             Specification that applies to a Cloud Storage
             fileset. This is only valid on entries of type
             FILESET.
-        bigquery_table_spec (~.table_spec.BigQueryTableSpec):
+        bigquery_table_spec (google.cloud.datacatalog_v1beta1.types.BigQueryTableSpec):
             Specification that applies to a BigQuery table. This is only
             valid on entries of type ``TABLE``.
-        bigquery_date_sharded_spec (~.table_spec.BigQueryDateShardedSpec):
+        bigquery_date_sharded_spec (google.cloud.datacatalog_v1beta1.types.BigQueryDateShardedSpec):
             Specification for a group of BigQuery tables with name
             pattern ``[prefix]YYYYMMDD``. Context:
             https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding.
@@ -540,10 +540,10 @@ class Entry(proto.Message):
             several sentences or paragraphs that describe
             entry contents. Default value is an empty
             string.
-        schema (~.gcd_schema.Schema):
+        schema (google.cloud.datacatalog_v1beta1.types.Schema):
             Schema of the entry. An entry might not have
             any schema attached to it.
-        source_system_timestamps (~.timestamps.SystemTimestamps):
+        source_system_timestamps (google.cloud.datacatalog_v1beta1.types.SystemTimestamps):
             Output only. Timestamps about the underlying resource, not
             about this Data Catalog entry. Output only when Entry is of
             type in the EntryType enum. For entries with
@@ -619,7 +619,7 @@ class EntryGroup(proto.Message):
             several sentences or paragraphs that describe
             entry group contents. Default value is an empty
             string.
-        data_catalog_timestamps (~.timestamps.SystemTimestamps):
+        data_catalog_timestamps (google.cloud.datacatalog_v1beta1.types.SystemTimestamps):
             Output only. Timestamps about this
             EntryGroup. Default value is empty timestamps.
     """
@@ -650,7 +650,7 @@ class CreateTagTemplateRequest(proto.Message):
         tag_template_id (str):
             Required. The id of the tag template to
             create.
-        tag_template (~.gcd_tags.TagTemplate):
+        tag_template (google.cloud.datacatalog_v1beta1.types.TagTemplate):
             Required. The tag template to create.
     """
 
@@ -680,10 +680,10 @@ class UpdateTagTemplateRequest(proto.Message):
     [UpdateTagTemplate][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTagTemplate].
 
     Attributes:
-        tag_template (~.gcd_tags.TagTemplate):
+        tag_template (google.cloud.datacatalog_v1beta1.types.TagTemplate):
             Required. The template to update. The "name"
             field must be set.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The field mask specifies the parts of the template to
             overwrite.
 
@@ -734,7 +734,7 @@ class CreateTagRequest(proto.Message):
 
             Note that this Tag and its child resources may not actually
             be stored in the location in this name.
-        tag (~.gcd_tags.Tag):
+        tag (google.cloud.datacatalog_v1beta1.types.Tag):
             Required. The tag to create.
     """
 
@@ -748,10 +748,10 @@ class UpdateTagRequest(proto.Message):
     [UpdateTag][google.cloud.datacatalog.v1beta1.DataCatalog.UpdateTag].
 
     Attributes:
-        tag (~.gcd_tags.Tag):
+        tag (google.cloud.datacatalog_v1beta1.types.Tag):
             Required. The updated tag. The "name" field
             must be set.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update on the Tag. If absent or empty, all
             modifiable fields are updated. Currently the only modifiable
             field is the field ``fields``.
@@ -794,7 +794,7 @@ class CreateTagTemplateFieldRequest(proto.Message):
             numbers (0-9), underscores (_) and dashes (-). Field IDs
             must be at least 1 character long and at most 128 characters
             long. Field IDs must also be unique within their template.
-        tag_template_field (~.gcd_tags.TagTemplateField):
+        tag_template_field (google.cloud.datacatalog_v1beta1.types.TagTemplateField):
             Required. The tag template field to create.
     """
 
@@ -816,9 +816,9 @@ class UpdateTagTemplateFieldRequest(proto.Message):
             Required. The name of the tag template field. Example:
 
             -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
-        tag_template_field (~.gcd_tags.TagTemplateField):
+        tag_template_field (google.cloud.datacatalog_v1beta1.types.TagTemplateField):
             Required. The template to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The field mask specifies the parts of the template
             to be updated. Allowed fields:
 
@@ -921,7 +921,7 @@ class ListTagsResponse(proto.Message):
     [ListTags][google.cloud.datacatalog.v1beta1.DataCatalog.ListTags].
 
     Attributes:
-        tags (Sequence[~.gcd_tags.Tag]):
+        tags (Sequence[google.cloud.datacatalog_v1beta1.types.Tag]):
             [Tag][google.cloud.datacatalog.v1beta1.Tag] details.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -955,7 +955,7 @@ class ListEntriesRequest(proto.Message):
         page_token (str):
             Token that specifies which page is requested.
             If empty, the first page is returned.
-        read_mask (~.field_mask.FieldMask):
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to return for each Entry. If not set or empty,
             all fields are returned. For example, setting read_mask to
             contain only one path "name" will cause ListEntries to
@@ -976,7 +976,7 @@ class ListEntriesResponse(proto.Message):
     [ListEntries][google.cloud.datacatalog.v1beta1.DataCatalog.ListEntries].
 
     Attributes:
-        entries (Sequence[~.datacatalog.Entry]):
+        entries (Sequence[google.cloud.datacatalog_v1beta1.types.Entry]):
             Entry details.
         next_page_token (str):
             Token to retrieve the next page of results.

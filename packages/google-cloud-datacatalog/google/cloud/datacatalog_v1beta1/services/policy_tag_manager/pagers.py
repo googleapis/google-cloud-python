@@ -24,7 +24,7 @@ class ListTaxonomiesPager:
     """A pager for iterating through ``list_taxonomies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.policytagmanager.ListTaxonomiesResponse` object, and
+    :class:`google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``taxonomies`` field.
 
@@ -33,7 +33,7 @@ class ListTaxonomiesPager:
     through the ``taxonomies`` field on the
     corresponding responses.
 
-    All the usual :class:`~.policytagmanager.ListTaxonomiesResponse`
+    All the usual :class:`google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListTaxonomiesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.policytagmanager.ListTaxonomiesRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ListTaxonomiesRequest):
                 The initial request object.
-            response (:class:`~.policytagmanager.ListTaxonomiesResponse`):
+            response (google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListTaxonomiesAsyncPager:
     """A pager for iterating through ``list_taxonomies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.policytagmanager.ListTaxonomiesResponse` object, and
+    :class:`google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``taxonomies`` field.
 
@@ -95,7 +95,7 @@ class ListTaxonomiesAsyncPager:
     through the ``taxonomies`` field on the
     corresponding responses.
 
-    All the usual :class:`~.policytagmanager.ListTaxonomiesResponse`
+    All the usual :class:`google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListTaxonomiesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.policytagmanager.ListTaxonomiesRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ListTaxonomiesRequest):
                 The initial request object.
-            response (:class:`~.policytagmanager.ListTaxonomiesResponse`):
+            response (google.cloud.datacatalog_v1beta1.types.ListTaxonomiesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +152,7 @@ class ListPolicyTagsPager:
     """A pager for iterating through ``list_policy_tags`` requests.
 
     This class thinly wraps an initial
-    :class:`~.policytagmanager.ListPolicyTagsResponse` object, and
+    :class:`google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``policy_tags`` field.
 
@@ -161,7 +161,7 @@ class ListPolicyTagsPager:
     through the ``policy_tags`` field on the
     corresponding responses.
 
-    All the usual :class:`~.policytagmanager.ListPolicyTagsResponse`
+    All the usual :class:`google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +179,9 @@ class ListPolicyTagsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.policytagmanager.ListPolicyTagsRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ListPolicyTagsRequest):
                 The initial request object.
-            response (:class:`~.policytagmanager.ListPolicyTagsResponse`):
+            response (google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +214,7 @@ class ListPolicyTagsAsyncPager:
     """A pager for iterating through ``list_policy_tags`` requests.
 
     This class thinly wraps an initial
-    :class:`~.policytagmanager.ListPolicyTagsResponse` object, and
+    :class:`google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``policy_tags`` field.
 
@@ -223,7 +223,7 @@ class ListPolicyTagsAsyncPager:
     through the ``policy_tags`` field on the
     corresponding responses.
 
-    All the usual :class:`~.policytagmanager.ListPolicyTagsResponse`
+    All the usual :class:`google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +241,9 @@ class ListPolicyTagsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.policytagmanager.ListPolicyTagsRequest`):
+            request (google.cloud.datacatalog_v1beta1.types.ListPolicyTagsRequest):
                 The initial request object.
-            response (:class:`~.policytagmanager.ListPolicyTagsResponse`):
+            response (google.cloud.datacatalog_v1beta1.types.ListPolicyTagsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

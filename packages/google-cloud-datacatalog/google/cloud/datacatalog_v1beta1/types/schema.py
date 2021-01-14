@@ -27,7 +27,7 @@ class Schema(proto.Message):
     r"""Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
 
     Attributes:
-        columns (Sequence[~.schema.ColumnSchema]):
+        columns (Sequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
             Required. Schema of columns. A maximum of
             10,000 columns and sub-columns can be specified.
     """
@@ -52,7 +52,7 @@ class ColumnSchema(proto.Message):
             this column are required, nullable, etc. Only ``NULLABLE``,
             ``REQUIRED`` and ``REPEATED`` are supported. Default mode is
             ``NULLABLE``.
-        subcolumns (Sequence[~.schema.ColumnSchema]):
+        subcolumns (Sequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
             Optional. Schema of sub-columns. A column can
             have zero or more sub-columns.
     """

@@ -64,7 +64,7 @@ class GcsFilesetSpec(proto.Message):
             for example:
 
             -  ``gs://bucket_name/[a-m]??.j*g``
-        sample_gcs_file_specs (Sequence[~.gcs_fileset_spec.GcsFileSpec]):
+        sample_gcs_file_specs (Sequence[google.cloud.datacatalog_v1beta1.types.GcsFileSpec]):
             Output only. Sample files contained in this
             fileset, not all files contained in this fileset
             are represented here.
@@ -84,7 +84,7 @@ class GcsFileSpec(proto.Message):
         file_path (str):
             Required. The full file path. Example:
             ``gs://bucket_name/a/b.txt``.
-        gcs_timestamps (~.timestamps.SystemTimestamps):
+        gcs_timestamps (google.cloud.datacatalog_v1beta1.types.SystemTimestamps):
             Output only. Timestamps about the Cloud
             Storage file.
         size_bytes (int):
