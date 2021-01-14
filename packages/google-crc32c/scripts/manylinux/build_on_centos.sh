@@ -52,6 +52,9 @@ for PYTHON_BIN in /opt/python/*/bin; do
     elif [[ "${PYTHON_BIN}" == *"39"* ]]; then
         VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
         continue
+    elif [[ "${PYTHON_BIN}" == *"310"* ]]; then
+        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+        continue
     else
         echo "Ignoring unsupported version: ${PYTHON_BIN}"
         echo "====================================="
