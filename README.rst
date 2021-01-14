@@ -64,7 +64,7 @@ Libraries
 
 .. API_TABLE_START
 
-.. list-table::
+.. list-table:: Libraries
    :header-rows: 1
 
    * - Client
