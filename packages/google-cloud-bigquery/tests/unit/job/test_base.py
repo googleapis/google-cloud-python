@@ -251,7 +251,7 @@ class Test_AsyncJob(unittest.TestCase):
         labels = {"foo": "bar"}
         client = _make_client(project=self.PROJECT)
         job = self._make_one(self.JOB_ID, client)
-        job._properties["labels"] = labels
+        job._properties.setdefault("configuration", {})["labels"] = labels
         self.assertEqual(job.labels, labels)
 
     def test_etag(self):

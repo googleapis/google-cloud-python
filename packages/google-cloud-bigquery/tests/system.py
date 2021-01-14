@@ -1667,6 +1667,23 @@ class TestBigQuery(unittest.TestCase):
         # raise an error, and that the job completed (in the `retry()`
         # above).
 
+    def test_job_labels(self):
+        DATASET_ID = _make_dataset_id("job_cancel")
+        JOB_ID_PREFIX = "fetch_" + DATASET_ID
+        QUERY = "SELECT 1 as one"
+
+        self.temp_dataset(DATASET_ID)
+
+        job_config = bigquery.QueryJobConfig(
+            labels={"custom_label": "label_value", "another_label": "foo123"}
+        )
+        job = Config.CLIENT.query(
+            QUERY, job_id_prefix=JOB_ID_PREFIX, job_config=job_config
+        )
+
+        expected_labels = {"custom_label": "label_value", "another_label": "foo123"}
+        self.assertEqual(job.labels, expected_labels)
+
     def test_get_failed_job(self):
         # issue 4246
         from google.api_core.exceptions import BadRequest

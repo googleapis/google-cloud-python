@@ -233,7 +233,7 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
     @property
     def labels(self):
         """Dict[str, str]: Labels for the job."""
-        return self._properties.setdefault("labels", {})
+        return self._properties.setdefault("configuration", {}).setdefault("labels", {})
 
     @property
     def etag(self):
@@ -671,9 +671,8 @@ class _JobConfig(object):
     def labels(self):
         """Dict[str, str]: Labels for the job.
 
-        This method always returns a dict. To change a job's labels,
-        modify the dict, then call ``Client.update_job``. To delete a
-        label, set its value to :data:`None` before updating.
+        This method always returns a dict. Once a job has been created on the
+        server, its labels cannot be modified anymore.
 
         Raises:
             ValueError: If ``value`` type is invalid.
