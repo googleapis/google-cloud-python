@@ -1,6 +1,6 @@
 Services for Google Cloud Bigquery Reservation v1 API
 =====================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.bigquery_reservation_v1.services.reservation_service
-    :members:
-    :inherited-members:
+    reservation_service

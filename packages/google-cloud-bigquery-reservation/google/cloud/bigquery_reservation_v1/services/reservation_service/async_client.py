@@ -111,6 +111,7 @@ class ReservationServiceAsyncClient:
         ReservationServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = ReservationServiceClient.from_service_account_info
     from_service_account_file = ReservationServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -190,18 +191,20 @@ class ReservationServiceAsyncClient:
         r"""Creates a new reservation resource.
 
         Args:
-            request (:class:`~.gcbr_reservation.CreateReservationRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.CreateReservationRequest`):
                 The request object. The request for
                 [ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation].
             parent (:class:`str`):
                 Required. Project, location. E.g.,
                 ``projects/myproject/locations/US``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            reservation (:class:`~.gcbr_reservation.Reservation`):
+            reservation (:class:`google.cloud.bigquery_reservation_v1.types.Reservation`):
                 Definition of the new reservation to
                 create.
+
                 This corresponds to the ``reservation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -210,6 +213,7 @@ class ReservationServiceAsyncClient:
                 only contain lower case alphanumeric
                 characters or dash. Max length is 64
                 characters.
+
                 This corresponds to the ``reservation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -221,7 +225,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcbr_reservation.Reservation:
+            google.cloud.bigquery_reservation_v1.types.Reservation:
                 A reservation is a mechanism used to
                 guarantee slots to users.
 
@@ -281,12 +285,13 @@ class ReservationServiceAsyncClient:
         specified location.
 
         Args:
-            request (:class:`~.reservation.ListReservationsRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.ListReservationsRequest`):
                 The request object. The request for
                 [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
             parent (:class:`str`):
                 Required. The parent resource name containing project
                 and location, e.g.: ``projects/myproject/locations/US``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -298,7 +303,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListReservationsAsyncPager:
+            google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.ListReservationsAsyncPager:
                 The response for
                 [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
 
@@ -370,13 +375,14 @@ class ReservationServiceAsyncClient:
         r"""Returns information about the reservation.
 
         Args:
-            request (:class:`~.reservation.GetReservationRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.GetReservationRequest`):
                 The request object. The request for
                 [ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation].
             name (:class:`str`):
                 Required. Resource name of the reservation to retrieve.
                 E.g.,
                 ``projects/myproject/locations/US/reservations/team1-prod``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -388,7 +394,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.Reservation:
+            google.cloud.bigquery_reservation_v1.types.Reservation:
                 A reservation is a mechanism used to
                 guarantee slots to users.
 
@@ -453,13 +459,14 @@ class ReservationServiceAsyncClient:
         assignments.
 
         Args:
-            request (:class:`~.reservation.DeleteReservationRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.DeleteReservationRequest`):
                 The request object. The request for
                 [ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation].
             name (:class:`str`):
                 Required. Resource name of the reservation to retrieve.
                 E.g.,
                 ``projects/myproject/locations/US/reservations/team1-prod``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -528,17 +535,18 @@ class ReservationServiceAsyncClient:
         r"""Updates an existing reservation resource.
 
         Args:
-            request (:class:`~.gcbr_reservation.UpdateReservationRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.UpdateReservationRequest`):
                 The request object. The request for
                 [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation].
-            reservation (:class:`~.gcbr_reservation.Reservation`):
+            reservation (:class:`google.cloud.bigquery_reservation_v1.types.Reservation`):
                 Content of the reservation to update.
                 This corresponds to the ``reservation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Standard field mask for the set of
                 fields to be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -550,7 +558,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcbr_reservation.Reservation:
+            google.cloud.bigquery_reservation_v1.types.Reservation:
                 A reservation is a mechanism used to
                 guarantee slots to users.
 
@@ -610,18 +618,20 @@ class ReservationServiceAsyncClient:
         r"""Creates a new capacity commitment resource.
 
         Args:
-            request (:class:`~.reservation.CreateCapacityCommitmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.CreateCapacityCommitmentRequest`):
                 The request object. The request for
                 [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment].
             parent (:class:`str`):
                 Required. Resource name of the parent reservation. E.g.,
                 ``projects/myproject/locations/US``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            capacity_commitment (:class:`~.reservation.CapacityCommitment`):
+            capacity_commitment (:class:`google.cloud.bigquery_reservation_v1.types.CapacityCommitment`):
                 Content of the capacity commitment to
                 create.
+
                 This corresponds to the ``capacity_commitment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -633,7 +643,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.CapacityCommitment:
+            google.cloud.bigquery_reservation_v1.types.CapacityCommitment:
                 Capacity commitment is a way to
                 purchase compute capacity for BigQuery
                 jobs (in the form of slots) with some
@@ -703,12 +713,13 @@ class ReservationServiceAsyncClient:
         project.
 
         Args:
-            request (:class:`~.reservation.ListCapacityCommitmentsRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsRequest`):
                 The request object. The request for
                 [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
             parent (:class:`str`):
                 Required. Resource name of the parent reservation. E.g.,
                 ``projects/myproject/locations/US``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -720,7 +731,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCapacityCommitmentsAsyncPager:
+            google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.ListCapacityCommitmentsAsyncPager:
                 The response for
                 [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
 
@@ -792,13 +803,14 @@ class ReservationServiceAsyncClient:
         r"""Returns information about the capacity commitment.
 
         Args:
-            request (:class:`~.reservation.GetCapacityCommitmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.GetCapacityCommitmentRequest`):
                 The request object. The request for
                 [ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment].
             name (:class:`str`):
                 Required. Resource name of the capacity commitment to
                 retrieve. E.g.,
                 ``projects/myproject/locations/US/capacityCommitments/123``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -810,7 +822,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.CapacityCommitment:
+            google.cloud.bigquery_reservation_v1.types.CapacityCommitment:
                 Capacity commitment is a way to
                 purchase compute capacity for BigQuery
                 jobs (in the form of slots) with some
@@ -887,13 +899,14 @@ class ReservationServiceAsyncClient:
         error code ``google.rpc.Code.FAILED_PRECONDITION``.
 
         Args:
-            request (:class:`~.reservation.DeleteCapacityCommitmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.DeleteCapacityCommitmentRequest`):
                 The request object. The request for
                 [ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment].
             name (:class:`str`):
                 Required. Resource name of the capacity commitment to
                 delete. E.g.,
                 ``projects/myproject/locations/US/capacityCommitments/123``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -969,18 +982,20 @@ class ReservationServiceAsyncClient:
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
         Args:
-            request (:class:`~.reservation.UpdateCapacityCommitmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.UpdateCapacityCommitmentRequest`):
                 The request object. The request for
                 [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment].
-            capacity_commitment (:class:`~.reservation.CapacityCommitment`):
+            capacity_commitment (:class:`google.cloud.bigquery_reservation_v1.types.CapacityCommitment`):
                 Content of the capacity commitment to
                 update.
+
                 This corresponds to the ``capacity_commitment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Standard field mask for the set of
                 fields to be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -992,7 +1007,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.CapacityCommitment:
+            google.cloud.bigquery_reservation_v1.types.CapacityCommitment:
                 Capacity commitment is a way to
                 purchase compute capacity for BigQuery
                 jobs (in the form of slots) with some
@@ -1072,18 +1087,20 @@ class ReservationServiceAsyncClient:
         ``FLEX`` and then delete it.
 
         Args:
-            request (:class:`~.reservation.SplitCapacityCommitmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.SplitCapacityCommitmentRequest`):
                 The request object. The request for
                 [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
             name (:class:`str`):
                 Required. The resource name e.g.,:
                 ``projects/myproject/locations/US/capacityCommitments/123``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             slot_count (:class:`int`):
                 Number of slots in the capacity
                 commitment after the split.
+
                 This corresponds to the ``slot_count`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1095,7 +1112,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.SplitCapacityCommitmentResponse:
+            google.cloud.bigquery_reservation_v1.types.SplitCapacityCommitmentResponse:
                 The response for
                 [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
 
@@ -1162,12 +1179,13 @@ class ReservationServiceAsyncClient:
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
         Args:
-            request (:class:`~.reservation.MergeCapacityCommitmentsRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.MergeCapacityCommitmentsRequest`):
                 The request object. The request for
                 [ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments].
             parent (:class:`str`):
                 Parent resource that identifies admin project and
                 location e.g., ``projects/myproject/locations/us``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1179,6 +1197,7 @@ class ReservationServiceAsyncClient:
                 ID is the last portion of capacity
                 commitment name e.g., 'abc' for
                 projects/myproject/locations/US/capacityCommitments/abc
+
                 This corresponds to the ``capacity_commitment_ids`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1190,7 +1209,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.CapacityCommitment:
+            google.cloud.bigquery_reservation_v1.types.CapacityCommitment:
                 Capacity commitment is a way to
                 purchase compute capacity for BigQuery
                 jobs (in the form of slots) with some
@@ -1292,7 +1311,7 @@ class ReservationServiceAsyncClient:
         the assignment does not match location of the reservation.
 
         Args:
-            request (:class:`~.reservation.CreateAssignmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.CreateAssignmentRequest`):
                 The request object. The request for
                 [ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment].
                 Note: "bigquery.reservationAssignments.create"
@@ -1301,10 +1320,11 @@ class ReservationServiceAsyncClient:
                 Required. The parent resource name of the assignment
                 E.g.
                 ``projects/myproject/locations/US/reservations/team1-prod``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            assignment (:class:`~.reservation.Assignment`):
+            assignment (:class:`google.cloud.bigquery_reservation_v1.types.Assignment`):
                 Assignment resource to create.
                 This corresponds to the ``assignment`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1317,7 +1337,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.Assignment:
+            google.cloud.bigquery_reservation_v1.types.Assignment:
                 A Assignment allows a project to
                 submit jobs of a certain type using
                 slots from the specified reservation.
@@ -1396,7 +1416,7 @@ class ReservationServiceAsyncClient:
         **Note** "-" cannot be used for projects nor locations.
 
         Args:
-            request (:class:`~.reservation.ListAssignmentsRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.ListAssignmentsRequest`):
                 The request object. The request for
                 [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
             parent (:class:`str`):
@@ -1407,6 +1427,7 @@ class ReservationServiceAsyncClient:
                 Or:
 
                 ``projects/myproject/locations/US/reservations/-``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1418,7 +1439,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListAssignmentsAsyncPager:
+            google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.ListAssignmentsAsyncPager:
                 The response for
                 [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
 
@@ -1505,7 +1526,7 @@ class ReservationServiceAsyncClient:
         ``project2`` will switch to use on-demand mode.
 
         Args:
-            request (:class:`~.reservation.DeleteAssignmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.DeleteAssignmentRequest`):
                 The request object. The request for
                 [ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment].
                 Note: "bigquery.reservationAssignments.delete"
@@ -1513,6 +1534,7 @@ class ReservationServiceAsyncClient:
             name (:class:`str`):
                 Required. Name of the resource, e.g.
                 ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1605,7 +1627,7 @@ class ReservationServiceAsyncClient:
         **Note** "-" cannot be used for projects nor locations.
 
         Args:
-            request (:class:`~.reservation.SearchAssignmentsRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.SearchAssignmentsRequest`):
                 The request object. The request for
                 [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
                 Note: "bigquery.reservationAssignments.search"
@@ -1614,6 +1636,7 @@ class ReservationServiceAsyncClient:
                 Required. The resource name of the admin
                 project(containing project and location), e.g.:
                 ``projects/myproject/locations/US``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1626,6 +1649,7 @@ class ReservationServiceAsyncClient:
                 -  ``assignee=folders/123``
                 -  ``assignee=organizations/456``
 
+
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1637,7 +1661,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.SearchAssignmentsAsyncPager:
+            google.cloud.bigquery_reservation_v1.services.reservation_service.pagers.SearchAssignmentsAsyncPager:
                 The response for
                 [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
 
@@ -1716,7 +1740,7 @@ class ReservationServiceAsyncClient:
         reservation.
 
         Args:
-            request (:class:`~.reservation.MoveAssignmentRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.MoveAssignmentRequest`):
                 The request object. The request for
                 [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment].
                 **Note**: "bigquery.reservationAssignments.create"
@@ -1728,12 +1752,14 @@ class ReservationServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the assignment, e.g.
                 ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             destination_id (:class:`str`):
                 The new reservation ID, e.g.:
                 ``projects/myotherproject/locations/US/reservations/team2-prod``
+
                 This corresponds to the ``destination_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1745,7 +1771,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.Assignment:
+            google.cloud.bigquery_reservation_v1.types.Assignment:
                 A Assignment allows a project to
                 submit jobs of a certain type using
                 slots from the specified reservation.
@@ -1803,13 +1829,14 @@ class ReservationServiceAsyncClient:
         r"""Retrieves a BI reservation.
 
         Args:
-            request (:class:`~.reservation.GetBiReservationRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.GetBiReservationRequest`):
                 The request object. A request to get a singleton BI
                 reservation.
             name (:class:`str`):
                 Required. Name of the requested reservation, for
                 example:
                 ``projects/{project_id}/locations/{location_id}/bireservation``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1821,7 +1848,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.BiReservation:
+            google.cloud.bigquery_reservation_v1.types.BiReservation:
                 Represents a BI Reservation.
         """
         # Create or coerce a protobuf request object.
@@ -1890,17 +1917,18 @@ class ReservationServiceAsyncClient:
         must be set to 0.
 
         Args:
-            request (:class:`~.reservation.UpdateBiReservationRequest`):
+            request (:class:`google.cloud.bigquery_reservation_v1.types.UpdateBiReservationRequest`):
                 The request object. A request to update a BI
                 reservation.
-            bi_reservation (:class:`~.reservation.BiReservation`):
+            bi_reservation (:class:`google.cloud.bigquery_reservation_v1.types.BiReservation`):
                 A reservation to update.
                 This corresponds to the ``bi_reservation`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 A list of fields to be updated in
                 this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1912,7 +1940,7 @@ class ReservationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.reservation.BiReservation:
+            google.cloud.bigquery_reservation_v1.types.BiReservation:
                 Represents a BI Reservation.
         """
         # Create or coerce a protobuf request object.

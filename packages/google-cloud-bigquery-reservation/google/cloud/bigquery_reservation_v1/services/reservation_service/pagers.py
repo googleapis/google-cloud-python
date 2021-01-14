@@ -24,7 +24,7 @@ class ListReservationsPager:
     """A pager for iterating through ``list_reservations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.ListReservationsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.ListReservationsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``reservations`` field.
 
@@ -33,7 +33,7 @@ class ListReservationsPager:
     through the ``reservations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.ListReservationsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.ListReservationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListReservationsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.ListReservationsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.ListReservationsRequest):
                 The initial request object.
-            response (:class:`~.reservation.ListReservationsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.ListReservationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListReservationsAsyncPager:
     """A pager for iterating through ``list_reservations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.ListReservationsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.ListReservationsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``reservations`` field.
 
@@ -95,7 +95,7 @@ class ListReservationsAsyncPager:
     through the ``reservations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.ListReservationsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.ListReservationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListReservationsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.ListReservationsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.ListReservationsRequest):
                 The initial request object.
-            response (:class:`~.reservation.ListReservationsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.ListReservationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +152,7 @@ class ListCapacityCommitmentsPager:
     """A pager for iterating through ``list_capacity_commitments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.ListCapacityCommitmentsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``capacity_commitments`` field.
 
@@ -161,7 +161,7 @@ class ListCapacityCommitmentsPager:
     through the ``capacity_commitments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.ListCapacityCommitmentsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +179,9 @@ class ListCapacityCommitmentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.ListCapacityCommitmentsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsRequest):
                 The initial request object.
-            response (:class:`~.reservation.ListCapacityCommitmentsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +214,7 @@ class ListCapacityCommitmentsAsyncPager:
     """A pager for iterating through ``list_capacity_commitments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.ListCapacityCommitmentsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``capacity_commitments`` field.
 
@@ -223,7 +223,7 @@ class ListCapacityCommitmentsAsyncPager:
     through the ``capacity_commitments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.ListCapacityCommitmentsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +241,9 @@ class ListCapacityCommitmentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.ListCapacityCommitmentsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsRequest):
                 The initial request object.
-            response (:class:`~.reservation.ListCapacityCommitmentsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.ListCapacityCommitmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -280,7 +280,7 @@ class ListAssignmentsPager:
     """A pager for iterating through ``list_assignments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.ListAssignmentsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.ListAssignmentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``assignments`` field.
 
@@ -289,7 +289,7 @@ class ListAssignmentsPager:
     through the ``assignments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.ListAssignmentsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.ListAssignmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -307,9 +307,9 @@ class ListAssignmentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.ListAssignmentsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.ListAssignmentsRequest):
                 The initial request object.
-            response (:class:`~.reservation.ListAssignmentsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.ListAssignmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -342,7 +342,7 @@ class ListAssignmentsAsyncPager:
     """A pager for iterating through ``list_assignments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.ListAssignmentsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.ListAssignmentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``assignments`` field.
 
@@ -351,7 +351,7 @@ class ListAssignmentsAsyncPager:
     through the ``assignments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.ListAssignmentsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.ListAssignmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -369,9 +369,9 @@ class ListAssignmentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.ListAssignmentsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.ListAssignmentsRequest):
                 The initial request object.
-            response (:class:`~.reservation.ListAssignmentsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.ListAssignmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -408,7 +408,7 @@ class SearchAssignmentsPager:
     """A pager for iterating through ``search_assignments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.SearchAssignmentsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.SearchAssignmentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``assignments`` field.
 
@@ -417,7 +417,7 @@ class SearchAssignmentsPager:
     through the ``assignments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.SearchAssignmentsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.SearchAssignmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -435,9 +435,9 @@ class SearchAssignmentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.SearchAssignmentsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.SearchAssignmentsRequest):
                 The initial request object.
-            response (:class:`~.reservation.SearchAssignmentsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.SearchAssignmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -470,7 +470,7 @@ class SearchAssignmentsAsyncPager:
     """A pager for iterating through ``search_assignments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.reservation.SearchAssignmentsResponse` object, and
+    :class:`google.cloud.bigquery_reservation_v1.types.SearchAssignmentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``assignments`` field.
 
@@ -479,7 +479,7 @@ class SearchAssignmentsAsyncPager:
     through the ``assignments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.reservation.SearchAssignmentsResponse`
+    All the usual :class:`google.cloud.bigquery_reservation_v1.types.SearchAssignmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -497,9 +497,9 @@ class SearchAssignmentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.reservation.SearchAssignmentsRequest`):
+            request (google.cloud.bigquery_reservation_v1.types.SearchAssignmentsRequest):
                 The initial request object.
-            response (:class:`~.reservation.SearchAssignmentsResponse`):
+            response (google.cloud.bigquery_reservation_v1.types.SearchAssignmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

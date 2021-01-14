@@ -113,18 +113,18 @@ class CapacityCommitment(proto.Message):
             ``projects/myproject/locations/US/capacityCommitments/123``
         slot_count (int):
             Number of slots in this commitment.
-        plan (~.gcbr_reservation.CapacityCommitment.CommitmentPlan):
+        plan (google.cloud.bigquery_reservation_v1.types.CapacityCommitment.CommitmentPlan):
             Capacity commitment commitment plan.
-        state (~.gcbr_reservation.CapacityCommitment.State):
+        state (google.cloud.bigquery_reservation_v1.types.CapacityCommitment.State):
             Output only. State of the commitment.
-        commitment_end_time (~.timestamp.Timestamp):
+        commitment_end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The end of the current
             commitment period. It is applicable only for
             ACTIVE capacity commitments.
-        failure_status (~.status.Status):
+        failure_status (google.rpc.status_pb2.Status):
             Output only. For FAILED commitment plan,
             provides the reason of failure.
-        renewal_plan (~.gcbr_reservation.CapacityCommitment.CommitmentPlan):
+        renewal_plan (google.cloud.bigquery_reservation_v1.types.CapacityCommitment.CommitmentPlan):
             The plan this capacity commitment is converted to after
             commitment_end_time passes. Once the plan is changed,
             committed period is extended according to commitment plan.
@@ -180,7 +180,7 @@ class CreateReservationRequest(proto.Message):
             The reservation ID. This field must only
             contain lower case alphanumeric characters or
             dash. Max length is 64 characters.
-        reservation (~.gcbr_reservation.Reservation):
+        reservation (google.cloud.bigquery_reservation_v1.types.Reservation):
             Definition of the new reservation to create.
     """
 
@@ -219,7 +219,7 @@ class ListReservationsResponse(proto.Message):
     [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations].
 
     Attributes:
-        reservations (Sequence[~.gcbr_reservation.Reservation]):
+        reservations (Sequence[google.cloud.bigquery_reservation_v1.types.Reservation]):
             List of reservations visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -269,9 +269,9 @@ class UpdateReservationRequest(proto.Message):
     [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation].
 
     Attributes:
-        reservation (~.gcbr_reservation.Reservation):
+        reservation (google.cloud.bigquery_reservation_v1.types.Reservation):
             Content of the reservation to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Standard field mask for the set of fields to
             be updated.
     """
@@ -289,7 +289,7 @@ class CreateCapacityCommitmentRequest(proto.Message):
         parent (str):
             Required. Resource name of the parent reservation. E.g.,
             ``projects/myproject/locations/US``
-        capacity_commitment (~.gcbr_reservation.CapacityCommitment):
+        capacity_commitment (google.cloud.bigquery_reservation_v1.types.CapacityCommitment):
             Content of the capacity commitment to create.
         enforce_single_admin_project_per_org (bool):
             If true, fail the request if another project
@@ -332,7 +332,7 @@ class ListCapacityCommitmentsResponse(proto.Message):
     [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments].
 
     Attributes:
-        capacity_commitments (Sequence[~.gcbr_reservation.CapacityCommitment]):
+        capacity_commitments (Sequence[google.cloud.bigquery_reservation_v1.types.CapacityCommitment]):
             List of capacity commitments visible to the
             user.
         next_page_token (str):
@@ -385,9 +385,9 @@ class UpdateCapacityCommitmentRequest(proto.Message):
     [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment].
 
     Attributes:
-        capacity_commitment (~.gcbr_reservation.CapacityCommitment):
+        capacity_commitment (google.cloud.bigquery_reservation_v1.types.CapacityCommitment):
             Content of the capacity commitment to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Standard field mask for the set of fields to
             be updated.
     """
@@ -422,9 +422,9 @@ class SplitCapacityCommitmentResponse(proto.Message):
     [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment].
 
     Attributes:
-        first (~.gcbr_reservation.CapacityCommitment):
+        first (google.cloud.bigquery_reservation_v1.types.CapacityCommitment):
             First capacity commitment, result of a split.
-        second (~.gcbr_reservation.CapacityCommitment):
+        second (google.cloud.bigquery_reservation_v1.types.CapacityCommitment):
             Second capacity commitment, result of a
             split.
     """
@@ -469,9 +469,9 @@ class Assignment(proto.Message):
             The resource which will use the reservation. E.g.
             ``projects/myproject``, ``folders/123``, or
             ``organizations/456``.
-        job_type (~.gcbr_reservation.Assignment.JobType):
+        job_type (google.cloud.bigquery_reservation_v1.types.Assignment.JobType):
             Which type of jobs will use the reservation.
-        state (~.gcbr_reservation.Assignment.State):
+        state (google.cloud.bigquery_reservation_v1.types.Assignment.State):
             Output only. State of the assignment.
     """
 
@@ -511,7 +511,7 @@ class CreateAssignmentRequest(proto.Message):
         parent (str):
             Required. The parent resource name of the assignment E.g.
             ``projects/myproject/locations/US/reservations/team1-prod``
-        assignment (~.gcbr_reservation.Assignment):
+        assignment (google.cloud.bigquery_reservation_v1.types.Assignment):
             Assignment resource to create.
     """
 
@@ -553,7 +553,7 @@ class ListAssignmentsResponse(proto.Message):
     [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments].
 
     Attributes:
-        assignments (Sequence[~.gcbr_reservation.Assignment]):
+        assignments (Sequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
             List of assignments visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -626,7 +626,7 @@ class SearchAssignmentsResponse(proto.Message):
     [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments].
 
     Attributes:
-        assignments (Sequence[~.gcbr_reservation.Assignment]):
+        assignments (Sequence[google.cloud.bigquery_reservation_v1.types.Assignment]):
             List of assignments visible to the user.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -676,7 +676,7 @@ class BiReservation(proto.Message):
             The resource name of the singleton BI reservation.
             Reservation names have the form
             ``projects/{project_id}/locations/{location_id}/bireservation``.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             reservation.
         size (int):
@@ -706,9 +706,9 @@ class UpdateBiReservationRequest(proto.Message):
     r"""A request to update a BI reservation.
 
     Attributes:
-        bi_reservation (~.gcbr_reservation.BiReservation):
+        bi_reservation (google.cloud.bigquery_reservation_v1.types.BiReservation):
             A reservation to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             A list of fields to be updated in this
             request.
     """
