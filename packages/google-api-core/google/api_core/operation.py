@@ -287,7 +287,7 @@ def _cancel_grpc(operations_stub, operation_name):
     operations_stub.CancelOperation(request_pb)
 
 
-def from_grpc(operation, operations_stub, result_type, **kwargs):
+def from_grpc(operation, operations_stub, result_type, grpc_metadata=None, **kwargs):
     """Create an operation future using a gRPC client.
 
     This interacts with the long-running operations `service`_ (specific
@@ -302,18 +302,20 @@ def from_grpc(operation, operations_stub, result_type, **kwargs):
         operations_stub (google.longrunning.operations_pb2.OperationsStub):
             The operations stub.
         result_type (:func:`type`): The protobuf result type.
+        grpc_metadata (Optional[List[Tuple[str, str]]]): Additional metadata to pass
+            to the rpc.
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
         ~.api_core.operation.Operation: The operation future to track the given
             operation.
     """
-    refresh = functools.partial(_refresh_grpc, operations_stub, operation.name)
-    cancel = functools.partial(_cancel_grpc, operations_stub, operation.name)
+    refresh = functools.partial(_refresh_grpc, operations_stub, operation.name, metadata=grpc_metadata)
+    cancel = functools.partial(_cancel_grpc, operations_stub, operation.name, metadata=grpc_metadata)
     return Operation(operation, refresh, cancel, result_type, **kwargs)
 
 
-def from_gapic(operation, operations_client, result_type, **kwargs):
+def from_gapic(operation, operations_client, result_type, grpc_metadata=None, **kwargs):
     """Create an operation future from a gapic client.
 
     This interacts with the long-running operations `service`_ (specific
@@ -328,12 +330,14 @@ def from_gapic(operation, operations_client, result_type, **kwargs):
         operations_client (google.api_core.operations_v1.OperationsClient):
             The operations client.
         result_type (:func:`type`): The protobuf result type.
+        grpc_metadata (Optional[List[Tuple[str, str]]]): Additional metadata to pass
+            to the rpc.
         kwargs: Keyword args passed into the :class:`Operation` constructor.
 
     Returns:
         ~.api_core.operation.Operation: The operation future to track the given
             operation.
     """
-    refresh = functools.partial(operations_client.get_operation, operation.name)
-    cancel = functools.partial(operations_client.cancel_operation, operation.name)
+    refresh = functools.partial(operations_client.get_operation, operation.name, metadata=grpc_metadata)
+    cancel = functools.partial(operations_client.cancel_operation, operation.name, metadata=grpc_metadata)
     return Operation(operation, refresh, cancel, result_type, **kwargs)

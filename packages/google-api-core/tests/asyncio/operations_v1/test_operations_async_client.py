@@ -36,9 +36,10 @@ async def test_get_operation():
         operations_pb2.Operation(name="meep"))
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    response = await client.get_operation("name")
+    response = await client.get_operation("name", metadata=[("x-goog-request-params", "foo")])
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
+    assert ("x-goog-request-params", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
     assert response == fake_call.response
 
 
@@ -53,7 +54,7 @@ async def test_list_operations():
     mocked_channel, method, fake_call = _mock_grpc_objects(list_response)
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    pager = await client.list_operations("name", "filter")
+    pager = await client.list_operations("name", "filter", metadata=[("x-goog-request-params", "foo")])
 
     assert isinstance(pager, page_iterator_async.AsyncIterator)
     responses = []
@@ -63,6 +64,7 @@ async def test_list_operations():
     assert responses == operations
 
     assert method.call_count == 1
+    assert ("x-goog-request-params", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
     request = tuple(method.call_args_list[0])[0][0]
     assert isinstance(request, operations_pb2.ListOperationsRequest)
     assert request.name == "name"
@@ -75,10 +77,11 @@ async def test_delete_operation():
         empty_pb2.Empty())
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    await client.delete_operation("name")
+    await client.delete_operation("name", metadata=[("x-goog-request-params", "foo")])
 
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
+    assert ("x-goog-request-params", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
 
 
 @pytest.mark.asyncio
@@ -87,7 +90,8 @@ async def test_cancel_operation():
         empty_pb2.Empty())
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    await client.cancel_operation("name")
+    await client.cancel_operation("name", metadata=[("x-goog-request-params", "foo")])
 
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
+    assert ("x-goog-request-params", "foo") in tuple(method.call_args_list[0])[1]["metadata"]

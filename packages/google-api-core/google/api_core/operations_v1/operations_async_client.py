@@ -77,7 +77,11 @@ class OperationsAsyncClient:
         )
 
     async def get_operation(
-        self, name, retry=gapic_v1.method_async.DEFAULT, timeout=gapic_v1.method_async.DEFAULT
+        self,
+        name,
+        retry=gapic_v1.method_async.DEFAULT,
+        timeout=gapic_v1.method_async.DEFAULT,
+        metadata=None,
     ):
         """Gets the latest state of a long-running operation.
 
@@ -103,6 +107,8 @@ class OperationsAsyncClient:
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            metadata (Optional[List[Tuple[str, str]]]):
+                Additional gRPC metadata.
 
         Returns:
             google.longrunning.operations_pb2.Operation: The state of the
@@ -114,7 +120,7 @@ class OperationsAsyncClient:
                 subclass will be raised.
         """
         request = operations_pb2.GetOperationRequest(name=name)
-        return await self._get_operation(request, retry=retry, timeout=timeout)
+        return await self._get_operation(request, retry=retry, timeout=timeout, metadata=metadata)
 
     async def list_operations(
         self,
@@ -122,6 +128,7 @@ class OperationsAsyncClient:
         filter_,
         retry=gapic_v1.method_async.DEFAULT,
         timeout=gapic_v1.method_async.DEFAULT,
+        metadata=None,
     ):
         """
         Lists operations that match the specified filter in the request.
@@ -157,6 +164,8 @@ class OperationsAsyncClient:
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            metadata (Optional[List[Tuple[str, str]]]): Additional gRPC
+                metadata.
 
         Returns:
             google.api_core.page_iterator.Iterator: An iterator that yields
@@ -174,7 +183,7 @@ class OperationsAsyncClient:
         request = operations_pb2.ListOperationsRequest(name=name, filter=filter_)
 
         # Create the method used to fetch pages
-        method = functools.partial(self._list_operations, retry=retry, timeout=timeout)
+        method = functools.partial(self._list_operations, retry=retry, timeout=timeout, metadata=metadata)
 
         iterator = page_iterator_async.AsyncGRPCIterator(
             client=None,
@@ -188,7 +197,11 @@ class OperationsAsyncClient:
         return iterator
 
     async def cancel_operation(
-        self, name, retry=gapic_v1.method_async.DEFAULT, timeout=gapic_v1.method_async.DEFAULT
+        self,
+        name,
+        retry=gapic_v1.method_async.DEFAULT,
+        timeout=gapic_v1.method_async.DEFAULT,
+        metadata=None,
     ):
         """Starts asynchronous cancellation on a long-running operation.
 
@@ -228,13 +241,19 @@ class OperationsAsyncClient:
             google.api_core.exceptions.GoogleAPICallError: If an error occurred
                 while invoking the RPC, the appropriate ``GoogleAPICallError``
                 subclass will be raised.
+            metadata (Optional[List[Tuple[str, str]]]): Additional gRPC
+                metadata.
         """
         # Create the request object.
         request = operations_pb2.CancelOperationRequest(name=name)
-        await self._cancel_operation(request, retry=retry, timeout=timeout)
+        await self._cancel_operation(request, retry=retry, timeout=timeout, metadata=metadata)
 
     async def delete_operation(
-        self, name, retry=gapic_v1.method_async.DEFAULT, timeout=gapic_v1.method_async.DEFAULT
+        self,
+        name,
+        retry=gapic_v1.method_async.DEFAULT,
+        timeout=gapic_v1.method_async.DEFAULT,
+        metadata=None,
     ):
         """Deletes a long-running operation.
 
@@ -260,6 +279,8 @@ class OperationsAsyncClient:
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            metadata (Optional[List[Tuple[str, str]]]): Additional gRPC
+                metadata.
 
         Raises:
             google.api_core.exceptions.MethodNotImplemented: If the server
@@ -271,4 +292,4 @@ class OperationsAsyncClient:
         """
         # Create the request object.
         request = operations_pb2.DeleteOperationRequest(name=name)
-        await self._delete_operation(request, retry=retry, timeout=timeout)
+        await self._delete_operation(request, retry=retry, timeout=timeout, metadata=metadata)

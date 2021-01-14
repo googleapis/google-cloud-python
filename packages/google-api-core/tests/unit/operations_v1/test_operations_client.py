@@ -24,8 +24,9 @@ def test_get_operation():
     client = operations_v1.OperationsClient(channel)
     channel.GetOperation.response = operations_pb2.Operation(name="meep")
 
-    response = client.get_operation("name")
+    response = client.get_operation("name", metadata=[("x-goog-request-params", "foo")])
 
+    assert ("x-goog-request-params", "foo") in channel.GetOperation.calls[0].metadata
     assert len(channel.GetOperation.requests) == 1
     assert channel.GetOperation.requests[0].name == "name"
     assert response == channel.GetOperation.response
@@ -41,11 +42,12 @@ def test_list_operations():
     list_response = operations_pb2.ListOperationsResponse(operations=operations)
     channel.ListOperations.response = list_response
 
-    response = client.list_operations("name", "filter")
+    response = client.list_operations("name", "filter", metadata=[("x-goog-request-params", "foo")])
 
     assert isinstance(response, page_iterator.Iterator)
     assert list(response) == operations
 
+    assert ("x-goog-request-params", "foo") in channel.ListOperations.calls[0].metadata
     assert len(channel.ListOperations.requests) == 1
     request = channel.ListOperations.requests[0]
     assert isinstance(request, operations_pb2.ListOperationsRequest)
@@ -58,8 +60,9 @@ def test_delete_operation():
     client = operations_v1.OperationsClient(channel)
     channel.DeleteOperation.response = empty_pb2.Empty()
 
-    client.delete_operation("name")
+    client.delete_operation("name", metadata=[("x-goog-request-params", "foo")])
 
+    assert ("x-goog-request-params", "foo") in channel.DeleteOperation.calls[0].metadata
     assert len(channel.DeleteOperation.requests) == 1
     assert channel.DeleteOperation.requests[0].name == "name"
 
@@ -69,7 +72,8 @@ def test_cancel_operation():
     client = operations_v1.OperationsClient(channel)
     channel.CancelOperation.response = empty_pb2.Empty()
 
-    client.cancel_operation("name")
+    client.cancel_operation("name", metadata=[("x-goog-request-params", "foo")])
 
+    assert ("x-goog-request-params", "foo") in channel.CancelOperation.calls[0].metadata
     assert len(channel.CancelOperation.requests) == 1
     assert channel.CancelOperation.requests[0].name == "name"
