@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.0.0...v1.0.1) (2021-01-14)
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limit ([#60](https://www.github.com/googleapis/python-bigquery-reservation/issues/60)) ([4115f1e](https://www.github.com/googleapis/python-bigquery-reservation/commit/4115f1ee6b67be5ce409122a44faa47ac53112bf))
+
+
+### Documentation
+
+* document enum values with `undoc-members` option ([#69](https://www.github.com/googleapis/python-bigquery-reservation/issues/69)) ([2acdeb7](https://www.github.com/googleapis/python-bigquery-reservation/commit/2acdeb782521c01a4e1fa01e42fdd1ce79dbf13d))
+
 ## [1.0.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v0.4.0...v1.0.0) (2020-10-29)
 
 
