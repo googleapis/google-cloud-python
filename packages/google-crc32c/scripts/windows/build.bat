@@ -27,6 +27,11 @@ set PYTHON_VERSION=%1
 if "%PYTHON_VERSION%"=="" (
   echo "Python version was not provided, using Python 3.9"
   set PYTHON_VERSION=3.9
+
+)
+
+if "%PYTHON_VERSION%"=="3.10-dev" (
+   set PYTHON_VERSION=3.10
 )
 
 py -0
@@ -34,7 +39,7 @@ py -%PYTHON_VERSION% -m pip install cmake
 
 git submodule update --init --recursive
 
-FOR %%V IN (32,64) DO (
+FOR %%V IN (32,64) DO (ddd
     set TARGET_PLATFORM="x64"
 
     if "%%V"=="32" (

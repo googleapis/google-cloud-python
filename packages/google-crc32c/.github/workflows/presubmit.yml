@@ -24,6 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # 3.10 is not yet available in manylinux docker images.
+        # https://github.com/pypa/manylinux
+        # python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
         python: [3.6, 3.7, 3.8, 3.9]
     steps:
     - uses: actions/checkout@v2
@@ -56,7 +59,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9]
+        python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -88,7 +91,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python: [3.6, 3.7, 3.8, 3.9]
+        python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
     steps:
     - uses: actions/checkout@v2
     - name: Add msbuild to PATH
