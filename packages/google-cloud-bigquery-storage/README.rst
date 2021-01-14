@@ -86,15 +86,21 @@ Optional Dependencies
 Several features of ``google-cloud-bigquery-storage`` require additional
 dependencies.
 
+* Parse Arrow blocks in a ``read_rows()`` stream using `pyarrow
+  <https://arrow.apache.org/docs/python/>`_.
+
+  ``pip install 'google-cloud-bigquery-storage[pyarrow]'``
+  
+
 * Parse Avro blocks in a ``read_rows()`` stream using `fastavro
   <https://fastavro.readthedocs.io/en/latest/>`_.
 
   ``pip install google-cloud-bigquery-storage[fastavro]``
 
-* Write rows to a `pandas <http://pandas.pydata.org/pandas-docs/stable/>`_
+* Download rows to a `pandas <http://pandas.pydata.org/pandas-docs/stable/>`_
   dataframe.
 
-  ``pip install google-cloud-bigquery-storage[pandas,fastavro]``
+  ``pip install 'google-cloud-bigquery-storage[pandas,pyarrow]'``
 
 Next Steps
 ~~~~~~~~~~
