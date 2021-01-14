@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+### [2.1.1](https://www.github.com/googleapis/python-logging/compare/v2.1.0...v2.1.1) (2021-01-14)
+
+
+### Bug Fixes
+
+* use dict for http request ([#156](https://www.github.com/googleapis/python-logging/issues/156)) ([dc26668](https://www.github.com/googleapis/python-logging/commit/dc266688b1e465112de0e3fe2e8d98003f6e7033))
+
 ## [2.1.0](https://www.github.com/googleapis/python-logging/compare/v2.0.2...v2.1.0) (2021-01-12)
 
 
