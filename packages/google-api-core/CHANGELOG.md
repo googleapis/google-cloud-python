@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.25.0](https://www.github.com/googleapis/python-api-core/compare/v1.24.1...v1.25.0) (2021-01-14)
+
+
+### Features
+
+* allow gRPC metadata to be passed to operations client ([#127](https://www.github.com/googleapis/python-api-core/issues/127)) ([73854e8](https://www.github.com/googleapis/python-api-core/commit/73854e897b885e9be290f2676a8a1466b4f041e4))
+
+
+### Documentation
+
+* **python:** document adding Python 3.9 support, dropping 3.5 support ([#120](https://www.github.com/googleapis/python-api-core/issues/120)) ([b51b7f5](https://www.github.com/googleapis/python-api-core/commit/b51b7f587042fe9340371c1b5c8e9adf8001c43a)), closes [#787](https://www.github.com/googleapis/python-api-core/issues/787)
+
 ### [1.24.1](https://www.github.com/googleapis/python-api-core/compare/v1.24.0...v1.24.1) (2020-12-16)
 
 
