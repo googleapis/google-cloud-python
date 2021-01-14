@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-crc32c/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-crc32c/compare/v1.1.0...v1.1.1) (2021-01-14)
+
+
+### Bug Fixes
+
+* Update CI to use GitHub actions and build for osx, windows, linux ([#51](https://www.github.com/googleapis/python-crc32c/issues/51)) ([66f49b8](https://www.github.com/googleapis/python-crc32c/commit/66f49b889ad66f7ecd5d6aeaf840f2c8f2ac131e))
+
+
+### Documentation
+
+* simplify main readme that is shown on pypi, add additional BUILDING.md ([#54](https://www.github.com/googleapis/python-crc32c/issues/54)) ([93e021f](https://www.github.com/googleapis/python-crc32c/commit/93e021fe8bc55fb046317b884ca21cb75e131e4f))
+
 ## [1.1.0](https://www.github.com/googleapis/python-crc32c/compare/v0.1.1...v1.1.0) (2020-12-14)
 
 
