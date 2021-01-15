@@ -4,7 +4,7 @@ setup(
     name="sqlalchemy-spanner",
     version='0.1',
     description="SQLAlchemy dialect integrated into Spanner database",
-    author='Google LLC',
+    author='QLogic LLC',
     author_email='cloud-spanner-developers@googlegroups.com',
     packages=['spanner'],
     classifiers=[
@@ -12,7 +12,7 @@ setup(
     ],
     install_requires=[
         'sqlalchemy>=1.1.13',
-        'google-cloud==0.25.0'
+        'google-cloud-spanner==3.0.0'
     ],
     entry_points={
         'sqlalchemy.dialects': [
