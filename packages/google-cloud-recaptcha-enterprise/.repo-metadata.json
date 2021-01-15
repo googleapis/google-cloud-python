@@ -7,6 +7,6 @@
     "release_level": "beta",
     "language": "python",
     "repo": "googleapis/python-recaptcha-enterprise",
-    "distribution_name": "google-cloud-recpatcha-enterprise",
+    "distribution_name": "google-cloud-recpatchaenterprise",
     "api_id": "recaptchaenterprise.googleapis.com"
   }
