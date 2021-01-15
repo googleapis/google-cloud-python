@@ -1,0 +1,12 @@
+{
+    "name": "domains",
+    "name_pretty": "Cloud Domains",
+    "product_documentation": "https://cloud.google.com/domains",
+    "client_documentation": "https://googleapis.dev/python/domains/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-domains",
+    "distribution_name": "google-cloud-domains",
+    "api_id": "domains.googleapis.com"
+  }

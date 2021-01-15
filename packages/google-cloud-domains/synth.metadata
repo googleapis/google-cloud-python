@@ -1,0 +1,43 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-domains"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "9e209af3c49d23b4169a16948165c3307abeb43a",
+        "internalRef": "351886920"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "domains",
+        "apiVersion": "v1beta1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
