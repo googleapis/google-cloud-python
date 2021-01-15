@@ -7,6 +7,6 @@
     "release_level": "beta",
     "language": "python",
     "repo": "googleapis/python-security-private-ca",
-    "distribution_name": "google-cloud-security-private-ca",
+    "distribution_name": "google-cloud-private-ca",
     "api_id": "privateca.googleapis.com"
 }
