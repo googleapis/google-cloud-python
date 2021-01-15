@@ -7,7 +7,7 @@
   "release_level": "beta",
   "language": "python",
   "repo": "googleapis/python-phishingprotection",
-  "distribution_name": "google-cloud-phishingprotection",
+  "distribution_name": "google-cloud-phishing-protection",
   "api_id": "phishingprotection.googleapis.com",
   "requires_billing": true
 }
