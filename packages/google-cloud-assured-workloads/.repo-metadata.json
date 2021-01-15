@@ -7,6 +7,6 @@
     "release_level": "beta",
     "language": "python",
     "repo": "googleapis/python-assured-workloads",
-    "distribution_name": "google-cloud-assured-workflows",
+    "distribution_name": "google-cloud-assured-workloads",
     "api_id": "workflows.googleapis.com"
   }
