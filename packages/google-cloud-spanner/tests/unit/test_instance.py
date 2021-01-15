@@ -697,6 +697,7 @@ class TestInstance(unittest.TestCase):
         )
 
     def test_list_backup_operations_defaults(self):
+        from google.api_core.operation import Operation
         from google.cloud.spanner_admin_database_v1 import CreateBackupMetadata
         from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
         from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
@@ -726,7 +727,7 @@ class TestInstance(unittest.TestCase):
             api._transport.list_backup_operations
         ] = mock.Mock(return_value=operations_pb)
 
-        instance.list_backup_operations()
+        ops = instance.list_backup_operations()
 
         expected_metadata = (
             ("google-cloud-resource-prefix", instance.name),
@@ -738,8 +739,10 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
+        self.assertTrue(all([type(op) == Operation for op in ops]))
 
     def test_list_backup_operations_w_options(self):
+        from google.api_core.operation import Operation
         from google.cloud.spanner_admin_database_v1 import CreateBackupMetadata
         from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
         from google.cloud.spanner_admin_database_v1 import ListBackupOperationsRequest
@@ -769,7 +772,7 @@ class TestInstance(unittest.TestCase):
             api._transport.list_backup_operations
         ] = mock.Mock(return_value=operations_pb)
 
-        instance.list_backup_operations(filter_="filter", page_size=10)
+        ops = instance.list_backup_operations(filter_="filter", page_size=10)
 
         expected_metadata = (
             ("google-cloud-resource-prefix", instance.name),
@@ -783,8 +786,10 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
+        self.assertTrue(all([type(op) == Operation for op in ops]))
 
     def test_list_database_operations_defaults(self):
+        from google.api_core.operation import Operation
         from google.cloud.spanner_admin_database_v1 import CreateDatabaseMetadata
         from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
         from google.cloud.spanner_admin_database_v1 import ListDatabaseOperationsRequest
@@ -827,7 +832,7 @@ class TestInstance(unittest.TestCase):
             api._transport.list_database_operations
         ] = mock.Mock(return_value=databases_pb)
 
-        instance.list_database_operations()
+        ops = instance.list_database_operations()
 
         expected_metadata = (
             ("google-cloud-resource-prefix", instance.name),
@@ -839,8 +844,10 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
+        self.assertTrue(all([type(op) == Operation for op in ops]))
 
     def test_list_database_operations_w_options(self):
+        from google.api_core.operation import Operation
         from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
         from google.cloud.spanner_admin_database_v1 import ListDatabaseOperationsRequest
         from google.cloud.spanner_admin_database_v1 import (
@@ -888,7 +895,7 @@ class TestInstance(unittest.TestCase):
             api._transport.list_database_operations
         ] = mock.Mock(return_value=databases_pb)
 
-        instance.list_database_operations(filter_="filter", page_size=10)
+        ops = instance.list_database_operations(filter_="filter", page_size=10)
 
         expected_metadata = (
             ("google-cloud-resource-prefix", instance.name),
@@ -902,6 +909,7 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
+        self.assertTrue(all([type(op) == Operation for op in ops]))
 
     def test_type_string_to_type_pb_hit(self):
         from google.cloud.spanner_admin_database_v1 import (
