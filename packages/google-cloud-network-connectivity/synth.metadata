@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-network-connectivity"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "networkconnectivity",
+        "apiVersion": "v1alpha1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}

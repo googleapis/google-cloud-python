@@ -1,0 +1,12 @@
+{
+    "name": "networkconnectivity",
+    "name_pretty": "Network Connectivity Center",
+    "product_documentation": "https://cloud.google.com/network-connectivity/",
+    "client_documentation": "https://googleapis.dev/python/networkconnectivity/latest",
+    "issue_tracker": "",
+    "release_level": "alpha",
+    "language": "python",
+    "repo": "googleapis/python-network-connectivity",
+    "distribution_name": "google-cloud-network-connectivity",
+    "api_id": "networkconnectivity.googleapis.com"
+  }
