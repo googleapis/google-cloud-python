@@ -68,14 +68,18 @@ class func(object):
 
 
 class terminal(str):
-    """
-    terminal represents the unit symbol that can be part of a SQL values clause.
-    """
+    """Represent the unit symbol that can be part of a SQL values clause."""
 
     pass
 
 
 class a_args(object):
+    """Expression arguments.
+
+    :type argv: list
+    :param argv: A List of expression arguments.
+    """
+
     def __init__(self, argv):
         self.argv = argv
 
@@ -108,9 +112,11 @@ class a_args(object):
         return self.argv[index]
 
     def homogenous(self):
-        """
-        Return True if all the arguments are pyformat
-        args and have the same number of arguments.
+        """Check arguments of the expression to be homogeneous.
+
+        :rtype: bool
+        :return: True if all the arguments of the expression are in pyformat
+                 and each has the same length, False otherwise.
         """
         if not self._is_equal_length():
             return False
@@ -126,8 +132,10 @@ class a_args(object):
         return True
 
     def _is_equal_length(self):
-        """
-        Return False if all the arguments have the same length.
+        """Return False if all the arguments have the same length.
+
+        :rtype: bool
+        :return: False if the sequences of the arguments have the same length.
         """
         if len(self) == 0:
             return True
@@ -141,6 +149,12 @@ class a_args(object):
 
 
 class values(a_args):
+    """A wrapper for values.
+
+    :rtype: str
+    :returns: A string of the values expression in a tree view.
+    """
+
     def __str__(self):
         return "VALUES%s" % super().__str__()
 
@@ -153,6 +167,21 @@ pyfmt_str = terminal("%s")
 
 
 def expect(word, token):
+    """Parse the given expression recursively.
+
+    :type word: str
+    :param word: A string expression.
+
+    :type token: str
+    :param token: An expression token.
+
+    :rtype: `Tuple(str, Any)`
+    :returns: A tuple containing the rest of the expression string and the
+              parse tree for the part of the expression that has already been
+              parsed.
+
+    :raises :class:`ProgrammingError`: If there is a parsing error.
+    """
     word = word.strip()
     if token == VALUES:
         if not word.startswith("VALUES"):
@@ -242,5 +271,13 @@ def expect(word, token):
 
 
 def as_values(values_stmt):
+    """Return the parsed values.
+
+    :type values_stmt: str
+    :param values_stmt: Raw values.
+
+    :rtype: Any
+    :returns: A tree of the already parsed expression.
+    """
     _, _values = parse_values(values_stmt)
     return _values

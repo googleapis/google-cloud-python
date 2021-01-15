@@ -85,6 +85,9 @@ class Cursor(object):
         -   ``precision``
         -   ``scale``
         -   ``null_ok``
+
+        :rtype: tuple
+        :returns: A tuple of columns' information.
         """
         if not (self._result_set and self._result_set.metadata):
             return None
@@ -107,7 +110,11 @@ class Cursor(object):
 
     @property
     def rowcount(self):
-        """The number of rows produced by the last `.execute()`."""
+        """The number of rows produced by the last `.execute()`.
+
+        :rtype: int
+        :returns: The number of rows produced by the last .execute*().
+        """
         return self._row_count
 
     def _raise_if_closed(self):
@@ -127,7 +134,14 @@ class Cursor(object):
         self._raise_if_closed()
 
     def close(self):
-        """Closes this Cursor, making it unusable from this point forward."""
+        """Prepare and execute a Spanner database operation.
+
+        :type sql: str
+        :param sql: A SQL query statement.
+
+        :type args: list
+        :param args: Additional parameters to supplement the SQL query.
+        """
         self._is_closed = True
 
     def _do_execute_update(self, transaction, sql, params, param_types=None):
@@ -358,6 +372,11 @@ class Cursor(object):
         return self._itr
 
     def list_tables(self):
+        """List the tables of the linked Database.
+
+        :rtype: list
+        :returns: The list of tables within the Database.
+        """
         return self.run_sql_in_snapshot(_helpers.SQL_LIST_TABLES)
 
     def run_sql_in_snapshot(self, sql, params=None, param_types=None):
