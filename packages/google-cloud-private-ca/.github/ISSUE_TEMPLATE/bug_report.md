@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `google-cloud-security-private-ca` version: `pip show google-cloud-security-private-ca`
+  - `google-cloud-private-ca` version: `pip show google-cloud-private-ca`
 
 #### Steps to reproduce
 

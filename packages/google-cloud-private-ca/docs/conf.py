@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-security-private-ca documentation build configuration file
+# google-cloud-private-ca documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -67,7 +67,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-security-private-ca"
+project = u"google-cloud-private-ca"
 copyright = u"2019, Google"
 author = u"Google APIs"
 
@@ -140,7 +140,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-security-private-ca",
+    "description": "Google Cloud Client Libraries for google-cloud-private-ca",
     "github_user": "googleapis",
     "github_repo": "python-security-private-ca",
     "github_banner": True,
@@ -234,7 +234,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-security-private-ca-doc"
+htmlhelp_basename = "google-cloud-private-ca-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -267,8 +267,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-security-private-ca.tex",
-        u"google-cloud-security-private-ca Documentation",
+        "google-cloud-private-ca.tex",
+        u"google-cloud-private-ca Documentation",
         author,
         "manual",
     )
@@ -302,8 +302,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-security-private-ca",
-        u"google-cloud-security-private-ca Documentation",
+        "google-cloud-private-ca",
+        u"google-cloud-private-ca Documentation",
         [author],
         1,
     )
@@ -321,11 +321,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-security-private-ca",
-        u"google-cloud-security-private-ca Documentation",
+        "google-cloud-private-ca",
+        u"google-cloud-private-ca Documentation",
         author,
-        "google-cloud-security-private-ca",
-        "google-cloud-security-private-ca Library",
+        "google-cloud-private-ca",
+        "google-cloud-private-ca Library",
         "APIs",
     )
 ]
