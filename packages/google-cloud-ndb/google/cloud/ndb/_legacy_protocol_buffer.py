@@ -160,12 +160,17 @@ class Decoder:
                 raise ProtocolBufferDecodeError("corrupted")
             b = self.get8()
 
+        if result >= 0x8000000000000000:
+            result -= 0x10000000000000000
+
         if result >= 0x80000000 or result < -0x80000000:
             raise ProtocolBufferDecodeError("corrupted")
         return result
 
     def getVarInt64(self):
         result = self.getVarUint64()
+        if result >= (1 << 63):
+            result -= 1 << 64
         return result
 
     def getVarUint64(self):

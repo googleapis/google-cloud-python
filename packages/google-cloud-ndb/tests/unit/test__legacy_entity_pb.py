@@ -431,6 +431,11 @@ class TestDecoder:
         assert d.get32() == 1
 
     @staticmethod
+    def test_getVarInt32_negative():
+        d = _get_decoder(b"\xc7\xf5\xff\xff\xff\xff\xff\xff\xff\x01")
+        assert d.getVarInt32() == -1337
+
+    @staticmethod
     def test_get32_truncated():
         d = _get_decoder(b"\x10")
         with pytest.raises(pb_module.ProtocolBufferDecodeError):
@@ -440,6 +445,11 @@ class TestDecoder:
     def test_get64():
         d = _get_decoder(b"\x01\x00\x00\x00\x00\x00\x00\x00")
         assert d.get64() == 1
+
+    @staticmethod
+    def test_getVarInt64_negative():
+        d = _get_decoder(b"\xc7\xf5\xff\xff\xff\xff\xff\xff\xff\x01")
+        assert d.getVarInt64() == -1337
 
     @staticmethod
     def test_get64_truncated():
