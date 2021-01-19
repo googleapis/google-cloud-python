@@ -47,10 +47,10 @@ class GlobalCache(object):
     implementations, as some specialized knowledge is required.
 
     Attributes:
-        strict_read (bool): If :data:`True`, transient errors that occur as part of a
+        strict_read (bool): If :data:`False`, transient errors that occur as part of a
             entity lookup operation will be logged as warnings but not raised to the
             application layer.
-        strict_write (bool): If :data:`True`, transient errors that occur as part of
+        strict_write (bool): If :data:`False`, transient errors that occur as part of
             a put or delete operation will be logged as warnings, but not raised to the
             application layer. Setting this to :data:`True` somewhat increases the risk
             that other clients might read stale data from the cache.
