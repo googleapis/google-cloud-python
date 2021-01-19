@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.40.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.39.1...v0.40.0) (2021-01-19)
+
+
+### Features
+
+* add mtls feature to rest transport ([#731](https://www.github.com/googleapis/gapic-generator-python/issues/731)) ([524dbab](https://www.github.com/googleapis/gapic-generator-python/commit/524dbab16d248198ca10a08ecede4600fd36cefc))
+
 ### [0.39.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.39.0...v0.39.1) (2021-01-05)
 
 
