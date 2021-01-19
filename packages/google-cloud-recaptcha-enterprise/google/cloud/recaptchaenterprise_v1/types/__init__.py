@@ -35,7 +35,6 @@ from .recaptchaenterprise import (
     IOSKeySettings,
 )
 
-
 __all__ = (
     "CreateAssessmentRequest",
     "AnnotateAssessmentRequest",

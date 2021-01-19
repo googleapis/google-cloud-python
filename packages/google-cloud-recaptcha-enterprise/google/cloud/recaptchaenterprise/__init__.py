@@ -15,7 +15,9 @@
 # limitations under the License.
 #
 
-
+from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.async_client import (
+    RecaptchaEnterpriseServiceAsyncClient,
+)
 from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.client import (
     RecaptchaEnterpriseServiceClient,
 )
@@ -71,6 +73,7 @@ __all__ = (
     "Key",
     "ListKeysRequest",
     "ListKeysResponse",
+    "RecaptchaEnterpriseServiceAsyncClient",
     "RecaptchaEnterpriseServiceClient",
     "RiskAnalysis",
     "TokenProperties",

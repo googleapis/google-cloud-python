@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-recpatcha-enterprise documentation build configuration file
+# google-cloud-recpatchaenterprise documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -67,7 +67,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-recpatcha-enterprise"
+project = u"google-cloud-recpatchaenterprise"
 copyright = u"2019, Google"
 author = u"Google APIs"
 
@@ -140,7 +140,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-recpatcha-enterprise",
+    "description": "Google Cloud Client Libraries for google-cloud-recpatchaenterprise",
     "github_user": "googleapis",
     "github_repo": "python-recaptcha-enterprise",
     "github_banner": True,
@@ -234,7 +234,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-recpatcha-enterprise-doc"
+htmlhelp_basename = "google-cloud-recpatchaenterprise-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -267,8 +267,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-recpatcha-enterprise.tex",
-        u"google-cloud-recpatcha-enterprise Documentation",
+        "google-cloud-recpatchaenterprise.tex",
+        u"google-cloud-recpatchaenterprise Documentation",
         author,
         "manual",
     )
@@ -302,8 +302,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-recpatcha-enterprise",
-        u"google-cloud-recpatcha-enterprise Documentation",
+        "google-cloud-recpatchaenterprise",
+        u"google-cloud-recpatchaenterprise Documentation",
         [author],
         1,
     )
@@ -321,11 +321,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-recpatcha-enterprise",
-        u"google-cloud-recpatcha-enterprise Documentation",
+        "google-cloud-recpatchaenterprise",
+        u"google-cloud-recpatchaenterprise Documentation",
         author,
-        "google-cloud-recpatcha-enterprise",
-        "google-cloud-recpatcha-enterprise Library",
+        "google-cloud-recpatchaenterprise",
+        "google-cloud-recpatchaenterprise Library",
         "APIs",
     )
 ]

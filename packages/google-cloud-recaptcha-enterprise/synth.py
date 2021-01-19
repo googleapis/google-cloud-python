@@ -25,13 +25,16 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate reCAPTCHA Enterprise GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="recaptchaenterprise", 
-    version="v1",
-    bazel_target=f"//google/cloud/recaptchaenterprise/{version}:recaptchaenterprise-{version}-py",
-)
+versions = ["v1"]
 
-s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
+for version in versions:
+    library = gapic.py_library(
+        service="recaptchaenterprise", 
+        version="v1",
+        bazel_target=f"//google/cloud/recaptchaenterprise/{version}:recaptchaenterprise-{version}-py",
+    )
+
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
 
 # rename to google-cloud-recaptcha-enterprise

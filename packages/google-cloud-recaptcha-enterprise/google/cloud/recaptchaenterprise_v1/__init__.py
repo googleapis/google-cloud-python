@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 from .services.recaptcha_enterprise_service import RecaptchaEnterpriseServiceClient
 from .types.recaptchaenterprise import AndroidKeySettings
 from .types.recaptchaenterprise import AnnotateAssessmentRequest

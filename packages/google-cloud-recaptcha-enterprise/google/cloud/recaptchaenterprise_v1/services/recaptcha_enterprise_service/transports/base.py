@@ -17,15 +17,29 @@
 
 import abc
 import typing
+import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
+from google.api_core import exceptions  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 
 from google.cloud.recaptchaenterprise_v1.types import recaptchaenterprise
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
 
-class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
+try:
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-recaptcha-enterprise",
+        ).version,
+    )
+except pkg_resources.DistributionNotFound:
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
+
+
+class RecaptchaEnterpriseServiceTransport(abc.ABC):
     """Abstract transport class for RecaptchaEnterpriseService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
@@ -35,6 +49,11 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
         *,
         host: str = "recaptchaenterprise.googleapis.com",
         credentials: credentials.Credentials = None,
+        credentials_file: typing.Optional[str] = None,
+        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
+        quota_project_id: typing.Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        **kwargs,
     ) -> None:
         """Instantiate the transport.
 
@@ -45,6 +64,17 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scope (Optional[Sequence[str]]): A list of scopes.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
+                The client info used to send a user-agent string along with	
+                API requests. If ``None``, then default info will be used.	
+                Generally, you only need to set this if you're developing	
+                your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -53,64 +83,132 @@ class RecaptchaEnterpriseServiceTransport(metaclass=abc.ABCMeta):
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
-        if credentials is None:
-            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+        if credentials and credentials_file:
+            raise exceptions.DuplicateCredentialArgs(
+                "'credentials_file' and 'credentials' are mutually exclusive"
+            )
+
+        if credentials_file is not None:
+            credentials, _ = auth.load_credentials_from_file(
+                credentials_file, scopes=scopes, quota_project_id=quota_project_id
+            )
+
+        elif credentials is None:
+            credentials, _ = auth.default(
+                scopes=scopes, quota_project_id=quota_project_id
+            )
 
         # Save the credentials.
         self._credentials = credentials
+
+        # Lifted into its own function so it can be stubbed out during tests.
+        self._prep_wrapped_messages(client_info)
+
+    def _prep_wrapped_messages(self, client_info):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.create_assessment: gapic_v1.method.wrap_method(
+                self.create_assessment, default_timeout=600.0, client_info=client_info,
+            ),
+            self.annotate_assessment: gapic_v1.method.wrap_method(
+                self.annotate_assessment,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.create_key: gapic_v1.method.wrap_method(
+                self.create_key, default_timeout=600.0, client_info=client_info,
+            ),
+            self.list_keys: gapic_v1.method.wrap_method(
+                self.list_keys, default_timeout=600.0, client_info=client_info,
+            ),
+            self.get_key: gapic_v1.method.wrap_method(
+                self.get_key, default_timeout=600.0, client_info=client_info,
+            ),
+            self.update_key: gapic_v1.method.wrap_method(
+                self.update_key, default_timeout=600.0, client_info=client_info,
+            ),
+            self.delete_key: gapic_v1.method.wrap_method(
+                self.delete_key, default_timeout=600.0, client_info=client_info,
+            ),
+        }
 
     @property
     def create_assessment(
         self,
     ) -> typing.Callable[
-        [recaptchaenterprise.CreateAssessmentRequest], recaptchaenterprise.Assessment
+        [recaptchaenterprise.CreateAssessmentRequest],
+        typing.Union[
+            recaptchaenterprise.Assessment,
+            typing.Awaitable[recaptchaenterprise.Assessment],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def annotate_assessment(
         self,
     ) -> typing.Callable[
         [recaptchaenterprise.AnnotateAssessmentRequest],
-        recaptchaenterprise.AnnotateAssessmentResponse,
+        typing.Union[
+            recaptchaenterprise.AnnotateAssessmentResponse,
+            typing.Awaitable[recaptchaenterprise.AnnotateAssessmentResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def create_key(
         self,
     ) -> typing.Callable[
-        [recaptchaenterprise.CreateKeyRequest], recaptchaenterprise.Key
+        [recaptchaenterprise.CreateKeyRequest],
+        typing.Union[
+            recaptchaenterprise.Key, typing.Awaitable[recaptchaenterprise.Key]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def list_keys(
         self,
     ) -> typing.Callable[
-        [recaptchaenterprise.ListKeysRequest], recaptchaenterprise.ListKeysResponse
+        [recaptchaenterprise.ListKeysRequest],
+        typing.Union[
+            recaptchaenterprise.ListKeysResponse,
+            typing.Awaitable[recaptchaenterprise.ListKeysResponse],
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def get_key(
         self,
-    ) -> typing.Callable[[recaptchaenterprise.GetKeyRequest], recaptchaenterprise.Key]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [recaptchaenterprise.GetKeyRequest],
+        typing.Union[
+            recaptchaenterprise.Key, typing.Awaitable[recaptchaenterprise.Key]
+        ],
+    ]:
+        raise NotImplementedError()
 
     @property
     def update_key(
         self,
     ) -> typing.Callable[
-        [recaptchaenterprise.UpdateKeyRequest], recaptchaenterprise.Key
+        [recaptchaenterprise.UpdateKeyRequest],
+        typing.Union[
+            recaptchaenterprise.Key, typing.Awaitable[recaptchaenterprise.Key]
+        ],
     ]:
-        raise NotImplementedError
+        raise NotImplementedError()
 
     @property
     def delete_key(
         self,
-    ) -> typing.Callable[[recaptchaenterprise.DeleteKeyRequest], empty.Empty]:
-        raise NotImplementedError
+    ) -> typing.Callable[
+        [recaptchaenterprise.DeleteKeyRequest],
+        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+    ]:
+        raise NotImplementedError()
 
 
 __all__ = ("RecaptchaEnterpriseServiceTransport",)

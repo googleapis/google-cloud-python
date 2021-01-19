@@ -54,12 +54,13 @@ class CreateAssessmentRequest(proto.Message):
             Required. The name of the project in which
             the assessment will be created, in the format
             "projects/{project}".
-        assessment (~.recaptchaenterprise.Assessment):
+        assessment (google.cloud.recaptchaenterprise_v1.types.Assessment):
             Required. The assessment details.
     """
 
     parent = proto.Field(proto.STRING, number=1)
-    assessment = proto.Field(proto.MESSAGE, number=2, message="Assessment")
+
+    assessment = proto.Field(proto.MESSAGE, number=2, message="Assessment",)
 
 
 class AnnotateAssessmentRequest(proto.Message):
@@ -70,7 +71,7 @@ class AnnotateAssessmentRequest(proto.Message):
             Required. The resource name of the
             Assessment, in the format
             "projects/{project}/assessments/{assessment}".
-        annotation (~.recaptchaenterprise.AnnotateAssessmentRequest.Annotation):
+        annotation (google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation):
             Required. The annotation that will be
             assigned to the Event.
     """
@@ -84,7 +85,8 @@ class AnnotateAssessmentRequest(proto.Message):
         PASSWORD_INCORRECT = 4
 
     name = proto.Field(proto.STRING, number=1)
-    annotation = proto.Field(proto.ENUM, number=2, enum=Annotation)
+
+    annotation = proto.Field(proto.ENUM, number=2, enum=Annotation,)
 
 
 class AnnotateAssessmentResponse(proto.Message):
@@ -99,20 +101,23 @@ class Assessment(proto.Message):
             Output only. The resource name for the
             Assessment in the format
             "projects/{project}/assessments/{assessment}".
-        event (~.recaptchaenterprise.Event):
+        event (google.cloud.recaptchaenterprise_v1.types.Event):
             The event being assessed.
-        risk_analysis (~.recaptchaenterprise.RiskAnalysis):
+        risk_analysis (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis):
             Output only. The risk analysis result for the
             event being assessed.
-        token_properties (~.recaptchaenterprise.TokenProperties):
+        token_properties (google.cloud.recaptchaenterprise_v1.types.TokenProperties):
             Output only. Properties of the provided event
             token.
     """
 
     name = proto.Field(proto.STRING, number=1)
-    event = proto.Field(proto.MESSAGE, number=2, message="Event")
-    risk_analysis = proto.Field(proto.MESSAGE, number=3, message="RiskAnalysis")
-    token_properties = proto.Field(proto.MESSAGE, number=4, message="TokenProperties")
+
+    event = proto.Field(proto.MESSAGE, number=2, message="Event",)
+
+    risk_analysis = proto.Field(proto.MESSAGE, number=3, message="RiskAnalysis",)
+
+    token_properties = proto.Field(proto.MESSAGE, number=4, message="TokenProperties",)
 
 
 class Event(proto.Message):
@@ -143,9 +148,13 @@ class Event(proto.Message):
     """
 
     token = proto.Field(proto.STRING, number=1)
+
     site_key = proto.Field(proto.STRING, number=2)
+
     user_agent = proto.Field(proto.STRING, number=3)
+
     user_ip_address = proto.Field(proto.STRING, number=4)
+
     expected_action = proto.Field(proto.STRING, number=5)
 
 
@@ -157,7 +166,7 @@ class RiskAnalysis(proto.Message):
             Legitimate event score from 0.0 to 1.0.
             (1.0 means very likely legitimate traffic while
             0.0 means very likely non-legitimate traffic).
-        reasons (Sequence[~.recaptchaenterprise.RiskAnalysis.ClassificationReason]):
+        reasons (Sequence[google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.ClassificationReason]):
             Reasons contributing to the risk analysis
             verdict.
     """
@@ -174,7 +183,8 @@ class RiskAnalysis(proto.Message):
         LOW_CONFIDENCE_SCORE = 5
 
     score = proto.Field(proto.FLOAT, number=1)
-    reasons = proto.RepeatedField(proto.ENUM, number=2, enum=ClassificationReason)
+
+    reasons = proto.RepeatedField(proto.ENUM, number=2, enum=ClassificationReason,)
 
 
 class TokenProperties(proto.Message):
@@ -188,10 +198,10 @@ class TokenProperties(proto.Message):
             solve a challenge or a sitekey mismatch (i.e the sitekey
             used to generate the token was different than the one
             specified in the assessment).
-        invalid_reason (~.recaptchaenterprise.TokenProperties.InvalidReason):
+        invalid_reason (google.cloud.recaptchaenterprise_v1.types.TokenProperties.InvalidReason):
             Reason associated with the response when
             valid = false.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp corresponding to the generation
             of the token.
         hostname (str):
@@ -213,9 +223,13 @@ class TokenProperties(proto.Message):
         MISSING = 5
 
     valid = proto.Field(proto.BOOL, number=1)
-    invalid_reason = proto.Field(proto.ENUM, number=2, enum=InvalidReason)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp)
+
+    invalid_reason = proto.Field(proto.ENUM, number=2, enum=InvalidReason,)
+
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+
     hostname = proto.Field(proto.STRING, number=4)
+
     action = proto.Field(proto.STRING, number=5)
 
 
@@ -227,13 +241,14 @@ class CreateKeyRequest(proto.Message):
             Required. The name of the project in which
             the key will be created, in the format
             "projects/{project}".
-        key (~.recaptchaenterprise.Key):
+        key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. Information to create a reCAPTCHA
             Enterprise key.
     """
 
     parent = proto.Field(proto.STRING, number=1)
-    key = proto.Field(proto.MESSAGE, number=2, message="Key")
+
+    key = proto.Field(proto.MESSAGE, number=2, message="Key",)
 
 
 class ListKeysRequest(proto.Message):
@@ -253,7 +268,9 @@ class ListKeysRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
 
 
@@ -261,7 +278,7 @@ class ListKeysResponse(proto.Message):
     r"""Response to request to list keys in a project.
 
     Attributes:
-        keys (Sequence[~.recaptchaenterprise.Key]):
+        keys (Sequence[google.cloud.recaptchaenterprise_v1.types.Key]):
             Key details.
         next_page_token (str):
             Token to retrieve the next page of results.
@@ -272,7 +289,8 @@ class ListKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    keys = proto.RepeatedField(proto.MESSAGE, number=1, message="Key")
+    keys = proto.RepeatedField(proto.MESSAGE, number=1, message="Key",)
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -292,16 +310,17 @@ class UpdateKeyRequest(proto.Message):
     r"""The update key request message.
 
     Attributes:
-        key (~.recaptchaenterprise.Key):
+        key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. The key to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which field of
             the key get updated. If the mask is not present,
             all fields will be updated.
     """
 
-    key = proto.Field(proto.MESSAGE, number=1, message="Key")
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask)
+    key = proto.Field(proto.MESSAGE, number=1, message="Key",)
+
+    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
 
 class DeleteKeyRequest(proto.Message):
@@ -327,34 +346,47 @@ class Key(proto.Message):
         display_name (str):
             Human-readable display name of this key.
             Modifiable by user.
-        web_settings (~.recaptchaenterprise.WebKeySettings):
+        web_settings (google.cloud.recaptchaenterprise_v1.types.WebKeySettings):
             Settings for keys that can be used by
             websites.
-        android_settings (~.recaptchaenterprise.AndroidKeySettings):
+        android_settings (google.cloud.recaptchaenterprise_v1.types.AndroidKeySettings):
             Settings for keys that can be used by Android
             apps.
-        ios_settings (~.recaptchaenterprise.IOSKeySettings):
+        ios_settings (google.cloud.recaptchaenterprise_v1.types.IOSKeySettings):
             Settings for keys that can be used by iOS
             apps.
-        labels (Sequence[~.recaptchaenterprise.Key.LabelsEntry]):
+        labels (Sequence[google.cloud.recaptchaenterprise_v1.types.Key.LabelsEntry]):
             Optional. See <a
             href="https://cloud.google.com/recaptcha-
             enterprise/docs/labels"> Creating and managing
             labels</a>.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp corresponding to the creation
             of this Key.
     """
 
     name = proto.Field(proto.STRING, number=1)
+
     display_name = proto.Field(proto.STRING, number=2)
-    web_settings = proto.Field(proto.MESSAGE, number=3, message="WebKeySettings")
-    android_settings = proto.Field(
-        proto.MESSAGE, number=4, message="AndroidKeySettings"
+
+    web_settings = proto.Field(
+        proto.MESSAGE, number=3, oneof="platform_settings", message="WebKeySettings",
     )
-    ios_settings = proto.Field(proto.MESSAGE, number=5, message="IOSKeySettings")
+
+    android_settings = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="platform_settings",
+        message="AndroidKeySettings",
+    )
+
+    ios_settings = proto.Field(
+        proto.MESSAGE, number=5, oneof="platform_settings", message="IOSKeySettings",
+    )
+
     labels = proto.MapField(proto.STRING, proto.STRING, number=6)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp)
+
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
 
 
 class WebKeySettings(proto.Message):
@@ -374,10 +406,10 @@ class WebKeySettings(proto.Message):
         allow_amp_traffic (bool):
             Required. Whether this key can be used on AMP
             (Accelerated Mobile Pages) websites.
-        integration_type (~.recaptchaenterprise.WebKeySettings.IntegrationType):
+        integration_type (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.IntegrationType):
             Required. Describes how this key is
             integrated with the website.
-        challenge_security_preference (~.recaptchaenterprise.WebKeySettings.ChallengeSecurityPreference):
+        challenge_security_preference (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.ChallengeSecurityPreference):
             Settings for the frequency and difficulty at
             which this key triggers captcha challenges. This
             should only be specified for IntegrationTypes
@@ -401,11 +433,15 @@ class WebKeySettings(proto.Message):
         SECURITY = 3
 
     allow_all_domains = proto.Field(proto.BOOL, number=3)
+
     allowed_domains = proto.RepeatedField(proto.STRING, number=1)
+
     allow_amp_traffic = proto.Field(proto.BOOL, number=2)
-    integration_type = proto.Field(proto.ENUM, number=4, enum=IntegrationType)
+
+    integration_type = proto.Field(proto.ENUM, number=4, enum=IntegrationType,)
+
     challenge_security_preference = proto.Field(
-        proto.ENUM, number=5, enum=ChallengeSecurityPreference
+        proto.ENUM, number=5, enum=ChallengeSecurityPreference,
     )
 
 

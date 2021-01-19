@@ -1,6 +1,6 @@
-Client for Google Cloud Recaptchaenterprise API
-===============================================
+Services for Google Cloud Recaptchaenterprise v1 API
+====================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.recaptchaenterprise_v1
-    :members:
-    :inherited-members:
+    recaptcha_enterprise_service

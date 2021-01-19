@@ -15,16 +15,26 @@
 # limitations under the License.
 #
 
-from unittest import mock
+import os
+import mock
 
 import grpc
+from grpc.experimental import aio
 import math
 import pytest
+from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 from google import auth
 from google.api_core import client_options
+from google.api_core import exceptions
+from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
+from google.api_core import grpc_helpers_async
 from google.auth import credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service import (
+    RecaptchaEnterpriseServiceAsyncClient,
+)
 from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service import (
     RecaptchaEnterpriseServiceClient,
 )
@@ -42,6 +52,17 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
+
+
+# If default endpoint is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint(client):
+    return (
+        "foo.googleapis.com"
+        if ("localhost" in client.DEFAULT_ENDPOINT)
+        else client.DEFAULT_ENDPOINT
+    )
 
 
 def test__get_default_mtls_endpoint():
@@ -76,92 +97,380 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_recaptcha_enterprise_service_client_from_service_account_file():
+def test_recaptcha_enterprise_service_client_from_service_account_info():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = RecaptchaEnterpriseServiceClient.from_service_account_info(info)
+        assert client.transport._credentials == creds
+
+        assert client.transport._host == "recaptchaenterprise.googleapis.com:443"
+
+
+@pytest.mark.parametrize(
+    "client_class",
+    [RecaptchaEnterpriseServiceClient, RecaptchaEnterpriseServiceAsyncClient,],
+)
+def test_recaptcha_enterprise_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = RecaptchaEnterpriseServiceClient.from_service_account_file(
-            "dummy/file/path.json"
-        )
-        assert client._transport._credentials == creds
+        client = client_class.from_service_account_file("dummy/file/path.json")
+        assert client.transport._credentials == creds
 
-        client = RecaptchaEnterpriseServiceClient.from_service_account_json(
-            "dummy/file/path.json"
-        )
-        assert client._transport._credentials == creds
+        client = client_class.from_service_account_json("dummy/file/path.json")
+        assert client.transport._credentials == creds
 
-        assert client._transport._host == "recaptchaenterprise.googleapis.com:443"
+        assert client.transport._host == "recaptchaenterprise.googleapis.com:443"
 
 
-def test_recaptcha_enterprise_service_client_client_options():
+def test_recaptcha_enterprise_service_client_get_transport_class():
+    transport = RecaptchaEnterpriseServiceClient.get_transport_class()
+    available_transports = [
+        transports.RecaptchaEnterpriseServiceGrpcTransport,
+    ]
+    assert transport in available_transports
+
+    transport = RecaptchaEnterpriseServiceClient.get_transport_class("grpc")
+    assert transport == transports.RecaptchaEnterpriseServiceGrpcTransport
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (
+            RecaptchaEnterpriseServiceClient,
+            transports.RecaptchaEnterpriseServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            RecaptchaEnterpriseServiceAsyncClient,
+            transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+    ],
+)
+@mock.patch.object(
+    RecaptchaEnterpriseServiceClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecaptchaEnterpriseServiceClient),
+)
+@mock.patch.object(
+    RecaptchaEnterpriseServiceAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecaptchaEnterpriseServiceAsyncClient),
+)
+def test_recaptcha_enterprise_service_client_client_options(
+    client_class, transport_class, transport_name
+):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch(
-        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.RecaptchaEnterpriseServiceClient.get_transport_class"
+    with mock.patch.object(
+        RecaptchaEnterpriseServiceClient, "get_transport_class"
     ) as gtc:
-        transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
-            credentials=credentials.AnonymousCredentials()
-        )
-        client = RecaptchaEnterpriseServiceClient(transport=transport)
+        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        client = client_class(transport=transport)
         gtc.assert_not_called()
 
-    # Check mTLS is not triggered with empty client options.
-    options = client_options.ClientOptions()
-    with mock.patch(
-        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.RecaptchaEnterpriseServiceClient.get_transport_class"
+    # Check that if channel is provided via str we will create a new one.
+    with mock.patch.object(
+        RecaptchaEnterpriseServiceClient, "get_transport_class"
     ) as gtc:
-        transport = gtc.return_value = mock.MagicMock()
-        client = RecaptchaEnterpriseServiceClient(client_options=options)
-        transport.assert_called_once_with(
-            credentials=None, host=client.DEFAULT_ENDPOINT
-        )
+        client = client_class(transport=transport_name)
+        gtc.assert_called()
 
-    # Check mTLS is not triggered if api_endpoint is provided but
-    # client_cert_source is None.
+    # Check the case api_endpoint is provided.
     options = client_options.ClientOptions(api_endpoint="squid.clam.whelk")
-    with mock.patch(
-        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.transports.RecaptchaEnterpriseServiceGrpcTransport.__init__"
-    ) as grpc_transport:
-        grpc_transport.return_value = None
-        client = RecaptchaEnterpriseServiceClient(client_options=options)
-        grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
-            client_cert_source=None,
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options)
+        patched.assert_called_once_with(
             credentials=None,
+            credentials_file=None,
             host="squid.clam.whelk",
+            scopes=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check mTLS is triggered if client_cert_source is provided.
-    options = client_options.ClientOptions(
-        client_cert_source=client_cert_source_callback
-    )
-    with mock.patch(
-        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.transports.RecaptchaEnterpriseServiceGrpcTransport.__init__"
-    ) as grpc_transport:
-        grpc_transport.return_value = None
-        client = RecaptchaEnterpriseServiceClient(client_options=options)
-        grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=client.DEFAULT_MTLS_ENDPOINT,
-            client_cert_source=client_cert_source_callback,
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
+    # "never".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class()
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=client.DEFAULT_ENDPOINT,
+                scopes=None,
+                ssl_channel_credentials=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT is
+    # "always".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            patched.return_value = None
+            client = client_class()
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=client.DEFAULT_MTLS_ENDPOINT,
+                scopes=None,
+                ssl_channel_credentials=None,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
+
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError):
+            client = client_class()
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError):
+            client = client_class()
+
+    # Check the case quota_project_id is provided
+    options = client_options.ClientOptions(quota_project_id="octopus")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options)
+        patched.assert_called_once_with(
             credentials=None,
+            credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            ssl_channel_credentials=None,
+            quota_project_id="octopus",
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
-    # Check mTLS is triggered if api_endpoint and client_cert_source are provided.
-    options = client_options.ClientOptions(
-        api_endpoint="squid.clam.whelk", client_cert_source=client_cert_source_callback
-    )
-    with mock.patch(
-        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.transports.RecaptchaEnterpriseServiceGrpcTransport.__init__"
-    ) as grpc_transport:
-        grpc_transport.return_value = None
-        client = RecaptchaEnterpriseServiceClient(client_options=options)
-        grpc_transport.assert_called_once_with(
-            api_mtls_endpoint="squid.clam.whelk",
-            client_cert_source=client_cert_source_callback,
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name,use_client_cert_env",
+    [
+        (
+            RecaptchaEnterpriseServiceClient,
+            transports.RecaptchaEnterpriseServiceGrpcTransport,
+            "grpc",
+            "true",
+        ),
+        (
+            RecaptchaEnterpriseServiceAsyncClient,
+            transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "true",
+        ),
+        (
+            RecaptchaEnterpriseServiceClient,
+            transports.RecaptchaEnterpriseServiceGrpcTransport,
+            "grpc",
+            "false",
+        ),
+        (
+            RecaptchaEnterpriseServiceAsyncClient,
+            transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+            "false",
+        ),
+    ],
+)
+@mock.patch.object(
+    RecaptchaEnterpriseServiceClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecaptchaEnterpriseServiceClient),
+)
+@mock.patch.object(
+    RecaptchaEnterpriseServiceAsyncClient,
+    "DEFAULT_ENDPOINT",
+    modify_default_endpoint(RecaptchaEnterpriseServiceAsyncClient),
+)
+@mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
+def test_recaptcha_enterprise_service_client_mtls_env_auto(
+    client_class, transport_class, transport_name, use_client_cert_env
+):
+    # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
+    # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
+
+    # Check the case client_cert_source is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        options = client_options.ClientOptions(
+            client_cert_source=client_cert_source_callback
+        )
+        with mock.patch.object(transport_class, "__init__") as patched:
+            ssl_channel_creds = mock.Mock()
+            with mock.patch(
+                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
+            ):
+                patched.return_value = None
+                client = client_class(client_options=options)
+
+                if use_client_cert_env == "false":
+                    expected_ssl_channel_creds = None
+                    expected_host = client.DEFAULT_ENDPOINT
+                else:
+                    expected_ssl_channel_creds = ssl_channel_creds
+                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=expected_host,
+                    scopes=None,
+                    ssl_channel_credentials=expected_ssl_channel_creds,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
+
+    # Check the case ADC client cert is provided. Whether client cert is used depends on
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    with mock.patch(
+                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
+                        new_callable=mock.PropertyMock,
+                    ) as ssl_credentials_mock:
+                        if use_client_cert_env == "false":
+                            is_mtls_mock.return_value = False
+                            ssl_credentials_mock.return_value = None
+                            expected_host = client.DEFAULT_ENDPOINT
+                            expected_ssl_channel_creds = None
+                        else:
+                            is_mtls_mock.return_value = True
+                            ssl_credentials_mock.return_value = mock.Mock()
+                            expected_host = client.DEFAULT_MTLS_ENDPOINT
+                            expected_ssl_channel_creds = (
+                                ssl_credentials_mock.return_value
+                            )
+
+                        patched.return_value = None
+                        client = client_class()
+                        patched.assert_called_once_with(
+                            credentials=None,
+                            credentials_file=None,
+                            host=expected_host,
+                            scopes=None,
+                            ssl_channel_credentials=expected_ssl_channel_creds,
+                            quota_project_id=None,
+                            client_info=transports.base.DEFAULT_CLIENT_INFO,
+                        )
+
+    # Check the case client_cert_source and ADC client cert are not provided.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
+    ):
+        with mock.patch.object(transport_class, "__init__") as patched:
+            with mock.patch(
+                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+            ):
+                with mock.patch(
+                    "google.auth.transport.grpc.SslCredentials.is_mtls",
+                    new_callable=mock.PropertyMock,
+                ) as is_mtls_mock:
+                    is_mtls_mock.return_value = False
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=client.DEFAULT_ENDPOINT,
+                        scopes=None,
+                        ssl_channel_credentials=None,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (
+            RecaptchaEnterpriseServiceClient,
+            transports.RecaptchaEnterpriseServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            RecaptchaEnterpriseServiceAsyncClient,
+            transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+    ],
+)
+def test_recaptcha_enterprise_service_client_client_options_scopes(
+    client_class, transport_class, transport_name
+):
+    # Check the case scopes are provided.
+    options = client_options.ClientOptions(scopes=["1", "2"],)
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options)
+        patched.assert_called_once_with(
             credentials=None,
-            host="squid.clam.whelk",
+            credentials_file=None,
+            host=client.DEFAULT_ENDPOINT,
+            scopes=["1", "2"],
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (
+            RecaptchaEnterpriseServiceClient,
+            transports.RecaptchaEnterpriseServiceGrpcTransport,
+            "grpc",
+        ),
+        (
+            RecaptchaEnterpriseServiceAsyncClient,
+            transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+            "grpc_asyncio",
+        ),
+    ],
+)
+def test_recaptcha_enterprise_service_client_client_options_credentials_file(
+    client_class, transport_class, transport_name
+):
+    # Check the case credentials file is provided.
+    options = client_options.ClientOptions(credentials_file="credentials.json")
+    with mock.patch.object(transport_class, "__init__") as patched:
+        patched.return_value = None
+        client = client_class(client_options=options)
+        patched.assert_called_once_with(
+            credentials=None,
+            credentials_file="credentials.json",
+            host=client.DEFAULT_ENDPOINT,
+            scopes=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
@@ -174,28 +483,33 @@ def test_recaptcha_enterprise_service_client_client_options_from_dict():
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
-            api_mtls_endpoint=None,
-            client_cert_source=None,
             credentials=None,
+            credentials_file=None,
             host="squid.clam.whelk",
+            scopes=None,
+            ssl_channel_credentials=None,
+            quota_project_id=None,
+            client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
 
 
-def test_create_assessment(transport: str = "grpc"):
+def test_create_assessment(
+    transport: str = "grpc", request_type=recaptchaenterprise.CreateAssessmentRequest
+):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.CreateAssessmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_assessment), "__call__"
+        type(client.transport.create_assessment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = recaptchaenterprise.Assessment(name="name_value")
+        call.return_value = recaptchaenterprise.Assessment(name="name_value",)
 
         response = client.create_assessment(request)
 
@@ -203,28 +517,134 @@ def test_create_assessment(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.CreateAssessmentRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, recaptchaenterprise.Assessment)
+
+    assert response.name == "name_value"
+
+
+def test_create_assessment_from_dict():
+    test_create_assessment(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_create_assessment_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.CreateAssessmentRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assessment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Assessment(name="name_value",)
+        )
+
+        response = await client.create_assessment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.CreateAssessmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, recaptchaenterprise.Assessment)
+
     assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_assessment_async_from_dict():
+    await test_create_assessment_async(request_type=dict)
+
+
+def test_create_assessment_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.CreateAssessmentRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assessment), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.Assessment()
+
+        client.create_assessment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_assessment_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.CreateAssessmentRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assessment), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Assessment()
+        )
+
+        await client.create_assessment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
 def test_create_assessment_flattened():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.create_assessment), "__call__"
+        type(client.transport.create_assessment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.Assessment()
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.create_assessment(
+        client.create_assessment(
             parent="parent_value",
             assessment=recaptchaenterprise.Assessment(name="name_value"),
         )
@@ -233,13 +653,15 @@ def test_create_assessment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+
         assert args[0].parent == "parent_value"
+
         assert args[0].assessment == recaptchaenterprise.Assessment(name="name_value")
 
 
 def test_create_assessment_flattened_error():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -252,18 +674,69 @@ def test_create_assessment_flattened_error():
         )
 
 
-def test_annotate_assessment(transport: str = "grpc"):
+@pytest.mark.asyncio
+async def test_create_assessment_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assessment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.Assessment()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Assessment()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_assessment(
+            parent="parent_value",
+            assessment=recaptchaenterprise.Assessment(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].parent == "parent_value"
+
+        assert args[0].assessment == recaptchaenterprise.Assessment(name="name_value")
+
+
+@pytest.mark.asyncio
+async def test_create_assessment_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_assessment(
+            recaptchaenterprise.CreateAssessmentRequest(),
+            parent="parent_value",
+            assessment=recaptchaenterprise.Assessment(name="name_value"),
+        )
+
+
+def test_annotate_assessment(
+    transport: str = "grpc", request_type=recaptchaenterprise.AnnotateAssessmentRequest
+):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.AnnotateAssessmentRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.annotate_assessment), "__call__"
+        type(client.transport.annotate_assessment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.AnnotateAssessmentResponse()
@@ -274,27 +747,130 @@ def test_annotate_assessment(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.AnnotateAssessmentRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, recaptchaenterprise.AnnotateAssessmentResponse)
+
+
+def test_annotate_assessment_from_dict():
+    test_annotate_assessment(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_annotate_assessment_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.AnnotateAssessmentRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.annotate_assessment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.AnnotateAssessmentResponse()
+        )
+
+        response = await client.annotate_assessment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.AnnotateAssessmentRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, recaptchaenterprise.AnnotateAssessmentResponse)
 
 
+@pytest.mark.asyncio
+async def test_annotate_assessment_async_from_dict():
+    await test_annotate_assessment_async(request_type=dict)
+
+
+def test_annotate_assessment_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.AnnotateAssessmentRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.annotate_assessment), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.AnnotateAssessmentResponse()
+
+        client.annotate_assessment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_annotate_assessment_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.AnnotateAssessmentRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.annotate_assessment), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.AnnotateAssessmentResponse()
+        )
+
+        await client.annotate_assessment(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 def test_annotate_assessment_flattened():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client._transport.annotate_assessment), "__call__"
+        type(client.transport.annotate_assessment), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.AnnotateAssessmentResponse()
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = client.annotate_assessment(
+        client.annotate_assessment(
             name="name_value",
             annotation=recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE,
         )
@@ -303,7 +879,9 @@ def test_annotate_assessment_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
+
         assert args[0].name == "name_value"
+
         assert (
             args[0].annotation
             == recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE
@@ -312,7 +890,7 @@ def test_annotate_assessment_flattened():
 
 def test_annotate_assessment_flattened_error():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -325,20 +903,76 @@ def test_annotate_assessment_flattened_error():
         )
 
 
-def test_create_key(transport: str = "grpc"):
+@pytest.mark.asyncio
+async def test_annotate_assessment_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.annotate_assessment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.AnnotateAssessmentResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.AnnotateAssessmentResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.annotate_assessment(
+            name="name_value",
+            annotation=recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].name == "name_value"
+
+        assert (
+            args[0].annotation
+            == recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE
+        )
+
+
+@pytest.mark.asyncio
+async def test_annotate_assessment_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.annotate_assessment(
+            recaptchaenterprise.AnnotateAssessmentRequest(),
+            name="name_value",
+            annotation=recaptchaenterprise.AnnotateAssessmentRequest.Annotation.LEGITIMATE,
+        )
+
+
+def test_create_key(
+    transport: str = "grpc", request_type=recaptchaenterprise.CreateKeyRequest
+):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.CreateKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.create_key), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.Key(
-            name="name_value", display_name="display_name_value"
+            name="name_value",
+            display_name="display_name_value",
+            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
 
         response = client.create_key(request)
@@ -347,28 +981,134 @@ def test_create_key(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.CreateKeyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, recaptchaenterprise.Key)
+
     assert response.name == "name_value"
+
     assert response.display_name == "display_name_value"
 
 
-def test_list_keys(transport: str = "grpc"):
-    client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+def test_create_key_from_dict():
+    test_create_key(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_create_key_async(
+    transport: str = "grpc_asyncio", request_type=recaptchaenterprise.CreateKeyRequest
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.ListKeysRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_keys), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key(
+                name="name_value", display_name="display_name_value",
+            )
+        )
+
+        response = await client.create_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.CreateKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.Key)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_key_async_from_dict():
+    await test_create_key_async(request_type=dict)
+
+
+def test_create_key_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.CreateKeyRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        call.return_value = recaptchaenterprise.Key()
+
+        client.create_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_key_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.CreateKeyRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key()
+        )
+
+        await client.create_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_keys(
+    transport: str = "grpc", request_type=recaptchaenterprise.ListKeysRequest
+):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.ListKeysResponse(
-            next_page_token="next_page_token_value"
+            next_page_token="next_page_token_value",
         )
 
         response = client.list_keys(request)
@@ -377,25 +1117,73 @@ def test_list_keys(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.ListKeysRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, pagers.ListKeysPager)
+
     assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_keys_from_dict():
+    test_list_keys(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_list_keys_async(
+    transport: str = "grpc_asyncio", request_type=recaptchaenterprise.ListKeysRequest
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListKeysResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+
+        response = await client.list_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.ListKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListKeysAsyncPager)
+
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_keys_async_from_dict():
+    await test_list_keys_async(request_type=dict)
 
 
 def test_list_keys_field_headers():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = recaptchaenterprise.ListKeysRequest(parent="parent/value")
+    request = recaptchaenterprise.ListKeysRequest()
+    request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_keys), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
         call.return_value = recaptchaenterprise.ListKeysResponse()
+
         client.list_keys(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -405,16 +1193,45 @@ def test_list_keys_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value") in kw["metadata"]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_keys_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ListKeysRequest()
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListKeysResponse()
+        )
+
+        await client.list_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
 def test_list_keys_pager():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials
+        credentials=credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_keys), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             recaptchaenterprise.ListKeysResponse(
@@ -425,27 +1242,36 @@ def test_list_keys_pager():
                 ],
                 next_page_token="abc",
             ),
-            recaptchaenterprise.ListKeysResponse(keys=[], next_page_token="def"),
+            recaptchaenterprise.ListKeysResponse(keys=[], next_page_token="def",),
             recaptchaenterprise.ListKeysResponse(
-                keys=[recaptchaenterprise.Key()], next_page_token="ghi"
+                keys=[recaptchaenterprise.Key(),], next_page_token="ghi",
             ),
             recaptchaenterprise.ListKeysResponse(
-                keys=[recaptchaenterprise.Key(), recaptchaenterprise.Key()]
+                keys=[recaptchaenterprise.Key(), recaptchaenterprise.Key(),],
             ),
             RuntimeError,
         )
-        results = [i for i in client.list_keys(request={})]
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_keys(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
         assert len(results) == 6
         assert all(isinstance(i, recaptchaenterprise.Key) for i in results)
 
 
 def test_list_keys_pages():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials
+        credentials=credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.list_keys), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_keys), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             recaptchaenterprise.ListKeysResponse(
@@ -456,34 +1282,113 @@ def test_list_keys_pages():
                 ],
                 next_page_token="abc",
             ),
-            recaptchaenterprise.ListKeysResponse(keys=[], next_page_token="def"),
+            recaptchaenterprise.ListKeysResponse(keys=[], next_page_token="def",),
             recaptchaenterprise.ListKeysResponse(
-                keys=[recaptchaenterprise.Key()], next_page_token="ghi"
+                keys=[recaptchaenterprise.Key(),], next_page_token="ghi",
             ),
             recaptchaenterprise.ListKeysResponse(
-                keys=[recaptchaenterprise.Key(), recaptchaenterprise.Key()]
+                keys=[recaptchaenterprise.Key(), recaptchaenterprise.Key(),],
             ),
             RuntimeError,
         )
         pages = list(client.list_keys(request={}).pages)
-        for page, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page.raw_page.next_page_token == token
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
-def test_get_key(transport: str = "grpc"):
+@pytest.mark.asyncio
+async def test_list_keys_async_pager():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_keys), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListKeysResponse(
+                keys=[
+                    recaptchaenterprise.Key(),
+                    recaptchaenterprise.Key(),
+                    recaptchaenterprise.Key(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListKeysResponse(keys=[], next_page_token="def",),
+            recaptchaenterprise.ListKeysResponse(
+                keys=[recaptchaenterprise.Key(),], next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListKeysResponse(
+                keys=[recaptchaenterprise.Key(), recaptchaenterprise.Key(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_keys(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, recaptchaenterprise.Key) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_keys_async_pages():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_keys), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListKeysResponse(
+                keys=[
+                    recaptchaenterprise.Key(),
+                    recaptchaenterprise.Key(),
+                    recaptchaenterprise.Key(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListKeysResponse(keys=[], next_page_token="def",),
+            recaptchaenterprise.ListKeysResponse(
+                keys=[recaptchaenterprise.Key(),], next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListKeysResponse(
+                keys=[recaptchaenterprise.Key(), recaptchaenterprise.Key(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_keys(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_key(
+    transport: str = "grpc", request_type=recaptchaenterprise.GetKeyRequest
+):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.GetKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_key), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.Key(
-            name="name_value", display_name="display_name_value"
+            name="name_value",
+            display_name="display_name_value",
+            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
 
         response = client.get_key(request)
@@ -492,26 +1397,77 @@ def test_get_key(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.GetKeyRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, recaptchaenterprise.Key)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+
+def test_get_key_from_dict():
+    test_get_key(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_get_key_async(
+    transport: str = "grpc_asyncio", request_type=recaptchaenterprise.GetKeyRequest
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key(
+                name="name_value", display_name="display_name_value",
+            )
+        )
+
+        response = await client.get_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.GetKeyRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, recaptchaenterprise.Key)
+
     assert response.name == "name_value"
+
     assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_key_async_from_dict():
+    await test_get_key_async(request_type=dict)
 
 
 def test_get_key_field_headers():
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = recaptchaenterprise.GetKeyRequest(name="name/value")
+    request = recaptchaenterprise.GetKeyRequest()
+    request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.get_key), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
         call.return_value = recaptchaenterprise.Key()
+
         client.get_key(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -521,23 +1477,56 @@ def test_get_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value") in kw["metadata"]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_update_key(transport: str = "grpc"):
+@pytest.mark.asyncio
+async def test_get_key_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.GetKeyRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key()
+        )
+
+        await client.get_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_update_key(
+    transport: str = "grpc", request_type=recaptchaenterprise.UpdateKeyRequest
+):
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.UpdateKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.update_key), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = recaptchaenterprise.Key(
-            name="name_value", display_name="display_name_value"
+            name="name_value",
+            display_name="display_name_value",
+            web_settings=recaptchaenterprise.WebKeySettings(allow_all_domains=True),
         )
 
         response = client.update_key(request)
@@ -546,25 +1535,131 @@ def test_update_key(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.UpdateKeyRequest()
 
     # Establish that the response is the type that we expect.
+
     assert isinstance(response, recaptchaenterprise.Key)
+
     assert response.name == "name_value"
+
     assert response.display_name == "display_name_value"
 
 
-def test_delete_key(transport: str = "grpc"):
-    client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport
+def test_update_key_from_dict():
+    test_update_key(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_update_key_async(
+    transport: str = "grpc_asyncio", request_type=recaptchaenterprise.UpdateKeyRequest
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
-    request = recaptchaenterprise.DeleteKeyRequest()
+    request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client._transport.delete_key), "__call__") as call:
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key(
+                name="name_value", display_name="display_name_value",
+            )
+        )
+
+        response = await client.update_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.UpdateKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.Key)
+
+    assert response.name == "name_value"
+
+    assert response.display_name == "display_name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_key_async_from_dict():
+    await test_update_key_async(request_type=dict)
+
+
+def test_update_key_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.UpdateKeyRequest()
+    request.key.name = "key.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        call.return_value = recaptchaenterprise.Key()
+
+        client.update_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "key.name=key.name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_key_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.UpdateKeyRequest()
+    request.key.name = "key.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.Key()
+        )
+
+        await client.update_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "key.name=key.name/value",) in kw["metadata"]
+
+
+def test_delete_key(
+    transport: str = "grpc", request_type=recaptchaenterprise.DeleteKeyRequest
+):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -574,47 +1669,200 @@ def test_delete_key(transport: str = "grpc"):
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
 
-        assert args[0] == request
+        assert args[0] == recaptchaenterprise.DeleteKeyRequest()
 
     # Establish that the response is the type that we expect.
     assert response is None
 
 
+def test_delete_key_from_dict():
+    test_delete_key(request_type=dict)
+
+
+@pytest.mark.asyncio
+async def test_delete_key_async(
+    transport: str = "grpc_asyncio", request_type=recaptchaenterprise.DeleteKeyRequest
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        response = await client.delete_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == recaptchaenterprise.DeleteKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_key_async_from_dict():
+    await test_delete_key_async(request_type=dict)
+
+
+def test_delete_key_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.DeleteKeyRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        call.return_value = None
+
+        client.delete_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_key_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.DeleteKeyRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+
+        await client.delete_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RecaptchaEnterpriseServiceClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport
+            credentials=credentials.AnonymousCredentials(), transport=transport,
+        )
+
+    # It is an error to provide a credentials file and a transport instance.
+    transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RecaptchaEnterpriseServiceClient(
+            client_options={"credentials_file": "credentials.json"},
+            transport=transport,
+        )
+
+    # It is an error to provide scopes and a transport instance.
+    transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    with pytest.raises(ValueError):
+        client = RecaptchaEnterpriseServiceClient(
+            client_options={"scopes": ["1", "2"]}, transport=transport,
         )
 
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     client = RecaptchaEnterpriseServiceClient(transport=transport)
-    assert client._transport is transport
+    assert client.transport is transport
+
+
+def test_transport_get_channel():
+    # A client may be instantiated with a custom transport instance.
+    transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+    transport = transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
+        credentials=credentials.AnonymousCredentials(),
+    )
+    channel = transport.grpc_channel
+    assert channel
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RecaptchaEnterpriseServiceGrpcTransport,
+        transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_transport_adc(transport_class):
+    # Test default credentials are used if not provided.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport_class()
+        adc.assert_called_once()
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = RecaptchaEnterpriseServiceClient(
-        credentials=credentials.AnonymousCredentials()
+        credentials=credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client._transport, transports.RecaptchaEnterpriseServiceGrpcTransport
+        client.transport, transports.RecaptchaEnterpriseServiceGrpcTransport,
     )
+
+
+def test_recaptcha_enterprise_service_base_transport_error():
+    # Passing both a credentials object and credentials_file should raise an error
+    with pytest.raises(exceptions.DuplicateCredentialArgs):
+        transport = transports.RecaptchaEnterpriseServiceTransport(
+            credentials=credentials.AnonymousCredentials(),
+            credentials_file="credentials.json",
+        )
 
 
 def test_recaptcha_enterprise_service_base_transport():
     # Instantiate the base transport.
-    transport = transports.RecaptchaEnterpriseServiceTransport(
-        credentials=credentials.AnonymousCredentials()
-    )
+    with mock.patch(
+        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.transports.RecaptchaEnterpriseServiceTransport.__init__"
+    ) as Transport:
+        Transport.return_value = None
+        transport = transports.RecaptchaEnterpriseServiceTransport(
+            credentials=credentials.AnonymousCredentials(),
+        )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
@@ -632,13 +1880,58 @@ def test_recaptcha_enterprise_service_base_transport():
             getattr(transport, method)(request=object())
 
 
+def test_recaptcha_enterprise_service_base_transport_with_credentials_file():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        auth, "load_credentials_from_file"
+    ) as load_creds, mock.patch(
+        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.transports.RecaptchaEnterpriseServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.RecaptchaEnterpriseServiceTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
+        )
+
+
+def test_recaptcha_enterprise_service_base_transport_with_adc():
+    # Test the default credentials are used if credentials and credentials_file are None.
+    with mock.patch.object(auth, "default") as adc, mock.patch(
+        "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.transports.RecaptchaEnterpriseServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transport = transports.RecaptchaEnterpriseServiceTransport()
+        adc.assert_called_once()
+
+
 def test_recaptcha_enterprise_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(auth, "default") as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         RecaptchaEnterpriseServiceClient()
         adc.assert_called_once_with(
-            scopes=("https://www.googleapis.com/auth/cloud-platform",)
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id=None,
+        )
+
+
+def test_recaptcha_enterprise_service_transport_auth_adc():
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(auth, "default") as adc:
+        adc.return_value = (credentials.AnonymousCredentials(), None)
+        transports.RecaptchaEnterpriseServiceGrpcTransport(
+            host="squid.clam.whelk", quota_project_id="octopus"
+        )
+        adc.assert_called_once_with(
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
         )
 
 
@@ -648,9 +1941,8 @@ def test_recaptcha_enterprise_service_host_no_port():
         client_options=client_options.ClientOptions(
             api_endpoint="recaptchaenterprise.googleapis.com"
         ),
-        transport="grpc",
     )
-    assert client._transport._host == "recaptchaenterprise.googleapis.com:443"
+    assert client.transport._host == "recaptchaenterprise.googleapis.com:443"
 
 
 def test_recaptcha_enterprise_service_host_with_port():
@@ -659,94 +1951,128 @@ def test_recaptcha_enterprise_service_host_with_port():
         client_options=client_options.ClientOptions(
             api_endpoint="recaptchaenterprise.googleapis.com:8000"
         ),
-        transport="grpc",
     )
-    assert client._transport._host == "recaptchaenterprise.googleapis.com:8000"
+    assert client.transport._host == "recaptchaenterprise.googleapis.com:8000"
 
 
 def test_recaptcha_enterprise_service_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
-    # Check that if channel is provided, mtls endpoint and client_cert_source
-    # won't be used.
-    callback = mock.MagicMock()
+    # Check that channel is used if provided.
     transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
-        host="squid.clam.whelk",
-        channel=channel,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=callback,
+        host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
-    assert not callback.called
+    assert transport._ssl_channel_credentials == None
 
 
-@mock.patch("grpc.ssl_channel_credentials", autospec=True)
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_recaptcha_enterprise_service_grpc_transport_channel_mtls_with_client_cert_source(
-    grpc_create_channel, grpc_ssl_channel_cred
-):
-    # Check that if channel is None, but api_mtls_endpoint and client_cert_source
-    # are provided, then a mTLS channel will be created.
-    mock_cred = mock.Mock()
+def test_recaptcha_enterprise_service_grpc_asyncio_transport_channel():
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
-    mock_ssl_cred = mock.Mock()
-    grpc_ssl_channel_cred.return_value = mock_ssl_cred
-
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
-
-    transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
-        host="squid.clam.whelk",
-        credentials=mock_cred,
-        api_mtls_endpoint="mtls.squid.clam.whelk",
-        client_cert_source=client_cert_source_callback,
+    # Check that channel is used if provided.
+    transport = transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
+        host="squid.clam.whelk", channel=channel,
     )
-    grpc_ssl_channel_cred.assert_called_once_with(
-        certificate_chain=b"cert bytes", private_key=b"key bytes"
-    )
-    grpc_create_channel.assert_called_once_with(
-        "mtls.squid.clam.whelk:443",
-        credentials=mock_cred,
-        ssl_credentials=mock_ssl_cred,
-        scopes=("https://www.googleapis.com/auth/cloud-platform",),
-    )
-    assert transport.grpc_channel == mock_grpc_channel
+    assert transport.grpc_channel == channel
+    assert transport._host == "squid.clam.whelk:443"
+    assert transport._ssl_channel_credentials == None
 
 
 @pytest.mark.parametrize(
-    "api_mtls_endpoint", ["mtls.squid.clam.whelk", "mtls.squid.clam.whelk:443"]
+    "transport_class",
+    [
+        transports.RecaptchaEnterpriseServiceGrpcTransport,
+        transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+    ],
 )
-@mock.patch("google.api_core.grpc_helpers.create_channel", autospec=True)
-def test_recaptcha_enterprise_service_grpc_transport_channel_mtls_with_adc(
-    grpc_create_channel, api_mtls_endpoint
+def test_recaptcha_enterprise_service_transport_channel_mtls_with_client_cert_source(
+    transport_class,
 ):
-    # Check that if channel and client_cert_source are None, but api_mtls_endpoint
-    # is provided, then a mTLS channel will be created with SSL ADC.
-    mock_grpc_channel = mock.Mock()
-    grpc_create_channel.return_value = mock_grpc_channel
+    with mock.patch(
+        "grpc.ssl_channel_credentials", autospec=True
+    ) as grpc_ssl_channel_cred:
+        with mock.patch.object(
+            transport_class, "create_channel"
+        ) as grpc_create_channel:
+            mock_ssl_cred = mock.Mock()
+            grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
-    # Mock google.auth.transport.grpc.SslCredentials class.
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+
+            cred = credentials.AnonymousCredentials()
+            with pytest.warns(DeprecationWarning):
+                with mock.patch.object(auth, "default") as adc:
+                    adc.return_value = (cred, None)
+                    transport = transport_class(
+                        host="squid.clam.whelk",
+                        api_mtls_endpoint="mtls.squid.clam.whelk",
+                        client_cert_source=client_cert_source_callback,
+                    )
+                    adc.assert_called_once()
+
+            grpc_ssl_channel_cred.assert_called_once_with(
+                certificate_chain=b"cert bytes", private_key=b"key bytes"
+            )
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
+            assert transport._ssl_channel_credentials == mock_ssl_cred
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RecaptchaEnterpriseServiceGrpcTransport,
+        transports.RecaptchaEnterpriseServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_recaptcha_enterprise_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        mock_cred = mock.Mock()
-        transport = transports.RecaptchaEnterpriseServiceGrpcTransport(
-            host="squid.clam.whelk",
-            credentials=mock_cred,
-            api_mtls_endpoint=api_mtls_endpoint,
-            client_cert_source=None,
-        )
-        grpc_create_channel.assert_called_once_with(
-            "mtls.squid.clam.whelk:443",
-            credentials=mock_cred,
-            ssl_credentials=mock_ssl_cred,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-        )
-        assert transport.grpc_channel == mock_grpc_channel
+        with mock.patch.object(
+            transport_class, "create_channel"
+        ) as grpc_create_channel:
+            mock_grpc_channel = mock.Mock()
+            grpc_create_channel.return_value = mock_grpc_channel
+            mock_cred = mock.Mock()
+
+            with pytest.warns(DeprecationWarning):
+                transport = transport_class(
+                    host="squid.clam.whelk",
+                    credentials=mock_cred,
+                    api_mtls_endpoint="mtls.squid.clam.whelk",
+                    client_cert_source=None,
+                )
+
+            grpc_create_channel.assert_called_once_with(
+                "mtls.squid.clam.whelk:443",
+                credentials=mock_cred,
+                credentials_file=None,
+                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                ssl_credentials=mock_ssl_cred,
+                quota_project_id=None,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            assert transport.grpc_channel == mock_grpc_channel
 
 
 def test_assessment_path():
@@ -754,14 +2080,17 @@ def test_assessment_path():
     assessment = "clam"
 
     expected = "projects/{project}/assessments/{assessment}".format(
-        project=project, assessment=assessment
+        project=project, assessment=assessment,
     )
     actual = RecaptchaEnterpriseServiceClient.assessment_path(project, assessment)
     assert expected == actual
 
 
 def test_parse_assessment_path():
-    expected = {"project": "whelk", "assessment": "octopus"}
+    expected = {
+        "project": "whelk",
+        "assessment": "octopus",
+    }
     path = RecaptchaEnterpriseServiceClient.assessment_path(**expected)
 
     # Check that the path construction is reversible.
@@ -770,18 +2099,145 @@ def test_parse_assessment_path():
 
 
 def test_key_path():
-    project = "squid"
-    key = "clam"
+    project = "oyster"
+    key = "nudibranch"
 
-    expected = "projects/{project}/keys/{key}".format(project=project, key=key)
+    expected = "projects/{project}/keys/{key}".format(project=project, key=key,)
     actual = RecaptchaEnterpriseServiceClient.key_path(project, key)
     assert expected == actual
 
 
 def test_parse_key_path():
-    expected = {"project": "whelk", "key": "octopus"}
+    expected = {
+        "project": "cuttlefish",
+        "key": "mussel",
+    }
     path = RecaptchaEnterpriseServiceClient.key_path(**expected)
 
     # Check that the path construction is reversible.
     actual = RecaptchaEnterpriseServiceClient.parse_key_path(path)
     assert expected == actual
+
+
+def test_common_billing_account_path():
+    billing_account = "winkle"
+
+    expected = "billingAccounts/{billing_account}".format(
+        billing_account=billing_account,
+    )
+    actual = RecaptchaEnterpriseServiceClient.common_billing_account_path(
+        billing_account
+    )
+    assert expected == actual
+
+
+def test_parse_common_billing_account_path():
+    expected = {
+        "billing_account": "nautilus",
+    }
+    path = RecaptchaEnterpriseServiceClient.common_billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_common_billing_account_path(path)
+    assert expected == actual
+
+
+def test_common_folder_path():
+    folder = "scallop"
+
+    expected = "folders/{folder}".format(folder=folder,)
+    actual = RecaptchaEnterpriseServiceClient.common_folder_path(folder)
+    assert expected == actual
+
+
+def test_parse_common_folder_path():
+    expected = {
+        "folder": "abalone",
+    }
+    path = RecaptchaEnterpriseServiceClient.common_folder_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_common_folder_path(path)
+    assert expected == actual
+
+
+def test_common_organization_path():
+    organization = "squid"
+
+    expected = "organizations/{organization}".format(organization=organization,)
+    actual = RecaptchaEnterpriseServiceClient.common_organization_path(organization)
+    assert expected == actual
+
+
+def test_parse_common_organization_path():
+    expected = {
+        "organization": "clam",
+    }
+    path = RecaptchaEnterpriseServiceClient.common_organization_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_common_organization_path(path)
+    assert expected == actual
+
+
+def test_common_project_path():
+    project = "whelk"
+
+    expected = "projects/{project}".format(project=project,)
+    actual = RecaptchaEnterpriseServiceClient.common_project_path(project)
+    assert expected == actual
+
+
+def test_parse_common_project_path():
+    expected = {
+        "project": "octopus",
+    }
+    path = RecaptchaEnterpriseServiceClient.common_project_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_common_project_path(path)
+    assert expected == actual
+
+
+def test_common_location_path():
+    project = "oyster"
+    location = "nudibranch"
+
+    expected = "projects/{project}/locations/{location}".format(
+        project=project, location=location,
+    )
+    actual = RecaptchaEnterpriseServiceClient.common_location_path(project, location)
+    assert expected == actual
+
+
+def test_parse_common_location_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+    }
+    path = RecaptchaEnterpriseServiceClient.common_location_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_common_location_path(path)
+    assert expected == actual
+
+
+def test_client_withDEFAULT_CLIENT_INFO():
+    client_info = gapic_v1.client_info.ClientInfo()
+
+    with mock.patch.object(
+        transports.RecaptchaEnterpriseServiceTransport, "_prep_wrapped_messages"
+    ) as prep:
+        client = RecaptchaEnterpriseServiceClient(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
+
+    with mock.patch.object(
+        transports.RecaptchaEnterpriseServiceTransport, "_prep_wrapped_messages"
+    ) as prep:
+        transport_class = RecaptchaEnterpriseServiceClient.get_transport_class()
+        transport = transport_class(
+            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+        )
+        prep.assert_called_once_with(client_info)
