@@ -31,7 +31,7 @@ for version in versions:
     library = gapic.py_library(
         service="osconfig",
         version=version,
-        bazel_target=f"//google/cloud/osconfig/{version}/:osconfig-{version}-py"
+        bazel_target=f"//google/cloud/osconfig/{version}:osconfig-{version}-py"
     )
 
     s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
