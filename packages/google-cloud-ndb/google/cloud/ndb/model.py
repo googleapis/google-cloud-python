@@ -941,7 +941,7 @@ class Property(ModelAttribute):
             def _validate(self, value):
                 # Lax user value to strict user value.
                 if not isinstance(value, Widget):
-                    raise nbd.exceptions.BadValueError(value)
+                    raise ndb.exceptions.BadValueError(value)
 
             def _to_base_type(self, value):
                 # (Strict) user value to base value.
