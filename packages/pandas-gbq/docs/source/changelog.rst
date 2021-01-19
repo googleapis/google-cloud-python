@@ -17,6 +17,8 @@ Dependencies
 ~~~~~~~~~~~~
 
 - Drop support for Python 3.5 and 3.6. (:issue:`337`)
+- Drop support for `google-cloud-bigquery==2.4.*` due to query hanging bug.
+  (:issue:`343`)
 
 
 .. _changelog-0.14.1:

@@ -22,7 +22,9 @@ INSTALL_REQUIRES = [
     "pydata-google-auth",
     "google-auth",
     "google-auth-oauthlib",
-    "google-cloud-bigquery[bqstorage,pandas]>=1.11.1,<3.0.0dev",
+    # 2.4.* has a bug where waiting for the query can hang indefinitely.
+    # https://github.com/pydata/pandas-gbq/issues/343
+    "google-cloud-bigquery[bqstorage,pandas]>=1.11.1,<3.0.0dev,!=2.4.*",
 ]
 
 extras = {"tqdm": "tqdm>=4.23.0"}
