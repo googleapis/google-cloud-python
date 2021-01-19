@@ -3,12 +3,9 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/google-cloud-python.git",
-        "sha": "d1d68c3dcfce1a4a0670d66c1dc8ce5454c6a498"
+        "remote": "git@github.com:googleapis/google-cloud-python.git",
+        "sha": "f5c4a1e42c4e6b6c882abb848dc3e8785f29a9c8"
       }
     }
-  ],
-  "generatedFiles": [
-    "README.rst"
   ]
 }

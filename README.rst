@@ -64,7 +64,7 @@ Libraries
 
 .. API_TABLE_START
 
-.. list-table:: Libraries
+.. list-table::
    :header-rows: 1
 
    * - Client
@@ -198,7 +198,7 @@ Libraries
      - |PyPI-google-cloud-access-approval|
    * - `Assured Workloads for Government <https://github.com/googleapis/python-assured-workloads>`_
      - |beta|
-     - |PyPI-google-cloud-assured-workflows|
+     - |PyPI-google-cloud-assured-workloads|
    * - `Audit Log <https://github.com/googleapis/python-audit-log>`_
      - |beta|
      - |PyPI-google-cloud-audit-log|
@@ -208,6 +208,9 @@ Libraries
    * - `Binary Authorization <https://github.com/googleapis/python-binary-authorization>`_
      - |beta|
      - |PyPI-google-cloud-binary-authorization|
+   * - `Channel Services <https://github.com/googleapis/python-channel>`_
+     - |beta|
+     - |PyPI-google-cloud-channel|
    * - `Compute Engine <https://github.com/googleapis/python-compute>`_
      - |beta|
      - |PyPI-google-cloud-compute|
@@ -237,16 +240,19 @@ Libraries
      - |PyPI-google-cloud-memcache|
    * - `Phishing Protection <https://github.com/googleapis/python-phishingprotection>`_
      - |beta|
-     - |PyPI-google-cloud-phishingprotection|
+     - |PyPI-google-cloud-phishing-protection|
    * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
      - |beta|
-     - |PyPI-google-cloud-security-private-ca|
+     - |PyPI-google-cloud-private-ca|
    * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
      - |beta|
      - |PyPI-google-cloud-pubsublite|
    * - `Recommendations AI <https://github.com/googleapis/python-recommendations-ai>`_
      - |beta|
      - |PyPI-google-cloud-recommendations-ai|
+   * - `Retail API <https://github.com/googleapis/python-retail>`_
+     - |beta|
+     - |PyPI-google-cloud-retail|
    * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
      - |beta|
      - |PyPI-google-cloud-runtimeconfig|
@@ -264,7 +270,7 @@ Libraries
      - |PyPI-google-cloud-workflows|
    * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
      - |beta|
-     - |PyPI-google-cloud-recpatcha-enterprise|
+     - |PyPI-google-cloud-recpatchaenterprise|
    * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
      - |alpha|
      - |PyPI-google-analytics-admin|
@@ -380,14 +386,16 @@ Libraries
      :target: https://pypi.org/project/google-cloud-notebooks
 .. |PyPI-google-cloud-access-approval| image:: https://img.shields.io/pypi/v/google-cloud-access-approval.svg
      :target: https://pypi.org/project/google-cloud-access-approval
-.. |PyPI-google-cloud-assured-workflows| image:: https://img.shields.io/pypi/v/google-cloud-assured-workflows.svg
-     :target: https://pypi.org/project/google-cloud-assured-workflows
+.. |PyPI-google-cloud-assured-workloads| image:: https://img.shields.io/pypi/v/google-cloud-assured-workloads.svg
+     :target: https://pypi.org/project/google-cloud-assured-workloads
 .. |PyPI-google-cloud-audit-log| image:: https://img.shields.io/pypi/v/google-cloud-audit-log.svg
      :target: https://pypi.org/project/google-cloud-audit-log
 .. |PyPI-google-cloud-billing-budgets| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
      :target: https://pypi.org/project/google-cloud-billing-budgets
 .. |PyPI-google-cloud-binary-authorization| image:: https://img.shields.io/pypi/v/google-cloud-binary-authorization.svg
      :target: https://pypi.org/project/google-cloud-binary-authorization
+.. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
+     :target: https://pypi.org/project/google-cloud-channel
 .. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
      :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
@@ -406,14 +414,16 @@ Libraries
      :target: https://pypi.org/project/google-cloud-media-translation
 .. |PyPI-google-cloud-memcache| image:: https://img.shields.io/pypi/v/google-cloud-memcache.svg
      :target: https://pypi.org/project/google-cloud-memcache
-.. |PyPI-google-cloud-phishingprotection| image:: https://img.shields.io/pypi/v/google-cloud-phishingprotection.svg
-     :target: https://pypi.org/project/google-cloud-phishingprotection
-.. |PyPI-google-cloud-security-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-security-private-ca.svg
-     :target: https://pypi.org/project/google-cloud-security-private-ca
+.. |PyPI-google-cloud-phishing-protection| image:: https://img.shields.io/pypi/v/google-cloud-phishing-protection.svg
+     :target: https://pypi.org/project/google-cloud-phishing-protection
+.. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
+     :target: https://pypi.org/project/google-cloud-private-ca
 .. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
      :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommendations-ai| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
      :target: https://pypi.org/project/google-cloud-recommendations-ai
+.. |PyPI-google-cloud-retail| image:: https://img.shields.io/pypi/v/google-cloud-retail.svg
+     :target: https://pypi.org/project/google-cloud-retail
 .. |PyPI-google-cloud-runtimeconfig| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-google-cloud-service-directory| image:: https://img.shields.io/pypi/v/google-cloud-service-directory.svg
@@ -424,8 +434,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-video-transcoder
 .. |PyPI-google-cloud-workflows| image:: https://img.shields.io/pypi/v/google-cloud-workflows.svg
      :target: https://pypi.org/project/google-cloud-workflows
-.. |PyPI-google-cloud-recpatcha-enterprise| image:: https://img.shields.io/pypi/v/google-cloud-recpatcha-enterprise.svg
-     :target: https://pypi.org/project/google-cloud-recpatcha-enterprise
+.. |PyPI-google-cloud-recpatchaenterprise| image:: https://img.shields.io/pypi/v/google-cloud-recpatchaenterprise.svg
+     :target: https://pypi.org/project/google-cloud-recpatchaenterprise
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
