@@ -174,6 +174,132 @@ class TestClient(unittest.TestCase):
             )
 
 
+class Test_ClientProjectMixin(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.client import _ClientProjectMixin
+
+        return _ClientProjectMixin
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults_wo_envvar(self):
+        environ = {}
+        patch_env = mock.patch("os.environ", new=environ)
+        patch_default = mock.patch(
+            "google.cloud.client._determine_default_project",
+            return_value=None,
+        )
+        with patch_env:
+            with patch_default as patched:
+                with self.assertRaises(EnvironmentError):
+                    self._make_one()
+
+        patched.assert_called_once_with(None)
+
+    def test_ctor_defaults_w_envvar(self):
+        from google.auth.environment_vars import PROJECT
+
+        project = "some-project-123"
+        environ = {PROJECT: project}
+        patch_env = mock.patch("os.environ", new=environ)
+        with patch_env:
+            client = self._make_one()
+
+        self.assertEqual(client.project, project)
+
+    def test_ctor_defaults_w_legacy_envvar(self):
+        from google.auth.environment_vars import LEGACY_PROJECT
+
+        project = "some-project-123"
+        environ = {LEGACY_PROJECT: project}
+        patch_env = mock.patch("os.environ", new=environ)
+        with patch_env:
+            client = self._make_one()
+
+        self.assertEqual(client.project, project)
+
+    def test_ctor_w_explicit_project(self):
+        explicit_project = "explicit-project-456"
+        patch_default = mock.patch(
+            "google.cloud.client._determine_default_project",
+            return_value=None,
+        )
+        with patch_default as patched:
+            client = self._make_one(project=explicit_project)
+
+        self.assertEqual(client.project, explicit_project)
+
+        patched.assert_not_called()
+
+    def test_ctor_w_explicit_project_bytes(self):
+        explicit_project = b"explicit-project-456"
+        patch_default = mock.patch(
+            "google.cloud.client._determine_default_project",
+            return_value=None,
+        )
+        with patch_default as patched:
+            client = self._make_one(project=explicit_project)
+
+        self.assertEqual(client.project, explicit_project.decode("utf-8"))
+
+        patched.assert_not_called()
+
+    def test_ctor_w_explicit_project_invalid(self):
+        explicit_project = object()
+        patch_default = mock.patch(
+            "google.cloud.client._determine_default_project",
+            return_value=None,
+        )
+        with patch_default as patched:
+            with self.assertRaises(ValueError):
+                self._make_one(project=explicit_project)
+
+        patched.assert_not_called()
+
+    @staticmethod
+    def _make_credentials(**kw):
+        from google.auth.credentials import Credentials
+
+        class _Credentials(Credentials):
+            def __init__(self, **kw):
+                self.__dict__.update(kw)
+
+            def refresh(self):  # pragma: NO COVER
+                pass
+
+        return _Credentials(**kw)
+
+    def test_ctor_w_explicit_credentials_wo_project(self):
+        default_project = "default-project-123"
+        credentials = self._make_credentials()
+        patch_default = mock.patch(
+            "google.cloud.client._determine_default_project",
+            return_value=default_project,
+        )
+        with patch_default as patched:
+            client = self._make_one(credentials=credentials)
+
+        self.assertEqual(client.project, default_project)
+
+        patched.assert_called_once_with(None)
+
+    def test_ctor_w_explicit_credentials_w_project(self):
+        project = "credentials-project-456"
+        credentials = self._make_credentials(project_id=project)
+        patch_default = mock.patch(
+            "google.cloud.client._determine_default_project",
+            return_value=None,
+        )
+        with patch_default as patched:
+            client = self._make_one(credentials=credentials)
+
+        self.assertEqual(client.project, project)
+
+        patched.assert_not_called()
+
+
 class TestClientWithProject(unittest.TestCase):
     @staticmethod
     def _get_target_class():

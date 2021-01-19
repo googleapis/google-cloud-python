@@ -16,6 +16,7 @@
 
 import io
 import json
+import os
 from pickle import PicklingError
 
 import six
@@ -23,6 +24,7 @@ import six
 import google.api_core.client_options
 import google.api_core.exceptions
 import google.auth
+from google.auth import environment_vars
 import google.auth.credentials
 import google.auth.transport.requests
 from google.cloud._helpers import _determine_default_project
@@ -188,26 +190,50 @@ class _ClientProjectMixin(object):
     """Mixin to allow setting the project on the client.
 
     :type project: str
-    :param project: the project which the client acts on behalf of. If not
-                    passed falls back to the default inferred from the
-                    environment.
+    :param project:
+        (Optional) the project which the client acts on behalf of. If not
+        passed, falls back to the default inferred from the environment.
+
+    :type credentials: :class:`google.auth.credentials.Credentials`
+    :param credentials:
+        (Optional) credentials used to discover a project, if not passed.
 
     :raises: :class:`EnvironmentError` if the project is neither passed in nor
-             set in the environment. :class:`ValueError` if the project value
-             is invalid.
+             set on the credentials or in the environment. :class:`ValueError`
+             if the project value is invalid.
     """
 
-    def __init__(self, project=None):
-        project = self._determine_default(project)
+    def __init__(self, project=None, credentials=None):
+        # This test duplicates the one from `google.auth.default`, but earlier,
+        # for backward compatibility:  we want the environment variable to
+        # override any project set on the credentials.  See:
+        # https://github.com/googleapis/python-cloud-core/issues/27
+        if project is None:
+            project = os.getenv(
+                environment_vars.PROJECT,
+                os.getenv(environment_vars.LEGACY_PROJECT),
+            )
+
+        # Project set on explicit credentials overrides discovery from
+        # SDK / GAE / GCE.
+        if project is None and credentials is not None:
+            project = getattr(credentials, "project_id", None)
+
+        if project is None:
+            project = self._determine_default(project)
+
         if project is None:
             raise EnvironmentError(
                 "Project was not passed and could not be "
                 "determined from the environment."
             )
+
         if isinstance(project, six.binary_type):
             project = project.decode("utf-8")
+
         if not isinstance(project, six.string_types):
             raise ValueError("Project must be a string.")
+
         self.project = project
 
     @staticmethod
@@ -246,5 +272,5 @@ class ClientWithProject(Client, _ClientProjectMixin):
     _SET_PROJECT = True  # Used by from_service_account_json()
 
     def __init__(self, project=None, credentials=None, client_options=None, _http=None):
-        _ClientProjectMixin.__init__(self, project=project)
+        _ClientProjectMixin.__init__(self, project=project, credentials=credentials)
         Client.__init__(self, credentials=credentials, client_options=client_options, _http=_http)
