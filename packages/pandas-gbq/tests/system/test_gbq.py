@@ -54,6 +54,80 @@ def make_mixed_dataframe_v2(test_size):
     )
 
 
+def get_schema(
+    gbq_connector: gbq.GbqConnector, dataset_id: str, table_id: str
+):
+    """Retrieve the schema of the table
+
+    Obtain from BigQuery the field names and field types
+    for the table defined by the parameters
+
+    Parameters
+    ----------
+    dataset_id : str
+        Name of the BigQuery dataset for the table
+    table_id : str
+        Name of the BigQuery table
+
+    Returns
+    -------
+    list of dicts
+        Fields representing the schema
+    """
+    from google.cloud import bigquery
+
+    bqclient = gbq_connector.client
+    table_ref = bigquery.TableReference(
+        bigquery.DatasetReference(bqclient.project, dataset_id),
+        table_id,
+    )
+
+    try:
+        table = bqclient.get_table(table_ref)
+        remote_schema = table.schema
+
+        remote_fields = [
+            field_remote.to_api_repr() for field_remote in remote_schema
+        ]
+        for field in remote_fields:
+            field["type"] = field["type"].upper()
+            field["mode"] = field["mode"].upper()
+
+        return remote_fields
+    except gbq_connector.http_error as ex:
+        gbq_connector.process_http_error(ex)
+
+
+def verify_schema(gbq_connector, dataset_id, table_id, schema):
+    """Indicate whether schemas match exactly
+
+    Compare the BigQuery table identified in the parameters with
+    the schema passed in and indicate whether all fields in the former
+    are present in the latter. Order is not considered.
+
+    Parameters
+    ----------
+    dataset_id :str
+        Name of the BigQuery dataset for the table
+    table_id : str
+        Name of the BigQuery table
+    schema : list(dict)
+        Schema for comparison. Each item should have
+        a 'name' and a 'type'
+
+    Returns
+    -------
+    bool
+        Whether the schemas match
+    """
+
+    fields_remote = pandas_gbq.schema._clean_schema_fields(
+        get_schema(gbq_connector, dataset_id, table_id)
+    )
+    fields_local = pandas_gbq.schema._clean_schema_fields(schema["fields"])
+    return fields_remote == fields_local
+
+
 class TestGBQConnectorIntegration(object):
     def test_should_be_able_to_make_a_connector(self, gbq_connector):
         assert gbq_connector is not None, "Could not create a GbqConnector"
@@ -914,19 +988,16 @@ class TestReadGBQIntegration(object):
 class TestToGBQIntegration(object):
     @pytest.fixture(autouse=True, scope="function")
     def setup(self, project, credentials, random_dataset_id):
-        from google.cloud import bigquery
-
         # - PER-TEST FIXTURES -
         # put here any instruction you want to be run *BEFORE* *EVERY* test is
         # executed.
+        self.credentials = credentials
+        self.gbq_connector = gbq.GbqConnector(project, credentials=credentials)
+        self.bqclient = self.gbq_connector.client
         self.table = gbq._Table(
             project, random_dataset_id, credentials=credentials
         )
         self.destination_table = "{}.{}".format(random_dataset_id, TABLE_ID)
-        self.credentials = credentials
-        self.bqclient = bigquery.Client(
-            project=project, credentials=credentials
-        )
 
     def test_upload_data(self, project_id):
         test_id = "1"
@@ -1340,8 +1411,8 @@ class TestToGBQIntegration(object):
             table_schema=test_schema,
         )
         dataset, table = destination_table.split(".")
-        assert self.table.verify_schema(
-            dataset, table, dict(fields=test_schema)
+        assert verify_schema(
+            self.gbq_connector, dataset, table, dict(fields=test_schema)
         )
 
     def test_upload_data_with_invalid_user_schema_raises_error(
@@ -1445,13 +1516,15 @@ class TestToGBQIntegration(object):
             table_schema=test_schema,
         )
         dataset, table = destination_table.split(".")
-        assert self.table.verify_schema(
-            dataset, table, dict(fields=test_schema)
+        assert verify_schema(
+            self.gbq_connector, dataset, table, dict(fields=test_schema)
         )
 
     def test_upload_data_tokyo(
         self, project_id, tokyo_dataset, bigquery_client
     ):
+        from google.cloud import bigquery
+
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
         tokyo_destination = "{}.to_gbq_test".format(tokyo_dataset)
@@ -1466,13 +1539,18 @@ class TestToGBQIntegration(object):
         )
 
         table = bigquery_client.get_table(
-            bigquery_client.dataset(tokyo_dataset).table("to_gbq_test")
+            bigquery.TableReference(
+                bigquery.DatasetReference(project_id, tokyo_dataset),
+                "to_gbq_test",
+            )
         )
         assert table.num_rows > 0
 
     def test_upload_data_tokyo_non_existing_dataset(
         self, project_id, random_dataset_id, bigquery_client
     ):
+        from google.cloud import bigquery
+
         test_size = 10
         df = make_mixed_dataframe_v2(test_size)
         non_existing_tokyo_dataset = random_dataset_id
@@ -1490,8 +1568,11 @@ class TestToGBQIntegration(object):
         )
 
         table = bigquery_client.get_table(
-            bigquery_client.dataset(non_existing_tokyo_dataset).table(
-                "to_gbq_test"
+            bigquery.TableReference(
+                bigquery.DatasetReference(
+                    project_id, non_existing_tokyo_dataset
+                ),
+                "to_gbq_test",
             )
         )
         assert table.num_rows > 0
@@ -1500,9 +1581,15 @@ class TestToGBQIntegration(object):
 # _Dataset tests
 
 
-def test_create_dataset(bigquery_client, gbq_dataset, random_dataset_id):
+def test_create_dataset(
+    bigquery_client, gbq_dataset, random_dataset_id, project_id
+):
+    from google.cloud import bigquery
+
     gbq_dataset.create(random_dataset_id)
-    dataset_reference = bigquery_client.dataset(random_dataset_id)
+    dataset_reference = bigquery.DatasetReference(
+        project_id, random_dataset_id
+    )
     assert bigquery_client.get_dataset(dataset_reference) is not None
 
 
@@ -1593,8 +1680,8 @@ def test_verify_schema_allows_flexible_column_order(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema_1)
-    assert gbq_connector.verify_schema(
-        gbq_table.dataset_id, table_id, test_schema_2
+    assert verify_schema(
+        gbq_connector, gbq_table.dataset_id, table_id, test_schema_2
     )
 
 
@@ -1618,8 +1705,8 @@ def test_verify_schema_fails_different_data_type(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema_1)
-    assert not gbq_connector.verify_schema(
-        gbq_table.dataset_id, table_id, test_schema_2
+    assert not verify_schema(
+        gbq_connector, gbq_table.dataset_id, table_id, test_schema_2
     )
 
 
@@ -1643,8 +1730,8 @@ def test_verify_schema_fails_different_structure(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema_1)
-    assert not gbq_connector.verify_schema(
-        gbq_table.dataset_id, table_id, test_schema_2
+    assert not verify_schema(
+        gbq_connector, gbq_table.dataset_id, table_id, test_schema_2
     )
 
 
@@ -1668,8 +1755,8 @@ def test_verify_schema_ignores_field_mode(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema_1)
-    assert gbq_connector.verify_schema(
-        gbq_table.dataset_id, table_id, test_schema_2
+    assert verify_schema(
+        gbq_connector, gbq_table.dataset_id, table_id, test_schema_2
     )
 
 
@@ -1706,16 +1793,15 @@ def test_retrieve_schema(gbq_table, gbq_connector):
     }
 
     gbq_table.create(table_id, test_schema)
-    actual = pandas_gbq.schema._clean_schema_fields(
-        gbq_connector.schema(gbq_table.dataset_id, table_id)
-    )
     expected = [
         {"name": "A", "type": "FLOAT"},
         {"name": "B", "type": "FLOAT"},
         {"name": "C", "type": "STRING"},
         {"name": "D", "type": "TIMESTAMP"},
     ]
-    assert expected == actual, "Expected schema used to create table"
+    assert verify_schema(
+        gbq_connector, gbq_table.dataset_id, table_id, {"fields": expected}
+    )
 
 
 def test_to_gbq_does_not_override_mode(gbq_table, gbq_connector):
@@ -1752,5 +1838,6 @@ def test_to_gbq_does_not_override_mode(gbq_table, gbq_connector):
         if_exists="append",
     )
 
-    actual = gbq_connector.schema(gbq_table.dataset_id, table_id)
-    assert table_schema["fields"] == actual
+    assert verify_schema(
+        gbq_connector, gbq_table.dataset_id, table_id, table_schema
+    )

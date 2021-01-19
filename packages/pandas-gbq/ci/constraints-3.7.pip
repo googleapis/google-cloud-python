@@ -3,6 +3,6 @@ pandas==0.23.2
 google-auth==1.4.1
 google-auth-oauthlib==0.0.1
 google-cloud-bigquery==1.11.1
-google-cloud-bigquery[bqstorage,pandas]==1.11.1
+google-cloud-bigquery-storage==1.1.0
 pydata-google-auth==0.1.2
 tqdm==4.23.0

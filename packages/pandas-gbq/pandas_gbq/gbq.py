@@ -633,70 +633,6 @@ class GbqConnector(object):
         except self.http_error as ex:
             self.process_http_error(ex)
 
-    def schema(self, dataset_id, table_id):
-        """Retrieve the schema of the table
-
-        Obtain from BigQuery the field names and field types
-        for the table defined by the parameters
-
-        Parameters
-        ----------
-        dataset_id : str
-            Name of the BigQuery dataset for the table
-        table_id : str
-            Name of the BigQuery table
-
-        Returns
-        -------
-        list of dicts
-            Fields representing the schema
-        """
-        table_ref = self.client.dataset(dataset_id).table(table_id)
-
-        try:
-            table = self.client.get_table(table_ref)
-            remote_schema = table.schema
-
-            remote_fields = [
-                field_remote.to_api_repr() for field_remote in remote_schema
-            ]
-            for field in remote_fields:
-                field["type"] = field["type"].upper()
-                field["mode"] = field["mode"].upper()
-
-            return remote_fields
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-    def verify_schema(self, dataset_id, table_id, schema):
-        """Indicate whether schemas match exactly
-
-        Compare the BigQuery table identified in the parameters with
-        the schema passed in and indicate whether all fields in the former
-        are present in the latter. Order is not considered.
-
-        Parameters
-        ----------
-        dataset_id :str
-            Name of the BigQuery dataset for the table
-        table_id : str
-            Name of the BigQuery table
-        schema : list(dict)
-            Schema for comparison. Each item should have
-            a 'name' and a 'type'
-
-        Returns
-        -------
-        bool
-            Whether the schemas match
-        """
-
-        fields_remote = pandas_gbq.schema._clean_schema_fields(
-            self.schema(dataset_id, table_id)
-        )
-        fields_local = pandas_gbq.schema._clean_schema_fields(schema["fields"])
-        return fields_remote == fields_local
-
     def delete_and_recreate_table(self, dataset_id, table_id, table_schema):
         table = _Table(
             self.project_id, dataset_id, credentials=self.credentials
@@ -1271,6 +1207,15 @@ class _Table(GbqConnector):
             private_key=private_key,
         )
 
+    def _table_ref(self, table_id):
+        """Return a BigQuery client library table reference"""
+        from google.cloud.bigquery import DatasetReference
+        from google.cloud.bigquery import TableReference
+
+        return TableReference(
+            DatasetReference(self.project_id, self.dataset_id), table_id
+        )
+
     def exists(self, table_id):
         """Check if a table exists in Google BigQuery
 
@@ -1285,12 +1230,8 @@ class _Table(GbqConnector):
             true if table exists, otherwise false
         """
         from google.api_core.exceptions import NotFound
-        from google.cloud.bigquery import DatasetReference
-        from google.cloud.bigquery import TableReference
 
-        table_ref = TableReference(
-            DatasetReference(self.project_id, self.dataset_id), table_id
-        )
+        table_ref = self._table_ref(table_id)
         try:
             self.client.get_table(table_ref)
             return True
@@ -1358,7 +1299,7 @@ class _Table(GbqConnector):
         if not self.exists(table_id):
             raise NotFoundException("Table does not exist")
 
-        table_ref = self.client.dataset(self.dataset_id).table(table_id)
+        table_ref = self._table_ref(table_id)
         try:
             self.client.delete_table(table_ref)
         except NotFound:
@@ -1385,6 +1326,12 @@ class _Dataset(GbqConnector):
             private_key=private_key,
         )
 
+    def _dataset_ref(self, dataset_id):
+        """Return a BigQuery client library dataset reference"""
+        from google.cloud.bigquery import DatasetReference
+
+        return DatasetReference(self.project_id, dataset_id)
+
     def exists(self, dataset_id):
         """Check if a dataset exists in Google BigQuery
 
@@ -1401,7 +1348,7 @@ class _Dataset(GbqConnector):
         from google.api_core.exceptions import NotFound
 
         try:
-            self.client.get_dataset(self.client.dataset(dataset_id))
+            self.client.get_dataset(self._dataset_ref(dataset_id))
             return True
         except NotFound:
             return False
@@ -1423,7 +1370,7 @@ class _Dataset(GbqConnector):
                 "Dataset {0} already " "exists".format(dataset_id)
             )
 
-        dataset = Dataset(self.client.dataset(dataset_id))
+        dataset = Dataset(self._dataset_ref(dataset_id))
 
         if self.location is not None:
             dataset.location = self.location
