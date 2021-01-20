@@ -60,6 +60,10 @@ jobs:
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
+      # It is possible 3.10-dev will fail when the other versions are green.
+      # Turn off fast fail so if 3.10 fails the other required versions have
+      # the opportunity to pass.
+      fail-fast: false
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -92,6 +96,10 @@ jobs:
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9, 3.10-dev]
+      # It is possible 3.10-dev will fail when the other versions are green.
+      # Turn off fast fail so if 3.10 fails the other required versions have
+      # the opportunity to pass.
+      fail-fast: false
     steps:
     - uses: actions/checkout@v2
     - name: Add msbuild to PATH
