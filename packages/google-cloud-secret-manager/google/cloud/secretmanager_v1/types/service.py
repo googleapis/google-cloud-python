@@ -76,7 +76,7 @@ class ListSecretsResponse(proto.Message):
     [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 
     Attributes:
-        secrets (Sequence[~.resources.Secret]):
+        secrets (Sequence[google.cloud.secretmanager_v1.types.Secret]):
             The list of [Secrets][google.cloud.secretmanager.v1.Secret]
             sorted in reverse by create_time (newest first).
         next_page_token (str):
@@ -116,7 +116,7 @@ class CreateSecretRequest(proto.Message):
             characters and can contain uppercase and lowercase letters,
             numerals, and the hyphen (``-``) and underscore (``_``)
             characters.
-        secret (~.resources.Secret):
+        secret (google.cloud.secretmanager_v1.types.Secret):
             Required. A [Secret][google.cloud.secretmanager.v1.Secret]
             with initial field values.
     """
@@ -139,7 +139,7 @@ class AddSecretVersionRequest(proto.Message):
             with the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
             in the format ``projects/*/secrets/*``.
-        payload (~.resources.SecretPayload):
+        payload (google.cloud.secretmanager_v1.types.SecretPayload):
             Required. The secret payload of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
@@ -197,7 +197,7 @@ class ListSecretVersionsResponse(proto.Message):
     [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 
     Attributes:
-        versions (Sequence[~.resources.SecretVersion]):
+        versions (Sequence[google.cloud.secretmanager_v1.types.SecretVersion]):
             The list of
             [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
             sorted in reverse by create_time (newest first).
@@ -246,10 +246,10 @@ class UpdateSecretRequest(proto.Message):
     [SecretManagerService.UpdateSecret][google.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
 
     Attributes:
-        secret (~.resources.Secret):
+        secret (google.cloud.secretmanager_v1.types.Secret):
             Required. [Secret][google.cloud.secretmanager.v1.Secret]
             with updated field values.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Specifies the fields to be updated.
     """
 
@@ -281,7 +281,7 @@ class AccessSecretVersionResponse(proto.Message):
             The resource name of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
             in the format ``projects/*/secrets/*/versions/*``.
-        payload (~.resources.SecretPayload):
+        payload (google.cloud.secretmanager_v1.types.SecretPayload):
             Secret payload
     """
 

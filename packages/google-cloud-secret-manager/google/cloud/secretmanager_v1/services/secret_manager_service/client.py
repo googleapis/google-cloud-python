@@ -37,6 +37,7 @@ from google.cloud.secretmanager_v1.types import resources
 from google.cloud.secretmanager_v1.types import service
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
@@ -125,6 +126,22 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SecretManagerServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -136,7 +153,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SecretManagerServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -257,10 +274,10 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SecretManagerServiceTransport]): The
+            transport (Union[str, SecretManagerServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -370,14 +387,15 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         r"""Lists [Secrets][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`~.service.ListSecretsRequest`):
+            request (google.cloud.secretmanager_v1.types.ListSecretsRequest):
                 The request object. Request message for
                 [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the project associated
                 with the
                 [Secrets][google.cloud.secretmanager.v1.Secret], in the
                 format ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -389,7 +407,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSecretsPager:
+            google.cloud.secretmanager_v1.services.secret_manager_service.pagers.ListSecretsPager:
                 Response message for
                 [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 
@@ -458,30 +476,33 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
 
         Args:
-            request (:class:`~.service.CreateSecretRequest`):
+            request (google.cloud.secretmanager_v1.types.CreateSecretRequest):
                 The request object. Request message for
                 [SecretManagerService.CreateSecret][google.cloud.secretmanager.v1.SecretManagerService.CreateSecret].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the project to associate
                 with the [Secret][google.cloud.secretmanager.v1.Secret],
                 in the format ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            secret_id (:class:`str`):
+            secret_id (str):
                 Required. This must be unique within the project.
 
                 A secret ID is a string with a maximum length of 255
                 characters and can contain uppercase and lowercase
                 letters, numerals, and the hyphen (``-``) and underscore
                 (``_``) characters.
+
                 This corresponds to the ``secret_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            secret (:class:`~.resources.Secret`):
+            secret (google.cloud.secretmanager_v1.types.Secret):
                 Required. A
                 [Secret][google.cloud.secretmanager.v1.Secret] with
                 initial field values.
+
                 This corresponds to the ``secret`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -493,14 +514,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Secret:
-                A [Secret][google.cloud.secretmanager.v1.Secret] is a
-                logical secret whose value and versions can be accessed.
+            google.cloud.secretmanager_v1.types.Secret:
+                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
+                   be accessed.
 
-                A [Secret][google.cloud.secretmanager.v1.Secret] is made
-                up of zero or more
-                [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
-                that represent the secret data.
+                   A [Secret][google.cloud.secretmanager.v1.Secret] is
+                   made up of zero or more
+                   [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
+                   that represent the secret data.
 
         """
         # Create or coerce a protobuf request object.
@@ -562,21 +583,23 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`~.service.AddSecretVersionRequest`):
+            request (google.cloud.secretmanager_v1.types.AddSecretVersionRequest):
                 The request object. Request message for
                 [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 [Secret][google.cloud.secretmanager.v1.Secret] to
                 associate with the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
                 in the format ``projects/*/secrets/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            payload (:class:`~.resources.SecretPayload`):
+            payload (google.cloud.secretmanager_v1.types.SecretPayload):
                 Required. The secret payload of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -588,7 +611,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.SecretVersion:
+            google.cloud.secretmanager_v1.types.SecretVersion:
                 A secret version resource in the
                 Secret Manager API.
 
@@ -647,13 +670,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`~.service.GetSecretRequest`):
+            request (google.cloud.secretmanager_v1.types.GetSecretRequest):
                 The request object. Request message for
                 [SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [Secret][google.cloud.secretmanager.v1.Secret], in the
                 format ``projects/*/secrets/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -665,14 +689,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Secret:
-                A [Secret][google.cloud.secretmanager.v1.Secret] is a
-                logical secret whose value and versions can be accessed.
+            google.cloud.secretmanager_v1.types.Secret:
+                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
+                   be accessed.
 
-                A [Secret][google.cloud.secretmanager.v1.Secret] is made
-                up of zero or more
-                [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
-                that represent the secret data.
+                   A [Secret][google.cloud.secretmanager.v1.Secret] is
+                   made up of zero or more
+                   [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
+                   that represent the secret data.
 
         """
         # Create or coerce a protobuf request object.
@@ -728,18 +752,20 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`~.service.UpdateSecretRequest`):
+            request (google.cloud.secretmanager_v1.types.UpdateSecretRequest):
                 The request object. Request message for
                 [SecretManagerService.UpdateSecret][google.cloud.secretmanager.v1.SecretManagerService.UpdateSecret].
-            secret (:class:`~.resources.Secret`):
+            secret (google.cloud.secretmanager_v1.types.Secret):
                 Required. [Secret][google.cloud.secretmanager.v1.Secret]
                 with updated field values.
+
                 This corresponds to the ``secret`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. Specifies the fields to be
                 updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -751,14 +777,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.Secret:
-                A [Secret][google.cloud.secretmanager.v1.Secret] is a
-                logical secret whose value and versions can be accessed.
+            google.cloud.secretmanager_v1.types.Secret:
+                A [Secret][google.cloud.secretmanager.v1.Secret] is a logical secret whose value and versions can
+                   be accessed.
 
-                A [Secret][google.cloud.secretmanager.v1.Secret] is made
-                up of zero or more
-                [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
-                that represent the secret data.
+                   A [Secret][google.cloud.secretmanager.v1.Secret] is
+                   made up of zero or more
+                   [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
+                   that represent the secret data.
 
         """
         # Create or coerce a protobuf request object.
@@ -816,13 +842,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         r"""Deletes a [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`~.service.DeleteSecretRequest`):
+            request (google.cloud.secretmanager_v1.types.DeleteSecretRequest):
                 The request object. Request message for
                 [SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [Secret][google.cloud.secretmanager.v1.Secret] to delete
                 in the format ``projects/*/secrets/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -885,15 +912,16 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         This call does not return secret data.
 
         Args:
-            request (:class:`~.service.ListSecretVersionsRequest`):
+            request (google.cloud.secretmanager_v1.types.ListSecretVersionsRequest):
                 The request object. Request message for
                 [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 [Secret][google.cloud.secretmanager.v1.Secret]
                 associated with the
                 [SecretVersions][google.cloud.secretmanager.v1.SecretVersion]
                 to list, in the format ``projects/*/secrets/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -905,7 +933,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSecretVersionsPager:
+            google.cloud.secretmanager_v1.services.secret_manager_service.pagers.ListSecretVersionsPager:
                 Response message for
                 [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 
@@ -975,16 +1003,17 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
         Args:
-            request (:class:`~.service.GetSecretVersionRequest`):
+            request (google.cloud.secretmanager_v1.types.GetSecretVersionRequest):
                 The request object. Request message for
                 [SecretManagerService.GetSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.GetSecretVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
                 in the format ``projects/*/secrets/*/versions/*``.
                 ``projects/*/secrets/*/versions/latest`` is an alias to
                 the ``latest``
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -996,7 +1025,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.SecretVersion:
+            google.cloud.secretmanager_v1.types.SecretVersion:
                 A secret version resource in the
                 Secret Manager API.
 
@@ -1058,13 +1087,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
         Args:
-            request (:class:`~.service.AccessSecretVersionRequest`):
+            request (google.cloud.secretmanager_v1.types.AccessSecretVersionRequest):
                 The request object. Request message for
                 [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
                 in the format ``projects/*/secrets/*/versions/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1076,7 +1106,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.AccessSecretVersionResponse:
+            google.cloud.secretmanager_v1.types.AccessSecretVersionResponse:
                 Response message for
                 [SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion].
 
@@ -1139,14 +1169,15 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [DISABLED][google.cloud.secretmanager.v1.SecretVersion.State.DISABLED].
 
         Args:
-            request (:class:`~.service.DisableSecretVersionRequest`):
+            request (google.cloud.secretmanager_v1.types.DisableSecretVersionRequest):
                 The request object. Request message for
                 [SecretManagerService.DisableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
                 to disable in the format
                 ``projects/*/secrets/*/versions/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1158,7 +1189,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.SecretVersion:
+            google.cloud.secretmanager_v1.types.SecretVersion:
                 A secret version resource in the
                 Secret Manager API.
 
@@ -1221,14 +1252,15 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [ENABLED][google.cloud.secretmanager.v1.SecretVersion.State.ENABLED].
 
         Args:
-            request (:class:`~.service.EnableSecretVersionRequest`):
+            request (google.cloud.secretmanager_v1.types.EnableSecretVersionRequest):
                 The request object. Request message for
                 [SecretManagerService.EnableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
                 to enable in the format
                 ``projects/*/secrets/*/versions/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1240,7 +1272,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.SecretVersion:
+            google.cloud.secretmanager_v1.types.SecretVersion:
                 A secret version resource in the
                 Secret Manager API.
 
@@ -1304,14 +1336,15 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         and irrevocably destroys the secret data.
 
         Args:
-            request (:class:`~.service.DestroySecretVersionRequest`):
+            request (google.cloud.secretmanager_v1.types.DestroySecretVersionRequest):
                 The request object. Request message for
                 [SecretManagerService.DestroySecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
                 to destroy in the format
                 ``projects/*/secrets/*/versions/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1323,7 +1356,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.SecretVersion:
+            google.cloud.secretmanager_v1.types.SecretVersion:
                 A secret version resource in the
                 Secret Manager API.
 
@@ -1384,7 +1417,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         [Secret][google.cloud.secretmanager.v1.Secret].
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
 
@@ -1395,72 +1428,62 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1499,7 +1522,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         have a policy set.
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
 
@@ -1510,72 +1533,62 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1619,7 +1632,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         warning.
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
 
@@ -1630,8 +1643,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
 

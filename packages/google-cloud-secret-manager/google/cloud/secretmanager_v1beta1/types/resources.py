@@ -40,17 +40,17 @@ class Secret(proto.Message):
             Output only. The resource name of the
             [Secret][google.cloud.secrets.v1beta1.Secret] in the format
             ``projects/*/secrets/*``.
-        replication (~.resources.Replication):
+        replication (google.cloud.secretmanager_v1beta1.types.Replication):
             Required. Immutable. The replication policy of the secret
             data attached to the
             [Secret][google.cloud.secrets.v1beta1.Secret].
 
             The replication policy cannot be changed after the Secret
             has been created.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
             [Secret][google.cloud.secrets.v1beta1.Secret] was created.
-        labels (Sequence[~.resources.Secret.LabelsEntry]):
+        labels (Sequence[google.cloud.secretmanager_v1beta1.types.Secret.LabelsEntry]):
             The labels assigned to this Secret.
 
             Label keys must be between 1 and 63 characters long, have a
@@ -88,17 +88,17 @@ class SecretVersion(proto.Message):
             IDs in a [Secret][google.cloud.secrets.v1beta1.Secret] start
             at 1 and are incremented for each subsequent version of the
             secret.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
             [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion]
             was created.
-        destroy_time (~.timestamp.Timestamp):
+        destroy_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this
             [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion]
             was destroyed. Only present if
             [state][google.cloud.secrets.v1beta1.SecretVersion.state] is
             [DESTROYED][google.cloud.secrets.v1beta1.SecretVersion.State.DESTROYED].
-        state (~.resources.SecretVersion.State):
+        state (google.cloud.secretmanager_v1beta1.types.SecretVersion.State):
             Output only. The current state of the
             [SecretVersion][google.cloud.secrets.v1beta1.SecretVersion].
     """
@@ -126,10 +126,10 @@ class Replication(proto.Message):
     r"""A policy that defines the replication configuration of data.
 
     Attributes:
-        automatic (~.resources.Replication.Automatic):
+        automatic (google.cloud.secretmanager_v1beta1.types.Replication.Automatic):
             The [Secret][google.cloud.secrets.v1beta1.Secret] will
             automatically be replicated without any restrictions.
-        user_managed (~.resources.Replication.UserManaged):
+        user_managed (google.cloud.secretmanager_v1beta1.types.Replication.UserManaged):
             The [Secret][google.cloud.secrets.v1beta1.Secret] will only
             be replicated into the locations specified.
     """
@@ -146,7 +146,7 @@ class Replication(proto.Message):
         locations specified in [Secret.replication.user_managed.replicas][]
 
         Attributes:
-            replicas (Sequence[~.resources.Replication.UserManaged.Replica]):
+            replicas (Sequence[google.cloud.secretmanager_v1beta1.types.Replication.UserManaged.Replica]):
                 Required. The list of Replicas for this
                 [Secret][google.cloud.secrets.v1beta1.Secret].
 

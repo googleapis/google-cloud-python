@@ -98,8 +98,21 @@ def test__get_default_mtls_endpoint():
     )
 
 
+def test_secret_manager_service_client_from_service_account_info():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = SecretManagerServiceClient.from_service_account_info(info)
+        assert client.transport._credentials == creds
+
+        assert client.transport._host == "secretmanager.googleapis.com:443"
+
+
 @pytest.mark.parametrize(
-    "client_class", [SecretManagerServiceClient, SecretManagerServiceAsyncClient]
+    "client_class", [SecretManagerServiceClient, SecretManagerServiceAsyncClient,]
 )
 def test_secret_manager_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
@@ -118,7 +131,10 @@ def test_secret_manager_service_client_from_service_account_file(client_class):
 
 def test_secret_manager_service_client_get_transport_class():
     transport = SecretManagerServiceClient.get_transport_class()
-    assert transport == transports.SecretManagerServiceGrpcTransport
+    available_transports = [
+        transports.SecretManagerServiceGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = SecretManagerServiceClient.get_transport_class("grpc")
     assert transport == transports.SecretManagerServiceGrpcTransport
@@ -3910,7 +3926,7 @@ def test_secret_manager_service_host_with_port():
 
 
 def test_secret_manager_service_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.SecretManagerServiceGrpcTransport(
@@ -3922,7 +3938,7 @@ def test_secret_manager_service_grpc_transport_channel():
 
 
 def test_secret_manager_service_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.SecretManagerServiceGrpcAsyncIOTransport(
@@ -3947,7 +3963,7 @@ def test_secret_manager_service_transport_channel_mtls_with_client_cert_source(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -4000,7 +4016,7 @@ def test_secret_manager_service_transport_channel_mtls_with_adc(transport_class)
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel

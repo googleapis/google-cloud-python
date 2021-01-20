@@ -18,6 +18,7 @@
 import proto  # type: ignore
 
 
+from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
@@ -49,17 +50,17 @@ class Secret(proto.Message):
             Output only. The resource name of the
             [Secret][google.cloud.secretmanager.v1.Secret] in the format
             ``projects/*/secrets/*``.
-        replication (~.resources.Replication):
+        replication (google.cloud.secretmanager_v1.types.Replication):
             Required. Immutable. The replication policy of the secret
             data attached to the
             [Secret][google.cloud.secretmanager.v1.Secret].
 
             The replication policy cannot be changed after the Secret
             has been created.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
             [Secret][google.cloud.secretmanager.v1.Secret] was created.
-        labels (Sequence[~.resources.Secret.LabelsEntry]):
+        labels (Sequence[google.cloud.secretmanager_v1.types.Secret.LabelsEntry]):
             The labels assigned to this Secret.
 
             Label keys must be between 1 and 63 characters long, have a
@@ -73,6 +74,14 @@ class Secret(proto.Message):
             ``[\p{Ll}\p{Lo}\p{N}_-]{0,63}``
 
             No more than 64 labels can be assigned to a given resource.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp in UTC when the
+            [Secret][google.cloud.secretmanager.v1.Secret] is scheduled
+            to expire. This is always provided on output, regardless of
+            what was sent on input.
+        ttl (google.protobuf.duration_pb2.Duration):
+            Input only. The TTL for the
+            [Secret][google.cloud.secretmanager.v1.Secret].
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -82,6 +91,14 @@ class Secret(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=4)
+
+    expire_time = proto.Field(
+        proto.MESSAGE, number=6, oneof="expiration", message=timestamp.Timestamp,
+    )
+
+    ttl = proto.Field(
+        proto.MESSAGE, number=7, oneof="expiration", message=duration.Duration,
+    )
 
 
 class SecretVersion(proto.Message):
@@ -97,21 +114,21 @@ class SecretVersion(proto.Message):
             IDs in a [Secret][google.cloud.secretmanager.v1.Secret]
             start at 1 and are incremented for each subsequent version
             of the secret.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
             was created.
-        destroy_time (~.timestamp.Timestamp):
+        destroy_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
             was destroyed. Only present if
             [state][google.cloud.secretmanager.v1.SecretVersion.state]
             is
             [DESTROYED][google.cloud.secretmanager.v1.SecretVersion.State.DESTROYED].
-        state (~.resources.SecretVersion.State):
+        state (google.cloud.secretmanager_v1.types.SecretVersion.State):
             Output only. The current state of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
-        replication_status (~.resources.ReplicationStatus):
+        replication_status (google.cloud.secretmanager_v1.types.ReplicationStatus):
             The replication status of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
@@ -144,10 +161,10 @@ class Replication(proto.Message):
     configuration of data.
 
     Attributes:
-        automatic (~.resources.Replication.Automatic):
+        automatic (google.cloud.secretmanager_v1.types.Replication.Automatic):
             The [Secret][google.cloud.secretmanager.v1.Secret] will
             automatically be replicated without any restrictions.
-        user_managed (~.resources.Replication.UserManaged):
+        user_managed (google.cloud.secretmanager_v1.types.Replication.UserManaged):
             The [Secret][google.cloud.secretmanager.v1.Secret] will only
             be replicated into the locations specified.
     """
@@ -158,7 +175,7 @@ class Replication(proto.Message):
         restrictions.
 
         Attributes:
-            customer_managed_encryption (~.resources.CustomerManagedEncryption):
+            customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryption):
                 Optional. The customer-managed encryption configuration of
                 the [Secret][google.cloud.secretmanager.v1.Secret]. If no
                 configuration is provided, Google-managed default encryption
@@ -183,7 +200,7 @@ class Replication(proto.Message):
         locations specified in [Secret.replication.user_managed.replicas][]
 
         Attributes:
-            replicas (Sequence[~.resources.Replication.UserManaged.Replica]):
+            replicas (Sequence[google.cloud.secretmanager_v1.types.Replication.UserManaged.Replica]):
                 Required. The list of Replicas for this
                 [Secret][google.cloud.secretmanager.v1.Secret].
 
@@ -198,7 +215,7 @@ class Replication(proto.Message):
                 location (str):
                     The canonical IDs of the location to replicate data. For
                     example: ``"us-east1"``.
-                customer_managed_encryption (~.resources.CustomerManagedEncryption):
+                customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryption):
                     Optional. The customer-managed encryption configuration of
                     the [User-Managed Replica][Replication.UserManaged.Replica].
                     If no configuration is provided, Google-managed default
@@ -264,7 +281,7 @@ class ReplicationStatus(proto.Message):
     [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 
     Attributes:
-        automatic (~.resources.ReplicationStatus.AutomaticStatus):
+        automatic (google.cloud.secretmanager_v1.types.ReplicationStatus.AutomaticStatus):
             Describes the replication status of a
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
             with automatic replication.
@@ -272,7 +289,7 @@ class ReplicationStatus(proto.Message):
             Only populated if the parent
             [Secret][google.cloud.secretmanager.v1.Secret] has an
             automatic replication policy.
-        user_managed (~.resources.ReplicationStatus.UserManagedStatus):
+        user_managed (google.cloud.secretmanager_v1.types.ReplicationStatus.UserManagedStatus):
             Describes the replication status of a
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]
             with user-managed replication.
@@ -292,7 +309,7 @@ class ReplicationStatus(proto.Message):
         replication policy.
 
         Attributes:
-            customer_managed_encryption (~.resources.CustomerManagedEncryptionStatus):
+            customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryptionStatus):
                 Output only. The customer-managed encryption status of the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
                 Only populated if customer-managed encryption is used.
@@ -312,7 +329,7 @@ class ReplicationStatus(proto.Message):
         replication policy.
 
         Attributes:
-            replicas (Sequence[~.resources.ReplicationStatus.UserManagedStatus.ReplicaStatus]):
+            replicas (Sequence[google.cloud.secretmanager_v1.types.ReplicationStatus.UserManagedStatus.ReplicaStatus]):
                 Output only. The list of replica statuses for the
                 [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
         """
@@ -325,7 +342,7 @@ class ReplicationStatus(proto.Message):
                 location (str):
                     Output only. The canonical ID of the replica location. For
                     example: ``"us-east1"``.
-                customer_managed_encryption (~.resources.CustomerManagedEncryptionStatus):
+                customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryptionStatus):
                     Output only. The customer-managed encryption status of the
                     [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
                     Only populated if customer-managed encryption is used.

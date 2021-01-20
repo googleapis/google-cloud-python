@@ -25,7 +25,7 @@ class ListSecretsPager:
     """A pager for iterating through ``list_secrets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListSecretsResponse` object, and
+    :class:`google.cloud.secretmanager_v1.types.ListSecretsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``secrets`` field.
 
@@ -34,7 +34,7 @@ class ListSecretsPager:
     through the ``secrets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListSecretsResponse`
+    All the usual :class:`google.cloud.secretmanager_v1.types.ListSecretsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +52,9 @@ class ListSecretsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListSecretsRequest`):
+            request (google.cloud.secretmanager_v1.types.ListSecretsRequest):
                 The initial request object.
-            response (:class:`~.service.ListSecretsResponse`):
+            response (google.cloud.secretmanager_v1.types.ListSecretsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +87,7 @@ class ListSecretsAsyncPager:
     """A pager for iterating through ``list_secrets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListSecretsResponse` object, and
+    :class:`google.cloud.secretmanager_v1.types.ListSecretsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``secrets`` field.
 
@@ -96,7 +96,7 @@ class ListSecretsAsyncPager:
     through the ``secrets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListSecretsResponse`
+    All the usual :class:`google.cloud.secretmanager_v1.types.ListSecretsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +114,9 @@ class ListSecretsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListSecretsRequest`):
+            request (google.cloud.secretmanager_v1.types.ListSecretsRequest):
                 The initial request object.
-            response (:class:`~.service.ListSecretsResponse`):
+            response (google.cloud.secretmanager_v1.types.ListSecretsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +153,7 @@ class ListSecretVersionsPager:
     """A pager for iterating through ``list_secret_versions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListSecretVersionsResponse` object, and
+    :class:`google.cloud.secretmanager_v1.types.ListSecretVersionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``versions`` field.
 
@@ -162,7 +162,7 @@ class ListSecretVersionsPager:
     through the ``versions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListSecretVersionsResponse`
+    All the usual :class:`google.cloud.secretmanager_v1.types.ListSecretVersionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +180,9 @@ class ListSecretVersionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListSecretVersionsRequest`):
+            request (google.cloud.secretmanager_v1.types.ListSecretVersionsRequest):
                 The initial request object.
-            response (:class:`~.service.ListSecretVersionsResponse`):
+            response (google.cloud.secretmanager_v1.types.ListSecretVersionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +215,7 @@ class ListSecretVersionsAsyncPager:
     """A pager for iterating through ``list_secret_versions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListSecretVersionsResponse` object, and
+    :class:`google.cloud.secretmanager_v1.types.ListSecretVersionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``versions`` field.
 
@@ -224,7 +224,7 @@ class ListSecretVersionsAsyncPager:
     through the ``versions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListSecretVersionsResponse`
+    All the usual :class:`google.cloud.secretmanager_v1.types.ListSecretVersionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +242,9 @@ class ListSecretVersionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListSecretVersionsRequest`):
+            request (google.cloud.secretmanager_v1.types.ListSecretVersionsRequest):
                 The initial request object.
-            response (:class:`~.service.ListSecretVersionsResponse`):
+            response (google.cloud.secretmanager_v1.types.ListSecretVersionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

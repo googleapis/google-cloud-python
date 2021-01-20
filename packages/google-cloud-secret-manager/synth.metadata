@@ -11,8 +11,8 @@
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "9ecdacc9a00e1dd443b11bf10215d6e7648db8a7",
+        "internalRef": "352563582"
       }
     },
     {
@@ -51,6 +51,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -104,8 +105,10 @@
     "docs/_templates/layout.html",
     "docs/conf.py",
     "docs/multiprocessing.rst",
+    "docs/secretmanager_v1/secret_manager_service.rst",
     "docs/secretmanager_v1/services.rst",
     "docs/secretmanager_v1/types.rst",
+    "docs/secretmanager_v1beta1/secret_manager_service.rst",
     "docs/secretmanager_v1beta1/services.rst",
     "docs/secretmanager_v1beta1/types.rst",
     "google/cloud/secretmanager/__init__.py",
