@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.0...v0.40.1) (2021-01-20)
+
+
+### Bug Fixes
+
+* raise for rest transport http error ([#738](https://www.github.com/googleapis/gapic-generator-python/issues/738)) ([7d24f3d](https://www.github.com/googleapis/gapic-generator-python/commit/7d24f3d81499ad714e57c7c9562b842c09e49d20))
+
 ## [0.40.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.39.1...v0.40.0) (2021-01-19)
 
 
