@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-channel.git",
-        "sha": "7b43e88d7d0997b68bb39d35a234876acc72d364"
+        "sha": "fae81e441e9a31e505e94a640f6aee9dbe42ea81"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+        "sha": "ba960d730416fe05c50547e975ce79fcee52c671"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+        "sha": "ba960d730416fe05c50547e975ce79fcee52c671"
       }
     }
   ],
