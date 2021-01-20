@@ -115,9 +115,7 @@ def system(session):
     session.install("ipython", "-c", constraints_path)
 
     # Run py.test against the system tests.
-    session.run(
-        "py.test", "--quiet", os.path.join("tests", "system.py"), *session.posargs
-    )
+    session.run("py.test", "--quiet", os.path.join("tests", "system"), *session.posargs)
 
 
 @nox.session(python=["3.8"])
@@ -181,12 +179,14 @@ def prerelease_deps(session):
     )
     session.install("--pre", "grpcio", "pandas")
     session.install(
-        "mock",
-        "pytest",
-        "google-cloud-testutils",
-        "pytest-cov",
         "freezegun",
+        "google-cloud-storage",
+        "google-cloud-testutils",
         "IPython",
+        "mock",
+        "psutil",
+        "pytest",
+        "pytest-cov",
     )
     session.install("-e", ".[all]")
 
@@ -196,7 +196,8 @@ def prerelease_deps(session):
     session.run("python", "-c", "import pyarrow; print(pyarrow.__version__)")
 
     # Run all tests, except a few samples tests which require extra dependencies.
-    session.run("py.test", "tests")
+    session.run("py.test", "tests/unit")
+    session.run("py.test", "tests/system")
     session.run("py.test", "samples/tests")
 
 
