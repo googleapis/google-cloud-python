@@ -54,7 +54,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         credentials: credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
-        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -73,8 +73,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
                 This argument is ignored if ``channel`` is provided.
             scopes (Optional(Sequence[str])): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
-            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
-                for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Callable[[], Tuple[bytes, bytes]]): Client
+                certificate to configure mutual TLS HTTP channel. It is ignored
+                if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
@@ -89,6 +90,8 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             host=host, credentials=credentials, client_info=client_info,
         )
         self._session = AuthorizedSession(self._credentials)
+        if client_cert_source_for_mtls:
+            self._session.configure_mtls_channel(client_cert_source_for_mtls)
 
     def add_rule(
         self,
@@ -471,11 +474,11 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "pageToken": request.page_token,
-            "filter": request.filter,
-            "orderBy": request.order_by,
             "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
+            "orderBy": request.order_by,
+            "filter": request.filter,
+            "pageToken": request.page_token,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -524,11 +527,11 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "pageToken": request.page_token,
-            "filter": request.filter,
-            "orderBy": request.order_by,
             "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
+            "orderBy": request.order_by,
+            "filter": request.filter,
+            "pageToken": request.page_token,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values

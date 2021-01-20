@@ -3,29 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-compute",
-        "sha": "432621401ddf808a5fef2d6d565b0e3a75bd2df0"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis-discovery",
-        "remote": "https://github.com/googleapis/googleapis-discovery.git",
-        "sha": "ed8fe29ede4a8c5117c955bf0972e6b751800e41"
+        "remote": "https://github.com/googleapis/python-compute.git",
+        "sha": "31fa79456f8e236befc4a61271405e9bec42c22f"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+        "sha": "b259489b06b25f399768b74b8baa943991f38ea7"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+        "sha": "b259489b06b25f399768b74b8baa943991f38ea7"
       }
     }
   ],
