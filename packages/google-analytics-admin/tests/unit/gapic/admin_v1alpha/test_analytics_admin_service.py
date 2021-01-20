@@ -93,8 +93,21 @@ def test__get_default_mtls_endpoint():
     )
 
 
+def test_analytics_admin_service_client_from_service_account_info():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = AnalyticsAdminServiceClient.from_service_account_info(info)
+        assert client.transport._credentials == creds
+
+        assert client.transport._host == "analyticsadmin.googleapis.com:443"
+
+
 @pytest.mark.parametrize(
-    "client_class", [AnalyticsAdminServiceClient, AnalyticsAdminServiceAsyncClient]
+    "client_class", [AnalyticsAdminServiceClient, AnalyticsAdminServiceAsyncClient,]
 )
 def test_analytics_admin_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
@@ -113,7 +126,10 @@ def test_analytics_admin_service_client_from_service_account_file(client_class):
 
 def test_analytics_admin_service_client_get_transport_class():
     transport = AnalyticsAdminServiceClient.get_transport_class()
-    assert transport == transports.AnalyticsAdminServiceGrpcTransport
+    available_transports = [
+        transports.AnalyticsAdminServiceGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = AnalyticsAdminServiceClient.get_transport_class("grpc")
     assert transport == transports.AnalyticsAdminServiceGrpcTransport
@@ -485,7 +501,7 @@ def test_get_account(
         call.return_value = resources.Account(
             name="name_value",
             display_name="display_name_value",
-            country_code="country_code_value",
+            region_code="region_code_value",
             deleted=True,
         )
 
@@ -505,7 +521,7 @@ def test_get_account(
 
     assert response.display_name == "display_name_value"
 
-    assert response.country_code == "country_code_value"
+    assert response.region_code == "region_code_value"
 
     assert response.deleted is True
 
@@ -533,7 +549,7 @@ async def test_get_account_async(
             resources.Account(
                 name="name_value",
                 display_name="display_name_value",
-                country_code="country_code_value",
+                region_code="region_code_value",
                 deleted=True,
             )
         )
@@ -553,7 +569,7 @@ async def test_get_account_async(
 
     assert response.display_name == "display_name_value"
 
-    assert response.country_code == "country_code_value"
+    assert response.region_code == "region_code_value"
 
     assert response.deleted is True
 
@@ -1114,7 +1130,7 @@ def test_update_account(
         call.return_value = resources.Account(
             name="name_value",
             display_name="display_name_value",
-            country_code="country_code_value",
+            region_code="region_code_value",
             deleted=True,
         )
 
@@ -1134,7 +1150,7 @@ def test_update_account(
 
     assert response.display_name == "display_name_value"
 
-    assert response.country_code == "country_code_value"
+    assert response.region_code == "region_code_value"
 
     assert response.deleted is True
 
@@ -1162,7 +1178,7 @@ async def test_update_account_async(
             resources.Account(
                 name="name_value",
                 display_name="display_name_value",
-                country_code="country_code_value",
+                region_code="region_code_value",
                 deleted=True,
             )
         )
@@ -1182,7 +1198,7 @@ async def test_update_account_async(
 
     assert response.display_name == "display_name_value"
 
-    assert response.country_code == "country_code_value"
+    assert response.region_code == "region_code_value"
 
     assert response.deleted is True
 
@@ -8892,19 +8908,13 @@ def test_get_enhanced_measurement_settings(
             page_views_enabled=True,
             scrolls_enabled=True,
             outbound_clicks_enabled=True,
-            content_views_enabled=True,
             site_search_enabled=True,
-            form_interactions_enabled=True,
             video_engagement_enabled=True,
             file_downloads_enabled=True,
-            data_tagged_element_clicks_enabled=True,
             page_loads_enabled=True,
             page_changes_enabled=True,
-            articles_and_blogs_enabled=True,
-            products_and_ecommerce_enabled=True,
             search_query_parameter="search_query_parameter_value",
-            url_query_parameter="url_query_parameter_value",
-            excluded_domains="excluded_domains_value",
+            uri_query_parameter="uri_query_parameter_value",
         )
 
         response = client.get_enhanced_measurement_settings(request)
@@ -8929,31 +8939,19 @@ def test_get_enhanced_measurement_settings(
 
     assert response.outbound_clicks_enabled is True
 
-    assert response.content_views_enabled is True
-
     assert response.site_search_enabled is True
-
-    assert response.form_interactions_enabled is True
 
     assert response.video_engagement_enabled is True
 
     assert response.file_downloads_enabled is True
 
-    assert response.data_tagged_element_clicks_enabled is True
-
     assert response.page_loads_enabled is True
 
     assert response.page_changes_enabled is True
 
-    assert response.articles_and_blogs_enabled is True
-
-    assert response.products_and_ecommerce_enabled is True
-
     assert response.search_query_parameter == "search_query_parameter_value"
 
-    assert response.url_query_parameter == "url_query_parameter_value"
-
-    assert response.excluded_domains == "excluded_domains_value"
+    assert response.uri_query_parameter == "uri_query_parameter_value"
 
 
 def test_get_enhanced_measurement_settings_from_dict():
@@ -8985,19 +8983,13 @@ async def test_get_enhanced_measurement_settings_async(
                 page_views_enabled=True,
                 scrolls_enabled=True,
                 outbound_clicks_enabled=True,
-                content_views_enabled=True,
                 site_search_enabled=True,
-                form_interactions_enabled=True,
                 video_engagement_enabled=True,
                 file_downloads_enabled=True,
-                data_tagged_element_clicks_enabled=True,
                 page_loads_enabled=True,
                 page_changes_enabled=True,
-                articles_and_blogs_enabled=True,
-                products_and_ecommerce_enabled=True,
                 search_query_parameter="search_query_parameter_value",
-                url_query_parameter="url_query_parameter_value",
-                excluded_domains="excluded_domains_value",
+                uri_query_parameter="uri_query_parameter_value",
             )
         )
 
@@ -9022,31 +9014,19 @@ async def test_get_enhanced_measurement_settings_async(
 
     assert response.outbound_clicks_enabled is True
 
-    assert response.content_views_enabled is True
-
     assert response.site_search_enabled is True
-
-    assert response.form_interactions_enabled is True
 
     assert response.video_engagement_enabled is True
 
     assert response.file_downloads_enabled is True
 
-    assert response.data_tagged_element_clicks_enabled is True
-
     assert response.page_loads_enabled is True
 
     assert response.page_changes_enabled is True
 
-    assert response.articles_and_blogs_enabled is True
-
-    assert response.products_and_ecommerce_enabled is True
-
     assert response.search_query_parameter == "search_query_parameter_value"
 
-    assert response.url_query_parameter == "url_query_parameter_value"
-
-    assert response.excluded_domains == "excluded_domains_value"
+    assert response.uri_query_parameter == "uri_query_parameter_value"
 
 
 @pytest.mark.asyncio
@@ -9215,19 +9195,13 @@ def test_update_enhanced_measurement_settings(
             page_views_enabled=True,
             scrolls_enabled=True,
             outbound_clicks_enabled=True,
-            content_views_enabled=True,
             site_search_enabled=True,
-            form_interactions_enabled=True,
             video_engagement_enabled=True,
             file_downloads_enabled=True,
-            data_tagged_element_clicks_enabled=True,
             page_loads_enabled=True,
             page_changes_enabled=True,
-            articles_and_blogs_enabled=True,
-            products_and_ecommerce_enabled=True,
             search_query_parameter="search_query_parameter_value",
-            url_query_parameter="url_query_parameter_value",
-            excluded_domains="excluded_domains_value",
+            uri_query_parameter="uri_query_parameter_value",
         )
 
         response = client.update_enhanced_measurement_settings(request)
@@ -9252,31 +9226,19 @@ def test_update_enhanced_measurement_settings(
 
     assert response.outbound_clicks_enabled is True
 
-    assert response.content_views_enabled is True
-
     assert response.site_search_enabled is True
-
-    assert response.form_interactions_enabled is True
 
     assert response.video_engagement_enabled is True
 
     assert response.file_downloads_enabled is True
 
-    assert response.data_tagged_element_clicks_enabled is True
-
     assert response.page_loads_enabled is True
 
     assert response.page_changes_enabled is True
 
-    assert response.articles_and_blogs_enabled is True
-
-    assert response.products_and_ecommerce_enabled is True
-
     assert response.search_query_parameter == "search_query_parameter_value"
 
-    assert response.url_query_parameter == "url_query_parameter_value"
-
-    assert response.excluded_domains == "excluded_domains_value"
+    assert response.uri_query_parameter == "uri_query_parameter_value"
 
 
 def test_update_enhanced_measurement_settings_from_dict():
@@ -9308,19 +9270,13 @@ async def test_update_enhanced_measurement_settings_async(
                 page_views_enabled=True,
                 scrolls_enabled=True,
                 outbound_clicks_enabled=True,
-                content_views_enabled=True,
                 site_search_enabled=True,
-                form_interactions_enabled=True,
                 video_engagement_enabled=True,
                 file_downloads_enabled=True,
-                data_tagged_element_clicks_enabled=True,
                 page_loads_enabled=True,
                 page_changes_enabled=True,
-                articles_and_blogs_enabled=True,
-                products_and_ecommerce_enabled=True,
                 search_query_parameter="search_query_parameter_value",
-                url_query_parameter="url_query_parameter_value",
-                excluded_domains="excluded_domains_value",
+                uri_query_parameter="uri_query_parameter_value",
             )
         )
 
@@ -9345,31 +9301,19 @@ async def test_update_enhanced_measurement_settings_async(
 
     assert response.outbound_clicks_enabled is True
 
-    assert response.content_views_enabled is True
-
     assert response.site_search_enabled is True
-
-    assert response.form_interactions_enabled is True
 
     assert response.video_engagement_enabled is True
 
     assert response.file_downloads_enabled is True
 
-    assert response.data_tagged_element_clicks_enabled is True
-
     assert response.page_loads_enabled is True
 
     assert response.page_changes_enabled is True
 
-    assert response.articles_and_blogs_enabled is True
-
-    assert response.products_and_ecommerce_enabled is True
-
     assert response.search_query_parameter == "search_query_parameter_value"
 
-    assert response.url_query_parameter == "url_query_parameter_value"
-
-    assert response.excluded_domains == "excluded_domains_value"
+    assert response.uri_query_parameter == "uri_query_parameter_value"
 
 
 @pytest.mark.asyncio
@@ -10274,7 +10218,9 @@ def test_list_firebase_links(
         type(client.transport.list_firebase_links), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_admin.ListFirebaseLinksResponse()
+        call.return_value = analytics_admin.ListFirebaseLinksResponse(
+            next_page_token="next_page_token_value",
+        )
 
         response = client.list_firebase_links(request)
 
@@ -10286,7 +10232,9 @@ def test_list_firebase_links(
 
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, analytics_admin.ListFirebaseLinksResponse)
+    assert isinstance(response, pagers.ListFirebaseLinksPager)
+
+    assert response.next_page_token == "next_page_token_value"
 
 
 def test_list_firebase_links_from_dict():
@@ -10312,7 +10260,9 @@ async def test_list_firebase_links_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_admin.ListFirebaseLinksResponse()
+            analytics_admin.ListFirebaseLinksResponse(
+                next_page_token="next_page_token_value",
+            )
         )
 
         response = await client.list_firebase_links(request)
@@ -10324,7 +10274,9 @@ async def test_list_firebase_links_async(
         assert args[0] == analytics_admin.ListFirebaseLinksRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, analytics_admin.ListFirebaseLinksResponse)
+    assert isinstance(response, pagers.ListFirebaseLinksAsyncPager)
+
+    assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
@@ -10470,6 +10422,164 @@ async def test_list_firebase_links_flattened_error_async():
         )
 
 
+def test_list_firebase_links_pager():
+    client = AnalyticsAdminServiceClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firebase_links), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[], next_page_token="def",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_firebase_links(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, resources.FirebaseLink) for i in results)
+
+
+def test_list_firebase_links_pages():
+    client = AnalyticsAdminServiceClient(credentials=credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firebase_links), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[], next_page_token="def",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_firebase_links(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_firebase_links_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firebase_links),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[], next_page_token="def",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_firebase_links(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, resources.FirebaseLink) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_firebase_links_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firebase_links),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                    resources.FirebaseLink(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[], next_page_token="def",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(),], next_page_token="ghi",
+            ),
+            analytics_admin.ListFirebaseLinksResponse(
+                firebase_links=[resources.FirebaseLink(), resources.FirebaseLink(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_firebase_links(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_get_global_site_tag(
     transport: str = "grpc", request_type=analytics_admin.GetGlobalSiteTagRequest
 ):
@@ -10487,7 +10597,7 @@ def test_get_global_site_tag(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = resources.GlobalSiteTag(
-            snippet="snippet_value", name="name_value",
+            name="name_value", snippet="snippet_value",
         )
 
         response = client.get_global_site_tag(request)
@@ -10502,9 +10612,9 @@ def test_get_global_site_tag(
 
     assert isinstance(response, resources.GlobalSiteTag)
 
-    assert response.snippet == "snippet_value"
-
     assert response.name == "name_value"
+
+    assert response.snippet == "snippet_value"
 
 
 def test_get_global_site_tag_from_dict():
@@ -10530,7 +10640,7 @@ async def test_get_global_site_tag_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.GlobalSiteTag(snippet="snippet_value", name="name_value",)
+            resources.GlobalSiteTag(name="name_value", snippet="snippet_value",)
         )
 
         response = await client.get_global_site_tag(request)
@@ -10544,9 +10654,9 @@ async def test_get_global_site_tag_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.GlobalSiteTag)
 
-    assert response.snippet == "snippet_value"
-
     assert response.name == "name_value"
+
+    assert response.snippet == "snippet_value"
 
 
 @pytest.mark.asyncio
@@ -10710,7 +10820,6 @@ def test_create_google_ads_link(
         # Designate an appropriate return value for the call.
         call.return_value = resources.GoogleAdsLink(
             name="name_value",
-            parent="parent_value",
             customer_id="customer_id_value",
             can_manage_clients=True,
             email_address="email_address_value",
@@ -10729,8 +10838,6 @@ def test_create_google_ads_link(
     assert isinstance(response, resources.GoogleAdsLink)
 
     assert response.name == "name_value"
-
-    assert response.parent == "parent_value"
 
     assert response.customer_id == "customer_id_value"
 
@@ -10764,7 +10871,6 @@ async def test_create_google_ads_link_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             resources.GoogleAdsLink(
                 name="name_value",
-                parent="parent_value",
                 customer_id="customer_id_value",
                 can_manage_clients=True,
                 email_address="email_address_value",
@@ -10783,8 +10889,6 @@ async def test_create_google_ads_link_async(
     assert isinstance(response, resources.GoogleAdsLink)
 
     assert response.name == "name_value"
-
-    assert response.parent == "parent_value"
 
     assert response.customer_id == "customer_id_value"
 
@@ -10968,7 +11072,6 @@ def test_update_google_ads_link(
         # Designate an appropriate return value for the call.
         call.return_value = resources.GoogleAdsLink(
             name="name_value",
-            parent="parent_value",
             customer_id="customer_id_value",
             can_manage_clients=True,
             email_address="email_address_value",
@@ -10987,8 +11090,6 @@ def test_update_google_ads_link(
     assert isinstance(response, resources.GoogleAdsLink)
 
     assert response.name == "name_value"
-
-    assert response.parent == "parent_value"
 
     assert response.customer_id == "customer_id_value"
 
@@ -11022,7 +11123,6 @@ async def test_update_google_ads_link_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             resources.GoogleAdsLink(
                 name="name_value",
-                parent="parent_value",
                 customer_id="customer_id_value",
                 can_manage_clients=True,
                 email_address="email_address_value",
@@ -11041,8 +11141,6 @@ async def test_update_google_ads_link_async(
     assert isinstance(response, resources.GoogleAdsLink)
 
     assert response.name == "name_value"
-
-    assert response.parent == "parent_value"
 
     assert response.customer_id == "customer_id_value"
 
@@ -12303,7 +12401,7 @@ def test_analytics_admin_service_host_with_port():
 
 
 def test_analytics_admin_service_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.AnalyticsAdminServiceGrpcTransport(
@@ -12315,7 +12413,7 @@ def test_analytics_admin_service_grpc_transport_channel():
 
 
 def test_analytics_admin_service_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.AnalyticsAdminServiceGrpcAsyncIOTransport(
@@ -12340,7 +12438,7 @@ def test_analytics_admin_service_transport_channel_mtls_with_client_cert_source(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -12398,7 +12496,7 @@ def test_analytics_admin_service_transport_channel_mtls_with_adc(transport_class
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel

@@ -139,7 +139,7 @@ class ListAccountsResponse(proto.Message):
     r"""Request message for ListAccounts RPC.
 
     Attributes:
-        accounts (Sequence[~.resources.Account]):
+        accounts (Sequence[google.analytics.admin_v1alpha.types.Account]):
             Results that were accessible to the caller.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -173,12 +173,13 @@ class UpdateAccountRequest(proto.Message):
     r"""Request message for UpdateAccount RPC.
 
     Attributes:
-        account (~.resources.Account):
+        account (google.analytics.admin_v1alpha.types.Account):
             Required. The account to update. The account's ``name``
             field is used to identify the account.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     account = proto.Field(proto.MESSAGE, number=1, message=resources.Account,)
@@ -190,7 +191,7 @@ class ProvisionAccountTicketRequest(proto.Message):
     r"""Request message for ProvisionAccountTicket RPC.
 
     Attributes:
-        account (~.resources.Account):
+        account (google.analytics.admin_v1alpha.types.Account):
             The account to create.
         redirect_uri (str):
             Redirect URI where the user will be sent
@@ -278,7 +279,7 @@ class ListPropertiesResponse(proto.Message):
     r"""Response message for ListProperties RPC.
 
     Attributes:
-        properties (Sequence[~.resources.Property]):
+        properties (Sequence[google.analytics.admin_v1alpha.types.Property]):
             Results that matched the filter criteria and
             were accessible to the caller.
         next_page_token (str):
@@ -302,12 +303,13 @@ class UpdatePropertyRequest(proto.Message):
     r"""Request message for UpdateProperty RPC.
 
     Attributes:
-        property (~.resources.Property):
+        property (google.analytics.admin_v1alpha.types.Property):
             Required. The property to update. The property's ``name``
             field is used to identify the property to be updated.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     property = proto.Field(proto.MESSAGE, number=1, message=resources.Property,)
@@ -319,7 +321,7 @@ class CreatePropertyRequest(proto.Message):
     r"""Request message for CreateProperty RPC.
 
     Attributes:
-        property (~.resources.Property):
+        property (google.analytics.admin_v1alpha.types.Property):
             Required. The property to create.
             Note: the supplied property must specify its
             parent.
@@ -378,7 +380,7 @@ class BatchGetUserLinksResponse(proto.Message):
     r"""Response message for BatchGetUserLinks RPC.
 
     Attributes:
-        user_links (Sequence[~.resources.UserLink]):
+        user_links (Sequence[google.analytics.admin_v1alpha.types.UserLink]):
             The requested user links.
     """
 
@@ -418,7 +420,7 @@ class ListUserLinksResponse(proto.Message):
     r"""Response message for ListUserLinks RPC.
 
     Attributes:
-        user_links (Sequence[~.resources.UserLink]):
+        user_links (Sequence[google.analytics.admin_v1alpha.types.UserLink]):
             List of UserLinks. These will be ordered
             stably, but in an arbitrary order.
         next_page_token (str):
@@ -469,7 +471,7 @@ class AuditUserLinksResponse(proto.Message):
     r"""Response message for AuditUserLinks RPC.
 
     Attributes:
-        user_links (Sequence[~.resources.AuditUserLink]):
+        user_links (Sequence[google.analytics.admin_v1alpha.types.AuditUserLink]):
             List of AuditUserLinks. These will be ordered
             stably, but in an arbitrary order.
         next_page_token (str):
@@ -506,7 +508,7 @@ class CreateUserLinkRequest(proto.Message):
             Optional. If set, then email the new user
             notifying them that they've been granted
             permissions to the resource.
-        user_link (~.resources.UserLink):
+        user_link (google.analytics.admin_v1alpha.types.UserLink):
             Required. The user link to create.
     """
 
@@ -533,7 +535,7 @@ class BatchCreateUserLinksRequest(proto.Message):
             that they've been granted permissions to the resource.
             Regardless of whether this is set or not, notify_new_user
             field inside each individual request is ignored.
-        requests (Sequence[~.analytics_admin.CreateUserLinkRequest]):
+        requests (Sequence[google.analytics.admin_v1alpha.types.CreateUserLinkRequest]):
             Required. The requests specifying the user
             links to create. A maximum of 1000 user links
             can be created in a batch.
@@ -552,7 +554,7 @@ class BatchCreateUserLinksResponse(proto.Message):
     r"""Response message for BatchCreateUserLinks RPC.
 
     Attributes:
-        user_links (Sequence[~.resources.UserLink]):
+        user_links (Sequence[google.analytics.admin_v1alpha.types.UserLink]):
             The user links created.
     """
 
@@ -565,7 +567,7 @@ class UpdateUserLinkRequest(proto.Message):
     r"""Request message for UpdateUserLink RPC.
 
     Attributes:
-        user_link (~.resources.UserLink):
+        user_link (google.analytics.admin_v1alpha.types.UserLink):
             Required. The user link to update.
     """
 
@@ -582,7 +584,7 @@ class BatchUpdateUserLinksRequest(proto.Message):
             field in the UpdateUserLinkRequest messages must
             either be empty or match this field.
             Example format: accounts/1234
-        requests (Sequence[~.analytics_admin.UpdateUserLinkRequest]):
+        requests (Sequence[google.analytics.admin_v1alpha.types.UpdateUserLinkRequest]):
             Required. The requests specifying the user
             links to update. A maximum of 1000 user links
             can be updated in a batch.
@@ -599,7 +601,7 @@ class BatchUpdateUserLinksResponse(proto.Message):
     r"""Response message for BatchUpdateUserLinks RPC.
 
     Attributes:
-        user_links (Sequence[~.resources.UserLink]):
+        user_links (Sequence[google.analytics.admin_v1alpha.types.UserLink]):
             The user links updated.
     """
 
@@ -630,7 +632,7 @@ class BatchDeleteUserLinksRequest(proto.Message):
             all values for user link names to delete must
             match this field.
             Example format: accounts/1234
-        requests (Sequence[~.analytics_admin.DeleteUserLinkRequest]):
+        requests (Sequence[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest]):
             Required. The requests specifying the user
             links to update. A maximum of 1000 user links
             can be updated in a batch.
@@ -673,12 +675,13 @@ class UpdateWebDataStreamRequest(proto.Message):
     r"""Request message for UpdateWebDataStream RPC.
 
     Attributes:
-        web_data_stream (~.resources.WebDataStream):
+        web_data_stream (google.analytics.admin_v1alpha.types.WebDataStream):
             Required. The web stream to update. The ``name`` field is
             used to identify the web stream to be updated.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     web_data_stream = proto.Field(
@@ -692,7 +695,7 @@ class CreateWebDataStreamRequest(proto.Message):
     r"""Request message for CreateWebDataStream RPC.
 
     Attributes:
-        web_data_stream (~.resources.WebDataStream):
+        web_data_stream (google.analytics.admin_v1alpha.types.WebDataStream):
             Required. The web stream to create.
         parent (str):
             Required. The parent resource where this web
@@ -739,7 +742,7 @@ class ListWebDataStreamsResponse(proto.Message):
     r"""Request message for ListWebDataStreams RPC.
 
     Attributes:
-        web_data_streams (Sequence[~.resources.WebDataStream]):
+        web_data_streams (Sequence[google.analytics.admin_v1alpha.types.WebDataStream]):
             Results that matched the filter criteria and
             were accessible to the caller.
         next_page_token (str):
@@ -791,12 +794,13 @@ class UpdateIosAppDataStreamRequest(proto.Message):
     r"""Request message for UpdateIosAppDataStream RPC.
 
     Attributes:
-        ios_app_data_stream (~.resources.IosAppDataStream):
+        ios_app_data_stream (google.analytics.admin_v1alpha.types.IosAppDataStream):
             Required. The iOS app stream to update. The ``name`` field
             is used to identify the iOS app stream to be updated.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     ios_app_data_stream = proto.Field(
@@ -810,7 +814,7 @@ class CreateIosAppDataStreamRequest(proto.Message):
     r"""Request message for CreateIosAppDataStream RPC.
 
     Attributes:
-        ios_app_data_stream (~.resources.IosAppDataStream):
+        ios_app_data_stream (google.analytics.admin_v1alpha.types.IosAppDataStream):
             Required. The iOS app data stream to create.
         parent (str):
             Required. The parent resource where this ios
@@ -857,7 +861,7 @@ class ListIosAppDataStreamsResponse(proto.Message):
     r"""Request message for ListIosAppDataStreams RPC.
 
     Attributes:
-        ios_app_data_streams (Sequence[~.resources.IosAppDataStream]):
+        ios_app_data_streams (Sequence[google.analytics.admin_v1alpha.types.IosAppDataStream]):
             Results that matched the filter criteria and
             were accessible to the caller.
         next_page_token (str):
@@ -909,13 +913,14 @@ class UpdateAndroidAppDataStreamRequest(proto.Message):
     r"""Request message for UpdateAndroidAppDataStream RPC.
 
     Attributes:
-        android_app_data_stream (~.resources.AndroidAppDataStream):
+        android_app_data_stream (google.analytics.admin_v1alpha.types.AndroidAppDataStream):
             Required. The android app stream to update. The ``name``
             field is used to identify the android app stream to be
             updated.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     android_app_data_stream = proto.Field(
@@ -929,7 +934,7 @@ class CreateAndroidAppDataStreamRequest(proto.Message):
     r"""Request message for CreateAndroidAppDataStream RPC.
 
     Attributes:
-        android_app_data_stream (~.resources.AndroidAppDataStream):
+        android_app_data_stream (google.analytics.admin_v1alpha.types.AndroidAppDataStream):
             Required. The android app stream to create.
         parent (str):
             Required. The parent resource where this
@@ -975,7 +980,7 @@ class ListAndroidAppDataStreamsResponse(proto.Message):
     r"""Request message for ListAndroidDataStreams RPC.
 
     Attributes:
-        android_app_data_streams (Sequence[~.resources.AndroidAppDataStream]):
+        android_app_data_streams (Sequence[google.analytics.admin_v1alpha.types.AndroidAppDataStream]):
             Results that matched the filter criteria and
             were accessible to the caller.
         next_page_token (str):
@@ -1001,7 +1006,6 @@ class GetEnhancedMeasurementSettingsRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the settings to lookup. Format:
-
             properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
             Example:
             "properties/1000/webDataStreams/2000/enhancedMeasurementSettings".
@@ -1014,12 +1018,13 @@ class UpdateEnhancedMeasurementSettingsRequest(proto.Message):
     r"""Request message for UpdateEnhancedMeasurementSettings RPC.
 
     Attributes:
-        enhanced_measurement_settings (~.resources.EnhancedMeasurementSettings):
+        enhanced_measurement_settings (google.analytics.admin_v1alpha.types.EnhancedMeasurementSettings):
             Required. The settings to update. The ``name`` field is used
             to identify the settings to be updated.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     enhanced_measurement_settings = proto.Field(
@@ -1036,7 +1041,7 @@ class CreateFirebaseLinkRequest(proto.Message):
         parent (str):
             Required. Format: properties/{property_id} Example:
             properties/1234
-        firebase_link (~.resources.FirebaseLink):
+        firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
             Required. The Firebase link to create.
     """
 
@@ -1051,11 +1056,12 @@ class UpdateFirebaseLinkRequest(proto.Message):
     r"""Request message for UpdateFirebaseLink RPC
 
     Attributes:
-        firebase_link (~.resources.FirebaseLink):
+        firebase_link (google.analytics.admin_v1alpha.types.FirebaseLink):
             Required. The Firebase link to update.
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     firebase_link = proto.Field(
@@ -1085,23 +1091,51 @@ class ListFirebaseLinksRequest(proto.Message):
         parent (str):
             Required. Format: properties/{property_id} Example:
             properties/1234
+        page_size (int):
+            The maximum number of resources to return.
+            The service may return fewer than this value,
+            even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            A page token, received from a previous ``ListFirebaseLinks``
+            call. Provide this to retrieve the subsequent page. When
+            paginating, all other parameters provided to
+            ``ListProperties`` must match the call that provided the
+            page token.
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
+    page_size = proto.Field(proto.INT32, number=2)
+
+    page_token = proto.Field(proto.STRING, number=3)
 
 
 class ListFirebaseLinksResponse(proto.Message):
     r"""Response message for ListFirebaseLinks RPC
 
     Attributes:
-        firebase_links (Sequence[~.resources.FirebaseLink]):
+        firebase_links (Sequence[google.analytics.admin_v1alpha.types.FirebaseLink]):
             List of FirebaseLinks. This will have at most
             one value.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages. Currently, Google Analytics supports only one
+            FirebaseLink per property, so this will never be populated.
     """
+
+    @property
+    def raw_page(self):
+        return self
 
     firebase_links = proto.RepeatedField(
         proto.MESSAGE, number=1, message=resources.FirebaseLink,
     )
+
+    next_page_token = proto.Field(proto.STRING, number=2)
 
 
 class GetGlobalSiteTagRequest(proto.Message):
@@ -1124,7 +1158,7 @@ class CreateGoogleAdsLinkRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Example format: properties/1234
-        google_ads_link (~.resources.GoogleAdsLink):
+        google_ads_link (google.analytics.admin_v1alpha.types.GoogleAdsLink):
             Required. The GoogleAdsLink to create.
     """
 
@@ -1139,11 +1173,12 @@ class UpdateGoogleAdsLinkRequest(proto.Message):
     r"""Request message for UpdateGoogleAdsLink RPC
 
     Attributes:
-        google_ads_link (~.resources.GoogleAdsLink):
+        google_ads_link (google.analytics.admin_v1alpha.types.GoogleAdsLink):
             The GoogleAdsLink to update
-        update_mask (~.field_mask.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
     """
 
     google_ads_link = proto.Field(
@@ -1197,7 +1232,7 @@ class ListGoogleAdsLinksResponse(proto.Message):
     r"""Response message for ListGoogleAdsLinks RPC.
 
     Attributes:
-        google_ads_links (Sequence[~.resources.GoogleAdsLink]):
+        google_ads_links (Sequence[google.analytics.admin_v1alpha.types.GoogleAdsLink]):
             List of GoogleAdsLinks.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -1258,7 +1293,7 @@ class ListAccountSummariesResponse(proto.Message):
     r"""Response message for ListAccountSummaries RPC.
 
     Attributes:
-        account_summaries (Sequence[~.resources.AccountSummary]):
+        account_summaries (Sequence[google.analytics.admin_v1alpha.types.AccountSummary]):
             Account summaries of all accounts the caller
             has access to.
         next_page_token (str):

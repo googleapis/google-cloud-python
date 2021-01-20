@@ -250,8 +250,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the get account method over gRPC.
 
         Lookup for a single Account.
-        Throws "Target not found" if no such account found, or
-        if caller does not have permissions to access it.
 
         Returns:
             Callable[[~.GetAccountRequest],
@@ -432,9 +430,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the get property method over gRPC.
 
         Lookup for a single "GA4" Property.
-        Throws "Target not found" if no such property found, if
-        property is not of the type "GA4", or if caller does not
-        have permissions to access it.
 
         Returns:
             Callable[[~.GetPropertyRequest],
@@ -894,9 +889,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the get web data stream method over gRPC.
 
         Lookup for a single WebDataStream
-        Throws "Target not found" if no such web data stream
-        found, or if the caller does not have permissions to
-        access it.
 
         Returns:
             Callable[[~.GetWebDataStreamRequest],
@@ -1042,9 +1034,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the get ios app data stream method over gRPC.
 
         Lookup for a single IosAppDataStream
-        Throws "Target not found" if no such iOS app data stream
-        found, or if the caller does not have permissions to
-        access it.
 
         Returns:
             Callable[[~.GetIosAppDataStreamRequest],
@@ -1194,9 +1183,6 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the get android app data stream method over gRPC.
 
         Lookup for a single AndroidAppDataStream
-        Throws "Target not found" if no such android app data
-        stream found, or if the caller does not have permissions
-        to access it.
 
         Returns:
             Callable[[~.GetAndroidAppDataStreamRequest],

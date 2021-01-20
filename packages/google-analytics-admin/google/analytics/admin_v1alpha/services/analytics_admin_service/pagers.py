@@ -25,7 +25,7 @@ class ListAccountsPager:
     """A pager for iterating through ``list_accounts`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListAccountsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListAccountsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``accounts`` field.
 
@@ -34,7 +34,7 @@ class ListAccountsPager:
     through the ``accounts`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListAccountsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAccountsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +52,9 @@ class ListAccountsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListAccountsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListAccountsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListAccountsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListAccountsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +87,7 @@ class ListAccountsAsyncPager:
     """A pager for iterating through ``list_accounts`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListAccountsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListAccountsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``accounts`` field.
 
@@ -96,7 +96,7 @@ class ListAccountsAsyncPager:
     through the ``accounts`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListAccountsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAccountsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +114,9 @@ class ListAccountsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListAccountsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListAccountsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListAccountsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListAccountsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +153,7 @@ class ListAccountSummariesPager:
     """A pager for iterating through ``list_account_summaries`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListAccountSummariesResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListAccountSummariesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``account_summaries`` field.
 
@@ -162,7 +162,7 @@ class ListAccountSummariesPager:
     through the ``account_summaries`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListAccountSummariesResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAccountSummariesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +180,9 @@ class ListAccountSummariesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListAccountSummariesRequest`):
+            request (google.analytics.admin_v1alpha.types.ListAccountSummariesRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListAccountSummariesResponse`):
+            response (google.analytics.admin_v1alpha.types.ListAccountSummariesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +215,7 @@ class ListAccountSummariesAsyncPager:
     """A pager for iterating through ``list_account_summaries`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListAccountSummariesResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListAccountSummariesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``account_summaries`` field.
 
@@ -224,7 +224,7 @@ class ListAccountSummariesAsyncPager:
     through the ``account_summaries`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListAccountSummariesResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAccountSummariesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +242,9 @@ class ListAccountSummariesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListAccountSummariesRequest`):
+            request (google.analytics.admin_v1alpha.types.ListAccountSummariesRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListAccountSummariesResponse`):
+            response (google.analytics.admin_v1alpha.types.ListAccountSummariesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -283,7 +283,7 @@ class ListPropertiesPager:
     """A pager for iterating through ``list_properties`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListPropertiesResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListPropertiesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``properties`` field.
 
@@ -292,7 +292,7 @@ class ListPropertiesPager:
     through the ``properties`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListPropertiesResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListPropertiesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -310,9 +310,9 @@ class ListPropertiesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListPropertiesRequest`):
+            request (google.analytics.admin_v1alpha.types.ListPropertiesRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListPropertiesResponse`):
+            response (google.analytics.admin_v1alpha.types.ListPropertiesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -345,7 +345,7 @@ class ListPropertiesAsyncPager:
     """A pager for iterating through ``list_properties`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListPropertiesResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListPropertiesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``properties`` field.
 
@@ -354,7 +354,7 @@ class ListPropertiesAsyncPager:
     through the ``properties`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListPropertiesResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListPropertiesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -372,9 +372,9 @@ class ListPropertiesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListPropertiesRequest`):
+            request (google.analytics.admin_v1alpha.types.ListPropertiesRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListPropertiesResponse`):
+            response (google.analytics.admin_v1alpha.types.ListPropertiesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -411,7 +411,7 @@ class ListUserLinksPager:
     """A pager for iterating through ``list_user_links`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListUserLinksResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``user_links`` field.
 
@@ -420,7 +420,7 @@ class ListUserLinksPager:
     through the ``user_links`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListUserLinksResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -438,9 +438,9 @@ class ListUserLinksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListUserLinksRequest`):
+            request (google.analytics.admin_v1alpha.types.ListUserLinksRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListUserLinksResponse`):
+            response (google.analytics.admin_v1alpha.types.ListUserLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -473,7 +473,7 @@ class ListUserLinksAsyncPager:
     """A pager for iterating through ``list_user_links`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListUserLinksResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``user_links`` field.
 
@@ -482,7 +482,7 @@ class ListUserLinksAsyncPager:
     through the ``user_links`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListUserLinksResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListUserLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -500,9 +500,9 @@ class ListUserLinksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListUserLinksRequest`):
+            request (google.analytics.admin_v1alpha.types.ListUserLinksRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListUserLinksResponse`):
+            response (google.analytics.admin_v1alpha.types.ListUserLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -539,7 +539,7 @@ class AuditUserLinksPager:
     """A pager for iterating through ``audit_user_links`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.AuditUserLinksResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``user_links`` field.
 
@@ -548,7 +548,7 @@ class AuditUserLinksPager:
     through the ``user_links`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.AuditUserLinksResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -566,9 +566,9 @@ class AuditUserLinksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.AuditUserLinksRequest`):
+            request (google.analytics.admin_v1alpha.types.AuditUserLinksRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.AuditUserLinksResponse`):
+            response (google.analytics.admin_v1alpha.types.AuditUserLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -601,7 +601,7 @@ class AuditUserLinksAsyncPager:
     """A pager for iterating through ``audit_user_links`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.AuditUserLinksResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``user_links`` field.
 
@@ -610,7 +610,7 @@ class AuditUserLinksAsyncPager:
     through the ``user_links`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.AuditUserLinksResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.AuditUserLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -628,9 +628,9 @@ class AuditUserLinksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.AuditUserLinksRequest`):
+            request (google.analytics.admin_v1alpha.types.AuditUserLinksRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.AuditUserLinksResponse`):
+            response (google.analytics.admin_v1alpha.types.AuditUserLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -667,7 +667,7 @@ class ListWebDataStreamsPager:
     """A pager for iterating through ``list_web_data_streams`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListWebDataStreamsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListWebDataStreamsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``web_data_streams`` field.
 
@@ -676,7 +676,7 @@ class ListWebDataStreamsPager:
     through the ``web_data_streams`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListWebDataStreamsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListWebDataStreamsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -694,9 +694,9 @@ class ListWebDataStreamsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListWebDataStreamsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListWebDataStreamsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListWebDataStreamsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListWebDataStreamsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -729,7 +729,7 @@ class ListWebDataStreamsAsyncPager:
     """A pager for iterating through ``list_web_data_streams`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListWebDataStreamsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListWebDataStreamsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``web_data_streams`` field.
 
@@ -738,7 +738,7 @@ class ListWebDataStreamsAsyncPager:
     through the ``web_data_streams`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListWebDataStreamsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListWebDataStreamsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -756,9 +756,9 @@ class ListWebDataStreamsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListWebDataStreamsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListWebDataStreamsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListWebDataStreamsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListWebDataStreamsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -795,7 +795,7 @@ class ListIosAppDataStreamsPager:
     """A pager for iterating through ``list_ios_app_data_streams`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListIosAppDataStreamsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListIosAppDataStreamsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``ios_app_data_streams`` field.
 
@@ -804,7 +804,7 @@ class ListIosAppDataStreamsPager:
     through the ``ios_app_data_streams`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListIosAppDataStreamsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListIosAppDataStreamsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -822,9 +822,9 @@ class ListIosAppDataStreamsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListIosAppDataStreamsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListIosAppDataStreamsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListIosAppDataStreamsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListIosAppDataStreamsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -857,7 +857,7 @@ class ListIosAppDataStreamsAsyncPager:
     """A pager for iterating through ``list_ios_app_data_streams`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListIosAppDataStreamsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListIosAppDataStreamsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``ios_app_data_streams`` field.
 
@@ -866,7 +866,7 @@ class ListIosAppDataStreamsAsyncPager:
     through the ``ios_app_data_streams`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListIosAppDataStreamsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListIosAppDataStreamsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -884,9 +884,9 @@ class ListIosAppDataStreamsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListIosAppDataStreamsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListIosAppDataStreamsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListIosAppDataStreamsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListIosAppDataStreamsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -925,7 +925,7 @@ class ListAndroidAppDataStreamsPager:
     """A pager for iterating through ``list_android_app_data_streams`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListAndroidAppDataStreamsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``android_app_data_streams`` field.
 
@@ -934,7 +934,7 @@ class ListAndroidAppDataStreamsPager:
     through the ``android_app_data_streams`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListAndroidAppDataStreamsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -952,9 +952,9 @@ class ListAndroidAppDataStreamsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListAndroidAppDataStreamsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListAndroidAppDataStreamsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -987,7 +987,7 @@ class ListAndroidAppDataStreamsAsyncPager:
     """A pager for iterating through ``list_android_app_data_streams`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListAndroidAppDataStreamsResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``android_app_data_streams`` field.
 
@@ -996,7 +996,7 @@ class ListAndroidAppDataStreamsAsyncPager:
     through the ``android_app_data_streams`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListAndroidAppDataStreamsResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -1016,9 +1016,9 @@ class ListAndroidAppDataStreamsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListAndroidAppDataStreamsRequest`):
+            request (google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListAndroidAppDataStreamsResponse`):
+            response (google.analytics.admin_v1alpha.types.ListAndroidAppDataStreamsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -1053,11 +1053,139 @@ class ListAndroidAppDataStreamsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListFirebaseLinksPager:
+    """A pager for iterating through ``list_firebase_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListFirebaseLinksResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``firebase_links`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListFirebaseLinks`` requests and continue to iterate
+    through the ``firebase_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListFirebaseLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., analytics_admin.ListFirebaseLinksResponse],
+        request: analytics_admin.ListFirebaseLinksRequest,
+        response: analytics_admin.ListFirebaseLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListFirebaseLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListFirebaseLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListFirebaseLinksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterable[analytics_admin.ListFirebaseLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterable[resources.FirebaseLink]:
+        for page in self.pages:
+            yield from page.firebase_links
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListFirebaseLinksAsyncPager:
+    """A pager for iterating through ``list_firebase_links`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.analytics.admin_v1alpha.types.ListFirebaseLinksResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``firebase_links`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListFirebaseLinks`` requests and continue to iterate
+    through the ``firebase_links`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListFirebaseLinksResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[analytics_admin.ListFirebaseLinksResponse]],
+        request: analytics_admin.ListFirebaseLinksRequest,
+        response: analytics_admin.ListFirebaseLinksResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.analytics.admin_v1alpha.types.ListFirebaseLinksRequest):
+                The initial request object.
+            response (google.analytics.admin_v1alpha.types.ListFirebaseLinksResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = analytics_admin.ListFirebaseLinksRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterable[analytics_admin.ListFirebaseLinksResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterable[resources.FirebaseLink]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.firebase_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListGoogleAdsLinksPager:
     """A pager for iterating through ``list_google_ads_links`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListGoogleAdsLinksResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListGoogleAdsLinksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``google_ads_links`` field.
 
@@ -1066,7 +1194,7 @@ class ListGoogleAdsLinksPager:
     through the ``google_ads_links`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListGoogleAdsLinksResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListGoogleAdsLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -1084,9 +1212,9 @@ class ListGoogleAdsLinksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListGoogleAdsLinksRequest`):
+            request (google.analytics.admin_v1alpha.types.ListGoogleAdsLinksRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListGoogleAdsLinksResponse`):
+            response (google.analytics.admin_v1alpha.types.ListGoogleAdsLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -1119,7 +1247,7 @@ class ListGoogleAdsLinksAsyncPager:
     """A pager for iterating through ``list_google_ads_links`` requests.
 
     This class thinly wraps an initial
-    :class:`~.analytics_admin.ListGoogleAdsLinksResponse` object, and
+    :class:`google.analytics.admin_v1alpha.types.ListGoogleAdsLinksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``google_ads_links`` field.
 
@@ -1128,7 +1256,7 @@ class ListGoogleAdsLinksAsyncPager:
     through the ``google_ads_links`` field on the
     corresponding responses.
 
-    All the usual :class:`~.analytics_admin.ListGoogleAdsLinksResponse`
+    All the usual :class:`google.analytics.admin_v1alpha.types.ListGoogleAdsLinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -1146,9 +1274,9 @@ class ListGoogleAdsLinksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.analytics_admin.ListGoogleAdsLinksRequest`):
+            request (google.analytics.admin_v1alpha.types.ListGoogleAdsLinksRequest):
                 The initial request object.
-            response (:class:`~.analytics_admin.ListGoogleAdsLinksResponse`):
+            response (google.analytics.admin_v1alpha.types.ListGoogleAdsLinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
