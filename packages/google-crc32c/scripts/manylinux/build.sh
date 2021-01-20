@@ -40,12 +40,10 @@ docker run \
     quay.io/pypa/manylinux2014_x86_64 \
     /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
 
-# This currently results in an error
-# Status: Downloaded newer image for quay.io/pypa/manylinux2014_aarch64:latest
-# standard_init_linux.go:219: exec user process caused: exec format error
-# docker run \
-#     --rm \
-#     --interactive \
-#     --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
-#     quay.io/pypa/manylinux2014_aarch64 \
-#     /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
+docker run --rm --privileged hypriot/qemu-register
+docker run \
+    --rm \
+    --interactive \
+    --volume ${REPO_ROOT}:/var/code/python-crc32c/ \
+    quay.io/pypa/manylinux2014_aarch64 \
+    /var/code/python-crc32c/scripts/manylinux/build_on_centos.sh
