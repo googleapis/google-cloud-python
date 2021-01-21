@@ -51,13 +51,13 @@ class Execution(proto.Message):
             Output only. The resource name of the
             execution. Format:
             projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Marks the beginning of
             execution.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Marks the end of execution,
             successful or not.
-        state (~.gcwe_executions.Execution.State):
+        state (google.cloud.workflows.executions_v1beta.types.Execution.State):
             Output only. Current state of the execution.
         argument (str):
             Input parameters of the execution represented
@@ -66,7 +66,7 @@ class Execution(proto.Message):
             Output only. Output of the execution represented as a JSON
             string. The value can only be present if the execution's
             state is ``SUCCEEDED``.
-        error (~.gcwe_executions.Execution.Error):
+        error (google.cloud.workflows.executions_v1beta.types.Execution.Error):
             Output only. The error which caused the execution to finish
             prematurely. The value is only present if the execution's
             state is ``FAILED`` or ``CANCELLED``.
@@ -143,7 +143,7 @@ class ListExecutionsRequest(proto.Message):
             When paginating, all other parameters provided to
             ``ListExecutions`` must match the call that provided the
             page token.
-        view (~.gcwe_executions.ExecutionView):
+        view (google.cloud.workflows.executions_v1beta.types.ExecutionView):
             Optional. A view defining which fields should
             be filled in the returned executions. The API
             will default to the BASIC view.
@@ -164,7 +164,7 @@ class ListExecutionsResponse(proto.Message):
     method.
 
     Attributes:
-        executions (Sequence[~.gcwe_executions.Execution]):
+        executions (Sequence[google.cloud.workflows.executions_v1beta.types.Execution]):
             The executions which match the request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -193,7 +193,7 @@ class CreateExecutionRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}
             The latest revision of the workflow will be
             used.
-        execution (~.gcwe_executions.Execution):
+        execution (google.cloud.workflows.executions_v1beta.types.Execution):
             Required. Execution to be created.
     """
 
@@ -212,7 +212,7 @@ class GetExecutionRequest(proto.Message):
             Required. Name of the execution to be
             retrieved. Format:
             projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
-        view (~.gcwe_executions.ExecutionView):
+        view (google.cloud.workflows.executions_v1beta.types.ExecutionView):
             Optional. A view defining which fields should
             be filled in the returned execution. The API
             will default to the FULL view.

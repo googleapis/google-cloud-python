@@ -78,6 +78,7 @@ class WorkflowsAsyncClient:
         WorkflowsClient.parse_common_location_path
     )
 
+    from_service_account_info = WorkflowsClient.from_service_account_info
     from_service_account_file = WorkflowsClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -155,7 +156,7 @@ class WorkflowsAsyncClient:
         The default order is not specified.
 
         Args:
-            request (:class:`~.workflows.ListWorkflowsRequest`):
+            request (:class:`google.cloud.workflows_v1beta.types.ListWorkflowsRequest`):
                 The request object. Request for the
                 [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
                 method.
@@ -164,6 +165,7 @@ class WorkflowsAsyncClient:
                 which the workflows should be listed.
                 Format:
                 projects/{project}/locations/{location}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -175,10 +177,10 @@ class WorkflowsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListWorkflowsAsyncPager:
+            google.cloud.workflows_v1beta.services.workflows.pagers.ListWorkflowsAsyncPager:
                 Response for the
-                [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
-                method.
+                   [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+                   method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -240,7 +242,7 @@ class WorkflowsAsyncClient:
         r"""Gets details of a single Workflow.
 
         Args:
-            request (:class:`~.workflows.GetWorkflowRequest`):
+            request (:class:`google.cloud.workflows_v1beta.types.GetWorkflowRequest`):
                 The request object. Request for the
                 [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow]
                 method.
@@ -248,6 +250,7 @@ class WorkflowsAsyncClient:
                 Required. Name of the workflow which
                 information should be retrieved. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -259,7 +262,7 @@ class WorkflowsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.workflows.Workflow:
+            google.cloud.workflows_v1beta.types.Workflow:
                 Workflow program to be executed by
                 Workflows.
 
@@ -319,7 +322,7 @@ class WorkflowsAsyncClient:
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
         Args:
-            request (:class:`~.workflows.CreateWorkflowRequest`):
+            request (:class:`google.cloud.workflows_v1beta.types.CreateWorkflowRequest`):
                 The request object. Request for the
                 [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
                 method.
@@ -328,10 +331,11 @@ class WorkflowsAsyncClient:
                 which the workflow should be created.
                 Format:
                 projects/{project}/locations/{location}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            workflow (:class:`~.workflows.Workflow`):
+            workflow (:class:`google.cloud.workflows_v1beta.types.Workflow`):
                 Required. Workflow to be created.
                 This corresponds to the ``workflow`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -348,6 +352,7 @@ class WorkflowsAsyncClient:
                 -  Must be unique within the customer project and
                    location.
 
+
                 This corresponds to the ``workflow_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -359,12 +364,12 @@ class WorkflowsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.workflows.Workflow``: Workflow program to be
-                executed by Workflows.
+                :class:`google.cloud.workflows_v1beta.types.Workflow`
+                Workflow program to be executed by Workflows.
 
         """
         # Create or coerce a protobuf request object.
@@ -431,7 +436,7 @@ class WorkflowsAsyncClient:
         executions of the workflow.
 
         Args:
-            request (:class:`~.workflows.DeleteWorkflowRequest`):
+            request (:class:`google.cloud.workflows_v1beta.types.DeleteWorkflowRequest`):
                 The request object. Request for the
                 [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
                 method.
@@ -439,6 +444,7 @@ class WorkflowsAsyncClient:
                 Required. Name of the workflow to be
                 deleted. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -450,24 +456,22 @@ class WorkflowsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -534,19 +538,20 @@ class WorkflowsAsyncClient:
         used in new workflow executions.
 
         Args:
-            request (:class:`~.workflows.UpdateWorkflowRequest`):
+            request (:class:`google.cloud.workflows_v1beta.types.UpdateWorkflowRequest`):
                 The request object. Request for the
                 [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
                 method.
-            workflow (:class:`~.workflows.Workflow`):
+            workflow (:class:`google.cloud.workflows_v1beta.types.Workflow`):
                 Required. Workflow to be updated.
                 This corresponds to the ``workflow`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 List of fields to be updated. If not
                 present, the entire workflow will be
                 updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -558,12 +563,12 @@ class WorkflowsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.workflows.Workflow``: Workflow program to be
-                executed by Workflows.
+                :class:`google.cloud.workflows_v1beta.types.Workflow`
+                Workflow program to be executed by Workflows.
 
         """
         # Create or coerce a protobuf request object.

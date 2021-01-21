@@ -24,7 +24,7 @@ class ListWorkflowsPager:
     """A pager for iterating through ``list_workflows`` requests.
 
     This class thinly wraps an initial
-    :class:`~.workflows.ListWorkflowsResponse` object, and
+    :class:`google.cloud.workflows_v1beta.types.ListWorkflowsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``workflows`` field.
 
@@ -33,7 +33,7 @@ class ListWorkflowsPager:
     through the ``workflows`` field on the
     corresponding responses.
 
-    All the usual :class:`~.workflows.ListWorkflowsResponse`
+    All the usual :class:`google.cloud.workflows_v1beta.types.ListWorkflowsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListWorkflowsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.workflows.ListWorkflowsRequest`):
+            request (google.cloud.workflows_v1beta.types.ListWorkflowsRequest):
                 The initial request object.
-            response (:class:`~.workflows.ListWorkflowsResponse`):
+            response (google.cloud.workflows_v1beta.types.ListWorkflowsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListWorkflowsAsyncPager:
     """A pager for iterating through ``list_workflows`` requests.
 
     This class thinly wraps an initial
-    :class:`~.workflows.ListWorkflowsResponse` object, and
+    :class:`google.cloud.workflows_v1beta.types.ListWorkflowsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``workflows`` field.
 
@@ -95,7 +95,7 @@ class ListWorkflowsAsyncPager:
     through the ``workflows`` field on the
     corresponding responses.
 
-    All the usual :class:`~.workflows.ListWorkflowsResponse`
+    All the usual :class:`google.cloud.workflows_v1beta.types.ListWorkflowsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListWorkflowsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.workflows.ListWorkflowsRequest`):
+            request (google.cloud.workflows_v1beta.types.ListWorkflowsRequest):
                 The initial request object.
-            response (:class:`~.workflows.ListWorkflowsResponse`):
+            response (google.cloud.workflows_v1beta.types.ListWorkflowsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

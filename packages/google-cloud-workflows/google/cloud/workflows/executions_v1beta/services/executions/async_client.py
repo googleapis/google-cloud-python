@@ -76,6 +76,7 @@ class ExecutionsAsyncClient:
         ExecutionsClient.parse_common_location_path
     )
 
+    from_service_account_info = ExecutionsClient.from_service_account_info
     from_service_account_file = ExecutionsClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -156,7 +157,7 @@ class ExecutionsAsyncClient:
         first).
 
         Args:
-            request (:class:`~.executions.ListExecutionsRequest`):
+            request (:class:`google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest`):
                 The request object. Request for the
                 [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
                 method.
@@ -165,6 +166,7 @@ class ExecutionsAsyncClient:
                 which the executions should be listed.
                 Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -176,10 +178,10 @@ class ExecutionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListExecutionsAsyncPager:
+            google.cloud.workflows.executions_v1beta.services.executions.pagers.ListExecutionsAsyncPager:
                 Response for the
-                [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
-                method.
+                   [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
+                   method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -243,7 +245,7 @@ class ExecutionsAsyncClient:
         the given workflow.
 
         Args:
-            request (:class:`~.executions.CreateExecutionRequest`):
+            request (:class:`google.cloud.workflows.executions_v1beta.types.CreateExecutionRequest`):
                 The request object. Request for the
                 [CreateExecution][google.cloud.workflows.executions.v1beta.Executions.CreateExecution]
                 method.
@@ -254,10 +256,11 @@ class ExecutionsAsyncClient:
                 projects/{project}/locations/{location}/workflows/{workflow}
                 The latest revision of the workflow will
                 be used.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            execution (:class:`~.executions.Execution`):
+            execution (:class:`google.cloud.workflows.executions_v1beta.types.Execution`):
                 Required. Execution to be created.
                 This corresponds to the ``execution`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -270,7 +273,7 @@ class ExecutionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.executions.Execution:
+            google.cloud.workflows.executions_v1beta.types.Execution:
                 A running instance of a
                 [Workflow][google.cloud.workflows.v1beta.Workflow].
 
@@ -327,7 +330,7 @@ class ExecutionsAsyncClient:
         r"""Returns an execution of the given name.
 
         Args:
-            request (:class:`~.executions.GetExecutionRequest`):
+            request (:class:`google.cloud.workflows.executions_v1beta.types.GetExecutionRequest`):
                 The request object. Request for the
                 [GetExecution][google.cloud.workflows.executions.v1beta.Executions.GetExecution]
                 method.
@@ -335,6 +338,7 @@ class ExecutionsAsyncClient:
                 Required. Name of the execution to be
                 retrieved. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -346,7 +350,7 @@ class ExecutionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.executions.Execution:
+            google.cloud.workflows.executions_v1beta.types.Execution:
                 A running instance of a
                 [Workflow][google.cloud.workflows.v1beta.Workflow].
 
@@ -401,7 +405,7 @@ class ExecutionsAsyncClient:
         r"""Cancels an execution of the given name.
 
         Args:
-            request (:class:`~.executions.CancelExecutionRequest`):
+            request (:class:`google.cloud.workflows.executions_v1beta.types.CancelExecutionRequest`):
                 The request object. Request for the
                 [CancelExecution][google.cloud.workflows.executions.v1beta.Executions.CancelExecution]
                 method.
@@ -409,6 +413,7 @@ class ExecutionsAsyncClient:
                 Required. Name of the execution to be
                 cancelled. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -420,7 +425,7 @@ class ExecutionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.executions.Execution:
+            google.cloud.workflows.executions_v1beta.types.Execution:
                 A running instance of a
                 [Workflow][google.cloud.workflows.v1beta.Workflow].
 

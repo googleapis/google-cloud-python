@@ -1,6 +1,6 @@
 Services for Google Cloud Workflows v1beta API
 ==============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.workflows_v1beta.services.workflows
-    :members:
-    :inherited-members:
+    workflows

@@ -24,7 +24,7 @@ class ListExecutionsPager:
     """A pager for iterating through ``list_executions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.executions.ListExecutionsResponse` object, and
+    :class:`google.cloud.workflows.executions_v1beta.types.ListExecutionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``executions`` field.
 
@@ -33,7 +33,7 @@ class ListExecutionsPager:
     through the ``executions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.executions.ListExecutionsResponse`
+    All the usual :class:`google.cloud.workflows.executions_v1beta.types.ListExecutionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListExecutionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.executions.ListExecutionsRequest`):
+            request (google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest):
                 The initial request object.
-            response (:class:`~.executions.ListExecutionsResponse`):
+            response (google.cloud.workflows.executions_v1beta.types.ListExecutionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListExecutionsAsyncPager:
     """A pager for iterating through ``list_executions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.executions.ListExecutionsResponse` object, and
+    :class:`google.cloud.workflows.executions_v1beta.types.ListExecutionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``executions`` field.
 
@@ -95,7 +95,7 @@ class ListExecutionsAsyncPager:
     through the ``executions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.executions.ListExecutionsResponse`
+    All the usual :class:`google.cloud.workflows.executions_v1beta.types.ListExecutionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListExecutionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.executions.ListExecutionsRequest`):
+            request (google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest):
                 The initial request object.
-            response (:class:`~.executions.ListExecutionsResponse`):
+            response (google.cloud.workflows.executions_v1beta.types.ListExecutionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

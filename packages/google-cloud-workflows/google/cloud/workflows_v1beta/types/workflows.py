@@ -49,7 +49,7 @@ class Workflow(proto.Message):
             Description of the workflow provided by the
             user. Must be at most 1000 unicode characters
             long.
-        state (~.gcw_workflows.Workflow.State):
+        state (google.cloud.workflows_v1beta.types.Workflow.State):
             Output only. State of the workflow
             deployment.
         revision_id (str):
@@ -62,16 +62,16 @@ class Workflow(proto.Message):
                first 6 characters define the zero-padded revision
                ordinal number. They are followed by a hyphen and 3
                hexadecimal random characters.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of when the
             workflow was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of the
             workflow.
-        revision_create_time (~.timestamp.Timestamp):
+        revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp that the latest
             revision of the workflow was created.
-        labels (Sequence[~.gcw_workflows.Workflow.LabelsEntry]):
+        labels (Sequence[google.cloud.workflows_v1beta.types.Workflow.LabelsEntry]):
             Labels associated with this workflow.
             Labels can contain at most 64 entries. Keys and
             values can be no longer than 63 characters and
@@ -183,7 +183,7 @@ class ListWorkflowsResponse(proto.Message):
     method.
 
     Attributes:
-        workflows (Sequence[~.gcw_workflows.Workflow]):
+        workflows (Sequence[google.cloud.workflows_v1beta.types.Workflow]):
             The workflows which match the request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
@@ -229,7 +229,7 @@ class CreateWorkflowRequest(proto.Message):
             Required. Project and location in which the
             workflow should be created. Format:
             projects/{project}/locations/{location}
-        workflow (~.gcw_workflows.Workflow):
+        workflow (google.cloud.workflows_v1beta.types.Workflow):
             Required. Workflow to be created.
         workflow_id (str):
             Required. The ID of the workflow to be created. It has to
@@ -271,9 +271,9 @@ class UpdateWorkflowRequest(proto.Message):
     method.
 
     Attributes:
-        workflow (~.gcw_workflows.Workflow):
+        workflow (google.cloud.workflows_v1beta.types.Workflow):
             Required. Workflow to be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             List of fields to be updated. If not present,
             the entire workflow will be updated.
     """
@@ -287,9 +287,9 @@ class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
     Attributes:
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation finished running.
         target (str):
             Server-defined resource path for the target

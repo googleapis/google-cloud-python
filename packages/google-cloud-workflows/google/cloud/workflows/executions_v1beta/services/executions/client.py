@@ -113,6 +113,22 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            ExecutionsClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -124,7 +140,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            ExecutionsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -250,10 +266,10 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ExecutionsTransport]): The
+            transport (Union[str, ExecutionsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -367,15 +383,16 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         first).
 
         Args:
-            request (:class:`~.executions.ListExecutionsRequest`):
+            request (google.cloud.workflows.executions_v1beta.types.ListExecutionsRequest):
                 The request object. Request for the
                 [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. Name of the workflow for
                 which the executions should be listed.
                 Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -387,10 +404,10 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListExecutionsPager:
+            google.cloud.workflows.executions_v1beta.services.executions.pagers.ListExecutionsPager:
                 Response for the
-                [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
-                method.
+                   [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
+                   method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -455,21 +472,22 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         the given workflow.
 
         Args:
-            request (:class:`~.executions.CreateExecutionRequest`):
+            request (google.cloud.workflows.executions_v1beta.types.CreateExecutionRequest):
                 The request object. Request for the
                 [CreateExecution][google.cloud.workflows.executions.v1beta.Executions.CreateExecution]
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. Name of the workflow for
                 which an execution should be created.
                 Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
                 The latest revision of the workflow will
                 be used.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            execution (:class:`~.executions.Execution`):
+            execution (google.cloud.workflows.executions_v1beta.types.Execution):
                 Required. Execution to be created.
                 This corresponds to the ``execution`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -482,7 +500,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.executions.Execution:
+            google.cloud.workflows.executions_v1beta.types.Execution:
                 A running instance of a
                 [Workflow][google.cloud.workflows.v1beta.Workflow].
 
@@ -540,14 +558,15 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         r"""Returns an execution of the given name.
 
         Args:
-            request (:class:`~.executions.GetExecutionRequest`):
+            request (google.cloud.workflows.executions_v1beta.types.GetExecutionRequest):
                 The request object. Request for the
                 [GetExecution][google.cloud.workflows.executions.v1beta.Executions.GetExecution]
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. Name of the execution to be
                 retrieved. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -559,7 +578,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.executions.Execution:
+            google.cloud.workflows.executions_v1beta.types.Execution:
                 A running instance of a
                 [Workflow][google.cloud.workflows.v1beta.Workflow].
 
@@ -615,14 +634,15 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
         r"""Cancels an execution of the given name.
 
         Args:
-            request (:class:`~.executions.CancelExecutionRequest`):
+            request (google.cloud.workflows.executions_v1beta.types.CancelExecutionRequest):
                 The request object. Request for the
                 [CancelExecution][google.cloud.workflows.executions.v1beta.Executions.CancelExecution]
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. Name of the execution to be
                 cancelled. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -634,7 +654,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.executions.Execution:
+            google.cloud.workflows.executions_v1beta.types.Execution:
                 A running instance of a
                 [Workflow][google.cloud.workflows.v1beta.Workflow].
 

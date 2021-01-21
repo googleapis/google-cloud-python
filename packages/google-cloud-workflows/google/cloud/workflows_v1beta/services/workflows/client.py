@@ -117,6 +117,22 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            WorkflowsClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -128,7 +144,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            WorkflowsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -236,10 +252,10 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.WorkflowsTransport]): The
+            transport (Union[str, WorkflowsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -350,15 +366,16 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         The default order is not specified.
 
         Args:
-            request (:class:`~.workflows.ListWorkflowsRequest`):
+            request (google.cloud.workflows_v1beta.types.ListWorkflowsRequest):
                 The request object. Request for the
                 [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. Project and location from
                 which the workflows should be listed.
                 Format:
                 projects/{project}/locations/{location}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -370,10 +387,10 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListWorkflowsPager:
+            google.cloud.workflows_v1beta.services.workflows.pagers.ListWorkflowsPager:
                 Response for the
-                [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
-                method.
+                   [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+                   method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -436,14 +453,15 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         r"""Gets details of a single Workflow.
 
         Args:
-            request (:class:`~.workflows.GetWorkflowRequest`):
+            request (google.cloud.workflows_v1beta.types.GetWorkflowRequest):
                 The request object. Request for the
                 [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow]
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. Name of the workflow which
                 information should be retrieved. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -455,7 +473,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.workflows.Workflow:
+            google.cloud.workflows_v1beta.types.Workflow:
                 Workflow program to be executed by
                 Workflows.
 
@@ -516,24 +534,25 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
         Args:
-            request (:class:`~.workflows.CreateWorkflowRequest`):
+            request (google.cloud.workflows_v1beta.types.CreateWorkflowRequest):
                 The request object. Request for the
                 [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. Project and location in
                 which the workflow should be created.
                 Format:
                 projects/{project}/locations/{location}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            workflow (:class:`~.workflows.Workflow`):
+            workflow (google.cloud.workflows_v1beta.types.Workflow):
                 Required. Workflow to be created.
                 This corresponds to the ``workflow`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            workflow_id (:class:`str`):
+            workflow_id (str):
                 Required. The ID of the workflow to be created. It has
                 to fulfill the following requirements:
 
@@ -544,6 +563,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 -  Must end with a number or a letter.
                 -  Must be unique within the customer project and
                    location.
+
 
                 This corresponds to the ``workflow_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -556,12 +576,12 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.workflows.Workflow``: Workflow program to be
-                executed by Workflows.
+                :class:`google.cloud.workflows_v1beta.types.Workflow`
+                Workflow program to be executed by Workflows.
 
         """
         # Create or coerce a protobuf request object.
@@ -629,14 +649,15 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         executions of the workflow.
 
         Args:
-            request (:class:`~.workflows.DeleteWorkflowRequest`):
+            request (google.cloud.workflows_v1beta.types.DeleteWorkflowRequest):
                 The request object. Request for the
                 [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. Name of the workflow to be
                 deleted. Format:
                 projects/{project}/locations/{location}/workflows/{workflow}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -648,24 +669,22 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -733,19 +752,20 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         used in new workflow executions.
 
         Args:
-            request (:class:`~.workflows.UpdateWorkflowRequest`):
+            request (google.cloud.workflows_v1beta.types.UpdateWorkflowRequest):
                 The request object. Request for the
                 [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
                 method.
-            workflow (:class:`~.workflows.Workflow`):
+            workflow (google.cloud.workflows_v1beta.types.Workflow):
                 Required. Workflow to be updated.
                 This corresponds to the ``workflow`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 List of fields to be updated. If not
                 present, the entire workflow will be
                 updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -757,12 +777,12 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.workflows.Workflow``: Workflow program to be
-                executed by Workflows.
+                :class:`google.cloud.workflows_v1beta.types.Workflow`
+                Workflow program to be executed by Workflows.
 
         """
         # Create or coerce a protobuf request object.

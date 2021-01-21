@@ -86,7 +86,20 @@ def test__get_default_mtls_endpoint():
     assert ExecutionsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [ExecutionsClient, ExecutionsAsyncClient])
+def test_executions_client_from_service_account_info():
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = ExecutionsClient.from_service_account_info(info)
+        assert client.transport._credentials == creds
+
+        assert client.transport._host == "workflowexecutions.googleapis.com:443"
+
+
+@pytest.mark.parametrize("client_class", [ExecutionsClient, ExecutionsAsyncClient,])
 def test_executions_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -104,7 +117,10 @@ def test_executions_client_from_service_account_file(client_class):
 
 def test_executions_client_get_transport_class():
     transport = ExecutionsClient.get_transport_class()
-    assert transport == transports.ExecutionsGrpcTransport
+    available_transports = [
+        transports.ExecutionsGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = ExecutionsClient.get_transport_class("grpc")
     assert transport == transports.ExecutionsGrpcTransport
@@ -1487,7 +1503,7 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.ExecutionsGrpcTransport, transports.ExecutionsGrpcAsyncIOTransport],
+    [transports.ExecutionsGrpcTransport, transports.ExecutionsGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1611,7 +1627,7 @@ def test_executions_host_with_port():
 
 
 def test_executions_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.ExecutionsGrpcTransport(
@@ -1623,7 +1639,7 @@ def test_executions_grpc_transport_channel():
 
 
 def test_executions_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.ExecutionsGrpcAsyncIOTransport(
@@ -1643,7 +1659,7 @@ def test_executions_transport_channel_mtls_with_client_cert_source(transport_cla
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -1693,7 +1709,7 @@ def test_executions_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
