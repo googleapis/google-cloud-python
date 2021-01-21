@@ -1056,6 +1056,7 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
         # Wrap the value into a proper Response obj
         json_return_value = {{ method.output.ident }}.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
         {% if method.client_streaming %}
@@ -1111,6 +1112,7 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = {{ method.output.ident }}.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode('UTF-8')
         req.return_value = response_value
 
