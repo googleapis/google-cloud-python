@@ -1186,6 +1186,32 @@ def test_watch_query(client, cleanup):
         )
 
 
+def test_array_union(client, cleanup):
+    doc_ref = client.document("gcp-7523", "test-document")
+    cleanup(doc_ref.delete)
+    doc_ref.delete()
+    tree_1 = {"forest": {"tree-1": "oak"}}
+    tree_2 = {"forest": {"tree-2": "pine"}}
+    tree_3 = {"forest": {"tree-3": firestore.ArrayUnion(["spruce"])}}
+
+    doc_ref.set(tree_1)
+    expected = tree_1.copy()
+    assert doc_ref.get().to_dict() == expected
+
+    doc_ref.set(tree_2, merge=True)
+    expected["forest"]["tree-2"] = tree_2["forest"]["tree-2"]
+    assert doc_ref.get().to_dict() == expected
+
+    doc_ref.set(tree_3, merge=True)
+    expected["forest"]["tree-3"] = ["spruce"]
+    assert doc_ref.get().to_dict() == expected
+
+    tree_3_part_2 = {"forest": {"tree-3": firestore.ArrayUnion(["palm"])}}
+    expected["forest"]["tree-3"].append("palm")
+    doc_ref.set(tree_3_part_2, merge=True)
+    assert doc_ref.get().to_dict() == expected
+
+
 def test_watch_query_order(client, cleanup):
     db = client
     collection_ref = db.collection("users")
