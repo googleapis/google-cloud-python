@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.1...v0.40.2) (2021-01-21)
+
+
+### Bug Fixes
+
+* fix rest transport unit test template ([#741](https://www.github.com/googleapis/gapic-generator-python/issues/741)) ([54b9806](https://www.github.com/googleapis/gapic-generator-python/commit/54b98060f881c8f0424c7e146488d3adc19fec7a))
+
 ### [0.40.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.0...v0.40.1) (2021-01-20)
 
 
