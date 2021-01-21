@@ -597,7 +597,7 @@ class Blob(_PropertyMixin):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY,
     ):
         """Determines whether or not this blob exists.
 

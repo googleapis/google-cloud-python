@@ -723,7 +723,7 @@ class Bucket(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY,
     ):
         """Determines whether or not this bucket exists.
 
@@ -1108,7 +1108,7 @@ class Bucket(_PropertyMixin):
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY,
         **kwargs
     ):
         """Get a blob object by name.

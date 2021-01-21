@@ -52,7 +52,6 @@ from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
 
 _marker = object()
@@ -320,7 +319,7 @@ class Client(ClientWithProject):
         timeout=_DEFAULT_TIMEOUT,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY,
     ):
         """API call: retrieve a bucket via a GET request.
 
@@ -407,7 +406,7 @@ class Client(ClientWithProject):
         timeout=_DEFAULT_TIMEOUT,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY,
     ):
         """Get a bucket by name, returning None if not found.
 
@@ -865,7 +864,7 @@ class Client(ClientWithProject):
 
         path = bucket.path + "/o"
         api_request = functools.partial(
-            self._connection.api_request, timeout=timeout, retry=DEFAULT_RETRY
+            self._connection.api_request, timeout=timeout, retry=retry
         )
         iterator = page_iterator.HTTPIterator(
             client=self,

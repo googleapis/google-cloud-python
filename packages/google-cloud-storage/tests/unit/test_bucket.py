@@ -672,7 +672,7 @@ class Test_Bucket(unittest.TestCase):
             "query_params": {"fields": "name"},
             "_target_object": None,
             "timeout": 42,
-            "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            "retry": DEFAULT_RETRY,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -707,7 +707,7 @@ class Test_Bucket(unittest.TestCase):
             },
             "_target_object": None,
             "timeout": 42,
-            "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            "retry": DEFAULT_RETRY,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
@@ -735,7 +735,7 @@ class Test_Bucket(unittest.TestCase):
             "query_params": {"fields": "name", "userProject": USER_PROJECT},
             "_target_object": None,
             "timeout": self._get_default_timeout(),
-            "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            "retry": DEFAULT_RETRY,
         }
         expected_cw = [((), expected_called_kwargs)]
         self.assertEqual(_FakeConnection._called_with, expected_cw)
