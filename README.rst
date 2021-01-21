@@ -211,9 +211,6 @@ Libraries
    * - `Channel Services <https://github.com/googleapis/python-channel>`_
      - |beta|
      - |PyPI-google-cloud-channel|
-   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
-     - |beta|
-     - |PyPI-google-cloud-compute|
    * - `Data Labeling <https://github.com/googleapis/python-datalabeling>`_
      - |beta|
      - |PyPI-google-cloud-datalabeling|
@@ -280,6 +277,9 @@ Libraries
    * - `Area 120 Tables API <https://github.com/googleapis/python-area120-tables>`_
      - |alpha|
      - |PyPI-google-area120-tables|
+   * - `Compute Engine <https://github.com/googleapis/python-compute>`_
+     - |alpha|
+     - |PyPI-google-cloud-compute|
    * - `DNS <https://github.com/googleapis/python-dns>`_
      - |alpha|
      - |PyPI-google-cloud-dns|
@@ -396,8 +396,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-binary-authorization
 .. |PyPI-google-cloud-channel| image:: https://img.shields.io/pypi/v/google-cloud-channel.svg
      :target: https://pypi.org/project/google-cloud-channel
-.. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
-     :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-datalabeling| image:: https://img.shields.io/pypi/v/google-cloud-datalabeling.svg
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dialogflow-cx| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow-cx.svg
@@ -442,6 +440,8 @@ Libraries
      :target: https://pypi.org/project/google-analytics-data
 .. |PyPI-google-area120-tables| image:: https://img.shields.io/pypi/v/google-area120-tables.svg
      :target: https://pypi.org/project/google-area120-tables
+.. |PyPI-google-cloud-compute| image:: https://img.shields.io/pypi/v/google-cloud-compute.svg
+     :target: https://pypi.org/project/google-cloud-compute
 .. |PyPI-google-cloud-dns| image:: https://img.shields.io/pypi/v/google-cloud-dns.svg
      :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
