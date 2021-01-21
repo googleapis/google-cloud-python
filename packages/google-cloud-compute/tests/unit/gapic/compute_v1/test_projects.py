@@ -403,6 +403,7 @@ def test_disable_xpn_host_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -453,6 +454,7 @@ def test_disable_xpn_host_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -522,6 +524,7 @@ def test_disable_xpn_resource_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -572,6 +575,7 @@ def test_disable_xpn_resource_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -657,6 +661,7 @@ def test_enable_xpn_host_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -707,6 +712,7 @@ def test_enable_xpn_host_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -776,6 +782,7 @@ def test_enable_xpn_resource_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -826,6 +833,7 @@ def test_enable_xpn_resource_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -901,6 +909,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetProjectReques
         # Wrap the value into a proper Response obj
         json_return_value = compute.Project.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -943,6 +952,7 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Project.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1004,6 +1014,7 @@ def test_get_xpn_host_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Project.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1046,6 +1057,7 @@ def test_get_xpn_host_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Project.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1095,6 +1107,7 @@ def test_get_xpn_resources_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.ProjectsGetXpnResources.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1125,6 +1138,7 @@ def test_get_xpn_resources_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.ProjectsGetXpnResources.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1183,6 +1197,7 @@ def test_list_xpn_hosts_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.XpnHostList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1220,6 +1235,7 @@ def test_list_xpn_hosts_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.XpnHostList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1305,6 +1321,7 @@ def test_move_disk_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1355,6 +1372,7 @@ def test_move_disk_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1439,6 +1457,7 @@ def test_move_instance_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1489,6 +1508,7 @@ def test_move_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1574,6 +1594,7 @@ def test_set_common_instance_metadata_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1624,6 +1645,7 @@ def test_set_common_instance_metadata_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1703,6 +1725,7 @@ def test_set_default_network_tier_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1753,6 +1776,7 @@ def test_set_default_network_tier_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1838,6 +1862,7 @@ def test_set_usage_export_bucket_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1888,6 +1913,7 @@ def test_set_usage_export_bucket_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

@@ -403,6 +403,7 @@ def test_add_access_config_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -453,6 +454,7 @@ def test_add_access_config_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -545,6 +547,7 @@ def test_add_resource_policies_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -595,6 +598,7 @@ def test_add_resource_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -676,6 +680,7 @@ def test_aggregated_list_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceAggregatedList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -714,6 +719,7 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceAggregatedList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -783,6 +789,7 @@ def test_attach_disk_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -833,6 +840,7 @@ def test_attach_disk_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -921,6 +929,7 @@ def test_delete_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -971,6 +980,7 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1049,6 +1059,7 @@ def test_delete_access_config_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1099,6 +1110,7 @@ def test_delete_access_config_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1187,6 +1199,7 @@ def test_detach_disk_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1237,6 +1250,7 @@ def test_detach_disk_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1344,6 +1358,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
         # Wrap the value into a proper Response obj
         json_return_value = compute.Instance.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1426,6 +1441,7 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Instance.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1489,6 +1505,7 @@ def test_get_guest_attributes_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.GuestAttributes.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1522,6 +1539,7 @@ def test_get_guest_attributes_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.GuestAttributes.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1591,6 +1609,7 @@ def test_get_iam_policy_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1629,6 +1648,7 @@ def test_get_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1683,6 +1703,7 @@ def test_get_screenshot_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Screenshot.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1710,6 +1731,7 @@ def test_get_screenshot_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Screenshot.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1770,6 +1792,7 @@ def test_get_serial_port_output_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.SerialPortOutput.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1800,6 +1823,7 @@ def test_get_serial_port_output_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.SerialPortOutput.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1861,6 +1885,7 @@ def test_get_shielded_instance_identity_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1893,6 +1918,7 @@ def test_get_shielded_instance_identity_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1971,6 +1997,7 @@ def test_insert_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2021,6 +2048,7 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2086,6 +2114,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2119,6 +2148,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2175,6 +2205,7 @@ def test_list_referrers_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceListReferrers.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2208,6 +2239,7 @@ def test_list_referrers_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceListReferrers.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2286,6 +2318,7 @@ def test_remove_resource_policies_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2336,6 +2369,7 @@ def test_remove_resource_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2427,6 +2461,7 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2477,6 +2512,7 @@ def test_reset_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2555,6 +2591,7 @@ def test_set_deletion_protection_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2605,6 +2642,7 @@ def test_set_deletion_protection_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2683,6 +2721,7 @@ def test_set_disk_auto_delete_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2733,6 +2772,7 @@ def test_set_disk_auto_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2812,6 +2852,7 @@ def test_set_iam_policy_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2850,6 +2891,7 @@ def test_set_iam_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2942,6 +2984,7 @@ def test_set_labels_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2992,6 +3035,7 @@ def test_set_labels_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3084,6 +3128,7 @@ def test_set_machine_resources_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3134,6 +3179,7 @@ def test_set_machine_resources_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3227,6 +3273,7 @@ def test_set_machine_type_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3277,6 +3324,7 @@ def test_set_machine_type_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3370,6 +3418,7 @@ def test_set_metadata_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3420,6 +3469,7 @@ def test_set_metadata_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3508,6 +3558,7 @@ def test_set_min_cpu_platform_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3558,6 +3609,7 @@ def test_set_min_cpu_platform_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3651,6 +3703,7 @@ def test_set_scheduling_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3701,6 +3754,7 @@ def test_set_scheduling_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3789,6 +3843,7 @@ def test_set_service_account_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3839,6 +3894,7 @@ def test_set_service_account_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3933,6 +3989,7 @@ def test_set_shielded_instance_integrity_policy_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3983,6 +4040,7 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4076,6 +4134,7 @@ def test_set_tags_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4126,6 +4185,7 @@ def test_set_tags_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4215,6 +4275,7 @@ def test_simulate_maintenance_event_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4265,6 +4326,7 @@ def test_simulate_maintenance_event_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4341,6 +4403,7 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4391,6 +4454,7 @@ def test_start_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4469,6 +4533,7 @@ def test_start_with_encryption_key_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4519,6 +4584,7 @@ def test_start_with_encryption_key_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4622,6 +4688,7 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4672,6 +4739,7 @@ def test_stop_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4728,6 +4796,7 @@ def test_test_iam_permissions_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4754,6 +4823,7 @@ def test_test_iam_permissions_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4846,6 +4916,7 @@ def test_update_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4896,6 +4967,7 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4984,6 +5056,7 @@ def test_update_access_config_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5034,6 +5107,7 @@ def test_update_access_config_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5126,6 +5200,7 @@ def test_update_display_device_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5176,6 +5251,7 @@ def test_update_display_device_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5264,6 +5340,7 @@ def test_update_network_interface_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5314,6 +5391,7 @@ def test_update_network_interface_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5411,6 +5489,7 @@ def test_update_shielded_instance_config_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5461,6 +5540,7 @@ def test_update_shielded_instance_config_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

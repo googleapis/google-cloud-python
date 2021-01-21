@@ -435,6 +435,7 @@ def test_get_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroup.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -473,6 +474,7 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroup.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -538,6 +540,7 @@ def test_list_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.RegionInstanceGroupList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -573,6 +576,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.RegionInstanceGroupList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -634,6 +638,7 @@ def test_list_instances_rest(
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -669,6 +674,7 @@ def test_list_instances_rest_flattened():
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -763,6 +769,7 @@ def test_set_named_ports_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -813,6 +820,7 @@ def test_set_named_ports_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

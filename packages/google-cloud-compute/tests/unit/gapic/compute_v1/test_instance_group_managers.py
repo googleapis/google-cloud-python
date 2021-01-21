@@ -446,6 +446,7 @@ def test_abandon_instances_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -498,6 +499,7 @@ def test_abandon_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -592,6 +594,7 @@ def test_aggregated_list_rest(
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -642,6 +645,7 @@ def test_aggregated_list_rest_flattened():
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -715,6 +719,7 @@ def test_apply_updates_to_instances_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -767,6 +772,7 @@ def test_apply_updates_to_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -863,6 +869,7 @@ def test_create_instances_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -915,6 +922,7 @@ def test_create_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1010,6 +1018,7 @@ def test_delete_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1062,6 +1071,7 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1145,6 +1155,7 @@ def test_delete_instances_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1197,6 +1208,7 @@ def test_delete_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1293,6 +1305,7 @@ def test_delete_per_instance_configs_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1345,6 +1358,7 @@ def test_delete_per_instance_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1459,6 +1473,7 @@ def test_get_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupManager.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1528,6 +1543,7 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupManager.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1610,6 +1626,7 @@ def test_insert_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1662,6 +1679,7 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1751,6 +1769,7 @@ def test_list_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupManagerList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1794,6 +1813,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupManagerList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1858,6 +1878,7 @@ def test_list_errors_rest(
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1897,6 +1918,7 @@ def test_list_errors_rest_flattened():
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1965,6 +1987,7 @@ def test_list_managed_instances_rest(
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2004,6 +2027,7 @@ def test_list_managed_instances_rest_flattened():
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2069,6 +2093,7 @@ def test_list_per_instance_configs_rest(
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2105,6 +2130,7 @@ def test_list_per_instance_configs_rest_flattened():
             return_value
         )
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2187,6 +2213,7 @@ def test_patch_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2239,6 +2266,7 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2342,6 +2370,7 @@ def test_patch_per_instance_configs_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2394,6 +2423,7 @@ def test_patch_per_instance_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2494,6 +2524,7 @@ def test_recreate_instances_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2546,6 +2577,7 @@ def test_recreate_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2641,6 +2673,7 @@ def test_resize_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2693,6 +2726,7 @@ def test_resize_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2780,6 +2814,7 @@ def test_set_instance_template_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2832,6 +2867,7 @@ def test_set_instance_template_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2928,6 +2964,7 @@ def test_set_target_pools_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2980,6 +3017,7 @@ def test_set_target_pools_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3076,6 +3114,7 @@ def test_update_per_instance_configs_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3128,6 +3167,7 @@ def test_update_per_instance_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

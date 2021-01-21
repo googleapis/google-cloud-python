@@ -397,6 +397,7 @@ def test_aggregated_list_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.VpnTunnelAggregatedList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -437,6 +438,7 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.VpnTunnelAggregatedList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -506,6 +508,7 @@ def test_delete_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -556,6 +559,7 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -633,6 +637,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetVpnTunnelRequ
         # Wrap the value into a proper Response obj
         json_return_value = compute.VpnTunnel.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -680,6 +685,7 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.VpnTunnel.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -760,6 +766,7 @@ def test_insert_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -810,6 +817,7 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -879,6 +887,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListVpnTunnelsR
         # Wrap the value into a proper Response obj
         json_return_value = compute.VpnTunnelList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -914,6 +923,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.VpnTunnelList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

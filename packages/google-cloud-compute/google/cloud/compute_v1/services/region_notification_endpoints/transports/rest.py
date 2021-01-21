@@ -169,6 +169,9 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         # Send the request
         response = self._session.delete(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -227,6 +230,9 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.NotificationEndpoint.from_json(response.content)
@@ -309,6 +315,9 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -344,11 +353,11 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
+            "filter": request.filter,
+            "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
-            "filter": request.filter,
-            "pageToken": request.page_token,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -360,6 +369,9 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.NotificationEndpointList.from_json(response.content)

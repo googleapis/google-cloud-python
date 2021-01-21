@@ -396,6 +396,7 @@ def test_aggregated_list_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.RouterAggregatedList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -440,6 +441,7 @@ def test_aggregated_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.RouterAggregatedList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -507,6 +509,7 @@ def test_delete_rest(transport: str = "rest", request_type=compute.DeleteRouterR
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -557,6 +560,7 @@ def test_delete_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -628,6 +632,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetRouterRequest
         # Wrap the value into a proper Response obj
         json_return_value = compute.Router.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -669,6 +674,7 @@ def test_get_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Router.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -730,6 +736,7 @@ def test_get_nat_mapping_info_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -765,6 +772,7 @@ def test_get_nat_mapping_info_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.VmEndpointNatMappingsList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -826,6 +834,7 @@ def test_get_router_status_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.RouterStatusResponse.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -855,6 +864,7 @@ def test_get_router_status_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.RouterStatusResponse.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -931,6 +941,7 @@ def test_insert_rest(transport: str = "rest", request_type=compute.InsertRouterR
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -981,6 +992,7 @@ def test_insert_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1058,6 +1070,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListRoutersRequ
         # Wrap the value into a proper Response obj
         json_return_value = compute.RouterList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1095,6 +1108,7 @@ def test_list_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.RouterList.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1168,6 +1182,7 @@ def test_patch_rest(transport: str = "rest", request_type=compute.PatchRouterReq
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1218,6 +1233,7 @@ def test_patch_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1294,6 +1310,7 @@ def test_preview_rest(
         # Wrap the value into a proper Response obj
         json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1322,6 +1339,7 @@ def test_preview_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.RoutersPreviewResponse.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1414,6 +1432,7 @@ def test_update_rest(transport: str = "rest", request_type=compute.UpdateRouterR
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -1464,6 +1483,7 @@ def test_update_rest_flattened():
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
+        response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

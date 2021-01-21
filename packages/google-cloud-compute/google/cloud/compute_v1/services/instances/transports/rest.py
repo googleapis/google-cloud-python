@@ -175,6 +175,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -260,6 +263,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -295,12 +301,12 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
             "filter": request.filter,
             "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
+            "maxResults": request.max_results,
             "includeAllScopes": request.include_all_scopes,
+            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -312,6 +318,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.InstanceAggregatedList.from_json(response.content)
@@ -384,8 +393,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "requestId": request.request_id,
             "forceAttach": request.force_attach,
+            "requestId": request.request_id,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -397,6 +406,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -477,6 +489,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.delete(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -544,8 +559,8 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {
             "networkInterface": request.network_interface,
-            "accessConfig": request.access_config,
             "requestId": request.request_id,
+            "accessConfig": request.access_config,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -557,6 +572,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -638,6 +656,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -692,6 +713,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.get(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Instance.from_json(response.content)
 
@@ -730,8 +754,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "queryPath": request.query_path,
             "variableKey": request.variable_key,
+            "queryPath": request.query_path,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -743,6 +767,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.GuestAttributes.from_json(response.content)
@@ -845,6 +872,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.get(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Policy.from_json(response.content)
 
@@ -894,6 +924,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.get(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Screenshot.from_json(response.content)
 
@@ -932,8 +965,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "start": request.start,
             "port": request.port,
+            "start": request.start,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -945,6 +978,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.SerialPortOutput.from_json(response.content)
@@ -995,6 +1031,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.ShieldedInstanceIdentity.from_json(response.content)
@@ -1078,6 +1117,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -1112,11 +1154,11 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
+            "filter": request.filter,
+            "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
-            "filter": request.filter,
-            "pageToken": request.page_token,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1128,6 +1170,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.InstanceList.from_json(response.content)
@@ -1169,11 +1214,11 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
+            "filter": request.filter,
+            "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
-            "filter": request.filter,
-            "pageToken": request.page_token,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1185,6 +1230,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.get(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.InstanceListReferrers.from_json(response.content)
@@ -1271,6 +1319,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -1350,6 +1401,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -1416,8 +1470,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "requestId": request.request_id,
             "deletionProtection": request.deletion_protection,
+            "requestId": request.request_id,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1429,6 +1483,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -1510,6 +1567,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -1616,6 +1676,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Policy.from_json(response.content)
 
@@ -1700,6 +1763,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -1786,6 +1852,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -1871,6 +1940,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -1954,6 +2026,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -2040,6 +2115,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -2123,6 +2201,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -2208,6 +2289,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -2295,6 +2379,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.patch(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -2379,6 +2466,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -2456,6 +2546,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -2535,6 +2628,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -2621,6 +2717,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -2699,6 +2798,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -2753,6 +2855,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.post(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.TestPermissionsResponse.from_json(response.content)
@@ -2825,8 +2930,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "mostDisruptiveAllowedAction": request.most_disruptive_allowed_action,
             "requestId": request.request_id,
+            "mostDisruptiveAllowedAction": request.most_disruptive_allowed_action,
             "minimalAction": request.minimal_action,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
@@ -2839,6 +2944,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.put(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -2925,6 +3033,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.post(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -3008,6 +3119,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.patch(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
@@ -3094,6 +3208,9 @@ class InstancesRestTransport(InstancesTransport):
         # Send the request
         response = self._session.patch(url, json=body,)
 
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
+
         # Return the response
         return compute.Operation.from_json(response.content)
 
@@ -3179,6 +3296,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Send the request
         response = self._session.patch(url, json=body,)
+
+        # Raise requests.exceptions.HTTPError if the status code is >= 400
+        response.raise_for_status()
 
         # Return the response
         return compute.Operation.from_json(response.content)
