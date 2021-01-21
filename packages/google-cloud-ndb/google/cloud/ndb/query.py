@@ -1731,7 +1731,7 @@ class Query(object):
                 values for some of these arguments.
 
         Returns:
-            List([model.Model]): The query results.
+            List[Union[model.Model, key.Key]]: The query results.
         """
         return self.fetch_async(_options=kwargs["_options"]).result()
 
