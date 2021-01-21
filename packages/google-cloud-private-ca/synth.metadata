@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-security-private-ca.git",
-        "sha": "6dacb8f94c7cfaa4ac69d097114325a8aed543d3"
+        "sha": "c2743f4ea176c6a94ea2601f5e802965232f012b"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     }
   ],
