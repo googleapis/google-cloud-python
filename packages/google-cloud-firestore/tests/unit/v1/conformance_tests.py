@@ -56,7 +56,7 @@ class TestFile(proto.Message):
     r"""A collection of tests.
 
     Attributes:
-        tests (Sequence[~.gcf_tests.Test]):
+        tests (Sequence[google.cloud.firestore_v1.types.Test]):
 
     """
 
@@ -73,21 +73,21 @@ class Test(proto.Message):
         comment (str):
             a comment describing the behavior being
             tested
-        get (~.gcf_tests.GetTest):
+        get (google.cloud.firestore_v1.types.GetTest):
 
-        create (~.gcf_tests.CreateTest):
+        create (google.cloud.firestore_v1.types.CreateTest):
 
-        set_ (~.gcf_tests.SetTest):
+        set_ (google.cloud.firestore_v1.types.SetTest):
 
-        update (~.gcf_tests.UpdateTest):
+        update (google.cloud.firestore_v1.types.UpdateTest):
 
-        update_paths (~.gcf_tests.UpdatePathsTest):
+        update_paths (google.cloud.firestore_v1.types.UpdatePathsTest):
 
-        delete (~.gcf_tests.DeleteTest):
+        delete (google.cloud.firestore_v1.types.DeleteTest):
 
-        query (~.gcf_tests.QueryTest):
+        query (google.cloud.firestore_v1.types.QueryTest):
 
-        listen (~.gcf_tests.ListenTest):
+        listen (google.cloud.firestore_v1.types.ListenTest):
 
     """
 
@@ -121,7 +121,7 @@ class GetTest(proto.Message):
         doc_ref_path (str):
             The path of the doc, e.g.
             "projects/projectID/databases/(default)/documents/C/d".
-        request (~.firestore.GetDocumentRequest):
+        request (google.cloud.firestore_v1.types.GetDocumentRequest):
             The request that the call should send to the
             Firestore service.
     """
@@ -146,7 +146,7 @@ class CreateTest(proto.Message):
             the two special sentinel values. Values that
             could be interpreted as integers (i.e. digit
             strings) should be treated as integers.
-        request (~.firestore.CommitRequest):
+        request (google.cloud.firestore_v1.types.CommitRequest):
             The request that the call should generate.
         is_error (bool):
             If true, the call should result in an error
@@ -169,11 +169,11 @@ class SetTest(proto.Message):
     Attributes:
         doc_ref_path (str):
             path of doc
-        option (~.gcf_tests.SetOption):
+        option (google.cloud.firestore_v1.types.SetOption):
             option to the Set call, if any
         json_data (str):
             data (see CreateTest.json_data)
-        request (~.firestore.CommitRequest):
+        request (google.cloud.firestore_v1.types.CommitRequest):
             expected request
         is_error (bool):
             call signals an error
@@ -197,11 +197,11 @@ class UpdateTest(proto.Message):
     Attributes:
         doc_ref_path (str):
             path of doc
-        precondition (~.common.Precondition):
+        precondition (google.cloud.firestore_v1.types.Precondition):
             precondition in call, if any
         json_data (str):
             data (see CreateTest.json_data)
-        request (~.firestore.CommitRequest):
+        request (google.cloud.firestore_v1.types.CommitRequest):
             expected request
         is_error (bool):
             call signals an error
@@ -225,14 +225,14 @@ class UpdatePathsTest(proto.Message):
     Attributes:
         doc_ref_path (str):
             path of doc
-        precondition (~.common.Precondition):
+        precondition (google.cloud.firestore_v1.types.Precondition):
             precondition in call, if any
-        field_paths (Sequence[~.gcf_tests.FieldPath]):
+        field_paths (Sequence[google.cloud.firestore_v1.types.FieldPath]):
             parallel sequences: field_paths[i] corresponds to
             json_values[i]
         json_values (Sequence[str]):
             the argument values, as JSON
-        request (~.firestore.CommitRequest):
+        request (google.cloud.firestore_v1.types.CommitRequest):
             expected rquest
         is_error (bool):
             call signals an error
@@ -257,9 +257,9 @@ class DeleteTest(proto.Message):
     Attributes:
         doc_ref_path (str):
             path of doc
-        precondition (~.common.Precondition):
+        precondition (google.cloud.firestore_v1.types.Precondition):
 
-        request (~.firestore.CommitRequest):
+        request (google.cloud.firestore_v1.types.CommitRequest):
             expected rquest
         is_error (bool):
             call signals an error
@@ -281,7 +281,7 @@ class SetOption(proto.Message):
         all_ (bool):
             if true, merge all fields ("fields" is
             ignored).
-        fields (Sequence[~.gcf_tests.FieldPath]):
+        fields (Sequence[google.cloud.firestore_v1.types.FieldPath]):
             field paths for a Merge option
     """
 
@@ -297,9 +297,9 @@ class QueryTest(proto.Message):
         coll_path (str):
             path of collection, e.g.
             "projects/projectID/databases/(default)/documents/C".
-        clauses (Sequence[~.gcf_tests.Clause]):
+        clauses (Sequence[google.cloud.firestore_v1.types.Clause]):
 
-        query (~.gcf_query.StructuredQuery):
+        query (google.cloud.firestore_v1.types.StructuredQuery):
 
         is_error (bool):
 
@@ -318,23 +318,23 @@ class Clause(proto.Message):
     r"""
 
     Attributes:
-        select (~.gcf_tests.Select):
+        select (google.cloud.firestore_v1.types.Select):
 
-        where (~.gcf_tests.Where):
+        where (google.cloud.firestore_v1.types.Where):
 
-        order_by (~.gcf_tests.OrderBy):
+        order_by (google.cloud.firestore_v1.types.OrderBy):
 
         offset (int):
 
         limit (int):
 
-        start_at (~.gcf_tests.Cursor_):
+        start_at (google.cloud.firestore_v1.types.Cursor_):
 
-        start_after (~.gcf_tests.Cursor_):
+        start_after (google.cloud.firestore_v1.types.Cursor_):
 
-        end_at (~.gcf_tests.Cursor_):
+        end_at (google.cloud.firestore_v1.types.Cursor_):
 
-        end_before (~.gcf_tests.Cursor_):
+        end_before (google.cloud.firestore_v1.types.Cursor_):
 
     """
 
@@ -365,7 +365,7 @@ class Select(proto.Message):
     r"""
 
     Attributes:
-        fields (Sequence[~.gcf_tests.FieldPath]):
+        fields (Sequence[google.cloud.firestore_v1.types.FieldPath]):
 
     """
 
@@ -376,7 +376,7 @@ class Where(proto.Message):
     r"""
 
     Attributes:
-        path (~.gcf_tests.FieldPath):
+        path (google.cloud.firestore_v1.types.FieldPath):
 
         op (str):
 
@@ -395,7 +395,7 @@ class OrderBy(proto.Message):
     r"""
 
     Attributes:
-        path (~.gcf_tests.FieldPath):
+        path (google.cloud.firestore_v1.types.FieldPath):
 
         direction (str):
             "asc" or "desc".
@@ -410,7 +410,7 @@ class Cursor_(proto.Message):
     r"""
 
     Attributes:
-        doc_snapshot (~.gcf_tests.DocSnapshot):
+        doc_snapshot (google.cloud.firestore_v1.types.DocSnapshot):
             one of:
         json_values (Sequence[str]):
 
@@ -462,9 +462,9 @@ class ListenTest(proto.Message):
     in the tests before running them.
 
     Attributes:
-        responses (Sequence[~.firestore.ListenResponse]):
+        responses (Sequence[google.cloud.firestore_v1.types.ListenResponse]):
 
-        snapshots (Sequence[~.gcf_tests.Snapshot]):
+        snapshots (Sequence[google.cloud.firestore_v1.types.Snapshot]):
 
         is_error (bool):
 
@@ -483,11 +483,11 @@ class Snapshot(proto.Message):
     r"""
 
     Attributes:
-        docs (Sequence[~.document.Document]):
+        docs (Sequence[google.cloud.firestore_v1.types.Document]):
 
-        changes (Sequence[~.gcf_tests.DocChange]):
+        changes (Sequence[google.cloud.firestore_v1.types.DocChange]):
 
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
 
     """
 
@@ -502,9 +502,9 @@ class DocChange(proto.Message):
     r"""
 
     Attributes:
-        kind (~.gcf_tests.DocChange.Kind):
+        kind (google.cloud.firestore_v1.types.DocChange.Kind):
 
-        doc (~.document.Document):
+        doc (google.cloud.firestore_v1.types.Document):
 
         old_index (int):
 

@@ -2,7 +2,7 @@
   "tests": [
     {
       "description": "query: invalid operator in Where clause",
-      "comment": "The |~|  operator is not supported.",
+      "comment": "The |~| operator is not supported.",
       "query": {
         "collPath": "projects/projectID/databases/(default)/documents/C",
         "clauses": [

@@ -5,23 +5,32 @@
 PROTOC = protoc
 
 # Dependent repos.
-REPO_DIR=$(HOME)/git-repos
-PROTOBUF_REPO = $(REPO_DIR)/protobuf
-GOOGLEAPIS_REPO = $(REPO_DIR)/googleapis
-TESTS_REPO = $(REPO_DIR)/conformance-tests
+REPO_DIR = $(shell pwd)
+BUILD_DIR = $(shell pwd)/.make
+# This requires a few other repositories, assumed to be in the same root
+# of this repository.
+# => git clone git@github.com:protocolbuffers/protobuf
+PROTOBUF_REPO = $(BUILD_DIR)/protobuf
+# => git clone git@github.com:googleapis/googleapis.git
+GOOGLEAPIS_REPO = $(BUILD_DIR)/googleapis
+# => git clone git@github.com:googleapis/conformance-tests.git
+TESTS_REPO = $(BUILD_DIR)/conformance-tests
+
 TEST_PROTO_DIR = $(TESTS_REPO)/firestore/v1
 TEST_PROTO_SRC = $(TEST_PROTO_DIR)/proto/google/cloud/conformance/firestore/v1/tests.proto
-TESTDATA_DIR = `pwd`/tests/unit/v1/testdata/
+TESTDATA_DIR = $(REPO_DIR)/tests/unit/v1/testdata/
 
-TMPDIR = /tmp/python-fs-proto
+TMPDIR = $(BUILD_DIR)/python-fs-proto
 TMPDIR_FS = $(TMPDIR)/google/cloud/firestore_v1/types
 TEST_PROTO_COPY = $(TMPDIR_FS)/tests.proto
 TEST_GEN_OUT = tests/unit/v1/conformance_tests.py
-OUTDIR = /tmp/python-fs-gen
+OUTDIR = $(BUILD_DIR)/python-fs-gen
 
-.PHONY: sync-protos gen-protos docker-pull
+.PHONY: sync gen-protos docker-pull all format clean
 
-gen-protos: sync-protos tweak-protos docker-pull gen-protos-raw
+all: gen-protos copy-testdata clean
+
+gen-protos: sync tweak-protos docker-pull gen-protos-raw format
 
 gen-protos-raw:
 	mkdir -p $(OUTDIR)
@@ -48,10 +57,13 @@ tweak-protos:
 	sed -i -e 's@google\.firestore\.v1@google.cloud.firestore_v1@' $(TEST_PROTO_COPY)
 	sed -i -e 's@Cursor@Cursor_@' $(TEST_PROTO_COPY)
 
-sync-protos:
-	cd $(PROTOBUF_REPO); git pull
-	cd $(GOOGLEAPIS_REPO); git pull
-	cd $(TESTS_REPO); git pull
+sync: clean
+	mkdir -p $(PROTOBUF_REPO)
+	git clone --depth 1 git@github.com:protocolbuffers/protobuf $(PROTOBUF_REPO)
+	mkdir -p $(GOOGLEAPIS_REPO)
+	git clone --depth 1 git@github.com:googleapis/googleapis.git $(GOOGLEAPIS_REPO)
+	mkdir -p $(TESTS_REPO)
+	git clone --depth 1 git@github.com:googleapis/conformance-tests.git $(TESTS_REPO)
 
 docker-pull:
 	docker pull gcr.io/gapic-images/gapic-generator-python:latest
@@ -59,3 +71,9 @@ docker-pull:
 copy-testdata:
 	rm $(TESTDATA_DIR)/*.json
 	cp $(TEST_PROTO_DIR)/*.json $(TESTDATA_DIR)/
+
+format:
+	nox -s blacken
+
+clean:
+	rm -rf $(BUILD_DIR)
