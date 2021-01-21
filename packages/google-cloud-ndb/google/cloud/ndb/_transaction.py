@@ -270,6 +270,7 @@ def _transaction_async(context, callback, read_only=False):
         # new event loop is of the same type as the current one, to propagate
         # the event loop class used for testing.
         eventloop=type(context.eventloop)(),
+        retry=context.get_retry_state(),
     )
 
     # The outer loop is dependent on the inner loop

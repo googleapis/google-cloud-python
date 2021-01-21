@@ -121,3 +121,11 @@ class Cancelled(Error):
     a call to ``Future.cancel`` (possibly on a future that depends on this
     future).
     """
+
+
+class NestedRetryException(Error):
+    """A nested retry block raised an exception.
+
+    Raised when a nested retry block cannot complete due to an exception. This
+    allows the outer retry to get back control and retry the whole operation.
+    """
