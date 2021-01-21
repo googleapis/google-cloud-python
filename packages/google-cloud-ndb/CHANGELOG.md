@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+### [1.7.3](https://www.github.com/googleapis/python-ndb/compare/v1.7.2...v1.7.3) (2021-01-21)
+
+
+### Bug Fixes
+
+* handle negatives in protobuf deserialization ([#591](https://www.github.com/googleapis/python-ndb/issues/591)) ([0d3d3ca](https://www.github.com/googleapis/python-ndb/commit/0d3d3ca99df10a3d6e1c6f31ee719faa373ccacf)), closes [#590](https://www.github.com/googleapis/python-ndb/issues/590)
+* make nested retry blocks work for RPC calls ([#589](https://www.github.com/googleapis/python-ndb/issues/589)) ([f125459](https://www.github.com/googleapis/python-ndb/commit/f125459d4eef05861776ccefd29d137a5f22e240))
+
+
+### Documentation
+
+* correct documentation for `GlobalCache` ([#565](https://www.github.com/googleapis/python-ndb/issues/565)) ([be5b157](https://www.github.com/googleapis/python-ndb/commit/be5b1571e8e30bd1d736ae5d77b3017473b1a373))
+* fix return type in fetch docstring ([#594](https://www.github.com/googleapis/python-ndb/issues/594)) ([9eb15f4](https://www.github.com/googleapis/python-ndb/commit/9eb15f4ff75204ad25f943dbc1e85c227d88faf6)), closes [#576](https://www.github.com/googleapis/python-ndb/issues/576)
+* fix typo in example code ([#588](https://www.github.com/googleapis/python-ndb/issues/588)) ([76fab49](https://www.github.com/googleapis/python-ndb/commit/76fab49f9d08a2add4135c011d08ff24f04549b2))
+
 ### [1.7.2](https://www.github.com/googleapis/python-ndb/compare/v1.7.1...v1.7.2) (2020-12-16)
 
 
