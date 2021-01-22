@@ -15,14 +15,13 @@
 import os
 import pytest
 
-import google.auth
+from google.auth import _default_async
 
 EXPECT_PROJECT_ID = os.environ.get("EXPECT_PROJECT_ID")
 
 @pytest.mark.asyncio
 async def test_application_default_credentials(verify_refresh):
-    credentials, project_id = google.auth.default_async()
-    #breakpoint()
+    credentials, project_id = _default_async.default_async()
 
     if EXPECT_PROJECT_ID is not None:
         assert project_id is not None

@@ -71,7 +71,8 @@ async def token_info(http_request):
         url = _helpers.update_query(sync_conftest.TOKEN_INFO_URL, query_params)
 
         response = await http_request(url=url, method="GET")
-        data = await response.data.read()
+
+        data = await response.content()
 
         return json.loads(data.decode("utf-8"))
 

@@ -30,7 +30,7 @@ import nox
 import py.path
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-LIBRARY_DIR = os.path.join(HERE, "..")
+LIBRARY_DIR = os.path.abspath(os.path.dirname(HERE))
 DATA_DIR = os.path.join(HERE, "data")
 SERVICE_ACCOUNT_FILE = os.path.join(DATA_DIR, "service_account.json")
 AUTHORIZED_USER_FILE = os.path.join(DATA_DIR, "authorized_user.json")
@@ -169,7 +169,7 @@ def configure_cloud_sdk(session, application_default_credentials, project=False)
 # Test sesssions
 
 TEST_DEPENDENCIES_ASYNC = ["aiohttp", "pytest-asyncio", "nest-asyncio"]
-TEST_DEPENDENCIES_SYNC = ["pytest", "requests"]
+TEST_DEPENDENCIES_SYNC = ["pytest", "requests", "mock"]
 PYTHON_VERSIONS_ASYNC = ["3.7"]
 PYTHON_VERSIONS_SYNC = ["2.7", "3.7"]
 
@@ -249,6 +249,7 @@ def app_engine(session):
         session.log("Skipping App Engine tests.")
         return
 
+    session.install(LIBRARY_DIR)
     # Unlike the default tests above, the App Engine system test require a
     # 'real' gcloud sdk installation that is configured to deploy to an
     # app engine project.
@@ -269,9 +270,8 @@ def app_engine(session):
     application_url = GAE_APP_URL_TMPL.format(GAE_TEST_APP_SERVICE, project_id)
 
     # Vendor in the test application's dependencies
-    session.chdir(os.path.join(HERE, "../app_engine_test_app"))
+    session.chdir(os.path.join(HERE, "system_tests_sync/app_engine_test_app"))
     session.install(*TEST_DEPENDENCIES_SYNC)
-    session.install(LIBRARY_DIR)
     session.run(
         "pip", "install", "--target", "lib", "-r", "requirements.txt", silent=True
     )
@@ -288,7 +288,7 @@ def app_engine(session):
 @nox.session(python=PYTHON_VERSIONS_SYNC)
 def grpc(session):
     session.install(LIBRARY_DIR)
-    session.install(*TEST_DEPENDENCIES_SYNC, "google-cloud-pubsub==1.0.0")
+    session.install(*TEST_DEPENDENCIES_SYNC, "google-cloud-pubsub==1.7.0")
     session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
     session.run("pytest", "system_tests_sync/test_grpc.py")
 

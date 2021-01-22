@@ -10,8 +10,8 @@ templated_files = common.py_library(unit_cov_level=100, cov_level=100)
 s.move(
     templated_files / ".kokoro",
     excludes=[
-        ".kokoro/continuous/common.cfg",
-        ".kokoro/presubmit/common.cfg",
-        ".kokoro/build.sh",
+        "continuous/common.cfg",
+        "presubmit/common.cfg",
+        "build.sh",
     ],
 )  # just move kokoro configs

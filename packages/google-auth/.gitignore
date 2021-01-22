@@ -30,6 +30,7 @@ scripts/local_test_setup
 tests/data/key.json
 tests/data/key.p12
 tests/data/user-key.json
+system_tests/data/
 
 # PyCharm configuration:
 .idea

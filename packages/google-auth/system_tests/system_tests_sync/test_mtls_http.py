@@ -13,8 +13,11 @@
 # limitations under the License.
 
 import json
-from os import path
+import mock
+import os
 import time
+from os import path
+
 
 import google.auth
 import google.auth.credentials
