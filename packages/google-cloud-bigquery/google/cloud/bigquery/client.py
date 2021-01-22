@@ -2136,11 +2136,11 @@ class Client(ClientWithProject):
         try:
             if size is None or size >= _MAX_MULTIPART_SIZE:
                 response = self._do_resumable_upload(
-                    file_obj, job_resource, num_retries, timeout
+                    file_obj, job_resource, num_retries, timeout, project=project
                 )
             else:
                 response = self._do_multipart_upload(
-                    file_obj, job_resource, size, num_retries, timeout
+                    file_obj, job_resource, size, num_retries, timeout, project=project
                 )
         except resumable_media.InvalidResponse as exc:
             raise exceptions.from_http_response(exc.response)
@@ -2475,7 +2475,9 @@ class Client(ClientWithProject):
             timeout=timeout,
         )
 
-    def _do_resumable_upload(self, stream, metadata, num_retries, timeout):
+    def _do_resumable_upload(
+        self, stream, metadata, num_retries, timeout, project=None
+    ):
         """Perform a resumable upload.
 
         Args:
@@ -2491,13 +2493,17 @@ class Client(ClientWithProject):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
 
+            project (Optional[str]):
+                Project ID of the project of where to run the upload. Defaults
+                to the client's project.
+
         Returns:
             requests.Response:
                 The "200 OK" response object returned after the final chunk
                 is uploaded.
         """
         upload, transport = self._initiate_resumable_upload(
-            stream, metadata, num_retries, timeout
+            stream, metadata, num_retries, timeout, project=project
         )
 
         while not upload.finished:
@@ -2505,7 +2511,9 @@ class Client(ClientWithProject):
 
         return response
 
-    def _initiate_resumable_upload(self, stream, metadata, num_retries, timeout):
+    def _initiate_resumable_upload(
+        self, stream, metadata, num_retries, timeout, project=None
+    ):
         """Initiate a resumable upload.
 
         Args:
@@ -2521,6 +2529,10 @@ class Client(ClientWithProject):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
 
+            project (Optional[str]):
+                Project ID of the project of where to run the upload. Defaults
+                to the client's project.
+
         Returns:
             Tuple:
                 Pair of
@@ -2532,7 +2544,11 @@ class Client(ClientWithProject):
         chunk_size = _DEFAULT_CHUNKSIZE
         transport = self._http
         headers = _get_upload_headers(self._connection.user_agent)
-        upload_url = _RESUMABLE_URL_TEMPLATE.format(project=self.project)
+
+        if project is None:
+            project = self.project
+        upload_url = _RESUMABLE_URL_TEMPLATE.format(project=project)
+
         # TODO: modify ResumableUpload to take a retry.Retry object
         # that it can use for the initial RPC.
         upload = ResumableUpload(upload_url, chunk_size, headers=headers)
@@ -2553,7 +2569,9 @@ class Client(ClientWithProject):
 
         return upload, transport
 
-    def _do_multipart_upload(self, stream, metadata, size, num_retries, timeout):
+    def _do_multipart_upload(
+        self, stream, metadata, size, num_retries, timeout, project=None
+    ):
         """Perform a multipart upload.
 
         Args:
@@ -2574,6 +2592,10 @@ class Client(ClientWithProject):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
 
+            project (Optional[str]):
+                Project ID of the project of where to run the upload. Defaults
+                to the client's project.
+
         Returns:
             requests.Response:
                 The "200 OK" response object returned after the multipart
@@ -2591,7 +2613,10 @@ class Client(ClientWithProject):
 
         headers = _get_upload_headers(self._connection.user_agent)
 
-        upload_url = _MULTIPART_URL_TEMPLATE.format(project=self.project)
+        if project is None:
+            project = self.project
+
+        upload_url = _MULTIPART_URL_TEMPLATE.format(project=project)
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:
