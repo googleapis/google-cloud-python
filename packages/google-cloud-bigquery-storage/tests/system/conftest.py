@@ -20,11 +20,9 @@ import uuid
 
 import pytest
 
-from google.cloud import bigquery_storage
-
 _TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
 
-_ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "../assets")
+_ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets")
 
 
 @pytest.fixture(scope="session")
@@ -50,11 +48,6 @@ def credentials(use_mtls):
     # NOTE: the test config in noxfile checks that the env variable is indeed set
     filename = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
     return service_account.Credentials.from_service_account_file(filename)
-
-
-@pytest.fixture(scope="session")
-def client(credentials):
-    return bigquery_storage.BigQueryReadClient(credentials=credentials)
 
 
 @pytest.fixture()

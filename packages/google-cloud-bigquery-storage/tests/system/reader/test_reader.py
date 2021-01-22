@@ -24,7 +24,6 @@ import pytest
 import pytz
 
 from google.cloud import bigquery
-from google.cloud.bigquery_storage import types
 
 
 def _to_bq_table_ref(table_name_string, partition_suffix=""):
@@ -54,12 +53,16 @@ def _to_bq_table_ref(table_name_string, partition_suffix=""):
 
 @pytest.mark.parametrize(
     "data_format,expected_schema_type",
-    ((types.DataFormat.AVRO, "avro_schema"), (types.DataFormat.ARROW, "arrow_schema")),
+    (("AVRO", "avro_schema"), ("ARROW", "arrow_schema")),
 )
 def test_read_rows_as_blocks_full_table(
-    client, project_id, small_table_reference, data_format, expected_schema_type
+    client_and_types,
+    project_id,
+    small_table_reference,
+    data_format,
+    expected_schema_type,
 ):
-
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = small_table_reference
     read_session.data_format = data_format
@@ -81,14 +84,11 @@ def test_read_rows_as_blocks_full_table(
     assert len(blocks) > 0
 
 
-@pytest.mark.parametrize(
-    "data_format,expected_schema_type",
-    ((types.DataFormat.AVRO, "avro_schema"), (types.DataFormat.ARROW, "arrow_schema")),
-)
+@pytest.mark.parametrize("data_format", ("AVRO", "ARROW"))
 def test_read_rows_as_rows_full_table(
-    client, project_id, small_table_reference, data_format, expected_schema_type
+    client_and_types, project_id, small_table_reference, data_format
 ):
-
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = small_table_reference
     read_session.data_format = data_format
@@ -107,10 +107,11 @@ def test_read_rows_as_rows_full_table(
     assert len(rows) > 0
 
 
-@pytest.mark.parametrize(
-    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
-)
-def test_basic_nonfiltered_read(client, project_id, table_with_data_ref, data_format):
+@pytest.mark.parametrize("data_format", ("AVRO", "ARROW"))
+def test_basic_nonfiltered_read(
+    client_and_types, project_id, table_with_data_ref, data_format
+):
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = table_with_data_ref
     read_session.data_format = data_format
@@ -129,7 +130,8 @@ def test_basic_nonfiltered_read(client, project_id, table_with_data_ref, data_fo
     assert len(rows) == 5  # all table rows
 
 
-def test_filtered_rows_read(client, project_id, table_with_data_ref):
+def test_filtered_rows_read(client_and_types, project_id, table_with_data_ref):
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = table_with_data_ref
     read_session.data_format = types.DataFormat.AVRO
@@ -149,11 +151,11 @@ def test_filtered_rows_read(client, project_id, table_with_data_ref):
     assert len(rows) == 2
 
 
-@pytest.mark.parametrize(
-    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
-)
-def test_column_selection_read(client, project_id, table_with_data_ref, data_format):
-
+@pytest.mark.parametrize("data_format", ("AVRO", "ARROW"))
+def test_column_selection_read(
+    client_and_types, project_id, table_with_data_ref, data_format
+):
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = table_with_data_ref
     read_session.data_format = data_format
@@ -175,14 +177,14 @@ def test_column_selection_read(client, project_id, table_with_data_ref, data_for
         assert sorted(row.keys()) == ["age", "first_name"]
 
 
-def test_snapshot(client, project_id, table_with_data_ref, bq_client):
-    before_new_data = types.Timestamp()
-    before_new_data.GetCurrentTime()
+def test_snapshot(client_and_types, project_id, table_with_data_ref, bq_client):
+    client, types = client_and_types
+    before_new_data = dt.datetime.now(tz=dt.timezone.utc)
 
     # load additional data into the table
     new_data = [
-        {u"first_name": u"NewGuyFoo", u"last_name": u"Smith", u"age": 46},
-        {u"first_name": u"NewGuyBar", u"last_name": u"Jones", u"age": 30},
+        {"first_name": "NewGuyFoo", "last_name": "Smith", "age": 46},
+        {"first_name": "NewGuyBar", "last_name": "Jones", "age": 30},
     ]
 
     destination = _to_bq_table_ref(table_with_data_ref)
@@ -214,8 +216,9 @@ def test_snapshot(client, project_id, table_with_data_ref, bq_client):
 
 
 def test_column_partitioned_table(
-    client, project_id, col_partition_table_ref, bq_client
+    client_and_types, project_id, col_partition_table_ref, bq_client
 ):
+    client, types = client_and_types
     data = [
         {"description": "Tracking established.", "occurred": "2017-02-15"},
         {"description": "Look, a solar eclipse!", "occurred": "2018-02-15"},
@@ -256,12 +259,11 @@ def test_column_partitioned_table(
         assert row["description"] in expected_descriptions
 
 
-@pytest.mark.parametrize(
-    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
-)
+@pytest.mark.parametrize("data_format", ("AVRO", "ARROW"))
 def test_ingestion_time_partitioned_table(
-    client, project_id, ingest_partition_table_ref, bq_client, data_format
+    client_and_types, project_id, ingest_partition_table_ref, bq_client, data_format
 ):
+    client, types = client_and_types
     data = [{"shape": "cigar", "altitude": 1200}, {"shape": "disc", "altitude": 750}]
     destination = _to_bq_table_ref(
         ingest_partition_table_ref, partition_suffix="$20190809"
@@ -306,37 +308,38 @@ def test_ingestion_time_partitioned_table(
     rows = list(client.read_rows(stream).rows(session))
     assert len(rows) == 2
 
+    data_format = getattr(types.DataFormat, data_format)
     if data_format == types.DataFormat.AVRO:
         actual_items = {(row["shape"], row["altitude"]) for row in rows}
-    else:
-        assert data_format == types.DataFormat.ARROW
+    elif data_format == types.DataFormat.ARROW:
         actual_items = {(row["shape"].as_py(), row["altitude"].as_py()) for row in rows}
+    else:
+        raise AssertionError(f"got unexpected data_format: {data_format}")
 
     expected_items = {("sphere", 3500), ("doughnut", 100)}
     assert actual_items == expected_items
 
 
-@pytest.mark.parametrize(
-    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
-)
+@pytest.mark.parametrize("data_format", ("AVRO", "ARROW"))
 def test_decoding_data_types(
-    client, project_id, all_types_table_ref, bq_client, data_format
+    client_and_types, project_id, all_types_table_ref, bq_client, data_format
 ):
+    client, types = client_and_types
     data = [
         {
-            u"string_field": u"Price: € 9.95.",
-            u"bytes_field": bigquery._helpers._bytes_to_json(b"byteees"),
-            u"int64_field": -1085,
-            u"float64_field": -42.195,
-            u"numeric_field": "1.4142",
-            u"bool_field": True,
-            u"geography_field": '{"type": "Point", "coordinates": [-49.3028, 69.0622]}',
-            u"person_struct_field": {u"name": u"John", u"age": 42},
-            u"timestamp_field": 1565357902.017896,  # 2019-08-09T13:38:22.017896
-            u"date_field": u"1995-03-17",
-            u"time_field": u"16:24:51",
-            u"datetime_field": u"2005-10-26T19:49:41",
-            u"string_array_field": [u"foo", u"bar", u"baz"],
+            "string_field": "Price: € 9.95.",
+            "bytes_field": bigquery._helpers._bytes_to_json(b"byteees"),
+            "int64_field": -1085,
+            "float64_field": -42.195,
+            "numeric_field": "1.4142",
+            "bool_field": True,
+            "geography_field": '{"type": "Point", "coordinates": [-49.3028, 69.0622]}',
+            "person_struct_field": {"name": "John", "age": 42},
+            "timestamp_field": 1565357902.017896,  # 2019-08-09T13:38:22.017896
+            "date_field": "1995-03-17",
+            "time_field": "16:24:51",
+            "datetime_field": "2005-10-26T19:49:41",
+            "string_array_field": ["foo", "bar", "baz"],
         }
     ]
 
@@ -386,28 +389,30 @@ def test_decoding_data_types(
 
     stream = session.streams[0].name
 
+    data_format = getattr(types.DataFormat, data_format)
     if data_format == types.DataFormat.AVRO:
         rows = list(client.read_rows(stream).rows(session))
-    else:
-        assert data_format == types.DataFormat.ARROW
+    elif data_format == types.DataFormat.ARROW:
         rows = list(
             dict((key, value.as_py()) for key, value in row_dict.items())
             for row_dict in client.read_rows(stream).rows(session)
         )
+    else:
+        raise AssertionError(f"got unexpected data_format: {data_format}")
 
     expected_result = {
-        u"string_field": u"Price: € 9.95.",
-        u"bytes_field": b"byteees",
-        u"int64_field": -1085,
-        u"float64_field": -42.195,
-        u"numeric_field": decimal.Decimal("1.4142"),
-        u"bool_field": True,
-        u"geography_field": "POINT(-49.3028 69.0622)",
-        u"person_struct_field": {u"name": u"John", u"age": 42},
-        u"timestamp_field": dt.datetime(2019, 8, 9, 13, 38, 22, 17896, tzinfo=pytz.UTC),
-        u"date_field": dt.date(1995, 3, 17),
-        u"time_field": dt.time(16, 24, 51),
-        u"string_array_field": [u"foo", u"bar", u"baz"],
+        "string_field": "Price: € 9.95.",
+        "bytes_field": b"byteees",
+        "int64_field": -1085,
+        "float64_field": -42.195,
+        "numeric_field": decimal.Decimal("1.4142"),
+        "bool_field": True,
+        "geography_field": "POINT(-49.3028 69.0622)",
+        "person_struct_field": {"name": "John", "age": 42},
+        "timestamp_field": dt.datetime(2019, 8, 9, 13, 38, 22, 17896, tzinfo=pytz.UTC),
+        "date_field": dt.date(1995, 3, 17),
+        "time_field": dt.time(16, 24, 51),
+        "string_array_field": ["foo", "bar", "baz"],
     }
 
     result_copy = copy.copy(rows[0])
@@ -421,13 +426,11 @@ def test_decoding_data_types(
     assert expected_pattern.match(str(rows[0]["datetime_field"]))
 
 
-@pytest.mark.parametrize(
-    "data_format", ((types.DataFormat.AVRO), (types.DataFormat.ARROW))
-)
+@pytest.mark.parametrize("data_format", ("AVRO", "ARROW"))
 def test_resuming_read_from_offset(
-    client, project_id, data_format, local_shakespeare_table_reference
+    client_and_types, project_id, data_format, local_shakespeare_table_reference
 ):
-
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = local_shakespeare_table_reference
     read_session.data_format = data_format
@@ -463,9 +466,10 @@ def test_resuming_read_from_offset(
     assert actual_len == expected_len
 
 
-def test_read_rows_to_dataframe_with_wide_table(client, project_id):
+def test_read_rows_to_dataframe_with_wide_table(client_and_types, project_id):
     # Use a wide table to boost the chance of getting a large message size.
     # https://github.com/googleapis/python-bigquery-storage/issues/78
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = "projects/{}/datasets/{}/tables/{}".format(
         "bigquery-public-data", "geo_census_tracts", "us_census_tracts_national"

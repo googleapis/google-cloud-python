@@ -22,7 +22,7 @@ from synthtool.languages import python
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1"]
+versions = ["v1beta2", "v1"]
 
 for version in versions:
     library = gapic.py_library(

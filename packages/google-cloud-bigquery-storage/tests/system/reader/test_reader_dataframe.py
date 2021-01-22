@@ -19,10 +19,9 @@ import numpy
 import pyarrow.types
 import pytest
 
-from google.cloud.bigquery_storage import types
 
-
-def test_read_v1(client, project_id):
+def test_read_rows_to_arrow(client_and_types, project_id):
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = "projects/{}/datasets/{}/tables/{}".format(
         "bigquery-public-data", "new_york_citibike", "citibike_stations"
@@ -60,9 +59,12 @@ def test_read_v1(client, project_id):
 
 @pytest.mark.parametrize(
     "data_format,expected_schema_type",
-    ((types.DataFormat.AVRO, "avro_schema"), (types.DataFormat.ARROW, "arrow_schema")),
+    (("AVRO", "avro_schema"), ("ARROW", "arrow_schema")),
 )
-def test_read_rows_to_dataframe(client, project_id, data_format, expected_schema_type):
+def test_read_rows_to_dataframe(
+    client_and_types, project_id, data_format, expected_schema_type
+):
+    client, types = client_and_types
     read_session = types.ReadSession()
     read_session.table = "projects/{}/datasets/{}/tables/{}".format(
         "bigquery-public-data", "new_york_citibike", "citibike_stations"
