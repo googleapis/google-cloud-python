@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.1.0...v2.2.0) (2021-01-22)
+
+
+### Features
+
+* add clients for v1beta2 endpoint ([#113](https://www.github.com/googleapis/python-bigquery-storage/issues/113)) ([e5f6198](https://www.github.com/googleapis/python-bigquery-storage/commit/e5f6198262cf9a593c62219cf5f6632c5a2a811e))
+* add manual wrapper for v1beta2 read client ([#117](https://www.github.com/googleapis/python-bigquery-storage/issues/117)) ([798cd34](https://www.github.com/googleapis/python-bigquery-storage/commit/798cd341fbe0734f99b9c2ac3c50ae09886d1c90))
+
+
+### Bug Fixes
+
+* skip some system tests for mtls testing ([#106](https://www.github.com/googleapis/python-bigquery-storage/issues/106)) ([89ba292](https://www.github.com/googleapis/python-bigquery-storage/commit/89ba292281970cbdee5bb43b45a9dac69e29ff0a))
+
+
+### Documentation
+
+* add note about Arrow blocks to README ([#73](https://www.github.com/googleapis/python-bigquery-storage/issues/73)) ([d9691f1](https://www.github.com/googleapis/python-bigquery-storage/commit/d9691f1714bf34b3119d4e457293a723c2fb9120))
+* request only a single stream in dataframe example ([#114](https://www.github.com/googleapis/python-bigquery-storage/issues/114)) ([3518624](https://www.github.com/googleapis/python-bigquery-storage/commit/35186247018b0c93a4af1fcde52fa739efa803c4))
+
 ## [2.1.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.0.1...v2.1.0) (2020-11-04)
 
 
