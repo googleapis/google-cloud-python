@@ -315,6 +315,10 @@ def _timestamp_to_json_parameter(value):
 def _timestamp_to_json_row(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, datetime.datetime):
+        # For naive datetime objects UTC timezone is assumed, thus we format
+        # those to string directly without conversion.
+        if value.tzinfo is not None:
+            value = value.astimezone(UTC)
         value = value.strftime(_RFC3339_MICROS)
     return value
 
@@ -322,6 +326,10 @@ def _timestamp_to_json_row(value):
 def _datetime_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
     if isinstance(value, datetime.datetime):
+        # For naive datetime objects UTC timezone is assumed, thus we format
+        # those to string directly without conversion.
+        if value.tzinfo is not None:
+            value = value.astimezone(UTC)
         value = value.strftime(_RFC3339_MICROS_NO_ZULU)
     return value
 

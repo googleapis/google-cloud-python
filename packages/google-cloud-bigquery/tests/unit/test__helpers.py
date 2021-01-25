@@ -420,13 +420,13 @@ class Test_row_tuple_from_json(unittest.TestCase):
     def test_w_single_scalar_column(self):
         # SELECT 1 AS col
         col = _Field("REQUIRED", "col", "INTEGER")
-        row = {u"f": [{u"v": u"1"}]}
+        row = {"f": [{"v": "1"}]}
         self.assertEqual(self._call_fut(row, schema=[col]), (1,))
 
     def test_w_single_scalar_geography_column(self):
         # SELECT 1 AS col
         col = _Field("REQUIRED", "geo", "GEOGRAPHY")
-        row = {u"f": [{u"v": u"POINT(1, 2)"}]}
+        row = {"f": [{"v": "POINT(1, 2)"}]}
         self.assertEqual(self._call_fut(row, schema=[col]), ("POINT(1, 2)",))
 
     def test_w_single_struct_column(self):
@@ -434,13 +434,13 @@ class Test_row_tuple_from_json(unittest.TestCase):
         sub_1 = _Field("REQUIRED", "sub_1", "INTEGER")
         sub_2 = _Field("REQUIRED", "sub_2", "INTEGER")
         col = _Field("REQUIRED", "col", "RECORD", fields=[sub_1, sub_2])
-        row = {u"f": [{u"v": {u"f": [{u"v": u"1"}, {u"v": u"2"}]}}]}
+        row = {"f": [{"v": {"f": [{"v": "1"}, {"v": "2"}]}}]}
         self.assertEqual(self._call_fut(row, schema=[col]), ({"sub_1": 1, "sub_2": 2},))
 
     def test_w_single_array_column(self):
         # SELECT [1, 2, 3] as col
         col = _Field("REPEATED", "col", "INTEGER")
-        row = {u"f": [{u"v": [{u"v": u"1"}, {u"v": u"2"}, {u"v": u"3"}]}]}
+        row = {"f": [{"v": [{"v": "1"}, {"v": "2"}, {"v": "3"}]}]}
         self.assertEqual(self._call_fut(row, schema=[col]), ([1, 2, 3],))
 
     def test_w_struct_w_nested_array_column(self):
@@ -450,13 +450,13 @@ class Test_row_tuple_from_json(unittest.TestCase):
         third = _Field("REPEATED", "third", "INTEGER")
         col = _Field("REQUIRED", "col", "RECORD", fields=[first, second, third])
         row = {
-            u"f": [
+            "f": [
                 {
-                    u"v": {
-                        u"f": [
-                            {u"v": [{u"v": u"1"}, {u"v": u"2"}]},
-                            {u"v": u"3"},
-                            {u"v": [{u"v": u"4"}, {u"v": u"5"}]},
+                    "v": {
+                        "f": [
+                            {"v": [{"v": "1"}, {"v": "2"}]},
+                            {"v": "3"},
+                            {"v": [{"v": "4"}, {"v": "5"}]},
                         ]
                     }
                 }
@@ -464,7 +464,7 @@ class Test_row_tuple_from_json(unittest.TestCase):
         }
         self.assertEqual(
             self._call_fut(row, schema=[col]),
-            ({u"first": [1, 2], u"second": 3, u"third": [4, 5]},),
+            ({"first": [1, 2], "second": 3, "third": [4, 5]},),
         )
 
     def test_w_array_of_struct(self):
@@ -474,11 +474,11 @@ class Test_row_tuple_from_json(unittest.TestCase):
         third = _Field("REQUIRED", "third", "INTEGER")
         col = _Field("REPEATED", "col", "RECORD", fields=[first, second, third])
         row = {
-            u"f": [
+            "f": [
                 {
-                    u"v": [
-                        {u"v": {u"f": [{u"v": u"1"}, {u"v": u"2"}, {u"v": u"3"}]}},
-                        {u"v": {u"f": [{u"v": u"4"}, {u"v": u"5"}, {u"v": u"6"}]}},
+                    "v": [
+                        {"v": {"f": [{"v": "1"}, {"v": "2"}, {"v": "3"}]}},
+                        {"v": {"f": [{"v": "4"}, {"v": "5"}, {"v": "6"}]}},
                     ]
                 }
             ]
@@ -487,8 +487,8 @@ class Test_row_tuple_from_json(unittest.TestCase):
             self._call_fut(row, schema=[col]),
             (
                 [
-                    {u"first": 1, u"second": 2, u"third": 3},
-                    {u"first": 4, u"second": 5, u"third": 6},
+                    {"first": 1, "second": 2, "third": 3},
+                    {"first": 4, "second": 5, "third": 6},
                 ],
             ),
         )
@@ -499,32 +499,25 @@ class Test_row_tuple_from_json(unittest.TestCase):
         second = _Field("REQUIRED", "second", "INTEGER")
         col = _Field("REPEATED", "col", "RECORD", fields=[first, second])
         row = {
-            u"f": [
+            "f": [
                 {
-                    u"v": [
+                    "v": [
                         {
-                            u"v": {
-                                u"f": [
-                                    {u"v": [{u"v": u"1"}, {u"v": u"2"}, {u"v": u"3"}]},
-                                    {u"v": u"4"},
+                            "v": {
+                                "f": [
+                                    {"v": [{"v": "1"}, {"v": "2"}, {"v": "3"}]},
+                                    {"v": "4"},
                                 ]
                             }
                         },
-                        {
-                            u"v": {
-                                u"f": [
-                                    {u"v": [{u"v": u"5"}, {u"v": u"6"}]},
-                                    {u"v": u"7"},
-                                ]
-                            }
-                        },
+                        {"v": {"f": [{"v": [{"v": "5"}, {"v": "6"}]}, {"v": "7"}]}},
                     ]
                 }
             ]
         }
         self.assertEqual(
             self._call_fut(row, schema=[col]),
-            ([{u"first": [1, 2, 3], u"second": 4}, {u"first": [5, 6], u"second": 7}],),
+            ([{"first": [1, 2, 3], "second": 4}, {"first": [5, 6], "second": 7}],),
         )
 
 
@@ -673,7 +666,7 @@ class Test_bytes_to_json(unittest.TestCase):
 
     def test_w_bytes(self):
         source = b"source"
-        expected = u"c291cmNl"
+        expected = "c291cmNl"
         converted = self._call_fut(source)
         self.assertEqual(converted, expected)
 
@@ -726,7 +719,7 @@ class Test_timestamp_to_json_row(unittest.TestCase):
         ZULU = "2016-12-20 15:58:27.339328+00:00"
         self.assertEqual(self._call_fut(ZULU), ZULU)
 
-    def test_w_datetime(self):
+    def test_w_datetime_no_zone(self):
         when = datetime.datetime(2016, 12, 20, 15, 58, 27, 339328)
         self.assertEqual(self._call_fut(when), "2016-12-20T15:58:27.339328Z")
 
@@ -735,6 +728,14 @@ class Test_timestamp_to_json_row(unittest.TestCase):
 
         when = datetime.datetime(2020, 11, 17, 1, 6, 52, 353795, tzinfo=UTC)
         self.assertEqual(self._call_fut(when), "2020-11-17T01:06:52.353795Z")
+
+    def test_w_datetime_w_non_utc_zone(self):
+        class EstZone(datetime.tzinfo):
+            def utcoffset(self, _):
+                return datetime.timedelta(minutes=-300)
+
+        when = datetime.datetime(2020, 11, 17, 1, 6, 52, 353795, tzinfo=EstZone())
+        self.assertEqual(self._call_fut(when), "2020-11-17T06:06:52.353795Z")
 
 
 class Test_datetime_to_json(unittest.TestCase):
@@ -752,6 +753,14 @@ class Test_datetime_to_json(unittest.TestCase):
 
         when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=UTC)
         self.assertEqual(self._call_fut(when), "2016-12-03T14:11:27.123456")
+
+    def test_w_datetime_w_non_utc_zone(self):
+        class EstZone(datetime.tzinfo):
+            def utcoffset(self, _):
+                return datetime.timedelta(minutes=-300)
+
+        when = datetime.datetime(2016, 12, 3, 14, 11, 27, 123456, tzinfo=EstZone())
+        self.assertEqual(self._call_fut(when), "2016-12-03T19:11:27.123456")
 
 
 class Test_date_to_json(unittest.TestCase):
