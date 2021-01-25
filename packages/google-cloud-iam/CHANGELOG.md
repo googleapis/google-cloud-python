@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-iam/compare/v2.0.0...v2.1.0) (2021-01-25)
+
+
+### Features
+
+* add 'from_service_account_info' factory to clients ([29746e1](https://www.github.com/googleapis/python-iam/commit/29746e1984fc3942d830f54a9e921151d4d720c1))
+* add common resource helpers; expose client transport ([da9e307](https://www.github.com/googleapis/python-iam/commit/da9e307cec6e2d38ef3c42a67ebdb6ab915b09f5))
+* add from_service_account_info factory and fix sphinx identifiers  ([#48](https://www.github.com/googleapis/python-iam/issues/48)) ([29746e1](https://www.github.com/googleapis/python-iam/commit/29746e1984fc3942d830f54a9e921151d4d720c1))
+
+
+### Bug Fixes
+
+* fix sphinx identifiers ([29746e1](https://www.github.com/googleapis/python-iam/commit/29746e1984fc3942d830f54a9e921151d4d720c1))
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#43](https://www.github.com/googleapis/python-iam/issues/43)) ([8f5023d](https://www.github.com/googleapis/python-iam/commit/8f5023dbb24a8151bfcd967261904797d8d74b5b))
+
+
+### Documentation
+
+* link to migration guide ([#28](https://www.github.com/googleapis/python-iam/issues/28)) ([f895427](https://www.github.com/googleapis/python-iam/commit/f895427f7e59820931de194af42a10f44c5e9ae6))
+
 ## [2.0.0](https://www.github.com/googleapis/python-iam/compare/v1.0.1...v2.0.0) (2020-07-27)
 
 
