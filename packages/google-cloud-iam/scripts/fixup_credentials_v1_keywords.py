@@ -18,10 +18,15 @@
 
 import argparse
 import os
-import libcst as cst
 import pathlib
 import sys
 from typing import (Any, Callable, Dict, List, Sequence, Tuple)
+
+try:
+    import libcst as cst
+except ImportError:
+    print("*** Could not import libcst! Did you install the google-cloud-iam package with the `[fixup]` extra?")
+    raise
 
 
 def partition(
