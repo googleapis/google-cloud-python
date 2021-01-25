@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.2.0...v2.2.1) (2021-01-25)
+
+
+### Documentation
+
+* remove required session variable to fix publish ([#124](https://www.github.com/googleapis/python-bigquery-storage/issues/124)) ([19a105c](https://www.github.com/googleapis/python-bigquery-storage/commit/19a105cb9c868bb1a9e63966609a2488876f511b))
+
 ## [2.2.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.1.0...v2.2.0) (2021-01-22)
 
 
