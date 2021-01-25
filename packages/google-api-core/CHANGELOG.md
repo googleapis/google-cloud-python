@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.25.1](https://www.github.com/googleapis/python-api-core/compare/v1.25.0...v1.25.1) (2021-01-25)
+
+
+### Bug Fixes
+
+* add operation name to x-goog-request-params ([#133](https://www.github.com/googleapis/python-api-core/issues/133)) ([97cef4a](https://www.github.com/googleapis/python-api-core/commit/97cef4ad1db55938715f9ac8000d1b0ad1e71873))
+
+
+### Documentation
+
+* fix spelling errors in retry ([#131](https://www.github.com/googleapis/python-api-core/issues/131)) ([232dab0](https://www.github.com/googleapis/python-api-core/commit/232dab0ad3ef2cca0edfe707d8f90ca0ea200ba2))
+
 ## [1.25.0](https://www.github.com/googleapis/python-api-core/compare/v1.24.1...v1.25.0) (2021-01-14)
 
 
