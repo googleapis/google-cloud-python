@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.2...v0.40.3) (2021-01-21)
+
+
+### Bug Fixes
+
+* stabilize order of query_params ([#742](https://www.github.com/googleapis/gapic-generator-python/issues/742)) ([2835ddb](https://www.github.com/googleapis/gapic-generator-python/commit/2835ddbe62b520e2e4c84f02810b1ac936c9cbb9))
+
 ### [0.40.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.1...v0.40.2) (2021-01-21)
 
 
