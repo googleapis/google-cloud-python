@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-vision/compare/v2.0.0...v2.1.0) (2021-01-26)
+
+
+### Features
+
+* **v1:** add text detection params; fix: remove client side recv limits ([#82](https://www.github.com/googleapis/python-vision/issues/82)) ([eaf1621](https://www.github.com/googleapis/python-vision/commit/eaf1621dc5a76e970e58d6366a80c1272be83ed2))
+
+
+### Bug Fixes
+
+* Fixes VPCSC Tests that did not conform to V2.0.0 client API ([#61](https://www.github.com/googleapis/python-vision/issues/61)) ([efed79a](https://www.github.com/googleapis/python-vision/commit/efed79a18c2c66bccb42aa214610fa5e7f9898dc))
+
+
+### Documentation
+
+* update example usage ([#68](https://www.github.com/googleapis/python-vision/issues/68)) ([ea22e98](https://www.github.com/googleapis/python-vision/commit/ea22e981ff1dfc87a18b026c5e775d5f08a29821))
+
 ## [2.0.0](https://www.github.com/googleapis/python-vision/compare/v1.0.0...v2.0.0) (2020-09-29)
 
 
