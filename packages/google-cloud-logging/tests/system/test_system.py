@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import datetime
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 import logging
 import os
 import pytest
@@ -41,19 +43,21 @@ from test_utils.system import unique_resource_id
 _RESOURCE_ID = unique_resource_id("-")
 DEFAULT_FILTER = "logName:syslog AND severity>=INFO"
 DEFAULT_DESCRIPTION = "System testing"
+_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
 retry_429 = RetryErrors(TooManyRequests)
+
+_ten_mins_ago = datetime.now(timezone.utc) - timedelta(minutes=10)
+_time_filter = f'timestamp>="{_ten_mins_ago.strftime(_TIME_FORMAT)}"'
 
 
 def _consume_entries(logger):
-    """Consume all log entries from logger iterator.
-
+    """Consume all recent log entries from logger iterator.
     :type logger: :class:`~google.cloud.logging.logger.Logger`
     :param logger: A Logger containing entries.
-
     :rtype: list
     :returns: List of all entries consumed.
     """
-    return list(logger.list_entries())
+    return list(logger.list_entries(filter_=_time_filter))
 
 
 def _list_entries(logger):
@@ -68,9 +72,12 @@ def _list_entries(logger):
     :rtype: list
     :returns: List of all entries consumed.
     """
-    inner = RetryResult(_has_entries, max_tries=9)(_consume_entries)
+    inner = RetryResult(_has_entries, delay=1, backoff=2, max_tries=6)(_consume_entries)
     outer = RetryErrors(
-        (ServiceUnavailable, ResourceExhausted, InternalServerError), max_tries=9
+        (ServiceUnavailable, ResourceExhausted, InternalServerError),
+        delay=1,
+        backoff=2,
+        max_tries=6,
     )(inner)
     return outer(logger)
 
@@ -147,7 +154,7 @@ class TestLogging(unittest.TestCase):
             pool.FindMessageTypeByName(type_name)
 
         type_url = "type.googleapis.com/" + type_name
-        filter_ = self.TYPE_FILTER.format(type_url)
+        filter_ = self.TYPE_FILTER.format(type_url) + f" AND {_time_filter}"
         entry_iter = iter(Config.CLIENT.list_entries(page_size=1, filter_=filter_))
 
         retry = RetryErrors(TooManyRequests)
@@ -172,11 +179,9 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
     def test_log_text_with_timestamp(self):
-        import datetime
-
         text_payload = "System test: test_log_text_with_timestamp"
         logger = Config.CLIENT.logger(self._logger_name("log_text_ts"))
-        now = datetime.datetime.utcnow()
+        now = datetime.utcnow()
 
         self.to_delete.append(logger)
 
@@ -185,13 +190,13 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, text_payload)
         self.assertEqual(entries[0].timestamp, now.replace(tzinfo=UTC))
-        self.assertIsInstance(entries[0].received_timestamp, datetime.datetime)
+        self.assertIsInstance(entries[0].received_timestamp, datetime)
 
     def test_log_text_with_resource(self):
         text_payload = "System test: test_log_text_with_timestamp"
 
         logger = Config.CLIENT.logger(self._logger_name("log_text_res"))
-        now = datetime.datetime.utcnow()
+        now = datetime.utcnow()
         resource = Resource(
             type="gae_app",
             labels={"module_id": "default", "version_id": "test", "zone": ""},
