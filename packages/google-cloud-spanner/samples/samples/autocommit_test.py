@@ -6,10 +6,12 @@
 
 import uuid
 
+from google.api_core.exceptions import Aborted
 from google.cloud import spanner
 from google.cloud.spanner_dbapi import connect
 import mock
 import pytest
+from test_utils.retry import RetryErrors
 
 import autocommit
 
@@ -49,6 +51,7 @@ def database(spanner_instance):
     db.drop()
 
 
+@RetryErrors(exception=Aborted, max_tries=2)
 def test_enable_autocommit_mode(capsys, database):
     connection = connect(INSTANCE_ID, DATABASE_ID)
     cursor = connection.cursor()
