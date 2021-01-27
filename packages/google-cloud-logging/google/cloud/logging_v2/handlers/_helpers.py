@@ -24,6 +24,7 @@ except ImportError:  # pragma: NO COVER
 
 from google.cloud.logging_v2.handlers.middleware.request import _get_django_request
 
+_DJANGO_CONTENT_LENGTH = "CONTENT_LENGTH"
 _DJANGO_TRACE_HEADER = "HTTP_X_CLOUD_TRACE_CONTEXT"
 _DJANGO_USERAGENT_HEADER = "HTTP_USER_AGENT"
 _DJANGO_REMOTE_ADDR_HEADER = "REMOTE_ADDR"
@@ -93,11 +94,18 @@ def get_request_data_from_django():
 
     if request is None:
         return None, None
+
+    # convert content_length to int if it exists
+    content_length = None
+    try:
+        content_length = int(request.META.get(_DJANGO_CONTENT_LENGTH))
+    except (ValueError, TypeError):
+        content_length = None
     # build http_request
     http_request = {
         "requestMethod": request.method,
         "requestUrl": request.build_absolute_uri(),
-        "requestSize": len(request.body),
+        "requestSize": content_length,
         "userAgent": request.META.get(_DJANGO_USERAGENT_HEADER),
         "remoteIp": request.META.get(_DJANGO_REMOTE_ADDR_HEADER),
         "referer": request.META.get(_DJANGO_REFERER_HEADER),

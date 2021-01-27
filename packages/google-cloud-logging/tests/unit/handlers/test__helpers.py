@@ -172,6 +172,9 @@ class Test_get_request_data_from_django(unittest.TestCase):
             HTTP_USER_AGENT=expected_agent,
             HTTP_REFERER=expected_referrer,
         )
+        # ensure test passes even after request has been read
+        # context: https://github.com/googleapis/python-logging/issues/159
+        django_request.read()
 
         middleware = request.RequestMiddleware(None)
         middleware.process_request(django_request)
