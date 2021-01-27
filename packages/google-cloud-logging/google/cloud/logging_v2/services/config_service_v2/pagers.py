@@ -24,7 +24,7 @@ class ListBucketsPager:
     """A pager for iterating through ``list_buckets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListBucketsResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListBucketsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``buckets`` field.
 
@@ -33,7 +33,7 @@ class ListBucketsPager:
     through the ``buckets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListBucketsResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListBucketsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListBucketsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListBucketsRequest`):
+            request (google.cloud.logging_v2.types.ListBucketsRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListBucketsResponse`):
+            response (google.cloud.logging_v2.types.ListBucketsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListBucketsAsyncPager:
     """A pager for iterating through ``list_buckets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListBucketsResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListBucketsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``buckets`` field.
 
@@ -95,7 +95,7 @@ class ListBucketsAsyncPager:
     through the ``buckets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListBucketsResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListBucketsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListBucketsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListBucketsRequest`):
+            request (google.cloud.logging_v2.types.ListBucketsRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListBucketsResponse`):
+            response (google.cloud.logging_v2.types.ListBucketsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +152,7 @@ class ListViewsPager:
     """A pager for iterating through ``list_views`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListViewsResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListViewsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``views`` field.
 
@@ -161,7 +161,7 @@ class ListViewsPager:
     through the ``views`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListViewsResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListViewsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +179,9 @@ class ListViewsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListViewsRequest`):
+            request (google.cloud.logging_v2.types.ListViewsRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListViewsResponse`):
+            response (google.cloud.logging_v2.types.ListViewsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +214,7 @@ class ListViewsAsyncPager:
     """A pager for iterating through ``list_views`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListViewsResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListViewsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``views`` field.
 
@@ -223,7 +223,7 @@ class ListViewsAsyncPager:
     through the ``views`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListViewsResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListViewsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +241,9 @@ class ListViewsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListViewsRequest`):
+            request (google.cloud.logging_v2.types.ListViewsRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListViewsResponse`):
+            response (google.cloud.logging_v2.types.ListViewsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -280,7 +280,7 @@ class ListSinksPager:
     """A pager for iterating through ``list_sinks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListSinksResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListSinksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``sinks`` field.
 
@@ -289,7 +289,7 @@ class ListSinksPager:
     through the ``sinks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListSinksResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListSinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -307,9 +307,9 @@ class ListSinksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListSinksRequest`):
+            request (google.cloud.logging_v2.types.ListSinksRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListSinksResponse`):
+            response (google.cloud.logging_v2.types.ListSinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -342,7 +342,7 @@ class ListSinksAsyncPager:
     """A pager for iterating through ``list_sinks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListSinksResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListSinksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``sinks`` field.
 
@@ -351,7 +351,7 @@ class ListSinksAsyncPager:
     through the ``sinks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListSinksResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListSinksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -369,9 +369,9 @@ class ListSinksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListSinksRequest`):
+            request (google.cloud.logging_v2.types.ListSinksRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListSinksResponse`):
+            response (google.cloud.logging_v2.types.ListSinksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -408,7 +408,7 @@ class ListExclusionsPager:
     """A pager for iterating through ``list_exclusions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListExclusionsResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListExclusionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``exclusions`` field.
 
@@ -417,7 +417,7 @@ class ListExclusionsPager:
     through the ``exclusions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListExclusionsResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListExclusionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -435,9 +435,9 @@ class ListExclusionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListExclusionsRequest`):
+            request (google.cloud.logging_v2.types.ListExclusionsRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListExclusionsResponse`):
+            response (google.cloud.logging_v2.types.ListExclusionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -470,7 +470,7 @@ class ListExclusionsAsyncPager:
     """A pager for iterating through ``list_exclusions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.logging_config.ListExclusionsResponse` object, and
+    :class:`google.cloud.logging_v2.types.ListExclusionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``exclusions`` field.
 
@@ -479,7 +479,7 @@ class ListExclusionsAsyncPager:
     through the ``exclusions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.logging_config.ListExclusionsResponse`
+    All the usual :class:`google.cloud.logging_v2.types.ListExclusionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -497,9 +497,9 @@ class ListExclusionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.logging_config.ListExclusionsRequest`):
+            request (google.cloud.logging_v2.types.ListExclusionsRequest):
                 The initial request object.
-            response (:class:`~.logging_config.ListExclusionsResponse`):
+            response (google.cloud.logging_v2.types.ListExclusionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

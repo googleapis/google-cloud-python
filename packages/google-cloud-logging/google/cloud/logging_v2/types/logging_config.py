@@ -84,11 +84,11 @@ class LogBucket(proto.Message):
             location can not be changed.
         description (str):
             Describes this bucket.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the
             bucket. This is not set for any of the default
             buckets.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of the
             bucket.
         retention_days (int):
@@ -103,7 +103,7 @@ class LogBucket(proto.Message):
             The retention period on a locked bucket may not
             be changed. Locked buckets may only be deleted
             if they are empty.
-        lifecycle_state (~.logging_config.LifecycleState):
+        lifecycle_state (google.cloud.logging_v2.types.LifecycleState):
             Output only. The bucket lifecycle state.
     """
 
@@ -133,10 +133,10 @@ class LogView(proto.Message):
             location/buckets/my-bucket-id/views/my-view
         description (str):
             Describes this view.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the
             view.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of the
             view.
         filter (str):
@@ -206,12 +206,12 @@ class LogSink(proto.Message):
         disabled (bool):
             Optional. If set to True, then this sink is
             disabled and it does not export any log entries.
-        exclusions (Sequence[~.logging_config.LogExclusion]):
+        exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
             Optional. Log entries that match any of the exclusion
             filters will not be exported. If a log entry is matched by
             both ``filter`` and one of ``exclusion_filters`` it will not
             be exported.
-        output_version_format (~.logging_config.LogSink.VersionFormat):
+        output_version_format (google.cloud.logging_v2.types.LogSink.VersionFormat):
             Deprecated. This field is unused.
         writer_identity (str):
             Output only. An IAM identity—a service account or
@@ -248,14 +248,14 @@ class LogSink(proto.Message):
 
                 logName:("projects/test-project1/" OR "projects/test-project2/") AND
                 resource.type=gce_instance
-        bigquery_options (~.logging_config.BigQueryOptions):
+        bigquery_options (google.cloud.logging_v2.types.BigQueryOptions):
             Optional. Options that affect sinks exporting
             data to BigQuery.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the
             sink.
             This field may not be present for older sinks.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of the
             sink.
             This field may not be present for older sinks.
@@ -366,7 +366,7 @@ class ListBucketsResponse(proto.Message):
     r"""The response from ListBuckets.
 
     Attributes:
-        buckets (Sequence[~.logging_config.LogBucket]):
+        buckets (Sequence[google.cloud.logging_v2.types.LogBucket]):
             A list of buckets.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -401,7 +401,7 @@ class CreateBucketRequest(proto.Message):
             ``"my-bucket"``. Identifiers are limited to 100 characters
             and can include only letters, digits, underscores, hyphens,
             and periods.
-        bucket (~.logging_config.LogBucket):
+        bucket (google.cloud.logging_v2.types.LogBucket):
             Required. The new bucket. The region
             specified in the new bucket must be compliant
             with any Location Restriction Org Policy. The
@@ -434,9 +434,9 @@ class UpdateBucketRequest(proto.Message):
             Also requires permission
             "resourcemanager.projects.updateLiens" to set the locked
             property
-        bucket (~.logging_config.LogBucket):
+        bucket (google.cloud.logging_v2.types.LogBucket):
             Required. The updated bucket.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Field mask that specifies the fields in ``bucket``
             that need an update. A bucket field will be overwritten if,
             and only if, it is in the update mask. ``name`` and output
@@ -552,7 +552,7 @@ class ListViewsResponse(proto.Message):
     r"""The response from ListViews.
 
     Attributes:
-        views (Sequence[~.logging_config.LogView]):
+        views (Sequence[google.cloud.logging_v2.types.LogView]):
             A list of views.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -585,7 +585,7 @@ class CreateViewRequest(proto.Message):
             ``"projects/my-logging-project/locations/my-location/buckets/my-bucket"``
         view_id (str):
             Required. The id to use for this view.
-        view (~.logging_config.LogView):
+        view (google.cloud.logging_v2.types.LogView):
             Required. The new view.
     """
 
@@ -609,9 +609,9 @@ class UpdateViewRequest(proto.Message):
 
             Example:
             ``"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"``.
-        view (~.logging_config.LogView):
+        view (google.cloud.logging_v2.types.LogView):
             Required. The updated view.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask that specifies the fields in ``view``
             that need an update. A field will be overwritten if, and
             only if, it is in the update mask. ``name`` and output only
@@ -703,7 +703,7 @@ class ListSinksResponse(proto.Message):
     r"""Result returned from ``ListSinks``.
 
     Attributes:
-        sinks (Sequence[~.logging_config.LogSink]):
+        sinks (Sequence[google.cloud.logging_v2.types.LogSink]):
             A list of sinks.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -757,7 +757,7 @@ class CreateSinkRequest(proto.Message):
 
             Examples: ``"projects/my-logging-project"``,
             ``"organizations/123456789"``.
-        sink (~.logging_config.LogSink):
+        sink (google.cloud.logging_v2.types.LogSink):
             Required. The new sink, whose ``name`` parameter is a sink
             identifier that is not already in use.
         unique_writer_identity (bool):
@@ -800,7 +800,7 @@ class UpdateSinkRequest(proto.Message):
                 "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
             Example: ``"projects/my-project-id/sinks/my-sink-id"``.
-        sink (~.logging_config.LogSink):
+        sink (google.cloud.logging_v2.types.LogSink):
             Required. The updated sink, whose name is the same
             identifier that appears as part of ``sink_name``.
         unique_writer_identity (bool):
@@ -819,7 +819,7 @@ class UpdateSinkRequest(proto.Message):
                account.
             -  It is an error if the old value is true and the new value
                is set to false or defaulted to false.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask that specifies the fields in ``sink``
             that need an update. A sink field will be overwritten if,
             and only if, it is in the update mask. ``name`` and output
@@ -901,12 +901,12 @@ class LogExclusion(proto.Message):
             and it does not exclude any log entries. You can [update an
             exclusion][google.logging.v2.ConfigServiceV2.UpdateExclusion]
             to change the value of this field.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the
             exclusion.
             This field may not be present for older
             exclusions.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of the
             exclusion.
             This field may not be present for older
@@ -964,7 +964,7 @@ class ListExclusionsResponse(proto.Message):
     r"""Result returned from ``ListExclusions``.
 
     Attributes:
-        exclusions (Sequence[~.logging_config.LogExclusion]):
+        exclusions (Sequence[google.cloud.logging_v2.types.LogExclusion]):
             A list of exclusions.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -1020,7 +1020,7 @@ class CreateExclusionRequest(proto.Message):
 
             Examples: ``"projects/my-logging-project"``,
             ``"organizations/123456789"``.
-        exclusion (~.logging_config.LogExclusion):
+        exclusion (google.cloud.logging_v2.types.LogExclusion):
             Required. The new exclusion, whose ``name`` parameter is an
             exclusion name that is not already used in the parent
             resource.
@@ -1047,10 +1047,10 @@ class UpdateExclusionRequest(proto.Message):
 
             Example:
             ``"projects/my-project-id/exclusions/my-exclusion-id"``.
-        exclusion (~.logging_config.LogExclusion):
+        exclusion (google.cloud.logging_v2.types.LogExclusion):
             Required. New values for the existing exclusion. Only the
             fields specified in ``update_mask`` are relevant.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A non-empty list of fields to change in the
             existing exclusion. New values for the fields are taken from
             the corresponding fields in the
@@ -1145,13 +1145,13 @@ class UpdateCmekSettingsRequest(proto.Message):
             Note: CMEK for the Logs Router can currently only be
             configured for GCP organizations. Once configured, it
             applies to all projects and folders in the GCP organization.
-        cmek_settings (~.logging_config.CmekSettings):
+        cmek_settings (google.cloud.logging_v2.types.CmekSettings):
             Required. The CMEK settings to update.
 
             See `Enabling CMEK for Logs
             Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
             for more information.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Field mask identifying which fields from
             ``cmek_settings`` should be updated. A field will be
             overwritten if and only if it is in the update mask. Output

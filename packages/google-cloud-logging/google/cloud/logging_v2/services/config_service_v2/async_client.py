@@ -90,6 +90,7 @@ class ConfigServiceV2AsyncClient:
         ConfigServiceV2Client.parse_common_location_path
     )
 
+    from_service_account_info = ConfigServiceV2Client.from_service_account_info
     from_service_account_file = ConfigServiceV2Client.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -166,7 +167,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists buckets.
 
         Args:
-            request (:class:`~.logging_config.ListBucketsRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListBucketsRequest`):
                 The request object. The parameters to `ListBuckets`.
             parent (:class:`str`):
                 Required. The parent resource whose buckets are to be
@@ -182,6 +183,7 @@ class ConfigServiceV2AsyncClient:
                 Note: The locations portion of the resource must be
                 specified, but supplying the character ``-`` in place of
                 [LOCATION_ID] will return all buckets.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -193,7 +195,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBucketsAsyncPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListBucketsAsyncPager:
                 The response from ListBuckets.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -255,7 +257,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a bucket.
 
         Args:
-            request (:class:`~.logging_config.GetBucketRequest`):
+            request (:class:`google.cloud.logging_v2.types.GetBucketRequest`):
                 The request object. The parameters to `GetBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -265,7 +267,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogBucket:
+            google.cloud.logging_v2.types.LogBucket:
                 Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
@@ -305,7 +307,7 @@ class ConfigServiceV2AsyncClient:
         cannot be changed.
 
         Args:
-            request (:class:`~.logging_config.CreateBucketRequest`):
+            request (:class:`google.cloud.logging_v2.types.CreateBucketRequest`):
                 The request object. The parameters to `CreateBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -315,7 +317,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogBucket:
+            google.cloud.logging_v2.types.LogBucket:
                 Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
@@ -363,7 +365,7 @@ class ConfigServiceV2AsyncClient:
         A buckets region may not be modified after it is created.
 
         Args:
-            request (:class:`~.logging_config.UpdateBucketRequest`):
+            request (:class:`google.cloud.logging_v2.types.UpdateBucketRequest`):
                 The request object. The parameters to `UpdateBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -373,7 +375,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogBucket:
+            google.cloud.logging_v2.types.LogBucket:
                 Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
@@ -413,7 +415,7 @@ class ConfigServiceV2AsyncClient:
         the bucket will be permanently deleted.
 
         Args:
-            request (:class:`~.logging_config.DeleteBucketRequest`):
+            request (:class:`google.cloud.logging_v2.types.DeleteBucketRequest`):
                 The request object. The parameters to `DeleteBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -457,7 +459,7 @@ class ConfigServiceV2AsyncClient:
         may be undeleted within the grace period of 7 days.
 
         Args:
-            request (:class:`~.logging_config.UndeleteBucketRequest`):
+            request (:class:`google.cloud.logging_v2.types.UndeleteBucketRequest`):
                 The request object. The parameters to `UndeleteBucket`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -501,14 +503,15 @@ class ConfigServiceV2AsyncClient:
         r"""Lists views on a bucket.
 
         Args:
-            request (:class:`~.logging_config.ListViewsRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListViewsRequest`):
                 The request object. The parameters to `ListViews`.
             parent (:class:`str`):
                 Required. The bucket whose views are to be listed:
 
                 ::
 
-                    "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]".
+                    "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -520,7 +523,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListViewsAsyncPager:
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListViewsAsyncPager:
                 The response from ListViews.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -582,7 +585,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a view.
 
         Args:
-            request (:class:`~.logging_config.GetViewRequest`):
+            request (:class:`google.cloud.logging_v2.types.GetViewRequest`):
                 The request object. The parameters to `GetView`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -592,7 +595,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogView:
+            google.cloud.logging_v2.types.LogView:
                 Describes a view over logs in a
                 bucket.
 
@@ -633,7 +636,7 @@ class ConfigServiceV2AsyncClient:
         contain a maximum of 50 views.
 
         Args:
-            request (:class:`~.logging_config.CreateViewRequest`):
+            request (:class:`google.cloud.logging_v2.types.CreateViewRequest`):
                 The request object. The parameters to `CreateView`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -643,7 +646,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogView:
+            google.cloud.logging_v2.types.LogView:
                 Describes a view over logs in a
                 bucket.
 
@@ -684,7 +687,7 @@ class ConfigServiceV2AsyncClient:
         existing view with values from the new view: ``filter``.
 
         Args:
-            request (:class:`~.logging_config.UpdateViewRequest`):
+            request (:class:`google.cloud.logging_v2.types.UpdateViewRequest`):
                 The request object. The parameters to `UpdateView`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -694,7 +697,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogView:
+            google.cloud.logging_v2.types.LogView:
                 Describes a view over logs in a
                 bucket.
 
@@ -734,7 +737,7 @@ class ConfigServiceV2AsyncClient:
         r"""Deletes a view from a bucket.
 
         Args:
-            request (:class:`~.logging_config.DeleteViewRequest`):
+            request (:class:`google.cloud.logging_v2.types.DeleteViewRequest`):
                 The request object. The parameters to `DeleteView`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -778,7 +781,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists sinks.
 
         Args:
-            request (:class:`~.logging_config.ListSinksRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListSinksRequest`):
                 The request object. The parameters to `ListSinks`.
             parent (:class:`str`):
                 Required. The parent resource whose sinks are to be
@@ -789,7 +792,8 @@ class ConfigServiceV2AsyncClient:
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
                     "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]".
+                    "folders/[FOLDER_ID]"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -801,8 +805,8 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSinksAsyncPager:
-                Result returned from ``ListSinks``.
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListSinksAsyncPager:
+                Result returned from ListSinks.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -874,7 +878,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets a sink.
 
         Args:
-            request (:class:`~.logging_config.GetSinkRequest`):
+            request (:class:`google.cloud.logging_v2.types.GetSinkRequest`):
                 The request object. The parameters to `GetSink`.
             sink_name (:class:`str`):
                 Required. The resource name of the sink:
@@ -887,6 +891,7 @@ class ConfigServiceV2AsyncClient:
                     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
                 Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -898,7 +903,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogSink:
+            google.cloud.logging_v2.types.LogSink:
                 Describes a sink used to export log
                 entries to one of the following
                 destinations in any project: a Cloud
@@ -977,7 +982,7 @@ class ConfigServiceV2AsyncClient:
         entries only from the resource owning the sink.
 
         Args:
-            request (:class:`~.logging_config.CreateSinkRequest`):
+            request (:class:`google.cloud.logging_v2.types.CreateSinkRequest`):
                 The request object. The parameters to `CreateSink`.
             parent (:class:`str`):
                 Required. The resource in which to create the sink:
@@ -991,12 +996,14 @@ class ConfigServiceV2AsyncClient:
 
                 Examples: ``"projects/my-logging-project"``,
                 ``"organizations/123456789"``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            sink (:class:`~.logging_config.LogSink`):
+            sink (:class:`google.cloud.logging_v2.types.LogSink`):
                 Required. The new sink, whose ``name`` parameter is a
                 sink identifier that is not already in use.
+
                 This corresponds to the ``sink`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1008,7 +1015,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogSink:
+            google.cloud.logging_v2.types.LogSink:
                 Describes a sink used to export log
                 entries to one of the following
                 destinations in any project: a Cloud
@@ -1079,7 +1086,7 @@ class ConfigServiceV2AsyncClient:
         the ``unique_writer_identity`` field.
 
         Args:
-            request (:class:`~.logging_config.UpdateSinkRequest`):
+            request (:class:`google.cloud.logging_v2.types.UpdateSinkRequest`):
                 The request object. The parameters to `UpdateSink`.
             sink_name (:class:`str`):
                 Required. The full resource name of the sink to update,
@@ -1093,16 +1100,18 @@ class ConfigServiceV2AsyncClient:
                     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
                 Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            sink (:class:`~.logging_config.LogSink`):
+            sink (:class:`google.cloud.logging_v2.types.LogSink`):
                 Required. The updated sink, whose name is the same
                 identifier that appears as part of ``sink_name``.
+
                 This corresponds to the ``sink`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. Field mask that specifies the fields in
                 ``sink`` that need an update. A sink field will be
                 overwritten if, and only if, it is in the update mask.
@@ -1118,6 +1127,7 @@ class ConfigServiceV2AsyncClient:
                 https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
 
                 Example: ``updateMask=filter``.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1129,7 +1139,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogSink:
+            google.cloud.logging_v2.types.LogSink:
                 Describes a sink used to export log
                 entries to one of the following
                 destinations in any project: a Cloud
@@ -1208,7 +1218,7 @@ class ConfigServiceV2AsyncClient:
         then that service account is also deleted.
 
         Args:
-            request (:class:`~.logging_config.DeleteSinkRequest`):
+            request (:class:`google.cloud.logging_v2.types.DeleteSinkRequest`):
                 The request object. The parameters to `DeleteSink`.
             sink_name (:class:`str`):
                 Required. The full resource name of the sink to delete,
@@ -1222,6 +1232,7 @@ class ConfigServiceV2AsyncClient:
                     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
 
                 Example: ``"projects/my-project-id/sinks/my-sink-id"``.
+
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1293,7 +1304,7 @@ class ConfigServiceV2AsyncClient:
         r"""Lists all the exclusions in a parent resource.
 
         Args:
-            request (:class:`~.logging_config.ListExclusionsRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListExclusionsRequest`):
                 The request object. The parameters to `ListExclusions`.
             parent (:class:`str`):
                 Required. The parent resource whose exclusions are to be
@@ -1304,7 +1315,8 @@ class ConfigServiceV2AsyncClient:
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
                     "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]".
+                    "folders/[FOLDER_ID]"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1316,8 +1328,8 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListExclusionsAsyncPager:
-                Result returned from ``ListExclusions``.
+            google.cloud.logging_v2.services.config_service_v2.pagers.ListExclusionsAsyncPager:
+                Result returned from ListExclusions.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1389,7 +1401,7 @@ class ConfigServiceV2AsyncClient:
         r"""Gets the description of an exclusion.
 
         Args:
-            request (:class:`~.logging_config.GetExclusionRequest`):
+            request (:class:`google.cloud.logging_v2.types.GetExclusionRequest`):
                 The request object. The parameters to `GetExclusion`.
             name (:class:`str`):
                 Required. The resource name of an existing exclusion:
@@ -1403,6 +1415,7 @@ class ConfigServiceV2AsyncClient:
 
                 Example:
                 ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1414,7 +1427,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogExclusion:
+            google.cloud.logging_v2.types.LogExclusion:
                 Specifies a set of log entries that
                 are not to be stored in Logging. If your
                 GCP resource receives a large volume of
@@ -1492,7 +1505,7 @@ class ConfigServiceV2AsyncClient:
         resource.
 
         Args:
-            request (:class:`~.logging_config.CreateExclusionRequest`):
+            request (:class:`google.cloud.logging_v2.types.CreateExclusionRequest`):
                 The request object. The parameters to `CreateExclusion`.
             parent (:class:`str`):
                 Required. The parent resource in which to create the
@@ -1507,13 +1520,15 @@ class ConfigServiceV2AsyncClient:
 
                 Examples: ``"projects/my-logging-project"``,
                 ``"organizations/123456789"``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            exclusion (:class:`~.logging_config.LogExclusion`):
+            exclusion (:class:`google.cloud.logging_v2.types.LogExclusion`):
                 Required. The new exclusion, whose ``name`` parameter is
                 an exclusion name that is not already used in the parent
                 resource.
+
                 This corresponds to the ``exclusion`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1525,7 +1540,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogExclusion:
+            google.cloud.logging_v2.types.LogExclusion:
                 Specifies a set of log entries that
                 are not to be stored in Logging. If your
                 GCP resource receives a large volume of
@@ -1594,7 +1609,7 @@ class ConfigServiceV2AsyncClient:
         exclusion.
 
         Args:
-            request (:class:`~.logging_config.UpdateExclusionRequest`):
+            request (:class:`google.cloud.logging_v2.types.UpdateExclusionRequest`):
                 The request object. The parameters to `UpdateExclusion`.
             name (:class:`str`):
                 Required. The resource name of the exclusion to update:
@@ -1608,16 +1623,18 @@ class ConfigServiceV2AsyncClient:
 
                 Example:
                 ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            exclusion (:class:`~.logging_config.LogExclusion`):
+            exclusion (:class:`google.cloud.logging_v2.types.LogExclusion`):
                 Required. New values for the existing exclusion. Only
                 the fields specified in ``update_mask`` are relevant.
+
                 This corresponds to the ``exclusion`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. A non-empty list of fields to change in the
                 existing exclusion. New values for the fields are taken
                 from the corresponding fields in the
@@ -1628,6 +1645,7 @@ class ConfigServiceV2AsyncClient:
                 For example, to change the filter and description of an
                 exclusion, specify an ``update_mask`` of
                 ``"filter,description"``.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1639,7 +1657,7 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.LogExclusion:
+            google.cloud.logging_v2.types.LogExclusion:
                 Specifies a set of log entries that
                 are not to be stored in Logging. If your
                 GCP resource receives a large volume of
@@ -1707,7 +1725,7 @@ class ConfigServiceV2AsyncClient:
         r"""Deletes an exclusion.
 
         Args:
-            request (:class:`~.logging_config.DeleteExclusionRequest`):
+            request (:class:`google.cloud.logging_v2.types.DeleteExclusionRequest`):
                 The request object. The parameters to `DeleteExclusion`.
             name (:class:`str`):
                 Required. The resource name of an existing exclusion to
@@ -1722,6 +1740,7 @@ class ConfigServiceV2AsyncClient:
 
                 Example:
                 ``"projects/my-project-id/exclusions/my-exclusion-id"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1798,7 +1817,7 @@ class ConfigServiceV2AsyncClient:
         for more information.
 
         Args:
-            request (:class:`~.logging_config.GetCmekSettingsRequest`):
+            request (:class:`google.cloud.logging_v2.types.GetCmekSettingsRequest`):
                 The request object. The parameters to
                 [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
                 See [Enabling CMEK for Logs
@@ -1812,19 +1831,19 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.CmekSettings:
-                Describes the customer-managed encryption key (CMEK)
-                settings associated with a project, folder,
-                organization, billing account, or flexible resource.
+            google.cloud.logging_v2.types.CmekSettings:
+                Describes the customer-managed encryption key (CMEK) settings associated with
+                   a project, folder, organization, billing account, or
+                   flexible resource.
 
-                Note: CMEK for the Logs Router can currently only be
-                configured for GCP organizations. Once configured, it
-                applies to all projects and folders in the GCP
-                organization.
+                   Note: CMEK for the Logs Router can currently only be
+                   configured for GCP organizations. Once configured, it
+                   applies to all projects and folders in the GCP
+                   organization.
 
-                See `Enabling CMEK for Logs
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
-                for more information.
+                   See [Enabling CMEK for Logs
+                   Router](\ https://cloud.google.com/logging/docs/routing/managed-encryption)
+                   for more information.
 
         """
         # Create or coerce a protobuf request object.
@@ -1876,7 +1895,7 @@ class ConfigServiceV2AsyncClient:
         for more information.
 
         Args:
-            request (:class:`~.logging_config.UpdateCmekSettingsRequest`):
+            request (:class:`google.cloud.logging_v2.types.UpdateCmekSettingsRequest`):
                 The request object. The parameters to
                 [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
                 See [Enabling CMEK for Logs
@@ -1890,19 +1909,19 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_config.CmekSettings:
-                Describes the customer-managed encryption key (CMEK)
-                settings associated with a project, folder,
-                organization, billing account, or flexible resource.
+            google.cloud.logging_v2.types.CmekSettings:
+                Describes the customer-managed encryption key (CMEK) settings associated with
+                   a project, folder, organization, billing account, or
+                   flexible resource.
 
-                Note: CMEK for the Logs Router can currently only be
-                configured for GCP organizations. Once configured, it
-                applies to all projects and folders in the GCP
-                organization.
+                   Note: CMEK for the Logs Router can currently only be
+                   configured for GCP organizations. Once configured, it
+                   applies to all projects and folders in the GCP
+                   organization.
 
-                See `Enabling CMEK for Logs
-                Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
-                for more information.
+                   See [Enabling CMEK for Logs
+                   Router](\ https://cloud.google.com/logging/docs/routing/managed-encryption)
+                   for more information.
 
         """
         # Create or coerce a protobuf request object.

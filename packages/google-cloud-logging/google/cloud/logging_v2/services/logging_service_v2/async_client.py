@@ -87,6 +87,7 @@ class LoggingServiceV2AsyncClient:
         LoggingServiceV2Client.parse_common_location_path
     )
 
+    from_service_account_info = LoggingServiceV2Client.from_service_account_info
     from_service_account_file = LoggingServiceV2Client.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -167,7 +168,7 @@ class LoggingServiceV2AsyncClient:
         with a timestamp before the operation will be deleted.
 
         Args:
-            request (:class:`~.logging.DeleteLogRequest`):
+            request (:class:`google.cloud.logging_v2.types.DeleteLogRequest`):
                 The request object. The parameters to DeleteLog.
             log_name (:class:`str`):
                 Required. The resource name of the log to delete:
@@ -184,6 +185,7 @@ class LoggingServiceV2AsyncClient:
                 ``"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"``.
                 For more information about log names, see
                 [LogEntry][google.logging.v2.LogEntry].
+
                 This corresponds to the ``log_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -262,7 +264,7 @@ class LoggingServiceV2AsyncClient:
         organizations, billing accounts or folders)
 
         Args:
-            request (:class:`~.logging.WriteLogEntriesRequest`):
+            request (:class:`google.cloud.logging_v2.types.WriteLogEntriesRequest`):
                 The request object. The parameters to WriteLogEntries.
             log_name (:class:`str`):
                 Optional. A default log resource name that is assigned
@@ -288,10 +290,11 @@ class LoggingServiceV2AsyncClient:
                 folder that is receiving new log entries, whether the
                 resource is specified in ``logName`` or in an individual
                 log entry.
+
                 This corresponds to the ``log_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            resource (:class:`~.monitored_resource.MonitoredResource`):
+            resource (:class:`google.api.monitored_resource_pb2.MonitoredResource`):
                 Optional. A default monitored resource object that is
                 assigned to all log entries in ``entries`` that do not
                 specify a value for ``resource``. Example:
@@ -303,19 +306,21 @@ class LoggingServiceV2AsyncClient:
                         "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
 
                 See [LogEntry][google.logging.v2.LogEntry].
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (:class:`Sequence[~.logging.WriteLogEntriesRequest.LabelsEntry]`):
+            labels (:class:`Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]`):
                 Optional. Default labels that are added to the
                 ``labels`` field of all log entries in ``entries``. If a
                 log entry already has a label with the same key as a
                 label in this parameter, then the log entry's label is
                 not changed. See [LogEntry][google.logging.v2.LogEntry].
+
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            entries (:class:`Sequence[~.log_entry.LogEntry]`):
+            entries (:class:`Sequence[google.cloud.logging_v2.types.LogEntry]`):
                 Required. The log entries to send to Logging. The order
                 of log entries in this list does not matter. Values
                 supplied in this method's ``log_name``, ``resource``,
@@ -345,6 +350,7 @@ class LoggingServiceV2AsyncClient:
                 for calls to ``entries.write``, you should try to
                 include several log entries in this list, rather than
                 calling this method for each individual log entry.
+
                 This corresponds to the ``entries`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -356,7 +362,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging.WriteLogEntriesResponse:
+            google.cloud.logging_v2.types.WriteLogEntriesResponse:
                 Result returned from WriteLogEntries.
         """
         # Create or coerce a protobuf request object.
@@ -426,7 +432,7 @@ class LoggingServiceV2AsyncClient:
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
         Args:
-            request (:class:`~.logging.ListLogEntriesRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListLogEntriesRequest`):
                 The request object. The parameters to `ListLogEntries`.
             resource_names (:class:`Sequence[str]`):
                 Required. Names of one or more parent resources from
@@ -447,6 +453,7 @@ class LoggingServiceV2AsyncClient:
 
                 Projects listed in the ``project_ids`` field are added
                 to this list.
+
                 This corresponds to the ``resource_names`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -460,6 +467,7 @@ class LoggingServiceV2AsyncClient:
                 resource that is not listed in ``resource_names`` will
                 cause the filter to return no results. The maximum
                 length of the filter is 20000 characters.
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -472,6 +480,7 @@ class LoggingServiceV2AsyncClient:
                 option returns entries in order of decreasing timestamps
                 (newest first). Entries with equal timestamps are
                 returned in order of their ``insert_id`` values.
+
                 This corresponds to the ``order_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -483,8 +492,8 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListLogEntriesAsyncPager:
-                Result returned from ``ListLogEntries``.
+            google.cloud.logging_v2.services.logging_service_v2.pagers.ListLogEntriesAsyncPager:
+                Result returned from ListLogEntries.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -555,7 +564,7 @@ class LoggingServiceV2AsyncClient:
         used by Logging.
 
         Args:
-            request (:class:`~.logging.ListMonitoredResourceDescriptorsRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListMonitoredResourceDescriptorsRequest`):
                 The request object. The parameters to
                 ListMonitoredResourceDescriptors
 
@@ -566,7 +575,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListMonitoredResourceDescriptorsAsyncPager:
+            google.cloud.logging_v2.services.logging_service_v2.pagers.ListMonitoredResourceDescriptorsAsyncPager:
                 Result returned from
                 ListMonitoredResourceDescriptors.
                 Iterating over this object will yield
@@ -622,7 +631,7 @@ class LoggingServiceV2AsyncClient:
         listed.
 
         Args:
-            request (:class:`~.logging.ListLogsRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListLogsRequest`):
                 The request object. The parameters to ListLogs.
             parent (:class:`str`):
                 Required. The resource name that owns the logs:
@@ -632,7 +641,8 @@ class LoggingServiceV2AsyncClient:
                     "projects/[PROJECT_ID]"
                     "organizations/[ORGANIZATION_ID]"
                     "billingAccounts/[BILLING_ACCOUNT_ID]"
-                    "folders/[FOLDER_ID]".
+                    "folders/[FOLDER_ID]"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -644,7 +654,7 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListLogsAsyncPager:
+            google.cloud.logging_v2.services.logging_service_v2.pagers.ListLogsAsyncPager:
                 Result returned from ListLogs.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -718,7 +728,7 @@ class LoggingServiceV2AsyncClient:
         logs.
 
         Args:
-            requests (AsyncIterator[`~.logging.TailLogEntriesRequest`]):
+            requests (AsyncIterator[`google.cloud.logging_v2.types.TailLogEntriesRequest`]):
                 The request object AsyncIterator. The parameters to `TailLogEntries`.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -727,8 +737,8 @@ class LoggingServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.logging.TailLogEntriesResponse]:
-                Result returned from ``TailLogEntries``.
+            AsyncIterable[google.cloud.logging_v2.types.TailLogEntriesResponse]:
+                Result returned from TailLogEntries.
         """
 
         # Wrap the RPC method; this adds retry and timeout information,

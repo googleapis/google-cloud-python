@@ -66,14 +66,14 @@ class LogEntry(proto.Message):
             Listing the log entry will not show the leading slash and
             filtering for a log name with a leading slash will never
             return any results.
-        resource (~.monitored_resource.MonitoredResource):
+        resource (google.api.monitored_resource_pb2.MonitoredResource):
             Required. The monitored resource that
             produced this log entry.
             Example: a log entry that reports a database
             error would be associated with the monitored
             resource designating the particular database
             that reported the error.
-        proto_payload (~.gp_any.Any):
+        proto_payload (google.protobuf.any_pb2.Any):
             The log entry payload, represented as a
             protocol buffer. Some Google Cloud Platform
             services use this field for their log entry
@@ -86,10 +86,10 @@ class LogEntry(proto.Message):
         text_payload (str):
             The log entry payload, represented as a
             Unicode string (UTF-8).
-        json_payload (~.struct.Struct):
+        json_payload (google.protobuf.struct_pb2.Struct):
             The log entry payload, represented as a
             structure that is expressed as a JSON object.
-        timestamp (~.gp_timestamp.Timestamp):
+        timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time the event described by the log entry
             occurred. This time is used to compute the log entry's age
             and to enforce the logs retention period. If this field is
@@ -104,10 +104,10 @@ class LogEntry(proto.Message):
             in the past, and that don't exceed 24 hours in the future.
             Log entries outside those time boundaries aren't ingested by
             Logging.
-        receive_timestamp (~.gp_timestamp.Timestamp):
+        receive_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the log entry was
             received by Logging.
-        severity (~.log_severity.LogSeverity):
+        severity (google.logging.type.log_severity_pb2.LogSeverity):
             Optional. The severity of the log entry. The default value
             is ``LogSeverity.DEFAULT``.
         insert_id (str):
@@ -125,14 +125,14 @@ class LogEntry(proto.Message):
             In queries, the ``insert_id`` is also used to order log
             entries that have the same ``log_name`` and ``timestamp``
             values.
-        http_request (~.glt_http_request.HttpRequest):
+        http_request (google.logging.type.http_request_pb2.HttpRequest):
             Optional. Information about the HTTP request
             associated with this log entry, if applicable.
-        labels (Sequence[~.log_entry.LogEntry.LabelsEntry]):
+        labels (Sequence[google.cloud.logging_v2.types.LogEntry.LabelsEntry]):
             Optional. A set of user-defined (key, value)
             data that provides additional information about
             the log entry.
-        operation (~.log_entry.LogEntryOperation):
+        operation (google.cloud.logging_v2.types.LogEntryOperation):
             Optional. Information about an operation
             associated with the log entry, if applicable.
         trace (str):
@@ -158,7 +158,7 @@ class LogEntry(proto.Message):
             log entry was written, or the sampling decision was unknown
             at the time. A non-sampled ``trace`` value is still useful
             as a request correlation identifier. The default is False.
-        source_location (~.log_entry.LogEntrySourceLocation):
+        source_location (google.cloud.logging_v2.types.LogEntrySourceLocation):
             Optional. Source code location information
             associated with the log entry, if any.
     """

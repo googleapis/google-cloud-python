@@ -80,6 +80,7 @@ class MetricsServiceV2AsyncClient:
         MetricsServiceV2Client.parse_common_location_path
     )
 
+    from_service_account_info = MetricsServiceV2Client.from_service_account_info
     from_service_account_file = MetricsServiceV2Client.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -156,7 +157,7 @@ class MetricsServiceV2AsyncClient:
         r"""Lists logs-based metrics.
 
         Args:
-            request (:class:`~.logging_metrics.ListLogMetricsRequest`):
+            request (:class:`google.cloud.logging_v2.types.ListLogMetricsRequest`):
                 The request object. The parameters to ListLogMetrics.
             parent (:class:`str`):
                 Required. The name of the project containing the
@@ -164,7 +165,8 @@ class MetricsServiceV2AsyncClient:
 
                 ::
 
-                    "projects/[PROJECT_ID]".
+                    "projects/[PROJECT_ID]"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -176,7 +178,7 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListLogMetricsAsyncPager:
+            google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsAsyncPager:
                 Result returned from ListLogMetrics.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -249,14 +251,15 @@ class MetricsServiceV2AsyncClient:
         r"""Gets a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.GetLogMetricRequest`):
+            request (:class:`google.cloud.logging_v2.types.GetLogMetricRequest`):
                 The request object. The parameters to GetLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the desired metric:
 
                 ::
 
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
+                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -268,7 +271,7 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_metrics.LogMetric:
+            google.cloud.logging_v2.types.LogMetric:
                 Describes a logs-based metric. The
                 value of the metric is the number of log
                 entries that match a logs filter in a
@@ -345,7 +348,7 @@ class MetricsServiceV2AsyncClient:
         r"""Creates a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.CreateLogMetricRequest`):
+            request (:class:`google.cloud.logging_v2.types.CreateLogMetricRequest`):
                 The request object. The parameters to CreateLogMetric.
             parent (:class:`str`):
                 Required. The resource name of the project in which to
@@ -356,13 +359,15 @@ class MetricsServiceV2AsyncClient:
                     "projects/[PROJECT_ID]"
 
                 The new metric must be provided in the request.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric (:class:`~.logging_metrics.LogMetric`):
+            metric (:class:`google.cloud.logging_v2.types.LogMetric`):
                 Required. The new logs-based metric,
                 which must not have an identifier that
                 already exists.
+
                 This corresponds to the ``metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -374,7 +379,7 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_metrics.LogMetric:
+            google.cloud.logging_v2.types.LogMetric:
                 Describes a logs-based metric. The
                 value of the metric is the number of log
                 entries that match a logs filter in a
@@ -441,7 +446,7 @@ class MetricsServiceV2AsyncClient:
         r"""Creates or updates a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.UpdateLogMetricRequest`):
+            request (:class:`google.cloud.logging_v2.types.UpdateLogMetricRequest`):
                 The request object. The parameters to UpdateLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the metric to update:
@@ -454,10 +459,11 @@ class MetricsServiceV2AsyncClient:
                 it's ``name`` field must be the same as ``[METRIC_ID]``
                 If the metric does not exist in ``[PROJECT_ID]``, then a
                 new metric is created.
+
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric (:class:`~.logging_metrics.LogMetric`):
+            metric (:class:`google.cloud.logging_v2.types.LogMetric`):
                 Required. The updated metric.
                 This corresponds to the ``metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -470,7 +476,7 @@ class MetricsServiceV2AsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_metrics.LogMetric:
+            google.cloud.logging_v2.types.LogMetric:
                 Describes a logs-based metric. The
                 value of the metric is the number of log
                 entries that match a logs filter in a
@@ -548,14 +554,15 @@ class MetricsServiceV2AsyncClient:
         r"""Deletes a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.DeleteLogMetricRequest`):
+            request (:class:`google.cloud.logging_v2.types.DeleteLogMetricRequest`):
                 The request object. The parameters to DeleteLogMetric.
             metric_name (:class:`str`):
                 Required. The resource name of the metric to delete:
 
                 ::
 
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
+                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

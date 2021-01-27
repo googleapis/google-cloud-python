@@ -115,6 +115,22 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            MetricsServiceV2Client: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -126,7 +142,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            MetricsServiceV2Client: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -231,10 +247,10 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.MetricsServiceV2Transport]): The
+            transport (Union[str, MetricsServiceV2Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -344,15 +360,16 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Lists logs-based metrics.
 
         Args:
-            request (:class:`~.logging_metrics.ListLogMetricsRequest`):
+            request (google.cloud.logging_v2.types.ListLogMetricsRequest):
                 The request object. The parameters to ListLogMetrics.
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the project containing the
                 metrics:
 
                 ::
 
-                    "projects/[PROJECT_ID]".
+                    "projects/[PROJECT_ID]"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -364,7 +381,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListLogMetricsPager:
+            google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsPager:
                 Result returned from ListLogMetrics.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -428,14 +445,15 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Gets a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.GetLogMetricRequest`):
+            request (google.cloud.logging_v2.types.GetLogMetricRequest):
                 The request object. The parameters to GetLogMetric.
-            metric_name (:class:`str`):
+            metric_name (str):
                 Required. The resource name of the desired metric:
 
                 ::
 
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
+                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -447,7 +465,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_metrics.LogMetric:
+            google.cloud.logging_v2.types.LogMetric:
                 Describes a logs-based metric. The
                 value of the metric is the number of log
                 entries that match a logs filter in a
@@ -515,9 +533,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Creates a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.CreateLogMetricRequest`):
+            request (google.cloud.logging_v2.types.CreateLogMetricRequest):
                 The request object. The parameters to CreateLogMetric.
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the project in which to
                 create the metric:
 
@@ -526,13 +544,15 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                     "projects/[PROJECT_ID]"
 
                 The new metric must be provided in the request.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric (:class:`~.logging_metrics.LogMetric`):
+            metric (google.cloud.logging_v2.types.LogMetric):
                 Required. The new logs-based metric,
                 which must not have an identifier that
                 already exists.
+
                 This corresponds to the ``metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -544,7 +564,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_metrics.LogMetric:
+            google.cloud.logging_v2.types.LogMetric:
                 Describes a logs-based metric. The
                 value of the metric is the number of log
                 entries that match a logs filter in a
@@ -612,9 +632,9 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Creates or updates a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.UpdateLogMetricRequest`):
+            request (google.cloud.logging_v2.types.UpdateLogMetricRequest):
                 The request object. The parameters to UpdateLogMetric.
-            metric_name (:class:`str`):
+            metric_name (str):
                 Required. The resource name of the metric to update:
 
                 ::
@@ -625,10 +645,11 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 it's ``name`` field must be the same as ``[METRIC_ID]``
                 If the metric does not exist in ``[PROJECT_ID]``, then a
                 new metric is created.
+
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric (:class:`~.logging_metrics.LogMetric`):
+            metric (google.cloud.logging_v2.types.LogMetric):
                 Required. The updated metric.
                 This corresponds to the ``metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -641,7 +662,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.logging_metrics.LogMetric:
+            google.cloud.logging_v2.types.LogMetric:
                 Describes a logs-based metric. The
                 value of the metric is the number of log
                 entries that match a logs filter in a
@@ -710,14 +731,15 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         r"""Deletes a logs-based metric.
 
         Args:
-            request (:class:`~.logging_metrics.DeleteLogMetricRequest`):
+            request (google.cloud.logging_v2.types.DeleteLogMetricRequest):
                 The request object. The parameters to DeleteLogMetric.
-            metric_name (:class:`str`):
+            metric_name (str):
                 Required. The resource name of the metric to delete:
 
                 ::
 
-                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
+                    "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

@@ -78,7 +78,7 @@ class LogMetric(proto.Message):
                 "resource.type=gae_app AND severity>=ERROR"
 
             The maximum length of the filter is 20000 characters.
-        metric_descriptor (~.ga_metric.MetricDescriptor):
+        metric_descriptor (google.api.metric_pb2.MetricDescriptor):
             Optional. The metric descriptor associated with the
             logs-based metric. If unspecified, it uses a default metric
             descriptor with a DELTA metric kind, INT64 value type, with
@@ -128,7 +128,7 @@ class LogMetric(proto.Message):
 
             Example:
             ``REGEXP_EXTRACT(jsonPayload.request, ".*quantity=(\d+).*")``
-        label_extractors (Sequence[~.logging_metrics.LogMetric.LabelExtractorsEntry]):
+        label_extractors (Sequence[google.cloud.logging_v2.types.LogMetric.LabelExtractorsEntry]):
             Optional. A map from a label key string to an extractor
             expression which is used to extract data from a log entry
             field and assign as the label value. Each label key
@@ -146,20 +146,20 @@ class LogMetric(proto.Message):
             Note that there are upper bounds on the maximum number of
             labels and the number of active time series that are allowed
             in a project.
-        bucket_options (~.distribution.Distribution.BucketOptions):
+        bucket_options (google.api.distribution_pb2.BucketOptions):
             Optional. The ``bucket_options`` are required when the
             logs-based metric is using a DISTRIBUTION value type and it
             describes the bucket boundaries used to create a histogram
             of the extracted values.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of the
             metric.
             This field may not be present for older metrics.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of the
             metric.
             This field may not be present for older metrics.
-        version (~.logging_metrics.LogMetric.ApiVersion):
+        version (google.cloud.logging_v2.types.LogMetric.ApiVersion):
             Deprecated. The API version that created or
             updated this metric. The v2 format is used by
             default and cannot be changed.
@@ -229,7 +229,7 @@ class ListLogMetricsResponse(proto.Message):
     r"""Result returned from ListLogMetrics.
 
     Attributes:
-        metrics (Sequence[~.logging_metrics.LogMetric]):
+        metrics (Sequence[google.cloud.logging_v2.types.LogMetric]):
             A list of logs-based metrics.
         next_page_token (str):
             If there might be more results than appear in this response,
@@ -275,7 +275,7 @@ class CreateLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]"
 
             The new metric must be provided in the request.
-        metric (~.logging_metrics.LogMetric):
+        metric (google.cloud.logging_v2.types.LogMetric):
             Required. The new logs-based metric, which
             must not have an identifier that already exists.
     """
@@ -300,7 +300,7 @@ class UpdateLogMetricRequest(proto.Message):
             ``name`` field must be the same as ``[METRIC_ID]`` If the
             metric does not exist in ``[PROJECT_ID]``, then a new metric
             is created.
-        metric (~.logging_metrics.LogMetric):
+        metric (google.cloud.logging_v2.types.LogMetric):
             Required. The updated metric.
     """
 

@@ -94,7 +94,7 @@ class WriteLogEntriesRequest(proto.Message):
             each project, organization, billing account, or folder that
             is receiving new log entries, whether the resource is
             specified in ``logName`` or in an individual log entry.
-        resource (~.monitored_resource.MonitoredResource):
+        resource (google.api.monitored_resource_pb2.MonitoredResource):
             Optional. A default monitored resource object that is
             assigned to all log entries in ``entries`` that do not
             specify a value for ``resource``. Example:
@@ -106,13 +106,13 @@ class WriteLogEntriesRequest(proto.Message):
                     "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
 
             See [LogEntry][google.logging.v2.LogEntry].
-        labels (Sequence[~.logging.WriteLogEntriesRequest.LabelsEntry]):
+        labels (Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]):
             Optional. Default labels that are added to the ``labels``
             field of all log entries in ``entries``. If a log entry
             already has a label with the same key as a label in this
             parameter, then the log entry's label is not changed. See
             [LogEntry][google.logging.v2.LogEntry].
-        entries (Sequence[~.log_entry.LogEntry]):
+        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             Required. The log entries to send to Logging. The order of
             log entries in this list does not matter. Values supplied in
             this method's ``log_name``, ``resource``, and ``labels``
@@ -181,7 +181,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
     r"""Error details for WriteLogEntries with partial success.
 
     Attributes:
-        log_entry_errors (Sequence[~.logging.WriteLogEntriesPartialErrors.LogEntryErrorsEntry]):
+        log_entry_errors (Sequence[google.cloud.logging_v2.types.WriteLogEntriesPartialErrors.LogEntryErrorsEntry]):
             When ``WriteLogEntriesRequest.partial_success`` is true,
             records the error status for entries that were not written
             due to a permanent error, keyed by the entry's zero-based
@@ -267,7 +267,7 @@ class ListLogEntriesResponse(proto.Message):
     r"""Result returned from ``ListLogEntries``.
 
     Attributes:
-        entries (Sequence[~.log_entry.LogEntry]):
+        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. If ``entries`` is empty,
             ``nextPageToken`` may still be returned, indicating that
             more entries may exist. See ``nextPageToken`` for more
@@ -323,7 +323,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""Result returned from ListMonitoredResourceDescriptors.
 
     Attributes:
-        resource_descriptors (Sequence[~.monitored_resource.MonitoredResourceDescriptor]):
+        resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             A list of resource descriptors.
         next_page_token (str):
             If there might be more results than those appearing in this
@@ -442,7 +442,7 @@ class TailLogEntriesRequest(proto.Message):
             not in ``resource_names`` will cause the filter to return no
             results. The maximum length of the filter is 20000
             characters.
-        buffer_window (~.duration.Duration):
+        buffer_window (google.protobuf.duration_pb2.Duration):
             Optional. The amount of time to buffer log
             entries at the server before being returned to
             prevent out of order results due to late
@@ -462,12 +462,12 @@ class TailLogEntriesResponse(proto.Message):
     r"""Result returned from ``TailLogEntries``.
 
     Attributes:
-        entries (Sequence[~.log_entry.LogEntry]):
+        entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. Each response in the stream will
             order entries with increasing values of
             ``LogEntry.timestamp``. Ordering is not guaranteed between
             separate responses.
-        suppression_info (Sequence[~.logging.TailLogEntriesResponse.SuppressionInfo]):
+        suppression_info (Sequence[google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo]):
             If entries that otherwise would have been
             included in the session were not sent back to
             the client, counts of relevant entries omitted
@@ -482,7 +482,7 @@ class TailLogEntriesResponse(proto.Message):
         r"""Information about entries that were omitted from the session.
 
         Attributes:
-            reason (~.logging.TailLogEntriesResponse.SuppressionInfo.Reason):
+            reason (google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo.Reason):
                 The reason that entries were omitted from the
                 session.
             suppressed_count (int):
