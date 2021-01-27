@@ -22,7 +22,7 @@ name = "googleapis-common-protos"
 description = "Common protobufs used in Google APIs"
 version = "1.52.0"
 release_status = "Development Status :: 5 - Production/Stable"
-dependencies = ["protobuf >= 3.6.0"]
+dependencies = ["protobuf >= 3.12.0"]
 
 extras_require = {"grpc": ["grpcio >= 1.0.0"]}
 
@@ -44,10 +44,10 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
     ],
     description=description,
@@ -58,7 +58,7 @@ setuptools.setup(
     license="Apache-2.0",
     packages=find_packages(),
     package_data={"": ["*.proto"]},
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
+    python_requires=">=3.6",
     namespace_packages=["google", "google.logging"],
     url="https://github.com/googleapis/python-api-common-protos",
     include_package_data=True,
