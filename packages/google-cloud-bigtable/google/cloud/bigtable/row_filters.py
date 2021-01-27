@@ -14,10 +14,14 @@
 
 """Filters for Google Cloud Bigtable Row classes."""
 
+import struct
+
 
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+
+_PACK_I64 = struct.Struct(">q").pack
 
 
 class RowFilter(object):
@@ -115,7 +119,9 @@ class _RegexFilter(RowFilter):
     .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
 
     :type regex: bytes or str
-    :param regex: A regular expression (RE2) for some row filter.
+    :param regex:
+        A regular expression (RE2) for some row filter.  String values
+        will be encoded as ASCII.
     """
 
     def __init__(self, regex):
@@ -439,9 +445,9 @@ class ValueRegexFilter(_RegexFilter):
         character will not match the new line character ``\\n``, which may be
         present in a binary value.
 
-    :type regex: bytes
+    :type regex: bytes or str
     :param regex: A regular expression (RE2) to match cells with values that
-                  match this regex.
+                  match this regex.  String values will be encoded as ASCII.
     """
 
     def to_pb(self):
@@ -451,6 +457,22 @@ class ValueRegexFilter(_RegexFilter):
         :returns: The converted current object.
         """
         return data_v2_pb2.RowFilter(value_regex_filter=self.regex)
+
+
+class ExactValueFilter(ValueRegexFilter):
+    """Row filter for an exact value.
+
+
+    :type value: bytes or str or int
+    :param value:
+        a literal string encodable as ASCII, or the
+        equivalent bytes, or an integer (which will be packed into 8-bytes).
+    """
+
+    def __init__(self, value):
+        if isinstance(value, int):
+            value = _PACK_I64(value)
+        super(ExactValueFilter, self).__init__(value)
 
 
 class ValueRangeFilter(RowFilter):
@@ -496,6 +518,8 @@ class ValueRangeFilter(RowFilter):
             raise ValueError(
                 "Inclusive start was specified but no " "start value was given."
             )
+        if isinstance(start_value, int):
+            start_value = _PACK_I64(start_value)
         self.start_value = start_value
         self.inclusive_start = inclusive_start
 
@@ -505,6 +529,8 @@ class ValueRangeFilter(RowFilter):
             raise ValueError(
                 "Inclusive end was specified but no " "end value was given."
             )
+        if isinstance(end_value, int):
+            end_value = _PACK_I64(end_value)
         self.end_value = end_value
         self.inclusive_end = inclusive_end
 
