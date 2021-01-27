@@ -45,13 +45,9 @@ extras = {
         # grpc.Channel.close() method isn't added until 1.32.0.
         # https://github.com/grpc/grpc/pull/15254
         "grpcio >= 1.32.0, < 2.0dev",
-        "pyarrow >= 1.0.0, < 3.0dev",
+        "pyarrow >= 1.0.0, < 4.0dev",
     ],
-    "pandas": [
-        "pandas>=0.23.0",
-        # pyarrow 1.0.0 is required for the use of timestamp_as_object keyword.
-        "pyarrow >= 1.0.0, < 3.0dev",
-    ],
+    "pandas": ["pandas>=0.23.0", "pyarrow >= 1.0.0, < 4.0dev",],
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
         "opentelemetry-api==0.11b0",
@@ -112,6 +108,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
         "Topic :: Internet",
     ],
@@ -120,7 +117,7 @@ setuptools.setup(
     namespace_packages=namespaces,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.6, <3.9",
+    python_requires=">=3.6, <3.10",
     include_package_data=True,
     zip_safe=False,
 )

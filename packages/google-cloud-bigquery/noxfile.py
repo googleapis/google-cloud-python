@@ -23,6 +23,10 @@ import nox
 
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
+
+DEFAULT_PYTHON_VERSION = "3.8"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
@@ -80,13 +84,13 @@ def default(session):
     )
 
 
-@nox.session(python=["3.6", "3.7", "3.8"])
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
 def unit(session):
     """Run the unit test suite."""
     default(session)
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
 
@@ -118,7 +122,7 @@ def system(session):
     session.run("py.test", "--quiet", os.path.join("tests", "system"), *session.posargs)
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def snippets(session):
     """Run the snippets test suite."""
 
@@ -154,7 +158,7 @@ def snippets(session):
     )
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
     """Run the final coverage report.
 
@@ -166,7 +170,7 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.8")
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed.
 
@@ -201,7 +205,7 @@ def prerelease_deps(session):
     session.run("py.test", "samples/tests")
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run linters.
 
@@ -218,7 +222,7 @@ def lint(session):
     session.run("black", "--check", *BLACK_PATHS)
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
 
@@ -239,7 +243,7 @@ def blacken(session):
     session.run("black", *BLACK_PATHS)
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs."""
 
@@ -262,7 +266,7 @@ def docs(session):
     )
 
 
-@nox.session(python="3.8")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
