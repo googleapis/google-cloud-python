@@ -1,1 +1,1 @@
-google-analytics-data==0.2.0
+google-analytics-data==0.3.0
