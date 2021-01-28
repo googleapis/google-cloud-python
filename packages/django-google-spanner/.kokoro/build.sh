@@ -28,6 +28,7 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 
 # Setup project id.
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
+export GOOGLE_CLOUD_PROJECT=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
 # Remove old nox
 python3.6 -m pip uninstall --yes --quiet nox-automation
@@ -54,6 +55,7 @@ export RUNNING_SPANNER_BACKEND_TESTS=1
 export USE_SPANNER_EMULATOR=0
 
 pip3 install .
+pip3 install -e 'git+https://github.com/q-logic/python-spanner-django.git@dj_tests_against_emulator#egg=django-google-spanner'
 # Create a unique DJANGO_TESTS_DIR per worker to avoid
 # any clashes with configured tests by other workers.
 export DJANGO_TESTS_DIR="django_tests_$DJANGO_WORKER_INDEX"
@@ -64,28 +66,18 @@ sudo apt-get update
 apt-get install -y libffi-dev libjpeg-dev zlib1g-dev libmemcached-dev
 cd $DJANGO_TESTS_DIR/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
 
-if [[ $USE_SPANNER_EMULATOR != 1 ]]
+# Not using the emulator!
+# Hardcode the max number of workers since Spanner has a very low
+# QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
+if [[ $KOKORO_JOB_NAME == *"continuous"* ]]
 then
-    # Not using the emulator!
-    # Hardcode the max number of workers since Spanner has a very low
-    # QPS for administrative RPCs of 5QPS (averaged every 100 seconds)
-    if [[ $KOKORO_JOB_NAME == *"continuous"* ]]
-    then
-        # Disable continuous build as it creates too many Spanner instances
-        # ("Quota exceeded for quota metric 'Instance create requests' and
-        # limit 'Instance create requests per minute' of service
-        # 'spanner.googleapis.com').
-        export DJANGO_WORKER_COUNT=0
-    else
-        export DJANGO_WORKER_COUNT=6
-    fi
+    # Disable continuous build as it creates too many Spanner instances
+    # ("Quota exceeded for quota metric 'Instance create requests' and
+    # limit 'Instance create requests per minute' of service
+    # 'spanner.googleapis.com').
+    export DJANGO_WORKER_COUNT=0
 else
-    export DJANGO_WORKER_COUNT=$(ls .kokoro/presubmit/worker* | wc -l)
-    # Install and start the Spanner emulator
-    VERSION=0.7.3
-    wget https://storage.googleapis.com/cloud-spanner-emulator/releases/${VERSION}/cloud-spanner-emulator_linux_amd64-${VERSION}.tar.gz 2&>/dev/null
-    tar zxvf cloud-spanner-emulator_linux_amd64-${VERSION}.tar.gz 2&>/dev/null
-    chmod +x emulator_main
+    export DJANGO_WORKER_COUNT=4
 fi
 
 ./bin/parallelize_tests_linux

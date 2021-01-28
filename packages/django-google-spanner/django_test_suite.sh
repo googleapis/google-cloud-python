@@ -4,8 +4,31 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-# exit when any command fails
-set -e
+set -x pipefail
+
+sudo apt-get update -y
+sudo apt-get install -y libmemcached-dev
+
+# Disable buffering, so that the logs stream through.
+export PYTHONUNBUFFERED=1
+
+export DJANGO_TESTS_DIR="django_tests_dir"
+mkdir -p $DJANGO_TESTS_DIR
+
+if [ $SPANNER_EMULATOR_HOST != 0 ]
+then
+    pip3 install .
+    pip3 install -e 'git+https://github.com/q-logic/python-spanner-django.git@dj_tests_against_emulator#egg=django-google-spanner'
+    git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git $DJANGO_TESTS_DIR/django
+fi
+
+# Install dependencies for Django tests.
+sudo apt-get update
+sudo apt-get install -y libffi-dev libjpeg-dev zlib1g-devel
+
+cd $DJANGO_TESTS_DIR/django && pip3 install -e . && pip3 install -r tests/requirements/py3.txt; cd ../../
+
+python3 create_test_instance.py
 
 # If no SPANNER_TEST_DB is set, generate a unique one
 # so that we can have multiple tests running without
@@ -13,11 +36,13 @@ set -e
 # cleanup the created database.
 TEST_DBNAME=${SPANNER_TEST_DB:-$(python3 -c 'import os, time; print(chr(ord("a") + time.time_ns() % 26)+os.urandom(10).hex())')}
 TEST_DBNAME_OTHER="$TEST_DBNAME-ot"
-TEST_APPS=${DJANGO_TEST_APPS:-basic}
 INSTANCE=${SPANNER_TEST_INSTANCE:-django-tests}
-PROJECT=${PROJECT_ID:-appdev-soda-spanner-staging}
+PROJECT=${PROJECT_ID}
+SPANNER_EMULATOR_HOST=${SPANNER_EMULATOR_HOST}
+GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
 SETTINGS_FILE="$TEST_DBNAME-settings"
 TESTS_DIR=${DJANGO_TESTS_DIR:-django_tests}
+TEST_APPS=${DJANGO_TEST_APPS}
 
 create_settings() {
     cat << ! > "$SETTINGS_FILE.py"
@@ -42,21 +67,7 @@ PASSWORD_HASHERS = [
 !
 }
 
-setup_emulator_if_needed() {
-    if [[ $SPANNER_EMULATOR_HOST != "" ]]
-    then
-        echo "Running the emulator at: $SPANNER_EMULATOR_HOST"
-        ./emulator_main --host_port "$SPANNER_EMULATOR_HOST" &
-        SPANNER_INSTANCE=$INSTANCE python3 .kokoro/ensure_instance_exists.py
-    fi
-}
+cd $TESTS_DIR/django/tests
+create_settings
 
-run_django_tests() {
-    cd $TESTS_DIR/django/tests
-    create_settings
-    echo -e "\033[32mRunning Django tests: $TEST_APPS\033[00m"
-    python3 runtests.py $TEST_APPS --verbosity=2 --noinput --settings $SETTINGS_FILE
-}
-
-setup_emulator_if_needed
-run_django_tests
+python3 runtests.py $TEST_APPS --verbosity=3 --noinput --settings $SETTINGS_FILE
