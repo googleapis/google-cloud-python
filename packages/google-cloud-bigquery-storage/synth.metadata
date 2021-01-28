@@ -3,16 +3,16 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:tswast/python-bigquery-storage.git",
-        "sha": "3178660aa98968ecba5538a47491b7b60e787e45"
+        "remote": "https://github.com/googleapis/python-bigquery-storage.git",
+        "sha": "2c26b798257361fbb655c1d0e03a01464f42fea3"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "38cb5ce59453ce509773afcdfc72764441a4b531",
-        "internalRef": "351190966"
+        "sha": "c8bfd324b41ad1f6f65fed124572f92fe116517b",
+        "internalRef": "351218127"
       }
     },
     {
@@ -35,6 +35,15 @@
       "client": {
         "source": "googleapis",
         "apiName": "bigquery_storage",
+        "apiVersion": "v1beta2",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "bigquery_storage",
         "apiVersion": "v1",
         "language": "python",
         "generator": "bazel"
@@ -42,6 +51,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -85,6 +95,7 @@
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
@@ -92,8 +103,13 @@
     "MANIFEST.in",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
+    "docs/bigquery_storage_v1/big_query_read.rst",
     "docs/bigquery_storage_v1/services.rst",
     "docs/bigquery_storage_v1/types.rst",
+    "docs/bigquery_storage_v1beta2/big_query_read.rst",
+    "docs/bigquery_storage_v1beta2/big_query_write.rst",
+    "docs/bigquery_storage_v1beta2/services.rst",
+    "docs/bigquery_storage_v1beta2/types.rst",
     "docs/conf.py",
     "docs/multiprocessing.rst",
     "google/cloud/bigquery_storage/__init__.py",
@@ -116,6 +132,35 @@
     "google/cloud/bigquery_storage_v1/types/avro.py",
     "google/cloud/bigquery_storage_v1/types/storage.py",
     "google/cloud/bigquery_storage_v1/types/stream.py",
+    "google/cloud/bigquery_storage_v1beta2/proto/arrow.proto",
+    "google/cloud/bigquery_storage_v1beta2/proto/avro.proto",
+    "google/cloud/bigquery_storage_v1beta2/proto/protobuf.proto",
+    "google/cloud/bigquery_storage_v1beta2/proto/storage.proto",
+    "google/cloud/bigquery_storage_v1beta2/proto/stream.proto",
+    "google/cloud/bigquery_storage_v1beta2/proto/table.proto",
+    "google/cloud/bigquery_storage_v1beta2/py.typed",
+    "google/cloud/bigquery_storage_v1beta2/services/__init__.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/__init__.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/async_client.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/client.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/transports/__init__.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/transports/base.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/transports/grpc.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_read/transports/grpc_asyncio.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/__init__.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/async_client.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/client.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/transports/__init__.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/transports/base.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/transports/grpc.py",
+    "google/cloud/bigquery_storage_v1beta2/services/big_query_write/transports/grpc_asyncio.py",
+    "google/cloud/bigquery_storage_v1beta2/types/__init__.py",
+    "google/cloud/bigquery_storage_v1beta2/types/arrow.py",
+    "google/cloud/bigquery_storage_v1beta2/types/avro.py",
+    "google/cloud/bigquery_storage_v1beta2/types/protobuf.py",
+    "google/cloud/bigquery_storage_v1beta2/types/storage.py",
+    "google/cloud/bigquery_storage_v1beta2/types/stream.py",
+    "google/cloud/bigquery_storage_v1beta2/types/table.py",
     "mypy.ini",
     "noxfile.py",
     "renovate.json",
@@ -134,6 +179,9 @@
     "setup.cfg",
     "testing/.gitignore",
     "tests/unit/gapic/bigquery_storage_v1/__init__.py",
-    "tests/unit/gapic/bigquery_storage_v1/test_big_query_read.py"
+    "tests/unit/gapic/bigquery_storage_v1/test_big_query_read.py",
+    "tests/unit/gapic/bigquery_storage_v1beta2/__init__.py",
+    "tests/unit/gapic/bigquery_storage_v1beta2/test_big_query_read.py",
+    "tests/unit/gapic/bigquery_storage_v1beta2/test_big_query_write.py"
   ]
 }
