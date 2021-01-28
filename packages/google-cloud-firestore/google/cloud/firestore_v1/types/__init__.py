@@ -69,7 +69,6 @@ from .firestore import (
     BatchWriteResponse,
 )
 
-
 __all__ = (
     "DocumentMask",
     "Precondition",

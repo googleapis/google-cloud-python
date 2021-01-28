@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[FirestoreAdminTransp
 _transport_registry["grpc"] = FirestoreAdminGrpcTransport
 _transport_registry["grpc_asyncio"] = FirestoreAdminGrpcAsyncIOTransport
 
-
 __all__ = (
     "FirestoreAdminTransport",
     "FirestoreAdminGrpcTransport",

@@ -38,8 +38,8 @@ from .operation import (
     ImportDocumentsMetadata,
     ExportDocumentsResponse,
     Progress,
+    OperationState,
 )
-
 
 __all__ = (
     "Index",
@@ -62,4 +62,5 @@ __all__ = (
     "ImportDocumentsMetadata",
     "ExportDocumentsResponse",
     "Progress",
+    "OperationState",
 )
