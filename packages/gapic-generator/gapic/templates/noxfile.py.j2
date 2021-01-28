@@ -32,6 +32,7 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
+        '--explicit-package-bases',
         {%- if api.naming.module_namespace %}
         '{{ api.naming.module_namespace[0] }}',
         {%- else %}

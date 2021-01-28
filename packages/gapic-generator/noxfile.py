@@ -227,7 +227,7 @@ def showcase_mypy(
         session.chdir(lib)
 
         # Run the tests.
-        session.run("mypy", "google")
+        session.run("mypy", "--explicit-package-bases", "google")
 
 
 @nox.session(python="3.8")
