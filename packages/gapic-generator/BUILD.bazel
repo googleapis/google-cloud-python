@@ -57,8 +57,8 @@ py_binary(
     python_version = "PY3",
     visibility = ["//visibility:public"],
     deps = [
-        "@com_google_protobuf//:protobuf_python",
         "@com_github_grpc_grpc//src/python/grpcio/grpc:grpcio",
+        requirement("protobuf"),
         requirement("click"),
         requirement("google-api-core"),
         requirement("googleapis-common-protos"),

@@ -15,7 +15,7 @@ def gapic_generator_python():
         requirements = "@gapic_generator_python//:requirements.txt",
     )
 
-    _protobuf_version = "3.13.0"
+    _protobuf_version = "3.14.0"
     _protobuf_version_in_link = "v%s" % _protobuf_version
     _maybe(
         http_archive,
