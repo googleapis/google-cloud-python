@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.0.1](https://www.github.com/googleapis/python-dlp/compare/v3.0.0...v3.0.1) (2021-01-28)
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limits;  add enums to `types/__init__.py` ([#89](https://www.github.com/googleapis/python-dlp/issues/89)) ([76e0439](https://www.github.com/googleapis/python-dlp/commit/76e0439b3acfdacf9303595107c03c1d49eac8b6))
+
 ## [3.0.0](https://www.github.com/googleapis/python-dlp/compare/v2.0.0...v3.0.0) (2020-12-02)
 
 
