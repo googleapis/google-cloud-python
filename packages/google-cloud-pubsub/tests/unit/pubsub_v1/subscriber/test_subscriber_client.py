@@ -16,6 +16,7 @@ from google.auth import credentials
 import grpc
 import mock
 
+from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.cloud.pubsub_v1 import subscriber
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.subscriber import futures
@@ -27,6 +28,26 @@ def test_init():
     creds = mock.Mock(spec=credentials.Credentials)
     client = subscriber.Client(credentials=creds)
     assert isinstance(client.api, subscriber_client.SubscriberClient)
+
+
+def test_init_default_client_info():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = subscriber.Client(credentials=creds)
+
+    installed_version = subscriber.client.__version__
+    expected_client_info = f"gccl/{installed_version}"
+
+    for wrapped_method in client.api.transport._wrapped_methods.values():
+        user_agent = next(
+            (
+                header_value
+                for header, header_value in wrapped_method._metadata
+                if header == METRICS_METADATA_KEY
+            ),
+            None,
+        )
+        assert user_agent is not None
+        assert expected_client_info in user_agent
 
 
 def test_init_w_custom_transport():
@@ -47,7 +68,7 @@ def test_init_w_api_endpoint():
 
 
 def test_init_w_unicode_api_endpoint():
-    client_options = {"api_endpoint": u"testendpoint.google.com"}
+    client_options = {"api_endpoint": "testendpoint.google.com"}
     client = subscriber.Client(client_options=client_options)
 
     assert isinstance(client.api, subscriber_client.SubscriberClient)

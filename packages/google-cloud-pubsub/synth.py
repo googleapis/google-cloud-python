@@ -97,6 +97,23 @@ s.replace(
         \g<0>""",
 )
 
+# Make sure that client library version is present in user agent header.
+s.replace(
+    [
+        "google/pubsub_v1/services/publisher/async_client.py",
+        "google/pubsub_v1/services/publisher/client.py",
+        "google/pubsub_v1/services/publisher/transports/base.py",
+        "google/pubsub_v1/services/schema_service/async_client.py",
+        "google/pubsub_v1/services/schema_service/client.py",
+        "google/pubsub_v1/services/schema_service/transports/base.py",
+        "google/pubsub_v1/services/subscriber/async_client.py",
+        "google/pubsub_v1/services/subscriber/client.py",
+        "google/pubsub_v1/services/subscriber/transports/base.py",
+    ],
+    r"""gapic_version=(pkg_resources\.get_distribution\(\s+)['"]google-pubsub['"]""",
+    "client_library_version=\g<1>'google-cloud-pubsub'",
+)
+
 # Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
 # in order to avoid docstring format warnings in docs.
 s.replace("google/pubsub_v1/services/*er/client.py", r"(\s+)Args:", "\n\g<1>Args:")

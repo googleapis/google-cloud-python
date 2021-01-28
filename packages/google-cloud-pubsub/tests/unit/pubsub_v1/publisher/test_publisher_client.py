@@ -26,6 +26,7 @@ import time
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import types
 
@@ -62,6 +63,26 @@ def test_init():
     assert client.batch_settings.max_messages == 100
 
 
+def test_init_default_client_info():
+    creds = mock.Mock(spec=credentials.Credentials)
+    client = publisher.Client(credentials=creds)
+
+    installed_version = publisher.client.__version__
+    expected_client_info = f"gccl/{installed_version}"
+
+    for wrapped_method in client.api.transport._wrapped_methods.values():
+        user_agent = next(
+            (
+                header_value
+                for header, header_value in wrapped_method._metadata
+                if header == METRICS_METADATA_KEY
+            ),
+            None,
+        )
+        assert user_agent is not None
+        assert expected_client_info in user_agent
+
+
 def test_init_w_custom_transport():
     transport = PublisherGrpcTransport()
     client = publisher.Client(transport=transport)
@@ -86,7 +107,7 @@ def test_init_w_api_endpoint():
 
 
 def test_init_w_unicode_api_endpoint():
-    client_options = {"api_endpoint": u"testendpoint.google.com"}
+    client_options = {"api_endpoint": "testendpoint.google.com"}
     client = publisher.Client(client_options=client_options)
 
     assert isinstance(client.api, publisher_client.PublisherClient)
@@ -219,7 +240,7 @@ def test_publish_data_not_bytestring_error():
     client = publisher.Client(credentials=creds)
     topic = "topic/path"
     with pytest.raises(TypeError):
-        client.publish(topic, u"This is a text string.")
+        client.publish(topic, "This is a text string.")
     with pytest.raises(TypeError):
         client.publish(topic, 42)
 
@@ -300,7 +321,7 @@ def test_publish_attrs_bytestring():
 
     # The attributes should have been sent as text.
     batch.publish.assert_called_once_with(
-        gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+        gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
     )
 
 
@@ -339,7 +360,7 @@ def test_publish_new_batch_needed():
         commit_when_full=True,
         commit_retry=gapic_v1.method.DEFAULT,
     )
-    message_pb = gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+    message_pb = gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
     batch1.publish.assert_called_once_with(message_pb)
     batch2.publish.assert_called_once_with(message_pb)
 

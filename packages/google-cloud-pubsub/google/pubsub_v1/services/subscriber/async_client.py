@@ -1874,7 +1874,9 @@ class SubscriberAsyncClient:
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-pubsub",).version,
+        client_library_version=pkg_resources.get_distribution(
+            "google-cloud-pubsub",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
