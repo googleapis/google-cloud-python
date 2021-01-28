@@ -1639,7 +1639,8 @@ class Test_Bucket(unittest.TestCase):
         NEW_BLOB_NAME = "new-blob-name"
         DATA = {"name": NEW_BLOB_NAME}
         GENERATION_NUMBER = 6
-        METAGENERATION_NUMBER = 9
+        SOURCE_GENERATION_NUMBER = 7
+        SOURCE_METAGENERATION_NUMBER = 9
 
         connection = _Connection(DATA)
         client = _Client(connection)
@@ -1652,7 +1653,8 @@ class Test_Bucket(unittest.TestCase):
             client=client,
             timeout=42,
             if_generation_match=GENERATION_NUMBER,
-            if_source_metageneration_not_match=METAGENERATION_NUMBER,
+            if_source_generation_match=SOURCE_GENERATION_NUMBER,
+            if_source_metageneration_not_match=SOURCE_METAGENERATION_NUMBER,
         )
 
         self.assertIs(renamed_blob.bucket, bucket)
@@ -1668,7 +1670,8 @@ class Test_Bucket(unittest.TestCase):
             kw["query_params"],
             {
                 "ifGenerationMatch": GENERATION_NUMBER,
-                "ifSourceMetagenerationNotMatch": METAGENERATION_NUMBER,
+                "ifSourceGenerationMatch": SOURCE_GENERATION_NUMBER,
+                "ifSourceMetagenerationNotMatch": SOURCE_METAGENERATION_NUMBER,
             },
         )
         self.assertEqual(kw["timeout"], 42)
@@ -1677,10 +1680,10 @@ class Test_Bucket(unittest.TestCase):
         blob.delete.assert_called_once_with(
             client=client,
             timeout=42,
-            if_generation_match=GENERATION_NUMBER,
+            if_generation_match=SOURCE_GENERATION_NUMBER,
             if_generation_not_match=None,
             if_metageneration_match=None,
-            if_metageneration_not_match=None,
+            if_metageneration_not_match=SOURCE_METAGENERATION_NUMBER,
             retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         )
 
