@@ -76,7 +76,8 @@ class Connection(object):
             self._bqstorage_client._transport.grpc_channel.close()
 
         for cursor_ in self._cursors_created:
-            cursor_.close()
+            if not cursor_._closed:
+                cursor_.close()
 
     def commit(self):
         """No-op, but for consistency raise an error if connection is closed."""

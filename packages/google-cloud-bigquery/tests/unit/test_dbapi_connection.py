@@ -176,6 +176,22 @@ class TestConnection(unittest.TestCase):
         self.assertTrue(cursor_1._closed)
         self.assertTrue(cursor_2._closed)
 
+    def test_close_closes_only_open_created_cursors(self):
+        connection = self._make_one(client=self._mock_client())
+        cursor_1 = connection.cursor()
+        cursor_2 = connection.cursor()
+        self.assertFalse(cursor_1._closed)
+        self.assertFalse(cursor_2._closed)
+
+        cursor_1.close()
+        self.assertTrue(cursor_1._closed)
+        cursor_1.close = mock.MagicMock()
+
+        connection.close()
+
+        self.assertFalse(cursor_1.close.called)
+        self.assertTrue(cursor_2._closed)
+
     def test_does_not_keep_cursor_instances_alive(self):
         from google.cloud.bigquery.dbapi import Cursor
 
