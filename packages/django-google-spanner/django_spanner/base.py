@@ -156,9 +156,11 @@ class DatabaseWrapper(BaseDatabaseWrapper):
 
     def init_connection_state(self):
         """Initialize the state of the existing connection."""
+        autocommit = self.connection.autocommit
         self.connection.close()
         database = self.connection.database
         self.connection.__init__(self.instance, database)
+        self.connection.autocommit = autocommit
 
     def create_cursor(self, name=None):
         """Create a new Database cursor.
@@ -196,3 +198,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
             return False
 
         return True
+
+    def _start_transaction_under_autocommit(self):
+        """
+        Start a transaction explicitly in autocommit mode.
+
+        Staying in autocommit mode works around a bug that breaks
+        save points when autocommit is disabled by django.
+        """
+        self.connection.cursor().execute("SELECT 1")
