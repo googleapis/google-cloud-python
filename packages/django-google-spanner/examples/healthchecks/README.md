@@ -9,7 +9,7 @@ This example shows how to use django-spanner for Cloud Spanner as a backend data
 - [Clone django-spanner](#clone-django-spanner)
 - [Install django-spanner in the virtual-env](#install-django-spanner-in-the-virtual-env)
 - [Ensure you have a Cloud Spanner database already created](#ensure-you-have-a-Cloud-Spanner-database-already-created)
-- [Set Google Application Default Credentials to the environment](#Set-Google-Application-Default-Credentials-to-the-environment)
+- [Set credentials and project environment variables](#Set-credentials-and-project-environment-variables)
 - [Update local_settings.py](#update-local_settings.py)
 - [Run the server](#run-the-server)
 - [Apply the migrations](#apply-the-migrations)
@@ -56,11 +56,12 @@ now install django-spanner using the path you obtained in [Clone django-spanner]
 If you haven't already, please follow the steps to install [Cloud Spanner](https://cloud.google.com/spanner/docs/getting-started/set-up),
 or visit this [codelab](https://opencensus.io/codelabs/spanner/#0)
 
-### Set Google Application Default Credentials to the environment
-You'll need to download a service account JSON keyfile and point to it using an environment variable: 
+### Set credentials and project environment variables
+You'll need to download a service account JSON keyfile and point to it using an environment variable:
 
 ```shell
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/keyfile.json
+export GOOGLE_CLOUD_PROJECT=gcloud_project
 ```
 
 ### Update local_settings.py
@@ -70,23 +71,23 @@ After we have a Cloud Spanner database created, we'll need a few variables:
 * Database name aka DisplayName
 
 
-*NOTE:* Healthchecks's  `local_settings.py` overrides the default settings 
+*NOTE:* Healthchecks's  `local_settings.py` overrides the default settings
 mentioned in `settings.py`.
 
 There are two ways to edit settings file:
-1. You can edit the file `hc/settings.py` to: 
-    
+1. You can edit the file `hc/settings.py` to:
+
     a) Add `django_spanner` as the first entry to `INSTALLED_APPS`:
-    
+
         ```python
         INSTALLED_APPS = [
             'django_spanner',  # Must be listed first.
             ...
         ]
         ```
-        
+
     b) Edit `DATABASES` into the following:
-    
+
         ```python
         DATABASES = {
             'default': {
@@ -102,7 +103,7 @@ There are two ways to edit settings file:
 
     a) The `INSTALLED_APPS` MUST be copied from hc/settings.py to hc/local_settings.py
        and add `django_spanner` as the first entry to `INSTALLED_APPS`:
-       
+
         ```python
         INSTALLED_APPS = [
             'django_spanner',  # Must be listed first.
@@ -111,7 +112,7 @@ There are two ways to edit settings file:
         ```
 
     b) Add or Edit `DATABASES` into the following:
-    
+
         ```python
         DATABASES = {
             'default': {

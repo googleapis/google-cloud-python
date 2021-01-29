@@ -4,7 +4,18 @@ This example shows how to use django-spanner for Cloud Spanner as a backend data
 
 *NOTE:* Use the version of python-spanner-django that corresponds to your version of Django. For example, python-spanner-django 2.2.x works with Django 2.2.y. (This is the only supported version at this time.)
 
-### Walkthrough the introduction to Django
+### Table of contents
+- [Install django-spanner](#install-django-spanner)
+- [Ensure you have a Cloud Spanner database already created](#ensure-you-have-a-cloud-spanner-database-already-created)
+- [Follow the tutorial](#follow-the-tutorial)
+- [Update your settings.py file to use django-spanner](#update-your-settings.py-file-to-use-django-spanner)
+- [Set credentials and project environment variables](#Set-credentials-and-project-environment-variables)
+- [Apply the migrations](#apply-the-migrations)
+- [Now run your server](#now-run-your-server)
+- [Create an Django admin user](#create-an-django-admin-user)
+- [Login as admin](#login-as-admin)
+- [Comprehensive hands-on guide](#comprehensive-hands-on-guide)
+- [References](#references)
 
 ### Install django-spanner
 To install from PyPI:
@@ -74,10 +85,11 @@ DATABASES = {
 }
 ```
 
-### Set Google Application Default Credentials to the environment
-You'll need to download a service account JSON key file and point to it using an environment variable: 
+### Set credentials and project environment variables
+You'll need to download a service account JSON key file and point to it using an environment variable:
 ```shell
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/keyfile.json
+export GOOGLE_CLOUD_PROJECT=gcloud_project
 ```
 
 ### Apply the migrations
