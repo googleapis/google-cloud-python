@@ -112,7 +112,7 @@ Executing a query
         "WHERE SingerId = 15"
     )
 
-    results = cur.fetchall()
+    results = cursor.fetchall()
 
 
 Current limitations
