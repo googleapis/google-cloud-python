@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.40.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.3...v0.40.4) (2021-01-28)
+
+
+### Bug Fixes
+
+* Make gapic-generator-python compatible with protobuf 3.14.0 (packaged as native namespace package) ([#753](https://www.github.com/googleapis/gapic-generator-python/issues/753)) ([45212af](https://www.github.com/googleapis/gapic-generator-python/commit/45212afb9f523a416d86272798d71ce05dc292f0))
+* mypy 0.800 update errors ([#754](https://www.github.com/googleapis/gapic-generator-python/issues/754)) ([608275a](https://www.github.com/googleapis/gapic-generator-python/commit/608275aa923f495520dea8ebddb94a99f26e27a5))
+
 ### [0.40.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.2...v0.40.3) (2021-01-21)
 
 
