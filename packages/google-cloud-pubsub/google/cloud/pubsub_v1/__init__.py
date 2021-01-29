@@ -17,6 +17,7 @@ from __future__ import absolute_import
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1 import publisher
 from google.cloud.pubsub_v1 import subscriber
+from google.pubsub_v1.services import schema_service
 
 
 class PublisherClient(publisher.Client):
@@ -27,4 +28,8 @@ class SubscriberClient(subscriber.Client):
     __doc__ = subscriber.Client.__doc__
 
 
-__all__ = ("types", "PublisherClient", "SubscriberClient")
+class SchemaServiceClient(schema_service.client.SchemaServiceClient):
+    __doc__ = schema_service.client.SchemaServiceClient.__doc__
+
+
+__all__ = ("types", "PublisherClient", "SubscriberClient", "SchemaServiceClient")

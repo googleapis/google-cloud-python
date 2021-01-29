@@ -19,6 +19,7 @@ from __future__ import absolute_import
 
 from google.cloud.pubsub_v1 import PublisherClient
 from google.cloud.pubsub_v1 import SubscriberClient
+from google.cloud.pubsub_v1 import SchemaServiceClient
 from google.cloud.pubsub_v1 import types
 
 
@@ -26,4 +27,5 @@ __all__ = (
     "types",
     "PublisherClient",
     "SubscriberClient",
+    "SchemaServiceClient",
 )
