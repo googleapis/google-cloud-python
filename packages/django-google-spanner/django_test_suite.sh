@@ -37,11 +37,8 @@ TEST_DBNAME=${SPANNER_TEST_DB:-$(python3 -c 'import os, time; print(chr(ord("a")
 TEST_DBNAME_OTHER="$TEST_DBNAME-ot"
 INSTANCE=${SPANNER_TEST_INSTANCE:-django-tests}
 PROJECT=${PROJECT_ID}
-SPANNER_EMULATOR_HOST=${SPANNER_EMULATOR_HOST}
-GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
 SETTINGS_FILE="$TEST_DBNAME-settings"
 TESTS_DIR=${DJANGO_TESTS_DIR:-django_tests}
-TEST_APPS=${DJANGO_TEST_APPS}
 
 create_settings() {
     cat << ! > "$SETTINGS_FILE.py"
@@ -69,4 +66,4 @@ PASSWORD_HASHERS = [
 cd $TESTS_DIR/django/tests
 create_settings
 
-python3 runtests.py $TEST_APPS --verbosity=3 --noinput --settings $SETTINGS_FILE
+python3 runtests.py $DJANGO_TEST_APPS --verbosity=3 --noinput --settings $SETTINGS_FILE
