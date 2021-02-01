@@ -1,7 +1,7 @@
 click==7.1.2
 google-api-core==1.25.0
 googleapis-common-protos==1.52.0
-jinja2==2.11.2
+jinja2==2.11.3
 MarkupSafe==1.1.1
 protobuf==3.14.0
 pypandoc==1.5
