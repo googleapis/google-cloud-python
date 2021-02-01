@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/google-cloud-python.git",
-        "sha": "780abadefe5cf71dcbcd9f0cbc8526ed31a4fb0e"
+        "sha": "e789e3d850b2cbd60816a26a33b3e538b60bdc3d"
       }
     }
   ],
