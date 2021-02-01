@@ -14,7 +14,7 @@ This example shows how to use django-spanner for Cloud Spanner as a backend data
 - [Now run your server](#now-run-your-server)
 - [Create an Django admin user](#create-an-django-admin-user)
 - [Login as admin](#login-as-admin)
-- [Comprehensive hands-on guide](#comprehensive-hands-on-guide)
+- [Create and register your first model](#create-and-register-your-first-model)
 - [References](#references)
 
 ### Install django-spanner
@@ -154,8 +154,10 @@ python3 manage.py runserver
 ```
 Then visit http://127.0.0.1:8000/admin/
 
-### Comprehensive hands-on guide
-For a more comprehensive, step by step hands-on guide, please visit [using django-spanner from scratch](https://orijtech-161805.firebaseapp.com/quickstart/new_app/)
+### Create and register your first model
+Please follow the guides in https://docs.djangoproject.com/en/2.2/intro/tutorial02/#creating-models
+to create and register the model to the Django’s automatically-generated admin site.
+
 
 ### References
 
@@ -163,4 +165,3 @@ Resource|URL
 ---|---
 Cloud Spanner homepage|https://cloud.google.com/spanner/
 django-spanner project's source code|https://github.com/googleapis/python-spanner-django/
-django-spanner from scratch|https://orijtech-161805.firebaseapp.com/quickstart/new_app/
