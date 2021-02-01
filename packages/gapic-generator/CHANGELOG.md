@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.4...v0.40.5) (2021-02-01)
+
+
+### Bug Fixes
+
+* Fix namespace packages conflict issue ([#757](https://www.github.com/googleapis/gapic-generator-python/issues/757)) ([8035662](https://www.github.com/googleapis/gapic-generator-python/commit/8035662bdcfbdffd1c294c5d28479733358407ca))
+
 ### [0.40.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.3...v0.40.4) (2021-01-28)
 
 
