@@ -203,6 +203,28 @@ class TestCredentials(object):
         assert "x-goog-user-project" not in headers
         assert "token" in headers["authorization"]
 
+    @mock.patch("google.auth.jwt.Credentials.from_signing_credentials", autospec=True)
+    def test__create_self_signed_jwt(self, from_signing_credentials):
+        credentials = service_account.Credentials(
+            SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI
+        )
+
+        audience = "https://pubsub.googleapis.com"
+        credentials._create_self_signed_jwt(audience)
+        from_signing_credentials.assert_called_once_with(credentials, audience)
+
+    @mock.patch("google.auth.jwt.Credentials.from_signing_credentials", autospec=True)
+    def test__create_self_signed_jwt_with_user_scopes(self, from_signing_credentials):
+        credentials = service_account.Credentials(
+            SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI, scopes=["foo"]
+        )
+
+        audience = "https://pubsub.googleapis.com"
+        credentials._create_self_signed_jwt(audience)
+
+        # JWT should not be created if there are user-defined scopes
+        from_signing_credentials.assert_not_called()
+
     @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
     def test_refresh_success(self, jwt_grant):
         credentials = self.make_credentials()
@@ -256,6 +278,32 @@ class TestCredentials(object):
 
         # Credentials should now be valid.
         assert credentials.valid
+
+    @mock.patch("google.auth.jwt.Credentials._make_jwt")
+    def test_refresh_with_jwt_credentials(self, make_jwt):
+        credentials = self.make_credentials()
+        credentials._create_self_signed_jwt("https://pubsub.googleapis.com")
+
+        request = mock.create_autospec(transport.Request, instance=True)
+
+        token = "token"
+        expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
+        make_jwt.return_value = (token, expiry)
+
+        # Credentials should start as invalid
+        assert not credentials.valid
+
+        # before_request should cause a refresh
+        credentials.before_request(request, "GET", "http://example.com?a=1#3", {})
+
+        # Credentials should now be valid.
+        assert credentials.valid
+
+        # Assert make_jwt was called
+        assert make_jwt.called_once()
+
+        assert credentials.token == token
+        assert credentials.expiry == expiry
 
 
 class TestIDTokenCredentials(object):

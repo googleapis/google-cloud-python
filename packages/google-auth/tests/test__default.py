@@ -471,7 +471,7 @@ def test_default_scoped(with_scopes, unused_get):
 
     assert credentials == with_scopes.return_value
     assert project_id == mock.sentinel.project_id
-    with_scopes.assert_called_once_with(MOCK_CREDENTIALS, scopes)
+    with_scopes.assert_called_once_with(MOCK_CREDENTIALS, scopes, default_scopes=None)
 
 
 @mock.patch(

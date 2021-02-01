@@ -101,6 +101,7 @@ class TestCredentials(object):
         assert not credentials.expired
         # Scopes are required
         assert not credentials.scopes
+        assert not credentials.default_scopes
         assert credentials.requires_scopes
         assert not credentials.quota_project_id
 
@@ -111,6 +112,20 @@ class TestCredentials(object):
         assert credentials.requires_scopes
 
         scoped_credentials = credentials.with_scopes(["email"])
+
+        assert scoped_credentials.has_scopes(["email"])
+        assert not scoped_credentials.requires_scopes
+
+    def test_with_default_scopes(self, app_identity):
+        credentials = app_engine.Credentials()
+
+        assert not credentials.scopes
+        assert not credentials.default_scopes
+        assert credentials.requires_scopes
+
+        scoped_credentials = credentials.with_scopes(
+            scopes=None, default_scopes=["email"]
+        )
 
         assert scoped_credentials.has_scopes(["email"])
         assert not scoped_credentials.requires_scopes
@@ -147,12 +162,31 @@ class TestCredentials(object):
         token = "token"
         ttl = 643942923
         app_identity.get_access_token.return_value = token, ttl
-        credentials = app_engine.Credentials(scopes=["email"])
+        credentials = app_engine.Credentials(
+            scopes=["email"], default_scopes=["profile"]
+        )
 
         credentials.refresh(None)
 
         app_identity.get_access_token.assert_called_with(
             credentials.scopes, credentials._service_account_id
+        )
+        assert credentials.token == token
+        assert credentials.expiry == datetime.datetime(1990, 5, 29, 1, 2, 3)
+        assert credentials.valid
+        assert not credentials.expired
+
+    @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+    def test_refresh_with_default_scopes(self, utcnow, app_identity):
+        token = "token"
+        ttl = 643942923
+        app_identity.get_access_token.return_value = token, ttl
+        credentials = app_engine.Credentials(default_scopes=["email"])
+
+        credentials.refresh(None)
+
+        app_identity.get_access_token.assert_called_with(
+            credentials.default_scopes, credentials._service_account_id
         )
         assert credentials.token == token
         assert credentials.expiry == datetime.datetime(1990, 5, 29, 1, 2, 3)

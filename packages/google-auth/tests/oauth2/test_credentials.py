@@ -127,6 +127,7 @@ class TestCredentials(object):
         self, unused_utcnow, refresh_grant
     ):
         scopes = ["email", "profile"]
+        default_scopes = ["https://www.googleapis.com/auth/cloud-platform"]
         token = "token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
         grant_response = {"id_token": mock.sentinel.id_token}
@@ -149,6 +150,7 @@ class TestCredentials(object):
             client_id=self.CLIENT_ID,
             client_secret=self.CLIENT_SECRET,
             scopes=scopes,
+            default_scopes=default_scopes,
         )
 
         # Refresh credentials
@@ -169,6 +171,62 @@ class TestCredentials(object):
         assert creds.expiry == expiry
         assert creds.id_token == mock.sentinel.id_token
         assert creds.has_scopes(scopes)
+
+        # Check that the credentials are valid (have a token and are not
+        # expired.)
+        assert creds.valid
+
+    @mock.patch("google.oauth2._client.refresh_grant", autospec=True)
+    @mock.patch(
+        "google.auth._helpers.utcnow",
+        return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
+    )
+    def test_credentials_with_only_default_scopes_requested(
+        self, unused_utcnow, refresh_grant
+    ):
+        default_scopes = ["email", "profile"]
+        token = "token"
+        expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
+        grant_response = {"id_token": mock.sentinel.id_token}
+        refresh_grant.return_value = (
+            # Access token
+            token,
+            # New refresh token
+            None,
+            # Expiry,
+            expiry,
+            # Extra data
+            grant_response,
+        )
+
+        request = mock.create_autospec(transport.Request)
+        creds = credentials.Credentials(
+            token=None,
+            refresh_token=self.REFRESH_TOKEN,
+            token_uri=self.TOKEN_URI,
+            client_id=self.CLIENT_ID,
+            client_secret=self.CLIENT_SECRET,
+            default_scopes=default_scopes,
+        )
+
+        # Refresh credentials
+        creds.refresh(request)
+
+        # Check jwt grant call.
+        refresh_grant.assert_called_with(
+            request,
+            self.TOKEN_URI,
+            self.REFRESH_TOKEN,
+            self.CLIENT_ID,
+            self.CLIENT_SECRET,
+            default_scopes,
+        )
+
+        # Check that the credentials have the token and expiry
+        assert creds.token == token
+        assert creds.expiry == expiry
+        assert creds.id_token == mock.sentinel.id_token
+        assert creds.has_scopes(default_scopes)
 
         # Check that the credentials are valid (have a token and are not
         # expired.)

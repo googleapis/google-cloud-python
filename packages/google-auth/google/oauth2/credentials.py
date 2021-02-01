@@ -66,6 +66,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         client_id=None,
         client_secret=None,
         scopes=None,
+        default_scopes=None,
         quota_project_id=None,
         expiry=None,
     ):
@@ -91,6 +92,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 token if refresh information is provided (e.g. The refresh
                 token scopes are a superset of this or contain a wild card
                 scope like 'https://www.googleapis.com/auth/any-api').
+            default_scopes (Sequence[str]): Default scopes passed by a
+                Google client library. Use 'scopes' for user-defined scopes.
             quota_project_id (Optional[str]): The project ID used for quota and billing.
                 This project may be different from the project used to
                 create the credentials.
@@ -101,6 +104,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._refresh_token = refresh_token
         self._id_token = id_token
         self._scopes = scopes
+        self._default_scopes = default_scopes
         self._token_uri = token_uri
         self._client_id = client_id
         self._client_secret = client_secret
@@ -121,6 +125,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._refresh_token = d.get("_refresh_token")
         self._id_token = d.get("_id_token")
         self._scopes = d.get("_scopes")
+        self._default_scopes = d.get("_default_scopes")
         self._token_uri = d.get("_token_uri")
         self._client_id = d.get("_client_id")
         self._client_secret = d.get("_client_secret")
@@ -180,6 +185,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             client_id=self.client_id,
             client_secret=self.client_secret,
             scopes=self.scopes,
+            default_scopes=self.default_scopes,
             quota_project_id=quota_project_id,
         )
 
@@ -197,13 +203,15 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
                 "token_uri, client_id, and client_secret."
             )
 
+        scopes = self._scopes if self._scopes is not None else self._default_scopes
+
         access_token, refresh_token, expiry, grant_response = _client.refresh_grant(
             request,
             self._token_uri,
             self._refresh_token,
             self._client_id,
             self._client_secret,
-            self._scopes,
+            scopes,
         )
 
         self.token = access_token
@@ -211,8 +219,8 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._refresh_token = refresh_token
         self._id_token = grant_response.get("id_token")
 
-        if self._scopes and "scopes" in grant_response:
-            requested_scopes = frozenset(self._scopes)
+        if scopes and "scopes" in grant_response:
+            requested_scopes = frozenset(scopes)
             granted_scopes = frozenset(grant_response["scopes"].split())
             scopes_requested_but_not_granted = requested_scopes - granted_scopes
             if scopes_requested_but_not_granted:

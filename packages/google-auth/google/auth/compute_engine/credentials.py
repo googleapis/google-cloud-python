@@ -52,7 +52,11 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
     """
 
     def __init__(
-        self, service_account_email="default", quota_project_id=None, scopes=None
+        self,
+        service_account_email="default",
+        quota_project_id=None,
+        scopes=None,
+        default_scopes=None,
     ):
         """
         Args:
@@ -61,11 +65,15 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
                 accounts.
             quota_project_id (Optional[str]): The project ID used for quota and
                 billing.
+            scopes (Optional[Sequence[str]]): The list of scopes for the credentials.
+            default_scopes (Optional[Sequence[str]]): Default scopes passed by a
+                Google client library. Use 'scopes' for user-defined scopes.
         """
         super(Credentials, self).__init__()
         self._service_account_email = service_account_email
         self._quota_project_id = quota_project_id
         self._scopes = scopes
+        self._default_scopes = default_scopes
 
     def _retrieve_info(self, request):
         """Retrieve information about the service account.
@@ -98,12 +106,11 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
                 service can't be reached if if the instance has not
                 credentials.
         """
+        scopes = self._scopes if self._scopes is not None else self._default_scopes
         try:
             self._retrieve_info(request)
             self.token, self.expiry = _metadata.get_service_account_token(
-                request,
-                service_account=self._service_account_email,
-                scopes=self._scopes,
+                request, service_account=self._service_account_email, scopes=scopes
             )
         except exceptions.TransportError as caught_exc:
             new_exc = exceptions.RefreshError(caught_exc)
@@ -131,12 +138,13 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
         )
 
     @_helpers.copy_docstring(credentials.Scoped)
-    def with_scopes(self, scopes):
+    def with_scopes(self, scopes, default_scopes=None):
         # Compute Engine credentials can not be scoped (the metadata service
         # ignores the scopes parameter). App Engine, Cloud Run and Flex support
         # requesting scopes.
         return self.__class__(
             scopes=scopes,
+            default_scopes=default_scopes,
             service_account_email=self._service_account_email,
             quota_project_id=self._quota_project_id,
         )

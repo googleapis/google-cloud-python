@@ -69,7 +69,9 @@ def _warn_about_problematic_credentials(credentials):
         warnings.warn(_CLOUD_SDK_CREDENTIALS_WARNING)
 
 
-def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
+def load_credentials_from_file(
+    filename, scopes=None, default_scopes=None, quota_project_id=None
+):
     """Loads Google credentials from a file.
 
     The credentials file must be a service account key or stored authorized
@@ -80,6 +82,8 @@ def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
         scopes (Optional[Sequence[str]]): The list of scopes for the credentials. If
             specified, the credentials will automatically be scoped if
             necessary
+        default_scopes (Optional[Sequence[str]]): Default scopes passed by a
+            Google client library. Use 'scopes' for user-defined scopes.
         quota_project_id (Optional[str]):  The project ID used for
                 quota and billing.
 
@@ -132,7 +136,7 @@ def load_credentials_from_file(filename, scopes=None, quota_project_id=None):
 
         try:
             credentials = service_account.Credentials.from_service_account_info(
-                info, scopes=scopes
+                info, scopes=scopes, default_scopes=default_scopes
             )
         except ValueError as caught_exc:
             msg = "Failed to load service account credentials from {}".format(filename)
@@ -248,7 +252,7 @@ def _get_gce_credentials(request=None):
         return None, None
 
 
-def default(scopes=None, request=None, quota_project_id=None):
+def default(scopes=None, request=None, quota_project_id=None, default_scopes=None):
     """Gets the default credentials for the current environment.
 
     `Application Default Credentials`_ provides an easy way to obtain
@@ -312,6 +316,8 @@ def default(scopes=None, request=None, quota_project_id=None):
             use the standard library http client to make requests.
         quota_project_id (Optional[str]):  The project ID used for
             quota and billing.
+        default_scopes (Optional[Sequence[str]]): Default scopes passed by a
+            Google client library. Use 'scopes' for user-defined scopes.
     Returns:
         Tuple[~google.auth.credentials.Credentials, Optional[str]]:
             the current environment's credentials and project ID. Project ID
@@ -339,7 +345,9 @@ def default(scopes=None, request=None, quota_project_id=None):
     for checker in checkers:
         credentials, project_id = checker()
         if credentials is not None:
-            credentials = with_scopes_if_required(credentials, scopes)
+            credentials = with_scopes_if_required(
+                credentials, scopes, default_scopes=default_scopes
+            )
             if quota_project_id:
                 credentials = credentials.with_quota_project(quota_project_id)
 

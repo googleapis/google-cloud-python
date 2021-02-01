@@ -24,6 +24,7 @@ import six
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
+from google.oauth2 import service_account
 
 try:
     import grpc
@@ -51,15 +52,19 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
             add to requests.
         request (google.auth.transport.Request): A HTTP transport request
             object used to refresh credentials as needed.
+        default_host (Optional[str]): A host like "pubsub.googleapis.com".
+            This is used when a self-signed JWT is created from service
+            account credentials.
     """
 
-    def __init__(self, credentials, request):
+    def __init__(self, credentials, request, default_host=None):
         # pylint: disable=no-value-for-parameter
         # pylint doesn't realize that the super method takes no arguments
         # because this class is the same name as the superclass.
         super(AuthMetadataPlugin, self).__init__()
         self._credentials = credentials
         self._request = request
+        self._default_host = default_host
 
     def _get_authorization_headers(self, context):
         """Gets the authorization headers for a request.
@@ -69,6 +74,19 @@ class AuthMetadataPlugin(grpc.AuthMetadataPlugin):
                 to add to the request.
         """
         headers = {}
+
+        # https://google.aip.dev/auth/4111
+        # Attempt to use self-signed JWTs when a service account is used.
+        # A default host must be explicitly provided since it cannot always
+        # be determined from the context.service_url.
+        if (
+            isinstance(self._credentials, service_account.Credentials)
+            and self._default_host
+        ):
+            self._credentials._create_self_signed_jwt(
+                "https://{}/".format(self._default_host)
+            )
+
         self._credentials.before_request(
             self._request, context.method_name, context.service_url, headers
         )
