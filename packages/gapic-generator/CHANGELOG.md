@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.5...v0.40.6) (2021-02-02)
+
+
+### Bug Fixes
+
+* remove duplicate assignment of certain flattened, repeated fields ([#760](https://www.github.com/googleapis/gapic-generator-python/issues/760)) ([cdbc221](https://www.github.com/googleapis/gapic-generator-python/commit/cdbc22130a176e733c529f60a6b8b1d224e82e89))
+
 ### [0.40.5](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.4...v0.40.5) (2021-02-01)
 
 
