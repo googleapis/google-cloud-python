@@ -65,7 +65,14 @@ class DocumentReference(BaseDocumentReference):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> write.WriteResult:
-        """Create the current document in the Firestore database.
+        """Create a document in the Firestore database.
+
+        >>> document_data = {"a": 1, "b": {"c": "Two"}}
+        >>> document.get().to_dict() is None  # does not exist
+        True
+        >>> document.create(document_data)
+        >>> document.get().to_dict() == document_data  # exists
+        True
 
         Args:
             document_data (dict): Property names and values to use for
@@ -95,23 +102,51 @@ class DocumentReference(BaseDocumentReference):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
     ) -> write.WriteResult:
-        """Replace the current document in the Firestore database.
+        """Create / replace / merge a document in the Firestore database.
 
-        A write ``option`` can be specified to indicate preconditions of
-        the "set" operation. If no ``option`` is specified and this document
-        doesn't exist yet, this method will create it.
+        - To "upsert" a document (create if it doesn't exist, replace completely
+          if it does), leave the ``merge`` argument at its default:
 
-        Overwrites all content for the document with the fields in
-        ``document_data``. This method performs almost the same functionality
-        as :meth:`create`. The only difference is that this method doesn't
-        make any requirements on the existence of the document (unless
-        ``option`` is used), whereas as :meth:`create` will fail if the
-        document already exists.
+          >>> document_data = {"a": 1, "b": {"c": "Two"}}
+          >>> document.get().to_dict() is None  # document exists
+          False
+          >>> document.set(document_data)
+          >>> document.get().to_dict() == document_data  # exists
+          True
+
+        - To "merge" ``document_data`` with an existing document (creating if
+          the document does not exist), pass ``merge`` as True``:
+
+          >>> document_data = {"a": 1, "b": {"c": "Two"}}
+          >>> document.get().to_dict() == {"d": "Three", "b": {}} # exists
+          >>> document.set(document_data, merge=True)
+          >>> document.get().to_dict() == {"a": 1, "d": "Three", "b": {"c": "Two"}}
+          True
+
+          In this case, existing documents with top-level keys which are
+          not present in ``document_data`` (``"d"``) will preserve the values
+          of those keys.
+
+
+        - To merge only specific fields of ``document_data`` with existing
+          documents (creating if the document does not exist), pass ``merge``
+          as a list of field paths:
+
+
+          >>> document_data = {"a": 1, "b": {"c": "Two"}}
+          >>> document.get().to_dict() == {"b": {"c": "One", "d": "Four" }} # exists
+          True
+          >>> document.set(document_data, merge=["b.c"])
+          >>> document.get().to_dict() == {"b": {"c": "Two", "d": "Four" }}
+          True
+
+          For more information on field paths, see
+          :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path`.
 
         Args:
             document_data (dict): Property names and values to use for
                 replacing a document.
-            merge (Optional[bool] or Optional[List<apispec>]):
+            merge (Optional[bool] or Optional[List<fieldpath>]):
                 If True, apply merging instead of overwriting the state
                 of the document.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -142,9 +177,9 @@ class DocumentReference(BaseDocumentReference):
         override these preconditions.
 
         Each key in ``field_updates`` can either be a field name or a
-        **field path** (For more information on **field paths**, see
-        :meth:`~google.cloud.firestore_v1.client.Client.field_path`.) To
-        illustrate this, consider a document with
+        **field path** (For more information on field paths, see
+        :meth:`~google.cloud.firestore_v1.base_client.BaseClient.field_path`.)
+        To illustrate this, consider a document with
 
         .. code-block:: python
 

@@ -288,12 +288,15 @@ class BaseCollectionReference(object):
 
     def limit_to_last(self, count: int):
         """Create a limited to last query with this collection as parent.
+
         .. note::
            `limit` and `limit_to_last` are mutually exclusive.
            Setting `limit_to_last` will drop previously set `limit`.
+
         See
         :meth:`~google.cloud.firestore_v1.query.Query.limit_to_last`
         for more information on this method.
+
         Args:
             count (int): Maximum number of documents to return that
                 match the query.

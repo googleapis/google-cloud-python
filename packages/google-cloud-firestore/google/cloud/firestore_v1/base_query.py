@@ -370,9 +370,11 @@ class BaseQuery(object):
         """Limit a query to return at most `count` matching results.
 
         If the current query already has a `limit` set, this will override it.
+
         .. note::
            `limit` and `limit_to_last` are mutually exclusive.
            Setting `limit` will drop previously set `limit_to_last`.
+
         Args:
             count (int): Maximum number of documents to return that match
                 the query.
@@ -398,9 +400,11 @@ class BaseQuery(object):
         """Limit a query to return the last `count` matching results.
         If the current query already has a `limit_to_last`
         set, this will override it.
+
         .. note::
            `limit` and `limit_to_last` are mutually exclusive.
            Setting `limit_to_last` will drop previously set `limit`.
+
         Args:
             count (int): Maximum number of documents to return that match
                 the query.
