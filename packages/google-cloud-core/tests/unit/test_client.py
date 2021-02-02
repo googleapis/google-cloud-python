@@ -125,20 +125,22 @@ class TestClient(unittest.TestCase):
         from google.cloud.client import _CREDENTIALS_REFRESH_TIMEOUT
 
         credentials = _make_credentials()
-        client = self._make_one(credentials=credentials)
+        mock_client_cert_source = mock.Mock()
+        client_options = {'client_cert_source': mock_client_cert_source}
+        client = self._make_one(credentials=credentials, client_options=client_options)
         self.assertIsNone(client._http_internal)
 
-        authorized_session_patch = mock.patch(
-            "google.auth.transport.requests.AuthorizedSession",
-            return_value=mock.sentinel.http,
-        )
-        with authorized_session_patch as AuthorizedSession:
-            self.assertIs(client._http, mock.sentinel.http)
+        with mock.patch('google.auth.transport.requests.AuthorizedSession') as AuthorizedSession:
+            session = mock.Mock()
+            session.configure_mtls_channel = mock.Mock()
+            AuthorizedSession.return_value = session
+            self.assertIs(client._http, session)
             # Check the mock.
             AuthorizedSession.assert_called_once_with(credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT)
+            session.configure_mtls_channel.assert_called_once_with(mock_client_cert_source)
             # Make sure the cached value is used on subsequent access.
-            self.assertIs(client._http_internal, mock.sentinel.http)
-            self.assertIs(client._http, mock.sentinel.http)
+            self.assertIs(client._http_internal, session)
+            self.assertIs(client._http, session)
             self.assertEqual(AuthorizedSession.call_count, 1)
 
     def test_from_service_account_json(self):

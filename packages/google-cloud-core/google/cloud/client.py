@@ -159,6 +159,7 @@ class Client(_ClientFactoryMixin):
             self._credentials = self._credentials.with_quota_project(client_options.quota_project_id)
 
         self._http_internal = _http
+        self._client_cert_source = client_options.client_cert_source
 
     def __getstate__(self):
         """Explicitly state that clients are not pickleable."""
@@ -183,6 +184,7 @@ class Client(_ClientFactoryMixin):
                 self._credentials,
                 refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
             )
+            self._http_internal.configure_mtls_channel(self._client_cert_source)
         return self._http_internal
 
 

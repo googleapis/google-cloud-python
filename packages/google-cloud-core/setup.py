@@ -29,6 +29,7 @@ description = "Google Cloud API client core library"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core >= 1.21.0, < 2.0.0dev",
+    "google-auth >= 1.24.0, < 2.0dev",
     # Support six==1.12.0 due to App Engine standard runtime.
     # https://github.com/googleapis/python-cloud-core/issues/45
     "six >=1.12.0",
