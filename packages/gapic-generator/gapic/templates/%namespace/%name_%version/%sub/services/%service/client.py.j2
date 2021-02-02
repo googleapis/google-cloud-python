@@ -244,7 +244,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         if use_client_cert:
             if client_options.client_cert_source:
                 is_mtls = True
-                client_cert_source_func = client_options.client_cert_source                
+                client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
                 client_cert_source_func = mtls.default_client_cert_source() if is_mtls else None
@@ -381,22 +381,22 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             {% endif -%}
-            {%- for key, field in method.flattened_fields.items() if not field.repeated and method.input.ident.package == method.ident.package %}
+            {%- for key, field in method.flattened_fields.items() if not field.repeated or method.input.ident.package == method.ident.package %}
             if {{ field.name }} is not None:
                 request.{{ key }} = {{ field.name }}
             {%- endfor %}
-	    {# Map-y fields can be _updated_, however #}
-            {%- for key, field in method.flattened_fields.items() if field.map and method.input.ident.package == method.ident.package %}
-
+            {# Map-y fields can be _updated_, however #}
+            {%- for key, field in method.flattened_fields.items() if field.repeated and method.input.ident.package != method.ident.package %}
+            {%- if field.map %} {# map implies repeated, but repeated does NOT imply map#}
             if {{ field.name }}:
                 request.{{ key }}.update({{ field.name }})
-            {%- endfor %}
+            {%- else %}
             {# And list-y fields can be _extended_ -#}
-            {%- for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
             if {{ field.name }}:
                 request.{{ key }}.extend({{ field.name }})
-            {%- endfor %}
-            {%- endif %}
+            {%- endif %} {# field.map #}
+            {%- endfor %} {# method.flattened_fields.items() #}
+            {%- endif %} {# method.client_streaming #}
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

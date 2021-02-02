@@ -341,9 +341,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        {% endif -%}
+        {% endif -%} {# method.flattened_fields #}
         {% if method.input.ident.package != method.ident.package -%} {# request lives in a different package, so there is no proto wrapper #}
-        # The request isn't a proto-plus wrapped type,
+        # The request isn't a proto-plus wrapped type.
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = {{ method.input.ident }}(**request)
@@ -351,7 +351,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         elif not request:
             request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
         {% endif -%}{# Cross-package req and flattened fields #}
-        {%- else %}
+        {%- else %}  {# Request is in _our_ package #}
         # Minor optimization to avoid making a copy if the user passes
         # in a {{ method.input.ident }}.
         # There's no risk of modifying the input as we've already verified
@@ -364,22 +364,22 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             {% endif -%}
-            {%- for key, field in method.flattened_fields.items() if not(field.repeated and method.input.ident.package != method.ident.package) %}
+            {%- for key, field in method.flattened_fields.items() if not field.repeated or method.input.ident.package == method.ident.package %}
             if {{ field.name }} is not None:
                 request.{{ key }} = {{ field.name }}
             {%- endfor %}
             {# Map-y fields can be _updated_, however #}
-            {%- for key, field in method.flattened_fields.items() if field.map and method.input.ident.package == method.ident.package %}
-
+            {%- for key, field in method.flattened_fields.items() if field.repeated and method.input.ident.package != method.ident.package %}
+            {%- if field.map %} {# map implies repeated, but repeated does NOT imply map#}
             if {{ field.name }}:
                 request.{{ key }}.update({{ field.name }})
-            {%- endfor %}
+            {%- else %}
             {# And list-y fields can be _extended_ -#}
-            {%- for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
             if {{ field.name }}:
                 request.{{ key }}.extend({{ field.name }})
-            {%- endfor %}
-            {%- endif %}
+            {%- endif %} {# field.map #}
+            {%- endfor %} {# key, field in method.flattened_fields.items() #}
+            {%- endif %} {# method.client_streaming #}
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -397,7 +397,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {%- endfor %}
             )),
         )
-        {%- endif %}
+        {%- endif %} {# method.field_headers #}
 
         # Send the request.
         {% if not method.void %}response = {% endif %}rpc(
@@ -405,7 +405,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request,
             {%- else %}
             requests,
-            {%- endif %}
+            {%- endif %} {# method.client_streaming #}
             retry=retry,
             timeout=timeout,
             metadata=metadata,
@@ -429,12 +429,12 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             response=response,
             metadata=metadata,
         )
-        {%- endif %}
+        {%- endif %} {# method.lro #}
         {%- if not method.void %}
 
         # Done; return the response.
         return response
-        {%- endif %}
+        {%- endif %} {# method.void #}
         {{ '\n' }}
     {% endfor %}
 
