@@ -157,11 +157,13 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- if method.http_opt['body'] != '*' %}
         body = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
             request.{{ method.http_opt['body'] }},
-            including_default_value_fields=False
+            including_default_value_fields=False,
+            use_integers_for_enums=False
         )
         {%- else %}
         body = {{ method.input.ident }}.to_json(
-            request
+            request,
+            use_integers_for_enums=False
         )
         {%- endif %}
         {%- endif %}
