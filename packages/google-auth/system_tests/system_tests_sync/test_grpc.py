@@ -57,8 +57,9 @@ def test_grpc_request_with_regular_credentials_and_self_signed_jwt(http_request)
     list_topics_iter = client.list_topics(project="projects/{}".format(project_id))
     list(list_topics_iter)
     
-    # Check that self-signed JWT was created
+    # Check that self-signed JWT was created and is being used
     assert credentials._jwt_credentials is not None
+    assert credentials._jwt_credentials.token == credentials.token
 
 
 def test_grpc_request_with_jwt_credentials():

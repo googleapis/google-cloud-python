@@ -49,6 +49,7 @@ import urllib3.exceptions  # pylint: disable=ungrouped-imports
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
+from google.oauth2 import service_account
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -262,6 +263,9 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
             retried.
         max_refresh_attempts (int): The maximum number of times to attempt to
             refresh the credentials and retry the request.
+        default_host (Optional[str]): A host like "pubsub.googleapis.com".
+            This is used when a self-signed JWT is created from service
+            account credentials.
     """
 
     def __init__(
@@ -270,6 +274,7 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         http=None,
         refresh_status_codes=transport.DEFAULT_REFRESH_STATUS_CODES,
         max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
+        default_host=None,
     ):
         if http is None:
             self.http = _make_default_http()
@@ -281,9 +286,21 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         self.credentials = credentials
         self._refresh_status_codes = refresh_status_codes
         self._max_refresh_attempts = max_refresh_attempts
+        self._default_host = default_host
         # Request instance used by internal methods (for example,
         # credentials.refresh).
         self._request = Request(self.http)
+
+        # https://google.aip.dev/auth/4111
+        # Attempt to use self-signed JWTs when a service account is used.
+        # A default host must be explicitly provided.
+        if (
+            isinstance(self.credentials, service_account.Credentials)
+            and self._default_host
+        ):
+            self.credentials._create_self_signed_jwt(
+                "https://{}/".format(self._default_host)
+            )
 
         super(AuthorizedHttp, self).__init__()
 

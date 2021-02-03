@@ -45,6 +45,7 @@ from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
 import google.auth.transport._mtls_helper
+from google.oauth2 import service_account
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -313,6 +314,9 @@ class AuthorizedSession(requests.Session):
             refreshing credentials. If not passed,
             an instance of :class:`~google.auth.transport.requests.Request`
             is created.
+        default_host (Optional[str]): A host like "pubsub.googleapis.com".
+            This is used when a self-signed JWT is created from service
+            account credentials.
     """
 
     def __init__(
@@ -322,6 +326,7 @@ class AuthorizedSession(requests.Session):
         max_refresh_attempts=transport.DEFAULT_MAX_REFRESH_ATTEMPTS,
         refresh_timeout=None,
         auth_request=None,
+        default_host=None,
     ):
         super(AuthorizedSession, self).__init__()
         self.credentials = credentials
@@ -329,6 +334,7 @@ class AuthorizedSession(requests.Session):
         self._max_refresh_attempts = max_refresh_attempts
         self._refresh_timeout = refresh_timeout
         self._is_mtls = False
+        self._default_host = default_host
 
         if auth_request is None:
             auth_request_session = requests.Session()
@@ -346,6 +352,17 @@ class AuthorizedSession(requests.Session):
         # Request instance used by internal methods (for example,
         # credentials.refresh).
         self._auth_request = auth_request
+
+        # https://google.aip.dev/auth/4111
+        # Attempt to use self-signed JWTs when a service account is used.
+        # A default host must be explicitly provided.
+        if (
+            isinstance(self.credentials, service_account.Credentials)
+            and self._default_host
+        ):
+            self.credentials._create_self_signed_jwt(
+                "https://{}/".format(self._default_host)
+            )
 
     def configure_mtls_channel(self, client_cert_callback=None):
         """Configure the client certificate and key for SSL connection.

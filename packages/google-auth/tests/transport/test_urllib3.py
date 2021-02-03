@@ -26,6 +26,7 @@ from google.auth import exceptions
 import google.auth.credentials
 import google.auth.transport._mtls_helper
 import google.auth.transport.urllib3
+from google.oauth2 import service_account
 from tests.transport import compliance
 
 
@@ -157,6 +158,25 @@ class TestAuthorizedHttp(object):
             ("GET", self.TEST_URL, None, {"authorization": "token"}, {}),
             ("GET", self.TEST_URL, None, {"authorization": "token1"}, {}),
         ]
+
+    def test_urlopen_no_default_host(self):
+        credentials = mock.create_autospec(service_account.Credentials)
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(credentials)
+
+        authed_http.credentials._create_self_signed_jwt.assert_not_called()
+
+    def test_urlopen_with_default_host(self):
+        default_host = "pubsub.googleapis.com"
+        credentials = mock.create_autospec(service_account.Credentials)
+
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            credentials, default_host=default_host
+        )
+
+        authed_http.credentials._create_self_signed_jwt.assert_called_once_with(
+            "https://{}/".format(default_host)
+        )
 
     def test_proxies(self):
         http = mock.create_autospec(urllib3.PoolManager)

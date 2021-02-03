@@ -294,11 +294,28 @@ def grpc(session):
 
 
 @nox.session(python=PYTHON_VERSIONS_SYNC)
+def requests(session):
+    session.install(LIBRARY_DIR)
+    session.install(*TEST_DEPENDENCIES_SYNC)
+    session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
+    session.run("pytest", "system_tests_sync/test_requests.py")
+
+
+@nox.session(python=PYTHON_VERSIONS_SYNC)
+def urllib3(session):
+    session.install(LIBRARY_DIR)
+    session.install(*TEST_DEPENDENCIES_SYNC)
+    session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
+    session.run("pytest", "system_tests_sync/test_urllib3.py")
+
+
+@nox.session(python=PYTHON_VERSIONS_SYNC)
 def mtls_http(session):
     session.install(LIBRARY_DIR)
     session.install(*TEST_DEPENDENCIES_SYNC, "pyopenssl")
     session.env[EXPLICIT_CREDENTIALS_ENV] = SERVICE_ACCOUNT_FILE
     session.run("pytest", "system_tests_sync/test_mtls_http.py")
+
 
 #ASYNC SYSTEM TESTS
 

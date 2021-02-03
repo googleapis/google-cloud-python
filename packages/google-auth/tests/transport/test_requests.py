@@ -30,6 +30,7 @@ from google.auth import exceptions
 import google.auth.credentials
 import google.auth.transport._mtls_helper
 import google.auth.transport.requests
+from google.oauth2 import service_account
 from tests.transport import compliance
 
 
@@ -371,6 +372,25 @@ class TestAuthorizedSession(object):
             authed_session.request(
                 "GET", self.TEST_URL, timeout=60, max_allowed_time=2.9
             )
+
+    def test_authorized_session_without_default_host(self):
+        credentials = mock.create_autospec(service_account.Credentials)
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
+
+        authed_session.credentials._create_self_signed_jwt.assert_not_called()
+
+    def test_authorized_session_with_default_host(self):
+        default_host = "pubsub.googleapis.com"
+        credentials = mock.create_autospec(service_account.Credentials)
+
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            credentials, default_host=default_host
+        )
+
+        authed_session.credentials._create_self_signed_jwt.assert_called_once_with(
+            "https://{}/".format(default_host)
+        )
 
     def test_configure_mtls_channel_with_callback(self):
         mock_callback = mock.Mock()
