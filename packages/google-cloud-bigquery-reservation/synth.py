@@ -13,11 +13,14 @@
 # limitations under the License.
 
 """This script is used to synthesize generated parts of this library."""
-import os
+import pathlib
 
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
+
+
+REPO_ROOT = pathlib.Path(__file__).parent.absolute()
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
@@ -28,14 +31,16 @@ common = gcp.CommonTemplates()
 library = gapic.py_library(
     service="bigquery/reservation",
     version="v1",
-    bazel_target=f"//google/cloud/bigquery/reservation/v1:bigquery-reservation-v1-py"
+    bazel_target=f"//google/cloud/bigquery/reservation/v1:bigquery-reservation-v1-py",
 )
 
 s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
 s.replace(
-    ["google/cloud/bigquery_reservation_v1/services/reservation_service/client.py",
-    "google/cloud/bigquery_reservation_v1/services/reservation_service/async_client.py"],
+    [
+        "google/cloud/bigquery_reservation_v1/services/reservation_service/client.py",
+        "google/cloud/bigquery_reservation_v1/services/reservation_service/async_client.py",
+    ],
     "assignee=organizations/456``",
     "assignee=organizations/456``\n",
 )
@@ -43,11 +48,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(
-    cov_level=100,
-    microgenerator=True,
-    samples=True,
-)
+templated_files = common.py_library(cov_level=100, microgenerator=True, samples=True,)
 s.move(
     templated_files,
     excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
@@ -64,3 +65,5 @@ python.py_samples()
 # ----------------------------------------------------------------------------
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+for noxfile in REPO_ROOT.glob("samples/**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
