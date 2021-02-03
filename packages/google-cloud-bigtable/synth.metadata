@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigtable.git",
-        "sha": "227482f8fd5ea500b3677348ee3fa25e486a2163"
+        "sha": "e2213520951d3da97019a1d784e5bf31d94e3353"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "ba960d730416fe05c50547e975ce79fcee52c671"
+        "sha": "573f7655311b553a937f9123bee17bf78497db95"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "ba960d730416fe05c50547e975ce79fcee52c671"
+        "sha": "573f7655311b553a937f9123bee17bf78497db95"
       }
     }
   ],
@@ -58,6 +58,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
