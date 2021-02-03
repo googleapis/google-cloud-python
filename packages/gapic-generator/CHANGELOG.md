@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.7](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.6...v0.40.7) (2021-02-03)
+
+
+### Bug Fixes
+
+* don't use integer for enums in json encoding ([#761](https://www.github.com/googleapis/gapic-generator-python/issues/761)) ([6d37a73](https://www.github.com/googleapis/gapic-generator-python/commit/6d37a7388995b90428ee6293bcce5d48cd9a48f8))
+
 ### [0.40.6](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.5...v0.40.6) (2021-02-02)
 
 
