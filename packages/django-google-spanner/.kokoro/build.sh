@@ -44,7 +44,7 @@ export RUNNING_SPANNER_BACKEND_TESTS=1
 
 pip3 install .
 export DJANGO_TESTS_DIR="django_tests_dir"
-mkdir -p $DJANGO_TESTS_DIR && git clone --depth 1 --single-branch --branch spanner-2.2.x https://github.com/timgraham/django.git $DJANGO_TESTS_DIR/django
+mkdir -p $DJANGO_TESTS_DIR && git clone --depth 1 --single-branch --branch "spanner/stable/2.2.x" https://github.com/c24t/django.git $DJANGO_TESTS_DIR/django
 
 # Install dependencies for Django tests.
 sudo apt-get update
