@@ -66,19 +66,38 @@ def test_method_client_output_empty():
 
 def test_method_client_output_paged():
     paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
+    parent = make_field(name='parent', type=9)          # str
+    page_size = make_field(name='page_size', type=5)    # int
+    page_token = make_field(name='page_token', type=9)  # str
+
     input_msg = make_message(name='ListFoosRequest', fields=(
-        make_field(name='parent', type=9),      # str
-        make_field(name='page_size', type=5),   # int
-        make_field(name='page_token', type=9),  # str
+        parent,
+        page_size,
+        page_token,
     ))
     output_msg = make_message(name='ListFoosResponse', fields=(
         paged,
         make_field(name='next_page_token', type=9),  # str
     ))
-    method = make_method('ListFoos',
-                         input_message=input_msg,
-                         output_message=output_msg,
-                         )
+    method = make_method(
+        'ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
+    assert method.paged_result_field == paged
+    assert method.client_output.ident.name == 'ListFoosPager'
+
+    max_results = make_field(name='max_results', type=5)  # int
+    input_msg = make_message(name='ListFoosRequest', fields=(
+        parent,
+        max_results,
+        page_token,
+    ))
+    method = make_method(
+        'ListFoos',
+        input_message=input_msg,
+        output_message=output_msg,
+    )
     assert method.paged_result_field == paged
     assert method.client_output.ident.name == 'ListFoosPager'
 
@@ -123,6 +142,19 @@ def test_method_paged_result_field_no_page_field():
                          )
     assert method.paged_result_field is None
 
+    method = make_method(
+        name='Foo',
+        input_message=make_message(
+            name='FooRequest',
+            fields=(make_field(name='page_token', type=9),)  # str
+        ),
+        output_message=make_message(
+            name='FooResponse',
+            fields=(make_field(name='next_page_token', type=9),)  # str
+        )
+    )
+    assert method.paged_result_field is None
+
 
 def test_method_paged_result_ref_types():
     input_msg = make_message(
@@ -139,7 +171,7 @@ def test_method_paged_result_ref_types():
         name='ListMolluscsResponse',
         fields=(
             make_field(name='molluscs', message=mollusc_msg, repeated=True),
-            make_field(name='next_page_token', type=9)
+            make_field(name='next_page_token', type=9)  # str
         ),
         module='mollusc'
     )
@@ -207,7 +239,7 @@ def test_flattened_ref_types():
 
 
 def test_method_paged_result_primitive():
-    paged = make_field(name='squids', type=9, repeated=True)
+    paged = make_field(name='squids', type=9, repeated=True)    # str
     input_msg = make_message(
         name='ListSquidsRequest',
         fields=(

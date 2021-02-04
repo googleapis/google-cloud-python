@@ -6,7 +6,7 @@
 {# This lives within the loop in order to ensure that this template
    is empty if there are no paged methods.
  -#}
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple, Optional
 
 {% filter sort_lines -%}
 {% for method in service.methods.values() | selectattr('paged_result_field') -%}
@@ -68,14 +68,25 @@ class {{ method.name }}Pager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
+    {% if method.paged_result_field.map %}
+    def __iter__(self) -> Iterable[Tuple[str, {{ method.paged_result_field.type.fields.get('value').ident }}]]:
+        for page in self.pages:
+            yield from page.{{ method.paged_result_field.name}}.items()
+
+    def get(self, key: str) -> Optional[{{ method.paged_result_field.type.fields.get('value').ident }}]:
+        return self._response.items.get(key)
+    {% else %}
     def __iter__(self) -> {{ method.paged_result_field.ident | replace('Sequence', 'Iterable') }}:
         for page in self.pages:
             yield from page.{{ method.paged_result_field.name }}
+    {% endif %}
 
     def __repr__(self) -> str:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
 
+{# TODO(yon-mg): remove on rest async transport impl #}
+{% if 'grpc' in opts.transport %}
 class {{ method.name }}AsyncPager:
     """A pager for iterating through ``{{ method.name|snake_case }}`` requests.
 
@@ -138,5 +149,6 @@ class {{ method.name }}AsyncPager:
     def __repr__(self) -> str:
         return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
 
+{% endif %}
 {% endfor %}
 {% endblock %}

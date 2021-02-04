@@ -184,11 +184,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            {% filter sort_lines -%} 
-            {%- for field in method.query_params %}
+            {%- for field in method.query_params | sort%}
             '{{ field|camel_case }}': request.{{ field }},
             {%- endfor %}
-            {% endfilter -%} 
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values

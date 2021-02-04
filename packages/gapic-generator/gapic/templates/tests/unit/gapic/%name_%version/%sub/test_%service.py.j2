@@ -1020,7 +1020,7 @@ def test_{{ method.name|snake_case }}_raw_page_lro():
     assert response.raw_page is response
 {% endif %} {#- method.paged_result_field #}
 
-{% endfor -%} {#- method in methods #}
+{% endfor -%} {#- method in methods for grpc #}
 
 {% for method in service.methods.values() if 'rest' in opts.transport -%}
 def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
@@ -1162,7 +1162,126 @@ def test_{{ method.name|snake_case }}_rest_flattened_error():
         )
 
 
-{% endfor -%}
+{% if method.paged_result_field %}
+def test_{{ method.name|snake_case }}_pager():
+    client = {{ service.client_name }}(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # Set the response as a series of pages
+        {% if method.paged_result_field.map%}
+        response = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'a':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'b':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'c':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={},
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'g':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}={
+                    'h':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                    'i':{{ method.paged_result_field.type.fields.get('value').ident }}(),
+                },
+            ),
+        )
+        {% else %}
+        response = (
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                ],
+                next_page_token='abc',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[],
+                next_page_token='def',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.type.ident }}(),
+                ],
+                next_page_token='ghi',
+            ),
+            {{ method.output.ident }}(
+                {{ method.paged_result_field.name }}=[
+                    {{ method.paged_result_field.type.ident }}(),
+                    {{ method.paged_result_field.type.ident }}(),
+                ],
+            ),
+        )
+        {% endif %}
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple({{ method.output.ident }}.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        {% if method.field_headers -%}
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                {%- for field_header in method.field_headers %}
+                {%- if not method.client_streaming %}
+                ('{{ field_header }}', ''),
+                {%- endif %}
+                {%- endfor %}
+            )),
+        )
+        {% endif -%}
+        pager = client.{{ method.name|snake_case }}(request={})
+
+        assert pager._metadata == metadata
+
+        {% if method.paged_result_field.map %}
+        assert isinstance(pager.get('a'), {{ method.paged_result_field.type.fields.get('value').ident }})
+        assert pager.get('h') is None
+        {% endif %}
+
+        results = list(pager)
+        assert len(results) == 6
+        {% if method.paged_result_field.map %}
+        assert all(
+            isinstance(i, tuple)
+                   for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (str, {{ method.paged_result_field.type.fields.get('value').ident }})
+        
+        assert pager.get('a') is None
+        assert isinstance(pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
+        {% else %}
+        assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
+                   for i in results)
+        {% endif %}
+
+        pages = list(client.{{ method.name|snake_case }}(request={}).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+        
+{% endif %} {# paged methods #}
+{% endfor -%} {#- method in methods for rest #}
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
