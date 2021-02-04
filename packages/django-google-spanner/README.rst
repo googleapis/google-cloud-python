@@ -1,39 +1,35 @@
 Cloud Spanner support for Django
 ================================
 
-ORM plugin for using Cloud Spanner as a `database backend
+This package provides a `3rd-party database backend
 <https://docs.djangoproject.com/en/2.2/ref/databases/#using-a-3rd-party-database-backend>`__
-for Django.
-
-How it works
-------------
-
-Overall design
-~~~~~~~~~~~~~~
-
-.. figure:: ./assets/overview.png
-   :alt:
-
-Internals
-~~~~~~~~~
-
-.. figure:: ./assets/internals.png
-   :alt:
-
+for using `Cloud Spanner <https://cloud.google.com/spanner>`__ with the `Django
+ORM <https://docs.djangoproject.com/en/2.2/topics/db/>`__. It uses the `Cloud
+Spanner Python client library <https://github.com/googleapis/python-spanner>`__
+under the hood.
 
 Installation
 ------------
 
-Using this library requires a Google Cloud Platform project with the Cloud
-Spanner API enabled. See the Spanner Python client `documentation
-<https://github.com/googleapis/python-spanner/#quick-start>`__ for details.
+To use this library, you'll need a Google Cloud Platform project with the Cloud
+Spanner API enabled. For details on enabling the API and authenticating with
+GCP, see the `Cloud Spanner Python client library quickstart guide
+<https://github.com/googleapis/python-spanner/#quick-start>`__.
 
-The version of ``django-google-spanner`` must correspond to your version
-of Django.  For example, ``django-google-spanner`` 2.2.x works with Django
-2.2.y (Note: this is the only supported version at this time).
+Supported versions
+~~~~~~~~~~~~~~~~~~
 
-The minor release numbers of Django may not correspond to the minor release
-numbers of ``django-google-spanner``. Use the latest minor release of each.
+At the moment, this library only supports `Django 2.2
+<https://docs.djangoproject.com/en/2.2/>`__. It also requires Python version
+3.6 or later.
+
+This package follows a common versioning convention for Django plugins: the
+major and minor version components of this package should match the installed
+version of Django. That is, ``django-google-spanner~=2.2`` works with
+``Django~=2.2``.
+
+Installing the package
+~~~~~~~~~~~~~~~~~~~~~~
 
 To install from PyPI:
 
@@ -51,14 +47,30 @@ To install from source:
     pip3 install -e .
 
 
+Creating a Cloud Spanner instance and database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you don't already have a Cloud Spanner database, or want to start from
+scratch for a new Django application, you can `create a new instance
+<https://cloud.google.com/spanner/docs/getting-started/python#create_an_instance>`__
+and `database
+<https://cloud.google.com/spanner/docs/getting-started/python#create_a_database>`__
+using the Google Cloud SDK:
+
+.. code:: shell
+
+    gcloud spanner instances create $INSTANCE --config=regional-us-central1 --description="New Django Instance" --nodes=1
+    gcloud spanner databases create $DB --instance $INSTANCE
+
+
 Configuring ``settings.py``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After `installation <#Installation>`__, you'll have to update your Django
-``settings.py`` file as follows.
+This package provides a Django application named ``django_spanner``. To use the
+Cloud Spanner database backend, the application needs to installed and
+configured:
 
--  Add ``django_spanner`` as the very first entry in the ``INSTALLED_APPS``
-   settings:
+-  Add ``django_spanner`` as the first entry in ``INSTALLED_APPS``:
 
    .. code:: python
 
@@ -67,34 +79,36 @@ After `installation <#Installation>`__, you'll have to update your Django
            ...
        ]
 
--  Edit the ``DATABASES`` settings to point to an EXISTING database, as shown in the following example:
+-  Edit the ``DATABASES`` setting to point to an existing Cloud Spanner database:
 
    .. code:: python
 
        DATABASES = {
            'default': {
                'ENGINE': 'django_spanner',
-               'PROJECT': '<GCP_project_id>',
-               'INSTANCE': '<instance_id>',
-               'NAME': '<database_name>',
+               'PROJECT': '$PROJECT',
+               'INSTANCE': '$INSTANCE',
+               'NAME': '$DATABASE',
            }
        }
 
--   In order to retrieve the Cloud Spanner credentials from a JSON file, the ``credentials_uri`` parameter can also be supplied in the ``OPTIONS`` field:
 
-    .. code:: python
+How it works
+------------
 
-       DATABASES = {
-           'default': {
-               'ENGINE': 'django_spanner',
-               'PROJECT': '<GCP_project_id>',
-               'INSTANCE': '<instance_id>',
-               'NAME': '<database_name>',
-               'OPTIONS': {
-                   'credentials_uri': '<credentials_uri>',
-               },
-           },
-       }
+Overall design
+~~~~~~~~~~~~~~
+
+.. figure:: ./assets/overview.png
+   :alt:
+
+Internals
+~~~~~~~~~
+
+.. figure:: ./assets/internals.png
+   :alt:
+
+
 
 Executing a query
 ~~~~~~~~~~~~~~~~~
