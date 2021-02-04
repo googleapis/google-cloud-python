@@ -44,7 +44,7 @@ from google.cloud.firestore_v1.services.firestore import client as firestore_cli
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc as firestore_grpc_transport,
 )
-from typing import Any, Generator, Iterable, Tuple
+from typing import Any, Generator, Iterable
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
@@ -117,7 +117,7 @@ class Client(BaseClient):
         """
         return self._target_helper(firestore_client.FirestoreClient)
 
-    def collection(self, *collection_path: Tuple[str]) -> CollectionReference:
+    def collection(self, *collection_path: str) -> CollectionReference:
         """Get a reference to a collection.
 
         For a top-level collection:
@@ -137,7 +137,7 @@ class Client(BaseClient):
         Sub-collections can be nested deeper in a similar fashion.
 
         Args:
-            collection_path (Tuple[str, ...]): Can either be
+            collection_path: Can either be
 
                 * A single ``/``-delimited path to a collection
                 * A tuple of collection path segments
@@ -170,7 +170,7 @@ class Client(BaseClient):
         """
         return CollectionGroup(self._get_collection_reference(collection_id))
 
-    def document(self, *document_path: Tuple[str]) -> DocumentReference:
+    def document(self, *document_path: str) -> DocumentReference:
         """Get a reference to a document in a collection.
 
         For a top-level document:
@@ -192,7 +192,7 @@ class Client(BaseClient):
         Documents in sub-collections can be nested deeper in a similar fashion.
 
         Args:
-            document_path (Tuple[str, ...]): Can either be
+            document_path): Can either be
 
                 * A single ``/``-delimited path to a document
                 * A tuple of document path segments

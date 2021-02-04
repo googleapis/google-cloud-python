@@ -49,7 +49,7 @@ from google.cloud.firestore_v1.services.firestore import (
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from typing import Any, AsyncGenerator, Iterable, Tuple
+from typing import Any, AsyncGenerator, Iterable
 
 
 class AsyncClient(BaseClient):
@@ -119,7 +119,7 @@ class AsyncClient(BaseClient):
         """
         return self._target_helper(firestore_client.FirestoreAsyncClient)
 
-    def collection(self, *collection_path: Tuple[str]) -> AsyncCollectionReference:
+    def collection(self, *collection_path: str) -> AsyncCollectionReference:
         """Get a reference to a collection.
 
         For a top-level collection:
@@ -139,7 +139,7 @@ class AsyncClient(BaseClient):
         Sub-collections can be nested deeper in a similar fashion.
 
         Args:
-            collection_path (Tuple[str, ...]): Can either be
+            collection_path: Can either be
 
                 * A single ``/``-delimited path to a collection
                 * A tuple of collection path segments
@@ -172,7 +172,7 @@ class AsyncClient(BaseClient):
         """
         return AsyncCollectionGroup(self._get_collection_reference(collection_id))
 
-    def document(self, *document_path: Tuple[str]) -> AsyncDocumentReference:
+    def document(self, *document_path: str) -> AsyncDocumentReference:
         """Get a reference to a document in a collection.
 
         For a top-level document:
@@ -194,7 +194,7 @@ class AsyncClient(BaseClient):
         Documents in sub-collections can be nested deeper in a similar fashion.
 
         Args:
-            document_path (Tuple[str, ...]): Can either be
+            document_path: Can either be
 
                 * A single ``/``-delimited path to a document
                 * A tuple of document path segments

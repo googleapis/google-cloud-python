@@ -314,7 +314,7 @@ class BaseClient(ClientWithProject):
         return joined_path.split(_helpers.DOCUMENT_PATH_DELIMITER)
 
     @staticmethod
-    def field_path(*field_names: Tuple[str]) -> str:
+    def field_path(*field_names: str) -> str:
         """Create a **field path** from a list of nested field names.
 
         A **field path** is a ``.``-delimited concatenation of the field
@@ -335,7 +335,7 @@ class BaseClient(ClientWithProject):
         ``data['aa']['bb']['cc']``.
 
         Args:
-            field_names (Tuple[str, ...]): The list of field names.
+            field_names: The list of field names.
 
         Returns:
             str: The ``.``-delimited field path.
