@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.25.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.24.0...v1.25.0) (2021-02-03)
+
+
+### Features
+
+* support self-signed jwt in requests and urllib3 transports ([#679](https://www.github.com/googleapis/google-auth-library-python/issues/679)) ([7a94acb](https://www.github.com/googleapis/google-auth-library-python/commit/7a94acb50e75fe0a51688e0f968bca3fa9bd9082))
+* use self-signed jwt for service account ([#665](https://www.github.com/googleapis/google-auth-library-python/issues/665)) ([bf5ce0c](https://www.github.com/googleapis/google-auth-library-python/commit/bf5ce0c56c10f655ced6630653f0f2ad47fcceeb))
+
 ## [1.24.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.23.0...v1.24.0) (2020-12-11)
 
 
