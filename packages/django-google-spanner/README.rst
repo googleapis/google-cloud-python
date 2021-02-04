@@ -189,11 +189,6 @@ types is limited to
 `NUMERIC <https://cloud.google.com/spanner/docs/data-types#numeric_types>`__
 precision. Higher-precision values can be stored as strings instead.
 
-``Variance`` and ``StdDev`` database functions aren't supported
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Spanner does not support these functions.
-
 ``Meta.order_with_respect_to`` model option isn't supported
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
