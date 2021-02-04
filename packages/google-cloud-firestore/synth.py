@@ -106,6 +106,19 @@ s.replace(
 )
 
 s.replace(
+    ".gitignore",
+    """\
+pylintrc
+pylintrc.test
+""",
+    """\
+pylintrc
+pylintrc.test
+.make/**
+""",
+)
+
+s.replace(
     "setup.cfg",
     """\
 universal = 1

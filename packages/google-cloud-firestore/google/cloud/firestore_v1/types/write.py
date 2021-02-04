@@ -41,14 +41,14 @@ class Write(proto.Message):
     r"""A write on a document.
 
     Attributes:
-        update (~.gf_document.Document):
+        update (google.cloud.firestore_v1.types.Document):
             A document to write.
         delete (str):
             A document name to delete. In the format:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        transform (~.write.DocumentTransform):
+        transform (google.cloud.firestore_v1.types.DocumentTransform):
             Applies a transformation to a document.
-        update_mask (~.common.DocumentMask):
+        update_mask (google.cloud.firestore_v1.types.DocumentMask):
             The fields to update in this write.
 
             This field can be set only when the operation is ``update``.
@@ -59,14 +59,14 @@ class Write(proto.Message):
             the mask, but not present in the input document, are deleted
             from the document on the server. The field paths in this
             mask must not contain a reserved field name.
-        update_transforms (Sequence[~.write.DocumentTransform.FieldTransform]):
+        update_transforms (Sequence[google.cloud.firestore_v1.types.DocumentTransform.FieldTransform]):
             The transforms to perform after update.
 
             This field can be set only when the operation is ``update``.
             If present, this write is equivalent to performing
             ``update`` and ``transform`` to the same document atomically
             and in order.
-        current_document (~.common.Precondition):
+        current_document (google.cloud.firestore_v1.types.Precondition):
             An optional precondition on the document.
             The write will fail if this is set and not met
             by the target document.
@@ -99,7 +99,7 @@ class DocumentTransform(proto.Message):
     Attributes:
         document (str):
             The name of the document to transform.
-        field_transforms (Sequence[~.write.DocumentTransform.FieldTransform]):
+        field_transforms (Sequence[google.cloud.firestore_v1.types.DocumentTransform.FieldTransform]):
             The list of transformations to apply to the
             fields of the document, in order.
             This must not be empty.
@@ -113,9 +113,9 @@ class DocumentTransform(proto.Message):
                 The path of the field. See
                 [Document.fields][google.firestore.v1.Document.fields] for
                 the field path syntax reference.
-            set_to_server_value (~.write.DocumentTransform.FieldTransform.ServerValue):
+            set_to_server_value (google.cloud.firestore_v1.types.DocumentTransform.FieldTransform.ServerValue):
                 Sets the field to the given server value.
-            increment (~.gf_document.Value):
+            increment (google.cloud.firestore_v1.types.Value):
                 Adds the given value to the field's current
                 value.
                 This must be an integer or a double value.
@@ -129,7 +129,7 @@ class DocumentTransform(proto.Message):
                 there is positive/negative integer overflow, the
                 field is resolved to the largest magnitude
                 positive/negative integer.
-            maximum (~.gf_document.Value):
+            maximum (google.cloud.firestore_v1.types.Value):
                 Sets the field to the maximum of its current
                 value and the given value.
                 This must be an integer or a double value.
@@ -146,7 +146,7 @@ class DocumentTransform(proto.Message):
                 zero input value is always the stored value.
                 The maximum of any numeric value x and NaN is
                 NaN.
-            minimum (~.gf_document.Value):
+            minimum (google.cloud.firestore_v1.types.Value):
                 Sets the field to the minimum of its current
                 value and the given value.
                 This must be an integer or a double value.
@@ -163,7 +163,7 @@ class DocumentTransform(proto.Message):
                 zero input value is always the stored value.
                 The minimum of any numeric value x and NaN is
                 NaN.
-            append_missing_elements (~.gf_document.ArrayValue):
+            append_missing_elements (google.cloud.firestore_v1.types.ArrayValue):
                 Append the given elements in order if they are not already
                 present in the current field value. If the field is not an
                 array, or if the field does not yet exist, it is first set
@@ -176,7 +176,7 @@ class DocumentTransform(proto.Message):
                 considered.
 
                 The corresponding transform_result will be the null value.
-            remove_all_from_array (~.gf_document.ArrayValue):
+            remove_all_from_array (google.cloud.firestore_v1.types.ArrayValue):
                 Remove all of the given elements from the array in the
                 field. If the field is not an array, or if the field does
                 not yet exist, it is set to the empty array.
@@ -241,13 +241,13 @@ class WriteResult(proto.Message):
     r"""The result of applying a write.
 
     Attributes:
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the document after applying the
             write. Not set after a ``delete``.
 
             If the write did not actually change the document, this will
             be the previous update_time.
-        transform_results (Sequence[~.gf_document.Value]):
+        transform_results (Sequence[google.cloud.firestore_v1.types.Value]):
             The results of applying each
             [DocumentTransform.FieldTransform][google.firestore.v1.DocumentTransform.FieldTransform],
             in the same order.
@@ -272,7 +272,7 @@ class DocumentChange(proto.Message):
     targets are affected.
 
     Attributes:
-        document (~.gf_document.Document):
+        document (google.cloud.firestore_v1.types.Document):
             The new state of the
             [Document][google.firestore.v1.Document].
 
@@ -311,7 +311,7 @@ class DocumentDelete(proto.Message):
         removed_target_ids (Sequence[int]):
             A set of target IDs for targets that
             previously matched this entity.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             The read timestamp at which the delete was observed.
 
             Greater or equal to the ``commit_time`` of the delete.
@@ -344,7 +344,7 @@ class DocumentRemove(proto.Message):
         removed_target_ids (Sequence[int]):
             A set of target IDs for targets that
             previously matched this document.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             The read timestamp at which the remove was observed.
 
             Greater or equal to the ``commit_time`` of the
