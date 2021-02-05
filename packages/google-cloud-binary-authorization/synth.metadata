@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-binary-authorization",
-        "sha": "9f6c2c61b7cdf188da47007f88f032b8dc9b2128"
+        "remote": "https://github.com/googleapis/python-binary-authorization.git",
+        "sha": "867e1f5cf4b4cc5b3f334c42f73cb13e8e096350"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+        "sha": "d1bb9173100f62c0cfc8f3138b62241e7f47ca6a"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+        "sha": "d1bb9173100f62c0cfc8f3138b62241e7f47ca6a"
       }
     }
   ],
@@ -40,5 +40,96 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/binaryauthorization_v1beta1/binauthz_management_service_v1_beta1.rst",
+    "docs/binaryauthorization_v1beta1/services.rst",
+    "docs/binaryauthorization_v1beta1/types.rst",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "google/cloud/binaryauthorization/__init__.py",
+    "google/cloud/binaryauthorization/py.typed",
+    "google/cloud/binaryauthorization_v1beta1/__init__.py",
+    "google/cloud/binaryauthorization_v1beta1/py.typed",
+    "google/cloud/binaryauthorization_v1beta1/services/__init__.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/__init__.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/async_client.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/client.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/pagers.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/transports/__init__.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/transports/base.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/transports/grpc.py",
+    "google/cloud/binaryauthorization_v1beta1/services/binauthz_management_service_v1_beta1/transports/grpc_asyncio.py",
+    "google/cloud/binaryauthorization_v1beta1/types/__init__.py",
+    "google/cloud/binaryauthorization_v1beta1/types/resources.py",
+    "google/cloud/binaryauthorization_v1beta1/types/service.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_binaryauthorization_v1beta1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/binaryauthorization_v1beta1/__init__.py",
+    "tests/unit/gapic/binaryauthorization_v1beta1/test_binauthz_management_service_v1_beta1.py"
   ]
 }
