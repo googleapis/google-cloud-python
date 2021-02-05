@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [1.6.0](https://www.github.com/googleapis/python-cloud-core/compare/v1.5.0...v1.6.0) (2021-02-02)
+
+
+### Features
+
+* add mtls support ([#75](https://www.github.com/googleapis/python-cloud-core/issues/75)) ([a93129b](https://www.github.com/googleapis/python-cloud-core/commit/a93129bf2fa6fabda3de8b8a342f31a328ccbaf0))
+* infer project from explicit service account creds ([#51](https://www.github.com/googleapis/python-cloud-core/issues/51)) ([2bd41a1](https://www.github.com/googleapis/python-cloud-core/commit/2bd41a177864c7d577155ee3c7e4a1dfd24601dc)), closes [#27](https://www.github.com/googleapis/python-cloud-core/issues/27)
+
+
+### Documentation
+
+* **python:** document adding Python 3.9 support, dropping 3.5 support ([#65](https://www.github.com/googleapis/python-cloud-core/issues/65)) ([860f345](https://www.github.com/googleapis/python-cloud-core/commit/860f345d1f912ffb9a41003159f34ddbebfbd110)), closes [#787](https://www.github.com/googleapis/python-cloud-core/issues/787)
+
 ## [1.5.0](https://www.github.com/googleapis/python-cloud-core/compare/v1.4.4...v1.5.0) (2020-12-14)
 
 
