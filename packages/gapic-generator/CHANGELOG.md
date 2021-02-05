@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.40.8](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.7...v0.40.8) (2021-02-05)
+
+
+### Bug Fixes
+
+* body encoding for rest transport ([#768](https://www.github.com/googleapis/gapic-generator-python/issues/768)) ([cc55a18](https://www.github.com/googleapis/gapic-generator-python/commit/cc55a182b878d78f92aba259c067d47ab1d01e5b))
+* update paging implementation to handle unconventional pagination ([#750](https://www.github.com/googleapis/gapic-generator-python/issues/750)) ([eaac3e6](https://www.github.com/googleapis/gapic-generator-python/commit/eaac3e69d366b610ae7551d94d4f546819e24bc2))
+
 ### [0.40.7](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.6...v0.40.7) (2021-02-03)
 
 
