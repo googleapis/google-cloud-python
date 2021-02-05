@@ -455,7 +455,7 @@ class DocumentReference(BaseDocumentReference):
         provided callback is run on the snapshot.
 
         Args:
-            callback(Callable[[:class:`~google.cloud.firestore.document.DocumentSnapshot`], NoneType]):
+            callback(Callable[[:class:`~google.cloud.firestore_v1.base_document.DocumentSnapshot`], NoneType]):
                 a callback to run when a change occurs
 
         Example:
