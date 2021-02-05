@@ -198,7 +198,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
             url
             {%- if 'body' in method.http_opt %},
-            json=body,
+            data=body,
             {%- endif %}
         )
 
