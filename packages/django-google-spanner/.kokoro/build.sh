@@ -61,7 +61,7 @@ then
     # 'spanner.googleapis.com').
     export DJANGO_WORKER_COUNT=0
 else
-    export DJANGO_WORKER_COUNT=4
+    export DJANGO_WORKER_COUNT=5
 fi
 
-./bin/parallelize_tests_linux
+python3 ./run_testing_worker.py
