@@ -34,6 +34,7 @@ dependencies = [
     "google-auth >= 1.21.1, < 2.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
     "setuptools >= 40.3.0",
+    "packaging >= 14.3",
     "six >= 1.13.0",
     "pytz",
     'futures >= 3.2.0; python_version < "3.2"',

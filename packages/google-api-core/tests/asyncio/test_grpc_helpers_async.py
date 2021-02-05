@@ -18,6 +18,7 @@ import mock
 import pytest
 
 from google.api_core import exceptions
+from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 import google.auth.credentials
 
@@ -263,6 +264,7 @@ def test_wrap_errors_streaming(wrap_stream_errors):
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch(
     "google.auth.default",
+    autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
 @mock.patch("grpc.experimental.aio.secure_channel")
@@ -273,7 +275,45 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
     channel = grpc_helpers_async.create_channel(target)
 
     assert channel is grpc_secure_channel.return_value
-    default.assert_called_once_with(scopes=None)
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        default.assert_called_once_with(scopes=None, default_scopes=None)
+    else:
+        default.assert_called_once_with(scopes=None)
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("google.auth.transport.grpc.AuthMetadataPlugin", autospec=True)
+@mock.patch(
+    "google.auth.transport.requests.Request",
+    autospec=True,
+    return_value=mock.sentinel.Request
+)
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+)
+@mock.patch("grpc.experimental.aio.secure_channel")
+def test_create_channel_implicit_with_default_host(grpc_secure_channel, default, composite_creds_call, request, auth_metadata_plugin):
+    target = "example.com:443"
+    default_host = "example.com"
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers_async.create_channel(target, default_host=default_host)
+
+    assert channel is grpc_secure_channel.return_value
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        default.assert_called_once_with(scopes=None, default_scopes=None)
+        auth_metadata_plugin.assert_called_once_with(mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host)
+    else:
+        default.assert_called_once_with(scopes=None)
+        auth_metadata_plugin.assert_called_once_with(mock.sentinel.credentials, mock.sentinel.Request)
+
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
@@ -292,7 +332,12 @@ def test_create_channel_implicit_with_ssl_creds(
 
     grpc_helpers_async.create_channel(target, ssl_credentials=ssl_creds)
 
-    default.assert_called_once_with(scopes=None)
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        default.assert_called_once_with(scopes=None, default_scopes=None)
+    else:
+        default.assert_called_once_with(scopes=None)
+
     composite_creds_call.assert_called_once_with(ssl_creds, mock.ANY)
     composite_creds = composite_creds_call.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
@@ -301,6 +346,7 @@ def test_create_channel_implicit_with_ssl_creds(
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch(
     "google.auth.default",
+    autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
 @mock.patch("grpc.experimental.aio.secure_channel")
@@ -313,7 +359,39 @@ def test_create_channel_implicit_with_scopes(
     channel = grpc_helpers_async.create_channel(target, scopes=["one", "two"])
 
     assert channel is grpc_secure_channel.return_value
-    default.assert_called_once_with(scopes=["one", "two"])
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        default.assert_called_once_with(scopes=["one", "two"], default_scopes=None)
+    else:
+        default.assert_called_once_with(scopes=["one", "two"])
+
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch(
+    "google.auth.default",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.projet),
+)
+@mock.patch("grpc.experimental.aio.secure_channel")
+def test_create_channel_implicit_with_default_scopes(
+    grpc_secure_channel, default, composite_creds_call
+):
+    target = "example.com:443"
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers_async.create_channel(target, default_scopes=["three", "four"])
+
+    assert channel is grpc_secure_channel.return_value
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        default.assert_called_once_with(scopes=None, default_scopes=["three", "four"])
+    else:
+        default.assert_called_once_with(scopes=["three", "four"])
+
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
@@ -331,7 +409,7 @@ def test_create_channel_explicit_with_duplicate_credentials():
 
 
 @mock.patch("grpc.composite_channel_credentials")
-@mock.patch("google.auth.credentials.with_scopes_if_required")
+@mock.patch("google.auth.credentials.with_scopes_if_required", autospec=True)
 @mock.patch("grpc.experimental.aio.secure_channel")
 def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_creds_call):
     target = "example.com:443"
@@ -339,7 +417,12 @@ def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_cred
 
     channel = grpc_helpers_async.create_channel(target, credentials=mock.sentinel.credentials)
 
-    auth_creds.assert_called_once_with(mock.sentinel.credentials, None)
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        auth_creds.assert_called_once_with(mock.sentinel.credentials, scopes=None, default_scopes=None)
+    else:
+        auth_creds.assert_called_once_with(mock.sentinel.credentials, scopes=None)
+
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -357,8 +440,36 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
     channel = grpc_helpers_async.create_channel(
         target, credentials=credentials, scopes=scopes
     )
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        credentials.with_scopes.assert_called_once_with(scopes, default_scopes=None)
+    else:
+        credentials.with_scopes.assert_called_once_with(scopes)
 
-    credentials.with_scopes.assert_called_once_with(scopes)
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.experimental.aio.secure_channel")
+def test_create_channel_explicit_default_scopes(grpc_secure_channel, composite_creds_call):
+    target = "example.com:443"
+    default_scopes = ["3", "4"]
+    composite_creds = composite_creds_call.return_value
+
+    credentials = mock.create_autospec(google.auth.credentials.Scoped, instance=True)
+    credentials.requires_scopes = True
+
+    channel = grpc_helpers_async.create_channel(
+        target, credentials=credentials, default_scopes=default_scopes
+    )
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        credentials.with_scopes.assert_called_once_with(scopes=None, default_scopes=default_scopes)
+    else:
+        credentials.with_scopes.assert_called_once_with(scopes=default_scopes)
+
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -384,6 +495,7 @@ def test_create_channel_explicit_with_quota_project(grpc_secure_channel, composi
 @mock.patch("grpc.experimental.aio.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
+    autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.project)
 )
 def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
@@ -396,7 +508,12 @@ def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_
         target, credentials_file=credentials_file
     )
 
-    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None)
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None, default_scopes=None)
+    else:
+        google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None)
+
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -405,6 +522,7 @@ def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_
 @mock.patch("grpc.experimental.aio.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
+    autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.project)
 )
 def test_create_channel_with_credentials_file_and_scopes(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
@@ -418,7 +536,40 @@ def test_create_channel_with_credentials_file_and_scopes(load_credentials_from_f
         target, credentials_file=credentials_file, scopes=scopes
     )
 
-    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes)
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes, default_scopes=None)
+    else:
+        google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes)
+
+    assert channel is grpc_secure_channel.return_value
+    grpc_secure_channel.assert_called_once_with(target, composite_creds)
+
+
+@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.experimental.aio.secure_channel")
+@mock.patch(
+    "google.auth.load_credentials_from_file",
+    autospec=True,
+    return_value=(mock.sentinel.credentials, mock.sentinel.project)
+)
+def test_create_channel_with_credentials_file_and_default_scopes(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
+    target = "example.com:443"
+    default_scopes = ["3", "4"]
+
+    credentials_file = "/path/to/credentials/file.json"
+    composite_creds = composite_creds_call.return_value
+
+    channel = grpc_helpers_async.create_channel(
+        target, credentials_file=credentials_file, default_scopes=default_scopes
+    )
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None, default_scopes=default_scopes)
+    else:
+        google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=default_scopes)
+
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -434,7 +585,12 @@ def test_create_channel_without_grpc_gcp(grpc_secure_channel):
 
     grpc_helpers_async.create_channel(target, credentials=credentials, scopes=scopes)
     grpc_secure_channel.assert_called()
-    credentials.with_scopes.assert_called_once_with(scopes)
+
+    # TODO: remove this if/else once google-auth >= 1.25.0 is required
+    if grpc_helpers._GOOGLE_AUTH_HAS_DEFAULT_SCOPES_AND_DEFAULT_HOST:
+        credentials.with_scopes.assert_called_once_with(scopes, default_scopes=None)
+    else:
+        credentials.with_scopes.assert_called_once_with(scopes)
 
 
 @pytest.mark.asyncio
