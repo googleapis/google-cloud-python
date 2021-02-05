@@ -34,7 +34,7 @@ class PlanNode(proto.Message):
         index (int):
             The ``PlanNode``'s index in [node
             list][google.spanner.v1.QueryPlan.plan_nodes].
-        kind (~.query_plan.PlanNode.Kind):
+        kind (google.cloud.spanner_v1.types.PlanNode.Kind):
             Used to determine the type of node. May be needed for
             visualizing different kinds of nodes differently. For
             example, If the node is a
@@ -43,13 +43,13 @@ class PlanNode(proto.Message):
             directly embed a description of the node in its parent.
         display_name (str):
             The display name for the node.
-        child_links (Sequence[~.query_plan.PlanNode.ChildLink]):
+        child_links (Sequence[google.cloud.spanner_v1.types.PlanNode.ChildLink]):
             List of child node ``index``\ es and their relationship to
             this parent.
-        short_representation (~.query_plan.PlanNode.ShortRepresentation):
+        short_representation (google.cloud.spanner_v1.types.PlanNode.ShortRepresentation):
             Condensed representation for
             [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] nodes.
-        metadata (~.struct.Struct):
+        metadata (google.protobuf.struct_pb2.Struct):
             Attributes relevant to the node contained in a group of
             key-value pairs. For example, a Parameter Reference node
             could have the following information in its metadata:
@@ -60,7 +60,7 @@ class PlanNode(proto.Message):
                   "parameter_reference": "param1",
                   "parameter_type": "array"
                 }
-        execution_stats (~.struct.Struct):
+        execution_stats (google.protobuf.struct_pb2.Struct):
             The execution statistics associated with the
             node, contained in a group of key-value pairs.
             Only present if the plan was returned as a
@@ -118,7 +118,7 @@ class PlanNode(proto.Message):
             description (str):
                 A string representation of the expression
                 subtree rooted at this node.
-            subqueries (Sequence[~.query_plan.PlanNode.ShortRepresentation.SubqueriesEntry]):
+            subqueries (Sequence[google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry]):
                 A mapping of (subquery variable name) -> (subquery node id)
                 for cases where the ``description`` string of this node
                 references a ``SCALAR`` subquery contained in the expression
@@ -152,7 +152,7 @@ class QueryPlan(proto.Message):
     plan.
 
     Attributes:
-        plan_nodes (Sequence[~.query_plan.PlanNode]):
+        plan_nodes (Sequence[google.cloud.spanner_v1.types.PlanNode]):
             The nodes in the query plan. Plan nodes are returned in
             pre-order starting with the plan root. Each
             [PlanNode][google.spanner.v1.PlanNode]'s ``id`` corresponds

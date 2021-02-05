@@ -24,7 +24,7 @@ class ListInstanceConfigsPager:
     """A pager for iterating through ``list_instance_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_instance_admin.ListInstanceConfigsResponse` object, and
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``instance_configs`` field.
 
@@ -33,7 +33,7 @@ class ListInstanceConfigsPager:
     through the ``instance_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_instance_admin.ListInstanceConfigsResponse`
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListInstanceConfigsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_instance_admin.ListInstanceConfigsRequest`):
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest):
                 The initial request object.
-            response (:class:`~.spanner_instance_admin.ListInstanceConfigsResponse`):
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListInstanceConfigsAsyncPager:
     """A pager for iterating through ``list_instance_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_instance_admin.ListInstanceConfigsResponse` object, and
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``instance_configs`` field.
 
@@ -95,7 +95,7 @@ class ListInstanceConfigsAsyncPager:
     through the ``instance_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_instance_admin.ListInstanceConfigsResponse`
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +115,9 @@ class ListInstanceConfigsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_instance_admin.ListInstanceConfigsRequest`):
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest):
                 The initial request object.
-            response (:class:`~.spanner_instance_admin.ListInstanceConfigsResponse`):
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -156,7 +156,7 @@ class ListInstancesPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_instance_admin.ListInstancesResponse` object, and
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``instances`` field.
 
@@ -165,7 +165,7 @@ class ListInstancesPager:
     through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_instance_admin.ListInstancesResponse`
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -183,9 +183,9 @@ class ListInstancesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_instance_admin.ListInstancesRequest`):
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest):
                 The initial request object.
-            response (:class:`~.spanner_instance_admin.ListInstancesResponse`):
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstancesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -218,7 +218,7 @@ class ListInstancesAsyncPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_instance_admin.ListInstancesResponse` object, and
+    :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``instances`` field.
 
@@ -227,7 +227,7 @@ class ListInstancesAsyncPager:
     through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_instance_admin.ListInstancesResponse`
+    All the usual :class:`google.cloud.spanner_admin_instance_v1.types.ListInstancesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -245,9 +245,9 @@ class ListInstancesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_instance_admin.ListInstancesRequest`):
+            request (google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest):
                 The initial request object.
-            response (:class:`~.spanner_instance_admin.ListInstancesResponse`):
+            response (google.cloud.spanner_admin_instance_v1.types.ListInstancesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

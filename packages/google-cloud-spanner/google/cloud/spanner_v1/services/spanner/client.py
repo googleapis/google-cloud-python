@@ -118,6 +118,22 @@ class SpannerClient(metaclass=SpannerClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpannerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -129,7 +145,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SpannerClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -253,10 +269,10 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SpannerTransport]): The
+            transport (Union[str, SpannerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -292,21 +308,17 @@ class SpannerClient(metaclass=SpannerClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -349,7 +361,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -384,12 +396,13 @@ class SpannerClient(metaclass=SpannerClientMeta):
         periodically, e.g., ``"SELECT 1"``.
 
         Args:
-            request (:class:`~.spanner.CreateSessionRequest`):
+            request (google.cloud.spanner_v1.types.CreateSessionRequest):
                 The request object. The request for
                 [CreateSession][google.spanner.v1.Spanner.CreateSession].
-            database (:class:`str`):
+            database (str):
                 Required. The database in which the
                 new session is created.
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -401,7 +414,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.Session:
+            google.cloud.spanner_v1.types.Session:
                 A session in the Cloud Spanner API.
         """
         # Create or coerce a protobuf request object.
@@ -459,16 +472,17 @@ class SpannerClient(metaclass=SpannerClientMeta):
         practices on session cache management.
 
         Args:
-            request (:class:`~.spanner.BatchCreateSessionsRequest`):
+            request (google.cloud.spanner_v1.types.BatchCreateSessionsRequest):
                 The request object. The request for
                 [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
-            database (:class:`str`):
+            database (str):
                 Required. The database in which the
                 new sessions are created.
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            session_count (:class:`int`):
+            session_count (int):
                 Required. The number of sessions to be created in this
                 batch call. The API may return fewer than the requested
                 number of sessions. If a specific number of sessions are
@@ -476,6 +490,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 BatchCreateSessions (adjusting
                 [session_count][google.spanner.v1.BatchCreateSessionsRequest.session_count]
                 as necessary).
+
                 This corresponds to the ``session_count`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -487,7 +502,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.BatchCreateSessionsResponse:
+            google.cloud.spanner_v1.types.BatchCreateSessionsResponse:
                 The response for
                 [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
 
@@ -547,12 +562,13 @@ class SpannerClient(metaclass=SpannerClientMeta):
         is still alive.
 
         Args:
-            request (:class:`~.spanner.GetSessionRequest`):
+            request (google.cloud.spanner_v1.types.GetSessionRequest):
                 The request object. The request for
                 [GetSession][google.spanner.v1.Spanner.GetSession].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the session to
                 retrieve.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -564,7 +580,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.Session:
+            google.cloud.spanner_v1.types.Session:
                 A session in the Cloud Spanner API.
         """
         # Create or coerce a protobuf request object.
@@ -618,12 +634,13 @@ class SpannerClient(metaclass=SpannerClientMeta):
         r"""Lists all sessions in a given database.
 
         Args:
-            request (:class:`~.spanner.ListSessionsRequest`):
+            request (google.cloud.spanner_v1.types.ListSessionsRequest):
                 The request object. The request for
                 [ListSessions][google.spanner.v1.Spanner.ListSessions].
-            database (:class:`str`):
+            database (str):
                 Required. The database in which to
                 list sessions.
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -635,7 +652,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSessionsPager:
+            google.cloud.spanner_v1.services.spanner.pagers.ListSessionsPager:
                 The response for
                 [ListSessions][google.spanner.v1.Spanner.ListSessions].
 
@@ -702,12 +719,13 @@ class SpannerClient(metaclass=SpannerClientMeta):
         of any operations that are running with this session.
 
         Args:
-            request (:class:`~.spanner.DeleteSessionRequest`):
+            request (google.cloud.spanner_v1.types.DeleteSessionRequest):
                 The request object. The request for
                 [DeleteSession][google.spanner.v1.Spanner.DeleteSession].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the session to
                 delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -780,7 +798,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         instead.
 
         Args:
-            request (:class:`~.spanner.ExecuteSqlRequest`):
+            request (google.cloud.spanner_v1.types.ExecuteSqlRequest):
                 The request object. The request for
                 [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
                 [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
@@ -792,9 +810,9 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.result_set.ResultSet:
+            google.cloud.spanner_v1.types.ResultSet:
                 Results from [Read][google.spanner.v1.Spanner.Read] or
-                [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
+                   [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
 
         """
         # Create or coerce a protobuf request object.
@@ -838,7 +856,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         column value can exceed 10 MiB.
 
         Args:
-            request (:class:`~.spanner.ExecuteSqlRequest`):
+            request (google.cloud.spanner_v1.types.ExecuteSqlRequest):
                 The request object. The request for
                 [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
                 [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
@@ -850,7 +868,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.result_set.PartialResultSet]:
+            Iterable[google.cloud.spanner_v1.types.PartialResultSet]:
                 Partial results from a streaming read
                 or SQL query. Streaming reads and SQL
                 queries better tolerate large result
@@ -907,7 +925,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         statements are not executed.
 
         Args:
-            request (:class:`~.spanner.ExecuteBatchDmlRequest`):
+            request (google.cloud.spanner_v1.types.ExecuteBatchDmlRequest):
                 The request object. The request for
                 [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml].
 
@@ -918,45 +936,46 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.ExecuteBatchDmlResponse:
-                The response for
-                [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml].
-                Contains a list of
-                [ResultSet][google.spanner.v1.ResultSet] messages, one
-                for each DML statement that has successfully executed,
-                in the same order as the statements in the request. If a
-                statement fails, the status in the response body
-                identifies the cause of the failure.
+            google.cloud.spanner_v1.types.ExecuteBatchDmlResponse:
+                The response for [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]. Contains a list
+                   of [ResultSet][google.spanner.v1.ResultSet] messages,
+                   one for each DML statement that has successfully
+                   executed, in the same order as the statements in the
+                   request. If a statement fails, the status in the
+                   response body identifies the cause of the failure.
 
-                To check for DML statements that failed, use the
-                following approach:
+                   To check for DML statements that failed, use the
+                   following approach:
 
-                1. Check the status in the response message. The
-                   [google.rpc.Code][google.rpc.Code] enum value ``OK``
-                   indicates that all statements were executed
-                   successfully.
-                2. If the status was not ``OK``, check the number of
-                   result sets in the response. If the response contains
-                   ``N`` [ResultSet][google.spanner.v1.ResultSet]
-                   messages, then statement ``N+1`` in the request
-                   failed.
+                   1. Check the status in the response message. The
+                      [google.rpc.Code][google.rpc.Code] enum value OK
+                      indicates that all statements were executed
+                      successfully.
+                   2. If the status was not OK, check the number of
+                      result sets in the response. If the response
+                      contains N
+                      [ResultSet][google.spanner.v1.ResultSet] messages,
+                      then statement N+1 in the request failed.
 
-                Example 1:
+                   Example 1:
 
-                -  Request: 5 DML statements, all executed successfully.
-                -  Response: 5 [ResultSet][google.spanner.v1.ResultSet]
-                   messages, with the status ``OK``.
+                   -  Request: 5 DML statements, all executed
+                      successfully.
+                   -  Response: 5
+                      [ResultSet][google.spanner.v1.ResultSet] messages,
+                      with the status OK.
 
-                Example 2:
+                   Example 2:
 
-                -  Request: 5 DML statements. The third statement has a
-                   syntax error.
-                -  Response: 2 [ResultSet][google.spanner.v1.ResultSet]
-                   messages, and a syntax error (``INVALID_ARGUMENT``)
-                   status. The number of
-                   [ResultSet][google.spanner.v1.ResultSet] messages
-                   indicates that the third statement failed, and the
-                   fourth and fifth statements were not executed.
+                   -  Request: 5 DML statements. The third statement has
+                      a syntax error.
+                   -  Response: 2
+                      [ResultSet][google.spanner.v1.ResultSet] messages,
+                      and a syntax error (INVALID_ARGUMENT) status. The
+                      number of [ResultSet][google.spanner.v1.ResultSet]
+                      messages indicates that the third statement
+                      failed, and the fourth and fifth statements were
+                      not executed.
 
         """
         # Create or coerce a protobuf request object.
@@ -1009,7 +1028,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         instead.
 
         Args:
-            request (:class:`~.spanner.ReadRequest`):
+            request (google.cloud.spanner_v1.types.ReadRequest):
                 The request object. The request for
                 [Read][google.spanner.v1.Spanner.Read] and
                 [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
@@ -1021,9 +1040,9 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.result_set.ResultSet:
+            google.cloud.spanner_v1.types.ResultSet:
                 Results from [Read][google.spanner.v1.Spanner.Read] or
-                [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
+                   [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
 
         """
         # Create or coerce a protobuf request object.
@@ -1067,7 +1086,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         exceed 10 MiB.
 
         Args:
-            request (:class:`~.spanner.ReadRequest`):
+            request (google.cloud.spanner_v1.types.ReadRequest):
                 The request object. The request for
                 [Read][google.spanner.v1.Spanner.Read] and
                 [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
@@ -1079,7 +1098,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.result_set.PartialResultSet]:
+            Iterable[google.cloud.spanner_v1.types.PartialResultSet]:
                 Partial results from a streaming read
                 or SQL query. Streaming reads and SQL
                 queries better tolerate large result
@@ -1129,18 +1148,20 @@ class SpannerClient(metaclass=SpannerClientMeta):
         transaction as a side-effect.
 
         Args:
-            request (:class:`~.spanner.BeginTransactionRequest`):
+            request (google.cloud.spanner_v1.types.BeginTransactionRequest):
                 The request object. The request for
                 [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
-            session (:class:`str`):
+            session (str):
                 Required. The session in which the
                 transaction runs.
+
                 This corresponds to the ``session`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            options (:class:`~.transaction.TransactionOptions`):
+            options (google.cloud.spanner_v1.types.TransactionOptions):
                 Required. Options for the new
                 transaction.
+
                 This corresponds to the ``options`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1152,7 +1173,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.transaction.Transaction:
+            google.cloud.spanner_v1.types.Transaction:
                 A transaction.
         """
         # Create or coerce a protobuf request object.
@@ -1218,31 +1239,41 @@ class SpannerClient(metaclass=SpannerClientMeta):
         re-attempt the transaction from the beginning, re-using the same
         session.
 
+        On very rare occasions, ``Commit`` might return ``UNKNOWN``.
+        This can happen, for example, if the client job experiences a 1+
+        hour networking failure. At that point, Cloud Spanner has lost
+        track of the transaction outcome and we recommend that you
+        perform another read from the database to see the state of
+        things as they are now.
+
         Args:
-            request (:class:`~.spanner.CommitRequest`):
+            request (google.cloud.spanner_v1.types.CommitRequest):
                 The request object. The request for
                 [Commit][google.spanner.v1.Spanner.Commit].
-            session (:class:`str`):
+            session (str):
                 Required. The session in which the
                 transaction to be committed is running.
+
                 This corresponds to the ``session`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            transaction_id (:class:`bytes`):
+            transaction_id (bytes):
                 Commit a previously-started
                 transaction.
+
                 This corresponds to the ``transaction_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            mutations (:class:`Sequence[~.mutation.Mutation]`):
+            mutations (Sequence[google.cloud.spanner_v1.types.Mutation]):
                 The mutations to be executed when
                 this transaction commits. All mutations
                 are applied atomically, in the order
                 they appear in this list.
+
                 This corresponds to the ``mutations`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            single_use_transaction (:class:`~.transaction.TransactionOptions`):
+            single_use_transaction (google.cloud.spanner_v1.types.TransactionOptions):
                 Execute mutations in a temporary transaction. Note that
                 unlike commit of a previously-started transaction,
                 commit with a temporary transaction is non-idempotent.
@@ -1253,6 +1284,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 If this is undesirable, use
                 [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]
                 and [Commit][google.spanner.v1.Spanner.Commit] instead.
+
                 This corresponds to the ``single_use_transaction`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1264,7 +1296,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.CommitResponse:
+            google.cloud.spanner_v1.types.CommitResponse:
                 The response for
                 [Commit][google.spanner.v1.Spanner.Commit].
 
@@ -1339,18 +1371,20 @@ class SpannerClient(metaclass=SpannerClientMeta):
         ``ABORTED``.
 
         Args:
-            request (:class:`~.spanner.RollbackRequest`):
+            request (google.cloud.spanner_v1.types.RollbackRequest):
                 The request object. The request for
                 [Rollback][google.spanner.v1.Spanner.Rollback].
-            session (:class:`str`):
+            session (str):
                 Required. The session in which the
                 transaction to roll back is running.
+
                 This corresponds to the ``session`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            transaction_id (:class:`bytes`):
+            transaction_id (bytes):
                 Required. The transaction to roll
                 back.
+
                 This corresponds to the ``transaction_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1425,7 +1459,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         from the beginning.
 
         Args:
-            request (:class:`~.spanner.PartitionQueryRequest`):
+            request (google.cloud.spanner_v1.types.PartitionQueryRequest):
                 The request object. The request for
                 [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
 
@@ -1436,11 +1470,10 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.PartitionResponse:
-                The response for
-                [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
-                or
-                [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
+            google.cloud.spanner_v1.types.PartitionResponse:
+                The response for [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
+                   or
+                   [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 
         """
         # Create or coerce a protobuf request object.
@@ -1495,7 +1528,7 @@ class SpannerClient(metaclass=SpannerClientMeta):
         from the beginning.
 
         Args:
-            request (:class:`~.spanner.PartitionReadRequest`):
+            request (google.cloud.spanner_v1.types.PartitionReadRequest):
                 The request object. The request for
                 [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 
@@ -1506,11 +1539,10 @@ class SpannerClient(metaclass=SpannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner.PartitionResponse:
-                The response for
-                [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
-                or
-                [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
+            google.cloud.spanner_v1.types.PartitionResponse:
+                The response for [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
+                   or
+                   [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 
         """
         # Create or coerce a protobuf request object.

@@ -26,7 +26,7 @@ class ListDatabasesPager:
     """A pager for iterating through ``list_databases`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_database_admin.ListDatabasesResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``databases`` field.
 
@@ -35,7 +35,7 @@ class ListDatabasesPager:
     through the ``databases`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_database_admin.ListDatabasesResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +53,9 @@ class ListDatabasesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_database_admin.ListDatabasesRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest):
                 The initial request object.
-            response (:class:`~.spanner_database_admin.ListDatabasesResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +88,7 @@ class ListDatabasesAsyncPager:
     """A pager for iterating through ``list_databases`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_database_admin.ListDatabasesResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``databases`` field.
 
@@ -97,7 +97,7 @@ class ListDatabasesAsyncPager:
     through the ``databases`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_database_admin.ListDatabasesResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +115,9 @@ class ListDatabasesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_database_admin.ListDatabasesRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest):
                 The initial request object.
-            response (:class:`~.spanner_database_admin.ListDatabasesResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListDatabasesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -156,7 +156,7 @@ class ListBackupsPager:
     """A pager for iterating through ``list_backups`` requests.
 
     This class thinly wraps an initial
-    :class:`~.backup.ListBackupsResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListBackupsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``backups`` field.
 
@@ -165,7 +165,7 @@ class ListBackupsPager:
     through the ``backups`` field on the
     corresponding responses.
 
-    All the usual :class:`~.backup.ListBackupsResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListBackupsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -183,9 +183,9 @@ class ListBackupsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.backup.ListBackupsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListBackupsRequest):
                 The initial request object.
-            response (:class:`~.backup.ListBackupsResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListBackupsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -218,7 +218,7 @@ class ListBackupsAsyncPager:
     """A pager for iterating through ``list_backups`` requests.
 
     This class thinly wraps an initial
-    :class:`~.backup.ListBackupsResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListBackupsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``backups`` field.
 
@@ -227,7 +227,7 @@ class ListBackupsAsyncPager:
     through the ``backups`` field on the
     corresponding responses.
 
-    All the usual :class:`~.backup.ListBackupsResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListBackupsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -245,9 +245,9 @@ class ListBackupsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.backup.ListBackupsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListBackupsRequest):
                 The initial request object.
-            response (:class:`~.backup.ListBackupsResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListBackupsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -284,7 +284,7 @@ class ListDatabaseOperationsPager:
     """A pager for iterating through ``list_database_operations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_database_admin.ListDatabaseOperationsResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``operations`` field.
 
@@ -293,7 +293,7 @@ class ListDatabaseOperationsPager:
     through the ``operations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_database_admin.ListDatabaseOperationsResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -311,9 +311,9 @@ class ListDatabaseOperationsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_database_admin.ListDatabaseOperationsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsRequest):
                 The initial request object.
-            response (:class:`~.spanner_database_admin.ListDatabaseOperationsResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -346,7 +346,7 @@ class ListDatabaseOperationsAsyncPager:
     """A pager for iterating through ``list_database_operations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner_database_admin.ListDatabaseOperationsResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``operations`` field.
 
@@ -355,7 +355,7 @@ class ListDatabaseOperationsAsyncPager:
     through the ``operations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner_database_admin.ListDatabaseOperationsResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -375,9 +375,9 @@ class ListDatabaseOperationsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner_database_admin.ListDatabaseOperationsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsRequest):
                 The initial request object.
-            response (:class:`~.spanner_database_admin.ListDatabaseOperationsResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -416,7 +416,7 @@ class ListBackupOperationsPager:
     """A pager for iterating through ``list_backup_operations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.backup.ListBackupOperationsResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListBackupOperationsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``operations`` field.
 
@@ -425,7 +425,7 @@ class ListBackupOperationsPager:
     through the ``operations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.backup.ListBackupOperationsResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListBackupOperationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -443,9 +443,9 @@ class ListBackupOperationsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.backup.ListBackupOperationsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListBackupOperationsRequest):
                 The initial request object.
-            response (:class:`~.backup.ListBackupOperationsResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListBackupOperationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -478,7 +478,7 @@ class ListBackupOperationsAsyncPager:
     """A pager for iterating through ``list_backup_operations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.backup.ListBackupOperationsResponse` object, and
+    :class:`google.cloud.spanner_admin_database_v1.types.ListBackupOperationsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``operations`` field.
 
@@ -487,7 +487,7 @@ class ListBackupOperationsAsyncPager:
     through the ``operations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.backup.ListBackupOperationsResponse`
+    All the usual :class:`google.cloud.spanner_admin_database_v1.types.ListBackupOperationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -505,9 +505,9 @@ class ListBackupOperationsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.backup.ListBackupOperationsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListBackupOperationsRequest):
                 The initial request object.
-            response (:class:`~.backup.ListBackupOperationsResponse`):
+            response (google.cloud.spanner_admin_database_v1.types.ListBackupOperationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

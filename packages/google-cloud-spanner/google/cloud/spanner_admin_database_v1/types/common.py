@@ -34,9 +34,9 @@ class OperationProgress(proto.Message):
         progress_percent (int):
             Percent completion of the operation.
             Values are between 0 and 100 inclusive.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the request was received.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             If set, the time at which this operation
             failed or was completed successfully.
     """

@@ -64,7 +64,7 @@ class CreateSessionRequest(proto.Message):
         database (str):
             Required. The database in which the new
             session is created.
-        session (~.spanner.Session):
+        session (google.cloud.spanner_v1.types.Session):
             The session to create.
     """
 
@@ -81,7 +81,7 @@ class BatchCreateSessionsRequest(proto.Message):
         database (str):
             Required. The database in which the new
             sessions are created.
-        session_template (~.spanner.Session):
+        session_template (google.cloud.spanner_v1.types.Session):
             Parameters to be applied to each created
             session.
         session_count (int):
@@ -106,7 +106,7 @@ class BatchCreateSessionsResponse(proto.Message):
     [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].
 
     Attributes:
-        session (Sequence[~.spanner.Session]):
+        session (Sequence[google.cloud.spanner_v1.types.Session]):
             The freshly created sessions.
     """
 
@@ -118,10 +118,9 @@ class Session(proto.Message):
 
     Attributes:
         name (str):
-            The name of the session. This is always
-            system-assigned; values provided when creating a
-            session are ignored.
-        labels (Sequence[~.spanner.Session.LabelsEntry]):
+            Output only. The name of the session. This is
+            always system-assigned.
+        labels (Sequence[google.cloud.spanner_v1.types.Session.LabelsEntry]):
             The labels for the session.
 
             -  Label keys must be between 1 and 63 characters long and
@@ -135,10 +134,10 @@ class Session(proto.Message):
 
             See https://goo.gl/xmQnxf for more information on and
             examples of labels.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the session
             is created.
-        approximate_last_use_time (~.timestamp.Timestamp):
+        approximate_last_use_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The approximate timestamp when
             the session is last used. It is typically
             earlier than the actual last use time.
@@ -212,7 +211,7 @@ class ListSessionsResponse(proto.Message):
     [ListSessions][google.spanner.v1.Spanner.ListSessions].
 
     Attributes:
-        sessions (Sequence[~.spanner.Session]):
+        sessions (Sequence[google.cloud.spanner_v1.types.Session]):
             The list of requested sessions.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -250,7 +249,7 @@ class ExecuteSqlRequest(proto.Message):
         session (str):
             Required. The session in which the SQL query
             should be performed.
-        transaction (~.gs_transaction.TransactionSelector):
+        transaction (google.cloud.spanner_v1.types.TransactionSelector):
             The transaction to use.
             For queries, if none is provided, the default is
             a temporary read-only transaction with strong
@@ -265,14 +264,15 @@ class ExecuteSqlRequest(proto.Message):
             DML transaction ID.
         sql (str):
             Required. The SQL string.
-        params (~.struct.Struct):
+        params (google.protobuf.struct_pb2.Struct):
             Parameter names and values that bind to placeholders in the
             SQL string.
 
             A parameter placeholder consists of the ``@`` character
             followed by the parameter name (for example,
-            ``@firstName``). Parameter names can contain letters,
-            numbers, and underscores.
+            ``@firstName``). Parameter names must conform to the naming
+            requirements of identifiers as specified at
+            https://cloud.google.com/spanner/docs/lexical#identifiers.
 
             Parameters can appear anywhere that a literal value is
             expected. The same parameter name can be used more than
@@ -282,7 +282,7 @@ class ExecuteSqlRequest(proto.Message):
 
             It is an error to execute a SQL statement with unbound
             parameters.
-        param_types (Sequence[~.spanner.ExecuteSqlRequest.ParamTypesEntry]):
+        param_types (Sequence[google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry]):
             It is not always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
@@ -303,7 +303,7 @@ class ExecuteSqlRequest(proto.Message):
             SQL statement execution to resume where the last one left
             off. The rest of the request parameters must exactly match
             the request that yielded this token.
-        query_mode (~.spanner.ExecuteSqlRequest.QueryMode):
+        query_mode (google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryMode):
             Used to control the amount of debugging information returned
             in [ResultSetStats][google.spanner.v1.ResultSetStats]. If
             [partition_token][google.spanner.v1.ExecuteSqlRequest.partition_token]
@@ -332,7 +332,7 @@ class ExecuteSqlRequest(proto.Message):
             yield the same response as the first execution.
             Required for DML statements. Ignored for
             queries.
-        query_options (~.spanner.ExecuteSqlRequest.QueryOptions):
+        query_options (google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions):
             Query optimizer configuration to use for the
             given query.
     """
@@ -362,7 +362,9 @@ class ExecuteSqlRequest(proto.Message):
                 optimizer versions can be queried from
                 SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS. Executing a SQL
                 statement with an invalid optimizer version will fail with a
-                syntax error (``INVALID_ARGUMENT``) status.
+                syntax error (``INVALID_ARGUMENT``) status. See
+                https://cloud.google.com/spanner/docs/query-optimizer/manage-query-optimizer
+                for more information on managing the query optimizer.
 
                 The ``optimizer_version`` statement hint has precedence over
                 this setting.
@@ -403,14 +405,14 @@ class ExecuteBatchDmlRequest(proto.Message):
         session (str):
             Required. The session in which the DML
             statements should be performed.
-        transaction (~.gs_transaction.TransactionSelector):
+        transaction (google.cloud.spanner_v1.types.TransactionSelector):
             Required. The transaction to use. Must be a
             read-write transaction.
             To protect against replays, single-use
             transactions are not supported. The caller must
             either supply an existing transaction ID or
             begin a new transaction.
-        statements (Sequence[~.spanner.ExecuteBatchDmlRequest.Statement]):
+        statements (Sequence[google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement]):
             Required. The list of statements to execute in this batch.
             Statements are executed serially, such that the effects of
             statement ``i`` are visible to statement ``i+1``. Each
@@ -440,7 +442,7 @@ class ExecuteBatchDmlRequest(proto.Message):
         Attributes:
             sql (str):
                 Required. The DML string.
-            params (~.struct.Struct):
+            params (google.protobuf.struct_pb2.Struct):
                 Parameter names and values that bind to placeholders in the
                 DML string.
 
@@ -457,7 +459,7 @@ class ExecuteBatchDmlRequest(proto.Message):
 
                 It is an error to execute a SQL statement with unbound
                 parameters.
-            param_types (Sequence[~.spanner.ExecuteBatchDmlRequest.Statement.ParamTypesEntry]):
+            param_types (Sequence[google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry]):
                 It is not always possible for Cloud Spanner to infer the
                 right SQL type from a JSON value. For example, values of
                 type ``BYTES`` and values of type ``STRING`` both appear in
@@ -526,7 +528,7 @@ class ExecuteBatchDmlResponse(proto.Message):
        were not executed.
 
     Attributes:
-        result_sets (Sequence[~.result_set.ResultSet]):
+        result_sets (Sequence[google.cloud.spanner_v1.types.ResultSet]):
             One [ResultSet][google.spanner.v1.ResultSet] for each
             statement in the request that ran successfully, in the same
             order as the statements in the request. Each
@@ -539,7 +541,7 @@ class ExecuteBatchDmlResponse(proto.Message):
             Only the first [ResultSet][google.spanner.v1.ResultSet] in
             the response contains valid
             [ResultSetMetadata][google.spanner.v1.ResultSetMetadata].
-        status (~.gr_status.Status):
+        status (google.rpc.status_pb2.Status):
             If all DML statements are executed successfully, the status
             is ``OK``. Otherwise, the error status of the first failed
             statement.
@@ -590,7 +592,7 @@ class PartitionQueryRequest(proto.Message):
         session (str):
             Required. The session used to create the
             partitions.
-        transaction (~.gs_transaction.TransactionSelector):
+        transaction (google.cloud.spanner_v1.types.TransactionSelector):
             Read only snapshot transactions are
             supported, read/write and single use
             transactions are not.
@@ -608,7 +610,7 @@ class PartitionQueryRequest(proto.Message):
             [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
             with a PartitionedDml transaction for large,
             partition-friendly DML operations.
-        params (~.struct.Struct):
+        params (google.protobuf.struct_pb2.Struct):
             Parameter names and values that bind to placeholders in the
             SQL string.
 
@@ -625,7 +627,7 @@ class PartitionQueryRequest(proto.Message):
 
             It is an error to execute a SQL statement with unbound
             parameters.
-        param_types (Sequence[~.spanner.PartitionQueryRequest.ParamTypesEntry]):
+        param_types (Sequence[google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry]):
             It is not always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
@@ -636,7 +638,7 @@ class PartitionQueryRequest(proto.Message):
             exact SQL type for some or all of the SQL query parameters.
             See the definition of [Type][google.spanner.v1.Type] for
             more information about SQL types.
-        partition_options (~.spanner.PartitionOptions):
+        partition_options (google.cloud.spanner_v1.types.PartitionOptions):
             Additional options that affect how many
             partitions are created.
     """
@@ -668,7 +670,7 @@ class PartitionReadRequest(proto.Message):
         session (str):
             Required. The session used to create the
             partitions.
-        transaction (~.gs_transaction.TransactionSelector):
+        transaction (google.cloud.spanner_v1.types.TransactionSelector):
             Read only snapshot transactions are
             supported, read/write and single use
             transactions are not.
@@ -688,7 +690,7 @@ class PartitionReadRequest(proto.Message):
             The columns of
             [table][google.spanner.v1.PartitionReadRequest.table] to be
             returned for each row matching this request.
-        key_set (~.keys.KeySet):
+        key_set (google.cloud.spanner_v1.types.KeySet):
             Required. ``key_set`` identifies the rows to be yielded.
             ``key_set`` names the primary keys of the rows in
             [table][google.spanner.v1.PartitionReadRequest.table] to be
@@ -704,7 +706,7 @@ class PartitionReadRequest(proto.Message):
             It is not an error for the ``key_set`` to name rows that do
             not exist in the database. Read yields nothing for
             nonexistent rows.
-        partition_options (~.spanner.PartitionOptions):
+        partition_options (google.cloud.spanner_v1.types.PartitionOptions):
             Additional options that affect how many
             partitions are created.
     """
@@ -750,9 +752,9 @@ class PartitionResponse(proto.Message):
     [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 
     Attributes:
-        partitions (Sequence[~.spanner.Partition]):
+        partitions (Sequence[google.cloud.spanner_v1.types.Partition]):
             Partitions created by this request.
-        transaction (~.gs_transaction.Transaction):
+        transaction (google.cloud.spanner_v1.types.Transaction):
             Transaction created by this request.
     """
 
@@ -771,7 +773,7 @@ class ReadRequest(proto.Message):
         session (str):
             Required. The session in which the read
             should be performed.
-        transaction (~.gs_transaction.TransactionSelector):
+        transaction (google.cloud.spanner_v1.types.TransactionSelector):
             The transaction to use. If none is provided,
             the default is a temporary read-only transaction
             with strong concurrency.
@@ -790,7 +792,7 @@ class ReadRequest(proto.Message):
             Required. The columns of
             [table][google.spanner.v1.ReadRequest.table] to be returned
             for each row matching this request.
-        key_set (~.keys.KeySet):
+        key_set (google.cloud.spanner_v1.types.KeySet):
             Required. ``key_set`` identifies the rows to be yielded.
             ``key_set`` names the primary keys of the rows in
             [table][google.spanner.v1.ReadRequest.table] to be yielded,
@@ -864,7 +866,7 @@ class BeginTransactionRequest(proto.Message):
         session (str):
             Required. The session in which the
             transaction runs.
-        options (~.gs_transaction.TransactionOptions):
+        options (google.cloud.spanner_v1.types.TransactionOptions):
             Required. Options for the new transaction.
     """
 
@@ -884,7 +886,7 @@ class CommitRequest(proto.Message):
             transaction to be committed is running.
         transaction_id (bytes):
             Commit a previously-started transaction.
-        single_use_transaction (~.gs_transaction.TransactionOptions):
+        single_use_transaction (google.cloud.spanner_v1.types.TransactionOptions):
             Execute mutations in a temporary transaction. Note that
             unlike commit of a previously-started transaction, commit
             with a temporary transaction is non-idempotent. That is, if
@@ -894,11 +896,16 @@ class CommitRequest(proto.Message):
             are executed more than once. If this is undesirable, use
             [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction]
             and [Commit][google.spanner.v1.Spanner.Commit] instead.
-        mutations (Sequence[~.mutation.Mutation]):
+        mutations (Sequence[google.cloud.spanner_v1.types.Mutation]):
             The mutations to be executed when this
             transaction commits. All mutations are applied
             atomically, in the order they appear in this
             list.
+        return_commit_stats (bool):
+            If ``true``, then statistics related to the transaction will
+            be included in the
+            [CommitResponse][google.spanner.v1.CommitResponse.commit_stats].
+            Default value is ``false``.
     """
 
     session = proto.Field(proto.STRING, number=1)
@@ -914,19 +921,45 @@ class CommitRequest(proto.Message):
 
     mutations = proto.RepeatedField(proto.MESSAGE, number=4, message=mutation.Mutation,)
 
+    return_commit_stats = proto.Field(proto.BOOL, number=5)
+
 
 class CommitResponse(proto.Message):
     r"""The response for [Commit][google.spanner.v1.Spanner.Commit].
 
     Attributes:
-        commit_timestamp (~.timestamp.Timestamp):
+        commit_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             The Cloud Spanner timestamp at which the
             transaction committed.
+        commit_stats (google.cloud.spanner_v1.types.CommitResponse.CommitStats):
+            The statistics about this Commit. Not returned by default.
+            For more information, see
+            [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].
     """
+
+    class CommitStats(proto.Message):
+        r"""Additional statistics about a commit.
+
+        Attributes:
+            mutation_count (int):
+                The total number of mutations for the transaction. Knowing
+                the ``mutation_count`` value can help you maximize the
+                number of mutations in a transaction and minimize the number
+                of API round trips. You can also monitor this value to
+                prevent transactions from exceeding the system
+                `limit <http://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data>`__.
+                If the number of mutations exceeds the limit, the server
+                returns
+                `INVALID_ARGUMENT <http://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT>`__.
+        """
+
+        mutation_count = proto.Field(proto.INT64, number=1)
 
     commit_timestamp = proto.Field(
         proto.MESSAGE, number=1, message=timestamp.Timestamp,
     )
+
+    commit_stats = proto.Field(proto.MESSAGE, number=2, message=CommitStats,)
 
 
 class RollbackRequest(proto.Message):

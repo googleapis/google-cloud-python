@@ -24,7 +24,7 @@ class ListSessionsPager:
     """A pager for iterating through ``list_sessions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner.ListSessionsResponse` object, and
+    :class:`google.cloud.spanner_v1.types.ListSessionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``sessions`` field.
 
@@ -33,7 +33,7 @@ class ListSessionsPager:
     through the ``sessions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner.ListSessionsResponse`
+    All the usual :class:`google.cloud.spanner_v1.types.ListSessionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +51,9 @@ class ListSessionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner.ListSessionsRequest`):
+            request (google.cloud.spanner_v1.types.ListSessionsRequest):
                 The initial request object.
-            response (:class:`~.spanner.ListSessionsResponse`):
+            response (google.cloud.spanner_v1.types.ListSessionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +86,7 @@ class ListSessionsAsyncPager:
     """A pager for iterating through ``list_sessions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.spanner.ListSessionsResponse` object, and
+    :class:`google.cloud.spanner_v1.types.ListSessionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``sessions`` field.
 
@@ -95,7 +95,7 @@ class ListSessionsAsyncPager:
     through the ``sessions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.spanner.ListSessionsResponse`
+    All the usual :class:`google.cloud.spanner_v1.types.ListSessionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +113,9 @@ class ListSessionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.spanner.ListSessionsRequest`):
+            request (google.cloud.spanner_v1.types.ListSessionsRequest):
                 The initial request object.
-            response (:class:`~.spanner.ListSessionsResponse`):
+            response (google.cloud.spanner_v1.types.ListSessionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

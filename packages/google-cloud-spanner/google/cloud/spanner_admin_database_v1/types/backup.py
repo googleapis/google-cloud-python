@@ -53,7 +53,12 @@ class Backup(proto.Message):
             created. This needs to be in the same instance as the
             backup. Values are of the form
             ``projects/<project>/instances/<instance>/databases/<database>``.
-        expire_time (~.timestamp.Timestamp):
+        version_time (google.protobuf.timestamp_pb2.Timestamp):
+            The backup will contain an externally consistent copy of the
+            database at the timestamp specified by ``version_time``. If
+            ``version_time`` is not specified, the system will set
+            ``version_time`` to the ``create_time`` of the backup.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Required for the
             [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
             operation. The expiration time of the backup, with
@@ -79,16 +84,15 @@ class Backup(proto.Message):
             instance configuration of the instance containing the
             backup, identified by the prefix of the backup name of the
             form ``projects/<project>/instances/<instance>``.
-        create_time (~.timestamp.Timestamp):
-            Output only. The backup will contain an externally
-            consistent copy of the database at the timestamp specified
-            by ``create_time``. ``create_time`` is approximately the
-            time the
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the
             [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
-            request is received.
+            request is received. If the request does not specify
+            ``version_time``, the ``version_time`` of the backup will be
+            equivalent to the ``create_time``.
         size_bytes (int):
             Output only. Size of the backup in bytes.
-        state (~.gsad_backup.Backup.State):
+        state (google.cloud.spanner_admin_database_v1.types.Backup.State):
             Output only. The current state of the backup.
         referencing_databases (Sequence[str]):
             Output only. The names of the restored databases that
@@ -108,6 +112,8 @@ class Backup(proto.Message):
         READY = 2
 
     database = proto.Field(proto.STRING, number=2)
+
+    version_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
 
     expire_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
 
@@ -139,7 +145,7 @@ class CreateBackupRequest(proto.Message):
             ``backup_id`` appended to ``parent`` forms the full backup
             name of the form
             ``projects/<project>/instances/<instance>/backups/<backup_id>``.
-        backup (~.gsad_backup.Backup):
+        backup (google.cloud.spanner_admin_database_v1.types.Backup):
             Required. The backup to create.
     """
 
@@ -160,11 +166,11 @@ class CreateBackupMetadata(proto.Message):
         database (str):
             The name of the database the backup is
             created from.
-        progress (~.common.OperationProgress):
+        progress (google.cloud.spanner_admin_database_v1.types.OperationProgress):
             The progress of the
             [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
             operation.
-        cancel_time (~.timestamp.Timestamp):
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which cancellation of this operation was
             received.
             [Operations.CancelOperation][google.longrunning.Operations.CancelOperation]
@@ -195,14 +201,14 @@ class UpdateBackupRequest(proto.Message):
     [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup].
 
     Attributes:
-        backup (~.gsad_backup.Backup):
+        backup (google.cloud.spanner_admin_database_v1.types.Backup):
             Required. The backup to update. ``backup.name``, and the
             fields to be updated as specified by ``update_mask`` are
             required. Other fields are ignored. Update is only supported
             for the following fields:
 
             -  ``backup.expire_time``.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A mask specifying which fields (e.g.
             ``expire_time``) in the Backup resource should be updated.
             This mask is relative to the Backup resource, not to the
@@ -322,7 +328,7 @@ class ListBackupsResponse(proto.Message):
     [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
     Attributes:
-        backups (Sequence[~.gsad_backup.Backup]):
+        backups (Sequence[google.cloud.spanner_admin_database_v1.types.Backup]):
             The list of matching backups. Backups returned are ordered
             by ``create_time`` in descending order, starting from the
             most recent ``create_time``.
@@ -424,7 +430,7 @@ class ListBackupOperationsResponse(proto.Message):
     [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
 
     Attributes:
-        operations (Sequence[~.gl_operations.Operation]):
+        operations (Sequence[google.longrunning.operations_pb2.Operation]):
             The list of matching backup [long-running
             operations][google.longrunning.Operation]. Each operation's
             name will be prefixed by the backup's name and the
@@ -461,16 +467,26 @@ class BackupInfo(proto.Message):
     Attributes:
         backup (str):
             Name of the backup.
-        create_time (~.timestamp.Timestamp):
+        version_time (google.protobuf.timestamp_pb2.Timestamp):
             The backup contains an externally consistent copy of
             ``source_database`` at the timestamp specified by
+            ``version_time``. If the
+            [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
+            request did not specify ``version_time``, the
+            ``version_time`` of the backup is equivalent to the
             ``create_time``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the
+            [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]
+            request was received.
         source_database (str):
             Name of the database the backup was created
             from.
     """
 
     backup = proto.Field(proto.STRING, number=1)
+
+    version_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
 
     create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 

@@ -43,7 +43,7 @@ class spannerCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'batch_create_sessions': ('database', 'session_count', 'session_template', ),
     'begin_transaction': ('session', 'options', ),
-    'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', ),
+    'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', ),
     'create_session': ('database', 'session', ),
     'delete_session': ('name', ),
     'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', ),

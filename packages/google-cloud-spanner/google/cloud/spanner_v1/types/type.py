@@ -50,14 +50,14 @@ class Type(proto.Message):
     stored in a table cell or returned from an SQL query.
 
     Attributes:
-        code (~.gs_type.TypeCode):
+        code (google.cloud.spanner_v1.types.TypeCode):
             Required. The [TypeCode][google.spanner.v1.TypeCode] for
             this type.
-        array_element_type (~.gs_type.Type):
+        array_element_type (google.cloud.spanner_v1.types.Type):
             If [code][google.spanner.v1.Type.code] ==
             [ARRAY][google.spanner.v1.TypeCode.ARRAY], then
             ``array_element_type`` is the type of the array elements.
-        struct_type (~.gs_type.StructType):
+        struct_type (google.cloud.spanner_v1.types.StructType):
             If [code][google.spanner.v1.Type.code] ==
             [STRUCT][google.spanner.v1.TypeCode.STRUCT], then
             ``struct_type`` provides type information for the struct's
@@ -76,7 +76,7 @@ class StructType(proto.Message):
     [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.
 
     Attributes:
-        fields (Sequence[~.gs_type.StructType.Field]):
+        fields (Sequence[google.cloud.spanner_v1.types.StructType.Field]):
             The list of fields that make up this struct. Order is
             significant, because values of this struct type are
             represented as lists, where the order of field values
@@ -97,9 +97,9 @@ class StructType(proto.Message):
                 the query ``"SELECT 'hello' AS Word"``), or the column name
                 (e.g., ``"ColName"`` in the query
                 ``"SELECT ColName FROM Table"``). Some columns might have an
-                empty name (e.g., `"SELECT UPPER(ColName)"`). Note that a
+                empty name (e.g., ``"SELECT UPPER(ColName)"``). Note that a
                 query result can contain multiple fields with the same name.
-            type_ (~.gs_type.Type):
+            type_ (google.cloud.spanner_v1.types.Type):
                 The type of the field.
         """
 

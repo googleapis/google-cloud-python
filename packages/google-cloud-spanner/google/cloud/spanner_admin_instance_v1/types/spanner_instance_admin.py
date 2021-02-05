@@ -50,7 +50,7 @@ class ReplicaInfo(proto.Message):
         location (str):
             The location of the serving resources, e.g.
             "us-central1".
-        type_ (~.spanner_instance_admin.ReplicaInfo.ReplicaType):
+        type_ (google.cloud.spanner_admin_instance_v1.types.ReplicaInfo.ReplicaType):
             The type of replica.
         default_leader_location (bool):
             If true, this location is designated as the default leader
@@ -90,7 +90,7 @@ class InstanceConfig(proto.Message):
         display_name (str):
             The name of this instance configuration as it
             appears in UIs.
-        replicas (Sequence[~.spanner_instance_admin.ReplicaInfo]):
+        replicas (Sequence[google.cloud.spanner_admin_instance_v1.types.ReplicaInfo]):
             The geographic placement of nodes in this
             instance configuration and their replication
             properties.
@@ -136,13 +136,13 @@ class Instance(proto.Message):
             See `the
             documentation <https://cloud.google.com/spanner/docs/instances#node_count>`__
             for more information about nodes.
-        state (~.spanner_instance_admin.Instance.State):
+        state (google.cloud.spanner_admin_instance_v1.types.Instance.State):
             Output only. The current instance state. For
             [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance],
             the state must be either omitted or set to ``CREATING``. For
             [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance],
             the state must be either omitted or set to ``READY``.
-        labels (Sequence[~.spanner_instance_admin.Instance.LabelsEntry]):
+        labels (Sequence[google.cloud.spanner_admin_instance_v1.types.Instance.LabelsEntry]):
             Cloud Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
             customer's organizational needs and deployment strategies.
@@ -228,7 +228,7 @@ class ListInstanceConfigsResponse(proto.Message):
     [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
 
     Attributes:
-        instance_configs (Sequence[~.spanner_instance_admin.InstanceConfig]):
+        instance_configs (Sequence[google.cloud.spanner_admin_instance_v1.types.InstanceConfig]):
             The list of requested instance
             configurations.
         next_page_token (str):
@@ -270,7 +270,7 @@ class GetInstanceRequest(proto.Message):
         name (str):
             Required. The name of the requested instance. Values are of
             the form ``projects/<project>/instances/<instance>``.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             If field_mask is present, specifies the subset of
             [Instance][google.spanner.admin.instance.v1.Instance] fields
             that should be returned. If absent, all
@@ -295,7 +295,7 @@ class CreateInstanceRequest(proto.Message):
             Required. The ID of the instance to create. Valid
             identifiers are of the form ``[a-z][-a-z0-9]*[a-z0-9]`` and
             must be between 2 and 64 characters in length.
-        instance (~.spanner_instance_admin.Instance):
+        instance (google.cloud.spanner_admin_instance_v1.types.Instance):
             Required. The instance to create. The name may be omitted,
             but if specified must be
             ``<parent>/instances/<instance_id>``.
@@ -364,7 +364,7 @@ class ListInstancesResponse(proto.Message):
     [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
 
     Attributes:
-        instances (Sequence[~.spanner_instance_admin.Instance]):
+        instances (Sequence[google.cloud.spanner_admin_instance_v1.types.Instance]):
             The list of requested instances.
         next_page_token (str):
             ``next_page_token`` can be sent in a subsequent
@@ -386,12 +386,12 @@ class UpdateInstanceRequest(proto.Message):
     [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
 
     Attributes:
-        instance (~.spanner_instance_admin.Instance):
+        instance (google.cloud.spanner_admin_instance_v1.types.Instance):
             Required. The instance to update, which must always include
             the instance name. Otherwise, only fields mentioned in
             [field_mask][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask]
             need be included.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A mask specifying which fields in
             [Instance][google.spanner.admin.instance.v1.Instance] should
             be updated. The field mask must always be specified; this
@@ -424,18 +424,18 @@ class CreateInstanceMetadata(proto.Message):
     [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
 
     Attributes:
-        instance (~.spanner_instance_admin.Instance):
+        instance (google.cloud.spanner_admin_instance_v1.types.Instance):
             The instance being created.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the
             [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance]
             request was received.
-        cancel_time (~.timestamp.Timestamp):
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this operation was
             cancelled. If set, this operation is in the
             process of undoing itself (which is guaranteed
             to succeed) and cannot be cancelled again.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this operation failed or
             was completed successfully.
     """
@@ -454,18 +454,18 @@ class UpdateInstanceMetadata(proto.Message):
     [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
 
     Attributes:
-        instance (~.spanner_instance_admin.Instance):
+        instance (google.cloud.spanner_admin_instance_v1.types.Instance):
             The desired end state of the update.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which
             [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance]
             request was received.
-        cancel_time (~.timestamp.Timestamp):
+        cancel_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this operation was
             cancelled. If set, this operation is in the
             process of undoing itself (which is guaranteed
             to succeed) and cannot be cancelled again.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this operation failed or
             was completed successfully.
     """

@@ -35,17 +35,17 @@ class ResultSet(proto.Message):
     [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].
 
     Attributes:
-        metadata (~.result_set.ResultSetMetadata):
+        metadata (google.cloud.spanner_v1.types.ResultSetMetadata):
             Metadata about the result set, such as row
             type information.
-        rows (Sequence[~.struct.ListValue]):
+        rows (Sequence[google.protobuf.struct_pb2.ListValue]):
             Each element in ``rows`` is a row whose format is defined by
             [metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type].
             The ith element in each row matches the ith field in
             [metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type].
             Elements are encoded based on type as described
             [here][google.spanner.v1.TypeCode].
-        stats (~.result_set.ResultSetStats):
+        stats (google.cloud.spanner_v1.types.ResultSetStats):
             Query plan and execution statistics for the SQL statement
             that produced this result set. These can be requested by
             setting
@@ -71,11 +71,11 @@ class PartialResultSet(proto.Message):
     rows, and large values, but are a little trickier to consume.
 
     Attributes:
-        metadata (~.result_set.ResultSetMetadata):
+        metadata (google.cloud.spanner_v1.types.ResultSetMetadata):
             Metadata about the result set, such as row
             type information. Only present in the first
             response.
-        values (Sequence[~.struct.Value]):
+        values (Sequence[google.protobuf.struct_pb2.Value]):
             A streamed result set consists of a stream of values, which
             might be split into many ``PartialResultSet`` messages to
             accommodate large rows and/or large values. Every N complete
@@ -170,7 +170,7 @@ class PartialResultSet(proto.Message):
             request and including ``resume_token``. Note that executing
             any other transaction in the same session invalidates the
             token.
-        stats (~.result_set.ResultSetStats):
+        stats (google.cloud.spanner_v1.types.ResultSetStats):
             Query plan and execution statistics for the statement that
             produced this streaming result set. These can be requested
             by setting
@@ -196,7 +196,7 @@ class ResultSetMetadata(proto.Message):
     [PartialResultSet][google.spanner.v1.PartialResultSet].
 
     Attributes:
-        row_type (~.gs_type.StructType):
+        row_type (google.cloud.spanner_v1.types.StructType):
             Indicates the field names and types for the rows in the
             result set. For example, a SQL query like
             ``"SELECT UserId, UserName FROM Users"`` could return a
@@ -208,7 +208,7 @@ class ResultSetMetadata(proto.Message):
                   { "name": "UserId", "type": { "code": "INT64" } },
                   { "name": "UserName", "type": { "code": "STRING" } },
                 ]
-        transaction (~.gs_transaction.Transaction):
+        transaction (google.cloud.spanner_v1.types.Transaction):
             If the read or SQL query began a transaction
             as a side-effect, the information about the new
             transaction is yielded here.
@@ -227,10 +227,10 @@ class ResultSetStats(proto.Message):
     [PartialResultSet][google.spanner.v1.PartialResultSet].
 
     Attributes:
-        query_plan (~.gs_query_plan.QueryPlan):
+        query_plan (google.cloud.spanner_v1.types.QueryPlan):
             [QueryPlan][google.spanner.v1.QueryPlan] for the query
             associated with this result.
-        query_stats (~.struct.Struct):
+        query_stats (google.protobuf.struct_pb2.Struct):
             Aggregated statistics from the execution of the query. Only
             present when the query is profiled. For example, a query
             could return the statistics as follows:

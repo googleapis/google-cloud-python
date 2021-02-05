@@ -40,14 +40,14 @@ class TransactionOptions(proto.Message):
             Authorization to begin a read-write transaction requires
             ``spanner.databases.beginOrRollbackReadWriteTransaction``
             permission on the ``session`` resource.
-        partitioned_dml (~.transaction.TransactionOptions.PartitionedDml):
+        partitioned_dml (google.cloud.spanner_v1.types.TransactionOptions.PartitionedDml):
             Partitioned DML transaction.
 
             Authorization to begin a Partitioned DML transaction
             requires
             ``spanner.databases.beginPartitionedDmlTransaction``
             permission on the ``session`` resource.
-        read_only (~.transaction.TransactionOptions.ReadOnly):
+        read_only (google.cloud.spanner_v1.types.TransactionOptions.ReadOnly):
             Transaction will not write.
 
             Authorization to begin a read-only transaction requires
@@ -70,7 +70,7 @@ class TransactionOptions(proto.Message):
             strong (bool):
                 Read at a timestamp where all previously
                 committed transactions are visible.
-            min_read_timestamp (~.timestamp.Timestamp):
+            min_read_timestamp (google.protobuf.timestamp_pb2.Timestamp):
                 Executes all reads at a timestamp >= ``min_read_timestamp``.
 
                 This is useful for requesting fresher data than some
@@ -83,7 +83,7 @@ class TransactionOptions(proto.Message):
 
                 A timestamp in RFC3339 UTC "Zulu" format, accurate to
                 nanoseconds. Example: ``"2014-10-02T15:01:23.045123456Z"``.
-            max_staleness (~.duration.Duration):
+            max_staleness (google.protobuf.duration_pb2.Duration):
                 Read data at a timestamp >= ``NOW - max_staleness`` seconds.
                 Guarantees that all writes that have committed more than the
                 specified number of seconds ago are visible. Because Cloud
@@ -97,7 +97,7 @@ class TransactionOptions(proto.Message):
 
                 Note that this option can only be used in single-use
                 transactions.
-            read_timestamp (~.timestamp.Timestamp):
+            read_timestamp (google.protobuf.timestamp_pb2.Timestamp):
                 Executes all reads at the given timestamp. Unlike other
                 modes, reads at a specific timestamp are repeatable; the
                 same read at the same timestamp always returns the same
@@ -110,7 +110,7 @@ class TransactionOptions(proto.Message):
 
                 A timestamp in RFC3339 UTC "Zulu" format, accurate to
                 nanoseconds. Example: ``"2014-10-02T15:01:23.045123456Z"``.
-            exact_staleness (~.duration.Duration):
+            exact_staleness (google.protobuf.duration_pb2.Duration):
                 Executes all reads at a timestamp that is
                 ``exact_staleness`` old. The timestamp is chosen soon after
                 the read is started.
@@ -178,7 +178,7 @@ class Transaction(proto.Message):
 
             Single-use read-only transactions do not have IDs, because
             single-use transactions do not support multiple requests.
-        read_timestamp (~.timestamp.Timestamp):
+        read_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             For snapshot read-only transactions, the read timestamp
             chosen for the transaction. Not returned by default: see
             [TransactionOptions.ReadOnly.return_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp].
@@ -201,7 +201,7 @@ class TransactionSelector(proto.Message):
     more information about transactions.
 
     Attributes:
-        single_use (~.transaction.TransactionOptions):
+        single_use (google.cloud.spanner_v1.types.TransactionOptions):
             Execute the read or SQL query in a temporary
             transaction. This is the most efficient way to
             execute a transaction that consists of a single
@@ -209,7 +209,7 @@ class TransactionSelector(proto.Message):
         id (bytes):
             Execute the read or SQL query in a
             previously-started transaction.
-        begin (~.transaction.TransactionOptions):
+        begin (google.cloud.spanner_v1.types.TransactionOptions):
             Begin a new transaction and execute this read or SQL query
             in it. The transaction ID of the new transaction is returned
             in

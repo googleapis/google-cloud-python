@@ -125,6 +125,22 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatabaseAdminClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -136,7 +152,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            DatabaseAdminClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -273,10 +289,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DatabaseAdminTransport]): The
+            transport (Union[str, DatabaseAdminTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -312,21 +328,17 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -369,7 +381,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -386,13 +398,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Lists Cloud Spanner databases.
 
         Args:
-            request (:class:`~.spanner_database_admin.ListDatabasesRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListDatabasesRequest):
                 The request object. The request for
                 [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
-            parent (:class:`str`):
+            parent (str):
                 Required. The instance whose databases should be listed.
                 Values are of the form
                 ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -404,7 +417,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListDatabasesPager:
+            google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabasesPager:
                 The response for
                 [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 
@@ -479,17 +492,18 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         successful.
 
         Args:
-            request (:class:`~.spanner_database_admin.CreateDatabaseRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.CreateDatabaseRequest):
                 The request object. The request for
                 [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the instance that will serve the
                 new database. Values are of the form
                 ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            create_statement (:class:`str`):
+            create_statement (str):
                 Required. A ``CREATE DATABASE`` statement, which
                 specifies the ID of the new database. The database ID
                 must conform to the regular expression
@@ -497,6 +511,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 characters in length. If the database ID is a reserved
                 word or if it contains a hyphen, the database ID must be
                 enclosed in backticks (:literal:`\``).
+
                 This corresponds to the ``create_statement`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -508,12 +523,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.spanner_database_admin.Database``: A Cloud
-                Spanner database.
+                :class:`google.cloud.spanner_admin_database_v1.types.Database`
+                A Cloud Spanner database.
 
         """
         # Create or coerce a protobuf request object.
@@ -577,13 +592,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Gets the state of a Cloud Spanner database.
 
         Args:
-            request (:class:`~.spanner_database_admin.GetDatabaseRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.GetDatabaseRequest):
                 The request object. The request for
                 [GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the requested database. Values are
                 of the form
                 ``projects/<project>/instances/<instance>/databases/<database>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -595,7 +611,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner_database_admin.Database:
+            google.cloud.spanner_admin_database_v1.types.Database:
                 A Cloud Spanner database.
         """
         # Create or coerce a protobuf request object.
@@ -658,7 +674,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         The operation has no response.
 
         Args:
-            request (:class:`~.spanner_database_admin.UpdateDatabaseDdlRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.UpdateDatabaseDdlRequest):
                 The request object. Enqueues the given DDL statements to
                 be applied, in order but not necessarily all at once, to
                 the database schema at some point (or points) in the
@@ -678,14 +694,15 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 monitor progress. See the
                 [operation_id][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id]
                 field for more details.
-            database (:class:`str`):
+            database (str):
                 Required. The database to update.
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            statements (:class:`Sequence[str]`):
+            statements (Sequence[str]):
                 Required. DDL statements to be
                 applied to the database.
+
                 This corresponds to the ``statements`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -697,24 +714,22 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -781,10 +796,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         ``expire_time``.
 
         Args:
-            request (:class:`~.spanner_database_admin.DropDatabaseRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.DropDatabaseRequest):
                 The request object. The request for
                 [DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].
-            database (:class:`str`):
+            database (str):
                 Required. The database to be dropped.
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -849,12 +864,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [Operations][google.longrunning.Operations] API.
 
         Args:
-            request (:class:`~.spanner_database_admin.GetDatabaseDdlRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlRequest):
                 The request object. The request for
                 [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
-            database (:class:`str`):
-                Required. The database whose schema
-                we wish to get.
+            database (str):
+                Required. The database whose schema we wish to get.
+                Values are of the form
+                ``projects/<project>/instances/<instance>/databases/<database>``
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -866,7 +883,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.spanner_database_admin.GetDatabaseDdlResponse:
+            google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse:
                 The response for
                 [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 
@@ -930,14 +947,15 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [resource][google.iam.v1.SetIamPolicyRequest.resource].
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
-            resource (:class:`str`):
+            resource (str):
                 REQUIRED: The resource for which the
                 policy is being specified. See the
                 operation documentation for the
                 appropriate value for this field.
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -949,72 +967,62 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1072,14 +1080,15 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [resource][google.iam.v1.GetIamPolicyRequest.resource].
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
-            resource (:class:`str`):
+            resource (str):
                 REQUIRED: The resource for which the
                 policy is being requested. See the
                 operation documentation for the
                 appropriate value for this field.
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1091,72 +1100,62 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1215,22 +1214,24 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         permission on the containing instance.
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
-            resource (:class:`str`):
+            resource (str):
                 REQUIRED: The resource for which the
                 policy detail is being requested. See
                 the operation documentation for the
                 appropriate value for this field.
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            permissions (:class:`Sequence[str]`):
+            permissions (Sequence[str]):
                 The set of permissions to check for the ``resource``.
                 Permissions with wildcards (such as '*' or 'storage.*')
                 are not allowed. For more information see `IAM
                 Overview <https://cloud.google.com/iam/docs/overview#permissions>`__.
+
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1242,8 +1243,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -1307,10 +1308,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         databases can run concurrently.
 
         Args:
-            request (:class:`~.gsad_backup.CreateBackupRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.CreateBackupRequest):
                 The request object. The request for
                 [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup].
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the instance in which the backup
                 will be created. This must be the same instance that
                 contains the database the backup will be created from.
@@ -1318,19 +1319,21 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 in the instance configuration of this instance. Values
                 are of the form
                 ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            backup (:class:`~.gsad_backup.Backup`):
+            backup (google.cloud.spanner_admin_database_v1.types.Backup):
                 Required. The backup to create.
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            backup_id (:class:`str`):
+            backup_id (str):
                 Required. The id of the backup to be created. The
                 ``backup_id`` appended to ``parent`` forms the full
                 backup name of the form
                 ``projects/<project>/instances/<instance>/backups/<backup_id>``.
+
                 This corresponds to the ``backup_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1342,12 +1345,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.gsad_backup.Backup``: A backup of a Cloud
-                Spanner database.
+                :class:`google.cloud.spanner_admin_database_v1.types.Backup`
+                A backup of a Cloud Spanner database.
 
         """
         # Create or coerce a protobuf request object.
@@ -1414,12 +1417,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [Backup][google.spanner.admin.database.v1.Backup].
 
         Args:
-            request (:class:`~.backup.GetBackupRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.GetBackupRequest):
                 The request object. The request for
                 [GetBackup][google.spanner.admin.database.v1.DatabaseAdmin.GetBackup].
-            name (:class:`str`):
+            name (str):
                 Required. Name of the backup. Values are of the form
                 ``projects/<project>/instances/<instance>/backups/<backup>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1431,7 +1435,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.backup.Backup:
+            google.cloud.spanner_admin_database_v1.types.Backup:
                 A backup of a Cloud Spanner database.
         """
         # Create or coerce a protobuf request object.
@@ -1487,10 +1491,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [Backup][google.spanner.admin.database.v1.Backup].
 
         Args:
-            request (:class:`~.gsad_backup.UpdateBackupRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.UpdateBackupRequest):
                 The request object. The request for
                 [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup].
-            backup (:class:`~.gsad_backup.Backup`):
+            backup (google.cloud.spanner_admin_database_v1.types.Backup):
                 Required. The backup to update. ``backup.name``, and the
                 fields to be updated as specified by ``update_mask`` are
                 required. Other fields are ignored. Update is only
@@ -1498,10 +1502,11 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
                 -  ``backup.expire_time``.
 
+
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. A mask specifying which fields (e.g.
                 ``expire_time``) in the Backup resource should be
                 updated. This mask is relative to the Backup resource,
@@ -1509,6 +1514,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 be specified; this prevents any future fields from being
                 erased accidentally by clients that do not know about
                 them.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1520,7 +1526,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gsad_backup.Backup:
+            google.cloud.spanner_admin_database_v1.types.Backup:
                 A backup of a Cloud Spanner database.
         """
         # Create or coerce a protobuf request object.
@@ -1579,13 +1585,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [Backup][google.spanner.admin.database.v1.Backup].
 
         Args:
-            request (:class:`~.backup.DeleteBackupRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.DeleteBackupRequest):
                 The request object. The request for
                 [DeleteBackup][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackup].
-            name (:class:`str`):
+            name (str):
                 Required. Name of the backup to delete. Values are of
                 the form
                 ``projects/<project>/instances/<instance>/backups/<backup>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1648,12 +1655,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         the most recent ``create_time``.
 
         Args:
-            request (:class:`~.backup.ListBackupsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListBackupsRequest):
                 The request object. The request for
                 [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
-            parent (:class:`str`):
+            parent (str):
                 Required. The instance to list backups from. Values are
                 of the form ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1665,7 +1673,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBackupsPager:
+            google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupsPager:
                 The response for
                 [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
@@ -1750,31 +1758,34 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         first restore to complete.
 
         Args:
-            request (:class:`~.spanner_database_admin.RestoreDatabaseRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.RestoreDatabaseRequest):
                 The request object. The request for
                 [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase].
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the instance in which to create
                 the restored database. This instance must be in the same
                 project and have the same instance configuration as the
                 instance containing the source backup. Values are of the
                 form ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            database_id (:class:`str`):
+            database_id (str):
                 Required. The id of the database to create and restore
                 to. This database must not already exist. The
                 ``database_id`` appended to ``parent`` forms the full
                 database name of the form
                 ``projects/<project>/instances/<instance>/databases/<database_id>``.
+
                 This corresponds to the ``database_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            backup (:class:`str`):
+            backup (str):
                 Name of the backup from which to restore. Values are of
                 the form
                 ``projects/<project>/instances/<instance>/backups/<backup>``.
+
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1786,12 +1797,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.spanner_database_admin.Database``: A Cloud
-                Spanner database.
+                :class:`google.cloud.spanner_admin_database_v1.types.Database`
+                A Cloud Spanner database.
 
         """
         # Create or coerce a protobuf request object.
@@ -1866,13 +1877,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         operations.
 
         Args:
-            request (:class:`~.spanner_database_admin.ListDatabaseOperationsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListDatabaseOperationsRequest):
                 The request object. The request for
                 [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
-            parent (:class:`str`):
+            parent (str):
                 Required. The instance of the database operations.
                 Values are of the form
                 ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1884,9 +1896,9 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListDatabaseOperationsPager:
+            google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabaseOperationsPager:
                 The response for
-                [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
+                   [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1962,13 +1974,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         order starting from the most recently started operation.
 
         Args:
-            request (:class:`~.backup.ListBackupOperationsRequest`):
+            request (google.cloud.spanner_admin_database_v1.types.ListBackupOperationsRequest):
                 The request object. The request for
                 [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
-            parent (:class:`str`):
+            parent (str):
                 Required. The instance of the backup operations. Values
                 are of the form
                 ``projects/<project>/instances/<instance>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1980,9 +1993,9 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBackupOperationsPager:
+            google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupOperationsPager:
                 The response for
-                [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
+                   [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

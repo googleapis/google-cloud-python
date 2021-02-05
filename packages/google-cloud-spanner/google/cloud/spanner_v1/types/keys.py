@@ -139,19 +139,19 @@ class KeyRange(proto.Message):
     because ``Key`` is a descending column in the schema.
 
     Attributes:
-        start_closed (~.struct.ListValue):
+        start_closed (google.protobuf.struct_pb2.ListValue):
             If the start is closed, then the range includes all rows
             whose first ``len(start_closed)`` key columns exactly match
             ``start_closed``.
-        start_open (~.struct.ListValue):
+        start_open (google.protobuf.struct_pb2.ListValue):
             If the start is open, then the range excludes rows whose
             first ``len(start_open)`` key columns exactly match
             ``start_open``.
-        end_closed (~.struct.ListValue):
+        end_closed (google.protobuf.struct_pb2.ListValue):
             If the end is closed, then the range includes all rows whose
             first ``len(end_closed)`` key columns exactly match
             ``end_closed``.
-        end_open (~.struct.ListValue):
+        end_open (google.protobuf.struct_pb2.ListValue):
             If the end is open, then the range excludes rows whose first
             ``len(end_open)`` key columns exactly match ``end_open``.
     """
@@ -183,13 +183,13 @@ class KeySet(proto.Message):
     Spanner behaves as if the key were only specified once.
 
     Attributes:
-        keys (Sequence[~.struct.ListValue]):
+        keys (Sequence[google.protobuf.struct_pb2.ListValue]):
             A list of specific keys. Entries in ``keys`` should have
             exactly as many elements as there are columns in the primary
             or index key with which this ``KeySet`` is used. Individual
             key values are encoded as described
             [here][google.spanner.v1.TypeCode].
-        ranges (Sequence[~.gs_keys.KeyRange]):
+        ranges (Sequence[google.cloud.spanner_v1.types.KeyRange]):
             A list of key ranges. See
             [KeyRange][google.spanner.v1.KeyRange] for more information
             about key range specifications.
