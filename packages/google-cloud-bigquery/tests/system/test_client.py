@@ -28,6 +28,7 @@ import unittest
 import uuid
 
 import psutil
+import pytest
 import pytz
 import pkg_resources
 
@@ -131,6 +132,8 @@ if pyarrow:
     PYARROW_INSTALLED_VERSION = pkg_resources.get_distribution("pyarrow").parsed_version
 else:
     PYARROW_INSTALLED_VERSION = None
+
+MTLS_TESTING = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"
 
 
 def _has_rows(result):
@@ -2651,6 +2654,9 @@ class TestBigQuery(unittest.TestCase):
         expected_rows = [("Some value", record)]
         self.assertEqual(row_tuples, expected_rows)
 
+    @pytest.mark.skipif(
+        MTLS_TESTING, reason="mTLS testing has no permission to the max-value.js file"
+    )
     def test_create_routine(self):
         routine_name = "test_routine"
         dataset = self.temp_dataset(_make_dataset_id("create_routine"))

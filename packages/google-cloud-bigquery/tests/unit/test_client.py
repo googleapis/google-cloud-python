@@ -2057,6 +2057,7 @@ class TestClient(unittest.TestCase):
             url=mock.ANY, method=mock.ANY, headers=mock.ANY, data=mock.ANY
         )
         http.reset_mock()
+        http.is_mtls = False
         mock_response.status_code = 200
         mock_response.json.return_value = self._make_table_resource()
         user_agent_override = client_info.ClientInfo(user_agent="my-application/1.2.3")
@@ -4425,7 +4426,7 @@ class TestClient(unittest.TestCase):
         fake_transport.request.return_value = fake_response
         return fake_transport
 
-    def _initiate_resumable_upload_helper(self, num_retries=None):
+    def _initiate_resumable_upload_helper(self, num_retries=None, mtls=False):
         from google.resumable_media.requests import ResumableUpload
         from google.cloud.bigquery.client import _DEFAULT_CHUNKSIZE
         from google.cloud.bigquery.client import _GENERIC_CONTENT_TYPE
@@ -4440,6 +4441,8 @@ class TestClient(unittest.TestCase):
         fake_transport = self._mock_transport(http.client.OK, response_headers)
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
         conn = client._connection = make_connection()
+        if mtls:
+            conn.get_api_base_url_for_mtls = mock.Mock(return_value="https://foo.mtls")
 
         # Create some mock arguments and call the method under test.
         data = b"goodbye gudbi gootbee"
@@ -4454,8 +4457,10 @@ class TestClient(unittest.TestCase):
 
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
+
+        host_name = "https://foo.mtls" if mtls else "https://bigquery.googleapis.com"
         upload_url = (
-            f"https://bigquery.googleapis.com/upload/bigquery/v2/projects/{self.PROJECT}"
+            f"{host_name}/upload/bigquery/v2/projects/{self.PROJECT}"
             "/jobs?uploadType=resumable"
         )
         self.assertEqual(upload.upload_url, upload_url)
@@ -4494,11 +4499,14 @@ class TestClient(unittest.TestCase):
     def test__initiate_resumable_upload(self):
         self._initiate_resumable_upload_helper()
 
+    def test__initiate_resumable_upload_mtls(self):
+        self._initiate_resumable_upload_helper(mtls=True)
+
     def test__initiate_resumable_upload_with_retry(self):
         self._initiate_resumable_upload_helper(num_retries=11)
 
     def _do_multipart_upload_success_helper(
-        self, get_boundary, num_retries=None, project=None
+        self, get_boundary, num_retries=None, project=None, mtls=False
     ):
         from google.cloud.bigquery.client import _get_upload_headers
         from google.cloud.bigquery.job import LoadJob
@@ -4508,6 +4516,8 @@ class TestClient(unittest.TestCase):
         fake_transport = self._mock_transport(http.client.OK, {})
         client = self._make_one(project=self.PROJECT, _http=fake_transport)
         conn = client._connection = make_connection()
+        if mtls:
+            conn.get_api_base_url_for_mtls = mock.Mock(return_value="https://foo.mtls")
 
         if project is None:
             project = self.PROJECT
@@ -4530,8 +4540,9 @@ class TestClient(unittest.TestCase):
         self.assertEqual(stream.tell(), size)
         get_boundary.assert_called_once_with()
 
+        host_name = "https://foo.mtls" if mtls else "https://bigquery.googleapis.com"
         upload_url = (
-            f"https://bigquery.googleapis.com/upload/bigquery/v2/projects/{project}"
+            f"{host_name}/upload/bigquery/v2/projects/{project}"
             "/jobs?uploadType=multipart"
         )
         payload = (
@@ -4555,6 +4566,10 @@ class TestClient(unittest.TestCase):
     @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
     def test__do_multipart_upload(self, get_boundary):
         self._do_multipart_upload_success_helper(get_boundary)
+
+    @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    def test__do_multipart_upload_mtls(self, get_boundary):
+        self._do_multipart_upload_success_helper(get_boundary, mtls=True)
 
     @mock.patch("google.resumable_media._upload.get_boundary", return_value=b"==0==")
     def test__do_multipart_upload_with_retry(self, get_boundary):

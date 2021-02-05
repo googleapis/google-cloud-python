@@ -78,10 +78,7 @@ from google.cloud.bigquery.table import RowIterator
 _DEFAULT_CHUNKSIZE = 1048576  # 1024 * 1024 B = 1 MB
 _MAX_MULTIPART_SIZE = 5 * 1024 * 1024
 _DEFAULT_NUM_RETRIES = 6
-_BASE_UPLOAD_TEMPLATE = (
-    "https://bigquery.googleapis.com/upload/bigquery/v2/projects/"
-    "{project}/jobs?uploadType="
-)
+_BASE_UPLOAD_TEMPLATE = "{host}/upload/bigquery/v2/projects/{project}/jobs?uploadType="
 _MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
 _RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
 _GENERIC_CONTENT_TYPE = "*/*"
@@ -2547,7 +2544,15 @@ class Client(ClientWithProject):
 
         if project is None:
             project = self.project
-        upload_url = _RESUMABLE_URL_TEMPLATE.format(project=project)
+        # TODO: Increase the minimum version of google-cloud-core to 1.6.0
+        # and remove this logic. See:
+        # https://github.com/googleapis/python-bigquery/issues/509
+        hostname = (
+            self._connection.API_BASE_URL
+            if not hasattr(self._connection, "get_api_base_url_for_mtls")
+            else self._connection.get_api_base_url_for_mtls()
+        )
+        upload_url = _RESUMABLE_URL_TEMPLATE.format(host=hostname, project=project)
 
         # TODO: modify ResumableUpload to take a retry.Retry object
         # that it can use for the initial RPC.
@@ -2616,7 +2621,15 @@ class Client(ClientWithProject):
         if project is None:
             project = self.project
 
-        upload_url = _MULTIPART_URL_TEMPLATE.format(project=project)
+        # TODO: Increase the minimum version of google-cloud-core to 1.6.0
+        # and remove this logic. See:
+        # https://github.com/googleapis/python-bigquery/issues/509
+        hostname = (
+            self._connection.API_BASE_URL
+            if not hasattr(self._connection, "get_api_base_url_for_mtls")
+            else self._connection.get_api_base_url_for_mtls()
+        )
+        upload_url = _MULTIPART_URL_TEMPLATE.format(host=hostname, project=project)
         upload = MultipartUpload(upload_url, headers=headers)
 
         if num_retries is not None:

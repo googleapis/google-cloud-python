@@ -14,9 +14,21 @@
 
 """Create / interact with Google BigQuery connections."""
 
+import os
+import pkg_resources
+
 from google.cloud import _http
 
 from google.cloud.bigquery import __version__
+
+
+# TODO: Increase the minimum version of google-cloud-core to 1.6.0
+# and remove this logic. See:
+# https://github.com/googleapis/python-bigquery/issues/509
+if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true":  # pragma: NO COVER
+    release = pkg_resources.get_distribution("google-cloud-core").parsed_version
+    if release < pkg_resources.parse_version("1.6.0"):
+        raise ImportError("google-cloud-core >= 1.6.0 is required to use mTLS feature")
 
 
 class Connection(_http.JSONConnection):
@@ -26,13 +38,18 @@ class Connection(_http.JSONConnection):
         client (google.cloud.bigquery.client.Client): The client that owns the current connection.
 
         client_info (Optional[google.api_core.client_info.ClientInfo]): Instance used to generate user agent.
+
+        api_endpoint (str): The api_endpoint to use. If None, the library will decide what endpoint to use.
     """
 
     DEFAULT_API_ENDPOINT = "https://bigquery.googleapis.com"
+    DEFAULT_API_MTLS_ENDPOINT = "https://bigquery.mtls.googleapis.com"
 
-    def __init__(self, client, client_info=None, api_endpoint=DEFAULT_API_ENDPOINT):
+    def __init__(self, client, client_info=None, api_endpoint=None):
         super(Connection, self).__init__(client, client_info)
-        self.API_BASE_URL = api_endpoint
+        self.API_BASE_URL = api_endpoint or self.DEFAULT_API_ENDPOINT
+        self.API_BASE_MTLS_URL = self.DEFAULT_API_MTLS_ENDPOINT
+        self.ALLOW_AUTO_SWITCH_TO_MTLS_URL = api_endpoint is None
         self._client_info.gapic_version = __version__
         self._client_info.client_library_version = __version__
 
