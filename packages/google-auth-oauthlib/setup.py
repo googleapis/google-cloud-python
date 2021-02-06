@@ -18,9 +18,9 @@ from setuptools import find_packages
 from setuptools import setup
 
 
-TOOL_DEPENDENCIES = "click"
+TOOL_DEPENDENCIES = "click>=6.0.0"
 
-DEPENDENCIES = ("google-auth", "requests-oauthlib>=0.7.0")
+DEPENDENCIES = ("google-auth>=1.0.0", "requests-oauthlib>=0.7.0")
 
 
 with io.open("README.rst", "r") as fh:
