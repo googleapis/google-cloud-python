@@ -1027,6 +1027,19 @@ class TestStorageWriteFiles(TestStorageFiles):
         owner = same_blob.owner
         self.assertIn(user_email, owner["entity"])
 
+    def test_upload_blob_custom_time(self):
+        blob = self.bucket.blob("CustomTimeBlob")
+        file_contents = b"Hello World"
+        current_time = datetime.datetime.now()
+        blob.custom_time = current_time
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        same_blob = self.bucket.blob("CustomTimeBlob")
+        same_blob.reload(projection="full")
+        custom_time = same_blob.custom_time.replace(tzinfo=None)
+        self.assertEqual(custom_time, current_time)
+
     def test_blob_crc32_md5_hash(self):
         blob = self.bucket.blob("MyBuffer")
         file_contents = b"Hello World"

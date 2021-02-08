@@ -96,6 +96,7 @@ _WRITABLE_FIELDS = (
     "contentLanguage",
     _CONTENT_TYPE_FIELD,
     "crc32c",
+    "customTime",
     "md5Hash",
     "metadata",
     "name",
@@ -1530,6 +1531,7 @@ class Blob(_PropertyMixin):
         * ``contentLanguage``
         * ``contentType``
         * ``crc32c``
+        * ``customTime``
         * ``md5Hash``
         * ``metadata``
         * ``name``
