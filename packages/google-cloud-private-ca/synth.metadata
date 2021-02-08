@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-security-private-ca.git",
-        "sha": "c2743f4ea176c6a94ea2601f5e802965232f012b"
+        "sha": "4d217ac6c49cc982509f20b416ab534bb3bdca45"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
       }
     }
   ],
@@ -48,6 +48,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
