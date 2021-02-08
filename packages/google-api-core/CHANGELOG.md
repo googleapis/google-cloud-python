@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.26.0](https://www.github.com/googleapis/python-api-core/compare/v1.25.1...v1.26.0) (2021-02-08)
+
+
+### Features
+
+* allow default_host and default_scopes to be passed to create_channel ([#134](https://www.github.com/googleapis/python-api-core/issues/134)) ([94c76e0](https://www.github.com/googleapis/python-api-core/commit/94c76e0873e5b2f42331d5b1ad286c1e63b61395))
+
 ### [1.25.1](https://www.github.com/googleapis/python-api-core/compare/v1.25.0...v1.25.1) (2021-01-25)
 
 
