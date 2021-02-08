@@ -236,14 +236,14 @@ s.replace(
     "CONTRIBUTING.rst",
     "\nTest Coverage",
     """*************
-Updating Conformance Tests	
-**************************	
+Updating Conformance Tests
+**************************
 
-The firestore client libraries use a shared set of conformance tests, the source of which can be found at https://github.com/googleapis/conformance-tests.	
+The firestore client libraries use a shared set of conformance tests, the source of which can be found at https://github.com/googleapis/conformance-tests.
 
-To update the copy of these conformance tests used by this repository, run the provided Makefile:	
+To update the copy of these conformance tests used by this repository, run the provided Makefile:
 
-   $ make -f Makefile_v1	
+   $ make -f Makefile_v1
 
 *************
 Test Coverage"""
