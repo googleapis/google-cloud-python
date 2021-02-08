@@ -84,6 +84,7 @@ def default(session):
     session.install("asyncmock", "pytest-asyncio")
 
     session.install("mock", "pytest", "pytest-cov", "flask", "webob", "django")
+
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
