@@ -86,6 +86,7 @@ def default(session):
     session.install(
         "mock", "pytest", "pytest-cov",
     )
+
     session.install("-e", ".")
 
     # Run py.test against the unit tests.

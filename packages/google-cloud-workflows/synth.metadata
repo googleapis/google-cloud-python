@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-workflows.git",
-        "sha": "ccddf0607d6af58ccf52e33ee1ff735a8034559a"
+        "sha": "639fadf257c4cbc9e3152ba5e78786da28ab07fe"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "fb53b6fb373b7c3edf4e55f3e8036bc6d73fa483"
+        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
       }
     }
   ],
@@ -58,6 +58,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
@@ -156,7 +157,6 @@
     "tests/unit/gapic/executions_v1beta/__init__.py",
     "tests/unit/gapic/executions_v1beta/test_executions.py",
     "tests/unit/gapic/workflows_v1beta/__init__.py",
-    "tests/unit/gapic/workflows_v1beta/test_workflows.py",
-    "workflows-v1beta-py.tar.gz"
+    "tests/unit/gapic/workflows_v1beta/test_workflows.py"
   ]
 }
