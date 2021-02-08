@@ -5,6 +5,23 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.3.0](https://www.github.com/googleapis/python-pubsub/compare/v2.2.0...v2.3.0) (2021-02-08)
+
+
+### Features
+
+* surface SchemaServiceClient in google.cloud.pubsub ([#281](https://www.github.com/googleapis/python-pubsub/issues/281)) ([8751bcc](https://www.github.com/googleapis/python-pubsub/commit/8751bcc5eb782df55769b48253629a3bde3d4661))
+
+
+### Bug Fixes
+
+* client version missing from the user agent header ([#275](https://www.github.com/googleapis/python-pubsub/issues/275)) ([b112f4f](https://www.github.com/googleapis/python-pubsub/commit/b112f4fcbf6f2bce8dcf37871bdc540b11f54fe3))
+* Don't open the google.cloud package by adding pubsub.py ([#269](https://www.github.com/googleapis/python-pubsub/issues/269)) ([542d79d](https://www.github.com/googleapis/python-pubsub/commit/542d79d7c5fb7403016150ba477485756cd4097b))
+* flaky samples tests ([#263](https://www.github.com/googleapis/python-pubsub/issues/263)) ([3d6a29d](https://www.github.com/googleapis/python-pubsub/commit/3d6a29de07cc09be663c90a3333f4cd33633994f))
+* Modify synth.py to update grpc transport options ([#266](https://www.github.com/googleapis/python-pubsub/issues/266)) ([41dcd30](https://www.github.com/googleapis/python-pubsub/commit/41dcd30636168f3dd1248f1d99170d531fc9bcb8))
+* pass anonymous credentials for emulator ([#250](https://www.github.com/googleapis/python-pubsub/issues/250)) ([8eed8e1](https://www.github.com/googleapis/python-pubsub/commit/8eed8e16019510dc8b20fb6b009d61a7ac532d26))
+* remove grpc send/recieve limits ([#259](https://www.github.com/googleapis/python-pubsub/issues/259)) ([fd2840c](https://www.github.com/googleapis/python-pubsub/commit/fd2840c10f92b03da7f4b40ac69c602220757c0a))
+
 ## [2.2.0](https://www.github.com/googleapis/python-pubsub/compare/v2.1.0...v2.2.0) (2020-11-16)
 
 
