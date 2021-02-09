@@ -1,0 +1,321 @@
+name: Tests
+
+# Controls when the action will run.
+on:
+  pull_request:
+  push:
+    branches: [ $default-branch ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Build the documentation.
+        run: nox -s docs
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Check type annotations.
+        run: nox -s mypy
+  # publish_image:
+  #   runs-on: ubuntu-latest
+  #   container: docker
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - setup_remote_docker
+  #     - name: Build Docker image.
+  #       run: docker build . -t gcr.io/gapic-images/gapic-generator-python:latest
+  #     - name: Download curl
+  #       run: apk add --no-cache curl
+  #     - name: Download the GCR credential helper.
+  #       run: |
+  #           curl -fsSL https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v1.5.0/docker-credential-gcr_linux_amd64-1.5.0.tar.gz \
+  #             | tar xz --to-stdout ./docker-credential-gcr \
+  #             > /usr/bin/docker-credential-gcr && chmod a+x /usr/bin/docker-credential-gcr
+  #     - name: Set up authentication to Google Container Registry.
+  #       run: |
+  #           echo ${GCLOUD_SERVICE_KEY} > ${GOOGLE_APPLICATION_CREDENTIALS}
+  #           docker-credential-gcr configure-docker
+  #     - name: Tag the Docker image and push it to Google Container Registry.
+  #       run: |
+  #           if [ -n "$CIRCLE_TAG" ]; then
+  #             export MAJOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $1; }'`
+  #             export MINOR=`echo $CIRCLE_TAG | awk -F '.' '{ print $2; }'`
+  #             export PATCH=`echo $CIRCLE_TAG | awk -F '.' '{ print $3; }'`
+  #             docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+  #             docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+  #             docker tag gcr.io/gapic-images/gapic-generator-python:latest gcr.io/gapic-images/gapic-generator-python:$MAJOR
+  #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR.$PATCH
+  #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR.$MINOR
+  #             docker push gcr.io/gapic-images/gapic-generator-python:$MAJOR
+  #           fi
+  #           docker push gcr.io/gapic-images/gapic-generator-python:latest
+  showcase:
+    strategy:
+      matrix:
+        target: [showcase, showcase_alternative_templates]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install showcase
+        run: |
+          sudo mkdir -p /usr/src/showcase
+          sudo chown -R ${USER} /usr/src/
+          curl --location https://github.com/googleapis/gapic-showcase/releases/download/v0.12.0/gapic-showcase-0.12.0-linux-amd64.tar.gz --output /usr/src/showcase/showcase-0.12.0-linux-amd64.tar.gz
+          cd /usr/src/showcase/
+          tar -xf showcase-*
+          ./gapic-showcase run &
+          cd -
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Install protoc 3.12.1.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Run showcase tests.
+        run: nox -s ${{ matrix.target }}
+  showcase-mtls:
+    strategy:
+      matrix:
+        target: [showcase_mtls, showcase_mtls_alternative_templates]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup temp directory
+        run: |
+          sudo mkdir -p /tmp/workspace/tests/cert/
+          sudo chown -R ${USER} /tmp/workspace/
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Copy mtls files
+        run: cp tests/cert/mtls.* /tmp/workspace/tests/cert/
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Install protoc 3.12.1.
+        run: |
+          sudo mkdir -p /usr/src/protoc/
+          sudo chown -R ${USER} /usr/src
+          curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+          cd /usr/src/protoc/
+          unzip protoc-3.12.1.zip
+          sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+          cd -
+      - name: Run showcase tests.
+        run:  |
+            sudo mkdir gapic_showcase
+            sudo chown ${USER} gapic_showcase
+            cd gapic_showcase
+            curl -sSL https://github.com/googleapis/gapic-showcase/releases/download/v0.11.0/gapic-showcase-0.11.0-linux-amd64.tar.gz | tar xz
+            ./gapic-showcase run --mtls-ca-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-cert=/tmp/workspace/tests/cert/mtls.crt --mtls-key=/tmp/workspace/tests/cert/mtls.key &
+            showcase_pid=$!
+
+            cleanup() {
+              echo "kill showcase server"
+            	kill $showcase_pid
+            	# Wait for the process to die, but don't report error from the kill.
+            	wait $showcase_pid || exit $exit_code
+            }
+            trap cleanup EXIT
+
+            cd ..
+            nox -s ${{ matrix.target }}
+  # TODO(yon-mg): add compute unit tests
+  showcase-unit:
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit-${{ matrix.python }}
+  showcase-unit-alternative-templates:
+    strategy:
+      matrix:
+        python: [3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
+  showcase-unit-add-iam-methods:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Run unit tests.
+        run: nox -s showcase_unit_add_iam_methods-3.8
+  showcase-mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Typecheck the generated output.
+        run: nox -s showcase_mypy
+  showcase-mypy-alternative-templates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install system dependencies.
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install protoc 3.12.1.
+        run: |
+            sudo mkdir -p /usr/src/protoc/
+            sudo chown -R ${USER} /usr/src/
+            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
+            cd /usr/src/protoc/
+            unzip protoc-3.12.1.zip
+            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Typecheck the generated output.
+        run: nox -s showcase_mypy_alternative_templates
+  unit:
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install pandoc
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y pandoc gcc git
+      - name: Install nox and codecov.
+        run: |
+            python -m pip install nox
+            python -m pip install codecov
+      - name: Run unit tests.
+        run: nox -s unit-${{ matrix.python }}
+      - name: Submit coverage data to codecov.
+        run: codecov
+        if: always()
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install autopep8
+        run: |
+            python -m pip install autopep8
+      - name: Check diff
+        run: |
+            find gapic tests -name "*.py" | xargs autopep8 --in-place --exit-code
