@@ -31,14 +31,16 @@ class Test__create_gapic_client(unittest.TestCase):
         credentials = _make_credentials()
         client = _Client(credentials)
         client_info = client._client_info = mock.Mock()
+        transport = mock.Mock()
 
-        result = self._invoke_client_factory(client_class)(client)
+        result = self._invoke_client_factory(client_class, transport=transport)(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            credentials=client._credentials,
+            credentials=None,
             client_info=client_info,
             client_options=None,
+            transport=transport,
         )
 
     def test_wo_emulator_w_client_options(self):
@@ -47,16 +49,18 @@ class Test__create_gapic_client(unittest.TestCase):
         client = _Client(credentials)
         client_info = client._client_info = mock.Mock()
         client_options = mock.Mock()
+        transport = mock.Mock()
 
         result = self._invoke_client_factory(
-            client_class, client_options=client_options
+            client_class, client_options=client_options, transport=transport
         )(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            credentials=client._credentials,
+            credentials=None,
             client_info=client_info,
             client_options=client_options,
+            transport=transport,
         )
 
     def test_w_emulator(self):
@@ -170,7 +174,13 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(client._emulator_host, emulator_host)
         self.assertIs(client._emulator_channel, factory.return_value)
-        factory.assert_called_once_with(emulator_host)
+        factory.assert_called_once_with(
+            target=emulator_host,
+            options={
+                "grpc.keepalive_time_ms": 30000,
+                "grpc.keepalive_timeout_ms": 10000,
+            }.items(),
+        )
         getenv.assert_called_once_with(BIGTABLE_EMULATOR)
 
     def test__get_scopes_default(self):
@@ -234,7 +244,9 @@ class TestClient(unittest.TestCase):
         from google.api_core.client_options import ClientOptions
 
         credentials = _make_credentials()
-        client_options = ClientOptions(quota_project_id="QUOTA-PROJECT")
+        client_options = ClientOptions(
+            quota_project_id="QUOTA-PROJECT", api_endpoint="xyz"
+        )
         client = self._make_one(
             project=self.PROJECT, credentials=credentials, client_options=client_options
         )
@@ -245,9 +257,11 @@ class TestClient(unittest.TestCase):
 
         self.assertIs(table_data_client, mocked.return_value)
         self.assertIs(client._table_data_client, table_data_client)
+
         mocked.assert_called_once_with(
             client_info=client._client_info,
-            credentials=mock.ANY,  # added scopes
+            credentials=None,
+            transport=mock.ANY,
             client_options=client_options,
         )
 
@@ -308,6 +322,7 @@ class TestClient(unittest.TestCase):
             admin_client_options=admin_client_options,
         )
 
+        client._create_gapic_client_channel = mock.Mock()
         patch = mock.patch("google.cloud.bigtable_admin_v2.BigtableTableAdminClient")
         with patch as mocked:
             table_admin_client = client.table_admin_client
@@ -316,7 +331,8 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._table_admin_client, table_admin_client)
         mocked.assert_called_once_with(
             client_info=client._client_info,
-            credentials=mock.ANY,  # added scopes
+            credentials=None,
+            transport=mock.ANY,
             client_options=admin_client_options,
         )
 
@@ -377,6 +393,7 @@ class TestClient(unittest.TestCase):
             admin_client_options=admin_client_options,
         )
 
+        client._create_gapic_client_channel = mock.Mock()
         patch = mock.patch("google.cloud.bigtable_admin_v2.BigtableInstanceAdminClient")
         with patch as mocked:
             instance_admin_client = client.instance_admin_client
@@ -385,7 +402,8 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._instance_admin_client, instance_admin_client)
         mocked.assert_called_once_with(
             client_info=client._client_info,
-            credentials=mock.ANY,  # added scopes
+            credentials=None,
+            transport=mock.ANY,
             client_options=admin_client_options,
         )
 

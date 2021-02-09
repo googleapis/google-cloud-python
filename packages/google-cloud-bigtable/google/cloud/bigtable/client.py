@@ -35,6 +35,11 @@ from google.api_core.gapic_v1 import client_info
 
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
+from google.cloud.bigtable_v2.gapic.transports import bigtable_grpc_transport
+from google.cloud.bigtable_admin_v2.gapic.transports import (
+    bigtable_table_admin_grpc_transport,
+    bigtable_instance_admin_grpc_transport,
+)
 
 from google.cloud.bigtable import __version__
 from google.cloud.bigtable.instance import Instance
@@ -60,13 +65,14 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 """Scope for reading table data."""
 
 
-def _create_gapic_client(client_class, client_options=None):
+def _create_gapic_client(client_class, client_options=None, transport=None):
     def inner(self):
         if self._emulator_host is None:
             return client_class(
-                credentials=self._credentials,
+                credentials=None,
                 client_info=self._client_info,
                 client_options=client_options,
+                transport=transport,
             )
         else:
             return client_class(
@@ -161,7 +167,13 @@ class Client(ClientWithProject):
         self._emulator_channel = None
 
         if self._emulator_host is not None:
-            self._emulator_channel = grpc.insecure_channel(self._emulator_host)
+            self._emulator_channel = grpc.insecure_channel(
+                target=self._emulator_host,
+                options={
+                    "grpc.keepalive_time_ms": 30000,
+                    "grpc.keepalive_timeout_ms": 10000,
+                }.items(),
+            )
 
         if channel is not None:
             warnings.warn(
@@ -195,6 +207,29 @@ class Client(ClientWithProject):
             scopes += (ADMIN_SCOPE,)
 
         return scopes
+
+    def _create_gapic_client_channel(self, client_class, grpc_transport):
+        if self._client_options and self._client_options.api_endpoint:
+            api_endpoint = self._client_options.api_endpoint
+        else:
+            api_endpoint = client_class.SERVICE_ADDRESS
+
+        channel = grpc_transport.create_channel(
+            api_endpoint,
+            self._credentials,
+            options={
+                "grpc.max_send_message_length": -1,
+                "grpc.max_receive_message_length": -1,
+                "grpc.keepalive_time_ms": 30000,
+                "grpc.keepalive_timeout_ms": 10000,
+            }.items(),
+        )
+        transport = grpc_transport(
+            address=api_endpoint,
+            channel=channel,
+            credentials=None,
+        )
+        return transport
 
     @property
     def project_path(self):
@@ -236,8 +271,14 @@ class Client(ClientWithProject):
         :returns: A BigtableClient object.
         """
         if self._table_data_client is None:
+            transport = self._create_gapic_client_channel(
+                bigtable_v2.BigtableClient,
+                bigtable_grpc_transport.BigtableGrpcTransport,
+            )
             klass = _create_gapic_client(
-                bigtable_v2.BigtableClient, client_options=self._client_options
+                bigtable_v2.BigtableClient,
+                client_options=self._client_options,
+                transport=transport,
             )
             self._table_data_client = klass(self)
         return self._table_data_client
@@ -262,9 +303,15 @@ class Client(ClientWithProject):
         if self._table_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+
+            transport = self._create_gapic_client_channel(
+                bigtable_admin_v2.BigtableTableAdminClient,
+                bigtable_table_admin_grpc_transport.BigtableTableAdminGrpcTransport,
+            )
             klass = _create_gapic_client(
                 bigtable_admin_v2.BigtableTableAdminClient,
                 client_options=self._admin_client_options,
+                transport=transport,
             )
             self._table_admin_client = klass(self)
         return self._table_admin_client
@@ -289,9 +336,15 @@ class Client(ClientWithProject):
         if self._instance_admin_client is None:
             if not self._admin:
                 raise ValueError("Client is not an admin client.")
+
+            transport = self._create_gapic_client_channel(
+                bigtable_admin_v2.BigtableInstanceAdminClient,
+                bigtable_instance_admin_grpc_transport.BigtableInstanceAdminGrpcTransport,
+            )
             klass = _create_gapic_client(
                 bigtable_admin_v2.BigtableInstanceAdminClient,
                 client_options=self._admin_client_options,
+                transport=transport,
             )
             self._instance_admin_client = klass(self)
         return self._instance_admin_client
