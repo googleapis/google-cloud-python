@@ -15,12 +15,11 @@
 
 set -eo pipefail
 
-cd github/python-ndb
+if [[ -z "${PROJECT_ROOT:-}" ]]; then
+    PROJECT_ROOT="github/python-ndb"
+fi
 
-# Need enchant for spell check
-sudo apt-get update
-sudo apt-get -y install dictionaries-common aspell aspell-en \
-                        hunspell-en-us libenchant1c2a enchant
+cd "${PROJECT_ROOT}"
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
@@ -48,16 +47,16 @@ gcloud --quiet --verbosity=debug datastore indexes create tests/system/index.yam
 
 
 # Remove old nox
-python3.6 -m pip uninstall --yes --quiet nox-automation
+python3 -m pip uninstall --yes --quiet nox-automation
 
 # Install nox
-python3.6 -m pip install --upgrade --quiet nox
-python3.6 -m nox --version
+python3 -m pip install --upgrade --quiet nox
+python3 -m nox --version
 
 # If NOX_SESSION is set, it only runs the specified session,
 # otherwise run all the sessions.
 if [[ -n "${NOX_SESSION:-}" ]]; then
-    python3.6 -m nox -s "${NOX_SESSION:-}"
+    python3 -m nox -s ${NOX_SESSION:-}
 else
-    python3.6 -m nox
+    python3 -m nox
 fi
