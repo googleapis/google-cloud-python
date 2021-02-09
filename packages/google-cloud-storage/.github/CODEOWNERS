@@ -7,4 +7,4 @@
 
 # The storage-dpe team is the default owner for anything not
 # explicitly taken by someone else.
-*                               @googleapis/storage-dpe
+*                               @googleapis/storage-dpe @googleapis/yoshi-python
