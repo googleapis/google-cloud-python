@@ -1,0 +1,61 @@
+name: Tests
+
+# Controls when the action will run.
+on:
+  pull_request:
+  push:
+    branches: [ $default-branch ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  style-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install black
+        run: pip install black==19.10b0
+      - name: Check diff
+        run: black --diff --check .
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install nox.
+        run: python -m pip install nox
+      - name: Build the documentation.
+        run: nox -s docs
+  unit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.6, 3.7, 3.8, 3.9]
+        variant: ['', cpp]
+        # Note: as of 2021-02-09, there are no 3.9 python wheels for protobuf/grpc
+        exclude:
+          - python: 3.9
+            variant: cpp
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install nox and codecov.
+        run: |
+          pip install nox
+          pip install codecov
+      - name: Run unit tests.
+        run: nox -s unit${{ matrix.variant }}-${{ matrix.python }}
+      - name: Submit coverage data to codecov.
+        run: codecov
+        if: always()

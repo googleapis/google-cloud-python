@@ -5,15 +5,9 @@ branchProtectionRules:
 - pattern: master
   isAdminEnforced: true
   requiredStatusCheckContexts:
-    - 'ci/circleci: docs'
-    - 'ci/circleci: style-check'
-    - 'ci/circleci: unit-3.6'
-    - 'ci/circleci: unit-3.7'
-    - 'ci/circleci: unit-3.8'
-    - 'ci/circleci: unit-3.9'
-    - 'ci/circleci: unit-cpp-3.6'
-    - 'ci/circleci: unit-cpp-3.7'
-    - 'ci/circleci: unit-cpp-3.8'
+    - 'style-check'
+    - 'docs'
+    - 'unit'
     - 'cla/google'
   requiredApprovingReviewCount: 1
   requiresCodeOwnerReviews: true
