@@ -15,13 +15,11 @@
 # Template for .trampolinerc
 
 # Add required env vars here.
-required_envvars+=(
-    "STAGING_BUCKET"
-    "V2_STAGING_BUCKET"
-)
+required_envvars+=()
 
 # Add env vars which are passed down into the container here.
 pass_down_envvars+=(
+    "ENVIRONMENT"
     "STAGING_BUCKET"
     "V2_STAGING_BUCKET"
     "NOX_SESSION"
