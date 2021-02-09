@@ -7,5 +7,5 @@
 
 # The api-bigtable team is the default owner for anything not
 # explicitly taken by someone else.
-*                               @googleapis/api-bigtable
+*                               @googleapis/api-bigtable @googleapis/yoshi-python
 /samples/                       @googleapis/api-bigtable @googleapis/python-samples-owners
