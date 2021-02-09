@@ -1,17 +1,27 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+import io
+import os
 import setuptools  # type: ignore
 
+version = '0.1.0'
+
+package_root = os.path.abspath(os.path.dirname(__file__))
+
+readme_filename = os.path.join(package_root, 'README.rst')
+with io.open(readme_filename, encoding='utf-8') as readme_file:
+    readme = readme_file.read()
 
 setuptools.setup(
     name='{{ api.naming.warehouse_package_name }}',
-    version='0.0.1',
+    version=version,
+    long_description=readme,
     {% if api.naming.namespace -%}
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
     {% else -%}
-    packages=setuptools.find_packages(),
+    packages=setuptools.PEP420PackageFinder.find(),
     {% endif -%}
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
@@ -24,9 +34,6 @@ setuptools.setup(
     {%- endif %}
     ),
     python_requires='>=3.6',
-    scripts=[
-        'scripts/fixup_{{ api.naming.versioned_module_name }}_keywords.py',
-    ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
