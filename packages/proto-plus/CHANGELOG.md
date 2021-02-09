@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.13.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.13.0...v1.13.1) (2021-02-09)
+
+
+### Bug Fixes
+
+* update docstring to match type hint ([#172](https://www.github.com/googleapis/proto-plus-python/issues/172)) ([14dad5b](https://www.github.com/googleapis/proto-plus-python/commit/14dad5bf6c5967a720e9d3095d621dbfe208b614))
+
 ## [1.13.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.12.0...v1.13.0) (2020-12-04)
 
 
