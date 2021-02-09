@@ -59,3 +59,13 @@ GOOGLE_API_USE_CLIENT_CERTIFICATE = "GOOGLE_API_USE_CLIENT_CERTIFICATE"
 
 The default value is false. Users have to explicitly set this value to true
 in order to use client certificate to establish a mutual TLS channel."""
+
+# AWS environment variables used with AWS workload identity pools to retrieve
+# AWS security credentials and the AWS region needed to create a serialized
+# signed requests to the AWS STS GetCalledIdentity API that can be exchanged
+# for a Google access tokens via the GCP STS endpoint.
+# When not available the AWS metadata server is used to retrieve these values.
+AWS_ACCESS_KEY_ID = "AWS_ACCESS_KEY_ID"
+AWS_SECRET_ACCESS_KEY = "AWS_SECRET_ACCESS_KEY"
+AWS_SESSION_TOKEN = "AWS_SESSION_TOKEN"
+AWS_REGION = "AWS_REGION"

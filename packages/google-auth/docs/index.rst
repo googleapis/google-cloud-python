@@ -20,6 +20,8 @@ also provides integration with several HTTP libraries.
 - Support for Google :mod:`Impersonated Credentials <google.auth.impersonated_credentials>`.
 - Support for :mod:`Google Compute Engine credentials <google.auth.compute_engine>`.
 - Support for :mod:`Google App Engine standard credentials <google.auth.app_engine>`.
+- Support for :mod:`Identity Pool credentials <google.auth.identity_pool>`.
+- Support for :mod:`AWS credentials <google.auth.aws>`.
 - Support for various transports, including
   :mod:`Requests <google.auth.transport.requests>`,
   :mod:`urllib3 <google.auth.transport.urllib3>`, and

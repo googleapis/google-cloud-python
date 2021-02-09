@@ -104,12 +104,17 @@ class TestImpersonatedCredentials(object):
         SIGNER, SERVICE_ACCOUNT_EMAIL, TOKEN_URI
     )
     USER_SOURCE_CREDENTIALS = credentials.Credentials(token="ABCDE")
+    IAM_ENDPOINT_OVERRIDE = (
+        "https://us-east1-iamcredentials.googleapis.com/v1/projects/-"
+        + "/serviceAccounts/{}:generateAccessToken".format(SERVICE_ACCOUNT_EMAIL)
+    )
 
     def make_credentials(
         self,
         source_credentials=SOURCE_CREDENTIALS,
         lifetime=LIFETIME,
         target_principal=TARGET_PRINCIPAL,
+        iam_endpoint_override=None,
     ):
 
         return Credentials(
@@ -118,6 +123,7 @@ class TestImpersonatedCredentials(object):
             target_scopes=self.TARGET_SCOPES,
             delegates=self.DELEGATES,
             lifetime=lifetime,
+            iam_endpoint_override=iam_endpoint_override,
         )
 
     def test_make_from_user_credentials(self):
@@ -171,6 +177,34 @@ class TestImpersonatedCredentials(object):
 
         assert credentials.valid
         assert not credentials.expired
+
+    @pytest.mark.parametrize("use_data_bytes", [True, False])
+    def test_refresh_success_iam_endpoint_override(
+        self, use_data_bytes, mock_donor_credentials
+    ):
+        credentials = self.make_credentials(
+            lifetime=None, iam_endpoint_override=self.IAM_ENDPOINT_OVERRIDE
+        )
+        token = "token"
+
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        response_body = {"accessToken": token, "expireTime": expire_time}
+
+        request = self.make_request(
+            data=json.dumps(response_body),
+            status=http_client.OK,
+            use_data_bytes=use_data_bytes,
+        )
+
+        credentials.refresh(request)
+
+        assert credentials.valid
+        assert not credentials.expired
+        # Confirm override endpoint used.
+        request_kwargs = request.call_args.kwargs
+        assert request_kwargs["url"] == self.IAM_ENDPOINT_OVERRIDE
 
     @pytest.mark.parametrize("time_skew", [100, -100])
     def test_refresh_source_credentials(self, time_skew):
@@ -316,6 +350,36 @@ class TestImpersonatedCredentials(object):
 
         quota_project_creds = credentials.with_quota_project("project-foo")
         assert quota_project_creds._quota_project_id == "project-foo"
+
+    @pytest.mark.parametrize("use_data_bytes", [True, False])
+    def test_with_quota_project_iam_endpoint_override(
+        self, use_data_bytes, mock_donor_credentials
+    ):
+        credentials = self.make_credentials(
+            lifetime=None, iam_endpoint_override=self.IAM_ENDPOINT_OVERRIDE
+        )
+        token = "token"
+        # iam_endpoint_override should be copied to created credentials.
+        quota_project_creds = credentials.with_quota_project("project-foo")
+
+        expire_time = (
+            _helpers.utcnow().replace(microsecond=0) + datetime.timedelta(seconds=500)
+        ).isoformat("T") + "Z"
+        response_body = {"accessToken": token, "expireTime": expire_time}
+
+        request = self.make_request(
+            data=json.dumps(response_body),
+            status=http_client.OK,
+            use_data_bytes=use_data_bytes,
+        )
+
+        quota_project_creds.refresh(request)
+
+        assert quota_project_creds.valid
+        assert not quota_project_creds.expired
+        # Confirm override endpoint used.
+        request_kwargs = request.call_args.kwargs
+        assert request_kwargs["url"] == self.IAM_ENDPOINT_OVERRIDE
 
     def test_id_token_success(
         self, mock_donor_credentials, mock_authorizedsession_idtoken
