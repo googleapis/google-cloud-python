@@ -57,7 +57,7 @@ class TestEntityProto:
         d = _get_decoder(b"\x6a\x03\x6a\x01\x41")
         entity.TryMerge(d)
         assert entity.key().has_app()
-        assert entity.key().app().decode() == "A"
+        assert entity.key().app.decode() == "A"
 
     @staticmethod
     def test_TryMerge_mutable_key_namespace():
@@ -65,7 +65,7 @@ class TestEntityProto:
         d = _get_decoder(b"\x6a\x04\xa2\x01\x01\x42")
         entity.TryMerge(d)
         assert entity.key().has_name_space()
-        assert entity.key().name_space().decode() == "B"
+        assert entity.key().name_space.decode() == "B"
 
     @staticmethod
     def test_TryMerge_mutable_key_database():
@@ -73,7 +73,7 @@ class TestEntityProto:
         d = _get_decoder(b"\x6a\x04\xba\x01\x01\x43")
         entity.TryMerge(d)
         assert entity.key().has_database_id()
-        assert entity.key().database_id().decode() == "C"
+        assert entity.key().database_id.decode() == "C"
 
     @staticmethod
     def test_TryMerge_mutable_key_path():
@@ -82,13 +82,28 @@ class TestEntityProto:
         entity.TryMerge(d)
         assert entity.has_key()  # noqa: W601
         assert entity.key().has_path()
-        element = entity.key().path().element_list()[0]
+        element = entity.key().path.element_list()[0]
         assert element.has_type()
-        assert element.type().decode() == "D"
+        # assert element.type.decode() == "D"
+        assert element.type == "D"
         assert element.has_id()
-        assert element.id() == 1
+        assert element.id == 1
         assert element.has_name()
-        assert element.name().decode() == "E"
+        assert element.name.decode() == "E"
+
+    @staticmethod
+    def test_TryMerge_mutable_key_path_not_bytes():
+        entity = entity_module.EntityProto()
+        d = _get_decoder(b"\x6a\x0c\x72\x0a\x0b\x12\x01\x44\x18\x01\x22\x01\x45\x0c")
+        entity.TryMerge(d)
+        assert entity.has_key()  # noqa: W601
+        assert entity.key().has_path()
+        element = entity.key().path.element_list()[0]
+        assert element.has_type()
+        assert element.type == "D"
+        # Not quite sure how this type could be set from a decoder string
+        element.set_type(u"E")
+        assert element.type == "E"
 
     @staticmethod
     def test_TryMerge_mutable_key_path_with_skip_data():
@@ -128,7 +143,7 @@ class TestEntityProto:
         d = _get_decoder(b"\x6a\x07\x02\x01\x01\xa2\x01\x01\x42")
         entity.TryMerge(d)
         assert entity.key().has_name_space()
-        assert entity.key().name_space().decode() == "B"
+        assert entity.key().name_space.decode() == "B"
 
     @staticmethod
     def test_TryMerge_mutable_key_decode_error():

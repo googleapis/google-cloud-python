@@ -41,6 +41,7 @@ from google.cloud.ndb import polymodel
 from google.cloud.ndb import query as query_module
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils as ndb_utils
+from google.cloud.ndb import _legacy_entity_pb
 
 from . import utils
 
@@ -2144,6 +2145,20 @@ class TestPickleProperty:
     def test__from_base_type(self):
         prop = model.PickleProperty(name="pkl")
         assert prop._from_base_type(self.PICKLED) == self.UNPICKLED
+
+    # @pytest.mark.usefixtures("in_context")
+    @pytest.mark.usefixtures("client_context")
+    def test__legacy_from_base_type(self, client_context):
+        # GAE NDB stores pickled properties as bytes and with GAE NDB structures.
+        # Validate we can unpickle to a Cloud NDB structure.
+        # See https://github.com/googleapis/python-ndb/issues/587
+        # TODO: This test fails as code will raise "_pickle.UnpicklingError: state is not a dictionary"
+        gae_ndb_stored_value = b"\x80\x02cunit.models\nA\nq\x01)\x81q\x02URj#j\x0fs~crwilcox-testr\x05\x0b\x12\x01A\x0c\xa2\x01\x08UnitTestr\x11\x1a\tsome_prop \x00*\x02\x08\x01r\x15\x1a\x06source \x00*\t\x1a\x07gae 2.7\x82\x01\x00b."
+        prop = model.PickleProperty(repeated=True)
+        val = prop._from_base_type(gae_ndb_stored_value)
+        expected = {"some_prop": 1, "source": "gae 2.7"}
+        actual = val.to_dict()
+        assert expected == actual
 
 
 class TestJsonProperty:
@@ -5697,6 +5712,272 @@ class TestExpando:
             del expansive.baz
 
 
+class Test__legacy_db_get_value:
+    @staticmethod
+    def test_str_blobkey():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.BLOBKEY)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"foo")
+        assert prop._legacy_db_get_value(v, p) == model.BlobKey(b"foo")
+
+    @staticmethod
+    def test_str_blob():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.BLOB)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"foo")
+        assert prop._legacy_db_get_value(v, p) == b"foo"
+
+    @staticmethod
+    def test_str_blob_compressed():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.BLOB)
+        p.set_meaning_uri("ZLIB")
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"foo")
+        assert prop._legacy_db_get_value(v, p) == b"foo"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_str_entity_proto():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.ENTITY_PROTO)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"\x6a\x03\x6a\x01\x42")
+        assert isinstance(prop._legacy_db_get_value(v, p), model.Expando)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_str_entity_proto_no_key():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.ENTITY_PROTO)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"\x72\x0a\x0b\x12\x01\x44\x18\x01\x22\x01\x45\x0c")
+        assert isinstance(prop._legacy_db_get_value(v, p), model.Expando)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_str_entity_proto_bad():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.ENTITY_PROTO)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"\x6a\x0c\x72\x0a\x0b\x12\x01\x44\x18\x01\x22\x01\x45\x0c")
+        with pytest.raises(ValueError):
+            prop._legacy_db_get_value(v, p)
+
+    @staticmethod
+    def test_str_bytestr_meaning():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.BYTESTRING)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"foo")
+        assert prop._legacy_db_get_value(v, p) == b"foo"
+
+    @staticmethod
+    @pytest.mark.skipif(six.PY2, reason="Test for Python 3 only.")
+    def test_str_utf8():  # pragma: NO PY2 COVER
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        v.has_stringvalue_ = 1
+        v.stringvalue_ = bytes("fo\xc3", encoding="utf-8")
+        assert prop._legacy_db_get_value(v, p) == "fo\xc3"
+
+    @staticmethod
+    @pytest.mark.skipif(six.PY3, reason="Test for Python 2 only.")
+    def test_str_utf8_py2():  # pragma: NO PY3 COVER
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        v.has_stringvalue_ = 1
+        v.stringvalue_ = r"fo\xc3"
+        assert prop._legacy_db_get_value(v, p) == r"fo\xc3"
+
+    @staticmethod
+    def test_str_decode_error():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_stringvalue(b"\xe9")
+        assert prop._legacy_db_get_value(v, p) == b"\xe9"
+
+    @staticmethod
+    def test_int_gd_when():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.GD_WHEN)
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_int64value(42)
+        d = datetime.datetime(1970, 1, 1, 0, 0, 0, 42)
+        assert prop._legacy_db_get_value(v, p) == d
+
+    @staticmethod
+    def test_boolean():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_booleanvalue(True)
+        assert prop._legacy_db_get_value(v, p) is True
+
+    @staticmethod
+    def test_double():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_doublevalue(3.1415)
+        assert prop._legacy_db_get_value(v, p) == 3.1415
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_reference():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        r = _legacy_entity_pb.PropertyValue_ReferenceValue()
+        e = _legacy_entity_pb.PropertyValue_ReferenceValuePathElement()
+        e.set_type("a")
+        e.set_id("b")
+        r.pathelement_ = [e]
+        r.set_app("c")
+        v.mutable_referencevalue()
+        v.referencevalue_ = r
+        key = key_module.Key("a", "b", app="c", namespace="")
+        assert prop._legacy_db_get_value(v, p) == key
+
+    @staticmethod
+    def test_point():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        r = _legacy_entity_pb.PropertyValue_PointValue()
+        r.set_x(10)
+        r.set_y(20)
+        v.mutable_pointvalue()
+        v.pointvalue_ = r
+        assert prop._legacy_db_get_value(v, p) == model.GeoPt(10, 20)
+
+    @staticmethod
+    def test_user():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        u = _legacy_entity_pb.PropertyValue_UserValue()
+        user = model.User(email="aol@aol.com", _auth_domain="aol.com", _user_id="loa")
+        u.set_email(b"aol@aol.com")
+        u.set_auth_domain(b"aol.com")
+        u.set_obfuscated_gaiaid(b"loa")
+        v.mutable_uservalue()
+        v.uservalue_ = u
+        assert prop._legacy_db_get_value(v, p) == user
+
+    @staticmethod
+    def test_missing():
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        assert prop._legacy_db_get_value(v, p) is None
+
+
+class Test__legacy_deserialize:
+    @staticmethod
+    def test_empty_list():
+        m = model.Model()
+        prop = model.Property()
+        p = _legacy_entity_pb.Property()
+        p.set_meaning(_legacy_entity_pb.Property.EMPTY_LIST)
+        assert prop._legacy_deserialize(m, p) is None
+
+    @staticmethod
+    def test_repeated():
+        m = model.Model()
+        prop = model.Property(repeated=True)
+        p = _legacy_entity_pb.Property()
+        assert prop._legacy_deserialize(m, p) is None
+
+    @staticmethod
+    def test_repeated_with_value():
+        m = model.Model()
+        prop = model.Property(repeated=True)
+        prop._store_value(m, [41])
+        p = _legacy_entity_pb.Property()
+        v = _legacy_entity_pb.PropertyValue()
+        v.set_int64value(42)
+        assert prop._legacy_deserialize(m, p) is None
+
+
+class Test__get_property_for:
+    @staticmethod
+    def test_depth_bigger_than_parts():
+        m = model.Model()
+        p = _legacy_entity_pb.Property()
+        p.set_name(b"foo")
+        assert m._get_property_for(p, depth=5) is None
+
+    @staticmethod
+    def test_none():
+        m = model.Model()
+        p = _legacy_entity_pb.Property()
+        p.set_name(b"foo")
+        assert m._get_property_for(p)._name == "foo"
+
+
+class Test__from_pb:
+    @staticmethod
+    def test_not_entity_proto_raises_error():
+        m = model.Model()
+        with pytest.raises(TypeError):
+            m._from_pb("not a pb")
+
+    @staticmethod
+    def test_with_key():
+        m = model.Model()
+        pb = _legacy_entity_pb.EntityProto()
+        key = key_module.Key("a", "b", app="c", namespace="")
+        ent = m._from_pb(pb, key=key)
+        assert ent.key == key
+
+    @staticmethod
+    def test_with_index_meaning():
+        m = model.Model()
+        pb = _legacy_entity_pb.EntityProto()
+        p = _legacy_entity_pb.Property()
+        p.set_name(b"foo")
+        p.set_meaning(_legacy_entity_pb.Property.INDEX_VALUE)
+        pb.property_ = [p]
+        ent = m._from_pb(pb)
+        assert "foo" in ent._projection
+
+
+class Test__fake_property:
+    @staticmethod
+    def test_with_clone_properties():
+        def clone():
+            pass
+
+        m = model.Model()
+        m._clone_properties = clone
+        p = _legacy_entity_pb.Property()
+        p.set_name(b"foo")
+        fake = m._fake_property(p, "next")
+        assert fake._name == "next"
+
+    @staticmethod
+    def test_with_same_name():
+        m = model.Model()
+        p = _legacy_entity_pb.Property()
+        p.set_name(b"next")
+        fake = m._fake_property(p, "next")
+        assert fake._name == "next"
+
+
 @pytest.mark.usefixtures("in_context")
 @mock.patch("google.cloud.ndb.key.Key")
 @mock.patch("google.cloud.ndb.tasklets.Future")
@@ -5790,7 +6071,7 @@ def test_get_indexes():
 @pytest.mark.usefixtures("in_context")
 def test_serialization():
 
-    # THis is needed because pickle can't serialize local objects
+    # This is needed because pickle can't serialize local objects
     global SomeKind, OtherKind
 
     class OtherKind(model.Model):

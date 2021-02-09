@@ -41,7 +41,7 @@ def unit(session):
     # Install all dependencies.
     session.install("pytest", "pytest-cov")
     session.install("mock")
-    session.install(".")
+    session.install("-e", ".")
     # This variable is used to skip coverage by Python version
     session.env["PY_VERSION"] = session.python[0]
     # Run py.test against the unit tests.

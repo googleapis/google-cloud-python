@@ -189,6 +189,40 @@ class PropertyValue_ReferenceValue(ProtocolBuffer.ProtocolMessage):
             d.skipData(tt)
 
 
+class PropertyValue_UserValue(ProtocolBuffer.ProtocolMessage):
+    has_email_ = 0
+    email_ = ""
+    has_auth_domain_ = 0
+    auth_domain_ = ""
+    has_nickname_ = 0
+    nickname_ = ""
+    has_gaiaid_ = 0
+    gaiaid_ = 0
+    has_obfuscated_gaiaid_ = 0
+    obfuscated_gaiaid_ = ""
+
+    def email(self):
+        return self.email_
+
+    def set_email(self, x):
+        self.has_email_ = 1
+        self.email_ = x
+
+    def auth_domain(self):
+        return self.auth_domain_
+
+    def set_auth_domain(self, x):
+        self.has_auth_domain_ = 1
+        self.auth_domain_ = x
+
+    def obfuscated_gaiaid(self):
+        return self.obfuscated_gaiaid_
+
+    def set_obfuscated_gaiaid(self, x):
+        self.has_obfuscated_gaiaid_ = 1
+        self.obfuscated_gaiaid_ = x
+
+
 class PropertyValue(ProtocolBuffer.ProtocolMessage):
     has_int64value_ = 0
     int64value_ = 0
@@ -200,6 +234,8 @@ class PropertyValue(ProtocolBuffer.ProtocolMessage):
     doublevalue_ = 0.0
     has_pointvalue_ = 0
     pointvalue_ = None
+    has_uservalue_ = 0
+    uservalue_ = None
     has_referencevalue_ = 0
     referencevalue_ = None
 
@@ -266,6 +302,18 @@ class PropertyValue(ProtocolBuffer.ProtocolMessage):
 
     def has_referencevalue(self):
         return self.has_referencevalue_
+
+    def uservalue(self):
+        if self.uservalue_ is None:
+            self.uservalue_ = PropertyValue_UserValue()
+        return self.uservalue_
+
+    def mutable_uservalue(self):
+        self.has_uservalue_ = 1
+        return self.uservalue()
+
+    def has_uservalue(self):
+        return self.has_uservalue_
 
     def TryMerge(self, d):
         while d.avail() > 0:
@@ -475,7 +523,11 @@ class Path_Element(ProtocolBuffer.ProtocolMessage):
     has_name_ = 0
     name_ = ""
 
+    @property
     def type(self):
+        # Force legacy byte-str to be a str.
+        if type(self.type_) is bytes:
+            return self.type_.decode()
         return self.type_
 
     def set_type(self, x):
@@ -485,6 +537,7 @@ class Path_Element(ProtocolBuffer.ProtocolMessage):
     def has_type(self):
         return self.has_type_
 
+    @property
     def id(self):
         return self.id_
 
@@ -495,6 +548,7 @@ class Path_Element(ProtocolBuffer.ProtocolMessage):
     def has_id(self):
         return self.has_id_
 
+    @property
     def name(self):
         return self.name_
 
@@ -529,8 +583,15 @@ class Path(ProtocolBuffer.ProtocolMessage):
     def __init__(self):
         self.element_ = []
 
+    @property
+    def element(self):
+        return self.element_
+
     def element_list(self):
         return self.element_
+
+    def element_size(self):
+        return len(self.element_)
 
     def add_element(self):
         x = Path_Element()
@@ -561,6 +622,7 @@ class Reference(ProtocolBuffer.ProtocolMessage):
     def __init__(self):
         self.path_ = Path()
 
+    @property
     def app(self):
         return self.app_
 
@@ -571,6 +633,7 @@ class Reference(ProtocolBuffer.ProtocolMessage):
     def has_app(self):
         return self.has_app_
 
+    @property
     def name_space(self):
         return self.name_space_
 
@@ -581,6 +644,7 @@ class Reference(ProtocolBuffer.ProtocolMessage):
     def has_name_space(self):
         return self.has_name_space_
 
+    @property
     def path(self):
         return self.path_
 
@@ -591,6 +655,7 @@ class Reference(ProtocolBuffer.ProtocolMessage):
     def has_path(self):
         return self.has_path_
 
+    @property
     def database_id(self):
         return self.database_id_
 

@@ -113,6 +113,25 @@ def in_context(context):
 
 
 @pytest.fixture
+def namespace():
+    return "UnitTest"
+
+
+@pytest.fixture
+def client_context(namespace):
+    from google.cloud import ndb
+
+    client = ndb.Client()
+    context_manager = client.context(
+        cache_policy=False,
+        legacy_data=False,
+        namespace=namespace,
+    )
+    with context_manager as context:
+        yield context
+
+
+@pytest.fixture
 def global_cache(context):
     assert not context_module._state.context
 
