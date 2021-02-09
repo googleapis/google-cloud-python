@@ -68,6 +68,25 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[".coveragerc", "docs/multiprocessing.rst"])
 
+# adjust .trampolinerc for environment tests
+s.replace(
+    ".trampolinerc",
+    "required_envvars[^\)]*\)",
+    "required_envvars+=()"
+)
+s.replace(
+    ".trampolinerc",
+    "pass_down_envvars\+\=\(",
+    'pass_down_envvars+=(\n    "ENVIRONMENT"'
+)
+
+# don't lint environment tests
+s.replace(
+    ".flake8",
+    "exclude =",
+    'exclude =\n  # Exclude environment test code.\n  tests/environment/**\n'
+)
+
 # --------------------------------------------------------------------------
 # Samples templates
 # --------------------------------------------------------------------------

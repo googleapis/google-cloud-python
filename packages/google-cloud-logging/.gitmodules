@@ -1,0 +1,3 @@
+[submodule "tests/environment"]
+	path = tests/environment
+	url = https://github.com/googleapis/env-tests-logging.git

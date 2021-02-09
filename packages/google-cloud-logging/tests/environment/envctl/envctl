@@ -1,0 +1,129 @@
+#!/bin/bash
+set -e # exit on any failure
+set -o pipefail # any step in pipe caused failure
+set -u # undefined variables cause exit
+
+# set an ID to use for future runs
+ENVCTL_ID="${ENVCTL_ID:-$(hostname)}"
+
+# find the associated project
+PROJECT_ID="${PROJECT_ID:-$(gcloud config get-value project)}"
+
+# ensure the working dir is the repo root
+SCRIPT_DIR=$(realpath $(dirname "$0"))
+REPO_ROOT=$(realpath $SCRIPT_DIR/../)
+cd $REPO_ROOT
+# find super-repo path
+set +e
+SUPERREPO_ROOT=$(git -C ../ rev-parse --show-toplevel 2> /dev/null)
+if [[ $? -ne 0 ]]; then
+  echo "ERROR: super-repo not found. envctl expects to be used as a git sub-module"
+  exit 1
+fi
+set -e
+
+# create and destroy temporary dir
+UUID=$(python  -c 'import uuid; print(uuid.uuid1())')
+TMP_DIR=$REPO_ROOT/tmp-$UUID
+mkdir $TMP_DIR
+function finish {
+    # Your cleanup code here
+    rm -rf $TMP_DIR
+}
+trap finish EXIT
+
+# shared logic
+build_container() {
+  export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
+  # copy super-repo into deployable dir
+  _env_tests_relative_path=${REPO_ROOT#"$SUPERREPO_ROOT/"}
+  _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
+  # copy over local copy of library
+  pushd $SUPERREPO_ROOT
+    tar -cvf $_deployable_dir/lib.tar --exclude tests --exclude .nox --exclude samples --exclude docs --exclude __pycache__ .
+  popd
+  mkdir -p $_deployable_dir/python-logging
+  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/python-logging
+  # build container
+  docker build -t $GCR_PATH $_deployable_dir
+  docker push $GCR_PATH
+}
+
+logs() {
+  echo "resource filter: \"$(filter-string)\""
+  echo "printing recent logs..."
+  gcloud logging read --freshness "5m" --limit 10 "$(filter-string)"
+}
+
+trigger() {
+  echo publishing to topic: $SERVICE_NAME
+  local FUNCTION="${1-empty}"
+  if [[ $FUNCTION == "empty" ]]; then
+    echo "function not set"
+    exit 1
+  fi
+  shift
+  if [[ -z "$@" ]]; then
+    echo calling $FUNCTION\(\)
+    gcloud pubsub topics publish "$SERVICE_NAME" --message="$FUNCTION"
+  else
+    echo calling $FUNCTION\($@\)
+    eval gcloud pubsub topics publish "$SERVICE_NAME" --message="$FUNCTION" --attribute=$@
+  fi
+}
+
+# entrypoint
+LANGUAGE=${1:-none}
+if [[ "$LANGUAGE" == "help" || "$LANGUAGE" == '-h' ]]; then
+  echo "usage:"
+  echo "$ envctl language environment action <args>"
+  exit 0
+elif [[ ! -d "$SCRIPT_DIR/env_scripts/$LANGUAGE" ]]; then
+  echo Error not a valid language: $LANGUAGE
+  echo
+  echo "Select a supported language."
+  echo
+  printf "options:\n$(ls $SCRIPT_DIR/env_scripts/)"
+  exit 1
+fi
+shift
+
+ENVIRONMENT=${1:-none}
+if [[ -f "$SCRIPT_DIR/env_scripts/$LANGUAGE/$ENVIRONMENT.sh" ]]; then
+  source "$SCRIPT_DIR/env_scripts/$LANGUAGE/$ENVIRONMENT.sh"
+else
+  echo Error: not a valid environment: $ENVIRONMENT
+  echo
+  echo "Select a supported GCP environment."
+  echo
+  printf "options:\n$(ls $SCRIPT_DIR/env_scripts/$LANGUAGE | sed -e "s/.sh//")"
+  exit 1
+fi
+shift
+
+# create pub/sub topic
+set +e
+gcloud pubsub topics create $SERVICE_NAME 2>/dev/null
+set -e
+
+ACTION=${1:-none}
+set -u
+if [[ "$(type -t $ACTION)" == "function" ]]; then
+  shift
+  $ACTION $@
+else
+  echo Error: not valid command: $ACTION
+  echo
+  echo "Select an action to run for the environment."
+  echo
+  echo "options:"
+  echo "deploy        Spin up an environment."
+  echo "verify        Check if an envirionment is active."
+  echo "destroy       Destroy an existing environment."
+  echo "trigger       Trigger a function in the environment."
+  echo "logs          Print logs for the environment."
+  echo "filter-string Print the filter to obtain logs for this environment"
+  echo
+  exit 1
+fi
+finish
