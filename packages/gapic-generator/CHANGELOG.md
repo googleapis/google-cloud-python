@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.9](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.8...v0.40.9) (2021-02-10)
+
+
+### Bug Fixes
+
+* fix rest transport tests ([#772](https://www.github.com/googleapis/gapic-generator-python/issues/772)) ([ce110a3](https://www.github.com/googleapis/gapic-generator-python/commit/ce110a35894aa1a838649f9782294b3b8446be5c))
+
 ### [0.40.8](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.7...v0.40.8) (2021-02-05)
 
 
