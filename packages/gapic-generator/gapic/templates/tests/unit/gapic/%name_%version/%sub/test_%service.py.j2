@@ -1131,14 +1131,14 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get('json')
+        body = http_params.get('data')
         {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
         {% if field.ident|string() == 'timestamp.Timestamp' -%}
         assert TimestampRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
         {% elif field.ident|string() == 'duration.Duration' -%}
         assert DurationRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
         {% else -%}
-        assert {% if field.field_pb is msg_field_pb %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False)
+        assert {% if field.field_pb is msg_field_pb %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False, use_integers_for_enums=False)
                {%- elif field.field_pb is str_field_pb %}{{ field.mock_value }}
                {%- else %}str({{ field.mock_value }})
                {%- endif %} in http_call[1] + str(body)
