@@ -34,7 +34,7 @@ extras = {"aiohttp": "aiohttp >= 3.6.2, < 4.0.0dev; python_version>='3.6'"}
 with io.open("README.rst", "r") as fh:
     long_description = fh.read()
 
-version = "1.25.0"
+version = "1.26.0"
 
 setup(
     name="google-auth",
