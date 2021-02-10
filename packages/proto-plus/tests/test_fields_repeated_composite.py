@@ -165,7 +165,7 @@ def test_repeated_composite_iadd():
     assert baz.foos[1].bar == 48
 
 
-def test_repeated_composite_set():
+def test_repeated_composite_set_index():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT32, number=1)
 
@@ -176,9 +176,101 @@ def test_repeated_composite_set():
     baz.foos[1] = Foo(bar=55)
     assert baz.foos[0].bar == 96
     assert baz.foos[1].bar == 55
+    assert len(baz.foos) == 2
 
 
-def test_repeated_composite_set_wrong_type():
+def test_repeated_composite_set_index_error():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[])
+    with pytest.raises(IndexError):
+        baz.foos[0] = Foo(bar=55)
+
+
+def test_repeated_composite_set_slice_less():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[{"bar": 96}, {"bar": 48}, {"bar": 24}])
+    baz.foos[:2] = [{"bar": 12}]
+    assert baz.foos[0].bar == 12
+    assert baz.foos[1].bar == 24
+    assert len(baz.foos) == 2
+
+
+def test_repeated_composite_set_slice_more():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[{"bar": 12}])
+    baz.foos[:2] = [{"bar": 96}, {"bar": 48}, {"bar": 24}]
+    assert baz.foos[0].bar == 96
+    assert baz.foos[1].bar == 48
+    assert baz.foos[2].bar == 24
+    assert len(baz.foos) == 3
+
+
+def test_repeated_composite_set_slice_not_iterable():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[])
+    with pytest.raises(TypeError):
+        baz.foos[:1] = None
+
+
+def test_repeated_composite_set_extended_slice():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[{"bar": 96}, {"bar": 48}])
+    baz.foos[::-1] = [{"bar": 96}, {"bar": 48}]
+    assert baz.foos[0].bar == 48
+    assert baz.foos[1].bar == 96
+    assert len(baz.foos) == 2
+
+
+def test_repeated_composite_set_extended_slice_wrong_length():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[{"bar": 96}])
+    with pytest.raises(ValueError):
+        baz.foos[::-1] = []
+
+
+def test_repeated_composite_set_wrong_key_type():
+    class Foo(proto.Message):
+        bar = proto.Field(proto.INT32, number=1)
+
+    class Baz(proto.Message):
+        foos = proto.RepeatedField(proto.MESSAGE, message=Foo, number=1)
+
+    baz = Baz(foos=[])
+    with pytest.raises(TypeError):
+        baz.foos[None] = Foo(bar=55)
+
+
+def test_repeated_composite_set_wrong_value_type():
     class Foo(proto.Message):
         bar = proto.Field(proto.INT32, number=1)
 
