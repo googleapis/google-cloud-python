@@ -55,7 +55,7 @@ from google.api_core.iam import Policy
 from google.cloud import exceptions
 from google.cloud._helpers import _bytes_to_unicode
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud._helpers import _to_bytes
 from google.cloud.exceptions import NotFound
 from google.cloud.storage._helpers import _add_generation_match_parameters
@@ -3645,7 +3645,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get("retentionExpirationTime")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def self_link(self):
@@ -3731,7 +3731,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get("timeDeleted")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def time_created(self):
@@ -3746,7 +3746,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get("timeCreated")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def updated(self):
@@ -3761,7 +3761,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get("updated")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def custom_time(self):
@@ -3776,7 +3776,7 @@ class Blob(_PropertyMixin):
         """
         value = self._properties.get("customTime")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @custom_time.setter
     def custom_time(self, value):

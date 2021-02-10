@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from google.cloud.exceptions import NotFound
-from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud._helpers import _rfc3339_nanos_to_datetime
 
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
@@ -151,7 +151,7 @@ class HMACKeyMetadata(object):
         """
         value = self._properties.get("timeCreated")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def updated(self):
@@ -164,7 +164,7 @@ class HMACKeyMetadata(object):
         """
         value = self._properties.get("updated")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def path(self):

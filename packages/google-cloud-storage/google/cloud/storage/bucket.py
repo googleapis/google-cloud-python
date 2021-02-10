@@ -28,7 +28,7 @@ from google.api_core import page_iterator
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
-from google.cloud._helpers import _rfc3339_to_datetime
+from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
 from google.cloud.storage import _signing
@@ -499,7 +499,7 @@ class IAMConfiguration(dict):
         ubla = self.get("uniformBucketLevelAccess", {})
         stamp = ubla.get("lockedTime")
         if stamp is not None:
-            stamp = _rfc3339_to_datetime(stamp)
+            stamp = _rfc3339_nanos_to_datetime(stamp)
         return stamp
 
     @property
@@ -2556,7 +2556,7 @@ class Bucket(_PropertyMixin):
         if policy is not None:
             timestamp = policy.get("effectiveTime")
             if timestamp is not None:
-                return _rfc3339_to_datetime(timestamp)
+                return _rfc3339_nanos_to_datetime(timestamp)
 
     @property
     def retention_policy_locked(self):
@@ -2675,7 +2675,7 @@ class Bucket(_PropertyMixin):
         """
         value = self._properties.get("timeCreated")
         if value is not None:
-            return _rfc3339_to_datetime(value)
+            return _rfc3339_nanos_to_datetime(value)
 
     @property
     def versioning_enabled(self):

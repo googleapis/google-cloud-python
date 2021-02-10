@@ -1063,6 +1063,21 @@ class TestStorageWriteFiles(TestStorageFiles):
         custom_time = same_blob.custom_time.replace(tzinfo=None)
         self.assertEqual(custom_time, current_time)
 
+    def test_blob_custom_time_no_micros(self):
+        # Test that timestamps without microseconds are treated correctly by
+        # custom_time encoding/decoding.
+        blob = self.bucket.blob("CustomTimeNoMicrosBlob")
+        file_contents = b"Hello World"
+        time_without_micros = datetime.datetime(2021, 2, 10, 12, 30)
+        blob.custom_time = time_without_micros
+        blob.upload_from_string(file_contents)
+        self.case_blobs_to_delete.append(blob)
+
+        same_blob = self.bucket.blob(("CustomTimeNoMicrosBlob"))
+        same_blob.reload(projection="full")
+        custom_time = same_blob.custom_time.replace(tzinfo=None)
+        self.assertEqual(custom_time, time_without_micros)
+
     def test_blob_crc32_md5_hash(self):
         blob = self.bucket.blob("MyBuffer")
         file_contents = b"Hello World"
