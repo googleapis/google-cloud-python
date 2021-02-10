@@ -909,6 +909,24 @@ class Test_Blob(unittest.TestCase):
         )
         self.assertEqual(download_url, expected_url)
 
+    def test__get_download_url_mtls(self):
+        blob_name = "bzzz-fly.txt"
+        bucket = _Bucket(name="buhkit")
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        self.assertIsNone(blob.media_link)
+        client = mock.Mock(_connection=_Connection)
+        client._connection.API_BASE_URL = "https://storage.googleapis.com"
+        client._connection.get_api_base_url_for_mtls = mock.Mock(
+            return_value="https://foo.mtls"
+        )
+        download_url = blob._get_download_url(client)
+        del client._connection.get_api_base_url_for_mtls
+        expected_url = (
+            "https://foo.mtls/download/storage/v1/b/" "buhkit/o/bzzz-fly.txt?alt=media"
+        )
+        self.assertEqual(download_url, expected_url)
+
     def test__get_download_url_on_the_fly_with_generation(self):
         blob_name = "pretend.txt"
         bucket = _Bucket(name="fictional")
@@ -1959,6 +1977,7 @@ class Test_Blob(unittest.TestCase):
         kms_key_name=None,
         timeout=None,
         metadata=None,
+        mtls=False,
     ):
         from six.moves.urllib.parse import urlencode
 
@@ -1977,6 +1996,14 @@ class Test_Blob(unittest.TestCase):
 
             client = mock.Mock(_http=transport, _connection=_Connection, spec=["_http"])
             client._connection.API_BASE_URL = "https://storage.googleapis.com"
+
+        # Mock get_api_base_url_for_mtls function.
+        mtls_url = "https://foo.mtls"
+        if mtls:
+            client._connection.get_api_base_url_for_mtls = mock.Mock(
+                return_value=mtls_url
+            )
+
         data = b"data here hear hier"
         stream = io.BytesIO(data)
         content_type = u"application/xml"
@@ -2002,6 +2029,10 @@ class Test_Blob(unittest.TestCase):
             **timeout_kwarg
         )
 
+        # Clean up the get_api_base_url_for_mtls mock.
+        if mtls:
+            del client._connection.get_api_base_url_for_mtls
+
         # Check the mocks and the returned value.
         self.assertIs(response, client._http.request.return_value)
         if size is None:
@@ -2016,6 +2047,8 @@ class Test_Blob(unittest.TestCase):
         upload_url = (
             "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
         )
+        if mtls:
+            upload_url = mtls_url + "/upload/storage/v1" + bucket.path + "/o"
 
         qs_params = [("uploadType", "multipart")]
 
@@ -2063,6 +2096,12 @@ class Test_Blob(unittest.TestCase):
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
     def test__do_multipart_upload_no_size(self, mock_get_boundary):
         self._do_multipart_success(mock_get_boundary, predefined_acl="private")
+
+    @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
+    def test__do_multipart_upload_no_size_mtls(self, mock_get_boundary):
+        self._do_multipart_success(
+            mock_get_boundary, predefined_acl="private", mtls=True
+        )
 
     @mock.patch(u"google.resumable_media._upload.get_boundary", return_value=b"==0==")
     def test__do_multipart_upload_with_size(self, mock_get_boundary):
@@ -2159,6 +2198,7 @@ class Test_Blob(unittest.TestCase):
         kms_key_name=None,
         timeout=None,
         metadata=None,
+        mtls=False,
     ):
         from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
@@ -2197,6 +2237,14 @@ class Test_Blob(unittest.TestCase):
                 _http=transport, _connection=_Connection, spec=[u"_http"]
             )
             client._connection.API_BASE_URL = "https://storage.googleapis.com"
+
+        # Mock get_api_base_url_for_mtls function.
+        mtls_url = "https://foo.mtls"
+        if mtls:
+            client._connection.get_api_base_url_for_mtls = mock.Mock(
+                return_value=mtls_url
+            )
+
         data = b"hello hallo halo hi-low"
         stream = io.BytesIO(data)
         content_type = u"text/plain"
@@ -2224,12 +2272,18 @@ class Test_Blob(unittest.TestCase):
             **timeout_kwarg
         )
 
+        # Clean up the get_api_base_url_for_mtls mock.
+        if mtls:
+            del client._connection.get_api_base_url_for_mtls
+
         # Check the returned values.
         self.assertIsInstance(upload, ResumableUpload)
 
         upload_url = (
             "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
         )
+        if mtls:
+            upload_url = mtls_url + "/upload/storage/v1" + bucket.path + "/o"
         qs_params = [("uploadType", "resumable")]
 
         if user_project is not None:
@@ -2321,6 +2375,9 @@ class Test_Blob(unittest.TestCase):
 
     def test__initiate_resumable_upload_no_size(self):
         self._initiate_resumable_helper()
+
+    def test__initiate_resumable_upload_no_size_mtls(self):
+        self._initiate_resumable_helper(mtls=True)
 
     def test__initiate_resumable_upload_with_size(self):
         self._initiate_resumable_helper(size=10000)

@@ -25,6 +25,8 @@ class TestConnection(unittest.TestCase):
         return Connection
 
     def _make_one(self, *args, **kw):
+        if "api_endpoint" not in kw:
+            kw["api_endpoint"] = "https://storage.googleapis.com"
         return self._get_target_class()(*args, **kw)
 
     def test_extra_headers(self):
@@ -213,3 +215,16 @@ class TestConnection(unittest.TestCase):
             retry=conditional_retry_mock,
         )
         http.request.assert_called_once()
+
+    def test_mtls(self):
+        client = object()
+
+        conn = self._make_one(client, api_endpoint=None)
+        self.assertEqual(conn.ALLOW_AUTO_SWITCH_TO_MTLS_URL, True)
+        self.assertEqual(conn.API_BASE_URL, "https://storage.googleapis.com")
+        self.assertEqual(conn.API_BASE_MTLS_URL, "https://storage.mtls.googleapis.com")
+
+        conn = self._make_one(client, api_endpoint="http://foo")
+        self.assertEqual(conn.ALLOW_AUTO_SWITCH_TO_MTLS_URL, False)
+        self.assertEqual(conn.API_BASE_URL, "http://foo")
+        self.assertEqual(conn.API_BASE_MTLS_URL, "https://storage.mtls.googleapis.com")

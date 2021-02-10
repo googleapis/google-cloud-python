@@ -89,6 +89,7 @@ def _make_json_response(data, status=http_client.OK, headers=None):
 def _make_requests_session(responses):
     session = mock.create_autospec(requests.Session, instance=True)
     session.request.side_effect = responses
+    session.is_mtls = False
     return session
 
 
@@ -218,6 +219,21 @@ class TestClient(unittest.TestCase):
         self.assertIsNone(client.current_batch)
         self.assertEqual(list(client._batch_stack), [])
         self.assertIs(client._connection._client_info, client_info)
+
+    def test_ctor_mtls(self):
+        credentials = _make_credentials()
+
+        client = self._make_one(credentials=credentials)
+        self.assertEqual(client._connection.ALLOW_AUTO_SWITCH_TO_MTLS_URL, True)
+        self.assertEqual(
+            client._connection.API_BASE_URL, "https://storage.googleapis.com"
+        )
+
+        client = self._make_one(
+            credentials=credentials, client_options={"api_endpoint": "http://foo"}
+        )
+        self.assertEqual(client._connection.ALLOW_AUTO_SWITCH_TO_MTLS_URL, False)
+        self.assertEqual(client._connection.API_BASE_URL, "http://foo")
 
     def test_create_anonymous_client(self):
         from google.auth.credentials import AnonymousCredentials

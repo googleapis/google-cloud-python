@@ -830,9 +830,8 @@ class Blob(_PropertyMixin):
         """
         name_value_pairs = []
         if self.media_link is None:
-            base_url = _DOWNLOAD_URL_TEMPLATE.format(
-                hostname=client._connection.API_BASE_URL, path=self.path
-            )
+            hostname = _get_host_name(client._connection)
+            base_url = _DOWNLOAD_URL_TEMPLATE.format(hostname=hostname, path=self.path)
             if self.generation is not None:
                 name_value_pairs.append(("generation", "{:d}".format(self.generation)))
         else:
@@ -1685,8 +1684,9 @@ class Blob(_PropertyMixin):
         info = self._get_upload_arguments(content_type)
         headers, object_metadata, content_type = info
 
+        hostname = _get_host_name(client._connection)
         base_url = _MULTIPART_URL_TEMPLATE.format(
-            hostname=client._connection.API_BASE_URL, bucket_path=self.bucket.path
+            hostname=hostname, bucket_path=self.bucket.path
         )
         name_value_pairs = []
 
@@ -1866,8 +1866,9 @@ class Blob(_PropertyMixin):
         if extra_headers is not None:
             headers.update(extra_headers)
 
+        hostname = _get_host_name(client._connection)
         base_url = _RESUMABLE_URL_TEMPLATE.format(
-            hostname=client._connection.API_BASE_URL, bucket_path=self.bucket.path
+            hostname=hostname, bucket_path=self.bucket.path
         )
         name_value_pairs = []
 
@@ -3796,6 +3797,25 @@ class Blob(_PropertyMixin):
             value = _datetime_to_rfc3339(value)
 
         self._patch_property("customTime", value)
+
+
+def _get_host_name(connection):
+    """Returns the host name from the given connection.
+
+    :type connection: :class:`~google.cloud.storage._http.Connection`
+    :param connection: The connection object.
+
+    :rtype: str
+    :returns: The host name.
+    """
+    # TODO: After google-cloud-core 1.6.0 is stable and we upgrade it
+    # to 1.6.0 in setup.py, we no longer need to check the attribute
+    # existence. We can simply return connection.get_api_base_url_for_mtls().
+    return (
+        connection.API_BASE_URL
+        if not hasattr(connection, "get_api_base_url_for_mtls")
+        else connection.get_api_base_url_for_mtls()
+    )
 
 
 def _get_encryption_headers(key, source=False):
