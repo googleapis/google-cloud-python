@@ -65,7 +65,7 @@ TEST_STATUS_CODE=$?
 
 # destroy resources
 echo "cleaning up..."
-/workspace/python-logging/tests/environment/envctl/envctl python $ENVIRONMENT destroy
+${PROJECT_ROOT}/tests/environment/envctl/envctl python $ENVIRONMENT destroy
 
 # exit with proper status code
 exit $TEST_STATUS_CODE
