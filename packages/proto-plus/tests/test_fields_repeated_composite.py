@@ -14,6 +14,7 @@
 
 from datetime import datetime
 from datetime import timezone
+from enum import Enum
 
 import pytest
 
@@ -93,6 +94,17 @@ def test_repeated_composite_marshaled():
     assert foo.timestamps[2].year == 2017
     assert foo.timestamps[2].month == 10
     assert foo.timestamps[2].hour == 0
+
+
+def test_repeated_composite_enum():
+    class Foo(proto.Message):
+        class Bar(proto.Enum):
+            BAZ = 0
+
+        bars = proto.RepeatedField(Bar, number=1)
+
+    foo = Foo(bars=[Foo.Bar.BAZ])
+    assert isinstance(foo.bars[0], Enum)
 
 
 def test_repeated_composite_outer_write():

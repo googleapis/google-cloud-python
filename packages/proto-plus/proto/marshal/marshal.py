@@ -157,7 +157,10 @@ class BaseMarshal:
         if value_type in compat.repeated_composite_types:
             return RepeatedComposite(value, marshal=self)
         if value_type in compat.repeated_scalar_types:
-            return Repeated(value, marshal=self)
+            if isinstance(proto_type, type):
+                return RepeatedComposite(value, marshal=self, proto_type=proto_type)
+            else:
+                return Repeated(value, marshal=self)
 
         # Same thing for maps of messages.
         if value_type in compat.map_composite_types:

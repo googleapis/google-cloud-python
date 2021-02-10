@@ -25,7 +25,7 @@ class Repeated(collections.abc.MutableSequence):
     modify the underlying field container directly.
     """
 
-    def __init__(self, sequence, *, marshal):
+    def __init__(self, sequence, *, marshal, proto_type=None):
         """Initialize a wrapper around a protobuf repeated field.
 
         Args:
@@ -35,6 +35,7 @@ class Repeated(collections.abc.MutableSequence):
         """
         self._pb = sequence
         self._marshal = marshal
+        self._proto_type = proto_type
 
     def __copy__(self):
         """Copy this object and return the copy."""
@@ -61,7 +62,7 @@ class Repeated(collections.abc.MutableSequence):
         return not self == other
 
     def __repr__(self):
-        return repr(self.pb)
+        return repr([*self])
 
     def __setitem__(self, key, value):
         self.pb[key] = value
@@ -89,6 +90,11 @@ class RepeatedComposite(Repeated):
     @cached_property
     def _pb_type(self):
         """Return the protocol buffer type for this sequence."""
+        # Provide the marshal-given proto_type, if any.
+        # Used for RepeatedComposite of Enum.
+        if self._proto_type is not None:
+            return self._proto_type
+
         # There is no public-interface mechanism to determine the type
         # of what should go in the list (and the C implementation seems to
         # have no exposed mechanism at all).
