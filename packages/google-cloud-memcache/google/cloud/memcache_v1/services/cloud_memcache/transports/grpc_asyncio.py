@@ -28,7 +28,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.memcache_v1beta2.types import cloud_memcache
+from google.cloud.memcache_v1.types import cloud_memcache
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 from .base import CloudMemcacheTransport, DEFAULT_CLIENT_INFO
@@ -312,7 +312,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
             self._stubs["list_instances"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/ListInstances",
+                "/google.cloud.memcache.v1.CloudMemcache/ListInstances",
                 request_serializer=cloud_memcache.ListInstancesRequest.serialize,
                 response_deserializer=cloud_memcache.ListInstancesResponse.deserialize,
             )
@@ -340,7 +340,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
             self._stubs["get_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/GetInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/GetInstance",
                 request_serializer=cloud_memcache.GetInstanceRequest.serialize,
                 response_deserializer=cloud_memcache.Instance.deserialize,
             )
@@ -368,7 +368,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
             self._stubs["create_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/CreateInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/CreateInstance",
                 request_serializer=cloud_memcache.CreateInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -397,7 +397,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
             self._stubs["update_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/UpdateInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/UpdateInstance",
                 request_serializer=cloud_memcache.UpdateInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -411,10 +411,10 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     ]:
         r"""Return a callable for the update parameters method over gRPC.
 
-        Updates the defined Memcached parameters for an existing
-        instance. This method only stages the parameters, it must be
-        followed by ``ApplyParameters`` to apply the parameters to nodes
-        of the Memcached instance.
+        Updates the defined Memcached Parameters for an
+        existing Instance. This method only stages the
+        parameters, it must be followed by ApplyParameters to
+        apply the parameters to nodes of the Memcached Instance.
 
         Returns:
             Callable[[~.UpdateParametersRequest],
@@ -428,7 +428,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "update_parameters" not in self._stubs:
             self._stubs["update_parameters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/UpdateParameters",
+                "/google.cloud.memcache.v1.CloudMemcache/UpdateParameters",
                 request_serializer=cloud_memcache.UpdateParametersRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -456,7 +456,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
             self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/DeleteInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/DeleteInstance",
                 request_serializer=cloud_memcache.DeleteInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -470,9 +470,9 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     ]:
         r"""Return a callable for the apply parameters method over gRPC.
 
-        ``ApplyParameters`` restarts the set of specified nodes in order
-        to update them to the current set of parameters for the
-        Memcached Instance.
+        ApplyParameters will restart the set of specified
+        nodes in order to update them to the current set of
+        parameters for the Memcached Instance.
 
         Returns:
             Callable[[~.ApplyParametersRequest],
@@ -486,40 +486,11 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "apply_parameters" not in self._stubs:
             self._stubs["apply_parameters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/ApplyParameters",
+                "/google.cloud.memcache.v1.CloudMemcache/ApplyParameters",
                 request_serializer=cloud_memcache.ApplyParametersRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["apply_parameters"]
-
-    @property
-    def apply_software_update(
-        self,
-    ) -> Callable[
-        [cloud_memcache.ApplySoftwareUpdateRequest], Awaitable[operations.Operation]
-    ]:
-        r"""Return a callable for the apply software update method over gRPC.
-
-        Updates software on the selected nodes of the
-        Instance.
-
-        Returns:
-            Callable[[~.ApplySoftwareUpdateRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "apply_software_update" not in self._stubs:
-            self._stubs["apply_software_update"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/ApplySoftwareUpdate",
-                request_serializer=cloud_memcache.ApplySoftwareUpdateRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
-            )
-        return self._stubs["apply_software_update"]
 
 
 __all__ = ("CloudMemcacheGrpcAsyncIOTransport",)

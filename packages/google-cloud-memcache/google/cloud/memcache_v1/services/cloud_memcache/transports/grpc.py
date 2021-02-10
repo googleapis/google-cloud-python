@@ -16,27 +16,25 @@
 #
 
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
-from google.api_core import gapic_v1  # type: ignore
-from google.api_core import grpc_helpers_async  # type: ignore
+from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
 from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.cloud.memcache_v1beta2.types import cloud_memcache
+from google.cloud.memcache_v1.types import cloud_memcache
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 from .base import CloudMemcacheTransport, DEFAULT_CLIENT_INFO
-from .grpc import CloudMemcacheGrpcTransport
 
 
-class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
-    """gRPC AsyncIO backend transport for CloudMemcache.
+class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
+    """gRPC backend transport for CloudMemcache.
 
     Configures and manages Cloud Memorystore for Memcached instances.
 
@@ -66,63 +64,21 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "memcache.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            address (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            scopes=scopes,
-            quota_project_id=quota_project_id,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
         *,
         host: str = "memcache.googleapis.com",
         credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
@@ -138,10 +94,9 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -159,14 +114,14 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
                 ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -250,6 +205,9 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
                 ],
             )
 
+        self._stubs = {}  # type: Dict[str, Callable]
+        self._operations_client = None
+
         # Run the base constructor.
         super().__init__(
             host=host,
@@ -260,21 +218,59 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             client_info=client_info,
         )
 
-        self._stubs = {}
-        self._operations_client = None
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "memcache.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
+
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
 
     @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service.
         """
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+    def operations_client(self) -> operations_v1.OperationsClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -282,9 +278,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -293,8 +287,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def list_instances(
         self,
     ) -> Callable[
-        [cloud_memcache.ListInstancesRequest],
-        Awaitable[cloud_memcache.ListInstancesResponse],
+        [cloud_memcache.ListInstancesRequest], cloud_memcache.ListInstancesResponse
     ]:
         r"""Return a callable for the list instances method over gRPC.
 
@@ -302,7 +295,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
 
         Returns:
             Callable[[~.ListInstancesRequest],
-                    Awaitable[~.ListInstancesResponse]]:
+                    ~.ListInstancesResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -312,7 +305,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "list_instances" not in self._stubs:
             self._stubs["list_instances"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/ListInstances",
+                "/google.cloud.memcache.v1.CloudMemcache/ListInstances",
                 request_serializer=cloud_memcache.ListInstancesRequest.serialize,
                 response_deserializer=cloud_memcache.ListInstancesResponse.deserialize,
             )
@@ -321,16 +314,14 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     @property
     def get_instance(
         self,
-    ) -> Callable[
-        [cloud_memcache.GetInstanceRequest], Awaitable[cloud_memcache.Instance]
-    ]:
+    ) -> Callable[[cloud_memcache.GetInstanceRequest], cloud_memcache.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets details of a single Instance.
 
         Returns:
             Callable[[~.GetInstanceRequest],
-                    Awaitable[~.Instance]]:
+                    ~.Instance]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -340,7 +331,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "get_instance" not in self._stubs:
             self._stubs["get_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/GetInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/GetInstance",
                 request_serializer=cloud_memcache.GetInstanceRequest.serialize,
                 response_deserializer=cloud_memcache.Instance.deserialize,
             )
@@ -349,16 +340,14 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     @property
     def create_instance(
         self,
-    ) -> Callable[
-        [cloud_memcache.CreateInstanceRequest], Awaitable[operations.Operation]
-    ]:
+    ) -> Callable[[cloud_memcache.CreateInstanceRequest], operations.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a new Instance in a given location.
 
         Returns:
             Callable[[~.CreateInstanceRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -368,7 +357,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "create_instance" not in self._stubs:
             self._stubs["create_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/CreateInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/CreateInstance",
                 request_serializer=cloud_memcache.CreateInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -377,9 +366,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     @property
     def update_instance(
         self,
-    ) -> Callable[
-        [cloud_memcache.UpdateInstanceRequest], Awaitable[operations.Operation]
-    ]:
+    ) -> Callable[[cloud_memcache.UpdateInstanceRequest], operations.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates an existing Instance in a given project and
@@ -387,7 +374,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
 
         Returns:
             Callable[[~.UpdateInstanceRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -397,7 +384,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "update_instance" not in self._stubs:
             self._stubs["update_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/UpdateInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/UpdateInstance",
                 request_serializer=cloud_memcache.UpdateInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -406,19 +393,17 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     @property
     def update_parameters(
         self,
-    ) -> Callable[
-        [cloud_memcache.UpdateParametersRequest], Awaitable[operations.Operation]
-    ]:
+    ) -> Callable[[cloud_memcache.UpdateParametersRequest], operations.Operation]:
         r"""Return a callable for the update parameters method over gRPC.
 
-        Updates the defined Memcached parameters for an existing
-        instance. This method only stages the parameters, it must be
-        followed by ``ApplyParameters`` to apply the parameters to nodes
-        of the Memcached instance.
+        Updates the defined Memcached Parameters for an
+        existing Instance. This method only stages the
+        parameters, it must be followed by ApplyParameters to
+        apply the parameters to nodes of the Memcached Instance.
 
         Returns:
             Callable[[~.UpdateParametersRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -428,7 +413,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "update_parameters" not in self._stubs:
             self._stubs["update_parameters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/UpdateParameters",
+                "/google.cloud.memcache.v1.CloudMemcache/UpdateParameters",
                 request_serializer=cloud_memcache.UpdateParametersRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -437,16 +422,14 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     @property
     def delete_instance(
         self,
-    ) -> Callable[
-        [cloud_memcache.DeleteInstanceRequest], Awaitable[operations.Operation]
-    ]:
+    ) -> Callable[[cloud_memcache.DeleteInstanceRequest], operations.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single Instance.
 
         Returns:
             Callable[[~.DeleteInstanceRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -456,7 +439,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "delete_instance" not in self._stubs:
             self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/DeleteInstance",
+                "/google.cloud.memcache.v1.CloudMemcache/DeleteInstance",
                 request_serializer=cloud_memcache.DeleteInstanceRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -465,18 +448,16 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     @property
     def apply_parameters(
         self,
-    ) -> Callable[
-        [cloud_memcache.ApplyParametersRequest], Awaitable[operations.Operation]
-    ]:
+    ) -> Callable[[cloud_memcache.ApplyParametersRequest], operations.Operation]:
         r"""Return a callable for the apply parameters method over gRPC.
 
-        ``ApplyParameters`` restarts the set of specified nodes in order
-        to update them to the current set of parameters for the
-        Memcached Instance.
+        ApplyParameters will restart the set of specified
+        nodes in order to update them to the current set of
+        parameters for the Memcached Instance.
 
         Returns:
             Callable[[~.ApplyParametersRequest],
-                    Awaitable[~.Operation]]:
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -486,40 +467,11 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         # to pass in the functions for each.
         if "apply_parameters" not in self._stubs:
             self._stubs["apply_parameters"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/ApplyParameters",
+                "/google.cloud.memcache.v1.CloudMemcache/ApplyParameters",
                 request_serializer=cloud_memcache.ApplyParametersRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["apply_parameters"]
 
-    @property
-    def apply_software_update(
-        self,
-    ) -> Callable[
-        [cloud_memcache.ApplySoftwareUpdateRequest], Awaitable[operations.Operation]
-    ]:
-        r"""Return a callable for the apply software update method over gRPC.
 
-        Updates software on the selected nodes of the
-        Instance.
-
-        Returns:
-            Callable[[~.ApplySoftwareUpdateRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "apply_software_update" not in self._stubs:
-            self._stubs["apply_software_update"] = self.grpc_channel.unary_unary(
-                "/google.cloud.memcache.v1beta2.CloudMemcache/ApplySoftwareUpdate",
-                request_serializer=cloud_memcache.ApplySoftwareUpdateRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
-            )
-        return self._stubs["apply_software_update"]
-
-
-__all__ = ("CloudMemcacheGrpcAsyncIOTransport",)
+__all__ = ("CloudMemcacheGrpcTransport",)

@@ -22,7 +22,9 @@ from synthtool.languages import python
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = ["v1beta2"]
+versions = ["v1beta2",
+            "v1",
+            ] # add new versions at the end of the list
 
 # ----------------------------------------------------------------------------
 # Generate memcache GAPIC layer

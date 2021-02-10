@@ -25,11 +25,8 @@ from .cloud_memcache import (
     DeleteInstanceRequest,
     ApplyParametersRequest,
     UpdateParametersRequest,
-    ApplySoftwareUpdateRequest,
     MemcacheParameters,
     OperationMetadata,
-    LocationMetadata,
-    ZoneMetadata,
     MemcacheVersion,
 )
 
@@ -43,10 +40,7 @@ __all__ = (
     "DeleteInstanceRequest",
     "ApplyParametersRequest",
     "UpdateParametersRequest",
-    "ApplySoftwareUpdateRequest",
     "MemcacheParameters",
     "OperationMetadata",
-    "LocationMetadata",
-    "ZoneMetadata",
     "MemcacheVersion",
 )

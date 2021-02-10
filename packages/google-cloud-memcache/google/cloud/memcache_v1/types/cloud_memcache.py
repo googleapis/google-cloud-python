@@ -23,7 +23,7 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.memcache.v1beta2",
+    package="google.cloud.memcache.v1",
     manifest={
         "MemcacheVersion",
         "Instance",
@@ -35,11 +35,8 @@ __protobuf__ = proto.module(
         "DeleteInstanceRequest",
         "ApplyParametersRequest",
         "UpdateParametersRequest",
-        "ApplySoftwareUpdateRequest",
         "MemcacheParameters",
         "OperationMetadata",
-        "LocationMetadata",
-        "ZoneMetadata",
     },
 )
 
@@ -51,7 +48,7 @@ class MemcacheVersion(proto.Enum):
 
 
 class Instance(proto.Message):
-    r"""A Memorystore for Memcached instance
+    r"""
 
     Attributes:
         name (str):
@@ -59,18 +56,16 @@ class Instance(proto.Message):
             including project and location using the form:
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
-            Note: Memcached instances are managed and addressed at the
-            regional level so ``location_id`` here refers to a Google
-            Cloud region; however, users may choose which zones
-            Memcached nodes should be provisioned in within an instance.
-            Refer to
-            [zones][google.cloud.memcache.v1beta2.Instance.zones] field
-            for more details.
+            Note: Memcached instances are managed and addressed at
+            regional level so location_id here refers to a GCP region;
+            however, users may choose which zones Memcached nodes within
+            an instances should be provisioned in. Refer to [zones]
+            field for more details.
         display_name (str):
-            User provided name for the instance, which is
-            only used for display purposes. Cannot be more
-            than 80 characters.
-        labels (Sequence[google.cloud.memcache_v1beta2.types.Instance.LabelsEntry]):
+            User provided name for the instance only used
+            for display purposes. Cannot be more than 80
+            characters.
+        labels (Sequence[google.cloud.memcache_v1.types.Instance.LabelsEntry]):
             Resource labels to represent user-provided
             metadata. Refer to cloud documentation on labels
             for more details.
@@ -78,40 +73,39 @@ class Instance(proto.Message):
             resources
         authorized_network (str):
             The full name of the Google Compute Engine
-            `network <https://cloud.google.com/vpc/docs/vpc>`__ to which
-            the instance is connected. If left unspecified, the
+            `network </compute/docs/networks-and-firewalls#networks>`__
+            to which the instance is connected. If left unspecified, the
             ``default`` network will be used.
         zones (Sequence[str]):
-            Zones in which Memcached nodes should be
-            provisioned. Memcached nodes will be equally
+            Zones where Memcached nodes should be
+            provisioned in. Memcached nodes will be equally
             distributed across these zones. If not provided,
             the service will by default create nodes in all
             zones in the region for the instance.
         node_count (int):
             Required. Number of nodes in the Memcached
             instance.
-        node_config (google.cloud.memcache_v1beta2.types.Instance.NodeConfig):
+        node_config (google.cloud.memcache_v1.types.Instance.NodeConfig):
             Required. Configuration for Memcached nodes.
-        memcache_version (google.cloud.memcache_v1beta2.types.MemcacheVersion):
+        memcache_version (google.cloud.memcache_v1.types.MemcacheVersion):
             The major version of Memcached software. If not provided,
             latest supported version will be used. Currently the latest
-            supported major version is ``MEMCACHE_1_5``. The minor
-            version will be automatically determined by our system based
-            on the latest supported minor version.
-        parameters (google.cloud.memcache_v1beta2.types.MemcacheParameters):
+            supported major version is MEMCACHE_1_5. The minor version
+            will be automatically determined by our system based on the
+            latest supported minor version.
+        parameters (google.cloud.memcache_v1.types.MemcacheParameters):
             Optional: User defined parameters to apply to
             the memcached process on each node.
-        memcache_nodes (Sequence[google.cloud.memcache_v1beta2.types.Instance.Node]):
-            Output only. List of Memcached nodes. Refer to
-            [Node][google.cloud.memcache.v1beta2.Instance.Node] message
-            for more details.
+        memcache_nodes (Sequence[google.cloud.memcache_v1.types.Instance.Node]):
+            Output only. List of Memcached nodes. Refer to [Node]
+            message for more details.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the instance was
             created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the instance was
             updated.
-        state (google.cloud.memcache_v1beta2.types.Instance.State):
+        state (google.cloud.memcache_v1.types.Instance.State):
             Output only. The state of this Memcached
             instance.
         memcache_full_version (str):
@@ -122,14 +116,11 @@ class Instance(proto.Message):
             MemcacheVersion.
             The full version format will be
             "memcached-1.5.16".
-        instance_messages (Sequence[google.cloud.memcache_v1beta2.types.Instance.InstanceMessage]):
-            List of messages that describe the current
-            state of the Memcached instance.
+        instance_messages (Sequence[google.cloud.memcache_v1.types.Instance.InstanceMessage]):
+            List of messages that describe current
+            statuses of memcached instance.
         discovery_endpoint (str):
-            Output only. Endpoint for the Discovery API.
-        update_available (bool):
-            Output only. Returns true if there is an
-            update waiting to be applied
+            Output only. Endpoint for Discovery API
     """
 
     class State(proto.Enum):
@@ -166,7 +157,7 @@ class Instance(proto.Message):
             zone (str):
                 Output only. Location (GCP Zone) for the
                 Memcached node.
-            state (google.cloud.memcache_v1beta2.types.Instance.Node.State):
+            state (google.cloud.memcache_v1.types.Instance.Node.State):
                 Output only. Current state of the Memcached
                 node.
             host (str):
@@ -176,12 +167,9 @@ class Instance(proto.Message):
             port (int):
                 Output only. The port number of the Memcached
                 server on this node.
-            parameters (google.cloud.memcache_v1beta2.types.MemcacheParameters):
+            parameters (google.cloud.memcache_v1.types.MemcacheParameters):
                 User defined parameters currently applied to
                 the node.
-            update_available (bool):
-                Output only. Returns true if there is an
-                update waiting to be applied
         """
 
         class State(proto.Enum):
@@ -204,13 +192,11 @@ class Instance(proto.Message):
 
         parameters = proto.Field(proto.MESSAGE, number=6, message="MemcacheParameters",)
 
-        update_available = proto.Field(proto.BOOL, number=7)
-
     class InstanceMessage(proto.Message):
         r"""
 
         Attributes:
-            code (google.cloud.memcache_v1beta2.types.Instance.InstanceMessage.Code):
+            code (google.cloud.memcache_v1.types.Instance.InstanceMessage.Code):
                 A code that correspond to one type of user-
                 acing message.
             message (str):
@@ -261,12 +247,10 @@ class Instance(proto.Message):
 
     discovery_endpoint = proto.Field(proto.STRING, number=20)
 
-    update_available = proto.Field(proto.BOOL, number=21)
-
 
 class ListInstancesRequest(proto.Message):
     r"""Request for
-    [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
+    [ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances].
 
     Attributes:
         parent (str):
@@ -277,18 +261,18 @@ class ListInstancesRequest(proto.Message):
             The maximum number of items to return.
 
             If not specified, a default value of 1000 will be used by
-            the service. Regardless of the ``page_size`` value, the
-            response may include a partial list and a caller should only
-            rely on response's
-            [``next_page_token``][google.cloud.memcache.v1beta2.ListInstancesResponse.next_page_token]
+            the service. Regardless of the page_size value, the response
+            may include a partial list and a caller should only rely on
+            response's
+            [next_page_token][CloudMemcache.ListInstancesResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            The ``next_page_token`` value returned from a previous List
+            The next_page_token value returned from a previous List
             request, if any.
         filter (str):
-            List filter. For example, exclude all Memcached instances
-            with name as my-instance by specifying
-            ``"name != my-instance"``.
+            List filter. For example, exclude all
+            Memcached instances with name as my-instance by
+            specifying "name != my-instance".
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -307,10 +291,10 @@ class ListInstancesRequest(proto.Message):
 
 class ListInstancesResponse(proto.Message):
     r"""Response for
-    [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
+    [ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances].
 
     Attributes:
-        resources (Sequence[google.cloud.memcache_v1beta2.types.Instance]):
+        instances (Sequence[google.cloud.memcache_v1.types.Instance]):
             A list of Memcached instances in the project in the
             specified location, or across all locations.
 
@@ -329,7 +313,7 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
+    instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -338,7 +322,7 @@ class ListInstancesResponse(proto.Message):
 
 class GetInstanceRequest(proto.Message):
     r"""Request for
-    [GetInstance][google.cloud.memcache.v1beta2.CloudMemcache.GetInstance].
+    [GetInstance][google.cloud.memcache.v1.CloudMemcache.GetInstance].
 
     Attributes:
         name (str):
@@ -352,7 +336,7 @@ class GetInstanceRequest(proto.Message):
 
 class CreateInstanceRequest(proto.Message):
     r"""Request for
-    [CreateInstance][google.cloud.memcache.v1beta2.CloudMemcache.CreateInstance].
+    [CreateInstance][google.cloud.memcache.v1.CloudMemcache.CreateInstance].
 
     Attributes:
         parent (str):
@@ -370,41 +354,41 @@ class CreateInstanceRequest(proto.Message):
             -  Must end with a number or a letter.
             -  Must be unique within the user project / location.
 
-            If any of the above are not met, the API raises an invalid
+            If any of the above are not met, will raise an invalid
             argument error.
-        resource (google.cloud.memcache_v1beta2.types.Instance):
-            Required. A Memcached [Instance] resource
+        instance (google.cloud.memcache_v1.types.Instance):
+            Required. A Memcached Instance
     """
 
     parent = proto.Field(proto.STRING, number=1)
 
     instance_id = proto.Field(proto.STRING, number=2)
 
-    resource = proto.Field(proto.MESSAGE, number=3, message="Instance",)
+    instance = proto.Field(proto.MESSAGE, number=3, message="Instance",)
 
 
 class UpdateInstanceRequest(proto.Message):
     r"""Request for
-    [UpdateInstance][google.cloud.memcache.v1beta2.CloudMemcache.UpdateInstance].
+    [UpdateInstance][google.cloud.memcache.v1.CloudMemcache.UpdateInstance].
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update.
 
             -  ``displayName``
-        resource (google.cloud.memcache_v1beta2.types.Instance):
-            Required. A Memcached [Instance] resource. Only fields
-            specified in update_mask are updated.
+        instance (google.cloud.memcache_v1.types.Instance):
+            Required. A Memcached Instance. Only fields specified in
+            update_mask are updated.
     """
 
     update_mask = proto.Field(proto.MESSAGE, number=1, message=field_mask.FieldMask,)
 
-    resource = proto.Field(proto.MESSAGE, number=2, message="Instance",)
+    instance = proto.Field(proto.MESSAGE, number=2, message="Instance",)
 
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request for
-    [DeleteInstance][google.cloud.memcache.v1beta2.CloudMemcache.DeleteInstance].
+    [DeleteInstance][google.cloud.memcache.v1.CloudMemcache.DeleteInstance].
 
     Attributes:
         name (str):
@@ -418,7 +402,7 @@ class DeleteInstanceRequest(proto.Message):
 
 class ApplyParametersRequest(proto.Message):
     r"""Request for
-    [ApplyParameters][google.cloud.memcache.v1beta2.CloudMemcache.ApplyParameters].
+    [ApplyParameters][google.cloud.memcache.v1.CloudMemcache.ApplyParameters].
 
     Attributes:
         name (str):
@@ -426,13 +410,14 @@ class ApplyParametersRequest(proto.Message):
             instance for which parameter group updates
             should be applied.
         node_ids (Sequence[str]):
-            Nodes to which the instance-level parameter
-            group is applied.
+            Nodes to which we should apply the instance-
+            evel parameter group.
         apply_all (bool):
-            Whether to apply instance-level parameter group to all
-            nodes. If set to true, users are restricted from specifying
-            individual nodes, and ``ApplyParameters`` updates all nodes
-            within the instance.
+            Whether to apply instance-level parameter
+            group to all nodes. If set to true, will
+            explicitly restrict users from specifying any
+            nodes, and apply parameter group updates to all
+            nodes within the instance.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -444,7 +429,7 @@ class ApplyParametersRequest(proto.Message):
 
 class UpdateParametersRequest(proto.Message):
     r"""Request for
-    [UpdateParameters][google.cloud.memcache.v1beta2.CloudMemcache.UpdateParameters].
+    [UpdateParameters][google.cloud.memcache.v1.CloudMemcache.UpdateParameters].
 
     Attributes:
         name (str):
@@ -453,7 +438,7 @@ class UpdateParametersRequest(proto.Message):
             updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update.
-        parameters (google.cloud.memcache_v1beta2.types.MemcacheParameters):
+        parameters (google.cloud.memcache_v1.types.MemcacheParameters):
             The parameters to apply to the instance.
     """
 
@@ -464,45 +449,18 @@ class UpdateParametersRequest(proto.Message):
     parameters = proto.Field(proto.MESSAGE, number=3, message="MemcacheParameters",)
 
 
-class ApplySoftwareUpdateRequest(proto.Message):
-    r"""Request for
-    [ApplySoftwareUpdate][google.cloud.memcache.v1beta2.CloudMemcache.ApplySoftwareUpdate].
-
-    Attributes:
-        instance (str):
-            Required. Resource name of the Memcached
-            instance for which software update should be
-            applied.
-        node_ids (Sequence[str]):
-            Nodes to which we should apply the update to.
-            Note all the selected nodes are updated in
-            parallel.
-        apply_all (bool):
-            Whether to apply the update to all nodes. If
-            set to true, will explicitly restrict users from
-            specifying any nodes, and apply software update
-            to all nodes (where applicable) within the
-            instance.
-    """
-
-    instance = proto.Field(proto.STRING, number=1)
-
-    node_ids = proto.RepeatedField(proto.STRING, number=2)
-
-    apply_all = proto.Field(proto.BOOL, number=3)
-
-
 class MemcacheParameters(proto.Message):
-    r"""The unique ID associated with this set of parameters. Users
-    can use this id to determine if the parameters associated with
-    the instance differ from the parameters associated with the
-    nodes. A discrepancy between parameter ids can inform users that
-    they may need to take action to apply parameters on nodes.
+    r"""
 
     Attributes:
         id (str):
-            Output only.
-        params (Sequence[google.cloud.memcache_v1beta2.types.MemcacheParameters.ParamsEntry]):
+            Output only. The unique ID associated with
+            this set of parameters. Users can use this id to
+            determine if the parameters associated with the
+            instance differ from the parameters associated
+            with the nodes and any action needs to be taken
+            to apply parameters on nodes.
+        params (Sequence[google.cloud.memcache_v1.types.MemcacheParameters.ParamsEntry]):
             User defined set of parameters to use in the
             memcached process.
     """
@@ -555,27 +513,6 @@ class OperationMetadata(proto.Message):
     cancel_requested = proto.Field(proto.BOOL, number=6)
 
     api_version = proto.Field(proto.STRING, number=7)
-
-
-class LocationMetadata(proto.Message):
-    r"""Metadata for the given
-    [google.cloud.location.Location][google.cloud.location.Location].
-
-    Attributes:
-        available_zones (Sequence[google.cloud.memcache_v1beta2.types.LocationMetadata.AvailableZonesEntry]):
-            Output only. The set of available zones in the location. The
-            map is keyed by the lowercase ID of each zone, as defined by
-            GCE. These keys can be specified in the ``zones`` field when
-            creating a Memcached instance.
-    """
-
-    available_zones = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message="ZoneMetadata",
-    )
-
-
-class ZoneMetadata(proto.Message):
-    r""""""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

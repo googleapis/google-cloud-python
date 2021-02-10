@@ -52,8 +52,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     -  As such, Memcached instances are resources of the form:
        ``/projects/{project_id}/locations/{location_id}/instances/{instance_id}``
 
-    Note that location_id must be refering to a GCP ``region``; for
-    example:
+    Note that location_id must be a GCP ``region``; for example:
 
     -  ``projects/my-memcached-project/locations/us-central1/instances/my-memcached``
 
@@ -78,6 +77,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -108,6 +108,10 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
                 for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                A callback to provide client certificate bytes and private key bytes,
+                both in PEM format. It is used to configure mutual TLS channel. It is
+                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -124,6 +128,11 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
         """
         self._ssl_channel_credentials = ssl_channel_credentials
 
+        if api_mtls_endpoint:
+            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
+        if client_cert_source:
+            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -133,11 +142,6 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
-            warnings.warn(
-                "api_mtls_endpoint and client_cert_source are deprecated",
-                DeprecationWarning,
-            )
-
             host = (
                 api_mtls_endpoint
                 if ":" in api_mtls_endpoint
@@ -181,12 +185,18 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
                     scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
                 )
 
+            if client_cert_source_for_mtls and not ssl_channel_credentials:
+                cert, key = client_cert_source_for_mtls()
+                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+
             # create a new channel. The provided one is ignored.
             self._grpc_channel = type(self).create_channel(
                 host,
                 credentials=credentials,
                 credentials_file=credentials_file,
-                ssl_credentials=ssl_channel_credentials,
+                ssl_credentials=self._ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
                 options=[
@@ -281,7 +291,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     ]:
         r"""Return a callable for the list instances method over gRPC.
 
-        Lists Instances in a given project and location.
+        Lists Instances in a given location.
 
         Returns:
             Callable[[~.ListInstancesRequest],
@@ -333,8 +343,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     ) -> Callable[[cloud_memcache.CreateInstanceRequest], operations.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
-        Creates a new Instance in a given project and
-        location.
+        Creates a new Instance in a given location.
 
         Returns:
             Callable[[~.CreateInstanceRequest],
@@ -387,10 +396,10 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     ) -> Callable[[cloud_memcache.UpdateParametersRequest], operations.Operation]:
         r"""Return a callable for the update parameters method over gRPC.
 
-        Updates the defined Memcached Parameters for an
-        existing Instance. This method only stages the
-        parameters, it must be followed by ApplyParameters to
-        apply the parameters to nodes of the Memcached Instance.
+        Updates the defined Memcached parameters for an existing
+        instance. This method only stages the parameters, it must be
+        followed by ``ApplyParameters`` to apply the parameters to nodes
+        of the Memcached instance.
 
         Returns:
             Callable[[~.UpdateParametersRequest],
@@ -442,8 +451,9 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     ) -> Callable[[cloud_memcache.ApplyParametersRequest], operations.Operation]:
         r"""Return a callable for the apply parameters method over gRPC.
 
-        ApplyParameters will update current set of Parameters
-        to the set of specified nodes of the Memcached Instance.
+        ``ApplyParameters`` restarts the set of specified nodes in order
+        to update them to the current set of parameters for the
+        Memcached Instance.
 
         Returns:
             Callable[[~.ApplyParametersRequest],
@@ -462,6 +472,33 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
                 response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["apply_parameters"]
+
+    @property
+    def apply_software_update(
+        self,
+    ) -> Callable[[cloud_memcache.ApplySoftwareUpdateRequest], operations.Operation]:
+        r"""Return a callable for the apply software update method over gRPC.
+
+        Updates software on the selected nodes of the
+        Instance.
+
+        Returns:
+            Callable[[~.ApplySoftwareUpdateRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "apply_software_update" not in self._stubs:
+            self._stubs["apply_software_update"] = self.grpc_channel.unary_unary(
+                "/google.cloud.memcache.v1beta2.CloudMemcache/ApplySoftwareUpdate",
+                request_serializer=cloud_memcache.ApplySoftwareUpdateRequest.serialize,
+                response_deserializer=operations.Operation.FromString,
+            )
+        return self._stubs["apply_software_update"]
 
 
 __all__ = ("CloudMemcacheGrpcTransport",)

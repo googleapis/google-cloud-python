@@ -1,6 +1,6 @@
 Services for Google Cloud Memcache v1beta2 API
 ==============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.memcache_v1beta2.services.cloud_memcache
-    :members:
-    :inherited-members:
+    cloud_memcache

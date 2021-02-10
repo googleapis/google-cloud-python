@@ -30,8 +30,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.memcache_v1beta2.services.cloud_memcache import pagers
-from google.cloud.memcache_v1beta2.types import cloud_memcache
+from google.cloud.memcache_v1.services.cloud_memcache import pagers
+from google.cloud.memcache_v1.types import cloud_memcache
 from google.protobuf import empty_pb2 as empty  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
@@ -177,9 +177,9 @@ class CloudMemcacheAsyncClient:
         r"""Lists Instances in a given location.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.ListInstancesRequest`):
+            request (:class:`google.cloud.memcache_v1.types.ListInstancesRequest`):
                 The request object. Request for
-                [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
+                [ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances].
             parent (:class:`str`):
                 Required. The resource name of the instance location
                 using the form:
@@ -197,9 +197,9 @@ class CloudMemcacheAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.memcache_v1beta2.services.cloud_memcache.pagers.ListInstancesAsyncPager:
+            google.cloud.memcache_v1.services.cloud_memcache.pagers.ListInstancesAsyncPager:
                 Response for
-                [ListInstances][google.cloud.memcache.v1beta2.CloudMemcache.ListInstances].
+                [ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -261,9 +261,9 @@ class CloudMemcacheAsyncClient:
         r"""Gets details of a single Instance.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.GetInstanceRequest`):
+            request (:class:`google.cloud.memcache_v1.types.GetInstanceRequest`):
                 The request object. Request for
-                [GetInstance][google.cloud.memcache.v1beta2.CloudMemcache.GetInstance].
+                [GetInstance][google.cloud.memcache.v1.CloudMemcache.GetInstance].
             name (:class:`str`):
                 Required. Memcached instance resource name in the
                 format:
@@ -281,8 +281,8 @@ class CloudMemcacheAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.memcache_v1beta2.types.Instance:
-                A Memorystore for Memcached instance
+            google.cloud.memcache_v1.types.Instance:
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -327,8 +327,8 @@ class CloudMemcacheAsyncClient:
         request: cloud_memcache.CreateInstanceRequest = None,
         *,
         parent: str = None,
+        instance: cloud_memcache.Instance = None,
         instance_id: str = None,
-        resource: cloud_memcache.Instance = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -336,9 +336,9 @@ class CloudMemcacheAsyncClient:
         r"""Creates a new Instance in a given location.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.CreateInstanceRequest`):
+            request (:class:`google.cloud.memcache_v1.types.CreateInstanceRequest`):
                 The request object. Request for
-                [CreateInstance][google.cloud.memcache.v1beta2.CloudMemcache.CreateInstance].
+                [CreateInstance][google.cloud.memcache.v1.CloudMemcache.CreateInstance].
             parent (:class:`str`):
                 Required. The resource name of the instance location
                 using the form:
@@ -346,6 +346,11 @@ class CloudMemcacheAsyncClient:
                 ``location_id`` refers to a GCP region
 
                 This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance (:class:`google.cloud.memcache_v1.types.Instance`):
+                Required. A Memcached Instance
+                This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance_id (:class:`str`):
@@ -359,15 +364,10 @@ class CloudMemcacheAsyncClient:
                 -  Must end with a number or a letter.
                 -  Must be unique within the user project / location.
 
-                If any of the above are not met, the API raises an
-                invalid argument error.
+                If any of the above are not met, will raise an invalid
+                argument error.
 
                 This corresponds to the ``instance_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            resource (:class:`google.cloud.memcache_v1beta2.types.Instance`):
-                Required. A Memcached [Instance] resource
-                This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -382,14 +382,13 @@ class CloudMemcacheAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.memcache_v1beta2.types.Instance` A
-                Memorystore for Memcached instance
+                :class:`google.cloud.memcache_v1.types.Instance`
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, instance_id, resource])
+        has_flattened_params = any([parent, instance, instance_id])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -403,10 +402,10 @@ class CloudMemcacheAsyncClient:
 
         if parent is not None:
             request.parent = parent
+        if instance is not None:
+            request.instance = instance
         if instance_id is not None:
             request.instance_id = instance_id
-        if resource is not None:
-            request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -440,8 +439,8 @@ class CloudMemcacheAsyncClient:
         self,
         request: cloud_memcache.UpdateInstanceRequest = None,
         *,
+        instance: cloud_memcache.Instance = None,
         update_mask: field_mask.FieldMask = None,
-        resource: cloud_memcache.Instance = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -450,9 +449,16 @@ class CloudMemcacheAsyncClient:
         location.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.UpdateInstanceRequest`):
+            request (:class:`google.cloud.memcache_v1.types.UpdateInstanceRequest`):
                 The request object. Request for
-                [UpdateInstance][google.cloud.memcache.v1beta2.CloudMemcache.UpdateInstance].
+                [UpdateInstance][google.cloud.memcache.v1.CloudMemcache.UpdateInstance].
+            instance (:class:`google.cloud.memcache_v1.types.Instance`):
+                Required. A Memcached Instance. Only fields specified in
+                update_mask are updated.
+
+                This corresponds to the ``instance`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Mask of fields to update.
 
@@ -460,13 +466,6 @@ class CloudMemcacheAsyncClient:
 
 
                 This corresponds to the ``update_mask`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            resource (:class:`google.cloud.memcache_v1beta2.types.Instance`):
-                Required. A Memcached [Instance] resource. Only fields
-                specified in update_mask are updated.
-
-                This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -481,14 +480,13 @@ class CloudMemcacheAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.memcache_v1beta2.types.Instance` A
-                Memorystore for Memcached instance
+                :class:`google.cloud.memcache_v1.types.Instance`
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([update_mask, resource])
+        has_flattened_params = any([instance, update_mask])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -500,10 +498,10 @@ class CloudMemcacheAsyncClient:
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
 
+        if instance is not None:
+            request.instance = instance
         if update_mask is not None:
             request.update_mask = update_mask
-        if resource is not None:
-            request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -517,7 +515,7 @@ class CloudMemcacheAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("resource.name", request.resource.name),)
+                (("instance.name", request.instance.name),)
             ),
         )
 
@@ -546,15 +544,15 @@ class CloudMemcacheAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates the defined Memcached parameters for an existing
-        instance. This method only stages the parameters, it must be
-        followed by ``ApplyParameters`` to apply the parameters to nodes
-        of the Memcached instance.
+        r"""Updates the defined Memcached Parameters for an
+        existing Instance. This method only stages the
+        parameters, it must be followed by ApplyParameters to
+        apply the parameters to nodes of the Memcached Instance.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.UpdateParametersRequest`):
+            request (:class:`google.cloud.memcache_v1.types.UpdateParametersRequest`):
                 The request object. Request for
-                [UpdateParameters][google.cloud.memcache.v1beta2.CloudMemcache.UpdateParameters].
+                [UpdateParameters][google.cloud.memcache.v1.CloudMemcache.UpdateParameters].
             name (:class:`str`):
                 Required. Resource name of the
                 Memcached instance for which the
@@ -568,7 +566,7 @@ class CloudMemcacheAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            parameters (:class:`google.cloud.memcache_v1beta2.types.MemcacheParameters`):
+            parameters (:class:`google.cloud.memcache_v1.types.MemcacheParameters`):
                 The parameters to apply to the
                 instance.
 
@@ -587,8 +585,7 @@ class CloudMemcacheAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.memcache_v1beta2.types.Instance` A
-                Memorystore for Memcached instance
+                :class:`google.cloud.memcache_v1.types.Instance`
 
         """
         # Create or coerce a protobuf request object.
@@ -653,9 +650,9 @@ class CloudMemcacheAsyncClient:
         r"""Deletes a single Instance.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.DeleteInstanceRequest`):
+            request (:class:`google.cloud.memcache_v1.types.DeleteInstanceRequest`):
                 The request object. Request for
-                [DeleteInstance][google.cloud.memcache.v1beta2.CloudMemcache.DeleteInstance].
+                [DeleteInstance][google.cloud.memcache.v1.CloudMemcache.DeleteInstance].
             name (:class:`str`):
                 Required. Memcached instance resource name in the
                 format:
@@ -748,14 +745,14 @@ class CloudMemcacheAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""``ApplyParameters`` restarts the set of specified nodes in order
-        to update them to the current set of parameters for the
-        Memcached Instance.
+        r"""ApplyParameters will restart the set of specified
+        nodes in order to update them to the current set of
+        parameters for the Memcached Instance.
 
         Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.ApplyParametersRequest`):
+            request (:class:`google.cloud.memcache_v1.types.ApplyParametersRequest`):
                 The request object. Request for
-                [ApplyParameters][google.cloud.memcache.v1beta2.CloudMemcache.ApplyParameters].
+                [ApplyParameters][google.cloud.memcache.v1.CloudMemcache.ApplyParameters].
             name (:class:`str`):
                 Required. Resource name of the
                 Memcached instance for which parameter
@@ -765,17 +762,19 @@ class CloudMemcacheAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             node_ids (:class:`Sequence[str]`):
-                Nodes to which the instance-level
-                parameter group is applied.
+                Nodes to which we should apply the
+                instance-level parameter group.
 
                 This corresponds to the ``node_ids`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             apply_all (:class:`bool`):
-                Whether to apply instance-level parameter group to all
-                nodes. If set to true, users are restricted from
-                specifying individual nodes, and ``ApplyParameters``
-                updates all nodes within the instance.
+                Whether to apply instance-level
+                parameter group to all nodes. If set to
+                true, will explicitly restrict users
+                from specifying any nodes, and apply
+                parameter group updates to all nodes
+                within the instance.
 
                 This corresponds to the ``apply_all`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -792,8 +791,7 @@ class CloudMemcacheAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.memcache_v1beta2.types.Instance` A
-                Memorystore for Memcached instance
+                :class:`google.cloud.memcache_v1.types.Instance`
 
         """
         # Create or coerce a protobuf request object.
@@ -831,118 +829,6 @@ class CloudMemcacheAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            cloud_memcache.Instance,
-            metadata_type=cloud_memcache.OperationMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def apply_software_update(
-        self,
-        request: cloud_memcache.ApplySoftwareUpdateRequest = None,
-        *,
-        instance: str = None,
-        node_ids: Sequence[str] = None,
-        apply_all: bool = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Updates software on the selected nodes of the
-        Instance.
-
-        Args:
-            request (:class:`google.cloud.memcache_v1beta2.types.ApplySoftwareUpdateRequest`):
-                The request object. Request for
-                [ApplySoftwareUpdate][google.cloud.memcache.v1beta2.CloudMemcache.ApplySoftwareUpdate].
-            instance (:class:`str`):
-                Required. Resource name of the
-                Memcached instance for which software
-                update should be applied.
-
-                This corresponds to the ``instance`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            node_ids (:class:`Sequence[str]`):
-                Nodes to which we should apply the
-                update to. Note all the selected nodes
-                are updated in parallel.
-
-                This corresponds to the ``node_ids`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            apply_all (:class:`bool`):
-                Whether to apply the update to all
-                nodes. If set to true, will explicitly
-                restrict users from specifying any
-                nodes, and apply software update to all
-                nodes (where applicable) within the
-                instance.
-
-                This corresponds to the ``apply_all`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.memcache_v1beta2.types.Instance` A
-                Memorystore for Memcached instance
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([instance, node_ids, apply_all])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = cloud_memcache.ApplySoftwareUpdateRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-
-        if instance is not None:
-            request.instance = instance
-        if apply_all is not None:
-            request.apply_all = apply_all
-
-        if node_ids:
-            request.node_ids.extend(node_ids)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.apply_software_update,
-            default_timeout=1200.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("instance", request.instance),)),
         )
 
         # Send the request.

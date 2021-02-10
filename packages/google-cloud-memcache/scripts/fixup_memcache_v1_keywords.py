@@ -42,12 +42,11 @@ class memcacheCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'apply_parameters': ('name', 'node_ids', 'apply_all', ),
-    'apply_software_update': ('instance', 'node_ids', 'apply_all', ),
-    'create_instance': ('parent', 'instance_id', 'resource', ),
+    'create_instance': ('parent', 'instance_id', 'instance', ),
     'delete_instance': ('name', ),
     'get_instance': ('name', ),
     'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'update_instance': ('update_mask', 'resource', ),
+    'update_instance': ('update_mask', 'instance', ),
     'update_parameters': ('name', 'update_mask', 'parameters', ),
 
     }

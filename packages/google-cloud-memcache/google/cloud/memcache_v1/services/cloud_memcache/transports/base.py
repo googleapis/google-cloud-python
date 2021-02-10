@@ -26,7 +26,7 @@ from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials  # type: ignore
 
-from google.cloud.memcache_v1beta2.types import cloud_memcache
+from google.cloud.memcache_v1.types import cloud_memcache
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 
@@ -127,11 +127,6 @@ class CloudMemcacheTransport(abc.ABC):
             self.apply_parameters: gapic_v1.method.wrap_method(
                 self.apply_parameters, default_timeout=1200.0, client_info=client_info,
             ),
-            self.apply_software_update: gapic_v1.method.wrap_method(
-                self.apply_software_update,
-                default_timeout=1200.0,
-                client_info=client_info,
-            ),
         }
 
     @property
@@ -203,15 +198,6 @@ class CloudMemcacheTransport(abc.ABC):
         self,
     ) -> typing.Callable[
         [cloud_memcache.ApplyParametersRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def apply_software_update(
-        self,
-    ) -> typing.Callable[
-        [cloud_memcache.ApplySoftwareUpdateRequest],
         typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
     ]:
         raise NotImplementedError()

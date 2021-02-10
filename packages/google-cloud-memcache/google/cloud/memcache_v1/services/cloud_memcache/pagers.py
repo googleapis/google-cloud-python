@@ -26,23 +26,23 @@ from typing import (
     Optional,
 )
 
-from google.cloud.memcache_v1beta2.types import cloud_memcache
+from google.cloud.memcache_v1.types import cloud_memcache
 
 
 class ListInstancesPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.memcache_v1beta2.types.ListInstancesResponse` object, and
+    :class:`google.cloud.memcache_v1.types.ListInstancesResponse` object, and
     provides an ``__iter__`` method to iterate through its
-    ``resources`` field.
+    ``instances`` field.
 
     If there are more pages, the ``__iter__`` method will make additional
     ``ListInstances`` requests and continue to iterate
-    through the ``resources`` field on the
+    through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.memcache_v1beta2.types.ListInstancesResponse`
+    All the usual :class:`google.cloud.memcache_v1.types.ListInstancesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -60,9 +60,9 @@ class ListInstancesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.memcache_v1beta2.types.ListInstancesRequest):
+            request (google.cloud.memcache_v1.types.ListInstancesRequest):
                 The initial request object.
-            response (google.cloud.memcache_v1beta2.types.ListInstancesResponse):
+            response (google.cloud.memcache_v1.types.ListInstancesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -85,7 +85,7 @@ class ListInstancesPager:
 
     def __iter__(self) -> Iterable[cloud_memcache.Instance]:
         for page in self.pages:
-            yield from page.resources
+            yield from page.instances
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
@@ -95,16 +95,16 @@ class ListInstancesAsyncPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.memcache_v1beta2.types.ListInstancesResponse` object, and
+    :class:`google.cloud.memcache_v1.types.ListInstancesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
-    ``resources`` field.
+    ``instances`` field.
 
     If there are more pages, the ``__aiter__`` method will make additional
     ``ListInstances`` requests and continue to iterate
-    through the ``resources`` field on the
+    through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.memcache_v1beta2.types.ListInstancesResponse`
+    All the usual :class:`google.cloud.memcache_v1.types.ListInstancesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -122,9 +122,9 @@ class ListInstancesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.memcache_v1beta2.types.ListInstancesRequest):
+            request (google.cloud.memcache_v1.types.ListInstancesRequest):
                 The initial request object.
-            response (google.cloud.memcache_v1beta2.types.ListInstancesResponse):
+            response (google.cloud.memcache_v1.types.ListInstancesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -148,7 +148,7 @@ class ListInstancesAsyncPager:
     def __aiter__(self) -> AsyncIterable[cloud_memcache.Instance]:
         async def async_generator():
             async for page in self.pages:
-                for response in page.resources:
+                for response in page.instances:
                     yield response
 
         return async_generator()
