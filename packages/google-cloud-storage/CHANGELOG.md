@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.36.0](https://www.github.com/googleapis/python-storage/compare/v1.35.1...v1.36.0) (2021-02-10)
+
+
+### Features
+
+* add mtls support ([#367](https://www.github.com/googleapis/python-storage/issues/367)) ([d35ab35](https://www.github.com/googleapis/python-storage/commit/d35ab3537d1828505f614d32b79b67173c9438c0))
+
+
+### Bug Fixes
+
+* correctly decode times without microseconds ([#375](https://www.github.com/googleapis/python-storage/issues/375)) ([37a1eb5](https://www.github.com/googleapis/python-storage/commit/37a1eb54095b4f857771784007dd049ffafbc11d)), closes [#363](https://www.github.com/googleapis/python-storage/issues/363)
+* expose num_retries parameter for blob upload methods ([#353](https://www.github.com/googleapis/python-storage/issues/353)) ([fdabd6a](https://www.github.com/googleapis/python-storage/commit/fdabd6af74da4b15fbb5d40fb8f80a9b478b9607)), closes [#352](https://www.github.com/googleapis/python-storage/issues/352)
+* pass the unused parameter ([#349](https://www.github.com/googleapis/python-storage/issues/349)) ([5c60d24](https://www.github.com/googleapis/python-storage/commit/5c60d240aa98d2a1dcc6933d6da2ce60ea1b7559))
+* set custom_time on uploads ([#374](https://www.github.com/googleapis/python-storage/issues/374)) ([f048be1](https://www.github.com/googleapis/python-storage/commit/f048be10416f51cea4e6c8c5b805df7b5d9c4d32)), closes [#372](https://www.github.com/googleapis/python-storage/issues/372)
+
 ### [1.35.1](https://www.github.com/googleapis/python-storage/compare/v1.35.0...v1.35.1) (2021-01-28)
 
 
