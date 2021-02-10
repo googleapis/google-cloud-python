@@ -2992,11 +2992,11 @@ class Test_Bucket(unittest.TestCase):
         name = "name"
         bucket = self._make_one(client=client, name=name)
 
-        def dummy_response():
+        def fake_response():
             return response
 
         iterator = bucket.list_blobs()
-        iterator._get_next_page_response = dummy_response
+        iterator._get_next_page_response = fake_response
 
         page = six.next(iterator.pages)
         self.assertEqual(page.prefixes, ("foo",))
@@ -3023,11 +3023,11 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=name)
         responses = [response1, response2]
 
-        def dummy_response():
+        def fake_response():
             return responses.pop(0)
 
         iterator = bucket.list_blobs()
-        iterator._get_next_page_response = dummy_response
+        iterator._get_next_page_response = fake_response
 
         # Parse first response.
         pages_iter = iterator.pages

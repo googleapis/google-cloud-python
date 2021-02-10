@@ -104,7 +104,7 @@ def system(session):
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
-    # Sanity check: Only run tests if the environment variable is set.
+    # Environment check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
     # mTLS tests requires pyopenssl.
@@ -113,7 +113,7 @@ def system(session):
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
-    # Sanity check: only run tests if found.
+    # Environment check: only run tests if found.
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 

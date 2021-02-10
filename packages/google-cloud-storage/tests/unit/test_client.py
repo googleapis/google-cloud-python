@@ -36,7 +36,7 @@ _CONFORMANCE_TESTS = _read_local_json("url_signer_v4_test_data.json")[
     "postPolicyV4Tests"
 ]
 _POST_POLICY_TESTS = [test for test in _CONFORMANCE_TESTS if "policyInput" in test]
-_DUMMY_CREDENTIALS = Credentials.from_service_account_info(_SERVICE_ACCOUNT_JSON)
+_FAKE_CREDENTIALS = Credentials.from_service_account_info(_SERVICE_ACCOUNT_JSON)
 
 
 def _make_credentials():
@@ -1462,11 +1462,11 @@ class TestClient(unittest.TestCase):
         blob_name = "bucket-name"
         response = {"items": [{"name": blob_name}]}
 
-        def dummy_response():
+        def fake_response():
             return response
 
         iterator = client.list_buckets()
-        iterator._get_next_page_response = dummy_response
+        iterator._get_next_page_response = fake_response
 
         page = six.next(iterator.pages)
         self.assertEqual(page.num_items, 1)
@@ -2049,7 +2049,7 @@ def test_conformance_post_policy(test_data):
     in_data = test_data["policyInput"]
     timestamp = datetime.datetime.strptime(in_data["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
 
-    client = Client(credentials=_DUMMY_CREDENTIALS, project="PROJECT")
+    client = Client(credentials=_FAKE_CREDENTIALS, project="PROJECT")
 
     # mocking time functions
     with mock.patch("google.cloud.storage._signing.NOW", return_value=timestamp):
@@ -2064,7 +2064,7 @@ def test_conformance_post_policy(test_data):
                     blob_name=in_data["object"],
                     conditions=_prepare_conditions(in_data),
                     fields=in_data.get("fields"),
-                    credentials=_DUMMY_CREDENTIALS,
+                    credentials=_FAKE_CREDENTIALS,
                     expiration=in_data["expiration"],
                     virtual_hosted_style=in_data.get("urlStyle")
                     == "VIRTUAL_HOSTED_STYLE",

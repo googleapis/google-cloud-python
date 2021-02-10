@@ -2684,13 +2684,13 @@ class Blob(_PropertyMixin):
             extra_headers["Origin"] = origin
 
         try:
-            dummy_stream = BytesIO(b"")
+            fake_stream = BytesIO(b"")
             # Send a fake the chunk size which we **know** will be acceptable
             # to the `ResumableUpload` constructor. The chunk size only
             # matters when **sending** bytes to an upload.
             upload, _ = self._initiate_resumable_upload(
                 client,
-                dummy_stream,
+                fake_stream,
                 content_type,
                 size,
                 None,
