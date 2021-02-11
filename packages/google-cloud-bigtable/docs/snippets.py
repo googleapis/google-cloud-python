@@ -704,13 +704,13 @@ def test_bigtable_cluster_name():
 def test_bigtable_instance_from_pb():
     # [START bigtable_api_instance_from_pb]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable_admin_v2.types import instance_pb2
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
 
     name = instance.name
-    instance_pb = instance_pb2.Instance(
+    instance_pb = data_v2_pb2.Instance(
         name=name, display_name=INSTANCE_ID, type=PRODUCTION, labels=LABELS
     )
 
@@ -723,7 +723,7 @@ def test_bigtable_instance_from_pb():
 def test_bigtable_cluster_from_pb():
     # [START bigtable_api_cluster_from_pb]
     from google.cloud.bigtable import Client
-    from google.cloud.bigtable_admin_v2.types import instance_pb2
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
 
     client = Client(admin=True)
     instance = client.instance(INSTANCE_ID)
@@ -732,7 +732,7 @@ def test_bigtable_cluster_from_pb():
     name = cluster.name
     cluster_state = cluster.state
     serve_nodes = 1
-    cluster_pb = instance_pb2.Cluster(
+    cluster_pb = data_v2_pb2.Cluster(
         name=name,
         location=LOCATION_ID,
         state=cluster_state,

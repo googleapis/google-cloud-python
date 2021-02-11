@@ -17,10 +17,8 @@
 import re
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
-from google.cloud.bigtable_admin_v2.gapic.bigtable_table_admin_client import (
-    BigtableTableAdminClient,
-)
-from google.cloud.bigtable_admin_v2.types import table_pb2
+from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
+from google.cloud.bigtable_admin_v2.types import table
 from google.cloud.bigtable.policy import Policy
 from google.cloud.exceptions import NotFound
 from google.protobuf import field_mask_pb2
@@ -220,7 +218,7 @@ class Backup(object):
     def from_pb(cls, backup_pb, instance):
         """Creates a Backup instance from a protobuf message.
 
-        :type backup_pb: :class:`table_pb2.Backup`
+        :type backup_pb: :class:`table.Backup`
         :param backup_pb: A Backup protobuf object.
 
         :type instance: :class:`Instance <google.cloud.bigtable.instance.Instance>`
@@ -256,7 +254,7 @@ class Backup(object):
         match = _TABLE_NAME_RE.match(backup_pb.source_table)
         table_id = match.group("table_id") if match else None
 
-        expire_time = backup_pb.expire_time
+        expire_time = backup_pb._pb.expire_time
 
         backup = cls(
             backup_id,
@@ -265,10 +263,10 @@ class Backup(object):
             table_id=table_id,
             expire_time=expire_time,
         )
-        backup._start_time = backup_pb.start_time
-        backup._end_time = backup_pb.end_time
-        backup._size_bytes = backup_pb.size_bytes
-        backup._state = backup_pb.state
+        backup._start_time = backup_pb._pb.start_time
+        backup._end_time = backup_pb._pb.end_time
+        backup._size_bytes = backup_pb._pb.size_bytes
+        backup._state = backup_pb._pb.state
 
         return backup
 
@@ -308,13 +306,19 @@ class Backup(object):
         if not self._cluster:
             raise ValueError('"cluster" parameter must be set')
 
-        backup = table_pb2.Backup(
+        backup = table.Backup(
             source_table=self.source_table,
             expire_time=_datetime_to_pb_timestamp(self.expire_time),
         )
 
-        api = self._instance._client.table_admin_client
-        return api.create_backup(self.parent, self.backup_id, backup)
+        api = self._instance._client._table_admin_client
+        return api.create_backup(
+            request={
+                "parent": self.parent,
+                "backup_id": self.backup_id,
+                "backup": backup,
+            }
+        )
 
     def get(self):
         """Retrieves metadata of a pending or completed Backup.
@@ -328,9 +332,9 @@ class Backup(object):
                 due to a retryable error and retry attempts failed.
         :raises ValueError: If the parameters are invalid.
         """
-        api = self._instance._client.table_admin_client
+        api = self._instance._client._table_admin_client
         try:
-            return api.get_backup(self.name)
+            return api.get_backup(request={"name": self.name})
         except NotFound:
             return None
 
@@ -338,11 +342,11 @@ class Backup(object):
         """Refreshes the stored backup properties."""
         backup = self.get()
         self._source_table = backup.source_table
-        self._expire_time = backup.expire_time
-        self._start_time = backup.start_time
-        self._end_time = backup.end_time
-        self._size_bytes = backup.size_bytes
-        self._state = backup.state
+        self._expire_time = backup._pb.expire_time
+        self._start_time = backup._pb.start_time
+        self._end_time = backup._pb.end_time
+        self._size_bytes = backup._pb.size_bytes
+        self._state = backup._pb.state
 
     def exists(self):
         """Tests whether this Backup exists.
@@ -358,18 +362,19 @@ class Backup(object):
         :type new_expire_time: :class:`datetime.datetime`
         :param new_expire_time: the new expiration time timestamp
         """
-        backup_update = table_pb2.Backup(
-            name=self.name,
-            expire_time=_datetime_to_pb_timestamp(new_expire_time),
+        backup_update = table.Backup(
+            name=self.name, expire_time=_datetime_to_pb_timestamp(new_expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
-        api = self._instance._client.table_admin_client
-        api.update_backup(backup_update, update_mask)
+        api = self._instance._client._table_admin_client
+        api.update_backup(request={"backup": backup_update, "update_mask": update_mask})
         self._expire_time = new_expire_time
 
     def delete(self):
         """Delete this Backup."""
-        self._instance._client.table_admin_client.delete_backup(self.name)
+        self._instance._client._table_admin_client.delete_backup(
+            request={"name": self.name}
+        )
 
     def restore(self, table_id):
         """Creates a new Table by restoring from this Backup. The new Table
@@ -391,8 +396,14 @@ class Backup(object):
                  due to a retryable error and retry attempts failed.
         :raises: ValueError: If the parameters are invalid.
         """
-        api = self._instance._client.table_admin_client
-        return api.restore_table(self._instance.name, table_id, self.name)
+        api = self._instance._client._table_admin_client
+        return api.restore_table(
+            request={
+                "parent": self._instance.name,
+                "table_id": table_id,
+                "backup": self.name,
+            }
+        )
 
     def get_iam_policy(self):
         """Gets the IAM access control policy for this backup.
@@ -401,8 +412,7 @@ class Backup(object):
         :returns: The current IAM policy of this backup.
         """
         table_api = self._instance._client.table_admin_client
-        args = {"resource": self.name}
-        response = table_api.get_iam_policy(**args)
+        response = table_api.get_iam_policy(request={"resource": self.name})
         return Policy.from_pb(response)
 
     def set_iam_policy(self, policy):
@@ -420,7 +430,9 @@ class Backup(object):
         :returns: The current IAM policy of this backup.
         """
         table_api = self._instance._client.table_admin_client
-        response = table_api.set_iam_policy(resource=self.name, policy=policy.to_pb())
+        response = table_api.set_iam_policy(
+            request={"resource": self.name, "policy": policy.to_pb()}
+        )
         return Policy.from_pb(response)
 
     def test_iam_permissions(self, permissions):
@@ -441,6 +453,6 @@ class Backup(object):
         """
         table_api = self._instance._client.table_admin_client
         response = table_api.test_iam_permissions(
-            resource=self.name, permissions=permissions
+            request={"resource": self.name, "permissions": permissions}
         )
         return list(response.permissions)

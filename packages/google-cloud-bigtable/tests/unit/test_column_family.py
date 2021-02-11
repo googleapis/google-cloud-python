@@ -344,11 +344,13 @@ class TestColumnFamily(unittest.TestCase):
         self.assertEqual(pb_val, expected)
 
     def _create_test_helper(self, gc_rule=None):
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_v2_pb2,
+        from google.cloud.bigtable_admin_v2.types import (
+            bigtable_table_admin as table_admin_v2_pb2,
         )
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            BigtableTableAdminClient,
+        )
 
         project_id = "project-id"
         zone = "zone"
@@ -366,7 +368,8 @@ class TestColumnFamily(unittest.TestCase):
             + table_id
         )
 
-        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        api = mock.create_autospec(BigtableTableAdminClient)
+
         credentials = _make_credentials()
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
@@ -380,7 +383,10 @@ class TestColumnFamily(unittest.TestCase):
         else:
             column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
         request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(name=table_name)
-        request_pb.modifications.add(id=column_family_id, create=column_family_pb)
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification()
+        modification.id = column_family_id
+        modification.create = column_family_pb
+        request_pb.modifications.append(modification)
 
         # Create response_pb
         response_pb = _ColumnFamilyPB()
@@ -409,10 +415,12 @@ class TestColumnFamily(unittest.TestCase):
 
     def _update_test_helper(self, gc_rule=None):
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_v2_pb2,
+        from google.cloud.bigtable_admin_v2.types import (
+            bigtable_table_admin as table_admin_v2_pb2,
         )
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            BigtableTableAdminClient,
+        )
 
         project_id = "project-id"
         zone = "zone"
@@ -430,7 +438,7 @@ class TestColumnFamily(unittest.TestCase):
             + table_id
         )
 
-        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        api = mock.create_autospec(BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
@@ -444,7 +452,10 @@ class TestColumnFamily(unittest.TestCase):
         else:
             column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
         request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(name=table_name)
-        request_pb.modifications.add(id=column_family_id, update=column_family_pb)
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification()
+        modification.id = column_family_id
+        modification.update = column_family_pb
+        request_pb.modifications.append(modification)
 
         # Create response_pb
         response_pb = _ColumnFamilyPB()
@@ -473,11 +484,13 @@ class TestColumnFamily(unittest.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_v2_pb2,
+        from google.cloud.bigtable_admin_v2.types import (
+            bigtable_table_admin as table_admin_v2_pb2,
         )
         from tests.unit._testing import _FakeStub
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            BigtableTableAdminClient,
+        )
 
         project_id = "project-id"
         zone = "zone"
@@ -495,7 +508,7 @@ class TestColumnFamily(unittest.TestCase):
             + table_id
         )
 
-        api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        api = mock.create_autospec(BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
@@ -505,7 +518,10 @@ class TestColumnFamily(unittest.TestCase):
 
         # Create request_pb
         request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(name=table_name)
-        request_pb.modifications.add(id=column_family_id, drop=True)
+        modification = table_admin_v2_pb2.ModifyColumnFamiliesRequest.Modification(
+            id=column_family_id, drop=True
+        )
+        request_pb.modifications.append(modification)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -587,10 +603,14 @@ class Test__gc_rule_from_pb(unittest.TestCase):
 
             names = []
 
+            _pb = {}
+
             @classmethod
             def WhichOneof(cls, name):
                 cls.names.append(name)
                 return "unknown"
+
+        MockProto._pb = MockProto
 
         self.assertEqual(MockProto.names, [])
         self.assertRaises(ValueError, self._call_fut, MockProto)
@@ -598,25 +618,25 @@ class Test__gc_rule_from_pb(unittest.TestCase):
 
 
 def _GcRulePB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
 

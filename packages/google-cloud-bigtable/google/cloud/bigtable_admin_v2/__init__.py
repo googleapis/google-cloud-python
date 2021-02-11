@@ -1,54 +1,153 @@
 # -*- coding: utf-8 -*-
-#
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-
-from __future__ import absolute_import
-import sys
-import warnings
-
-from google.cloud.bigtable_admin_v2 import types
-from google.cloud.bigtable_admin_v2.gapic import bigtable_instance_admin_client
-from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-from google.cloud.bigtable_admin_v2.gapic import enums
-
-
-if sys.version_info[:2] == (2, 7):
-    message = (
-        "A future version of this library will drop support for Python 2.7. "
-        "More details about Python 2 support for Google Cloud Client Libraries "
-        "can be found at https://cloud.google.com/python/docs/python2-sunset/"
-    )
-    warnings.warn(message, DeprecationWarning)
-
-
-class BigtableInstanceAdminClient(
-    bigtable_instance_admin_client.BigtableInstanceAdminClient
-):
-    __doc__ = bigtable_instance_admin_client.BigtableInstanceAdminClient.__doc__
-    enums = enums
-
-
-class BigtableTableAdminClient(bigtable_table_admin_client.BigtableTableAdminClient):
-    __doc__ = bigtable_table_admin_client.BigtableTableAdminClient.__doc__
-    enums = enums
+from .services.bigtable_instance_admin import BigtableInstanceAdminClient
+from .services.bigtable_table_admin import BigtableTableAdminClient
+from .types.bigtable_instance_admin import CreateAppProfileRequest
+from .types.bigtable_instance_admin import CreateClusterMetadata
+from .types.bigtable_instance_admin import CreateClusterRequest
+from .types.bigtable_instance_admin import CreateInstanceMetadata
+from .types.bigtable_instance_admin import CreateInstanceRequest
+from .types.bigtable_instance_admin import DeleteAppProfileRequest
+from .types.bigtable_instance_admin import DeleteClusterRequest
+from .types.bigtable_instance_admin import DeleteInstanceRequest
+from .types.bigtable_instance_admin import GetAppProfileRequest
+from .types.bigtable_instance_admin import GetClusterRequest
+from .types.bigtable_instance_admin import GetInstanceRequest
+from .types.bigtable_instance_admin import ListAppProfilesRequest
+from .types.bigtable_instance_admin import ListAppProfilesResponse
+from .types.bigtable_instance_admin import ListClustersRequest
+from .types.bigtable_instance_admin import ListClustersResponse
+from .types.bigtable_instance_admin import ListInstancesRequest
+from .types.bigtable_instance_admin import ListInstancesResponse
+from .types.bigtable_instance_admin import PartialUpdateInstanceRequest
+from .types.bigtable_instance_admin import UpdateAppProfileMetadata
+from .types.bigtable_instance_admin import UpdateAppProfileRequest
+from .types.bigtable_instance_admin import UpdateClusterMetadata
+from .types.bigtable_instance_admin import UpdateInstanceMetadata
+from .types.bigtable_table_admin import CheckConsistencyRequest
+from .types.bigtable_table_admin import CheckConsistencyResponse
+from .types.bigtable_table_admin import CreateBackupMetadata
+from .types.bigtable_table_admin import CreateBackupRequest
+from .types.bigtable_table_admin import CreateTableFromSnapshotMetadata
+from .types.bigtable_table_admin import CreateTableFromSnapshotRequest
+from .types.bigtable_table_admin import CreateTableRequest
+from .types.bigtable_table_admin import DeleteBackupRequest
+from .types.bigtable_table_admin import DeleteSnapshotRequest
+from .types.bigtable_table_admin import DeleteTableRequest
+from .types.bigtable_table_admin import DropRowRangeRequest
+from .types.bigtable_table_admin import GenerateConsistencyTokenRequest
+from .types.bigtable_table_admin import GenerateConsistencyTokenResponse
+from .types.bigtable_table_admin import GetBackupRequest
+from .types.bigtable_table_admin import GetSnapshotRequest
+from .types.bigtable_table_admin import GetTableRequest
+from .types.bigtable_table_admin import ListBackupsRequest
+from .types.bigtable_table_admin import ListBackupsResponse
+from .types.bigtable_table_admin import ListSnapshotsRequest
+from .types.bigtable_table_admin import ListSnapshotsResponse
+from .types.bigtable_table_admin import ListTablesRequest
+from .types.bigtable_table_admin import ListTablesResponse
+from .types.bigtable_table_admin import ModifyColumnFamiliesRequest
+from .types.bigtable_table_admin import OptimizeRestoredTableMetadata
+from .types.bigtable_table_admin import RestoreTableMetadata
+from .types.bigtable_table_admin import RestoreTableRequest
+from .types.bigtable_table_admin import SnapshotTableMetadata
+from .types.bigtable_table_admin import SnapshotTableRequest
+from .types.bigtable_table_admin import UpdateBackupRequest
+from .types.common import OperationProgress
+from .types.common import StorageType
+from .types.instance import AppProfile
+from .types.instance import Cluster
+from .types.instance import Instance
+from .types.table import Backup
+from .types.table import BackupInfo
+from .types.table import ColumnFamily
+from .types.table import GcRule
+from .types.table import RestoreInfo
+from .types.table import RestoreSourceType
+from .types.table import Snapshot
+from .types.table import Table
 
 
 __all__ = (
-    "enums",
-    "types",
+    "AppProfile",
+    "Backup",
+    "BackupInfo",
     "BigtableInstanceAdminClient",
+    "CheckConsistencyRequest",
+    "CheckConsistencyResponse",
+    "Cluster",
+    "ColumnFamily",
+    "CreateAppProfileRequest",
+    "CreateBackupMetadata",
+    "CreateBackupRequest",
+    "CreateClusterMetadata",
+    "CreateClusterRequest",
+    "CreateInstanceMetadata",
+    "CreateInstanceRequest",
+    "CreateTableFromSnapshotMetadata",
+    "CreateTableFromSnapshotRequest",
+    "CreateTableRequest",
+    "DeleteAppProfileRequest",
+    "DeleteBackupRequest",
+    "DeleteClusterRequest",
+    "DeleteInstanceRequest",
+    "DeleteSnapshotRequest",
+    "DeleteTableRequest",
+    "DropRowRangeRequest",
+    "GcRule",
+    "GenerateConsistencyTokenRequest",
+    "GenerateConsistencyTokenResponse",
+    "GetAppProfileRequest",
+    "GetBackupRequest",
+    "GetClusterRequest",
+    "GetInstanceRequest",
+    "GetSnapshotRequest",
+    "GetTableRequest",
+    "Instance",
+    "ListAppProfilesRequest",
+    "ListAppProfilesResponse",
+    "ListBackupsRequest",
+    "ListBackupsResponse",
+    "ListClustersRequest",
+    "ListClustersResponse",
+    "ListInstancesRequest",
+    "ListInstancesResponse",
+    "ListSnapshotsRequest",
+    "ListSnapshotsResponse",
+    "ListTablesRequest",
+    "ListTablesResponse",
+    "ModifyColumnFamiliesRequest",
+    "OperationProgress",
+    "OptimizeRestoredTableMetadata",
+    "PartialUpdateInstanceRequest",
+    "RestoreInfo",
+    "RestoreSourceType",
+    "RestoreTableMetadata",
+    "RestoreTableRequest",
+    "Snapshot",
+    "SnapshotTableMetadata",
+    "SnapshotTableRequest",
+    "StorageType",
+    "Table",
+    "UpdateAppProfileMetadata",
+    "UpdateAppProfileRequest",
+    "UpdateBackupRequest",
+    "UpdateClusterMetadata",
+    "UpdateInstanceMetadata",
     "BigtableTableAdminClient",
 )

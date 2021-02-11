@@ -24,8 +24,8 @@ from google.api_core import exceptions
 from google.api_core import retry
 from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable_v2.proto import bigtable_pb2 as data_messages_v2_pb2
-from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
+from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
 _MISSING_COLUMN_FAMILY = "Column family {} is not among the cells stored in this row."
 _MISSING_COLUMN = (
@@ -537,11 +537,11 @@ class PartialRowsData(object):
     def _update_cell(self, chunk):
         if self._cell is None:
             qualifier = None
-            if chunk.HasField("qualifier"):
-                qualifier = chunk.qualifier.value
+            if "qualifier" in chunk:
+                qualifier = chunk.qualifier
             family = None
-            if chunk.HasField("family_name"):
-                family = chunk.family_name.value
+            if "family_name" in chunk:
+                family = chunk.family_name
 
             self._cell = PartialCellData(
                 chunk.row_key,
@@ -571,8 +571,8 @@ class PartialRowsData(object):
 
         # No reset with other keys
         _raise_if(chunk.row_key)
-        _raise_if(chunk.HasField("family_name"))
-        _raise_if(chunk.HasField("qualifier"))
+        _raise_if("family_name" in chunk)
+        _raise_if("qualifier" in chunk)
         _raise_if(chunk.timestamp_micros)
         _raise_if(chunk.labels)
         _raise_if(chunk.value_size)
@@ -638,7 +638,7 @@ class _ReadRowsRequestManager(object):
         # if neither RowSet.row_keys nor RowSet.row_ranges currently exist,
         # add row_range that starts with last_scanned_key as start_key_open
         # to request only rows that have not been returned yet
-        if not self.message.HasField("rows"):
+        if "rows" not in self.message:
             row_range = data_v2_pb2.RowRange(start_key_open=self.last_scanned_key)
             r_kwargs["rows"] = data_v2_pb2.RowSet(row_ranges=[row_range])
         else:

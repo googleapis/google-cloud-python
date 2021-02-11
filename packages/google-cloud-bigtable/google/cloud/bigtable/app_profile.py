@@ -18,7 +18,7 @@
 import re
 
 from google.cloud.bigtable.enums import RoutingPolicyType
-from google.cloud.bigtable_admin_v2.types import instance_pb2
+from google.cloud.bigtable_admin_v2.types import instance
 from google.protobuf import field_mask_pb2
 from google.api_core.exceptions import NotFound
 
@@ -138,7 +138,7 @@ class AppProfile(object):
     def from_pb(cls, app_profile_pb, instance):
         """Creates an instance app_profile from a protobuf.
 
-        :type app_profile_pb: :class:`instance_pb2.app_profile_pb`
+        :type app_profile_pb: :class:`instance.app_profile_pb`
         :param app_profile_pb: An instance protobuf object.
 
         :type instance: :class:`google.cloud.bigtable.instance.Instance`
@@ -188,7 +188,7 @@ class AppProfile(object):
         self.description = app_profile_pb.description
 
         routing_policy_type = None
-        if app_profile_pb.HasField("multi_cluster_routing_use_any"):
+        if app_profile_pb._pb.HasField("multi_cluster_routing_use_any"):
             routing_policy_type = RoutingPolicyType.ANY
             self.allow_transactional_writes = False
         else:
@@ -201,7 +201,7 @@ class AppProfile(object):
 
     def _to_pb(self):
         """Create an AppProfile proto buff message for API calls
-        :rtype: :class:`.instance_pb2.AppProfile`
+        :rtype: :class:`.instance.AppProfile`
         :returns: The converted current object.
 
         :raises: :class:`ValueError <exceptions.ValueError>` if the AppProfile
@@ -215,15 +215,15 @@ class AppProfile(object):
 
         if self.routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
-                instance_pb2.AppProfile.MultiClusterRoutingUseAny()
+                instance.AppProfile.MultiClusterRoutingUseAny()
             )
         else:
-            single_cluster_routing = instance_pb2.AppProfile.SingleClusterRouting(
+            single_cluster_routing = instance.AppProfile.SingleClusterRouting(
                 cluster_id=self.cluster_id,
                 allow_transactional_writes=self.allow_transactional_writes,
             )
 
-        app_profile_pb = instance_pb2.AppProfile(
+        app_profile_pb = instance.AppProfile(
             name=self.name,
             description=self.description,
             multi_cluster_routing_use_any=multi_cluster_routing_use_any,
@@ -242,7 +242,9 @@ class AppProfile(object):
             :dedent: 4
         """
 
-        app_profile_pb = self.instance_admin_client.get_app_profile(self.name)
+        app_profile_pb = self.instance_admin_client.get_app_profile(
+            request={"name": self.name}
+        )
 
         # NOTE: _update_from_pb does not check that the project and
         #       app_profile ID on the response match the request.
@@ -262,7 +264,7 @@ class AppProfile(object):
         :returns: True if the AppProfile exists, else False.
         """
         try:
-            self.instance_admin_client.get_app_profile(self.name)
+            self.instance_admin_client.get_app_profile(request={"name": self.name})
             return True
         # NOTE: There could be other exceptions that are returned to the user.
         except NotFound:
@@ -291,10 +293,12 @@ class AppProfile(object):
         """
         return self.from_pb(
             self.instance_admin_client.create_app_profile(
-                parent=self._instance.name,
-                app_profile_id=self.app_profile_id,
-                app_profile=self._to_pb(),
-                ignore_warnings=ignore_warnings,
+                request={
+                    "parent": self._instance.name,
+                    "app_profile_id": self.app_profile_id,
+                    "app_profile": self._to_pb(),
+                    "ignore_warnings": ignore_warnings,
+                }
             ),
             self._instance,
         )
@@ -328,9 +332,11 @@ class AppProfile(object):
             update_mask_pb.paths.append("single_cluster_routing")
 
         return self.instance_admin_client.update_app_profile(
-            app_profile=self._to_pb(),
-            update_mask=update_mask_pb,
-            ignore_warnings=ignore_warnings,
+            request={
+                "app_profile": self._to_pb(),
+                "update_mask": update_mask_pb,
+                "ignore_warnings": ignore_warnings,
+            }
         )
 
     def delete(self, ignore_warnings=None):
@@ -352,4 +358,6 @@ class AppProfile(object):
                  If the request failed due to a retryable error and retry
                  attempts failed. ValueError: If the parameters are invalid.
         """
-        self.instance_admin_client.delete_app_profile(self.name, ignore_warnings)
+        self.instance_admin_client.delete_app_profile(
+            request={"name": self.name, "ignore_warnings": ignore_warnings}
+        )

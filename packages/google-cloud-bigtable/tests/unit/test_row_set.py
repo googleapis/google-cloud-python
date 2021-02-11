@@ -185,7 +185,7 @@ class TestRowSet(unittest.TestCase):
         expected_request = _ReadRowsRequestPB(table_name=table_name)
         expected_request.rows.row_keys.append(_to_bytes("row_key1"))
 
-        expected_request.rows.row_ranges.add(**row_range1.get_range_kwargs())
+        expected_request.rows.row_ranges.append(row_range1.get_range_kwargs())
 
         self.assertEqual(request, expected_request)
 
@@ -270,6 +270,6 @@ class TestRowRange(unittest.TestCase):
 
 
 def _ReadRowsRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)

@@ -19,7 +19,7 @@ import struct
 
 from google.cloud._helpers import _microseconds_from_datetime
 from google.cloud._helpers import _to_bytes
-from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
 _PACK_I64 = struct.Struct(">q").pack
 

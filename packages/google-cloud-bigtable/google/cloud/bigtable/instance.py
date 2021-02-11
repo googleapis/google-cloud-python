@@ -22,7 +22,9 @@ from google.cloud.bigtable.table import Table
 
 from google.protobuf import field_mask_pb2
 
-from google.cloud.bigtable_admin_v2.types import instance_pb2, options_pb2
+from google.cloud.bigtable_admin_v2.types import instance
+
+from google.iam.v1 import options_pb2
 
 from google.api_core.exceptions import NotFound
 
@@ -121,7 +123,7 @@ class Instance(object):
         if not instance_pb.display_name:  # Simple field (string)
             raise ValueError("Instance protobuf does not contain display_name")
         self.display_name = instance_pb.display_name
-        self.type_ = instance_pb.type
+        self.type_ = instance_pb.type_
         self.labels = dict(instance_pb.labels)
         self._state = instance_pb.state
 
@@ -136,7 +138,7 @@ class Instance(object):
             :end-before: [END bigtable_api_instance_from_pb]
             :dedent: 4
 
-        :type instance_pb: :class:`instance_pb2.Instance`
+        :type instance_pb: :class:`instance.Instance`
         :param instance_pb: An instance protobuf object.
 
         :type client: :class:`Client <google.cloud.bigtable.client.Client>`
@@ -314,17 +316,19 @@ class Instance(object):
                              simultaneously."
             )
 
-        instance_pb = instance_pb2.Instance(
-            display_name=self.display_name, type=self.type_, labels=self.labels
+        instance_pb = instance.Instance(
+            display_name=self.display_name, type_=self.type_, labels=self.labels
         )
 
         parent = self._client.project_path
 
         return self._client.instance_admin_client.create_instance(
-            parent=parent,
-            instance_id=self.instance_id,
-            instance=instance_pb,
-            clusters={c.cluster_id: c._to_pb() for c in clusters},
+            request={
+                "parent": parent,
+                "instance_id": self.instance_id,
+                "instance": instance_pb,
+                "clusters": {c.cluster_id: c._to_pb() for c in clusters},
+            }
         )
 
     def exists(self):
@@ -341,7 +345,7 @@ class Instance(object):
         :returns: True if the table exists, else False.
         """
         try:
-            self._client.instance_admin_client.get_instance(name=self.name)
+            self._client.instance_admin_client.get_instance(request={"name": self.name})
             return True
         # NOTE: There could be other exceptions that are returned to the user.
         except NotFound:
@@ -357,7 +361,9 @@ class Instance(object):
             :end-before: [END bigtable_api_reload_instance]
             :dedent: 4
         """
-        instance_pb = self._client.instance_admin_client.get_instance(self.name)
+        instance_pb = self._client.instance_admin_client.get_instance(
+            request={"name": self.name}
+        )
 
         # NOTE: _update_from_pb does not check that the project and
         #       instance ID on the response match the request.
@@ -399,15 +405,15 @@ class Instance(object):
             update_mask_pb.paths.append("type")
         if self.labels is not None:
             update_mask_pb.paths.append("labels")
-        instance_pb = instance_pb2.Instance(
+        instance_pb = instance.Instance(
             name=self.name,
             display_name=self.display_name,
-            type=self.type_,
+            type_=self.type_,
             labels=self.labels,
         )
 
         return self._client.instance_admin_client.partial_update_instance(
-            instance=instance_pb, update_mask=update_mask_pb
+            request={"instance": instance_pb, "update_mask": update_mask_pb}
         )
 
     def delete(self):
@@ -439,7 +445,7 @@ class Instance(object):
           irrevocably disappear from the API, and their data will be
           permanently deleted.
         """
-        self._client.instance_admin_client.delete_instance(name=self.name)
+        self._client.instance_admin_client.delete_instance(request={"name": self.name})
 
     def get_iam_policy(self, requested_policy_version=None):
         """Gets the access control policy for an instance resource.
@@ -474,7 +480,7 @@ class Instance(object):
 
         instance_admin_client = self._client.instance_admin_client
 
-        resp = instance_admin_client.get_iam_policy(**args)
+        resp = instance_admin_client.get_iam_policy(request=args)
         return Policy.from_pb(resp)
 
     def set_iam_policy(self, policy):
@@ -500,7 +506,7 @@ class Instance(object):
         """
         instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.set_iam_policy(
-            resource=self.name, policy=policy.to_pb()
+            request={"resource": self.name, "policy": policy.to_pb()}
         )
         return Policy.from_pb(resp)
 
@@ -529,7 +535,7 @@ class Instance(object):
         """
         instance_admin_client = self._client.instance_admin_client
         resp = instance_admin_client.test_iam_permissions(
-            resource=self.name, permissions=permissions
+            request={"resource": self.name, "permissions": permissions}
         )
         return list(resp.permissions)
 
@@ -596,7 +602,9 @@ class Instance(object):
             'failed_locations' is a list of locations which could not
             be resolved.
         """
-        resp = self._client.instance_admin_client.list_clusters(self.name)
+        resp = self._client.instance_admin_client.list_clusters(
+            request={"parent": self.name}
+        )
         clusters = [Cluster.from_pb(cluster, self) for cluster in resp.clusters]
         return clusters, resp.failed_locations
 
@@ -641,10 +649,12 @@ class Instance(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
-        table_list_pb = self._client.table_admin_client.list_tables(self.name)
+        table_list_pb = self._client.table_admin_client.list_tables(
+            request={"parent": self.name}
+        )
 
         result = []
-        for table_pb in table_list_pb:
+        for table_pb in table_list_pb.tables:
             table_prefix = self.name + "/tables/"
             if not table_pb.name.startswith(table_prefix):
                 raise ValueError(
@@ -725,5 +735,7 @@ class Instance(object):
                   :class:`~google.cloud.bigtable.app_profile.AppProfile`
                   instances.
         """
-        resp = self._client.instance_admin_client.list_app_profiles(self.name)
+        resp = self._client.instance_admin_client.list_app_profiles(
+            request={"parent": self.name}
+        )
         return [AppProfile.from_pb(app_profile, self) for app_profile in resp]

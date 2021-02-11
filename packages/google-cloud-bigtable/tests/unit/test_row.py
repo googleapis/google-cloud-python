@@ -120,7 +120,7 @@ class TestDirectRow(unittest.TestCase):
 
         total_mutations_size = 0
         for mutation in row._get_mutations():
-            total_mutations_size += mutation.ByteSize()
+            total_mutations_size += mutation._pb.ByteSize()
 
         self.assertEqual(row.get_mutations_size(), total_mutations_size)
 
@@ -282,7 +282,9 @@ class TestDirectRow(unittest.TestCase):
             )
         )
         if time_range is not None:
-            expected_pb.delete_from_column.time_range.CopyFrom(time_range.to_pb())
+            expected_pb.delete_from_column.time_range._pb.CopyFrom(
+                time_range.to_pb()._pb
+            )
         self.assertEqual(row._pb_mutations, [expected_pb])
 
     def test_delete_cells_no_time_range(self):
@@ -427,7 +429,7 @@ class TestConditionalRow(unittest.TestCase):
 
     def test_commit(self):
         from google.cloud.bigtable.row_filters import RowSampleFilter
-        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
         project_id = "project-id"
         row_key = b"row_key"
@@ -439,7 +441,7 @@ class TestConditionalRow(unittest.TestCase):
         column1 = b"column1"
         column2 = b"column2"
 
-        api = bigtable_client.BigtableClient(mock.Mock())
+        api = mock.create_autospec(BigtableClient)
         credentials = _make_credentials()
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
@@ -456,7 +458,7 @@ class TestConditionalRow(unittest.TestCase):
         response_pb = _CheckAndMutateRowResponsePB(predicate_matched=predicate_matched)
 
         # Patch the stub used by the API method.
-        api.transport.check_and_mutate_row.side_effect = [response_pb]
+        api.check_and_mutate_row.side_effect = [response_pb]
         client._table_data_client = api
 
         # Create expected_result.
@@ -468,8 +470,8 @@ class TestConditionalRow(unittest.TestCase):
         row.delete_cell(column_family_id2, column2, state=True)
         row.delete_cells(column_family_id3, row.ALL_COLUMNS, state=True)
         result = row.commit()
-        call_args = api.transport.check_and_mutate_row.call_args.args[0]
-        self.assertEqual(app_profile_id, call_args.app_profile_id)
+        call_args = api.check_and_mutate_row.call_args
+        self.assertEqual(app_profile_id, call_args.app_profile_id[0])
         self.assertEqual(result, expected_result)
         self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
@@ -585,7 +587,7 @@ class TestAppendRow(unittest.TestCase):
     def test_commit(self):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import row as MUT
-        from google.cloud.bigtable_v2.gapic import bigtable_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
 
         project_id = "project-id"
         row_key = b"row_key"
@@ -594,7 +596,8 @@ class TestAppendRow(unittest.TestCase):
         column_family_id = u"column_family_id"
         column = b"column"
 
-        api = bigtable_client.BigtableClient(mock.Mock())
+        api = mock.create_autospec(BigtableClient)
+
         credentials = _make_credentials()
         client = self._make_client(
             project=project_id, credentials=credentials, admin=True
@@ -618,10 +621,11 @@ class TestAppendRow(unittest.TestCase):
 
         # Perform the method and check the result.
         with _Monkey(MUT, _parse_rmw_row_response=mock_parse_rmw_row_response):
+            row._table._instance._client._table_data_client = api
             row.append_cell_value(column_family_id, column, value)
             result = row.commit()
-        call_args = api.transport.read_modify_write_row.call_args.args[0]
-        self.assertEqual(app_profile_id, call_args.app_profile_id)
+        call_args = api.read_modify_write_row.call_args_list[0]
+        self.assertEqual(app_profile_id, call_args.app_profile_id[0])
         self.assertEqual(result, expected_result)
         self.assertEqual(row._rule_pb_list, [])
 
@@ -770,73 +774,73 @@ class Test__parse_family_pb(unittest.TestCase):
 
 
 def _CheckAndMutateRowResponsePB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     return messages_v2_pb2.CheckAndMutateRowResponse(*args, **kw)
 
 
 def _ReadModifyWriteRowResponsePB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     return messages_v2_pb2.ReadModifyWriteRowResponse(*args, **kw)
 
 
 def _CellPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Cell(*args, **kw)
 
 
 def _ColumnPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Column(*args, **kw)
 
 
 def _FamilyPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Family(*args, **kw)
 
 
 def _MutationPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Mutation(*args, **kw)
 
 
 def _MutationSetCellPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Mutation.SetCell(*args, **kw)
 
 
 def _MutationDeleteFromColumnPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Mutation.DeleteFromColumn(*args, **kw)
 
 
 def _MutationDeleteFromFamilyPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Mutation.DeleteFromFamily(*args, **kw)
 
 
 def _MutationDeleteFromRowPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Mutation.DeleteFromRow(*args, **kw)
 
 
 def _RowPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.Row(*args, **kw)
 
 
 def _ReadModifyWriteRulePB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import data_pb2 as data_v2_pb2
+    from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
     return data_v2_pb2.ReadModifyWriteRule(*args, **kw)
 

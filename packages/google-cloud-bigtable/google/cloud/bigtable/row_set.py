@@ -141,7 +141,7 @@ class RowSet(object):
 
         for each in self.row_ranges:
             r_kwrags = each.get_range_kwargs()
-            message.rows.row_ranges.add(**r_kwrags)
+            message.rows.row_ranges.append(r_kwrags)
 
 
 class RowRange(object):

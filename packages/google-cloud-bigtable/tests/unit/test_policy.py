@@ -147,11 +147,7 @@ class TestPolicy(unittest.TestCase):
                 },
             }
         ]
-        message = policy_pb2.Policy(
-            etag=ETAG,
-            version=VERSION,
-            bindings=BINDINGS,
-        )
+        message = policy_pb2.Policy(etag=ETAG, version=VERSION, bindings=BINDINGS,)
         klass = self._get_target_class()
         policy = klass.from_pb(message)
         self.assertEqual(policy.etag, ETAG)

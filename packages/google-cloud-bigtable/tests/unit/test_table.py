@@ -47,7 +47,8 @@ class Test__compile_mutation_entries(unittest.TestCase):
 
     def test_normal(self):
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_v2.proto import bigtable_pb2
+        from google.cloud.bigtable_v2.types import MutateRowsRequest
+        from google.cloud.bigtable_v2.types import data
 
         table = mock.Mock(spec=["name"])
         table.name = "table"
@@ -60,22 +61,23 @@ class Test__compile_mutation_entries(unittest.TestCase):
 
         result = self._call_fut("table", rows)
 
-        Entry = bigtable_pb2.MutateRowsRequest.Entry
-
-        entry_1 = Entry(row_key=b"row_key")
-        mutations_1 = entry_1.mutations.add()
+        entry_1 = MutateRowsRequest.Entry()
+        entry_1.row_key = b"row_key"
+        mutations_1 = data.Mutation()
         mutations_1.set_cell.family_name = "cf1"
         mutations_1.set_cell.column_qualifier = b"c1"
         mutations_1.set_cell.timestamp_micros = -1
         mutations_1.set_cell.value = b"1"
+        entry_1.mutations.append(mutations_1)
 
-        entry_2 = Entry(row_key=b"row_key_2")
-        mutations_2 = entry_2.mutations.add()
+        entry_2 = MutateRowsRequest.Entry()
+        entry_2.row_key = b"row_key_2"
+        mutations_2 = data.Mutation()
         mutations_2.set_cell.family_name = "cf1"
         mutations_2.set_cell.column_qualifier = b"c1"
         mutations_2.set_cell.timestamp_micros = -1
         mutations_2.set_cell.value = b"2"
-
+        entry_2.mutations.append(mutations_2)
         self.assertEqual(result, [entry_1, entry_2])
 
 
@@ -141,7 +143,7 @@ class TestTable(unittest.TestCase):
     ROW_KEY_1 = b"row-key-1"
     ROW_KEY_2 = b"row-key-2"
     ROW_KEY_3 = b"row-key-3"
-    FAMILY_NAME = u"family"
+    FAMILY_NAME = "family"
     QUALIFIER = b"qualifier"
     TIMESTAMP_MICROS = 100
     VALUE = b"value"
@@ -322,16 +324,16 @@ class TestTable(unittest.TestCase):
         self.assertNotEqual(table1, table2)
 
     def _create_test_helper(self, split_keys=[], column_families={}):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-        from google.cloud.bigtable_admin_v2.proto import table_pb2
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_admin_messages_v2_pb2,
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
+        from google.cloud.bigtable_admin_v2.types import table as table_pb2
+        from google.cloud.bigtable_admin_v2.types import (
+            bigtable_table_admin as table_admin_messages_v2_pb2,
         )
         from google.cloud.bigtable.column_family import ColumnFamily
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -354,10 +356,12 @@ class TestTable(unittest.TestCase):
         splits = [split(key=split_key) for split_key in split_keys]
 
         table_api.create_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            table=table_pb2.Table(column_families=families),
-            table_id=self.TABLE_ID,
-            initial_splits=splits,
+            request={
+                "parent": self.INSTANCE_NAME,
+                "table": table_pb2.Table(column_families=families),
+                "table_id": self.TABLE_ID,
+                "initial_splits": splits,
+            }
         )
 
     def test_create(self):
@@ -373,35 +377,44 @@ class TestTable(unittest.TestCase):
         self._create_test_helper(split_keys=[b"split1", b"split2", b"split3"])
 
     def test_exists(self):
-        from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_data_v2_pb2
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2 as table_messages_v1_pb2,
+        from google.cloud.bigtable_admin_v2.types import ListTablesResponse
+        from google.cloud.bigtable_admin_v2.types import Table
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as table_admin_client,
         )
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client,
-            bigtable_table_admin_client,
+        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
+            client as instance_admin_client,
         )
         from google.api_core.exceptions import NotFound
         from google.api_core.exceptions import BadRequest
 
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
-        instance_api = bigtable_instance_admin_client.BigtableInstanceAdminClient(
-            mock.Mock()
+        table_api = mock.create_autospec(table_admin_client.BigtableTableAdminClient)
+        instance_api = mock.create_autospec(
+            instance_admin_client.BigtableInstanceAdminClient
         )
+
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
         )
         instance = client.instance(instance_id=self.INSTANCE_ID)
         # Create response_pb
-        response_pb = table_messages_v1_pb2.ListTablesResponse(
-            tables=[table_data_v2_pb2.Table(name=self.TABLE_NAME)]
-        )
+        response_pb = ListTablesResponse(tables=[Table(name=self.TABLE_NAME)])
 
         # Patch API calls
         client._table_admin_client = table_api
         client._instance_admin_client = instance_api
-        bigtable_table_stub = client._table_admin_client.transport
+        bigtable_table_stub = client._table_admin_client
+
+        bigtable_table_stub.get_table.side_effect = [
+            response_pb,
+            NotFound("testing"),
+            BadRequest("testing"),
+        ]
+
+        client._table_admin_client = table_api
+        client._instance_admin_client = instance_api
+        bigtable_table_stub = client._table_admin_client
         bigtable_table_stub.get_table.side_effect = [
             response_pb,
             NotFound("testing"),
@@ -422,11 +435,11 @@ class TestTable(unittest.TestCase):
             table2.exists()
 
     def test_delete(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -445,9 +458,11 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def _list_column_families_helper(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -462,7 +477,7 @@ class TestTable(unittest.TestCase):
 
         # Patch the stub used by the API method.
         client._table_admin_client = table_api
-        bigtable_table_stub = client._table_admin_client.transport
+        bigtable_table_stub = client._table_admin_client
         bigtable_table_stub.get_table.side_effect = [response_pb]
 
         # Create expected_result.
@@ -476,7 +491,9 @@ class TestTable(unittest.TestCase):
         self._list_column_families_helper()
 
     def test_get_cluster_states(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.cloud.bigtable.enums import Table as enum_table
         from google.cloud.bigtable.table import ClusterState
 
@@ -484,7 +501,7 @@ class TestTable(unittest.TestCase):
         PLANNED_MAINTENANCE = enum_table.ReplicationState.PLANNED_MAINTENANCE
         READY = enum_table.ReplicationState.READY
 
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -502,14 +519,15 @@ class TestTable(unittest.TestCase):
 
         # Patch the stub used by the API method.
         client._table_admin_client = table_api
-        bigtable_table_stub = client._table_admin_client.transport
+        bigtable_table_stub = client._table_admin_client
+
         bigtable_table_stub.get_table.side_effect = [response_pb]
 
         # build expected result
         expected_result = {
-            u"cluster-id1": ClusterState(INITIALIZING),
-            u"cluster-id2": ClusterState(PLANNED_MAINTENANCE),
-            u"cluster-id3": ClusterState(READY),
+            "cluster-id1": ClusterState(INITIALIZING),
+            "cluster-id2": ClusterState(PLANNED_MAINTENANCE),
+            "cluster-id3": ClusterState(READY),
         }
 
         # Perform the method and check the result.
@@ -521,14 +539,14 @@ class TestTable(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable import table as MUT
         from google.cloud.bigtable.row_set import RowSet
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.cloud.bigtable.row_filters import RowSampleFilter
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -554,10 +572,8 @@ class TestTable(unittest.TestCase):
         # Patch the stub used by the API method.
         client._table_data_client = data_api
         client._table_admin_client = table_api
-        client._table_data_client.transport.read_rows = mock.Mock(
-            side_effect=[response_iterator]
-        )
-
+        client._table_data_client.read_rows.side_effect = [response_iterator]
+        table._instance._client._table_data_client = client._table_data_client
         # Perform the method and check the result.
         filter_obj = RowSampleFilter(0.33)
         result = None
@@ -618,7 +634,7 @@ class TestTable(unittest.TestCase):
             timestamp_micros=self.TIMESTAMP_MICROS,
             value=self.VALUE,
             commit_row=True,
-        )
+        )._pb
         chunk_2 = _ReadRowsResponseCellChunkPB(
             row_key=self.ROW_KEY_2,
             family_name=self.FAMILY_NAME,
@@ -626,7 +642,7 @@ class TestTable(unittest.TestCase):
             timestamp_micros=self.TIMESTAMP_MICROS,
             value=self.VALUE,
             commit_row=True,
-        )
+        )._pb
 
         chunks = [chunk_1, chunk_2]
         with self.assertRaises(ValueError):
@@ -650,11 +666,11 @@ class TestTable(unittest.TestCase):
     ):
         from google.rpc.status_pb2 import Status
         from google.cloud.bigtable.table import DEFAULT_RETRY
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -737,14 +753,14 @@ class TestTable(unittest.TestCase):
         from google.cloud._testing import _Monkey
         from google.cloud.bigtable.row_data import PartialRowsData
         from google.cloud.bigtable import table as MUT
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.cloud.bigtable.row_data import DEFAULT_RETRY_READ_ROWS
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -797,12 +813,14 @@ class TestTable(unittest.TestCase):
         self.assertEqual(mock_created, [(table.name, created_kwargs)])
 
     def test_read_retry_rows(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.api_core import retry
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -840,7 +858,9 @@ class TestTable(unittest.TestCase):
         response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
-        client._table_data_client.transport.read_rows = mock.Mock(
+        data_api.table_path.return_value = f"projects/{self.PROJECT_ID}/instances/{self.INSTANCE_ID}/tables/{self.TABLE_ID}"
+
+        client._table_data_client.read_rows = mock.Mock(
             side_effect=[
                 response_failure_iterator_1,
                 response_failure_iterator_2,
@@ -848,6 +868,8 @@ class TestTable(unittest.TestCase):
             ]
         )
 
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
         rows = []
         for row in table.read_rows(
             start_key=self.ROW_KEY_1, end_key=self.ROW_KEY_2, retry=retry_read_rows
@@ -858,12 +880,14 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result.row_key, self.ROW_KEY_2)
 
     def test_yield_retry_rows(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         import warnings
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -899,13 +923,16 @@ class TestTable(unittest.TestCase):
         response_iterator = _MockReadRowsIterator(response_2)
 
         # Patch the stub used by the API method.
-        client._table_data_client.transport.read_rows = mock.Mock(
-            side_effect=[
-                response_failure_iterator_1,
-                response_failure_iterator_2,
-                response_iterator,
-            ]
-        )
+        data_api.table_path.return_value = f"projects/{self.PROJECT_ID}/instances/{self.INSTANCE_ID}/tables/{self.TABLE_ID}"
+        table_api.table_path.return_value = f"projects/{self.PROJECT_ID}/instances/{self.INSTANCE_ID}/tables/{self.TABLE_ID}"
+
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
+        client._table_data_client.read_rows.side_effect = [
+            response_failure_iterator_1,
+            response_failure_iterator_2,
+            response_iterator,
+        ]
 
         rows = []
         with warnings.catch_warnings(record=True) as warned:
@@ -921,14 +948,16 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result.row_key, self.ROW_KEY_2)
 
     def test_yield_rows_with_row_set(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.cloud.bigtable.row_set import RowSet
         from google.cloud.bigtable.row_set import RowRange
         import warnings
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -972,9 +1001,12 @@ class TestTable(unittest.TestCase):
         response_iterator = _MockReadRowsIterator(response_1, response_2, response_3)
 
         # Patch the stub used by the API method.
-        client._table_data_client.transport.read_rows = mock.Mock(
-            side_effect=[response_iterator]
-        )
+        data_api.table_path.return_value = f"projects/{self.PROJECT_ID}/instances/{self.INSTANCE_ID}/tables/{self.TABLE_ID}"
+        table_api.table_path.return_value = f"projects/{self.PROJECT_ID}/instances/{self.INSTANCE_ID}/tables/{self.TABLE_ID}"
+
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
+        client._table_data_client.read_rows.side_effect = [response_iterator]
 
         rows = []
         row_set = RowSet()
@@ -995,11 +1027,13 @@ class TestTable(unittest.TestCase):
         self.assertEqual(rows[2].row_key, self.ROW_KEY_3)
 
     def test_sample_row_keys(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1013,10 +1047,7 @@ class TestTable(unittest.TestCase):
         response_iterator = object()  # Just passed to a mock.
 
         # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["sample_row_keys"] = mock.Mock(
-            side_effect=[[response_iterator]]
-        )
+        client._table_data_client.sample_row_keys.side_effect = [[response_iterator]]
 
         # Create expected_result.
         expected_result = response_iterator
@@ -1026,13 +1057,13 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result[0], expected_result)
 
     def test_truncate(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        data_api = mock.create_autospec(bigtable_client.BigtableClient)
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1047,19 +1078,19 @@ class TestTable(unittest.TestCase):
             result = table.truncate()
 
         table_api.drop_row_range.assert_called_once_with(
-            name=self.TABLE_NAME, delete_all_data_from_table=True
+            request={"name": self.TABLE_NAME, "delete_all_data_from_table": True}
         )
 
         self.assertEqual(result, expected_result)
 
     def test_truncate_w_timeout(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        data_api = mock.create_autospec(bigtable_client.BigtableClient)
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1077,13 +1108,13 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_drop_by_prefix(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        data_api = mock.create_autospec(bigtable_client.BigtableClient)
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1102,13 +1133,13 @@ class TestTable(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_drop_by_prefix_w_timeout(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        data_api = mock.create_autospec(bigtable_client.BigtableClient)
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1140,7 +1171,9 @@ class TestTable(unittest.TestCase):
         self.assertEqual(mutation_batcher.max_row_bytes, max_row_bytes)
 
     def test_get_iam_policy(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.iam.v1 import policy_pb2
         from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
 
@@ -1157,15 +1190,15 @@ class TestTable(unittest.TestCase):
         bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": members}]
         iam_policy = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         client._table_admin_client = table_api
         table_api.get_iam_policy.return_value = iam_policy
 
         result = table.get_iam_policy()
 
-        table_api.get_iam_policy.assert_called_once_with(resource=table.name)
+        table_api.get_iam_policy.assert_called_once_with(
+            request={"resource": table.name}
+        )
         self.assertEqual(result.version, version)
         self.assertEqual(result.etag, etag)
         admins = result.bigtable_admins
@@ -1174,7 +1207,9 @@ class TestTable(unittest.TestCase):
             self.assertEqual(found, expected)
 
     def test_set_iam_policy(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.iam.v1 import policy_pb2
         from google.cloud.bigtable.policy import Policy
         from google.cloud.bigtable.policy import BIGTABLE_ADMIN_ROLE
@@ -1192,9 +1227,7 @@ class TestTable(unittest.TestCase):
         bindings = [{"role": BIGTABLE_ADMIN_ROLE, "members": sorted(members)}]
         iam_policy_pb = policy_pb2.Policy(version=version, etag=etag, bindings=bindings)
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         client._table_admin_client = table_api
         table_api.set_iam_policy.return_value = iam_policy_pb
 
@@ -1207,7 +1240,7 @@ class TestTable(unittest.TestCase):
         result = table.set_iam_policy(iam_policy)
 
         table_api.set_iam_policy.assert_called_once_with(
-            resource=table.name, policy=iam_policy_pb
+            request={"resource": table.name, "policy": iam_policy_pb}
         )
         self.assertEqual(result.version, version)
         self.assertEqual(result.etag, etag)
@@ -1217,7 +1250,9 @@ class TestTable(unittest.TestCase):
             self.assertEqual(found, expected)
 
     def test_test_iam_permissions(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
         from google.iam.v1 import iam_policy_pb2
 
         credentials = _make_credentials()
@@ -1231,9 +1266,7 @@ class TestTable(unittest.TestCase):
 
         response = iam_policy_pb2.TestIamPermissionsResponse(permissions=permissions)
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         table_api.test_iam_permissions.return_value = response
         client._table_admin_client = table_api
 
@@ -1241,7 +1274,7 @@ class TestTable(unittest.TestCase):
 
         self.assertEqual(result, permissions)
         table_api.test_iam_permissions.assert_called_once_with(
-            resource=table.name, permissions=permissions
+            request={"resource": table.name, "permissions": permissions}
         )
 
     def test_backup_factory_defaults(self):
@@ -1274,9 +1307,7 @@ class TestTable(unittest.TestCase):
         table = self._make_one(self.TABLE_ID, instance)
         timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
         backup = table.backup(
-            self.BACKUP_ID,
-            cluster_id=self.CLUSTER_ID,
-            expire_time=timestamp,
+            self.BACKUP_ID, cluster_id=self.CLUSTER_ID, expire_time=timestamp,
         )
 
         self.assertIsInstance(backup, Backup)
@@ -1293,18 +1324,20 @@ class TestTable(unittest.TestCase):
         self.assertIsNone(backup._state)
 
     def _list_backups_helper(self, cluster_id=None, filter_=None, **kwargs):
-        from google.cloud.bigtable_admin_v2.gapic import (
-            bigtable_instance_admin_client,
-            bigtable_table_admin_client,
+        from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
+            BigtableInstanceAdminClient,
         )
-        from google.cloud.bigtable_admin_v2.proto import (
-            bigtable_table_admin_pb2,
-            table_pb2,
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            BigtableTableAdminClient,
+        )
+        from google.cloud.bigtable_admin_v2.types import (
+            bigtable_table_admin,
+            Backup as backup_pb,
         )
         from google.cloud.bigtable.backup import Backup
 
-        instance_api = bigtable_instance_admin_client.BigtableInstanceAdminClient
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        instance_api = mock.create_autospec(BigtableInstanceAdminClient)
+        table_api = mock.create_autospec(BigtableTableAdminClient)
         client = self._make_client(
             project=self.PROJECT_ID, credentials=_make_credentials(), admin=True
         )
@@ -1313,19 +1346,20 @@ class TestTable(unittest.TestCase):
 
         client._instance_admin_client = instance_api
         client._table_admin_client = table_api
+        table._instance._client._instance_admin_client = instance_api
+        table._instance._client._table_admin_client = table_api
 
         parent = self.INSTANCE_NAME + "/clusters/cluster"
-        backups_pb = bigtable_table_admin_pb2.ListBackupsResponse(
+        backups_pb = bigtable_table_admin.ListBackupsResponse(
             backups=[
-                table_pb2.Backup(name=parent + "/backups/op1"),
-                table_pb2.Backup(name=parent + "/backups/op2"),
-                table_pb2.Backup(name=parent + "/backups/op3"),
+                backup_pb(name=parent + "/backups/op1"),
+                backup_pb(name=parent + "/backups/op2"),
+                backup_pb(name=parent + "/backups/op3"),
             ]
         )
 
-        api = table_api._inner_api_calls["list_backups"] = mock.Mock(
-            return_value=backups_pb
-        )
+        table_api.list_backups.return_value = backups_pb
+        api = table._instance._client._table_admin_client.list_backups
 
         backups_filter = "source_table:{}".format(self.TABLE_NAME)
         if filter_:
@@ -1340,16 +1374,21 @@ class TestTable(unittest.TestCase):
             cluster_id = "-"
         parent = "{}/clusters/{}".format(self.INSTANCE_NAME, cluster_id)
 
-        expected_metadata = [
-            ("x-goog-request-params", "parent={}".format(parent)),
-        ]
+        order_by = None
+        page_size = 0
+        if "order_by" in kwargs:
+            order_by = kwargs["order_by"]
+
+        if "page_size" in kwargs:
+            page_size = kwargs["page_size"]
+
         api.assert_called_once_with(
-            bigtable_table_admin_pb2.ListBackupsRequest(
-                parent=parent, filter=backups_filter, **kwargs
-            ),
-            retry=mock.ANY,
-            timeout=mock.ANY,
-            metadata=expected_metadata,
+            request={
+                "parent": parent,
+                "filter": backups_filter,
+                "order_by": order_by,
+                "page_size": page_size,
+            }
         )
 
     def test_list_backups_defaults(self):
@@ -1362,20 +1401,23 @@ class TestTable(unittest.TestCase):
 
     def _restore_helper(self, backup_name=None):
         from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_instance_admin_client
         from google.cloud.bigtable.instance import Instance
 
         op_future = object()
-        instance_api = bigtable_instance_admin_client.BigtableInstanceAdminClient
+        credentials = _make_credentials()
+        client = self._make_client(
+            project=self.PROJECT_ID, credentials=credentials, admin=True
+        )
 
-        client = mock.Mock(project=self.PROJECT_ID, instance_admin_client=instance_api)
         instance = Instance(self.INSTANCE_ID, client=client)
         table = self._make_one(self.TABLE_ID, instance)
 
-        api = client.table_admin_client = mock.create_autospec(
-            BigtableTableAdminClient, instance=True
+        api = client._table_admin_client = mock.create_autospec(
+            BigtableTableAdminClient
         )
+
         api.restore_table.return_value = op_future
+        table._instance._client._table_admin_client = api
 
         if backup_name:
             future = table.restore(self.TABLE_ID, backup_name=self.BACKUP_NAME)
@@ -1384,9 +1426,11 @@ class TestTable(unittest.TestCase):
         self.assertIs(future, op_future)
 
         api.restore_table.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            table_id=self.TABLE_ID,
-            backup=self.BACKUP_NAME,
+            request={
+                "parent": self.INSTANCE_NAME,
+                "table_id": self.TABLE_ID,
+                "backup": self.BACKUP_NAME,
+            }
         )
 
     def test_restore_table_w_backup_id(self):
@@ -1445,7 +1489,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def _make_responses(self, codes):
         import six
-        from google.cloud.bigtable_v2.proto.bigtable_pb2 import MutateRowsResponse
+        from google.cloud.bigtable_v2.types.bigtable import MutateRowsResponse
         from google.rpc.status_pb2 import Status
 
         entries = [
@@ -1455,13 +1499,13 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         return MutateRowsResponse(entries=entries)
 
     def test_callable_empty_rows(self):
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        data_api = mock.create_autospec(bigtable_client.BigtableClient)
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1478,8 +1522,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_callable_no_retry_strategy(self):
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 3 rows.
@@ -1491,8 +1537,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - State of responses_statuses should be
         #       [success, retryable, non-retryable]
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
+
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1509,12 +1556,16 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         row_3 = DirectRow(row_key=b"row_key_3", table=table)
         row_3.set_cell("cf", b"col", b"value3")
 
-        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
-
         response_codes = [self.SUCCESS, self.RETRYABLE_1, self.NON_RETRYABLE]
         response = self._make_responses(response_codes)
         data_api.mutate_rows = mock.MagicMock(return_value=[response])
 
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
+
+        table._instance._client._table_data_client.mutate_rows.return_value = [response]
+
+        worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
         statuses = worker(retry=None)
 
         result = [status.code for status in statuses]
@@ -1525,8 +1576,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def test_callable_retry(self):
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import DEFAULT_RETRY
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 3 rows.
@@ -1539,8 +1592,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - State of responses_statuses should be
         #       [success, success, non-retryable]
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
+
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1549,7 +1603,6 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         client._table_admin_client = table_api
         instance = client.instance(instance_id=self.INSTANCE_ID)
         table = self._make_table(self.TABLE_ID, instance)
-
         row_1 = DirectRow(row_key=b"row_key", table=table)
         row_1.set_cell("cf", b"col", b"value1")
         row_2 = DirectRow(row_key=b"row_key_2", table=table)
@@ -1563,9 +1616,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response_2 = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        client._table_data_client._inner_api_calls["mutate_rows"] = mock.Mock(
-            side_effect=[[response_1], [response_2]]
-        )
+        client._table_data_client.mutate_rows.side_effect = [[response_1], [response_2]]
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
 
         retry = DEFAULT_RETRY.with_delay(initial=0.1)
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
@@ -1574,17 +1627,15 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         result = [status.code for status in statuses]
         expected_result = [self.SUCCESS, self.SUCCESS, self.NON_RETRYABLE]
 
-        self.assertEqual(
-            client._table_data_client._inner_api_calls["mutate_rows"].call_count, 2
-        )
+        self.assertEqual(client._table_data_client.mutate_rows.call_count, 2)
         self.assertEqual(result, expected_result)
 
     def test_do_mutate_retryable_rows_empty_rows(self):
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
-
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
         )
+
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1600,8 +1651,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows(self):
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 2 rows.
@@ -1610,8 +1663,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Expectation:
         #   - Expect [success, non-retryable]
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
+
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1629,8 +1683,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS, self.NON_RETRYABLE])
 
         # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
+        client._table_data_client.mutate_rows.side_effect = [[response]]
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
 
         worker = self._make_worker(client, table.name, [row_1, row_2])
         statuses = worker._do_mutate_retryable_rows()
@@ -1643,8 +1698,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def test_do_mutate_retryable_rows_retry(self):
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import _BigtableRetryableError
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 3 rows.
@@ -1655,8 +1712,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - State of responses_statuses should be
         #       [success, retryable, non-retryable]
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1678,8 +1735,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         )
 
         # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
+        client._table_data_client.mutate_rows.side_effect = [[response]]
+
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
 
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3])
 
@@ -1695,8 +1754,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
     def test_do_mutate_retryable_rows_second_retry(self):
         from google.cloud.bigtable.row import DirectRow
         from google.cloud.bigtable.table import _BigtableRetryableError
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 4 rows.
@@ -1712,8 +1773,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - Exception contains response whose index should be '3' even though
         #     only two rows were retried.
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1735,8 +1796,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS, self.RETRYABLE_1])
 
         # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
+        client._table_data_client.mutate_rows.side_effect = [[response]]
+
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
 
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses(
@@ -1759,8 +1822,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_second_try(self):
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 4 rows.
@@ -1772,8 +1837,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         #   - After second try:
         #       [success, non-retryable, non-retryable, success]
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1795,8 +1860,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.NON_RETRYABLE, self.SUCCESS])
 
         # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
+        client._table_data_client.mutate_rows.side_effect = [[response]]
+
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
 
         worker = self._make_worker(client, table.name, [row_1, row_2, row_3, row_4])
         worker.responses_statuses = self._make_responses_statuses(
@@ -1817,7 +1884,9 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_second_try_no_retryable(self):
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
         # Setup:
         #   - Mutate 2 rows.
@@ -1827,9 +1896,7 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         # Expectation:
         #   - After second try: [success, non-retryable]
 
-        table_api = mock.create_autospec(
-            bigtable_table_admin_client.BigtableTableAdminClient
-        )
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1848,6 +1915,8 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
             [self.SUCCESS, self.NON_RETRYABLE]
         )
 
+        table._instance._client._table_admin_client = table_api
+
         statuses = worker._do_mutate_retryable_rows()
 
         result = [status.code for status in statuses]
@@ -1857,11 +1926,13 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
 
     def test_do_mutate_retryable_rows_mismatch_num_responses(self):
         from google.cloud.bigtable.row import DirectRow
-        from google.cloud.bigtable_v2.gapic import bigtable_client
-        from google.cloud.bigtable_admin_v2.gapic import bigtable_table_admin_client
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
 
-        data_api = bigtable_client.BigtableClient(mock.Mock())
-        table_api = bigtable_table_admin_client.BigtableTableAdminClient(mock.Mock())
+        data_api = mock.create_autospec(BigtableClient)
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
         credentials = _make_credentials()
         client = self._make_client(
             project="project-id", credentials=credentials, admin=True
@@ -1879,8 +1950,10 @@ class Test__RetryableMutateRowsWorker(unittest.TestCase):
         response = self._make_responses([self.SUCCESS])
 
         # Patch the stub used by the API method.
-        inner_api_calls = client._table_data_client._inner_api_calls
-        inner_api_calls["mutate_rows"] = mock.Mock(side_effect=[[response]])
+        client._table_data_client.mutate_rows.side_effect = [[response]]
+
+        table._instance._client._table_data_client = data_api
+        table._instance._client._table_admin_client = table_api
 
         worker = self._make_worker(client, table.name, [row_1, row_2])
         with self.assertRaises(RuntimeError):
@@ -1924,33 +1997,42 @@ class Test__create_row_request(unittest.TestCase):
             self._call_fut(None, end_key=object(), row_set=object())
 
     def test_row_range_start_key(self):
+        from google.cloud.bigtable_v2.types import RowRange
+
         table_name = "table_name"
         start_key = b"start_key"
         result = self._call_fut(table_name, start_key=start_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
-        expected_result.rows.row_ranges.add(start_key_closed=start_key)
+        row_range = RowRange(start_key_closed=start_key)
+        expected_result.rows.row_ranges.append(row_range)
         self.assertEqual(result, expected_result)
 
     def test_row_range_end_key(self):
+        from google.cloud.bigtable_v2.types import RowRange
+
         table_name = "table_name"
         end_key = b"end_key"
         result = self._call_fut(table_name, end_key=end_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
-        expected_result.rows.row_ranges.add(end_key_open=end_key)
+        row_range = RowRange(end_key_open=end_key)
+        expected_result.rows.row_ranges.append(row_range)
         self.assertEqual(result, expected_result)
 
     def test_row_range_both_keys(self):
+        from google.cloud.bigtable_v2.types import RowRange
+
         table_name = "table_name"
         start_key = b"start_key"
         end_key = b"end_key"
         result = self._call_fut(table_name, start_key=start_key, end_key=end_key)
+        row_range = RowRange(start_key_closed=start_key, end_key_open=end_key)
         expected_result = _ReadRowsRequestPB(table_name=table_name)
-        expected_result.rows.row_ranges.add(
-            start_key_closed=start_key, end_key_open=end_key
-        )
+        expected_result.rows.row_ranges.append(row_range)
         self.assertEqual(result, expected_result)
 
     def test_row_range_both_keys_inclusive(self):
+        from google.cloud.bigtable_v2.types import RowRange
+
         table_name = "table_name"
         start_key = b"start_key"
         end_key = b"end_key"
@@ -1958,9 +2040,8 @@ class Test__create_row_request(unittest.TestCase):
             table_name, start_key=start_key, end_key=end_key, end_inclusive=True
         )
         expected_result = _ReadRowsRequestPB(table_name=table_name)
-        expected_result.rows.row_ranges.add(
-            start_key_closed=start_key, end_key_closed=end_key
-        )
+        row_range = RowRange(start_key_closed=start_key, end_key_closed=end_key)
+        expected_result.rows.row_ranges.append(row_range)
         self.assertEqual(result, expected_result)
 
     def test_with_filter(self):
@@ -2002,7 +2083,7 @@ class Test__create_row_request(unittest.TestCase):
 
 
 def _ReadRowsRequestPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
@@ -2094,24 +2175,24 @@ class Test_ClusterState(unittest.TestCase):
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     family_name = kw.pop("family_name")
     qualifier = kw.pop("qualifier")
     message = messages_v2_pb2.ReadRowsResponse.CellChunk(*args, **kw)
-    message.family_name.value = family_name
-    message.qualifier.value = qualifier
+    message.family_name = family_name
+    message.qualifier = qualifier
     return message
 
 
 def _ReadRowsResponsePB(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
 def _mutate_rows_request_pb(*args, **kw):
-    from google.cloud.bigtable_v2.proto import bigtable_pb2 as data_messages_v2_pb2
+    from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
 
     return data_messages_v2_pb2.MutateRowsRequest(*args, **kw)
 
@@ -2130,6 +2211,9 @@ class _MockFailureIterator_1(object):
     def next(self):
         raise DeadlineExceeded("Failed to read from server")
 
+    def __init__(self, last_scanned_row_key=""):
+        self.last_scanned_row_key = last_scanned_row_key
+
     __next__ = next
 
 
@@ -2137,6 +2221,7 @@ class _MockFailureIterator_2(object):
     def __init__(self, *values):
         self.iter_values = values[0]
         self.calls = 0
+        self.last_scanned_row_key = ""
 
     def next(self):
         self.calls += 1
@@ -2155,19 +2240,19 @@ class _ReadRowsResponseV2(object):
 
 
 def _TablePB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.Table(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.ColumnFamily(*args, **kw)
 
 
 def _ClusterStatePB(replication_state):
-    from google.cloud.bigtable_admin_v2.proto import table_pb2 as table_v2_pb2
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.Table.ClusterState(replication_state=replication_state)
 

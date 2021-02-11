@@ -16,7 +16,7 @@
 
 
 import re
-from google.cloud.bigtable_admin_v2.types import instance_pb2
+from google.cloud.bigtable_admin_v2.types import instance
 from google.api_core.exceptions import NotFound
 
 
@@ -101,7 +101,7 @@ class Cluster(object):
             :end-before: [END bigtable_api_cluster_from_pb]
             :dedent: 4
 
-        :type cluster_pb: :class:`instance_pb2.Cluster`
+        :type cluster_pb: :class:`instance.Cluster`
         :param cluster_pb: An instance protobuf object.
 
         :type instance: :class:`google.cloud.bigtable.instance.Instance`
@@ -211,7 +211,9 @@ class Cluster(object):
             :end-before: [END bigtable_api_reload_cluster]
             :dedent: 4
         """
-        cluster_pb = self._instance._client.instance_admin_client.get_cluster(self.name)
+        cluster_pb = self._instance._client.instance_admin_client.get_cluster(
+            request={"name": self.name}
+        )
 
         # NOTE: _update_from_pb does not check that the project and
         #       cluster ID on the response match the request.
@@ -232,7 +234,7 @@ class Cluster(object):
         """
         client = self._instance._client
         try:
-            client.instance_admin_client.get_cluster(name=self.name)
+            client.instance_admin_client.get_cluster(request={"name": self.name})
             return True
         # NOTE: There could be other exceptions that are returned to the user.
         except NotFound:
@@ -269,7 +271,11 @@ class Cluster(object):
         cluster_pb = self._to_pb()
 
         return client.instance_admin_client.create_cluster(
-            self._instance.name, self.cluster_id, cluster_pb
+            request={
+                "parent": self._instance.name,
+                "cluster_id": self.cluster_id,
+                "cluster": cluster_pb,
+            }
         )
 
     def update(self):
@@ -302,7 +308,11 @@ class Cluster(object):
         # Location is set only at the time of creation of a cluster
         # and can not be changed after cluster has been created.
         return client.instance_admin_client.update_cluster(
-            name=self.name, serve_nodes=self.serve_nodes, location=None
+            request={
+                "serve_nodes": self.serve_nodes,
+                "name": self.name,
+                "location": None,
+            }
         )
 
     def delete(self):
@@ -333,15 +343,15 @@ class Cluster(object):
           permanently deleted.
         """
         client = self._instance._client
-        client.instance_admin_client.delete_cluster(self.name)
+        client.instance_admin_client.delete_cluster(request={"name": self.name})
 
     def _to_pb(self):
         """ Create cluster proto buff message for API calls """
         client = self._instance._client
-        location = client.instance_admin_client.location_path(
+        location = client.instance_admin_client.common_location_path(
             client.project, self.location_id
         )
-        cluster_pb = instance_pb2.Cluster(
+        cluster_pb = instance.Cluster(
             location=location,
             serve_nodes=self.serve_nodes,
             default_storage_type=self.default_storage_type,
