@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.2.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.0...v2.2.1) (2021-02-09)
+
+
+### Documentation
+
+* update python contributing guide ([#89](https://www.github.com/googleapis/python-containeranalysis/issues/89)) ([fd356af](https://www.github.com/googleapis/python-containeranalysis/commit/fd356afb7010186559ebdd621c6c2e7012826a81))
+
 ## [2.2.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.1.0...v2.2.0) (2021-01-06)
 
 
