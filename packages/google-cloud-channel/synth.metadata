@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-channel.git",
-        "sha": "6d0a2da2130c68fb4091fd1245ada5adabbce132"
+        "sha": "0d25fa6ad0e3fac43b7473523393c22cbd157129"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "b241bbc1ad920771707fe03e4cedd4e8c492e143",
-        "internalRef": "350670798"
+        "sha": "6ef9eaea379fc1cc0355e06a5a20b594543ee693",
+        "internalRef": "355059873"
       }
     },
     {
@@ -122,6 +122,7 @@
     "google/cloud/channel_v1/types/operations.py",
     "google/cloud/channel_v1/types/products.py",
     "google/cloud/channel_v1/types/service.py",
+    "google/cloud/channel_v1/types/subscriber_event.py",
     "mypy.ini",
     "noxfile.py",
     "renovate.json",

@@ -113,6 +113,17 @@ from .service import (
     ListPurchasableOffersRequest,
     ListPurchasableOffersResponse,
     PurchasableOffer,
+    RegisterSubscriberRequest,
+    RegisterSubscriberResponse,
+    UnregisterSubscriberRequest,
+    UnregisterSubscriberResponse,
+    ListSubscribersRequest,
+    ListSubscribersResponse,
+)
+from .subscriber_event import (
+    CustomerEvent,
+    EntitlementEvent,
+    SubscriberEvent,
 )
 
 __all__ = (
@@ -201,4 +212,13 @@ __all__ = (
     "ListPurchasableOffersRequest",
     "ListPurchasableOffersResponse",
     "PurchasableOffer",
+    "RegisterSubscriberRequest",
+    "RegisterSubscriberResponse",
+    "UnregisterSubscriberRequest",
+    "UnregisterSubscriberResponse",
+    "ListSubscribersRequest",
+    "ListSubscribersResponse",
+    "CustomerEvent",
+    "EntitlementEvent",
+    "SubscriberEvent",
 )

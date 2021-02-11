@@ -135,6 +135,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -166,6 +167,10 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
                 for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                A callback to provide client certificate bytes and private key bytes,
+                both in PEM format. It is used to configure mutual TLS channel. It is
+                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
@@ -182,6 +187,11 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         """
         self._ssl_channel_credentials = ssl_channel_credentials
 
+        if api_mtls_endpoint:
+            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
+        if client_cert_source:
+            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -191,11 +201,6 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
-            warnings.warn(
-                "api_mtls_endpoint and client_cert_source are deprecated",
-                DeprecationWarning,
-            )
-
             host = (
                 api_mtls_endpoint
                 if ":" in api_mtls_endpoint
@@ -239,12 +244,18 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
                     scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
                 )
 
+            if client_cert_source_for_mtls and not ssl_channel_credentials:
+                cert, key = client_cert_source_for_mtls()
+                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+
             # create a new channel. The provided one is ignored.
             self._grpc_channel = type(self).create_channel(
                 host,
                 credentials=credentials,
                 credentials_file=credentials_file,
-                ssl_credentials=ssl_channel_credentials,
+                ssl_credentials=self._ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
                 options=[
@@ -1736,6 +1747,149 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
                 response_deserializer=service.ListPurchasableOffersResponse.deserialize,
             )
         return self._stubs["list_purchasable_offers"]
+
+    @property
+    def register_subscriber(
+        self,
+    ) -> Callable[
+        [service.RegisterSubscriberRequest],
+        Awaitable[service.RegisterSubscriberResponse],
+    ]:
+        r"""Return a callable for the register subscriber method over gRPC.
+
+        Registers a service account with subscriber privileges on the
+        Cloud Pub/Sub topic created for this Channel Services account.
+        Once you create a subscriber, you will get the events as per
+        [SubscriberEvent][google.cloud.channel.v1.SubscriberEvent]
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the reseller account making the request
+           and the reseller account being provided are different, or if
+           the impersonated user is not a super admin.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: Topic name with service email address registered
+        if successful, otherwise error is returned.
+
+        Returns:
+            Callable[[~.RegisterSubscriberRequest],
+                    Awaitable[~.RegisterSubscriberResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "register_subscriber" not in self._stubs:
+            self._stubs["register_subscriber"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/RegisterSubscriber",
+                request_serializer=service.RegisterSubscriberRequest.serialize,
+                response_deserializer=service.RegisterSubscriberResponse.deserialize,
+            )
+        return self._stubs["register_subscriber"]
+
+    @property
+    def unregister_subscriber(
+        self,
+    ) -> Callable[
+        [service.UnregisterSubscriberRequest],
+        Awaitable[service.UnregisterSubscriberResponse],
+    ]:
+        r"""Return a callable for the unregister subscriber method over gRPC.
+
+        Unregisters a service account with subscriber privileges on the
+        Cloud Pub/Sub topic created for this Channel Services account.
+        If there are no more service account left with sunbscriber
+        privileges, the topic will be deleted. You can check this by
+        calling ListSubscribers api.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the reseller account making the request
+           and the reseller account being provided are different, or if
+           the impersonated user is not a super admin.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request.
+        -  NOT_FOUND: If the topic resource doesn't exist.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: Topic name from which service email address has
+        been unregistered if successful, otherwise error is returned. If
+        the service email was already not associated with the topic, the
+        success response will be returned.
+
+        Returns:
+            Callable[[~.UnregisterSubscriberRequest],
+                    Awaitable[~.UnregisterSubscriberResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "unregister_subscriber" not in self._stubs:
+            self._stubs["unregister_subscriber"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/UnregisterSubscriber",
+                request_serializer=service.UnregisterSubscriberRequest.serialize,
+                response_deserializer=service.UnregisterSubscriberResponse.deserialize,
+            )
+        return self._stubs["unregister_subscriber"]
+
+    @property
+    def list_subscribers(
+        self,
+    ) -> Callable[
+        [service.ListSubscribersRequest], Awaitable[service.ListSubscribersResponse]
+    ]:
+        r"""Return a callable for the list subscribers method over gRPC.
+
+        Lists service accounts with subscriber privileges on the Cloud
+        Pub/Sub topic created for this Channel Services account.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the reseller account making the request
+           and the reseller account being provided are different, or if
+           the account is not a super admin.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request.
+        -  NOT_FOUND: If the topic resource doesn't exist.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: List of service email addresses if successful,
+        otherwise error is returned.
+
+        Returns:
+            Callable[[~.ListSubscribersRequest],
+                    Awaitable[~.ListSubscribersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_subscribers" not in self._stubs:
+            self._stubs["list_subscribers"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ListSubscribers",
+                request_serializer=service.ListSubscribersRequest.serialize,
+                response_deserializer=service.ListSubscribersResponse.deserialize,
+            )
+        return self._stubs["list_subscribers"]
 
 
 __all__ = ("CloudChannelServiceGrpcAsyncIOTransport",)

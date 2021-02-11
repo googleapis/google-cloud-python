@@ -93,6 +93,8 @@ from google.cloud.channel_v1.types.service import ListPurchasableSkusRequest
 from google.cloud.channel_v1.types.service import ListPurchasableSkusResponse
 from google.cloud.channel_v1.types.service import ListSkusRequest
 from google.cloud.channel_v1.types.service import ListSkusResponse
+from google.cloud.channel_v1.types.service import ListSubscribersRequest
+from google.cloud.channel_v1.types.service import ListSubscribersResponse
 from google.cloud.channel_v1.types.service import ListTransferableOffersRequest
 from google.cloud.channel_v1.types.service import ListTransferableOffersResponse
 from google.cloud.channel_v1.types.service import ListTransferableSkusRequest
@@ -100,14 +102,21 @@ from google.cloud.channel_v1.types.service import ListTransferableSkusResponse
 from google.cloud.channel_v1.types.service import ProvisionCloudIdentityRequest
 from google.cloud.channel_v1.types.service import PurchasableOffer
 from google.cloud.channel_v1.types.service import PurchasableSku
+from google.cloud.channel_v1.types.service import RegisterSubscriberRequest
+from google.cloud.channel_v1.types.service import RegisterSubscriberResponse
 from google.cloud.channel_v1.types.service import StartPaidServiceRequest
 from google.cloud.channel_v1.types.service import SuspendEntitlementRequest
 from google.cloud.channel_v1.types.service import TransferEntitlementsRequest
 from google.cloud.channel_v1.types.service import TransferEntitlementsResponse
 from google.cloud.channel_v1.types.service import TransferEntitlementsToGoogleRequest
 from google.cloud.channel_v1.types.service import TransferableOffer
+from google.cloud.channel_v1.types.service import UnregisterSubscriberRequest
+from google.cloud.channel_v1.types.service import UnregisterSubscriberResponse
 from google.cloud.channel_v1.types.service import UpdateChannelPartnerLinkRequest
 from google.cloud.channel_v1.types.service import UpdateCustomerRequest
+from google.cloud.channel_v1.types.subscriber_event import CustomerEvent
+from google.cloud.channel_v1.types.subscriber_event import EntitlementEvent
+from google.cloud.channel_v1.types.subscriber_event import SubscriberEvent
 
 __all__ = (
     "ActivateEntitlementRequest",
@@ -134,9 +143,11 @@ __all__ = (
     "CreateEntitlementRequest",
     "Customer",
     "CustomerConstraints",
+    "CustomerEvent",
     "DeleteCustomerRequest",
     "EduData",
     "Entitlement",
+    "EntitlementEvent",
     "GetChannelPartnerLinkRequest",
     "GetCustomerRequest",
     "GetEntitlementRequest",
@@ -156,6 +167,8 @@ __all__ = (
     "ListPurchasableSkusResponse",
     "ListSkusRequest",
     "ListSkusResponse",
+    "ListSubscribersRequest",
+    "ListSubscribersResponse",
     "ListTransferableOffersRequest",
     "ListTransferableOffersResponse",
     "ListTransferableSkusRequest",
@@ -182,10 +195,13 @@ __all__ = (
     "ProvisionedService",
     "PurchasableOffer",
     "PurchasableSku",
+    "RegisterSubscriberRequest",
+    "RegisterSubscriberResponse",
     "RenewalSettings",
     "ResourceType",
     "Sku",
     "StartPaidServiceRequest",
+    "SubscriberEvent",
     "SuspendEntitlementRequest",
     "TransferEligibility",
     "TransferEntitlementsRequest",
@@ -194,6 +210,8 @@ __all__ = (
     "TransferableOffer",
     "TransferableSku",
     "TrialSettings",
+    "UnregisterSubscriberRequest",
+    "UnregisterSubscriberResponse",
     "UpdateChannelPartnerLinkRequest",
     "UpdateCustomerRequest",
     "Value",

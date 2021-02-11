@@ -86,6 +86,8 @@ from .types.service import ListPurchasableSkusRequest
 from .types.service import ListPurchasableSkusResponse
 from .types.service import ListSkusRequest
 from .types.service import ListSkusResponse
+from .types.service import ListSubscribersRequest
+from .types.service import ListSubscribersResponse
 from .types.service import ListTransferableOffersRequest
 from .types.service import ListTransferableOffersResponse
 from .types.service import ListTransferableSkusRequest
@@ -93,14 +95,21 @@ from .types.service import ListTransferableSkusResponse
 from .types.service import ProvisionCloudIdentityRequest
 from .types.service import PurchasableOffer
 from .types.service import PurchasableSku
+from .types.service import RegisterSubscriberRequest
+from .types.service import RegisterSubscriberResponse
 from .types.service import StartPaidServiceRequest
 from .types.service import SuspendEntitlementRequest
 from .types.service import TransferEntitlementsRequest
 from .types.service import TransferEntitlementsResponse
 from .types.service import TransferEntitlementsToGoogleRequest
 from .types.service import TransferableOffer
+from .types.service import UnregisterSubscriberRequest
+from .types.service import UnregisterSubscriberResponse
 from .types.service import UpdateChannelPartnerLinkRequest
 from .types.service import UpdateCustomerRequest
+from .types.subscriber_event import CustomerEvent
+from .types.subscriber_event import EntitlementEvent
+from .types.subscriber_event import SubscriberEvent
 
 
 __all__ = (
@@ -126,9 +135,11 @@ __all__ = (
     "CreateEntitlementRequest",
     "Customer",
     "CustomerConstraints",
+    "CustomerEvent",
     "DeleteCustomerRequest",
     "EduData",
     "Entitlement",
+    "EntitlementEvent",
     "GetChannelPartnerLinkRequest",
     "GetCustomerRequest",
     "GetEntitlementRequest",
@@ -148,6 +159,8 @@ __all__ = (
     "ListPurchasableSkusResponse",
     "ListSkusRequest",
     "ListSkusResponse",
+    "ListSubscribersRequest",
+    "ListSubscribersResponse",
     "ListTransferableOffersRequest",
     "ListTransferableOffersResponse",
     "ListTransferableSkusRequest",
@@ -174,10 +187,13 @@ __all__ = (
     "ProvisionedService",
     "PurchasableOffer",
     "PurchasableSku",
+    "RegisterSubscriberRequest",
+    "RegisterSubscriberResponse",
     "RenewalSettings",
     "ResourceType",
     "Sku",
     "StartPaidServiceRequest",
+    "SubscriberEvent",
     "SuspendEntitlementRequest",
     "TransferEligibility",
     "TransferEntitlementsRequest",
@@ -186,6 +202,8 @@ __all__ = (
     "TransferableOffer",
     "TransferableSku",
     "TrialSettings",
+    "UnregisterSubscriberRequest",
+    "UnregisterSubscriberResponse",
     "UpdateChannelPartnerLinkRequest",
     "UpdateCustomerRequest",
     "Value",

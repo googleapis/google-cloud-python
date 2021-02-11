@@ -78,6 +78,12 @@ __protobuf__ = proto.module(
         "ListPurchasableOffersRequest",
         "ListPurchasableOffersResponse",
         "PurchasableOffer",
+        "RegisterSubscriberRequest",
+        "RegisterSubscriberResponse",
+        "UnregisterSubscriberRequest",
+        "UnregisterSubscriberResponse",
+        "ListSubscribersRequest",
+        "ListSubscribersResponse",
     },
 )
 
@@ -1483,6 +1489,120 @@ class PurchasableOffer(proto.Message):
     """
 
     offer = proto.Field(proto.MESSAGE, number=1, message=gcc_offers.Offer,)
+
+
+class RegisterSubscriberRequest(proto.Message):
+    r"""Request Message for RegisterSubscriber.
+
+    Attributes:
+        account (str):
+            Required. Resource name of the account.
+        service_account (str):
+            Required. Service account which will provide
+            subscriber access to the registered topic.
+    """
+
+    account = proto.Field(proto.STRING, number=1)
+
+    service_account = proto.Field(proto.STRING, number=2)
+
+
+class RegisterSubscriberResponse(proto.Message):
+    r"""Response Message for RegisterSubscriber.
+
+    Attributes:
+        topic (str):
+            Name of the topic to which the subscriber
+            will listen to.
+    """
+
+    topic = proto.Field(proto.STRING, number=1)
+
+
+class UnregisterSubscriberRequest(proto.Message):
+    r"""Request Message for UnregisterSubscriber.
+
+    Attributes:
+        account (str):
+            Required. Resource name of the account.
+        service_account (str):
+            Required. Service account which will be
+            unregistered from getting subscriber access to
+            the topic.
+    """
+
+    account = proto.Field(proto.STRING, number=1)
+
+    service_account = proto.Field(proto.STRING, number=2)
+
+
+class UnregisterSubscriberResponse(proto.Message):
+    r"""Response Message for UnregisterSubscriber.
+
+    Attributes:
+        topic (str):
+            Name of the topic from which the service
+            account subscriber access has been removed.
+    """
+
+    topic = proto.Field(proto.STRING, number=1)
+
+
+class ListSubscribersRequest(proto.Message):
+    r"""Request Message for ListSubscribers.
+
+    Attributes:
+        account (str):
+            Required. Resource name of the account.
+        page_size (int):
+            Optional. The maximum number of service
+            accounts to return. The service may return fewer
+            than this value. If unspecified, at most 100
+            service accounts will be returned. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListSubscribers`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListSubscribers`` must match the call that provided the
+            page token.
+    """
+
+    account = proto.Field(proto.STRING, number=1)
+
+    page_size = proto.Field(proto.INT32, number=2)
+
+    page_token = proto.Field(proto.STRING, number=3)
+
+
+class ListSubscribersResponse(proto.Message):
+    r"""Response Message for ListSubscribers.
+
+    Attributes:
+        topic (str):
+            Name of the topic registered with the
+            reseller.
+        service_accounts (Sequence[str]):
+            List of service accounts which have
+            subscriber access to the topic.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    topic = proto.Field(proto.STRING, number=1)
+
+    service_accounts = proto.RepeatedField(proto.STRING, number=2)
+
+    next_page_token = proto.Field(proto.STRING, number=3)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

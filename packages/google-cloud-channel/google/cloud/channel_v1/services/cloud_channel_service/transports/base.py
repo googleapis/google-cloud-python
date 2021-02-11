@@ -228,6 +228,17 @@ class CloudChannelServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.register_subscriber: gapic_v1.method.wrap_method(
+                self.register_subscriber, default_timeout=None, client_info=client_info,
+            ),
+            self.unregister_subscriber: gapic_v1.method.wrap_method(
+                self.unregister_subscriber,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_subscribers: gapic_v1.method.wrap_method(
+                self.list_subscribers, default_timeout=None, client_info=client_info,
+            ),
         }
 
     @property
@@ -542,6 +553,42 @@ class CloudChannelServiceTransport(abc.ABC):
         typing.Union[
             service.ListPurchasableOffersResponse,
             typing.Awaitable[service.ListPurchasableOffersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def register_subscriber(
+        self,
+    ) -> typing.Callable[
+        [service.RegisterSubscriberRequest],
+        typing.Union[
+            service.RegisterSubscriberResponse,
+            typing.Awaitable[service.RegisterSubscriberResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def unregister_subscriber(
+        self,
+    ) -> typing.Callable[
+        [service.UnregisterSubscriberRequest],
+        typing.Union[
+            service.UnregisterSubscriberResponse,
+            typing.Awaitable[service.UnregisterSubscriberResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_subscribers(
+        self,
+    ) -> typing.Callable[
+        [service.ListSubscribersRequest],
+        typing.Union[
+            service.ListSubscribersResponse,
+            typing.Awaitable[service.ListSubscribersResponse],
         ],
     ]:
         raise NotImplementedError()
