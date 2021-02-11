@@ -65,9 +65,7 @@ _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 _DEFAULT_TOKEN_URI = "https://oauth2.googleapis.com/token"
 
 
-def _make_iam_token_request(
-    request, principal, headers, body, iam_endpoint_override=None
-):
+def _make_iam_token_request(request, principal, headers, body):
     """Makes a request to the Google Cloud IAM service for an access token.
     Args:
         request (Request): The Request object to use.
@@ -75,9 +73,6 @@ def _make_iam_token_request(
         headers (Mapping[str, str]): Map of headers to transmit.
         body (Mapping[str, str]): JSON Payload body for the iamcredentials
             API call.
-        iam_endpoint_override (Optiona[str]): The full IAM endpoint override
-            with the target_principal embedded. This is useful when supporting
-            impersonation with regional endpoints.
 
     Raises:
         google.auth.exceptions.TransportError: Raised if there is an underlying
@@ -87,7 +82,7 @@ def _make_iam_token_request(
             `iamcredentials.googleapis.com` is not enabled or the
             `Service Account Token Creator` is not assigned
     """
-    iam_endpoint = iam_endpoint_override or _IAM_ENDPOINT.format(principal)
+    iam_endpoint = _IAM_ENDPOINT.format(principal)
 
     body = json.dumps(body).encode("utf-8")
 
@@ -190,7 +185,6 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
         delegates=None,
         lifetime=_DEFAULT_TOKEN_LIFETIME_SECS,
         quota_project_id=None,
-        iam_endpoint_override=None,
     ):
         """
         Args:
@@ -215,9 +209,6 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
             quota_project_id (Optional[str]): The project ID used for quota and billing.
                 This project may be different from the project used to
                 create the credentials.
-            iam_endpoint_override (Optiona[str]): The full IAM endpoint override
-                with the target_principal embedded. This is useful when supporting
-                impersonation with regional endpoints.
         """
 
         super(Credentials, self).__init__()
@@ -235,7 +226,6 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
         self.token = None
         self.expiry = _helpers.utcnow()
         self._quota_project_id = quota_project_id
-        self._iam_endpoint_override = iam_endpoint_override
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
@@ -270,7 +260,6 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
             principal=self._target_principal,
             headers=headers,
             body=body,
-            iam_endpoint_override=self._iam_endpoint_override,
         )
 
     def sign_bytes(self, message):
@@ -313,7 +302,6 @@ class Credentials(credentials.CredentialsWithQuotaProject, credentials.Signing):
             delegates=self._delegates,
             lifetime=self._lifetime,
             quota_project_id=quota_project_id,
-            iam_endpoint_override=self._iam_endpoint_override,
         )
 
 
