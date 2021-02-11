@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-vision/compare/v2.1.0...v2.2.0) (2021-02-11)
+
+
+### Features
+
+* add from_service_account_info factory ([7c3035a](https://www.github.com/googleapis/python-vision/commit/7c3035a5fa58d7218ba4ee60fbd0b37fd5fb21ab))
+* **v1:** add `LEFT_CHEEK_CENTER` and `RIGHT_CHEEK_CENTER` to `FaceAnnotation` ([#103](https://www.github.com/googleapis/python-vision/issues/103)) ([7c3035a](https://www.github.com/googleapis/python-vision/commit/7c3035a5fa58d7218ba4ee60fbd0b37fd5fb21ab))
+
+
+### Bug Fixes
+
+* **v1:** deprecate confidence fields in safe search annotation ([7c3035a](https://www.github.com/googleapis/python-vision/commit/7c3035a5fa58d7218ba4ee60fbd0b37fd5fb21ab))
+
+
+### Documentation
+
+* use absolute references for types in docstrings ([7c3035a](https://www.github.com/googleapis/python-vision/commit/7c3035a5fa58d7218ba4ee60fbd0b37fd5fb21ab))
+
 ## [2.1.0](https://www.github.com/googleapis/python-vision/compare/v2.0.0...v2.1.0) (2021-01-26)
 
 
