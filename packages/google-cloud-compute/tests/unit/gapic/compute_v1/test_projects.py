@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.projects import ProjectsClient
+from google.cloud.compute_v1.services.projects import pagers
 from google.cloud.compute_v1.services.projects import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -466,7 +467,7 @@ def test_disable_xpn_host_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -594,13 +595,14 @@ def test_disable_xpn_resource_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.ProjectsDisableXpnResourceRequest.to_json(
             projects_disable_xpn_resource_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -724,7 +726,7 @@ def test_enable_xpn_host_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -852,13 +854,14 @@ def test_enable_xpn_resource_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.ProjectsEnableXpnResourceRequest.to_json(
             projects_enable_xpn_resource_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -964,7 +967,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1069,7 +1072,7 @@ def test_get_xpn_host_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1113,11 +1116,9 @@ def test_get_xpn_resources_rest(
 
         response = client.get_xpn_resources(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.ProjectsGetXpnResources)
+    assert isinstance(response, pagers.GetXpnResourcesPager)
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.resources == [compute.XpnResourceId(id="id_value")]
@@ -1150,7 +1151,7 @@ def test_get_xpn_resources_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1164,6 +1165,57 @@ def test_get_xpn_resources_rest_flattened_error():
         client.get_xpn_resources(
             compute.GetXpnResourcesProjectsRequest(), project="project_value",
         )
+
+
+def test_get_xpn_resources_pager():
+    client = ProjectsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.ProjectsGetXpnResources(
+                resources=[
+                    compute.XpnResourceId(),
+                    compute.XpnResourceId(),
+                    compute.XpnResourceId(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.ProjectsGetXpnResources(resources=[], next_page_token="def",),
+            compute.ProjectsGetXpnResources(
+                resources=[compute.XpnResourceId(),], next_page_token="ghi",
+            ),
+            compute.ProjectsGetXpnResources(
+                resources=[compute.XpnResourceId(), compute.XpnResourceId(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.ProjectsGetXpnResources.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.get_xpn_resources(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.XpnResourceId) for i in results)
+
+        pages = list(client.get_xpn_resources(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_xpn_hosts_rest(
@@ -1203,11 +1255,9 @@ def test_list_xpn_hosts_rest(
 
         response = client.list_xpn_hosts(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.XpnHostList)
+    assert isinstance(response, pagers.ListXpnHostsPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.Project(
@@ -1254,13 +1304,14 @@ def test_list_xpn_hosts_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.ProjectsListXpnHostsRequest.to_json(
             projects_list_xpn_hosts_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1277,6 +1328,49 @@ def test_list_xpn_hosts_rest_flattened_error():
                 organization="organization_value"
             ),
         )
+
+
+def test_list_xpn_hosts_pager():
+    client = ProjectsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.XpnHostList(
+                items=[compute.Project(), compute.Project(), compute.Project(),],
+                next_page_token="abc",
+            ),
+            compute.XpnHostList(items=[], next_page_token="def",),
+            compute.XpnHostList(items=[compute.Project(),], next_page_token="ghi",),
+            compute.XpnHostList(items=[compute.Project(), compute.Project(),],),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.XpnHostList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_xpn_hosts(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Project) for i in results)
+
+        pages = list(client.list_xpn_hosts(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_move_disk_rest(
@@ -1391,12 +1485,14 @@ def test_move_disk_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.DiskMoveRequest.to_json(
-            disk_move_request_resource, including_default_value_fields=False
+            disk_move_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1527,12 +1623,14 @@ def test_move_instance_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.InstanceMoveRequest.to_json(
-            instance_move_request_resource, including_default_value_fields=False
+            instance_move_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1661,12 +1759,14 @@ def test_set_common_instance_metadata_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.Metadata.to_json(
-            metadata_resource, including_default_value_fields=False
+            metadata_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1795,13 +1895,14 @@ def test_set_default_network_tier_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.ProjectsSetDefaultNetworkTierRequest.to_json(
             projects_set_default_network_tier_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1932,12 +2033,14 @@ def test_set_usage_export_bucket_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.UsageExportLocation.to_json(
-            usage_export_location_resource, including_default_value_fields=False
+            usage_export_location_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

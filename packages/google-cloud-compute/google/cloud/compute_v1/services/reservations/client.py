@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.reservations import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import ReservationsTransport, DEFAULT_CLIENT_INFO
@@ -330,7 +331,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ReservationAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of reservations.
 
         Args:
@@ -351,8 +352,12 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ReservationAggregatedList:
+            google.cloud.compute_v1.services.reservations.pagers.AggregatedListPager:
                 Contains a list of reservations.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -383,6 +388,12 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -833,7 +844,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ReservationList:
+    ) -> pagers.ListPager:
         r"""A list of all the reservations that have been
         configured for the specified project in specified zone.
 
@@ -860,7 +871,10 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ReservationList:
+            google.cloud.compute_v1.services.reservations.pagers.ListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -894,6 +908,12 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.projects import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import ProjectsTransport, DEFAULT_CLIENT_INFO
@@ -859,7 +860,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ProjectsGetXpnResources:
+    ) -> pagers.GetXpnResourcesPager:
         r"""Gets service resources (a.k.a service project)
         associated with this host project.
 
@@ -881,7 +882,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ProjectsGetXpnResources:
+            google.cloud.compute_v1.services.projects.pagers.GetXpnResourcesPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -914,6 +918,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.GetXpnResourcesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -926,7 +936,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.XpnHostList:
+    ) -> pagers.ListXpnHostsPager:
         r"""Lists all shared VPC host projects visible to the
         user in an organization.
 
@@ -953,7 +963,10 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.XpnHostList:
+            google.cloud.compute_v1.services.projects.pagers.ListXpnHostsPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -989,6 +1002,12 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListXpnHostsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -445,7 +445,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -532,14 +532,16 @@ def test_test_iam_permissions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.TestPermissionsRequest.to_json(
-            test_permissions_request_resource, including_default_value_fields=False
+            test_permissions_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

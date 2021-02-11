@@ -126,11 +126,11 @@ class NodeTypesRestTransport(NodeTypesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
+            "includeAllScopes": request.include_all_scopes,
+            "maxResults": request.max_results,
+            "orderBy": request.order_by,
             "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "includeAllScopes": request.include_all_scopes,
-            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -241,10 +241,10 @@ class NodeTypesRestTransport(NodeTypesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values

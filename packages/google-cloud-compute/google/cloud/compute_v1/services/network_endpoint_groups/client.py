@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.network_endpoint_groups import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import NetworkEndpointGroupsTransport, DEFAULT_CLIENT_INFO
@@ -334,7 +335,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroupAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of network endpoint groups and
         sorts them by zone.
 
@@ -356,7 +357,10 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NetworkEndpointGroupAggregatedList:
+            google.cloud.compute_v1.services.network_endpoint_groups.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -388,6 +392,12 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -998,7 +1008,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroupList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of network endpoint groups that
         are located in the specified project and zone.
 
@@ -1028,7 +1038,10 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NetworkEndpointGroupList:
+            google.cloud.compute_v1.services.network_endpoint_groups.pagers.ListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1063,6 +1076,12 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1077,7 +1096,7 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkEndpointGroupsListNetworkEndpoints:
+    ) -> pagers.ListNetworkEndpointsPager:
         r"""Lists the network endpoints in the specified network
         endpoint group.
 
@@ -1121,7 +1140,10 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NetworkEndpointGroupsListNetworkEndpoints:
+            google.cloud.compute_v1.services.network_endpoint_groups.pagers.ListNetworkEndpointsPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1170,6 +1192,12 @@ class NetworkEndpointGroupsClient(metaclass=NetworkEndpointGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListNetworkEndpointsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

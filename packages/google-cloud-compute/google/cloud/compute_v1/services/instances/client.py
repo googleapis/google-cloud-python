@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import InstancesTransport, DEFAULT_CLIENT_INFO
@@ -581,7 +582,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves aggregated list of all of the instances in
         your project across all regions and zones.
 
@@ -603,7 +604,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceAggregatedList:
+            google.cloud.compute_v1.services.instances.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -635,6 +639,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1808,7 +1818,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of instances contained within the
         specified zone.
 
@@ -1836,8 +1846,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceList:
+            google.cloud.compute_v1.services.instances.pagers.ListPager:
                 Contains a list of instances.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -1871,6 +1885,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1884,7 +1904,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceListReferrers:
+    ) -> pagers.ListReferrersPager:
         r"""Retrieves a list of resources that refer to the VM
         instance specified in the request. For example, if the
         VM instance is part of a managed or unmanaged instance
@@ -1926,9 +1946,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceListReferrers:
+            google.cloud.compute_v1.services.instances.pagers.ListReferrersPager:
                 Contains a list of instance
                 referrers.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1964,6 +1987,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListReferrersPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

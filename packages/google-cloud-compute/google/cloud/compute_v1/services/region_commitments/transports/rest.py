@@ -126,11 +126,11 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
+            "includeAllScopes": request.include_all_scopes,
+            "maxResults": request.max_results,
+            "orderBy": request.order_by,
             "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "includeAllScopes": request.include_all_scopes,
-            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -263,7 +263,9 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
 
         # Jsonify the request body
         body = compute.Commitment.to_json(
-            request.commitment_resource, including_default_value_fields=False
+            request.commitment_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -286,7 +288,7 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -329,10 +331,10 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values

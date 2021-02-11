@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.zones import ZonesClient
+from google.cloud.compute_v1.services.zones import pagers
 from google.cloud.compute_v1.services.zones import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -437,7 +438,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -486,11 +487,9 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListZonesReques
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.ZoneList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.Zone(available_cpu_platforms=["available_cpu_platforms_value"])
@@ -528,7 +527,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -542,6 +541,49 @@ def test_list_rest_flattened_error():
         client.list(
             compute.ListZonesRequest(), project="project_value",
         )
+
+
+def test_list_pager():
+    client = ZonesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.ZoneList(
+                items=[compute.Zone(), compute.Zone(), compute.Zone(),],
+                next_page_token="abc",
+            ),
+            compute.ZoneList(items=[], next_page_token="def",),
+            compute.ZoneList(items=[compute.Zone(),], next_page_token="ghi",),
+            compute.ZoneList(items=[compute.Zone(), compute.Zone(),],),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.ZoneList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Zone) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():

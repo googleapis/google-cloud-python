@@ -227,6 +227,7 @@ class ProjectsRestTransport(ProjectsTransport):
         body = compute.ProjectsDisableXpnResourceRequest.to_json(
             request.projects_disable_xpn_resource_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -249,7 +250,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -391,6 +392,7 @@ class ProjectsRestTransport(ProjectsTransport):
         body = compute.ProjectsEnableXpnResourceRequest.to_json(
             request.projects_enable_xpn_resource_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -413,7 +415,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -563,10 +565,10 @@ class ProjectsRestTransport(ProjectsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -612,6 +614,7 @@ class ProjectsRestTransport(ProjectsTransport):
         body = compute.ProjectsListXpnHostsRequest.to_json(
             request.projects_list_xpn_hosts_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -624,10 +627,10 @@ class ProjectsRestTransport(ProjectsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -638,7 +641,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -699,7 +702,9 @@ class ProjectsRestTransport(ProjectsTransport):
 
         # Jsonify the request body
         body = compute.DiskMoveRequest.to_json(
-            request.disk_move_request_resource, including_default_value_fields=False
+            request.disk_move_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -722,7 +727,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -783,7 +788,9 @@ class ProjectsRestTransport(ProjectsTransport):
 
         # Jsonify the request body
         body = compute.InstanceMoveRequest.to_json(
-            request.instance_move_request_resource, including_default_value_fields=False
+            request.instance_move_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -806,7 +813,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -868,7 +875,9 @@ class ProjectsRestTransport(ProjectsTransport):
 
         # Jsonify the request body
         body = compute.Metadata.to_json(
-            request.metadata_resource, including_default_value_fields=False
+            request.metadata_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -891,7 +900,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -954,6 +963,7 @@ class ProjectsRestTransport(ProjectsTransport):
         body = compute.ProjectsSetDefaultNetworkTierRequest.to_json(
             request.projects_set_default_network_tier_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -976,7 +986,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1037,7 +1047,9 @@ class ProjectsRestTransport(ProjectsTransport):
 
         # Jsonify the request body
         body = compute.UsageExportLocation.to_json(
-            request.usage_export_location_resource, including_default_value_fields=False
+            request.usage_export_location_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1060,7 +1072,7 @@ class ProjectsRestTransport(ProjectsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

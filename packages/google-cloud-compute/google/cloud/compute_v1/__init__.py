@@ -1152,6 +1152,7 @@ __all__ = (
     "AcceleratorType",
     "AcceleratorTypeAggregatedList",
     "AcceleratorTypeList",
+    "AcceleratorTypesClient",
     "AcceleratorTypesScopedList",
     "Accelerators",
     "AccessConfig",
@@ -1360,7 +1361,6 @@ __all__ = (
     "DiskTypesClient",
     "DiskTypesScopedList",
     "DisksAddResourcePoliciesRequest",
-    "DisksClient",
     "DisksRemoveResourcePoliciesRequest",
     "DisksResizeRequest",
     "DisksScopedList",
@@ -2271,5 +2271,5 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "AcceleratorTypesClient",
+    "DisksClient",
 )

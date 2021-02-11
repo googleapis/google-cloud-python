@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.ssl_policies import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import SslPoliciesTransport, DEFAULT_CLIENT_INFO
@@ -616,7 +617,7 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.SslPoliciesList:
+    ) -> pagers.ListPager:
         r"""Lists all the SSL policies that have been configured
         for the specified project.
 
@@ -638,7 +639,10 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.SslPoliciesList:
+            google.cloud.compute_v1.services.ssl_policies.pagers.ListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -670,6 +674,12 @@ class SslPoliciesClient(metaclass=SslPoliciesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

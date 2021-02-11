@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.machine_types import MachineTypesClient
+from google.cloud.compute_v1.services.machine_types import pagers
 from google.cloud.compute_v1.services.machine_types import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -407,11 +408,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.MachineTypeAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.MachineTypesScopedList(
@@ -456,7 +455,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -470,6 +469,72 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListMachineTypesRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = MachineTypesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.MachineTypeAggregatedList(
+                items={
+                    "a": compute.MachineTypesScopedList(),
+                    "b": compute.MachineTypesScopedList(),
+                    "c": compute.MachineTypesScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.MachineTypeAggregatedList(items={}, next_page_token="def",),
+            compute.MachineTypeAggregatedList(
+                items={"g": compute.MachineTypesScopedList(),}, next_page_token="ghi",
+            ),
+            compute.MachineTypeAggregatedList(
+                items={
+                    "h": compute.MachineTypesScopedList(),
+                    "i": compute.MachineTypesScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.MachineTypeAggregatedList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.MachineTypesScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.MachineTypesScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.MachineTypesScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_get_rest(transport: str = "rest", request_type=compute.GetMachineTypeRequest):
@@ -567,7 +632,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -625,11 +690,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.MachineTypeList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.MachineType(
@@ -671,7 +734,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -689,6 +752,57 @@ def test_list_rest_flattened_error():
             project="project_value",
             zone="zone_value",
         )
+
+
+def test_list_pager():
+    client = MachineTypesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.MachineTypeList(
+                items=[
+                    compute.MachineType(),
+                    compute.MachineType(),
+                    compute.MachineType(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.MachineTypeList(items=[], next_page_token="def",),
+            compute.MachineTypeList(
+                items=[compute.MachineType(),], next_page_token="ghi",
+            ),
+            compute.MachineTypeList(
+                items=[compute.MachineType(), compute.MachineType(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.MachineTypeList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.MachineType) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():

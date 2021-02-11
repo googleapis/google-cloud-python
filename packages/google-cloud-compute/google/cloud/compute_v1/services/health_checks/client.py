@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.health_checks import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import HealthChecksTransport, DEFAULT_CLIENT_INFO
@@ -330,7 +331,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.HealthChecksAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all HealthCheck resources,
         regional and global, available to the specified project.
 
@@ -354,7 +355,10 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.HealthChecksAggregatedList:
+            google.cloud.compute_v1.services.health_checks.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -386,6 +390,12 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -702,7 +712,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.HealthCheckList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of HealthCheck resources available
         to the specified project.
 
@@ -724,9 +734,12 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.HealthCheckList:
+            google.cloud.compute_v1.services.health_checks.pagers.ListPager:
                 Contains a list of HealthCheck
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -758,6 +771,12 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

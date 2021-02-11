@@ -138,11 +138,6 @@ def system(session):
     )
     session.install("-e", ".")
 
-    # If mtls is enabled via environment variable
-    # GOOGLE_API_USE_CLIENT_CERTIFICATE, then pyopenssl is needed. Here we
-    # install it regardless.
-    session.install("pyopenssl")
-
     # Run py.test against the system tests.
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)

@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.packet_mirrorings import PacketMirroringsClient
+from google.cloud.compute_v1.services.packet_mirrorings import pagers
 from google.cloud.compute_v1.services.packet_mirrorings import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -425,11 +426,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.PacketMirroringAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.PacketMirroringsScopedList(
@@ -476,7 +475,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -490,6 +489,75 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListPacketMirroringsRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = PacketMirroringsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.PacketMirroringAggregatedList(
+                items={
+                    "a": compute.PacketMirroringsScopedList(),
+                    "b": compute.PacketMirroringsScopedList(),
+                    "c": compute.PacketMirroringsScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.PacketMirroringAggregatedList(items={}, next_page_token="def",),
+            compute.PacketMirroringAggregatedList(
+                items={"g": compute.PacketMirroringsScopedList(),},
+                next_page_token="ghi",
+            ),
+            compute.PacketMirroringAggregatedList(
+                items={
+                    "h": compute.PacketMirroringsScopedList(),
+                    "i": compute.PacketMirroringsScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.PacketMirroringAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.PacketMirroringsScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.PacketMirroringsScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.PacketMirroringsScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest(
@@ -601,7 +669,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -733,7 +801,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -871,14 +939,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.PacketMirroring.to_json(
-            packet_mirroring_resource, including_default_value_fields=False
+            packet_mirroring_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -937,11 +1007,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.PacketMirroringList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.PacketMirroring(
@@ -985,7 +1053,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1003,6 +1071,57 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = PacketMirroringsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.PacketMirroringList(
+                items=[
+                    compute.PacketMirroring(),
+                    compute.PacketMirroring(),
+                    compute.PacketMirroring(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.PacketMirroringList(items=[], next_page_token="def",),
+            compute.PacketMirroringList(
+                items=[compute.PacketMirroring(),], next_page_token="ghi",
+            ),
+            compute.PacketMirroringList(
+                items=[compute.PacketMirroring(), compute.PacketMirroring(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.PacketMirroringList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.PacketMirroring) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(
@@ -1121,7 +1240,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1130,7 +1249,9 @@ def test_patch_rest_flattened():
         assert "packet_mirroring_value" in http_call[1] + str(body)
 
         assert compute.PacketMirroring.to_json(
-            packet_mirroring_resource, including_default_value_fields=False
+            packet_mirroring_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1222,7 +1343,7 @@ def test_test_iam_permissions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1231,7 +1352,9 @@ def test_test_iam_permissions_rest_flattened():
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.TestPermissionsRequest.to_json(
-            test_permissions_request_resource, including_default_value_fields=False
+            test_permissions_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

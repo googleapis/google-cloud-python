@@ -148,6 +148,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         body = compute.TargetPoolsAddHealthCheckRequest.to_json(
             request.target_pools_add_health_check_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -173,7 +174,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -236,6 +237,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         body = compute.TargetPoolsAddInstanceRequest.to_json(
             request.target_pools_add_instance_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -261,7 +263,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -302,11 +304,11 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
+            "includeAllScopes": request.include_all_scopes,
+            "maxResults": request.max_results,
+            "orderBy": request.order_by,
             "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "includeAllScopes": request.include_all_scopes,
-            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -492,7 +494,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
         # Jsonify the request body
         body = compute.InstanceReference.to_json(
-            request.instance_reference_resource, including_default_value_fields=False
+            request.instance_reference_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -516,7 +520,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -577,7 +581,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
         # Jsonify the request body
         body = compute.TargetPool.to_json(
-            request.target_pool_resource, including_default_value_fields=False
+            request.target_pool_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -600,7 +606,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -643,10 +649,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -720,6 +726,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         body = compute.TargetPoolsRemoveHealthCheckRequest.to_json(
             request.target_pools_remove_health_check_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -745,7 +752,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -808,6 +815,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         body = compute.TargetPoolsRemoveInstanceRequest.to_json(
             request.target_pools_remove_instance_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -833,7 +841,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -894,7 +902,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
 
         # Jsonify the request body
         body = compute.TargetReference.to_json(
-            request.target_reference_resource, including_default_value_fields=False
+            request.target_reference_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -921,7 +931,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

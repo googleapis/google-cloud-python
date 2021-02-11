@@ -37,6 +37,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.region_health_check_services import (
     RegionHealthCheckServicesClient,
 )
+from google.cloud.compute_v1.services.region_health_check_services import pagers
 from google.cloud.compute_v1.services.region_health_check_services import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -520,7 +521,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -635,7 +636,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -775,14 +776,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.HealthCheckService.to_json(
-            health_check_service_resource, including_default_value_fields=False
+            health_check_service_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -839,11 +842,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.HealthCheckServicesList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.HealthCheckService(creation_timestamp="creation_timestamp_value")
@@ -885,7 +886,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -905,6 +906,59 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = RegionHealthCheckServicesClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.HealthCheckServicesList(
+                items=[
+                    compute.HealthCheckService(),
+                    compute.HealthCheckService(),
+                    compute.HealthCheckService(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.HealthCheckServicesList(items=[], next_page_token="def",),
+            compute.HealthCheckServicesList(
+                items=[compute.HealthCheckService(),], next_page_token="ghi",
+            ),
+            compute.HealthCheckServicesList(
+                items=[compute.HealthCheckService(), compute.HealthCheckService(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.HealthCheckServicesList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.HealthCheckService) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(
@@ -1023,7 +1077,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1032,7 +1086,9 @@ def test_patch_rest_flattened():
         assert "health_check_service_value" in http_call[1] + str(body)
 
         assert compute.HealthCheckService.to_json(
-            health_check_service_resource, including_default_value_fields=False
+            health_check_service_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

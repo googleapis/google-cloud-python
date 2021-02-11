@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.instance_group_managers import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import InstanceGroupManagersTransport, DEFAULT_CLIENT_INFO
@@ -477,7 +478,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupManagerAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of managed instance groups and
         groups them by zone.
 
@@ -499,7 +500,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupManagerAggregatedList:
+            google.cloud.compute_v1.services.instance_group_managers.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -531,6 +535,12 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1428,7 +1438,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupManagerList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of managed instance groups that are
         contained within the specified project and zone.
 
@@ -1457,8 +1467,12 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupManagerList:
+            google.cloud.compute_v1.services.instance_group_managers.pagers.ListPager:
                 [Output Only] A list of managed instance groups.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -1492,6 +1506,12 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1505,7 +1525,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupManagersListErrorsResponse:
+    ) -> pagers.ListErrorsPager:
         r"""Lists all errors thrown by actions on instances for a
         given managed instance group. The filter and orderBy
         query parameters are not supported.
@@ -1545,7 +1565,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupManagersListErrorsResponse:
+            google.cloud.compute_v1.services.instance_group_managers.pagers.ListErrorsPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1582,6 +1605,12 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListErrorsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1595,7 +1624,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupManagersListManagedInstancesResponse:
+    ) -> pagers.ListManagedInstancesPager:
         r"""Lists all of the instances in the managed instance
         group. Each instance in the list has a currentAction,
         which indicates the action that the managed instance
@@ -1637,7 +1666,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupManagersListManagedInstancesResponse:
+            google.cloud.compute_v1.services.instance_group_managers.pagers.ListManagedInstancesPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1676,6 +1708,12 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListManagedInstancesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1689,7 +1727,7 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupManagersListPerInstanceConfigsResp:
+    ) -> pagers.ListPerInstanceConfigsPager:
         r"""Lists all of the per-instance configs defined for the
         managed instance group. The orderBy query parameter is
         not supported.
@@ -1727,7 +1765,10 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupManagersListPerInstanceConfigsResp:
+            google.cloud.compute_v1.services.instance_group_managers.pagers.ListPerInstanceConfigsPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1769,6 +1810,12 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPerInstanceConfigsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

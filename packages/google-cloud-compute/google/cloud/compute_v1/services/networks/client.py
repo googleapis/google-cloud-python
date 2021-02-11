@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.networks import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import NetworksTransport, DEFAULT_CLIENT_INFO
@@ -716,7 +717,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NetworkList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of networks available to the
         specified project.
 
@@ -737,8 +738,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NetworkList:
+            google.cloud.compute_v1.services.networks.pagers.ListPager:
                 Contains a list of networks.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -770,6 +775,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -782,7 +793,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ExchangedPeeringRoutesList:
+    ) -> pagers.ListPeeringRoutesPager:
         r"""Lists the peering routes exchanged over peering
         connection.
 
@@ -809,7 +820,10 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ExchangedPeeringRoutesList:
+            google.cloud.compute_v1.services.networks.pagers.ListPeeringRoutesPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -843,6 +857,12 @@ class NetworksClient(metaclass=NetworksClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPeeringRoutesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

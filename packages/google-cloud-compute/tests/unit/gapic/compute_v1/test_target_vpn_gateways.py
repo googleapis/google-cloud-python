@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.target_vpn_gateways import TargetVpnGatewaysClient
+from google.cloud.compute_v1.services.target_vpn_gateways import pagers
 from google.cloud.compute_v1.services.target_vpn_gateways import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -423,11 +424,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.TargetVpnGatewayAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.TargetVpnGatewaysScopedList(
@@ -470,7 +469,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -484,6 +483,75 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListTargetVpnGatewaysRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = TargetVpnGatewaysClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.TargetVpnGatewayAggregatedList(
+                items={
+                    "a": compute.TargetVpnGatewaysScopedList(),
+                    "b": compute.TargetVpnGatewaysScopedList(),
+                    "c": compute.TargetVpnGatewaysScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.TargetVpnGatewayAggregatedList(items={}, next_page_token="def",),
+            compute.TargetVpnGatewayAggregatedList(
+                items={"g": compute.TargetVpnGatewaysScopedList(),},
+                next_page_token="ghi",
+            ),
+            compute.TargetVpnGatewayAggregatedList(
+                items={
+                    "h": compute.TargetVpnGatewaysScopedList(),
+                    "i": compute.TargetVpnGatewaysScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.TargetVpnGatewayAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.TargetVpnGatewaysScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.TargetVpnGatewaysScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.TargetVpnGatewaysScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest(
@@ -595,7 +663,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -701,7 +769,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -837,14 +905,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.TargetVpnGateway.to_json(
-            target_vpn_gateway_resource, including_default_value_fields=False
+            target_vpn_gateway_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -897,11 +967,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.TargetVpnGatewayList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.TargetVpnGateway(creation_timestamp="creation_timestamp_value")
@@ -941,7 +1009,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -959,6 +1027,57 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = TargetVpnGatewaysClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.TargetVpnGatewayList(
+                items=[
+                    compute.TargetVpnGateway(),
+                    compute.TargetVpnGateway(),
+                    compute.TargetVpnGateway(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.TargetVpnGatewayList(items=[], next_page_token="def",),
+            compute.TargetVpnGatewayList(
+                items=[compute.TargetVpnGateway(),], next_page_token="ghi",
+            ),
+            compute.TargetVpnGatewayList(
+                items=[compute.TargetVpnGateway(), compute.TargetVpnGateway(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.TargetVpnGatewayList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.TargetVpnGateway) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():

@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.backend_services import BackendServicesClient
+from google.cloud.compute_v1.services.backend_services import pagers
 from google.cloud.compute_v1.services.backend_services import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -493,14 +494,16 @@ def test_add_signed_url_key_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_service_value" in http_call[1] + str(body)
 
         assert compute.SignedUrlKey.to_json(
-            signed_url_key_resource, including_default_value_fields=False
+            signed_url_key_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -556,11 +559,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.BackendServiceAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.BackendServicesScopedList(
@@ -601,7 +602,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -615,6 +616,75 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListBackendServicesRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = BackendServicesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.BackendServiceAggregatedList(
+                items={
+                    "a": compute.BackendServicesScopedList(),
+                    "b": compute.BackendServicesScopedList(),
+                    "c": compute.BackendServicesScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.BackendServiceAggregatedList(items={}, next_page_token="def",),
+            compute.BackendServiceAggregatedList(
+                items={"g": compute.BackendServicesScopedList(),},
+                next_page_token="ghi",
+            ),
+            compute.BackendServiceAggregatedList(
+                items={
+                    "h": compute.BackendServicesScopedList(),
+                    "i": compute.BackendServicesScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.BackendServiceAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.BackendServicesScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.BackendServicesScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.BackendServicesScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest(
@@ -724,7 +794,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -854,7 +924,7 @@ def test_delete_signed_url_key_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1037,7 +1107,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1132,14 +1202,16 @@ def test_get_health_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_service_value" in http_call[1] + str(body)
 
         assert compute.ResourceGroupReference.to_json(
-            resource_group_reference_resource, including_default_value_fields=False
+            resource_group_reference_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1268,12 +1340,14 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.BackendService.to_json(
-            backend_service_resource, including_default_value_fields=False
+            backend_service_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1323,11 +1397,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.BackendServiceList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [compute.BackendService(affinity_cookie_ttl_sec=2432)]
     assert response.kind == "kind_value"
@@ -1363,7 +1435,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1377,6 +1449,57 @@ def test_list_rest_flattened_error():
         client.list(
             compute.ListBackendServicesRequest(), project="project_value",
         )
+
+
+def test_list_pager():
+    client = BackendServicesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.BackendServiceList(
+                items=[
+                    compute.BackendService(),
+                    compute.BackendService(),
+                    compute.BackendService(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.BackendServiceList(items=[], next_page_token="def",),
+            compute.BackendServiceList(
+                items=[compute.BackendService(),], next_page_token="ghi",
+            ),
+            compute.BackendServiceList(
+                items=[compute.BackendService(), compute.BackendService(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.BackendServiceList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.BackendService) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(
@@ -1490,14 +1613,16 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_service_value" in http_call[1] + str(body)
 
         assert compute.BackendService.to_json(
-            backend_service_resource, including_default_value_fields=False
+            backend_service_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1630,14 +1755,16 @@ def test_set_security_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_service_value" in http_call[1] + str(body)
 
         assert compute.SecurityPolicyReference.to_json(
-            security_policy_reference_resource, including_default_value_fields=False
+            security_policy_reference_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1768,14 +1895,16 @@ def test_update_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_service_value" in http_call[1] + str(body)
 
         assert compute.BackendService.to_json(
-            backend_service_resource, including_default_value_fields=False
+            backend_service_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

@@ -37,6 +37,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.region_instance_group_managers import (
     RegionInstanceGroupManagersClient,
 )
+from google.cloud.compute_v1.services.region_instance_group_managers import pagers
 from google.cloud.compute_v1.services.region_instance_group_managers import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -526,7 +527,7 @@ def test_abandon_instances_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -537,6 +538,7 @@ def test_abandon_instances_rest_flattened():
         assert compute.RegionInstanceGroupManagersAbandonInstancesRequest.to_json(
             region_instance_group_managers_abandon_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -676,7 +678,7 @@ def test_apply_updates_to_instances_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -687,6 +689,7 @@ def test_apply_updates_to_instances_rest_flattened():
         assert compute.RegionInstanceGroupManagersApplyUpdatesRequest.to_json(
             region_instance_group_managers_apply_updates_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -826,7 +829,7 @@ def test_create_instances_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -837,6 +840,7 @@ def test_create_instances_rest_flattened():
         assert compute.RegionInstanceGroupManagersCreateInstancesRequest.to_json(
             region_instance_group_managers_create_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -971,7 +975,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1113,7 +1117,7 @@ def test_delete_instances_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1124,6 +1128,7 @@ def test_delete_instances_rest_flattened():
         assert compute.RegionInstanceGroupManagersDeleteInstancesRequest.to_json(
             region_instance_group_managers_delete_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1263,7 +1268,7 @@ def test_delete_per_instance_configs_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1274,6 +1279,7 @@ def test_delete_per_instance_configs_rest_flattened():
         assert compute.RegionInstanceGroupManagerDeleteInstanceConfigReq.to_json(
             region_instance_group_manager_delete_instance_config_req_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1443,7 +1449,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1588,14 +1594,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.InstanceGroupManager.to_json(
-            instance_group_manager_resource, including_default_value_fields=False
+            instance_group_manager_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1660,11 +1668,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.RegionInstanceGroupManagerList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.InstanceGroupManager(
@@ -1712,7 +1718,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1732,6 +1738,61 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = RegionInstanceGroupManagersClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.RegionInstanceGroupManagerList(
+                items=[
+                    compute.InstanceGroupManager(),
+                    compute.InstanceGroupManager(),
+                    compute.InstanceGroupManager(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.RegionInstanceGroupManagerList(items=[], next_page_token="def",),
+            compute.RegionInstanceGroupManagerList(
+                items=[compute.InstanceGroupManager(),], next_page_token="ghi",
+            ),
+            compute.RegionInstanceGroupManagerList(
+                items=[compute.InstanceGroupManager(), compute.InstanceGroupManager(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.RegionInstanceGroupManagerList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.InstanceGroupManager) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_errors_rest(
@@ -1770,11 +1831,9 @@ def test_list_errors_rest(
 
         response = client.list_errors(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.RegionInstanceGroupManagersListErrorsResponse)
+    assert isinstance(response, pagers.ListErrorsPager)
     assert response.items == [
         compute.InstanceManagedByIgmError(
             error=compute.InstanceManagedByIgmErrorManagedInstanceError(
@@ -1820,7 +1879,7 @@ def test_list_errors_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1843,6 +1902,67 @@ def test_list_errors_rest_flattened_error():
             region="region_value",
             instance_group_manager="instance_group_manager_value",
         )
+
+
+def test_list_errors_pager():
+    client = RegionInstanceGroupManagersClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.RegionInstanceGroupManagersListErrorsResponse(
+                items=[
+                    compute.InstanceManagedByIgmError(),
+                    compute.InstanceManagedByIgmError(),
+                    compute.InstanceManagedByIgmError(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.RegionInstanceGroupManagersListErrorsResponse(
+                items=[], next_page_token="def",
+            ),
+            compute.RegionInstanceGroupManagersListErrorsResponse(
+                items=[compute.InstanceManagedByIgmError(),], next_page_token="ghi",
+            ),
+            compute.RegionInstanceGroupManagersListErrorsResponse(
+                items=[
+                    compute.InstanceManagedByIgmError(),
+                    compute.InstanceManagedByIgmError(),
+                ],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.RegionInstanceGroupManagersListErrorsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_errors(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.InstanceManagedByIgmError) for i in results)
+
+        pages = list(client.list_errors(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_managed_instances_rest(
@@ -1879,13 +1999,9 @@ def test_list_managed_instances_rest(
 
         response = client.list_managed_instances(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(
-        response, compute.RegionInstanceGroupManagersListInstancesResponse
-    )
+    assert isinstance(response, pagers.ListManagedInstancesPager)
     assert response.managed_instances == [
         compute.ManagedInstance(
             current_action=compute.ManagedInstance.CurrentAction.ABANDONING
@@ -1929,7 +2045,7 @@ def test_list_managed_instances_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1952,6 +2068,67 @@ def test_list_managed_instances_rest_flattened_error():
             region="region_value",
             instance_group_manager="instance_group_manager_value",
         )
+
+
+def test_list_managed_instances_pager():
+    client = RegionInstanceGroupManagersClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.RegionInstanceGroupManagersListInstancesResponse(
+                managed_instances=[
+                    compute.ManagedInstance(),
+                    compute.ManagedInstance(),
+                    compute.ManagedInstance(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.RegionInstanceGroupManagersListInstancesResponse(
+                managed_instances=[], next_page_token="def",
+            ),
+            compute.RegionInstanceGroupManagersListInstancesResponse(
+                managed_instances=[compute.ManagedInstance(),], next_page_token="ghi",
+            ),
+            compute.RegionInstanceGroupManagersListInstancesResponse(
+                managed_instances=[
+                    compute.ManagedInstance(),
+                    compute.ManagedInstance(),
+                ],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.RegionInstanceGroupManagersListInstancesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_managed_instances(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.ManagedInstance) for i in results)
+
+        pages = list(client.list_managed_instances(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_per_instance_configs_rest(
@@ -1985,13 +2162,9 @@ def test_list_per_instance_configs_rest(
 
         response = client.list_per_instance_configs(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(
-        response, compute.RegionInstanceGroupManagersListInstanceConfigsResp
-    )
+    assert isinstance(response, pagers.ListPerInstanceConfigsPager)
     assert response.items == [
         compute.PerInstanceConfig(fingerprint="fingerprint_value")
     ]
@@ -2034,7 +2207,7 @@ def test_list_per_instance_configs_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2057,6 +2230,64 @@ def test_list_per_instance_configs_rest_flattened_error():
             region="region_value",
             instance_group_manager="instance_group_manager_value",
         )
+
+
+def test_list_per_instance_configs_pager():
+    client = RegionInstanceGroupManagersClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp(
+                items=[
+                    compute.PerInstanceConfig(),
+                    compute.PerInstanceConfig(),
+                    compute.PerInstanceConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp(
+                items=[], next_page_token="def",
+            ),
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp(
+                items=[compute.PerInstanceConfig(),], next_page_token="ghi",
+            ),
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp(
+                items=[compute.PerInstanceConfig(), compute.PerInstanceConfig(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_per_instance_configs(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.PerInstanceConfig) for i in results)
+
+        pages = list(client.list_per_instance_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(
@@ -2179,7 +2410,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2188,7 +2419,9 @@ def test_patch_rest_flattened():
         assert "instance_group_manager_value" in http_call[1] + str(body)
 
         assert compute.InstanceGroupManager.to_json(
-            instance_group_manager_resource, including_default_value_fields=False
+            instance_group_manager_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -2334,7 +2567,7 @@ def test_patch_per_instance_configs_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2345,6 +2578,7 @@ def test_patch_per_instance_configs_rest_flattened():
         assert compute.RegionInstanceGroupManagerPatchInstanceConfigReq.to_json(
             region_instance_group_manager_patch_instance_config_req_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -2486,7 +2720,7 @@ def test_recreate_instances_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2497,6 +2731,7 @@ def test_recreate_instances_rest_flattened():
         assert compute.RegionInstanceGroupManagersRecreateRequest.to_json(
             region_instance_group_managers_recreate_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -2632,7 +2867,7 @@ def test_resize_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2777,7 +3012,7 @@ def test_set_instance_template_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2788,6 +3023,7 @@ def test_set_instance_template_rest_flattened():
         assert compute.RegionInstanceGroupManagersSetTemplateRequest.to_json(
             region_instance_group_managers_set_template_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -2927,7 +3163,7 @@ def test_set_target_pools_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2938,6 +3174,7 @@ def test_set_target_pools_rest_flattened():
         assert compute.RegionInstanceGroupManagersSetTargetPoolsRequest.to_json(
             region_instance_group_managers_set_target_pools_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3079,7 +3316,7 @@ def test_update_per_instance_configs_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3090,6 +3327,7 @@ def test_update_per_instance_configs_rest_flattened():
         assert compute.RegionInstanceGroupManagerUpdateInstanceConfigReq.to_json(
             region_instance_group_manager_update_instance_config_req_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

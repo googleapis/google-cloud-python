@@ -176,6 +176,7 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
         body = compute.TestPermissionsRequest.to_json(
             request.test_permissions_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -196,7 +197,7 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

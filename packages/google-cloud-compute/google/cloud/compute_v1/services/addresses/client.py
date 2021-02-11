@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.addresses import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import AddressesTransport, DEFAULT_CLIENT_INFO
@@ -330,7 +331,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.AddressAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of addresses.
 
         Args:
@@ -351,7 +352,10 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.AddressAggregatedList:
+            google.cloud.compute_v1.services.addresses.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -383,6 +387,12 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -722,7 +732,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.AddressList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of addresses contained within the
         specified region.
 
@@ -748,8 +758,12 @@ class AddressesClient(metaclass=AddressesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.AddressList:
+            google.cloud.compute_v1.services.addresses.pagers.ListPager:
                 Contains a list of addresses.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -782,6 +796,12 @@ class AddressesClient(metaclass=AddressesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

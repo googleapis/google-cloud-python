@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.vpn_tunnels import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import VpnTunnelsTransport, DEFAULT_CLIENT_INFO
@@ -330,7 +331,7 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.VpnTunnelAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of VPN tunnels.
 
         Args:
@@ -351,7 +352,10 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.VpnTunnelAggregatedList:
+            google.cloud.compute_v1.services.vpn_tunnels.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -383,6 +387,12 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -699,7 +709,7 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.VpnTunnelList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of VpnTunnel resources contained in
         the specified project and region.
 
@@ -725,9 +735,12 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.VpnTunnelList:
+            google.cloud.compute_v1.services.vpn_tunnels.pagers.ListPager:
                 Contains a list of VpnTunnel
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -761,6 +774,12 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

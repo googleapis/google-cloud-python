@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.instance_templates import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import InstanceTemplatesTransport, DEFAULT_CLIENT_INFO
@@ -748,7 +749,7 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceTemplateList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of instance templates that are
         contained within the specified project.
 
@@ -770,8 +771,12 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceTemplateList:
+            google.cloud.compute_v1.services.instance_templates.pagers.ListPager:
                 A list of instance templates.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -802,6 +807,12 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

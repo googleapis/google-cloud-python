@@ -37,6 +37,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.network_endpoint_groups import (
     NetworkEndpointGroupsClient,
 )
+from google.cloud.compute_v1.services.network_endpoint_groups import pagers
 from google.cloud.compute_v1.services.network_endpoint_groups import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -446,11 +447,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.NetworkEndpointGroupAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.NetworkEndpointGroupsScopedList(
@@ -497,7 +496,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -514,6 +513,79 @@ def test_aggregated_list_rest_flattened_error():
             compute.AggregatedListNetworkEndpointGroupsRequest(),
             project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = NetworkEndpointGroupsClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.NetworkEndpointGroupAggregatedList(
+                items={
+                    "a": compute.NetworkEndpointGroupsScopedList(),
+                    "b": compute.NetworkEndpointGroupsScopedList(),
+                    "c": compute.NetworkEndpointGroupsScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.NetworkEndpointGroupAggregatedList(
+                items={}, next_page_token="def",
+            ),
+            compute.NetworkEndpointGroupAggregatedList(
+                items={"g": compute.NetworkEndpointGroupsScopedList(),},
+                next_page_token="ghi",
+            ),
+            compute.NetworkEndpointGroupAggregatedList(
+                items={
+                    "h": compute.NetworkEndpointGroupsScopedList(),
+                    "i": compute.NetworkEndpointGroupsScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.NetworkEndpointGroupAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.NetworkEndpointGroupsScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.NetworkEndpointGroupsScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.NetworkEndpointGroupsScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_attach_network_endpoints_rest(
@@ -635,7 +707,7 @@ def test_attach_network_endpoints_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -646,6 +718,7 @@ def test_attach_network_endpoints_rest_flattened():
         assert compute.NetworkEndpointGroupsAttachEndpointsRequest.to_json(
             network_endpoint_groups_attach_endpoints_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -781,7 +854,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -925,7 +998,7 @@ def test_detach_network_endpoints_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -936,6 +1009,7 @@ def test_detach_network_endpoints_rest_flattened():
         assert compute.NetworkEndpointGroupsDetachEndpointsRequest.to_json(
             network_endpoint_groups_detach_endpoints_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1068,7 +1142,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1208,14 +1282,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "zone_value" in http_call[1] + str(body)
 
         assert compute.NetworkEndpointGroup.to_json(
-            network_endpoint_group_resource, including_default_value_fields=False
+            network_endpoint_group_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1270,11 +1346,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.NetworkEndpointGroupList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.NetworkEndpointGroup(annotations={"key_value": "value_value"})
@@ -1316,7 +1390,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1336,6 +1410,59 @@ def test_list_rest_flattened_error():
             project="project_value",
             zone="zone_value",
         )
+
+
+def test_list_pager():
+    client = NetworkEndpointGroupsClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.NetworkEndpointGroupList(
+                items=[
+                    compute.NetworkEndpointGroup(),
+                    compute.NetworkEndpointGroup(),
+                    compute.NetworkEndpointGroup(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.NetworkEndpointGroupList(items=[], next_page_token="def",),
+            compute.NetworkEndpointGroupList(
+                items=[compute.NetworkEndpointGroup(),], next_page_token="ghi",
+            ),
+            compute.NetworkEndpointGroupList(
+                items=[compute.NetworkEndpointGroup(), compute.NetworkEndpointGroup(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.NetworkEndpointGroupList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.NetworkEndpointGroup) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_network_endpoints_rest(
@@ -1381,11 +1508,9 @@ def test_list_network_endpoints_rest(
 
         response = client.list_network_endpoints(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.NetworkEndpointGroupsListNetworkEndpoints)
+    assert isinstance(response, pagers.ListNetworkEndpointsPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.NetworkEndpointWithHealthStatus(
@@ -1443,7 +1568,7 @@ def test_list_network_endpoints_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1454,6 +1579,7 @@ def test_list_network_endpoints_rest_flattened():
         assert compute.NetworkEndpointGroupsListEndpointsRequest.to_json(
             network_endpoint_groups_list_endpoints_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1474,6 +1600,70 @@ def test_list_network_endpoints_rest_flattened_error():
                 health_status=compute.NetworkEndpointGroupsListEndpointsRequest.HealthStatus.SHOW
             ),
         )
+
+
+def test_list_network_endpoints_pager():
+    client = NetworkEndpointGroupsClient(
+        credentials=credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.NetworkEndpointGroupsListNetworkEndpoints(
+                items=[
+                    compute.NetworkEndpointWithHealthStatus(),
+                    compute.NetworkEndpointWithHealthStatus(),
+                    compute.NetworkEndpointWithHealthStatus(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.NetworkEndpointGroupsListNetworkEndpoints(
+                items=[], next_page_token="def",
+            ),
+            compute.NetworkEndpointGroupsListNetworkEndpoints(
+                items=[compute.NetworkEndpointWithHealthStatus(),],
+                next_page_token="ghi",
+            ),
+            compute.NetworkEndpointGroupsListNetworkEndpoints(
+                items=[
+                    compute.NetworkEndpointWithHealthStatus(),
+                    compute.NetworkEndpointWithHealthStatus(),
+                ],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.NetworkEndpointGroupsListNetworkEndpoints.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_network_endpoints(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(
+            isinstance(i, compute.NetworkEndpointWithHealthStatus) for i in results
+        )
+
+        pages = list(client.list_network_endpoints(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_test_iam_permissions_rest(
@@ -1547,7 +1737,7 @@ def test_test_iam_permissions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1556,7 +1746,9 @@ def test_test_iam_permissions_rest_flattened():
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.TestPermissionsRequest.to_json(
-            test_permissions_request_resource, including_default_value_fields=False
+            test_permissions_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.subnetworks import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import SubnetworksTransport, DEFAULT_CLIENT_INFO
@@ -330,7 +331,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.SubnetworkAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of subnetworks.
 
         Args:
@@ -351,7 +352,10 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.SubnetworkAggregatedList:
+            google.cloud.compute_v1.services.subnetworks.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -383,6 +387,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -973,7 +983,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.SubnetworkList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of subnetworks available to the
         specified project.
 
@@ -1002,9 +1012,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.SubnetworkList:
+            google.cloud.compute_v1.services.subnetworks.pagers.ListPager:
                 Contains a list of Subnetwork
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1039,6 +1052,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1050,7 +1069,7 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.UsableSubnetworksAggregatedList:
+    ) -> pagers.ListUsablePager:
         r"""Retrieves an aggregated list of all usable
         subnetworks in the project.
 
@@ -1072,7 +1091,10 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.UsableSubnetworksAggregatedList:
+            google.cloud.compute_v1.services.subnetworks.pagers.ListUsablePager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1104,6 +1126,12 @@ class SubnetworksClient(metaclass=SubnetworksClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListUsablePager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

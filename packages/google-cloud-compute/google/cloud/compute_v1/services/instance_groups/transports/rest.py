@@ -148,6 +148,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         body = compute.InstanceGroupsAddInstancesRequest.to_json(
             request.instance_groups_add_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -173,7 +174,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -214,11 +215,11 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
+            "includeAllScopes": request.include_all_scopes,
+            "maxResults": request.max_results,
+            "orderBy": request.order_by,
             "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "includeAllScopes": request.include_all_scopes,
-            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -444,7 +445,9 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
 
         # Jsonify the request body
         body = compute.InstanceGroup.to_json(
-            request.instance_group_resource, including_default_value_fields=False
+            request.instance_group_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -467,7 +470,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -508,10 +511,10 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -557,6 +560,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         body = compute.InstanceGroupsListInstancesRequest.to_json(
             request.instance_groups_list_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -572,10 +576,10 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -586,7 +590,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -649,6 +653,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         body = compute.InstanceGroupsRemoveInstancesRequest.to_json(
             request.instance_groups_remove_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -674,7 +679,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -737,6 +742,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         body = compute.InstanceGroupsSetNamedPortsRequest.to_json(
             request.instance_groups_set_named_ports_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -762,7 +768,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

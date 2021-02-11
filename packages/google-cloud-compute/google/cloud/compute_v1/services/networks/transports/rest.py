@@ -148,6 +148,7 @@ class NetworksRestTransport(NetworksTransport):
         body = compute.NetworksAddPeeringRequest.to_json(
             request.networks_add_peering_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -170,7 +171,7 @@ class NetworksRestTransport(NetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -364,7 +365,9 @@ class NetworksRestTransport(NetworksTransport):
 
         # Jsonify the request body
         body = compute.Network.to_json(
-            request.network_resource, including_default_value_fields=False
+            request.network_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -387,7 +390,7 @@ class NetworksRestTransport(NetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -427,10 +430,10 @@ class NetworksRestTransport(NetworksTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -481,14 +484,14 @@ class NetworksRestTransport(NetworksTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "filter": request.filter,
-            "region": request.region,
-            "pageToken": request.page_token,
             "direction": request.direction,
-            "returnPartialSuccess": request.return_partial_success,
+            "filter": request.filter,
             "maxResults": request.max_results,
-            "peeringName": request.peering_name,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "peeringName": request.peering_name,
+            "region": request.region,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -559,7 +562,9 @@ class NetworksRestTransport(NetworksTransport):
 
         # Jsonify the request body
         body = compute.Network.to_json(
-            request.network_resource, including_default_value_fields=False
+            request.network_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -582,7 +587,7 @@ class NetworksRestTransport(NetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -645,6 +650,7 @@ class NetworksRestTransport(NetworksTransport):
         body = compute.NetworksRemovePeeringRequest.to_json(
             request.networks_remove_peering_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -667,7 +673,7 @@ class NetworksRestTransport(NetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -809,6 +815,7 @@ class NetworksRestTransport(NetworksTransport):
         body = compute.NetworksUpdatePeeringRequest.to_json(
             request.networks_update_peering_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -831,7 +838,7 @@ class NetworksRestTransport(NetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

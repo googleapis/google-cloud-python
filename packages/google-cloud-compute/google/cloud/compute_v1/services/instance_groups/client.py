@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.instance_groups import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import InstanceGroupsTransport, DEFAULT_CLIENT_INFO
@@ -462,7 +463,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of instance groups and sorts them
         by zone.
 
@@ -484,7 +485,10 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupAggregatedList:
+            google.cloud.compute_v1.services.instance_groups.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -516,6 +520,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -860,7 +870,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of zonal instance group resources
         contained within the specified zone.
         For managed instance groups, use the
@@ -892,8 +902,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupList:
+            google.cloud.compute_v1.services.instance_groups.pagers.ListPager:
                 A list of InstanceGroup resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -927,6 +941,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -941,7 +961,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.InstanceGroupsListInstances:
+    ) -> pagers.ListInstancesPager:
         r"""Lists the instances in the specified instance group.
         The orderBy query parameter is not supported.
 
@@ -983,7 +1003,10 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.InstanceGroupsListInstances:
+            google.cloud.compute_v1.services.instance_groups.pagers.ListInstancesPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1030,6 +1053,12 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListInstancesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

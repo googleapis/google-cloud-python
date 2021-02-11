@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.node_groups import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import NodeGroupsTransport, DEFAULT_CLIENT_INFO
@@ -450,7 +451,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NodeGroupAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of node groups. Note:
         use nodeGroups.listNodes for more details about each
         group.
@@ -473,7 +474,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NodeGroupAggregatedList:
+            google.cloud.compute_v1.services.node_groups.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -505,6 +509,12 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1103,7 +1113,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NodeGroupList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of node groups available to the
         specified project. Note: use nodeGroups.listNodes for
         more details about each group.
@@ -1132,8 +1142,12 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NodeGroupList:
+            google.cloud.compute_v1.services.node_groups.pagers.ListPager:
                 Contains a list of nodeGroups.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -1167,6 +1181,12 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -1180,7 +1200,7 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NodeGroupsListNodes:
+    ) -> pagers.ListNodesPager:
         r"""Lists nodes in the node group.
 
         Args:
@@ -1215,7 +1235,10 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NodeGroupsListNodes:
+            google.cloud.compute_v1.services.node_groups.pagers.ListNodesPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1251,6 +1274,12 @@ class NodeGroupsClient(metaclass=NodeGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListNodesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

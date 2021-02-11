@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.target_pools import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import TargetPoolsTransport, DEFAULT_CLIENT_INFO
@@ -579,7 +580,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TargetPoolAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of target pools.
 
         Args:
@@ -600,7 +601,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.TargetPoolAggregatedList:
+            google.cloud.compute_v1.services.target_pools.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -632,6 +636,12 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1054,7 +1064,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TargetPoolList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of target pools available to the
         specified project and region.
 
@@ -1083,9 +1093,12 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.TargetPoolList:
+            google.cloud.compute_v1.services.target_pools.pagers.ListPager:
                 Contains a list of TargetPool
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1119,6 +1132,12 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

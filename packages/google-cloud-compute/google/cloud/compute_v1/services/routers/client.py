@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.routers import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import RoutersTransport, DEFAULT_CLIENT_INFO
@@ -330,7 +331,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.RouterAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of routers.
 
         Args:
@@ -351,8 +352,12 @@ class RoutersClient(metaclass=RoutersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.RouterAggregatedList:
+            google.cloud.compute_v1.services.routers.pagers.AggregatedListPager:
                 Contains a list of routers.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -383,6 +388,12 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -590,7 +601,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.VmEndpointNatMappingsList:
+    ) -> pagers.GetNatMappingInfoPager:
         r"""Retrieves runtime Nat mapping information of VM
         endpoints.
 
@@ -625,9 +636,12 @@ class RoutersClient(metaclass=RoutersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.VmEndpointNatMappingsList:
+            google.cloud.compute_v1.services.routers.pagers.GetNatMappingInfoPager:
                 Contains a list of
                 VmEndpointNatMappings.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -663,6 +677,12 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.GetNatMappingInfoPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -864,7 +884,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.RouterList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of Router resources available to the
         specified project.
 
@@ -890,8 +910,12 @@ class RoutersClient(metaclass=RoutersClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.RouterList:
+            google.cloud.compute_v1.services.routers.pagers.ListPager:
                 Contains a list of Router resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -924,6 +948,12 @@ class RoutersClient(metaclass=RoutersClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -126,11 +126,11 @@ class SubnetworksRestTransport(SubnetworksTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
+            "includeAllScopes": request.include_all_scopes,
+            "maxResults": request.max_results,
+            "orderBy": request.order_by,
             "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "includeAllScopes": request.include_all_scopes,
-            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -286,6 +286,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         body = compute.SubnetworksExpandIpCidrRangeRequest.to_json(
             request.subnetworks_expand_ip_cidr_range_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -311,7 +312,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -535,7 +536,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
         # Jsonify the request body
         body = compute.Subnetwork.to_json(
-            request.subnetwork_resource, including_default_value_fields=False
+            request.subnetwork_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -558,7 +561,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -601,10 +604,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -656,10 +659,10 @@ class SubnetworksRestTransport(SubnetworksTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -731,7 +734,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
 
         # Jsonify the request body
         body = compute.Subnetwork.to_json(
-            request.subnetwork_resource, including_default_value_fields=False
+            request.subnetwork_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -758,7 +763,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -843,6 +848,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         body = compute.RegionSetPolicyRequest.to_json(
             request.region_set_policy_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -866,7 +872,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -930,6 +936,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         body = compute.SubnetworksSetPrivateIpGoogleAccessRequest.to_json(
             request.subnetworks_set_private_ip_google_access_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -955,7 +962,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -990,6 +997,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         body = compute.TestPermissionsRequest.to_json(
             request.test_permissions_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1013,7 +1021,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

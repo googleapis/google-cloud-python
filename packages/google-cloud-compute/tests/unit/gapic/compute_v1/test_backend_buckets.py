@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.backend_buckets import BackendBucketsClient
+from google.cloud.compute_v1.services.backend_buckets import pagers
 from google.cloud.compute_v1.services.backend_buckets import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -483,14 +484,16 @@ def test_add_signed_url_key_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_bucket_value" in http_call[1] + str(body)
 
         assert compute.SignedUrlKey.to_json(
-            signed_url_key_resource, including_default_value_fields=False
+            signed_url_key_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -615,7 +618,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -744,7 +747,7 @@ def test_delete_signed_url_key_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -851,7 +854,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -980,12 +983,14 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.BackendBucket.to_json(
-            backend_bucket_resource, including_default_value_fields=False
+            backend_bucket_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1035,11 +1040,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.BackendBucketList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [compute.BackendBucket(bucket_name="bucket_name_value")]
     assert response.kind == "kind_value"
@@ -1075,7 +1078,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1089,6 +1092,57 @@ def test_list_rest_flattened_error():
         client.list(
             compute.ListBackendBucketsRequest(), project="project_value",
         )
+
+
+def test_list_pager():
+    client = BackendBucketsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.BackendBucketList(
+                items=[
+                    compute.BackendBucket(),
+                    compute.BackendBucket(),
+                    compute.BackendBucket(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.BackendBucketList(items=[], next_page_token="def",),
+            compute.BackendBucketList(
+                items=[compute.BackendBucket(),], next_page_token="ghi",
+            ),
+            compute.BackendBucketList(
+                items=[compute.BackendBucket(), compute.BackendBucket(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.BackendBucketList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.BackendBucket) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(
@@ -1202,14 +1256,16 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_bucket_value" in http_call[1] + str(body)
 
         assert compute.BackendBucket.to_json(
-            backend_bucket_resource, including_default_value_fields=False
+            backend_bucket_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1340,14 +1396,16 @@ def test_update_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "backend_bucket_value" in http_call[1] + str(body)
 
         assert compute.BackendBucket.to_json(
-            backend_bucket_resource, including_default_value_fields=False
+            backend_bucket_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

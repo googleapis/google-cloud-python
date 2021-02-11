@@ -148,6 +148,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersAbandonInstancesRequest.to_json(
             request.region_instance_group_managers_abandon_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -173,7 +174,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -237,6 +238,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersApplyUpdatesRequest.to_json(
             request.region_instance_group_managers_apply_updates_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -260,7 +262,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -323,6 +325,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersCreateInstancesRequest.to_json(
             request.region_instance_group_managers_create_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -348,7 +351,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -493,6 +496,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersDeleteInstancesRequest.to_json(
             request.region_instance_group_managers_delete_instances_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -518,7 +522,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -582,6 +586,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagerDeleteInstanceConfigReq.to_json(
             request.region_instance_group_manager_delete_instance_config_req_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -605,7 +610,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -734,6 +739,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.InstanceGroupManager.to_json(
             request.instance_group_manager_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -756,7 +762,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -799,10 +805,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -857,10 +863,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -917,10 +923,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -977,10 +983,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1056,6 +1062,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.InstanceGroupManager.to_json(
             request.instance_group_manager_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1081,7 +1088,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1145,6 +1152,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagerPatchInstanceConfigReq.to_json(
             request.region_instance_group_manager_patch_instance_config_req_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1170,7 +1178,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1233,6 +1241,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersRecreateRequest.to_json(
             request.region_instance_group_managers_recreate_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1258,7 +1267,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1329,8 +1338,8 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "size": request.size,
             "requestId": request.request_id,
+            "size": request.size,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1404,6 +1413,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersSetTemplateRequest.to_json(
             request.region_instance_group_managers_set_template_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1429,7 +1439,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1492,6 +1502,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagersSetTargetPoolsRequest.to_json(
             request.region_instance_group_managers_set_target_pools_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1517,7 +1528,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1581,6 +1592,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         body = compute.RegionInstanceGroupManagerUpdateInstanceConfigReq.to_json(
             request.region_instance_group_manager_update_instance_config_req_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1606,7 +1618,7 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

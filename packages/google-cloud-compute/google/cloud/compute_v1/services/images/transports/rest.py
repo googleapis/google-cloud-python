@@ -224,7 +224,9 @@ class ImagesRestTransport(ImagesTransport):
 
         # Jsonify the request body
         body = compute.DeprecationStatus.to_json(
-            request.deprecation_status_resource, including_default_value_fields=False
+            request.deprecation_status_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -247,7 +249,7 @@ class ImagesRestTransport(ImagesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -515,7 +517,9 @@ class ImagesRestTransport(ImagesTransport):
 
         # Jsonify the request body
         body = compute.Image.to_json(
-            request.image_resource, including_default_value_fields=False
+            request.image_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -539,7 +543,7 @@ class ImagesRestTransport(ImagesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -579,10 +583,10 @@ class ImagesRestTransport(ImagesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -653,7 +657,9 @@ class ImagesRestTransport(ImagesTransport):
 
         # Jsonify the request body
         body = compute.Image.to_json(
-            request.image_resource, including_default_value_fields=False
+            request.image_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -676,7 +682,7 @@ class ImagesRestTransport(ImagesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -761,6 +767,7 @@ class ImagesRestTransport(ImagesTransport):
         body = compute.GlobalSetPolicyRequest.to_json(
             request.global_set_policy_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -781,7 +788,7 @@ class ImagesRestTransport(ImagesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -844,6 +851,7 @@ class ImagesRestTransport(ImagesTransport):
         body = compute.GlobalSetLabelsRequest.to_json(
             request.global_set_labels_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -864,7 +872,7 @@ class ImagesRestTransport(ImagesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -899,6 +907,7 @@ class ImagesRestTransport(ImagesTransport):
         body = compute.TestPermissionsRequest.to_json(
             request.test_permissions_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -919,7 +928,7 @@ class ImagesRestTransport(ImagesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

@@ -286,7 +286,9 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
 
         # Jsonify the request body
         body = compute.TargetTcpProxy.to_json(
-            request.target_tcp_proxy_resource, including_default_value_fields=False
+            request.target_tcp_proxy_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -309,7 +311,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -352,10 +354,10 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -429,6 +431,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         body = compute.TargetTcpProxiesSetBackendServiceRequest.to_json(
             request.target_tcp_proxies_set_backend_service_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -453,7 +456,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -516,6 +519,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         body = compute.TargetTcpProxiesSetProxyHeaderRequest.to_json(
             request.target_tcp_proxies_set_proxy_header_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -540,7 +544,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

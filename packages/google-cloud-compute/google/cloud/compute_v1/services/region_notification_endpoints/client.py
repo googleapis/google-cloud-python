@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.region_notification_endpoints import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import RegionNotificationEndpointsTransport, DEFAULT_CLIENT_INFO
@@ -655,7 +656,7 @@ class RegionNotificationEndpointsClient(
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.NotificationEndpointList:
+    ) -> pagers.ListPager:
         r"""Lists the NotificationEndpoints for a project in the
         given region.
 
@@ -684,7 +685,10 @@ class RegionNotificationEndpointsClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.NotificationEndpointList:
+            google.cloud.compute_v1.services.region_notification_endpoints.pagers.ListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -718,6 +722,12 @@ class RegionNotificationEndpointsClient(
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

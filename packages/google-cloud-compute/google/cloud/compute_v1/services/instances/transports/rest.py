@@ -146,7 +146,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.AccessConfig.to_json(
-            request.access_config_resource, including_default_value_fields=False
+            request.access_config_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -173,7 +175,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -236,6 +238,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesAddResourcePoliciesRequest.to_json(
             request.instances_add_resource_policies_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -261,7 +264,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -302,11 +305,11 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
+            "includeAllScopes": request.include_all_scopes,
+            "maxResults": request.max_results,
+            "orderBy": request.order_by,
             "pageToken": request.page_token,
             "returnPartialSuccess": request.return_partial_success,
-            "maxResults": request.max_results,
-            "includeAllScopes": request.include_all_scopes,
-            "orderBy": request.order_by,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -378,7 +381,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.AttachedDisk.to_json(
-            request.attached_disk_resource, including_default_value_fields=False
+            request.attached_disk_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -405,7 +410,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -558,9 +563,9 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
+            "accessConfig": request.access_config,
             "networkInterface": request.network_interface,
             "requestId": request.request_id,
-            "accessConfig": request.access_config,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -642,8 +647,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "requestId": request.request_id,
             "deviceName": request.device_name,
+            "requestId": request.request_id,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -754,8 +759,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "variableKey": request.variable_key,
             "queryPath": request.query_path,
+            "variableKey": request.variable_key,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1091,7 +1096,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.Instance.to_json(
-            request.instance_resource, including_default_value_fields=False
+            request.instance_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1103,8 +1110,8 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "sourceInstanceTemplate": request.source_instance_template,
             "requestId": request.request_id,
+            "sourceInstanceTemplate": request.source_instance_template,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1115,7 +1122,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1155,10 +1162,10 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1215,10 +1222,10 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1292,6 +1299,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesRemoveResourcePoliciesRequest.to_json(
             request.instances_remove_resource_policies_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1317,7 +1325,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1554,8 +1562,8 @@ class InstancesRestTransport(InstancesTransport):
         #               not required for GCE
         query_params = {
             "autoDelete": request.auto_delete,
-            "requestId": request.request_id,
             "deviceName": request.device_name,
+            "requestId": request.request_id,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -1651,6 +1659,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.ZoneSetPolicyRequest.to_json(
             request.zone_set_policy_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1674,7 +1683,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1737,6 +1746,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesSetLabelsRequest.to_json(
             request.instances_set_labels_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1762,7 +1772,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1825,6 +1835,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesSetMachineResourcesRequest.to_json(
             request.instances_set_machine_resources_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1850,7 +1861,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1913,6 +1924,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesSetMachineTypeRequest.to_json(
             request.instances_set_machine_type_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1938,7 +1950,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1999,7 +2011,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.Metadata.to_json(
-            request.metadata_resource, including_default_value_fields=False
+            request.metadata_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2025,7 +2039,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2088,6 +2102,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesSetMinCpuPlatformRequest.to_json(
             request.instances_set_min_cpu_platform_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2113,7 +2128,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2174,7 +2189,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.Scheduling.to_json(
-            request.scheduling_resource, including_default_value_fields=False
+            request.scheduling_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2200,7 +2217,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2263,6 +2280,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesSetServiceAccountRequest.to_json(
             request.instances_set_service_account_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2288,7 +2306,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2352,6 +2370,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.ShieldedInstanceIntegrityPolicy.to_json(
             request.shielded_instance_integrity_policy_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2377,7 +2396,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2438,7 +2457,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.Tags.to_json(
-            request.tags_resource, including_default_value_fields=False
+            request.tags_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2464,7 +2485,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2690,6 +2711,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.InstancesStartWithEncryptionKeyRequest.to_json(
             request.instances_start_with_encryption_key_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2715,7 +2737,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2831,6 +2853,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.TestPermissionsRequest.to_json(
             request.test_permissions_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2854,7 +2877,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -2915,7 +2938,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.Instance.to_json(
-            request.instance_resource, including_default_value_fields=False
+            request.instance_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -2930,9 +2955,9 @@ class InstancesRestTransport(InstancesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "requestId": request.request_id,
-            "mostDisruptiveAllowedAction": request.most_disruptive_allowed_action,
             "minimalAction": request.minimal_action,
+            "mostDisruptiveAllowedAction": request.most_disruptive_allowed_action,
+            "requestId": request.request_id,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -2943,7 +2968,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.put(url, json=body,)
+        response = self._session.put(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -3004,7 +3029,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.AccessConfig.to_json(
-            request.access_config_resource, including_default_value_fields=False
+            request.access_config_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -3031,7 +3058,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -3092,7 +3119,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.DisplayDevice.to_json(
-            request.display_device_resource, including_default_value_fields=False
+            request.display_device_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -3118,7 +3147,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -3179,7 +3208,9 @@ class InstancesRestTransport(InstancesTransport):
 
         # Jsonify the request body
         body = compute.NetworkInterface.to_json(
-            request.network_interface_resource, including_default_value_fields=False
+            request.network_interface_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -3206,7 +3237,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -3270,6 +3301,7 @@ class InstancesRestTransport(InstancesTransport):
         body = compute.ShieldedInstanceConfig.to_json(
             request.shielded_instance_config_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -3295,7 +3327,7 @@ class InstancesRestTransport(InstancesTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.patch(url, json=body,)
+        response = self._session.patch(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

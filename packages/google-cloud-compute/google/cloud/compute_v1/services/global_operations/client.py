@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.global_operations import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import GlobalOperationsTransport, DEFAULT_CLIENT_INFO
@@ -332,7 +333,7 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.OperationAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of all operations.
 
         Args:
@@ -353,7 +354,10 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.OperationAggregatedList:
+            google.cloud.compute_v1.services.global_operations.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -385,6 +389,12 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -576,7 +586,7 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.OperationList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of Operation resources contained
         within the specified project.
 
@@ -598,9 +608,12 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.OperationList:
+            google.cloud.compute_v1.services.global_operations.pagers.ListPager:
                 Contains a list of Operation
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -632,6 +645,12 @@ class GlobalOperationsClient(metaclass=GlobalOperationsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

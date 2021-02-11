@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.forwarding_rules import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import ForwardingRulesTransport, DEFAULT_CLIENT_INFO
@@ -332,7 +333,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ForwardingRuleAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of forwarding rules.
 
         Args:
@@ -353,7 +354,10 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ForwardingRuleAggregatedList:
+            google.cloud.compute_v1.services.forwarding_rules.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -385,6 +389,12 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -725,7 +735,7 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ForwardingRuleList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of ForwardingRule resources
         available to the specified project and region.
 
@@ -754,9 +764,12 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ForwardingRuleList:
+            google.cloud.compute_v1.services.forwarding_rules.pagers.ListPager:
                 Contains a list of ForwardingRule
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -790,6 +803,12 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

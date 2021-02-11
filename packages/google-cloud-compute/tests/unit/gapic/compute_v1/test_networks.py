@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.networks import NetworksClient
+from google.cloud.compute_v1.services.networks import pagers
 from google.cloud.compute_v1.services.networks import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -474,14 +475,16 @@ def test_add_peering_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "network_value" in http_call[1] + str(body)
 
         assert compute.NetworksAddPeeringRequest.to_json(
-            networks_add_peering_request_resource, including_default_value_fields=False
+            networks_add_peering_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -608,7 +611,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -716,7 +719,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -845,12 +848,14 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert compute.Network.to_json(
-            network_resource, including_default_value_fields=False
+            network_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -896,11 +901,9 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListNetworksReq
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.NetworkList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [compute.Network(auto_create_subnetworks=True)]
     assert response.kind == "kind_value"
@@ -936,7 +939,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -950,6 +953,49 @@ def test_list_rest_flattened_error():
         client.list(
             compute.ListNetworksRequest(), project="project_value",
         )
+
+
+def test_list_pager():
+    client = NetworksClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.NetworkList(
+                items=[compute.Network(), compute.Network(), compute.Network(),],
+                next_page_token="abc",
+            ),
+            compute.NetworkList(items=[], next_page_token="def",),
+            compute.NetworkList(items=[compute.Network(),], next_page_token="ghi",),
+            compute.NetworkList(items=[compute.Network(), compute.Network(),],),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.NetworkList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Network) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_peering_routes_rest(
@@ -983,11 +1029,9 @@ def test_list_peering_routes_rest(
 
         response = client.list_peering_routes(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.ExchangedPeeringRoutesList)
+    assert isinstance(response, pagers.ListPeeringRoutesPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.ExchangedPeeringRoute(dest_range="dest_range_value")
@@ -1027,7 +1071,7 @@ def test_list_peering_routes_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1045,6 +1089,62 @@ def test_list_peering_routes_rest_flattened_error():
             project="project_value",
             network="network_value",
         )
+
+
+def test_list_peering_routes_pager():
+    client = NetworksClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.ExchangedPeeringRoutesList(
+                items=[
+                    compute.ExchangedPeeringRoute(),
+                    compute.ExchangedPeeringRoute(),
+                    compute.ExchangedPeeringRoute(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.ExchangedPeeringRoutesList(items=[], next_page_token="def",),
+            compute.ExchangedPeeringRoutesList(
+                items=[compute.ExchangedPeeringRoute(),], next_page_token="ghi",
+            ),
+            compute.ExchangedPeeringRoutesList(
+                items=[
+                    compute.ExchangedPeeringRoute(),
+                    compute.ExchangedPeeringRoute(),
+                ],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.ExchangedPeeringRoutesList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_peering_routes(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.ExchangedPeeringRoute) for i in results)
+
+        pages = list(client.list_peering_routes(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(transport: str = "rest", request_type=compute.PatchNetworkRequest):
@@ -1156,14 +1256,16 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "network_value" in http_call[1] + str(body)
 
         assert compute.Network.to_json(
-            network_resource, including_default_value_fields=False
+            network_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1294,7 +1396,7 @@ def test_remove_peering_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1303,6 +1405,7 @@ def test_remove_peering_rest_flattened():
         assert compute.NetworksRemovePeeringRequest.to_json(
             networks_remove_peering_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1429,7 +1532,7 @@ def test_switch_to_custom_mode_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1562,7 +1665,7 @@ def test_update_peering_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1571,6 +1674,7 @@ def test_update_peering_rest_flattened():
         assert compute.NetworksUpdatePeeringRequest.to_json(
             networks_update_peering_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

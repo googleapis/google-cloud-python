@@ -148,6 +148,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         body = compute.RegionDisksAddResourcePoliciesRequest.to_json(
             request.region_disks_add_resource_policies_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -173,7 +174,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -234,7 +235,9 @@ class RegionDisksRestTransport(RegionDisksTransport):
 
         # Jsonify the request body
         body = compute.Snapshot.to_json(
-            request.snapshot_resource, including_default_value_fields=False
+            request.snapshot_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -260,7 +263,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -579,7 +582,9 @@ class RegionDisksRestTransport(RegionDisksTransport):
 
         # Jsonify the request body
         body = compute.Disk.to_json(
-            request.disk_resource, including_default_value_fields=False
+            request.disk_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -591,8 +596,8 @@ class RegionDisksRestTransport(RegionDisksTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            "sourceImage": request.source_image,
             "requestId": request.request_id,
+            "sourceImage": request.source_image,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -603,7 +608,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -644,10 +649,10 @@ class RegionDisksRestTransport(RegionDisksTransport):
         #               not required for GCE
         query_params = {
             "filter": request.filter,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
             "maxResults": request.max_results,
             "orderBy": request.order_by,
+            "pageToken": request.page_token,
+            "returnPartialSuccess": request.return_partial_success,
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -721,6 +726,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         body = compute.RegionDisksRemoveResourcePoliciesRequest.to_json(
             request.region_disks_remove_resource_policies_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -746,7 +752,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -809,6 +815,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         body = compute.RegionDisksResizeRequest.to_json(
             request.region_disks_resize_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -834,7 +841,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -919,6 +926,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         body = compute.RegionSetPolicyRequest.to_json(
             request.region_set_policy_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -942,7 +950,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1005,6 +1013,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         body = compute.RegionSetLabelsRequest.to_json(
             request.region_set_labels_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1030,7 +1039,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1065,6 +1074,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         body = compute.TestPermissionsRequest.to_json(
             request.test_permissions_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         )
 
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
@@ -1088,7 +1098,7 @@ class RegionDisksRestTransport(RegionDisksTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url, json=body,)
+        response = self._session.post(url, data=body,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()

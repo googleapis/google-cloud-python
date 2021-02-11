@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.target_vpn_gateways import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import TargetVpnGatewaysTransport, DEFAULT_CLIENT_INFO
@@ -334,7 +335,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TargetVpnGatewayAggregatedList:
+    ) -> pagers.AggregatedListPager:
         r"""Retrieves an aggregated list of target VPN gateways.
 
         Args:
@@ -355,7 +356,10 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.TargetVpnGatewayAggregatedList:
+            google.cloud.compute_v1.services.target_vpn_gateways.pagers.AggregatedListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -387,6 +391,12 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.AggregatedListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -706,7 +716,7 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.TargetVpnGatewayList:
+    ) -> pagers.ListPager:
         r"""Retrieves a list of target VPN gateways available to
         the specified project and region.
 
@@ -733,9 +743,12 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.TargetVpnGatewayList:
+            google.cloud.compute_v1.services.target_vpn_gateways.pagers.ListPager:
                 Contains a list of TargetVpnGateway
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -769,6 +782,12 @@ class TargetVpnGatewaysClient(metaclass=TargetVpnGatewaysClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

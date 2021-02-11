@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.routers import RoutersClient
+from google.cloud.compute_v1.services.routers import pagers
 from google.cloud.compute_v1.services.routers import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -402,11 +403,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.RouterAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.RoutersScopedList(
@@ -453,7 +452,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -467,6 +466,69 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListRoutersRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = RoutersClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.RouterAggregatedList(
+                items={
+                    "a": compute.RoutersScopedList(),
+                    "b": compute.RoutersScopedList(),
+                    "c": compute.RoutersScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.RouterAggregatedList(items={}, next_page_token="def",),
+            compute.RouterAggregatedList(
+                items={"g": compute.RoutersScopedList(),}, next_page_token="ghi",
+            ),
+            compute.RouterAggregatedList(
+                items={
+                    "h": compute.RoutersScopedList(),
+                    "i": compute.RoutersScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.RouterAggregatedList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.RoutersScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (str, compute.RoutersScopedList)
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.RoutersScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest(transport: str = "rest", request_type=compute.DeleteRouterRequest):
@@ -574,7 +636,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -688,7 +750,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -742,11 +804,9 @@ def test_get_nat_mapping_info_rest(
 
         response = client.get_nat_mapping_info(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.VmEndpointNatMappingsList)
+    assert isinstance(response, pagers.GetNatMappingInfoPager)
     assert response.id == "id_value"
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
@@ -786,7 +846,7 @@ def test_get_nat_mapping_info_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -807,6 +867,60 @@ def test_get_nat_mapping_info_rest_flattened_error():
             region="region_value",
             router="router_value",
         )
+
+
+def test_get_nat_mapping_info_pager():
+    client = RoutersClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.VmEndpointNatMappingsList(
+                result=[
+                    compute.VmEndpointNatMappings(),
+                    compute.VmEndpointNatMappings(),
+                    compute.VmEndpointNatMappings(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.VmEndpointNatMappingsList(result=[], next_page_token="def",),
+            compute.VmEndpointNatMappingsList(
+                result=[compute.VmEndpointNatMappings(),], next_page_token="ghi",
+            ),
+            compute.VmEndpointNatMappingsList(
+                result=[
+                    compute.VmEndpointNatMappings(),
+                    compute.VmEndpointNatMappings(),
+                ],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.VmEndpointNatMappingsList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.get_nat_mapping_info(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.VmEndpointNatMappings) for i in results)
+
+        pages = list(client.get_nat_mapping_info(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_get_router_status_rest(
@@ -878,7 +992,7 @@ def test_get_router_status_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1012,14 +1126,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.Router.to_json(
-            router_resource, including_default_value_fields=False
+            router_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1076,11 +1192,9 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListRoutersRequ
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.RouterList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.Router(
@@ -1122,7 +1236,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1140,6 +1254,49 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = RoutersClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.RouterList(
+                items=[compute.Router(), compute.Router(), compute.Router(),],
+                next_page_token="abc",
+            ),
+            compute.RouterList(items=[], next_page_token="def",),
+            compute.RouterList(items=[compute.Router(),], next_page_token="ghi",),
+            compute.RouterList(items=[compute.Router(), compute.Router(),],),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.RouterList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Router) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(transport: str = "rest", request_type=compute.PatchRouterRequest):
@@ -1254,7 +1411,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1263,7 +1420,9 @@ def test_patch_rest_flattened():
         assert "router_value" in http_call[1] + str(body)
 
         assert compute.Router.to_json(
-            router_resource, including_default_value_fields=False
+            router_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1360,7 +1519,7 @@ def test_preview_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1369,7 +1528,9 @@ def test_preview_rest_flattened():
         assert "router_value" in http_call[1] + str(body)
 
         assert compute.Router.to_json(
-            router_resource, including_default_value_fields=False
+            router_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1504,7 +1665,7 @@ def test_update_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1513,7 +1674,9 @@ def test_update_rest_flattened():
         assert "router_value" in http_call[1] + str(body)
 
         assert compute.Router.to_json(
-            router_resource, including_default_value_fields=False
+            router_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

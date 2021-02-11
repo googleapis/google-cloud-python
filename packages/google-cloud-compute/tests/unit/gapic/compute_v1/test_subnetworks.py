@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.subnetworks import SubnetworksClient
+from google.cloud.compute_v1.services.subnetworks import pagers
 from google.cloud.compute_v1.services.subnetworks import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -405,11 +406,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.SubnetworkAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.SubnetworksScopedList(
@@ -452,7 +451,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -466,6 +465,72 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListSubnetworksRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = SubnetworksClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.SubnetworkAggregatedList(
+                items={
+                    "a": compute.SubnetworksScopedList(),
+                    "b": compute.SubnetworksScopedList(),
+                    "c": compute.SubnetworksScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.SubnetworkAggregatedList(items={}, next_page_token="def",),
+            compute.SubnetworkAggregatedList(
+                items={"g": compute.SubnetworksScopedList(),}, next_page_token="ghi",
+            ),
+            compute.SubnetworkAggregatedList(
+                items={
+                    "h": compute.SubnetworksScopedList(),
+                    "i": compute.SubnetworksScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.SubnetworkAggregatedList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.SubnetworksScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.SubnetworksScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.SubnetworksScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest(
@@ -577,7 +642,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -714,7 +779,7 @@ def test_expand_ip_cidr_range_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -725,6 +790,7 @@ def test_expand_ip_cidr_range_rest_flattened():
         assert compute.SubnetworksExpandIpCidrRangeRequest.to_json(
             subnetworks_expand_ip_cidr_range_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -857,7 +923,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -966,7 +1032,7 @@ def test_get_iam_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1102,14 +1168,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.Subnetwork.to_json(
-            subnetwork_resource, including_default_value_fields=False
+            subnetwork_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1160,11 +1228,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.SubnetworkList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
         compute.Subnetwork(creation_timestamp="creation_timestamp_value")
@@ -1204,7 +1270,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1222,6 +1288,57 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = SubnetworksClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.SubnetworkList(
+                items=[
+                    compute.Subnetwork(),
+                    compute.Subnetwork(),
+                    compute.Subnetwork(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.SubnetworkList(items=[], next_page_token="def",),
+            compute.SubnetworkList(
+                items=[compute.Subnetwork(),], next_page_token="ghi",
+            ),
+            compute.SubnetworkList(
+                items=[compute.Subnetwork(), compute.Subnetwork(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.SubnetworkList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Subnetwork) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_usable_rest(
@@ -1257,11 +1374,9 @@ def test_list_usable_rest(
 
         response = client.list_usable(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.UsableSubnetworksAggregatedList)
+    assert isinstance(response, pagers.ListUsablePager)
     assert response.id == "id_value"
     assert response.items == [
         compute.UsableSubnetwork(ip_cidr_range="ip_cidr_range_value")
@@ -1301,7 +1416,7 @@ def test_list_usable_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1315,6 +1430,59 @@ def test_list_usable_rest_flattened_error():
         client.list_usable(
             compute.ListUsableSubnetworksRequest(), project="project_value",
         )
+
+
+def test_list_usable_pager():
+    client = SubnetworksClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.UsableSubnetworksAggregatedList(
+                items=[
+                    compute.UsableSubnetwork(),
+                    compute.UsableSubnetwork(),
+                    compute.UsableSubnetwork(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.UsableSubnetworksAggregatedList(items=[], next_page_token="def",),
+            compute.UsableSubnetworksAggregatedList(
+                items=[compute.UsableSubnetwork(),], next_page_token="ghi",
+            ),
+            compute.UsableSubnetworksAggregatedList(
+                items=[compute.UsableSubnetwork(), compute.UsableSubnetwork(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.UsableSubnetworksAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_usable(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.UsableSubnetwork) for i in results)
+
+        pages = list(client.list_usable(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_patch_rest(
@@ -1431,7 +1599,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1440,7 +1608,9 @@ def test_patch_rest_flattened():
         assert "subnetwork_value" in http_call[1] + str(body)
 
         assert compute.Subnetwork.to_json(
-            subnetwork_resource, including_default_value_fields=False
+            subnetwork_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1554,7 +1724,7 @@ def test_set_iam_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1563,7 +1733,9 @@ def test_set_iam_policy_rest_flattened():
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.RegionSetPolicyRequest.to_json(
-            region_set_policy_request_resource, including_default_value_fields=False
+            region_set_policy_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1699,7 +1871,7 @@ def test_set_private_ip_google_access_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1710,6 +1882,7 @@ def test_set_private_ip_google_access_rest_flattened():
         assert compute.SubnetworksSetPrivateIpGoogleAccessRequest.to_json(
             subnetworks_set_private_ip_google_access_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1798,7 +1971,7 @@ def test_test_iam_permissions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1807,7 +1980,9 @@ def test_test_iam_permissions_rest_flattened():
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.TestPermissionsRequest.to_json(
-            test_permissions_request_resource, including_default_value_fields=False
+            test_permissions_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

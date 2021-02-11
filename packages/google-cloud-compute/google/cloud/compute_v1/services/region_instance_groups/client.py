@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.region_instance_groups import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import RegionInstanceGroupsTransport, DEFAULT_CLIENT_INFO
@@ -442,7 +443,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.RegionInstanceGroupList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of instance group resources
         contained within the specified region.
 
@@ -471,9 +472,12 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.RegionInstanceGroupList:
+            google.cloud.compute_v1.services.region_instance_groups.pagers.ListPager:
                 Contains a list of InstanceGroup
                 resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -508,6 +512,12 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
         # Done; return the response.
         return response
 
@@ -522,7 +532,7 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.RegionInstanceGroupsListInstances:
+    ) -> pagers.ListInstancesPager:
         r"""Lists the instances in the specified instance group
         and displays information about the named ports.
         Depending on the specified options, this method can list
@@ -566,7 +576,10 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.RegionInstanceGroupsListInstances:
+            google.cloud.compute_v1.services.region_instance_groups.pagers.ListInstancesPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -613,6 +626,12 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListInstancesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

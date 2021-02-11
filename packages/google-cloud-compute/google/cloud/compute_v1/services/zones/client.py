@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.zones import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import ZonesTransport, DEFAULT_CLIENT_INFO
@@ -410,7 +411,7 @@ class ZonesClient(metaclass=ZonesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.ZoneList:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of Zone resources available to the
         specified project.
 
@@ -431,8 +432,12 @@ class ZonesClient(metaclass=ZonesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.ZoneList:
+            google.cloud.compute_v1.services.zones.pagers.ListPager:
                 Contains a list of zone resources.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -463,6 +468,12 @@ class ZonesClient(metaclass=ZonesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

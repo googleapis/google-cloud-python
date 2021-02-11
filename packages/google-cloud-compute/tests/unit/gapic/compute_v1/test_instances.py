@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.instances import InstancesClient
+from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.services.instances import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -474,7 +475,7 @@ def test_add_access_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -485,7 +486,9 @@ def test_add_access_config_rest_flattened():
         assert "network_interface_value" in http_call[1] + str(body)
 
         assert compute.AccessConfig.to_json(
-            access_config_resource, including_default_value_fields=False
+            access_config_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -619,7 +622,7 @@ def test_add_resource_policies_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -630,6 +633,7 @@ def test_add_resource_policies_rest_flattened():
         assert compute.InstancesAddResourcePoliciesRequest.to_json(
             instances_add_resource_policies_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -686,11 +690,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.InstanceAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.InstancesScopedList(
@@ -731,7 +733,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -745,6 +747,69 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListInstancesRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.InstanceAggregatedList(
+                items={
+                    "a": compute.InstancesScopedList(),
+                    "b": compute.InstancesScopedList(),
+                    "c": compute.InstancesScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.InstanceAggregatedList(items={}, next_page_token="def",),
+            compute.InstanceAggregatedList(
+                items={"g": compute.InstancesScopedList(),}, next_page_token="ghi",
+            ),
+            compute.InstanceAggregatedList(
+                items={
+                    "h": compute.InstancesScopedList(),
+                    "i": compute.InstancesScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.InstanceAggregatedList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.InstancesScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (str, compute.InstancesScopedList)
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.InstancesScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_attach_disk_rest(
@@ -859,7 +924,7 @@ def test_attach_disk_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -868,7 +933,9 @@ def test_attach_disk_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.AttachedDisk.to_json(
-            attached_disk_resource, including_default_value_fields=False
+            attached_disk_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -994,7 +1061,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1128,7 +1195,7 @@ def test_delete_access_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1267,7 +1334,7 @@ def test_detach_disk_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1455,7 +1522,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1553,7 +1620,7 @@ def test_get_guest_attributes_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1662,7 +1729,7 @@ def test_get_iam_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1745,7 +1812,7 @@ def test_get_screenshot_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1837,7 +1904,7 @@ def test_get_serial_port_output_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1932,7 +1999,7 @@ def test_get_shielded_instance_identity_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2066,14 +2133,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "zone_value" in http_call[1] + str(body)
 
         assert compute.Instance.to_json(
-            instance_resource, including_default_value_fields=False
+            instance_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -2120,11 +2189,9 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.InstanceList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [compute.Instance(can_ip_forward=True)]
     assert response.kind == "kind_value"
@@ -2162,7 +2229,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2178,6 +2245,49 @@ def test_list_rest_flattened_error():
         client.list(
             compute.ListInstancesRequest(), project="project_value", zone="zone_value",
         )
+
+
+def test_list_pager():
+    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.InstanceList(
+                items=[compute.Instance(), compute.Instance(), compute.Instance(),],
+                next_page_token="abc",
+            ),
+            compute.InstanceList(items=[], next_page_token="def",),
+            compute.InstanceList(items=[compute.Instance(),], next_page_token="ghi",),
+            compute.InstanceList(items=[compute.Instance(), compute.Instance(),],),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.InstanceList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Instance) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_list_referrers_rest(
@@ -2211,11 +2321,9 @@ def test_list_referrers_rest(
 
         response = client.list_referrers(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.InstanceListReferrers)
+    assert isinstance(response, pagers.ListReferrersPager)
     assert response.id == "id_value"
     assert response.items == [compute.Reference(kind="kind_value")]
     assert response.kind == "kind_value"
@@ -2253,7 +2361,7 @@ def test_list_referrers_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2274,6 +2382,53 @@ def test_list_referrers_rest_flattened_error():
             zone="zone_value",
             instance="instance_value",
         )
+
+
+def test_list_referrers_pager():
+    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.InstanceListReferrers(
+                items=[compute.Reference(), compute.Reference(), compute.Reference(),],
+                next_page_token="abc",
+            ),
+            compute.InstanceListReferrers(items=[], next_page_token="def",),
+            compute.InstanceListReferrers(
+                items=[compute.Reference(),], next_page_token="ghi",
+            ),
+            compute.InstanceListReferrers(
+                items=[compute.Reference(), compute.Reference(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.InstanceListReferrers.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list_referrers(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.Reference) for i in results)
+
+        pages = list(client.list_referrers(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_remove_resource_policies_rest(
@@ -2390,7 +2545,7 @@ def test_remove_resource_policies_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2401,6 +2556,7 @@ def test_remove_resource_policies_rest_flattened():
         assert compute.InstancesRemoveResourcePoliciesRequest.to_json(
             instances_remove_resource_policies_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -2526,7 +2682,7 @@ def test_reset_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2656,7 +2812,7 @@ def test_set_deletion_protection_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2790,7 +2946,7 @@ def test_set_disk_auto_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2912,7 +3068,7 @@ def test_set_iam_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -2921,7 +3077,9 @@ def test_set_iam_policy_rest_flattened():
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.ZoneSetPolicyRequest.to_json(
-            zone_set_policy_request_resource, including_default_value_fields=False
+            zone_set_policy_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3056,7 +3214,7 @@ def test_set_labels_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3065,7 +3223,9 @@ def test_set_labels_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.InstancesSetLabelsRequest.to_json(
-            instances_set_labels_request_resource, including_default_value_fields=False
+            instances_set_labels_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3200,7 +3360,7 @@ def test_set_machine_resources_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3211,6 +3371,7 @@ def test_set_machine_resources_rest_flattened():
         assert compute.InstancesSetMachineResourcesRequest.to_json(
             instances_set_machine_resources_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3345,7 +3506,7 @@ def test_set_machine_type_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3356,6 +3517,7 @@ def test_set_machine_type_rest_flattened():
         assert compute.InstancesSetMachineTypeRequest.to_json(
             instances_set_machine_type_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3488,7 +3650,7 @@ def test_set_metadata_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3497,7 +3659,9 @@ def test_set_metadata_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.Metadata.to_json(
-            metadata_resource, including_default_value_fields=False
+            metadata_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3630,7 +3794,7 @@ def test_set_min_cpu_platform_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3641,6 +3805,7 @@ def test_set_min_cpu_platform_rest_flattened():
         assert compute.InstancesSetMinCpuPlatformRequest.to_json(
             instances_set_min_cpu_platform_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3773,7 +3938,7 @@ def test_set_scheduling_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3782,7 +3947,9 @@ def test_set_scheduling_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.Scheduling.to_json(
-            scheduling_resource, including_default_value_fields=False
+            scheduling_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -3915,7 +4082,7 @@ def test_set_service_account_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -3926,6 +4093,7 @@ def test_set_service_account_rest_flattened():
         assert compute.InstancesSetServiceAccountRequest.to_json(
             instances_set_service_account_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -4061,7 +4229,7 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4072,6 +4240,7 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
         assert compute.ShieldedInstanceIntegrityPolicy.to_json(
             shielded_instance_integrity_policy_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -4204,7 +4373,7 @@ def test_set_tags_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4213,7 +4382,9 @@ def test_set_tags_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.Tags.to_json(
-            tags_resource, including_default_value_fields=False
+            tags_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -4340,7 +4511,7 @@ def test_simulate_maintenance_event_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4468,7 +4639,7 @@ def test_start_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4611,7 +4782,7 @@ def test_start_with_encryption_key_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4622,6 +4793,7 @@ def test_start_with_encryption_key_rest_flattened():
         assert compute.InstancesStartWithEncryptionKeyRequest.to_json(
             instances_start_with_encryption_key_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -4753,7 +4925,7 @@ def test_stop_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4844,7 +5016,7 @@ def test_test_iam_permissions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4853,7 +5025,9 @@ def test_test_iam_permissions_rest_flattened():
         assert "resource_value" in http_call[1] + str(body)
 
         assert compute.TestPermissionsRequest.to_json(
-            test_permissions_request_resource, including_default_value_fields=False
+            test_permissions_request_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -4986,7 +5160,7 @@ def test_update_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -4995,7 +5169,9 @@ def test_update_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.Instance.to_json(
-            instance_resource, including_default_value_fields=False
+            instance_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -5127,7 +5303,7 @@ def test_update_access_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -5138,7 +5314,9 @@ def test_update_access_config_rest_flattened():
         assert "network_interface_value" in http_call[1] + str(body)
 
         assert compute.AccessConfig.to_json(
-            access_config_resource, including_default_value_fields=False
+            access_config_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -5270,7 +5448,7 @@ def test_update_display_device_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -5279,7 +5457,9 @@ def test_update_display_device_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.DisplayDevice.to_json(
-            display_device_resource, including_default_value_fields=False
+            display_device_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -5413,7 +5593,7 @@ def test_update_network_interface_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -5424,7 +5604,9 @@ def test_update_network_interface_rest_flattened():
         assert "network_interface_value" in http_call[1] + str(body)
 
         assert compute.NetworkInterface.to_json(
-            network_interface_resource, including_default_value_fields=False
+            network_interface_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -5561,7 +5743,7 @@ def test_update_shielded_instance_config_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -5570,7 +5752,9 @@ def test_update_shielded_instance_config_rest_flattened():
         assert "instance_value" in http_call[1] + str(body)
 
         assert compute.ShieldedInstanceConfig.to_json(
-            shielded_instance_config_resource, including_default_value_fields=False
+            shielded_instance_config_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 

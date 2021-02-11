@@ -32,6 +32,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
+from google.cloud.compute_v1.services.licenses import pagers
 from google.cloud.compute_v1.types import compute
 
 from .transports.base import LicensesTransport, DEFAULT_CLIENT_INFO
@@ -743,7 +744,7 @@ class LicensesClient(metaclass=LicensesClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> compute.LicensesListResponse:
+    ) -> pagers.ListPager:
         r"""Retrieves the list of licenses available in the
         specified project. This method does not get any licenses
         that belong to other projects, including licenses
@@ -772,7 +773,10 @@ class LicensesClient(metaclass=LicensesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.LicensesListResponse:
+            google.cloud.compute_v1.services.licenses.pagers.ListPager:
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -804,6 +808,12 @@ class LicensesClient(metaclass=LicensesClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response

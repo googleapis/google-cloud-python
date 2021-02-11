@@ -35,6 +35,7 @@ from google.api_core import grpc_helpers_async
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.target_pools import TargetPoolsClient
+from google.cloud.compute_v1.services.target_pools import pagers
 from google.cloud.compute_v1.services.target_pools import transports
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
@@ -481,7 +482,7 @@ def test_add_health_check_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -492,6 +493,7 @@ def test_add_health_check_rest_flattened():
         assert compute.TargetPoolsAddHealthCheckRequest.to_json(
             target_pools_add_health_check_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -628,7 +630,7 @@ def test_add_instance_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -639,6 +641,7 @@ def test_add_instance_rest_flattened():
         assert compute.TargetPoolsAddInstanceRequest.to_json(
             target_pools_add_instance_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -695,11 +698,9 @@ def test_aggregated_list_rest(
 
         response = client.aggregated_list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.TargetPoolAggregatedList)
+    assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.TargetPoolsScopedList(
@@ -740,7 +741,7 @@ def test_aggregated_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -754,6 +755,72 @@ def test_aggregated_list_rest_flattened_error():
         client.aggregated_list(
             compute.AggregatedListTargetPoolsRequest(), project="project_value",
         )
+
+
+def test_aggregated_list_pager():
+    client = TargetPoolsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.TargetPoolAggregatedList(
+                items={
+                    "a": compute.TargetPoolsScopedList(),
+                    "b": compute.TargetPoolsScopedList(),
+                    "c": compute.TargetPoolsScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.TargetPoolAggregatedList(items={}, next_page_token="def",),
+            compute.TargetPoolAggregatedList(
+                items={"g": compute.TargetPoolsScopedList(),}, next_page_token="ghi",
+            ),
+            compute.TargetPoolAggregatedList(
+                items={
+                    "h": compute.TargetPoolsScopedList(),
+                    "i": compute.TargetPoolsScopedList(),
+                },
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.TargetPoolAggregatedList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.aggregated_list(request={})
+
+        assert pager._metadata == metadata
+
+        assert isinstance(pager.get("a"), compute.TargetPoolsScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.TargetPoolsScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.TargetPoolsScopedList)
+
+        pages = list(client.aggregated_list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_delete_rest(
@@ -865,7 +932,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -971,7 +1038,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1068,7 +1135,7 @@ def test_get_health_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1077,7 +1144,9 @@ def test_get_health_rest_flattened():
         assert "target_pool_value" in http_call[1] + str(body)
 
         assert compute.InstanceReference.to_json(
-            instance_reference_resource, including_default_value_fields=False
+            instance_reference_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1209,14 +1278,16 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
         assert "region_value" in http_call[1] + str(body)
 
         assert compute.TargetPool.to_json(
-            target_pool_resource, including_default_value_fields=False
+            target_pool_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1265,11 +1336,9 @@ def test_list_rest(
 
         response = client.list(request)
 
-    assert response.raw_page is response
-
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, compute.TargetPoolList)
+    assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [compute.TargetPool(backup_pool="backup_pool_value")]
     assert response.kind == "kind_value"
@@ -1307,7 +1376,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1325,6 +1394,57 @@ def test_list_rest_flattened_error():
             project="project_value",
             region="region_value",
         )
+
+
+def test_list_pager():
+    client = TargetPoolsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Set the response as a series of pages
+
+        response = (
+            compute.TargetPoolList(
+                items=[
+                    compute.TargetPool(),
+                    compute.TargetPool(),
+                    compute.TargetPool(),
+                ],
+                next_page_token="abc",
+            ),
+            compute.TargetPoolList(items=[], next_page_token="def",),
+            compute.TargetPoolList(
+                items=[compute.TargetPool(),], next_page_token="ghi",
+            ),
+            compute.TargetPoolList(
+                items=[compute.TargetPool(), compute.TargetPool(),],
+            ),
+        )
+
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(compute.TargetPoolList.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        metadata = ()
+        pager = client.list(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+
+        assert all(isinstance(i, compute.TargetPool) for i in results)
+
+        pages = list(client.list(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_remove_health_check_rest(
@@ -1443,7 +1563,7 @@ def test_remove_health_check_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1454,6 +1574,7 @@ def test_remove_health_check_rest_flattened():
         assert compute.TargetPoolsRemoveHealthCheckRequest.to_json(
             target_pools_remove_health_check_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1590,7 +1711,7 @@ def test_remove_instance_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1601,6 +1722,7 @@ def test_remove_instance_rest_flattened():
         assert compute.TargetPoolsRemoveInstanceRequest.to_json(
             target_pools_remove_instance_request_resource,
             including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
@@ -1733,7 +1855,7 @@ def test_set_backup_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
-        body = http_params.get("json")
+        body = http_params.get("data")
 
         assert "project_value" in http_call[1] + str(body)
 
@@ -1742,7 +1864,9 @@ def test_set_backup_rest_flattened():
         assert "target_pool_value" in http_call[1] + str(body)
 
         assert compute.TargetReference.to_json(
-            target_reference_resource, including_default_value_fields=False
+            target_reference_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
         ) in http_call[1] + str(body)
 
 
