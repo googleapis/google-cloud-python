@@ -113,7 +113,11 @@ def system(session):
     session.install(
         "mock", "pytest", "psutil", "google-cloud-testutils", "-c", constraints_path
     )
-    session.install("google-cloud-storage", "-c", constraints_path)
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "") == "true":
+        # mTLS test requires pyopenssl and latest google-cloud-storage
+        session.install("google-cloud-storage", "pyopenssl")
+    else:
+        session.install("google-cloud-storage", "-c", constraints_path)
 
     session.install("-e", ".[all]", "-c", constraints_path)
     session.install("ipython", "-c", constraints_path)
