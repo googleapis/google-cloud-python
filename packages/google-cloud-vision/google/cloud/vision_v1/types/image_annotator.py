@@ -93,7 +93,7 @@ class Feature(proto.Message):
     ``Feature`` objects can be specified in the ``features`` list.
 
     Attributes:
-        type_ (~.image_annotator.Feature.Type):
+        type_ (google.cloud.vision_v1.types.Feature.Type):
             The feature type.
         max_results (int):
             Maximum number of results of this type. Does not apply to
@@ -176,7 +176,11 @@ class Image(proto.Message):
             Image content, represented as a stream of bytes. Note: As
             with all ``bytes`` fields, protobuffers use a pure binary
             representation, whereas JSON representations use base64.
-        source (~.image_annotator.ImageSource):
+
+            Currently, this field only works for BatchAnnotateImages
+            requests. It does not work for AsyncBatchAnnotateImages
+            requests.
+        source (google.cloud.vision_v1.types.ImageSource):
             Google Cloud Storage image location, or publicly-accessible
             image URL. If both ``content`` and ``source`` are provided
             for an image, ``content`` takes precedence and is used to
@@ -193,7 +197,7 @@ class FaceAnnotation(proto.Message):
     detection.
 
     Attributes:
-        bounding_poly (~.geometry.BoundingPoly):
+        bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             The bounding polygon around the face. The coordinates of the
             bounding box are in the original image's scale. The bounding
             box is computed to "frame" the face in accordance with human
@@ -201,7 +205,7 @@ class FaceAnnotation(proto.Message):
             that one or more x and/or y coordinates may not be generated
             in the ``BoundingPoly`` (the polygon will be unbounded) if
             only a partial face appears in the image to be annotated.
-        fd_bounding_poly (~.geometry.BoundingPoly):
+        fd_bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             The ``fd_bounding_poly`` bounding polygon is tighter than
             the ``boundingPoly``, and encloses only the skin part of the
             face. Typically, it is used to eliminate the face from any
@@ -209,7 +213,7 @@ class FaceAnnotation(proto.Message):
             an image. It is not based on the landmarker results, only on
             the initial face detection, hence the fd (face detection)
             prefix.
-        landmarks (Sequence[~.image_annotator.FaceAnnotation.Landmark]):
+        landmarks (Sequence[google.cloud.vision_v1.types.FaceAnnotation.Landmark]):
             Detected face landmarks.
         roll_angle (float):
             Roll angle, which indicates the amount of
@@ -228,19 +232,19 @@ class FaceAnnotation(proto.Message):
             Detection confidence. Range [0, 1].
         landmarking_confidence (float):
             Face landmarking confidence. Range [0, 1].
-        joy_likelihood (~.image_annotator.Likelihood):
+        joy_likelihood (google.cloud.vision_v1.types.Likelihood):
             Joy likelihood.
-        sorrow_likelihood (~.image_annotator.Likelihood):
+        sorrow_likelihood (google.cloud.vision_v1.types.Likelihood):
             Sorrow likelihood.
-        anger_likelihood (~.image_annotator.Likelihood):
+        anger_likelihood (google.cloud.vision_v1.types.Likelihood):
             Anger likelihood.
-        surprise_likelihood (~.image_annotator.Likelihood):
+        surprise_likelihood (google.cloud.vision_v1.types.Likelihood):
             Surprise likelihood.
-        under_exposed_likelihood (~.image_annotator.Likelihood):
+        under_exposed_likelihood (google.cloud.vision_v1.types.Likelihood):
             Under-exposed likelihood.
-        blurred_likelihood (~.image_annotator.Likelihood):
+        blurred_likelihood (google.cloud.vision_v1.types.Likelihood):
             Blurred likelihood.
-        headwear_likelihood (~.image_annotator.Likelihood):
+        headwear_likelihood (google.cloud.vision_v1.types.Likelihood):
             Headwear likelihood.
     """
 
@@ -248,9 +252,9 @@ class FaceAnnotation(proto.Message):
         r"""A face-specific landmark (for example, a face feature).
 
         Attributes:
-            type_ (~.image_annotator.FaceAnnotation.Landmark.Type):
+            type_ (google.cloud.vision_v1.types.FaceAnnotation.Landmark.Type):
                 Face landmark type.
-            position (~.geometry.Position):
+            position (google.cloud.vision_v1.types.Position):
                 Face landmark position.
         """
 
@@ -295,6 +299,8 @@ class FaceAnnotation(proto.Message):
             CHIN_GNATHION = 32
             CHIN_LEFT_GONION = 33
             CHIN_RIGHT_GONION = 34
+            LEFT_CHEEK_CENTER = 35
+            RIGHT_CHEEK_CENTER = 36
 
         type_ = proto.Field(proto.ENUM, number=3, enum="FaceAnnotation.Landmark.Type",)
 
@@ -337,7 +343,7 @@ class LocationInfo(proto.Message):
     r"""Detected entity location information.
 
     Attributes:
-        lat_lng (~.latlng.LatLng):
+        lat_lng (google.type.latlng_pb2.LatLng):
             lat/long location coordinates.
     """
 
@@ -392,17 +398,17 @@ class EntityAnnotation(proto.Message):
             than to an image containing a detected distant towering
             building, even though the confidence that there is a tower
             in each image may be the same. Range [0, 1].
-        bounding_poly (~.geometry.BoundingPoly):
+        bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             Image region to which this entity belongs. Not produced for
             ``LABEL_DETECTION`` features.
-        locations (Sequence[~.image_annotator.LocationInfo]):
+        locations (Sequence[google.cloud.vision_v1.types.LocationInfo]):
             The location information for the detected entity. Multiple
             ``LocationInfo`` elements can be present because one
             location may indicate the location of the scene in the
             image, and another location may indicate the location of the
             place where the image was taken. Location information is
             usually present for landmarks.
-        properties (Sequence[~.image_annotator.Property]):
+        properties (Sequence[google.cloud.vision_v1.types.Property]):
             Some entities may have optional user-supplied ``Property``
             (name/value) fields, such a score or string that qualifies
             the entity.
@@ -442,7 +448,7 @@ class LocalizedObjectAnnotation(proto.Message):
             Object name, expressed in its ``language_code`` language.
         score (float):
             Score of the result. Range [0, 1].
-        bounding_poly (~.geometry.BoundingPoly):
+        bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             Image region to which this object belongs.
             This must be populated.
     """
@@ -464,21 +470,21 @@ class SafeSearchAnnotation(proto.Message):
     spoof, medical, violence).
 
     Attributes:
-        adult (~.image_annotator.Likelihood):
+        adult (google.cloud.vision_v1.types.Likelihood):
             Represents the adult content likelihood for
             the image. Adult content may contain elements
             such as nudity, pornographic images or cartoons,
             or sexual activities.
-        spoof (~.image_annotator.Likelihood):
+        spoof (google.cloud.vision_v1.types.Likelihood):
             Spoof likelihood. The likelihood that an
             modification was made to the image's canonical
             version to make it appear funny or offensive.
-        medical (~.image_annotator.Likelihood):
+        medical (google.cloud.vision_v1.types.Likelihood):
             Likelihood that this is a medical image.
-        violence (~.image_annotator.Likelihood):
+        violence (google.cloud.vision_v1.types.Likelihood):
             Likelihood that this image contains violent
             content.
-        racy (~.image_annotator.Likelihood):
+        racy (google.cloud.vision_v1.types.Likelihood):
             Likelihood that the request image contains
             racy content. Racy content may include (but is
             not limited to) skimpy or sheer clothing,
@@ -532,9 +538,9 @@ class LatLongRect(proto.Message):
     r"""Rectangle determined by min and max ``LatLng`` pairs.
 
     Attributes:
-        min_lat_lng (~.latlng.LatLng):
+        min_lat_lng (google.type.latlng_pb2.LatLng):
             Min lat/long pair.
-        max_lat_lng (~.latlng.LatLng):
+        max_lat_lng (google.type.latlng_pb2.LatLng):
             Max lat/long pair.
     """
 
@@ -548,7 +554,7 @@ class ColorInfo(proto.Message):
     fraction of the image that the color occupies in the image.
 
     Attributes:
-        color (~.gt_color.Color):
+        color (google.type.color_pb2.Color):
             RGB components of the color.
         score (float):
             Image-specific score for this color. Value in range [0, 1].
@@ -568,7 +574,7 @@ class DominantColorsAnnotation(proto.Message):
     r"""Set of dominant colors and their corresponding scores.
 
     Attributes:
-        colors (Sequence[~.image_annotator.ColorInfo]):
+        colors (Sequence[google.cloud.vision_v1.types.ColorInfo]):
             RGB color values with their score and pixel
             fraction.
     """
@@ -580,7 +586,7 @@ class ImageProperties(proto.Message):
     r"""Stores image properties, such as dominant colors.
 
     Attributes:
-        dominant_colors (~.image_annotator.DominantColorsAnnotation):
+        dominant_colors (google.cloud.vision_v1.types.DominantColorsAnnotation):
             If present, dominant colors completed
             successfully.
     """
@@ -595,7 +601,7 @@ class CropHint(proto.Message):
     serving an image.
 
     Attributes:
-        bounding_poly (~.geometry.BoundingPoly):
+        bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             The bounding polygon for the crop region. The
             coordinates of the bounding box are in the
             original image's scale.
@@ -618,7 +624,7 @@ class CropHintsAnnotation(proto.Message):
     serving images.
 
     Attributes:
-        crop_hints (Sequence[~.image_annotator.CropHint]):
+        crop_hints (Sequence[google.cloud.vision_v1.types.CropHint]):
             Crop hint results.
     """
 
@@ -673,7 +679,7 @@ class ImageContext(proto.Message):
     r"""Image context and/or feature-specific parameters.
 
     Attributes:
-        lat_long_rect (~.image_annotator.LatLongRect):
+        lat_long_rect (google.cloud.vision_v1.types.LatLongRect):
             Not used.
         language_hints (Sequence[str]):
             List of languages to use for TEXT_DETECTION. In most cases,
@@ -686,13 +692,13 @@ class ImageContext(proto.Message):
             Text detection returns an error if one or more of the
             specified languages is not one of the `supported
             languages <https://cloud.google.com/vision/docs/languages>`__.
-        crop_hints_params (~.image_annotator.CropHintsParams):
+        crop_hints_params (google.cloud.vision_v1.types.CropHintsParams):
             Parameters for crop hints annotation request.
-        product_search_params (~.product_search.ProductSearchParams):
+        product_search_params (google.cloud.vision_v1.types.ProductSearchParams):
             Parameters for product search.
-        web_detection_params (~.image_annotator.WebDetectionParams):
+        web_detection_params (google.cloud.vision_v1.types.WebDetectionParams):
             Parameters for web detection.
-        text_detection_params (~.image_annotator.TextDetectionParams):
+        text_detection_params (google.cloud.vision_v1.types.TextDetectionParams):
             Parameters for text detection and document
             text detection.
     """
@@ -722,11 +728,11 @@ class AnnotateImageRequest(proto.Message):
     context information.
 
     Attributes:
-        image (~.image_annotator.Image):
+        image (google.cloud.vision_v1.types.Image):
             The image to be processed.
-        features (Sequence[~.image_annotator.Feature]):
+        features (Sequence[google.cloud.vision_v1.types.Feature]):
             Requested features.
-        image_context (~.image_annotator.ImageContext):
+        image_context (google.cloud.vision_v1.types.ImageContext):
             Additional context that may accompany the
             image.
     """
@@ -761,50 +767,50 @@ class AnnotateImageResponse(proto.Message):
     r"""Response to an image annotation request.
 
     Attributes:
-        face_annotations (Sequence[~.image_annotator.FaceAnnotation]):
+        face_annotations (Sequence[google.cloud.vision_v1.types.FaceAnnotation]):
             If present, face detection has completed
             successfully.
-        landmark_annotations (Sequence[~.image_annotator.EntityAnnotation]):
+        landmark_annotations (Sequence[google.cloud.vision_v1.types.EntityAnnotation]):
             If present, landmark detection has completed
             successfully.
-        logo_annotations (Sequence[~.image_annotator.EntityAnnotation]):
+        logo_annotations (Sequence[google.cloud.vision_v1.types.EntityAnnotation]):
             If present, logo detection has completed
             successfully.
-        label_annotations (Sequence[~.image_annotator.EntityAnnotation]):
+        label_annotations (Sequence[google.cloud.vision_v1.types.EntityAnnotation]):
             If present, label detection has completed
             successfully.
-        localized_object_annotations (Sequence[~.image_annotator.LocalizedObjectAnnotation]):
+        localized_object_annotations (Sequence[google.cloud.vision_v1.types.LocalizedObjectAnnotation]):
             If present, localized object detection has
             completed successfully. This will be sorted
             descending by confidence score.
-        text_annotations (Sequence[~.image_annotator.EntityAnnotation]):
+        text_annotations (Sequence[google.cloud.vision_v1.types.EntityAnnotation]):
             If present, text (OCR) detection has
             completed successfully.
-        full_text_annotation (~.text_annotation.TextAnnotation):
+        full_text_annotation (google.cloud.vision_v1.types.TextAnnotation):
             If present, text (OCR) detection or document
             (OCR) text detection has completed successfully.
             This annotation provides the structural
             hierarchy for the OCR detected text.
-        safe_search_annotation (~.image_annotator.SafeSearchAnnotation):
+        safe_search_annotation (google.cloud.vision_v1.types.SafeSearchAnnotation):
             If present, safe-search annotation has
             completed successfully.
-        image_properties_annotation (~.image_annotator.ImageProperties):
+        image_properties_annotation (google.cloud.vision_v1.types.ImageProperties):
             If present, image properties were extracted
             successfully.
-        crop_hints_annotation (~.image_annotator.CropHintsAnnotation):
+        crop_hints_annotation (google.cloud.vision_v1.types.CropHintsAnnotation):
             If present, crop hints have completed
             successfully.
-        web_detection (~.gcv_web_detection.WebDetection):
+        web_detection (google.cloud.vision_v1.types.WebDetection):
             If present, web detection has completed
             successfully.
-        product_search_results (~.product_search.ProductSearchResults):
+        product_search_results (google.cloud.vision_v1.types.ProductSearchResults):
             If present, product search has completed
             successfully.
-        error (~.status.Status):
+        error (google.rpc.status_pb2.Status):
             If set, represents the error message for the operation. Note
             that filled-in image annotations are guaranteed to be
             correct, even when ``error`` is set.
-        context (~.image_annotator.ImageAnnotationContext):
+        context (google.cloud.vision_v1.types.ImageAnnotationContext):
             If present, contextual information is needed
             to understand where this image comes from.
     """
@@ -867,7 +873,7 @@ class BatchAnnotateImagesRequest(proto.Message):
     service call.
 
     Attributes:
-        requests (Sequence[~.image_annotator.AnnotateImageRequest]):
+        requests (Sequence[google.cloud.vision_v1.types.AnnotateImageRequest]):
             Required. Individual image annotation
             requests for this batch.
         parent (str):
@@ -896,7 +902,7 @@ class BatchAnnotateImagesResponse(proto.Message):
     r"""Response to a batch image annotation request.
 
     Attributes:
-        responses (Sequence[~.image_annotator.AnnotateImageResponse]):
+        responses (Sequence[google.cloud.vision_v1.types.AnnotateImageResponse]):
             Individual responses to image annotation
             requests within the batch.
     """
@@ -911,11 +917,11 @@ class AnnotateFileRequest(proto.Message):
     GIF file.
 
     Attributes:
-        input_config (~.image_annotator.InputConfig):
+        input_config (google.cloud.vision_v1.types.InputConfig):
             Required. Information about the input file.
-        features (Sequence[~.image_annotator.Feature]):
+        features (Sequence[google.cloud.vision_v1.types.Feature]):
             Required. Requested features.
-        image_context (~.image_annotator.ImageContext):
+        image_context (google.cloud.vision_v1.types.ImageContext):
             Additional context that may accompany the
             image(s) in the file.
         pages (Sequence[int]):
@@ -951,16 +957,16 @@ class AnnotateFileResponse(proto.Message):
     responses.
 
     Attributes:
-        input_config (~.image_annotator.InputConfig):
+        input_config (google.cloud.vision_v1.types.InputConfig):
             Information about the file for which this
             response is generated.
-        responses (Sequence[~.image_annotator.AnnotateImageResponse]):
+        responses (Sequence[google.cloud.vision_v1.types.AnnotateImageResponse]):
             Individual responses to images found within the file. This
             field will be empty if the ``error`` field is set.
         total_pages (int):
             This field gives the total number of pages in
             the file.
-        error (~.status.Status):
+        error (google.rpc.status_pb2.Status):
             If set, represents the error message for the failed request.
             The ``responses`` field will not be set in this case.
     """
@@ -981,7 +987,7 @@ class BatchAnnotateFilesRequest(proto.Message):
     BatchAnnotateFiles API.
 
     Attributes:
-        requests (Sequence[~.image_annotator.AnnotateFileRequest]):
+        requests (Sequence[google.cloud.vision_v1.types.AnnotateFileRequest]):
             Required. The list of file annotation
             requests. Right now we support only one
             AnnotateFileRequest in
@@ -1012,7 +1018,7 @@ class BatchAnnotateFilesResponse(proto.Message):
     r"""A list of file annotation responses.
 
     Attributes:
-        responses (Sequence[~.image_annotator.AnnotateFileResponse]):
+        responses (Sequence[google.cloud.vision_v1.types.AnnotateFileResponse]):
             The list of file annotation responses, each
             response corresponding to each
             AnnotateFileRequest in
@@ -1028,14 +1034,14 @@ class AsyncAnnotateFileRequest(proto.Message):
     r"""An offline file annotation request.
 
     Attributes:
-        input_config (~.image_annotator.InputConfig):
+        input_config (google.cloud.vision_v1.types.InputConfig):
             Required. Information about the input file.
-        features (Sequence[~.image_annotator.Feature]):
+        features (Sequence[google.cloud.vision_v1.types.Feature]):
             Required. Requested features.
-        image_context (~.image_annotator.ImageContext):
+        image_context (google.cloud.vision_v1.types.ImageContext):
             Additional context that may accompany the
             image(s) in the file.
-        output_config (~.image_annotator.OutputConfig):
+        output_config (google.cloud.vision_v1.types.OutputConfig):
             Required. The desired output location and
             metadata (e.g. format).
     """
@@ -1053,7 +1059,7 @@ class AsyncAnnotateFileResponse(proto.Message):
     r"""The response for a single offline file annotation request.
 
     Attributes:
-        output_config (~.image_annotator.OutputConfig):
+        output_config (google.cloud.vision_v1.types.OutputConfig):
             The output location and metadata from
             AsyncAnnotateFileRequest.
     """
@@ -1065,10 +1071,10 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
     r"""Request for async image annotation for a list of images.
 
     Attributes:
-        requests (Sequence[~.image_annotator.AnnotateImageRequest]):
+        requests (Sequence[google.cloud.vision_v1.types.AnnotateImageRequest]):
             Required. Individual image annotation
             requests for this batch.
-        output_config (~.image_annotator.OutputConfig):
+        output_config (google.cloud.vision_v1.types.OutputConfig):
             Required. The desired output location and
             metadata (e.g. format).
         parent (str):
@@ -1099,7 +1105,7 @@ class AsyncBatchAnnotateImagesResponse(proto.Message):
     r"""Response to an async batch image annotation request.
 
     Attributes:
-        output_config (~.image_annotator.OutputConfig):
+        output_config (google.cloud.vision_v1.types.OutputConfig):
             The output location and metadata from
             AsyncBatchAnnotateImagesRequest.
     """
@@ -1112,7 +1118,7 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
     single service call.
 
     Attributes:
-        requests (Sequence[~.image_annotator.AsyncAnnotateFileRequest]):
+        requests (Sequence[google.cloud.vision_v1.types.AsyncAnnotateFileRequest]):
             Required. Individual async file annotation
             requests for this batch.
         parent (str):
@@ -1141,7 +1147,7 @@ class AsyncBatchAnnotateFilesResponse(proto.Message):
     r"""Response to an async batch file annotation request.
 
     Attributes:
-        responses (Sequence[~.image_annotator.AsyncAnnotateFileResponse]):
+        responses (Sequence[google.cloud.vision_v1.types.AsyncAnnotateFileResponse]):
             The list of file annotation responses, one
             for each request in
             AsyncBatchAnnotateFilesRequest.
@@ -1156,7 +1162,7 @@ class InputConfig(proto.Message):
     r"""The desired input location and metadata.
 
     Attributes:
-        gcs_source (~.image_annotator.GcsSource):
+        gcs_source (google.cloud.vision_v1.types.GcsSource):
             The Google Cloud Storage location to read the
             input from.
         content (bytes):
@@ -1184,7 +1190,7 @@ class OutputConfig(proto.Message):
     r"""The desired output location and metadata.
 
     Attributes:
-        gcs_destination (~.image_annotator.GcsDestination):
+        gcs_destination (google.cloud.vision_v1.types.GcsDestination):
             The Google Cloud Storage location to write
             the output(s) to.
         batch_size (int):
@@ -1261,11 +1267,11 @@ class OperationMetadata(proto.Message):
     r"""Contains metadata for the BatchAnnotateImages operation.
 
     Attributes:
-        state (~.image_annotator.OperationMetadata.State):
+        state (google.cloud.vision_v1.types.OperationMetadata.State):
             Current state of the batch operation.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch request was received.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the operation result was last
             updated.
     """

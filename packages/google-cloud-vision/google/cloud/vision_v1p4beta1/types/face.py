@@ -64,7 +64,7 @@ class FaceRecognitionResult(proto.Message):
     r"""Information about a face's identity.
 
     Attributes:
-        celebrity (~.face.Celebrity):
+        celebrity (google.cloud.vision_v1p4beta1.types.Celebrity):
             The [Celebrity][google.cloud.vision.v1p4beta1.Celebrity]
             that this face was matched to.
         confidence (float):

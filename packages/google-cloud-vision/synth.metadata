@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-vision.git",
-        "sha": "62f5df93426f6d7fd796a470c2fa049f90dd56ed"
+        "sha": "2fa6dcd06b59debf1dba80e7061c83e3e3f972a9"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "e28aa8570dc86136fe677202c976f4ee00d77f61",
+        "internalRef": "356624136"
       }
     },
     {
@@ -131,12 +131,19 @@
     "docs/_templates/layout.html",
     "docs/conf.py",
     "docs/multiprocessing.rst",
+    "docs/vision_v1/image_annotator.rst",
+    "docs/vision_v1/product_search.rst",
     "docs/vision_v1/services.rst",
     "docs/vision_v1/types.rst",
+    "docs/vision_v1p2beta1/image_annotator.rst",
     "docs/vision_v1p2beta1/services.rst",
     "docs/vision_v1p2beta1/types.rst",
+    "docs/vision_v1p3beta1/image_annotator.rst",
+    "docs/vision_v1p3beta1/product_search.rst",
     "docs/vision_v1p3beta1/services.rst",
     "docs/vision_v1p3beta1/types.rst",
+    "docs/vision_v1p4beta1/image_annotator.rst",
+    "docs/vision_v1p4beta1/product_search.rst",
     "docs/vision_v1p4beta1/services.rst",
     "docs/vision_v1p4beta1/types.rst",
     "google/cloud/vision/__init__.py",

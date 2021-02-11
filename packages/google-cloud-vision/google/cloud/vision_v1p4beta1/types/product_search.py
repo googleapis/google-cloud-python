@@ -33,7 +33,7 @@ class ProductSearchParams(proto.Message):
     r"""Parameters for a product search request.
 
     Attributes:
-        bounding_poly (~.geometry.BoundingPoly):
+        bounding_poly (google.cloud.vision_v1p4beta1.types.BoundingPoly):
             The bounding polygon around the area of
             interest in the image. If it is not specified,
             system discretion will be applied.
@@ -83,14 +83,14 @@ class ProductSearchResults(proto.Message):
     r"""Results for a product search request.
 
     Attributes:
-        index_time (~.timestamp.Timestamp):
+        index_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp of the index which provided these
             results. Products added to the product set and
             products removed from the product set after this
             time are not reflected in the current results.
-        results (Sequence[~.product_search.ProductSearchResults.Result]):
+        results (Sequence[google.cloud.vision_v1p4beta1.types.ProductSearchResults.Result]):
             List of results, one for each product match.
-        product_grouped_results (Sequence[~.product_search.ProductSearchResults.GroupedResult]):
+        product_grouped_results (Sequence[google.cloud.vision_v1p4beta1.types.ProductSearchResults.GroupedResult]):
             List of results grouped by products detected
             in the query image. Each entry corresponds to
             one bounding polygon in the query image, and
@@ -103,7 +103,7 @@ class ProductSearchResults(proto.Message):
         r"""Information about a product.
 
         Attributes:
-            product (~.product_search_service.Product):
+            product (google.cloud.vision_v1p4beta1.types.Product):
                 The Product.
             score (float):
                 A confidence level on the match, ranging from
@@ -151,12 +151,12 @@ class ProductSearchResults(proto.Message):
         a query image.
 
         Attributes:
-            bounding_poly (~.geometry.BoundingPoly):
+            bounding_poly (google.cloud.vision_v1p4beta1.types.BoundingPoly):
                 The bounding polygon around the product
                 detected in the query image.
-            results (Sequence[~.product_search.ProductSearchResults.Result]):
+            results (Sequence[google.cloud.vision_v1p4beta1.types.ProductSearchResults.Result]):
                 List of results, one for each product match.
-            object_annotations (Sequence[~.product_search.ProductSearchResults.ObjectAnnotation]):
+            object_annotations (Sequence[google.cloud.vision_v1p4beta1.types.ProductSearchResults.ObjectAnnotation]):
                 List of generic predictions for the object in
                 the bounding box.
         """

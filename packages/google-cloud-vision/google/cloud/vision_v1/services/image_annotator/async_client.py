@@ -83,6 +83,7 @@ class ImageAnnotatorAsyncClient:
         ImageAnnotatorClient.parse_common_location_path
     )
 
+    from_service_account_info = ImageAnnotatorClient.from_service_account_info
     from_service_account_file = ImageAnnotatorClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -160,12 +161,13 @@ class ImageAnnotatorAsyncClient:
         images.
 
         Args:
-            request (:class:`~.image_annotator.BatchAnnotateImagesRequest`):
+            request (:class:`google.cloud.vision_v1.types.BatchAnnotateImagesRequest`):
                 The request object. Multiple image annotation requests
                 are batched into a single service call.
-            requests (:class:`Sequence[~.image_annotator.AnnotateImageRequest]`):
+            requests (:class:`Sequence[google.cloud.vision_v1.types.AnnotateImageRequest]`):
                 Required. Individual image annotation
                 requests for this batch.
+
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -177,7 +179,7 @@ class ImageAnnotatorAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.image_annotator.BatchAnnotateImagesResponse:
+            google.cloud.vision_v1.types.BatchAnnotateImagesResponse:
                 Response to a batch image annotation
                 request.
 
@@ -241,14 +243,15 @@ class ImageAnnotatorAsyncClient:
         extracted.
 
         Args:
-            request (:class:`~.image_annotator.BatchAnnotateFilesRequest`):
+            request (:class:`google.cloud.vision_v1.types.BatchAnnotateFilesRequest`):
                 The request object. A list of requests to annotate files
                 using the BatchAnnotateFiles API.
-            requests (:class:`Sequence[~.image_annotator.AnnotateFileRequest]`):
+            requests (:class:`Sequence[google.cloud.vision_v1.types.AnnotateFileRequest]`):
                 Required. The list of file annotation
                 requests. Right now we support only one
                 AnnotateFileRequest in
                 BatchAnnotateFilesRequest.
+
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -260,7 +263,7 @@ class ImageAnnotatorAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.image_annotator.BatchAnnotateFilesResponse:
+            google.cloud.vision_v1.types.BatchAnnotateFilesResponse:
                 A list of file annotation responses.
         """
         # Create or coerce a protobuf request object.
@@ -327,18 +330,20 @@ class ImageAnnotatorAsyncClient:
         BatchAnnotateImagesResponse proto.
 
         Args:
-            request (:class:`~.image_annotator.AsyncBatchAnnotateImagesRequest`):
+            request (:class:`google.cloud.vision_v1.types.AsyncBatchAnnotateImagesRequest`):
                 The request object. Request for async image annotation
                 for a list of images.
-            requests (:class:`Sequence[~.image_annotator.AnnotateImageRequest]`):
+            requests (:class:`Sequence[google.cloud.vision_v1.types.AnnotateImageRequest]`):
                 Required. Individual image annotation
                 requests for this batch.
+
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            output_config (:class:`~.image_annotator.OutputConfig`):
+            output_config (:class:`google.cloud.vision_v1.types.OutputConfig`):
                 Required. The desired output location
                 and metadata (e.g. format).
+
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -350,11 +355,11 @@ class ImageAnnotatorAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.image_annotator.AsyncBatchAnnotateImagesResponse``:
+                :class:`google.cloud.vision_v1.types.AsyncBatchAnnotateImagesResponse`
                 Response to an async batch image annotation request.
 
         """
@@ -427,12 +432,13 @@ class ImageAnnotatorAsyncClient:
         ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Args:
-            request (:class:`~.image_annotator.AsyncBatchAnnotateFilesRequest`):
+            request (:class:`google.cloud.vision_v1.types.AsyncBatchAnnotateFilesRequest`):
                 The request object. Multiple async file annotation
                 requests are batched into a single service call.
-            requests (:class:`Sequence[~.image_annotator.AsyncAnnotateFileRequest]`):
+            requests (:class:`Sequence[google.cloud.vision_v1.types.AsyncAnnotateFileRequest]`):
                 Required. Individual async file
                 annotation requests for this batch.
+
                 This corresponds to the ``requests`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -444,11 +450,11 @@ class ImageAnnotatorAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.image_annotator.AsyncBatchAnnotateFilesResponse``:
+                :class:`google.cloud.vision_v1.types.AsyncBatchAnnotateFilesResponse`
                 Response to an async batch file annotation request.
 
         """

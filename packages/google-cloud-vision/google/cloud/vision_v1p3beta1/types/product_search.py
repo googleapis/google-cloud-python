@@ -55,7 +55,7 @@ class ProductSearchParams(proto.Message):
             The resource name of the catalog to search.
 
             Format is: ``productSearch/catalogs/CATALOG_NAME``.
-        category (~.product_search.ProductSearchCategory):
+        category (google.cloud.vision_v1p3beta1.types.ProductSearchCategory):
             The category to search in. Optional. It is inferred by the
             system if it is not specified. [Deprecated] Use
             ``product_category``.
@@ -64,15 +64,15 @@ class ProductSearchParams(proto.Message):
             by the system if it is not specified. Supported values are
             ``bag``, ``shoe``, ``sunglasses``, ``dress``, ``outerwear``,
             ``skirt``, ``top``, ``shorts``, and ``pants``.
-        normalized_bounding_poly (~.geometry.NormalizedBoundingPoly):
+        normalized_bounding_poly (google.cloud.vision_v1p3beta1.types.NormalizedBoundingPoly):
             The bounding polygon around the area of interest in the
             image. Optional. If it is not specified, system discretion
             will be applied. [Deprecated] Use ``bounding_poly``.
-        bounding_poly (~.geometry.BoundingPoly):
+        bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding polygon around the area of
             interest in the image. Optional. If it is not
             specified, system discretion will be applied.
-        view (~.product_search.ProductSearchResultsView):
+        view (google.cloud.vision_v1p3beta1.types.ProductSearchResultsView):
             Specifies the verbosity of the product search results.
             Optional. Defaults to ``BASIC``.
         product_set (str):
@@ -123,19 +123,19 @@ class ProductSearchResults(proto.Message):
     r"""Results for a product search request.
 
     Attributes:
-        category (~.product_search.ProductSearchCategory):
+        category (google.cloud.vision_v1p3beta1.types.ProductSearchCategory):
             Product category. [Deprecated] Use ``product_category``.
         product_category (str):
             Product category. Supported values are ``bag`` and ``shoe``.
             [Deprecated] ``product_category`` is provided in each
             Product.
-        index_time (~.timestamp.Timestamp):
+        index_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp of the index which provided these
             results. Changes made after this time are not
             reflected in the current results.
-        products (Sequence[~.product_search.ProductSearchResults.ProductInfo]):
+        products (Sequence[google.cloud.vision_v1p3beta1.types.ProductSearchResults.ProductInfo]):
             List of detected products.
-        results (Sequence[~.product_search.ProductSearchResults.Result]):
+        results (Sequence[google.cloud.vision_v1p3beta1.types.ProductSearchResults.Result]):
             List of results, one for each product match.
     """
 
@@ -168,7 +168,7 @@ class ProductSearchResults(proto.Message):
         r"""Information about a product.
 
         Attributes:
-            product (~.product_search_service.Product):
+            product (google.cloud.vision_v1p3beta1.types.Product):
                 The Product.
             score (float):
                 A confidence level on the match, ranging from 0 (no

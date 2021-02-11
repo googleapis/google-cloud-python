@@ -38,7 +38,7 @@ class TextAnnotation(proto.Message):
     message definition below for more detail.
 
     Attributes:
-        pages (Sequence[~.text_annotation.Page]):
+        pages (Sequence[google.cloud.vision_v1p3beta1.types.Page]):
             List of pages detected by OCR.
         text (str):
             UTF-8 text detected on the pages.
@@ -64,7 +64,7 @@ class TextAnnotation(proto.Message):
         r"""Detected start or end of a structural component.
 
         Attributes:
-            type_ (~.text_annotation.TextAnnotation.DetectedBreak.BreakType):
+            type_ (google.cloud.vision_v1p3beta1.types.TextAnnotation.DetectedBreak.BreakType):
                 Detected break type.
             is_prefix (bool):
                 True if break prepends the element.
@@ -89,10 +89,10 @@ class TextAnnotation(proto.Message):
         r"""Additional information detected on the structural component.
 
         Attributes:
-            detected_languages (Sequence[~.text_annotation.TextAnnotation.DetectedLanguage]):
+            detected_languages (Sequence[google.cloud.vision_v1p3beta1.types.TextAnnotation.DetectedLanguage]):
                 A list of detected languages together with
                 confidence.
-            detected_break (~.text_annotation.TextAnnotation.DetectedBreak):
+            detected_break (google.cloud.vision_v1p3beta1.types.TextAnnotation.DetectedBreak):
                 Detected start or end of a text segment.
         """
 
@@ -113,7 +113,7 @@ class Page(proto.Message):
     r"""Detected page from OCR.
 
     Attributes:
-        property (~.text_annotation.TextAnnotation.TextProperty):
+        property (google.cloud.vision_v1p3beta1.types.TextAnnotation.TextProperty):
             Additional information detected on the page.
         width (int):
             Page width. For PDFs the unit is points. For
@@ -121,7 +121,7 @@ class Page(proto.Message):
         height (int):
             Page height. For PDFs the unit is points. For
             images (including TIFFs) the unit is pixels.
-        blocks (Sequence[~.text_annotation.Block]):
+        blocks (Sequence[google.cloud.vision_v1p3beta1.types.Block]):
             List of blocks of text, images etc on this
             page.
         confidence (float):
@@ -145,10 +145,10 @@ class Block(proto.Message):
     r"""Logical element on the page.
 
     Attributes:
-        property (~.text_annotation.TextAnnotation.TextProperty):
+        property (google.cloud.vision_v1p3beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the
             block.
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding box for the block. The vertices are in the
             order of top-left, top-right, bottom-right, bottom-left.
             When a rotation of the bounding box is detected the rotation
@@ -173,10 +173,10 @@ class Block(proto.Message):
                     1----0
 
                and the vertice order will still be (0, 1, 2, 3).
-        paragraphs (Sequence[~.text_annotation.Paragraph]):
+        paragraphs (Sequence[google.cloud.vision_v1p3beta1.types.Paragraph]):
             List of paragraphs in this block (if this
             blocks is of type text).
-        block_type (~.text_annotation.Block.BlockType):
+        block_type (google.cloud.vision_v1p3beta1.types.Block.BlockType):
             Detected block type (text, image etc) for
             this block.
         confidence (float):
@@ -210,10 +210,10 @@ class Paragraph(proto.Message):
     certain order.
 
     Attributes:
-        property (~.text_annotation.TextAnnotation.TextProperty):
+        property (google.cloud.vision_v1p3beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the
             paragraph.
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding box for the paragraph. The vertices are in the
             order of top-left, top-right, bottom-right, bottom-left.
             When a rotation of the bounding box is detected the rotation
@@ -225,7 +225,7 @@ class Paragraph(proto.Message):
             -  when it's rotated 180 degrees around the top-left corner
                it becomes: 2----3 \| \| 1----0 and the vertice order
                will still be (0, 1, 2, 3).
-        words (Sequence[~.text_annotation.Word]):
+        words (Sequence[google.cloud.vision_v1p3beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
             Confidence of the OCR results for the paragraph. Range [0,
@@ -247,9 +247,9 @@ class Word(proto.Message):
     r"""A word representation.
 
     Attributes:
-        property (~.text_annotation.TextAnnotation.TextProperty):
+        property (google.cloud.vision_v1p3beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the word.
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding box for the word. The vertices are in the order
             of top-left, top-right, bottom-right, bottom-left. When a
             rotation of the bounding box is detected the rotation is
@@ -261,7 +261,7 @@ class Word(proto.Message):
             -  when it's rotated 180 degrees around the top-left corner
                it becomes: 2----3 \| \| 1----0 and the vertice order
                will still be (0, 1, 2, 3).
-        symbols (Sequence[~.text_annotation.Symbol]):
+        symbols (Sequence[google.cloud.vision_v1p3beta1.types.Symbol]):
             List of symbols in the word.
             The order of the symbols follows the natural
             reading order.
@@ -284,10 +284,10 @@ class Symbol(proto.Message):
     r"""A single symbol representation.
 
     Attributes:
-        property (~.text_annotation.TextAnnotation.TextProperty):
+        property (google.cloud.vision_v1p3beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the
             symbol.
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding box for the symbol. The vertices are in the
             order of top-left, top-right, bottom-right, bottom-left.
             When a rotation of the bounding box is detected the rotation

@@ -27,24 +27,24 @@ class WebDetection(proto.Message):
     r"""Relevant information for the image from the Internet.
 
     Attributes:
-        web_entities (Sequence[~.web_detection.WebDetection.WebEntity]):
+        web_entities (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebEntity]):
             Deduced entities from similar images on the
             Internet.
-        full_matching_images (Sequence[~.web_detection.WebDetection.WebImage]):
+        full_matching_images (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebImage]):
             Fully matching images from the Internet.
             Can include resized copies of the query image.
-        partial_matching_images (Sequence[~.web_detection.WebDetection.WebImage]):
+        partial_matching_images (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebImage]):
             Partial matching images from the Internet.
             Those images are similar enough to share some
             key-point features. For example an original
             image will likely have partial matching for its
             crops.
-        pages_with_matching_images (Sequence[~.web_detection.WebDetection.WebPage]):
+        pages_with_matching_images (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebPage]):
             Web pages containing the matching images from
             the Internet.
-        visually_similar_images (Sequence[~.web_detection.WebDetection.WebImage]):
+        visually_similar_images (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebImage]):
             The visually similar image results.
-        best_guess_labels (Sequence[~.web_detection.WebDetection.WebLabel]):
+        best_guess_labels (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebLabel]):
             Best guess text labels for the request image.
     """
 
@@ -96,10 +96,10 @@ class WebDetection(proto.Message):
             page_title (str):
                 Title for the web page, may contain HTML
                 markups.
-            full_matching_images (Sequence[~.web_detection.WebDetection.WebImage]):
+            full_matching_images (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebImage]):
                 Fully matching images on the page.
                 Can include resized copies of the query image.
-            partial_matching_images (Sequence[~.web_detection.WebDetection.WebImage]):
+            partial_matching_images (Sequence[google.cloud.vision_v1p1beta1.types.WebDetection.WebImage]):
                 Partial matching images on the page.
                 Those images are similar enough to share some
                 key-point features. For example an original

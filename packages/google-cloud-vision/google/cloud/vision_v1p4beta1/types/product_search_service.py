@@ -87,7 +87,7 @@ class Product(proto.Message):
             "toys-v2". The legacy categories "homegoods",
             "apparel", and "toys" are still supported, but
             these should not be used for new products.
-        product_labels (Sequence[~.product_search_service.Product.KeyValue]):
+        product_labels (Sequence[google.cloud.vision_v1p4beta1.types.Product.KeyValue]):
             Key-value pairs that can be attached to a product. At query
             time, constraints can be specified based on the
             product_labels.
@@ -150,7 +150,7 @@ class ProductSet(proto.Message):
             The user-provided name for this ProductSet.
             Must not be empty. Must be at most 4096
             characters long.
-        index_time (~.timestamp.Timestamp):
+        index_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             ProductSet was last indexed. Query results will
             reflect all updates before this time. If this
@@ -160,7 +160,7 @@ class ProductSet(proto.Message):
 
             This field is ignored when creating a
             ProductSet.
-        index_error (~.status.Status):
+        index_error (google.rpc.status_pb2.Status):
             Output only. If there was an error with
             indexing the product set, the field is
             populated.
@@ -195,7 +195,7 @@ class ReferenceImage(proto.Message):
             image.
 
             The URI must start with ``gs://``.
-        bounding_polys (Sequence[~.geometry.BoundingPoly]):
+        bounding_polys (Sequence[google.cloud.vision_v1p4beta1.types.BoundingPoly]):
             Optional. Bounding polygons around the areas
             of interest in the reference image. If this
             field is empty, the system will try to detect
@@ -226,7 +226,7 @@ class CreateProductRequest(proto.Message):
             created.
 
             Format is ``projects/PROJECT_ID/locations/LOC_ID``.
-        product (~.product_search_service.Product):
+        product (google.cloud.vision_v1p4beta1.types.Product):
             Required. The product to create.
         product_id (str):
             A user-supplied resource id for this Product. If set, the
@@ -271,7 +271,7 @@ class ListProductsResponse(proto.Message):
     r"""Response message for the ``ListProducts`` method.
 
     Attributes:
-        products (Sequence[~.product_search_service.Product]):
+        products (Sequence[google.cloud.vision_v1p4beta1.types.Product]):
             List of products.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -306,11 +306,11 @@ class UpdateProductRequest(proto.Message):
     r"""Request message for the ``UpdateProduct`` method.
 
     Attributes:
-        product (~.product_search_service.Product):
+        product (google.cloud.vision_v1p4beta1.types.Product):
             Required. The Product resource which replaces
             the one on the server. product.name is
             immutable.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The [FieldMask][google.protobuf.FieldMask] that specifies
             which fields to update. If update_mask isn't specified, all
             mutable fields are to be updated. Valid mask paths include
@@ -345,7 +345,7 @@ class CreateProductSetRequest(proto.Message):
             created.
 
             Format is ``projects/PROJECT_ID/locations/LOC_ID``.
-        product_set (~.product_search_service.ProductSet):
+        product_set (google.cloud.vision_v1p4beta1.types.ProductSet):
             Required. The ProductSet to create.
         product_set_id (str):
             A user-supplied resource id for this ProductSet. If set, the
@@ -390,7 +390,7 @@ class ListProductSetsResponse(proto.Message):
     r"""Response message for the ``ListProductSets`` method.
 
     Attributes:
-        product_sets (Sequence[~.product_search_service.ProductSet]):
+        product_sets (Sequence[google.cloud.vision_v1p4beta1.types.ProductSet]):
             List of ProductSets.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -425,10 +425,10 @@ class UpdateProductSetRequest(proto.Message):
     r"""Request message for the ``UpdateProductSet`` method.
 
     Attributes:
-        product_set (~.product_search_service.ProductSet):
+        product_set (google.cloud.vision_v1p4beta1.types.ProductSet):
             Required. The ProductSet resource which
             replaces the one on the server.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The [FieldMask][google.protobuf.FieldMask] that specifies
             which fields to update. If update_mask isn't specified, all
             mutable fields are to be updated. Valid mask path is
@@ -464,7 +464,7 @@ class CreateReferenceImageRequest(proto.Message):
 
             Format is
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
-        reference_image (~.product_search_service.ReferenceImage):
+        reference_image (google.cloud.vision_v1p4beta1.types.ReferenceImage):
             Required. The reference image to create.
             If an image ID is specified, it is ignored.
         reference_image_id (str):
@@ -514,7 +514,7 @@ class ListReferenceImagesResponse(proto.Message):
     r"""Response message for the ``ListReferenceImages`` method.
 
     Attributes:
-        reference_images (Sequence[~.product_search_service.ReferenceImage]):
+        reference_images (Sequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
             The list of reference images.
         page_size (int):
             The maximum number of items to return.
@@ -641,7 +641,7 @@ class ListProductsInProductSetResponse(proto.Message):
     r"""Response message for the ``ListProductsInProductSet`` method.
 
     Attributes:
-        products (Sequence[~.product_search_service.Product]):
+        products (Sequence[google.cloud.vision_v1p4beta1.types.Product]):
             The list of Products.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -746,7 +746,7 @@ class ImportProductSetsInputConfig(proto.Message):
     r"""The input content for the ``ImportProductSets`` method.
 
     Attributes:
-        gcs_source (~.product_search_service.ImportProductSetsGcsSource):
+        gcs_source (google.cloud.vision_v1p4beta1.types.ImportProductSetsGcsSource):
             The Google Cloud Storage location for a csv
             file which preserves a list of
             ImportProductSetRequests in each line.
@@ -766,7 +766,7 @@ class ImportProductSetsRequest(proto.Message):
             imported.
 
             Format is ``projects/PROJECT_ID/locations/LOC_ID``.
-        input_config (~.product_search_service.ImportProductSetsInputConfig):
+        input_config (google.cloud.vision_v1p4beta1.types.ImportProductSetsInputConfig):
             Required. The input content for the list of
             requests.
     """
@@ -788,9 +788,9 @@ class ImportProductSetsResponse(proto.Message):
     field.
 
     Attributes:
-        reference_images (Sequence[~.product_search_service.ReferenceImage]):
+        reference_images (Sequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
             The list of reference_images that are imported successfully.
-        statuses (Sequence[~.status.Status]):
+        statuses (Sequence[google.rpc.status_pb2.Status]):
             The rpc status for each ImportProductSet request, including
             both successes and errors.
 
@@ -815,12 +815,12 @@ class BatchOperationMetadata(proto.Message):
     ``google::longrunning::Operations`` service.
 
     Attributes:
-        state (~.product_search_service.BatchOperationMetadata.State):
+        state (google.cloud.vision_v1p4beta1.types.BatchOperationMetadata.State):
             The current state of the batch operation.
-        submit_time (~.timestamp.Timestamp):
+        submit_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch request was submitted
             to the server.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch request is finished and
             [google.longrunning.Operation.done][google.longrunning.Operation.done]
             is set to true.
@@ -861,7 +861,7 @@ class PurgeProductsRequest(proto.Message):
     r"""Request message for the ``PurgeProducts`` method.
 
     Attributes:
-        product_set_purge_config (~.product_search_service.ProductSetPurgeConfig):
+        product_set_purge_config (google.cloud.vision_v1p4beta1.types.ProductSetPurgeConfig):
             Specify which ProductSet contains the
             Products to be deleted.
         delete_orphan_products (bool):
