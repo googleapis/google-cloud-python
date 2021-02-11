@@ -124,7 +124,7 @@ def blacken(session: nox.sessions.Session) -> None:
         "appengine_standard",
         "appengine_flex_python",
         "appengine_flex_container",
-        "kubernetesengine",
+        "kubernetes",
         "cloudrun",
         "functions",
     ],

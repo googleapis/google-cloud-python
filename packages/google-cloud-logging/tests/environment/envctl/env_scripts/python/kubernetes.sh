@@ -35,6 +35,11 @@ destroy() {
 
 verify() {
   set +e
+  gcloud pubsub subscriptions describe $SERVICE_NAME-subscriber 2> /dev/null
+  if [[ $? != 0 ]]; then
+     echo "FALSE"
+     exit 1
+  fi
   gcloud container clusters describe --zone $ZONE $SERVICE_NAME > /dev/null 2> /dev/null
   if [[ $? == 0 ]]; then
      echo "TRUE"
@@ -93,6 +98,16 @@ EOF
   set -e
   # deploy test container
   kubectl apply -f $TMP_DIR
+  # wait for pod to spin up
+  kubectl wait --for=condition=ready pod -l app=$SERVICE_NAME
+  # wait for the pub/sub subscriber to start
+  NUM_SUBSCRIBERS=0
+  TRIES=0
+  while [[ "${NUM_SUBSCRIBERS}" -lt 1 && "${TRIES}" -lt 10 ]]; do
+    sleep 30
+    NUM_SUBSCRIBERS=$(gcloud pubsub topics list-subscriptions $SERVICE_NAME 2> /dev/null | wc -l)
+    TRIES=$((TRIES + 1))
+  done
 }
 
 filter-string() {
