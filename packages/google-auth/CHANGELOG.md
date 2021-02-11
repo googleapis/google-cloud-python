@@ -4,6 +4,17 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.26.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.26.0...v1.26.1) (2021-02-11)
+
+
+### Documentation
+
+* fix a typo in the user guide (avaiable -> available) ([#680](https://www.github.com/googleapis/google-auth-library-python/issues/680)) ([684457a](https://www.github.com/googleapis/google-auth-library-python/commit/684457afd3f81892e12d983a61672d7ea9bbe296))
+
+### Bug Fixes
+
+* revert workload identity federation support ([#691](https://github.com/googleapis/google-auth-library-python/pull/691))
+
 ## [1.26.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.25.0...v1.26.0) (2021-02-09)
 
 
