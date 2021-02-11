@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.0.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.0...v3.0.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* remove client recv msg limit  ([a1727c3](https://www.github.com/googleapis/python-cloudbuild/commit/a1727c393b14a919884b52aa1ba1f3f332a4b204))
+
 ## [3.0.0](https://www.github.com/googleapis/python-cloudbuild/compare/v2.0.0...v3.0.0) (2020-11-04)
 
 
