@@ -43,6 +43,9 @@ gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 gcloud config set project $PROJECT_ID
 
+# set a default zone.
+gcloud config set compute/zone us-central1-b
+
 # authenticate docker
 gcloud auth configure-docker -q
 
@@ -52,6 +55,15 @@ python3.6 -m pip uninstall --yes --quiet nox-automation
 # Install nox
 python3.6 -m pip install --upgrade --quiet nox
 python3.6 -m nox --version
+
+# Install kubectl
+if [[ "${ENVIRONMENT}" == "kubernetes" ]]; then
+  curl -LO https://dl.k8s.io/release/v1.20.0/bin/linux/amd64/kubectl
+  chmod +x kubectl
+  mkdir -p ~/.local/bin
+  mv ./kubectl ~/.local/bin
+  export PATH=$PATH:~/.local/bin
+fi
 
 # create a unique id for this run
 UUID=$(python  -c 'import uuid; print(uuid.uuid1())' | head -c 7)
