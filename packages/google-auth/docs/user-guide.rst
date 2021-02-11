@@ -251,7 +251,7 @@ to assume the identity of a target_principal that does have access.
 Identity Tokens
 +++++++++++++++
 
-`Google OpenID Connect`_ tokens are avaiable through :mod:`Service Account <google.oauth2.service_account>`,
+`Google OpenID Connect`_ tokens are available through :mod:`Service Account <google.oauth2.service_account>`,
 :mod:`Impersonated <google.auth.impersonated_credentials>`,
 and :mod:`Compute Engine <google.auth.compute_engine>`.  These tokens can be used to
 authenticate against `Cloud Functions`_, `Cloud Run`_, a user service behind
