@@ -128,7 +128,6 @@ class TestBackup(unittest.TestCase):
             klasse.from_pb(backup_pb, instance)
 
     def test_from_pb_success(self):
-        from google.cloud.bigtable_admin_v2.gapic import enums
         from google.cloud.bigtable_admin_v2.types import table
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
@@ -136,7 +135,7 @@ class TestBackup(unittest.TestCase):
         instance = _Instance(self.INSTANCE_NAME, client)
         timestamp = _datetime_to_pb_timestamp(self._make_timestamp())
         size_bytes = 1234
-        state = enums.Backup.State.READY
+        state = table.Backup.State.READY
         backup_pb = table.Backup(
             name=self.BACKUP_NAME,
             source_table=self.TABLE_NAME,
@@ -269,11 +268,11 @@ class TestBackup(unittest.TestCase):
         self.assertEqual(backup.size_bytes, expected)
 
     def test_property_state(self):
-        from google.cloud.bigtable_admin_v2.gapic import enums
+        from google.cloud.bigtable_admin_v2.types import table
 
         instance = _Instance(self.INSTANCE_NAME)
         backup = self._make_one(self.BACKUP_ID, instance)
-        expected = backup._state = enums.Backup.State.READY
+        expected = backup._state = table.Backup.State.READY
         self.assertEqual(backup.state, expected)
 
     def test___eq__(self):
@@ -493,12 +492,11 @@ class TestBackup(unittest.TestCase):
         api.get_backup.assert_called_once_with(request={"name": self.BACKUP_NAME})
 
     def test_get(self):
-        from google.cloud.bigtable_admin_v2.gapic import enums
         from google.cloud.bigtable_admin_v2.types import table
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         timestamp = _datetime_to_pb_timestamp(self._make_timestamp())
-        state = enums.Backup.State.READY
+        state = table.Backup.State.READY
 
         client = _Client()
         backup_pb = table.Backup(
@@ -519,12 +517,11 @@ class TestBackup(unittest.TestCase):
         self.assertEqual(backup.get(), backup_pb)
 
     def test_reload(self):
-        from google.cloud.bigtable_admin_v2.gapic import enums
         from google.cloud.bigtable_admin_v2.types import table
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         timestamp = _datetime_to_pb_timestamp(self._make_timestamp())
-        state = enums.Backup.State.READY
+        state = table.Backup.State.READY
 
         client = _Client()
         backup_pb = table.Backup(
