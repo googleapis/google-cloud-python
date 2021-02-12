@@ -517,6 +517,6 @@ class _RedirectWSGIApp(object):
         Returns:
             Iterable[bytes]: The response body.
         """
-        start_response("200 OK", [("Content-type", "text/plain")])
+        start_response("200 OK", [("Content-type", "text/plain; charset=utf-8")])
         self.last_request_uri = wsgiref.util.request_uri(environ)
         return [self._success_message.encode("utf-8")]
