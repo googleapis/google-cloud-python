@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/google-resumable-media-python.git",
-        "sha": "dbf07e1c690adb9325b96416952682019c5b1cde"
+        "sha": "7452784dbfc88b7e3b42a92fac00d6ac83a79991"
       }
     },
     {
