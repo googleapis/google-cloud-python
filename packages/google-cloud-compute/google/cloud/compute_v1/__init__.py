@@ -1361,6 +1361,7 @@ __all__ = (
     "DiskTypesClient",
     "DiskTypesScopedList",
     "DisksAddResourcePoliciesRequest",
+    "DisksClient",
     "DisksRemoveResourcePoliciesRequest",
     "DisksResizeRequest",
     "DisksScopedList",
@@ -2225,7 +2226,6 @@ __all__ = (
     "UrlMapTest",
     "UrlMapValidationResult",
     "UrlMapsAggregatedList",
-    "UrlMapsClient",
     "UrlMapsScopedList",
     "UrlMapsValidateRequest",
     "UrlMapsValidateResponse",
@@ -2271,5 +2271,5 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "DisksClient",
+    "UrlMapsClient",
 )
