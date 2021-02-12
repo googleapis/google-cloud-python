@@ -139,6 +139,10 @@ def system(session):
     )
     session.install("-e", ".")
 
+    # mTLS test needs pyopenssl
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "") == "true":
+        session.install("pyopenssl")
+
     # Run py.test against the system tests.
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
