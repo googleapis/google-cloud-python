@@ -120,6 +120,11 @@ class OperationsAsyncClient:
                 subclass will be raised.
         """
         request = operations_pb2.GetOperationRequest(name=name)
+
+        # Add routing header
+        metadata = metadata or []
+        metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
+
         return await self._get_operation(request, retry=retry, timeout=timeout, metadata=metadata)
 
     async def list_operations(
@@ -181,6 +186,10 @@ class OperationsAsyncClient:
         """
         # Create the request object.
         request = operations_pb2.ListOperationsRequest(name=name, filter=filter_)
+
+        # Add routing header
+        metadata = metadata or []
+        metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
 
         # Create the method used to fetch pages
         method = functools.partial(self._list_operations, retry=retry, timeout=timeout, metadata=metadata)
@@ -246,6 +255,11 @@ class OperationsAsyncClient:
         """
         # Create the request object.
         request = operations_pb2.CancelOperationRequest(name=name)
+
+        # Add routing header
+        metadata = metadata or []
+        metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
+
         await self._cancel_operation(request, retry=retry, timeout=timeout, metadata=metadata)
 
     async def delete_operation(
@@ -292,4 +306,9 @@ class OperationsAsyncClient:
         """
         # Create the request object.
         request = operations_pb2.DeleteOperationRequest(name=name)
+
+        # Add routing header
+        metadata = metadata or []
+        metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
+
         await self._delete_operation(request, retry=retry, timeout=timeout, metadata=metadata)
