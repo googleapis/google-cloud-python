@@ -110,7 +110,7 @@ def calculate_retry_wait(base_wait, max_sleep):
     """Calculate the amount of time to wait before a retry attempt.
 
     Wait time grows exponentially with the number of attempts, until
-    it hits ``max_sleep``.
+    ``max_sleep``.
 
     A random amount of jitter (between 0 and 1 seconds) is added to spread out
     retry attempts from different clients.
