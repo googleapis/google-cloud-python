@@ -56,6 +56,7 @@ class Cursor(object):
         self._itr = None
         self._result_set = None
         self._row_count = _UNSET_COUNT
+        self.lastrowid = None
         self.connection = connection
         self._is_closed = False
         # the currently running SQL statement results checksum
@@ -89,7 +90,10 @@ class Cursor(object):
         :rtype: tuple
         :returns: A tuple of columns' information.
         """
-        if not (self._result_set and self._result_set.metadata):
+        if not self._result_set:
+            return None
+
+        if not getattr(self._result_set, "metadata", None):
             return None
 
         row_type = self._result_set.metadata.row_type
