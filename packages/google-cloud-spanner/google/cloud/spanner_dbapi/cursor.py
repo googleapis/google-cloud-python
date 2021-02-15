@@ -279,7 +279,7 @@ class Cursor(object):
                     self._checksum.consume_result(row)
                 res.append(row)
         except Aborted:
-            self._connection.retry_transaction()
+            self.connection.retry_transaction()
             return self.fetchall()
 
         return res
@@ -310,7 +310,7 @@ class Cursor(object):
             except StopIteration:
                 break
             except Aborted:
-                self._connection.retry_transaction()
+                self.connection.retry_transaction()
                 return self.fetchmany(size)
 
         return items
