@@ -29,7 +29,7 @@ Integrations with Other Libraries
 
   pandas
 
-See also, the :mod:`google.cloud.bigquery.magics` module for integrations
-with Jupyter.
+See also, the :mod:`google.cloud.bigquery.magics.magics` module for
+integrations with Jupyter.
 
 

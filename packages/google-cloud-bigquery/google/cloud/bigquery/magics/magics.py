@@ -14,6 +14,15 @@
 
 """IPython Magics
 
+To use these magics, you must first register them. Run the ``%load_ext`` magic
+in a Jupyter notebook cell.
+
+.. code::
+
+    %load_ext google.cloud.bigquery
+
+This makes the ``%%bigquery`` magic available.
+
 .. function:: %%bigquery
 
     IPython cell magic to run a query and display the result as a DataFrame
