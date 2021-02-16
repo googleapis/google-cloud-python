@@ -67,4 +67,6 @@ def lint_setup_py(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def compliance_test(session):
     """Run SQLAlchemy dialect compliance test suite."""
+    session.install("pytest")
+    session.install(".")
     session.run("pytest", "-v")
