@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .sqlalchemy_spanner import SpannerDialect
+from sqlalchemy.testing.requirements import SuiteRequirements
 
-__all__ = (SpannerDialect,)
+
+class Requirements(SuiteRequirements):
+
+    pass

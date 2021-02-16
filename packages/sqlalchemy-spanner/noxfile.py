@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import nox
 
 
 BLACK_VERSION = "black==19.10b0"
-BLACK_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
+BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.7"
 
@@ -37,7 +37,7 @@ def lint(session):
         "black", "--check", *BLACK_PATHS,
     )
     session.run(
-        "flake8", "google", "tests", "--max-line-length=88",
+        "flake8", "google", "test", "--max-line-length=88",
     )
 
 
@@ -62,3 +62,9 @@ def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def compliance_test(session):
+    """Run SQLAlchemy dialect compliance test suite."""
+    session.run("pytest", "-v")
