@@ -12,21 +12,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from setuptools import setup
+import setuptools
 
-setup(
-    author="QLogic LLC",
+
+# Package metadata.
+
+name = "sqlalchemy-spanner"
+description = "SQLAlchemy dialect integrated into Cloud Spanner database"
+dependencies = [
+    "sqlalchemy>=1.1.13",
+    "google-cloud-spanner>=3.0.0"
+]
+
+# Only include packages under the 'google' namespace. Do not include tests,
+# benchmarks, etc.
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
+]
+
+# Determine which namespaces are needed.
+namespaces = ["google"]
+if "google.cloud" in packages:
+    namespaces.append("google.cloud")
+
+setuptools.setup(
+    author="Google LLC",
     author_email="cloud-spanner-developers@googlegroups.com",
     classifiers=["Intended Audience :: Developers"],
-    description="SQLAlchemy dialect integrated into Cloud Spanner database",
+    description=description,
     entry_points={
         "sqlalchemy.dialects": [
             "spanner = google.cloud.sqlalchemy_spanner:SpannerDialect"
         ]
     },
-    install_requires=["sqlalchemy>=1.1.13", "google-cloud-spanner>=3.0.0"],
-    name="sqlalchemy-spanner",
-    packages=["google.cloud.sqlalchemy_spanner"],
-    url="https://github.com/q-logic/python-sqlalchemy-spanner/",
+    install_requires=dependencies,
+    name=name,
+    namespace_packages=namespaces,
+    packages=packages,
+    url="https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy",
     version="0.1",
+    include_package_data=True,
+    zip_safe=False,
 )
