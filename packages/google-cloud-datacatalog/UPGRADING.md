@@ -7,13 +7,15 @@ If you experience issues or have questions, please file an [issue](https://githu
 ## Supported Python Versions
 
 > **WARNING**: Breaking change
-The 3.0.0 release requires Python 3.6+.
+> 
+> The 3.0.0 release requires Python 3.6+.
 
 
 ## Method Calls
 
 > **WARNING**: Breaking change
-Methods expect request objects. We provide a script that will convert most common use cases.
+>
+> Methods expect request objects. We provide a script that will convert most common use cases.
 
 * Install the library
 
@@ -100,7 +102,7 @@ response = client.create_entry_group(
     parent=parent, 
     entry_group_id=entry_group_id,
     entry_group=entry_group
-    )  # Make an API request.
+)  # Make an API request.
 ```
 
 This call is invalid because it mixes `request` with a keyword argument `entry_group`. Executing this code
@@ -121,8 +123,9 @@ response = client.create_entry_group(
 ## Enums and Types
 
 
-> **WARNING**: Breaking change
-The submodules `enums` and `types` have been removed.
+> **WARNING**: Breaking changes
+> 
+> The submodules `enums` and `types` have been removed; the `type` attributes were renamed to `type_` to avoid name collisions.
 
 **Before:**
 ```py
@@ -136,7 +139,7 @@ entry.type = datacatalog_v1.enums.EntryType.FILESET
 ```py
 from google.cloud import datacatalog_v1
 entry = datacatalog_v1.Entry()
-entry.type = datacatalog_v1.EntryType.FILESET
+entry.type_ = datacatalog_v1.EntryType.FILESET
 ```
 
 ## Common Resource Path Helper Methods
