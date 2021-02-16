@@ -43,3 +43,8 @@ class MutualTLSChannelError(GoogleAuthError):
 
 class ClientCertError(GoogleAuthError):
     """Used to indicate that client certificate is missing or invalid."""
+
+
+class OAuthError(GoogleAuthError):
+    """Used to indicate an error occurred during an OAuth related HTTP
+    request."""

@@ -7,8 +7,8 @@ Credentials and account types
 -----------------------------
 
 :class:`~credentials.Credentials` are the means of identifying an application or
-user to a service or API. Credentials can be obtained with two different types
-of accounts: *service accounts* and *user accounts*.
+user to a service or API. Credentials can be obtained with three different types
+of accounts: *service accounts*, *user accounts* and *external accounts*.
 
 Credentials from service accounts identify a particular application. These types
 of credentials are used in server-to-server use cases, such as accessing a
@@ -20,6 +20,11 @@ application needs access to a user's data in another service, such as accessing
 a user's documents in Google Drive. This library provides no support for
 obtaining user credentials, but does provide limited support for using user
 credentials.
+
+Credentials from external accounts (workload identity federation) are used to
+identify a particular application from an on-prem or non-Google Cloud platform
+including Amazon Web Services (AWS), Microsoft Azure or any identity provider
+that supports OpenID Connect (OIDC).
 
 Obtaining credentials
 ---------------------
@@ -43,6 +48,13 @@ If your application requires specific scopes::
 
     credentials, project = google.auth.default(
         scopes=['https://www.googleapis.com/auth/cloud-platform'])
+
+Application Default Credentials also support workload identity federation to
+access Google Cloud resources from non-Google Cloud platforms including Amazon
+Web Services (AWS), Microsoft Azure or any identity provider that supports
+OpenID Connect (OIDC). Workload identity federation is recommended for
+non-Google Cloud environments as it avoids the need to download, manage and
+store service account private keys locally.
 
 .. _Google Application Default Credentials:
     https://developers.google.com/identity/protocols/
@@ -218,6 +230,163 @@ You can also use :class:`google_auth_oauthlib.flow.Flow` to perform the OAuth
     https://pypi.python.org/pypi/google-auth-oauthlib
 .. _requests-oauthlib:
     https://requests-oauthlib.readthedocs.io/en/latest/
+
+External credentials (Workload identity federation)
++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Using workload identity federation, your application can access Google Cloud
+resources from Amazon Web Services (AWS), Microsoft Azure or any identity
+provider that supports OpenID Connect (OIDC).
+
+Traditionally, applications running outside Google Cloud have used service
+account keys to access Google Cloud resources. Using identity federation,
+you can allow your workload to impersonate a service account.
+This lets you access Google Cloud resources directly, eliminating the
+maintenance and security burden associated with service account keys.
+
+Accessing resources from AWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to access Google Cloud resources from Amazon Web Services (AWS), the
+following requirements are needed:
+
+- A workload identity pool needs to be created.
+- AWS needs to be added as an identity provider in the workload identity pool
+  (The Google organization policy needs to allow federation from AWS).
+- Permission to impersonate a service account needs to be granted to the
+  external identity.
+- A credential configuration file needs to be generated. Unlike service account
+  credential files, the generated credential configuration file will only
+  contain non-sensitive metadata to instruct the library on how to retrieve
+  external subject tokens and exchange them for service account access tokens.
+
+Follow the detailed instructions on how to
+`Configure Workload Identity Federation from AWS`_.
+
+.. _Configure Workload Identity Federation from AWS:
+    https://cloud.google.com/iam/docs/access-resources-aws
+
+Accessing resources from Microsoft Azure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to access Google Cloud resources from Microsoft Azure, the following
+requirements are needed:
+
+- A workload identity pool needs to be created.
+- Azure needs to be added as an identity provider in the workload identity pool
+  (The Google organization policy needs to allow federation from Azure).
+- The Azure tenant needs to be configured for identity federation.
+- Permission to impersonate a service account needs to be granted to the
+  external identity.
+- A credential configuration file needs to be generated. Unlike service account
+  credential files, the generated credential configuration file will only
+  contain non-sensitive metadata to instruct the library on how to retrieve
+  external subject tokens and exchange them for service account access tokens.
+
+Follow the detailed instructions on how to
+`Configure Workload Identity Federation from Microsoft Azure`_.
+
+.. _Configure Workload Identity Federation from Microsoft Azure:
+    https://cloud.google.com/iam/docs/access-resources-azure
+
+Accessing resources from an OIDC identity provider
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In order to access Google Cloud resources from an identity provider that
+supports `OpenID Connect (OIDC)`_, the following requirements are needed:
+
+- A workload identity pool needs to be created.
+- An OIDC identity provider needs to be added in the workload identity pool
+  (The Google organization policy needs to allow federation from the identity
+  provider).
+- Permission to impersonate a service account needs to be granted to the
+  external identity.
+- A credential configuration file needs to be generated. Unlike service account
+  credential files, the generated credential configuration file will only
+  contain non-sensitive metadata to instruct the library on how to retrieve
+  external subject tokens and exchange them for service account access tokens.
+
+For OIDC providers, the Auth library can retrieve OIDC tokens either from a
+local file location (file-sourced credentials) or from a local server
+(URL-sourced credentials).
+
+- For file-sourced credentials, a background process needs to be continuously
+  refreshing the file location with a new OIDC token prior to expiration.
+  For tokens with one hour lifetimes, the token needs to be updated in the file
+  every hour. The token can be stored directly as plain text or in JSON format.
+- For URL-sourced credentials, a local server needs to host a GET endpoint to
+  return the OIDC token. The response can be in plain text or JSON.
+  Additional required request headers can also be specified.
+
+Follow the detailed instructions on how to
+`Configure Workload Identity Federation from an OIDC identity provider`_.
+
+.. _OpenID Connect (OIDC):
+    https://openid.net/connect/
+.. _Configure Workload Identity Federation from an OIDC identity provider:
+    https://cloud.google.com/iam/docs/access-resources-oidc
+
+Using External Identities
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+External identities (AWS, Azure and OIDC identity providers) can be used with
+Application Default Credentials.
+In order to use external identities with Application Default Credentials, you
+need to generate the JSON credentials configuration file for your external
+identity.
+Once generated, store the path to this file in the
+``GOOGLE_APPLICATION_CREDENTIALS`` environment variable.
+
+.. code-block:: bash
+
+    $ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/config.json
+
+The library can now automatically choose the right type of client and initialize
+credentials from the context provided in the configuration file::
+
+    import google.auth
+
+    credentials, project = google.auth.default()
+
+When using external identities with Application Default Credentials,
+the ``roles/browser`` role needs to be granted to the service account.
+The ``Cloud Resource Manager API`` should also be enabled on the project.
+This is needed since :func:`default` will try to auto-discover the project ID
+from the current environment using the impersonated credential.
+Otherwise, the project ID will resolve to ``None``. You can override the project
+detection by setting the ``GOOGLE_CLOUD_PROJECT`` environment variable.
+
+You can also explicitly initialize external account clients using the generated
+configuration file.
+
+For Azure and OIDC providers, use :meth:`identity_pool.Credentials.from_info
+<google.auth.identity_pool.Credentials.from_info>` or
+:meth:`identity_pool.Credentials.from_file
+<google.auth.identity_pool.Credentials.from_file>`::
+
+    import json
+
+    from google.auth import identity_pool
+
+    json_config_info = json.loads(function_to_get_json_config())
+    credentials = identity_pool.Credentials.from_info(json_config_info)
+    scoped_credentials = credentials.with_scopes(
+        ['https://www.googleapis.com/auth/cloud-platform'])
+
+For AWS providers, use :meth:`aws.Credentials.from_info
+<google.auth.aws.Credentials.from_info>` or
+:meth:`aws.Credentials.from_file
+<google.auth.aws.Credentials.from_file>`::
+
+    import json
+
+    from google.auth import aws
+
+    json_config_info = json.loads(function_to_get_json_config())
+    credentials = aws.Credentials.from_info(json_config_info)
+    scoped_credentials = credentials.with_scopes(
+        ['https://www.googleapis.com/auth/cloud-platform'])
+
 
 Impersonated credentials
 ++++++++++++++++++++++++
