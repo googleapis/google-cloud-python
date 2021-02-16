@@ -72,6 +72,9 @@ class DestinationFormat(object):
     AVRO = "AVRO"
     """Specifies Avro format."""
 
+    PARQUET = "PARQUET"
+    """Specifies Parquet format."""
+
 
 class Encoding(object):
     """The character encoding of the data. The default is :attr:`UTF_8`.
