@@ -14,6 +14,7 @@
 
 from __future__ import absolute_import
 
+import concurrent.futures
 import datetime
 import itertools
 import operator as op
@@ -609,6 +610,78 @@ class TestStreamingPull(object):
         finally:
             subscription_future.cancel()  # trigger clean shutdown
 
+    def test_streaming_pull_blocking_shutdown(
+        self, publisher, topic_path, subscriber, subscription_path, cleanup
+    ):
+        # Make sure the topic and subscription get deleted.
+        cleanup.append((publisher.delete_topic, (), {"topic": topic_path}))
+        cleanup.append(
+            (subscriber.delete_subscription, (), {"subscription": subscription_path})
+        )
+
+        # The ACK-s are only persisted if *all* messages published in the same batch
+        # are ACK-ed. We thus publish each message in its own batch so that the backend
+        # treats all messages' ACKs independently of each other.
+        publisher.create_topic(name=topic_path)
+        subscriber.create_subscription(name=subscription_path, topic=topic_path)
+        _publish_messages(publisher, topic_path, batch_sizes=[1] * 10)
+
+        # Artificially delay message processing, gracefully shutdown the streaming pull
+        # in the meantime, then verify that those messages were nevertheless processed.
+        processed_messages = []
+
+        def callback(message):
+            time.sleep(15)
+            processed_messages.append(message.data)
+            message.ack()
+
+        # Flow control limits should exceed the number of worker threads, so that some
+        # of the messages will be blocked on waiting for free scheduler threads.
+        flow_control = pubsub_v1.types.FlowControl(max_messages=5)
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
+        scheduler = pubsub_v1.subscriber.scheduler.ThreadScheduler(executor=executor)
+        subscription_future = subscriber.subscribe(
+            subscription_path,
+            callback=callback,
+            flow_control=flow_control,
+            scheduler=scheduler,
+        )
+
+        try:
+            subscription_future.result(timeout=10)  # less than the sleep in callback
+        except exceptions.TimeoutError:
+            subscription_future.cancel(await_msg_callbacks=True)
+
+        # The shutdown should have waited for the already executing callbacks to finish.
+        assert len(processed_messages) == 3
+
+        # The messages that were not processed should have been NACK-ed and we should
+        # receive them again quite soon.
+        all_done = threading.Barrier(7 + 1, timeout=5)  # +1 because of the main thread
+        remaining = []
+
+        def callback2(message):
+            remaining.append(message.data)
+            message.ack()
+            all_done.wait()
+
+        subscription_future = subscriber.subscribe(
+            subscription_path, callback=callback2
+        )
+
+        try:
+            all_done.wait()
+        except threading.BrokenBarrierError:  # PRAGMA: no cover
+            pytest.fail("The remaining messages have not been re-delivered in time.")
+        finally:
+            subscription_future.cancel(await_msg_callbacks=False)
+
+        # There should be 7 messages left that were not yet processed and none of them
+        # should be a message that should have already been sucessfully processed in the
+        # first streaming pull.
+        assert len(remaining) == 7
+        assert not (set(processed_messages) & set(remaining))  # no re-delivery
+
 
 @pytest.mark.skipif(
     "KOKORO_GFILE_DIR" not in os.environ,
@@ -790,8 +863,8 @@ def _publish_messages(publisher, topic_path, batch_sizes):
     publish_futures = []
     msg_counter = itertools.count(start=1)
 
-    for batch_size in batch_sizes:
-        msg_batch = _make_messages(count=batch_size)
+    for batch_num, batch_size in enumerate(batch_sizes, start=1):
+        msg_batch = _make_messages(count=batch_size, batch_num=batch_num)
         for msg in msg_batch:
             future = publisher.publish(topic_path, msg, seq_num=str(next(msg_counter)))
             publish_futures.append(future)
@@ -802,9 +875,10 @@ def _publish_messages(publisher, topic_path, batch_sizes):
         future.result(timeout=30)
 
 
-def _make_messages(count):
+def _make_messages(count, batch_num):
     messages = [
-        "message {}/{}".format(i, count).encode("utf-8") for i in range(1, count + 1)
+        f"message {i}/{count} of batch {batch_num}".encode("utf-8")
+        for i in range(1, count + 1)
     ]
     return messages
 

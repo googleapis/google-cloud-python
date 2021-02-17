@@ -69,10 +69,18 @@ class TestStreamingPullFuture(object):
         result = future.result()
         assert result == "foo"  # on close callback was a no-op
 
-    def test_cancel(self):
+    def test_cancel_default_nonblocking_manager_shutdown(self):
         future = self.make_future()
 
         future.cancel()
 
-        future._manager.close.assert_called_once()
+        future._manager.close.assert_called_once_with(await_msg_callbacks=False)
+        assert future.cancelled()
+
+    def test_cancel_blocking_manager_shutdown(self):
+        future = self.make_future()
+
+        future.cancel(await_msg_callbacks=True)
+
+        future._manager.close.assert_called_once_with(await_msg_callbacks=True)
         assert future.cancelled()

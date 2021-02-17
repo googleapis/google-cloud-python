@@ -22,22 +22,44 @@ import mock
 import pytest
 
 
-def test_heartbeat_inactive(caplog):
-    caplog.set_level(logging.INFO)
+def test_heartbeat_inactive_manager_active_rpc(caplog):
+    caplog.set_level(logging.DEBUG)
+
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
     )
     manager.is_active = False
+    manager.heartbeat.return_value = True  # because of active rpc
 
     heartbeater_ = heartbeater.Heartbeater(manager)
+    make_sleep_mark_event_as_done(heartbeater_)
 
     heartbeater_.heartbeat()
 
+    assert "Sent heartbeat" in caplog.text
+    assert "exiting" in caplog.text
+
+
+def test_heartbeat_inactive_manager_inactive_rpc(caplog):
+    caplog.set_level(logging.DEBUG)
+
+    manager = mock.create_autospec(
+        streaming_pull_manager.StreamingPullManager, instance=True
+    )
+    manager.is_active = False
+    manager.heartbeat.return_value = False  # because of inactive rpc
+
+    heartbeater_ = heartbeater.Heartbeater(manager)
+    make_sleep_mark_event_as_done(heartbeater_)
+
+    heartbeater_.heartbeat()
+
+    assert "Sent heartbeat" not in caplog.text
     assert "exiting" in caplog.text
 
 
 def test_heartbeat_stopped(caplog):
-    caplog.set_level(logging.INFO)
+    caplog.set_level(logging.DEBUG)
     manager = mock.create_autospec(
         streaming_pull_manager.StreamingPullManager, instance=True
     )
@@ -47,17 +69,18 @@ def test_heartbeat_stopped(caplog):
 
     heartbeater_.heartbeat()
 
+    assert "Sent heartbeat" not in caplog.text
     assert "exiting" in caplog.text
 
 
-def make_sleep_mark_manager_as_inactive(heartbeater):
-    # Make sleep mark the manager as inactive so that heartbeat()
+def make_sleep_mark_event_as_done(heartbeater):
+    # Make sleep actually trigger the done event so that heartbeat()
     # exits at the end of the first run.
-    def trigger_inactive(timeout):
+    def trigger_done(timeout):
         assert timeout
-        heartbeater._manager.is_active = False
+        heartbeater._stop_event.set()
 
-    heartbeater._stop_event.wait = trigger_inactive
+    heartbeater._stop_event.wait = trigger_done
 
 
 def test_heartbeat_once():
@@ -65,7 +88,7 @@ def test_heartbeat_once():
         streaming_pull_manager.StreamingPullManager, instance=True
     )
     heartbeater_ = heartbeater.Heartbeater(manager)
-    make_sleep_mark_manager_as_inactive(heartbeater_)
+    make_sleep_mark_event_as_done(heartbeater_)
 
     heartbeater_.heartbeat()
 
