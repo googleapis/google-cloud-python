@@ -48,8 +48,36 @@ class {{ service.async_client_name }}:
     parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path)
     {% endfor %}
 
-    from_service_account_info = {{ service.client_name }}.from_service_account_info
-    from_service_account_file = {{ service.client_name }}.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            {{ service.async_client_name }}: The constructed client.
+        """
+        return {{ service.client_name }}.from_service_account_info.__func__({{ service.async_client_name }}, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            {{ service.async_client_name }}: The constructed client.
+        """
+        return {{ service.client_name }}.from_service_account_file.__func__({{ service.async_client_name }}, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
