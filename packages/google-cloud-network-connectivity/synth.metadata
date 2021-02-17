@@ -3,21 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-network-connectivity"
+        "remote": "https://github.com/googleapis/python-network-connectivity.git",
+        "sha": "7c5e2683ff1774acf4a16bc928706709c0c70f91"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "d99d5d592f3d1d5526511c90120b1e9ab3ce6e17",
+        "internalRef": "354148500"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "16ec872dd898d7de6e1822badfac32484b5d9031"
+        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
       }
     }
   ],
@@ -31,5 +40,96 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "docs/networkconnectivity_v1alpha1/hub_service.rst",
+    "docs/networkconnectivity_v1alpha1/services.rst",
+    "docs/networkconnectivity_v1alpha1/types.rst",
+    "google/cloud/networkconnectivity/__init__.py",
+    "google/cloud/networkconnectivity/py.typed",
+    "google/cloud/networkconnectivity_v1alpha1/__init__.py",
+    "google/cloud/networkconnectivity_v1alpha1/py.typed",
+    "google/cloud/networkconnectivity_v1alpha1/services/__init__.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/__init__.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/async_client.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/client.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/pagers.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/transports/__init__.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/transports/base.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/transports/grpc.py",
+    "google/cloud/networkconnectivity_v1alpha1/services/hub_service/transports/grpc_asyncio.py",
+    "google/cloud/networkconnectivity_v1alpha1/types/__init__.py",
+    "google/cloud/networkconnectivity_v1alpha1/types/common.py",
+    "google/cloud/networkconnectivity_v1alpha1/types/hub.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_networkconnectivity_v1alpha1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/networkconnectivity_v1alpha1/__init__.py",
+    "tests/unit/gapic/networkconnectivity_v1alpha1/test_hub_service.py"
   ]
 }
