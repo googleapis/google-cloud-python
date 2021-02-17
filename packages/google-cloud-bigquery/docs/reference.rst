@@ -62,6 +62,7 @@ Job-Related Types
     job.QueryPlanEntry
     job.QueryPlanEntryStep
     job.QueryPriority
+    job.ReservationUsage
     job.SourceFormat
     job.WriteDisposition
     job.SchemaUpdateOption

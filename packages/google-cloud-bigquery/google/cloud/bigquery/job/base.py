@@ -14,6 +14,7 @@
 
 """Base classes and helpers for job classes."""
 
+from collections import namedtuple
 import copy
 import http
 import threading
@@ -71,6 +72,16 @@ def _error_result_to_exception(error_result):
     return exceptions.from_http_status(
         status_code, error_result.get("message", ""), errors=[error_result]
     )
+
+
+ReservationUsage = namedtuple("ReservationUsage", "name slot_ms")
+ReservationUsage.__doc__ = "Job resource usage for a reservation."
+ReservationUsage.name.__doc__ = (
+    'Reservation name or "unreserved" for on-demand resources usage.'
+)
+ReservationUsage.slot_ms.__doc__ = (
+    "Total slot milliseconds used by the reservation for a particular job."
+)
 
 
 class _JobReference(object):
@@ -304,6 +315,22 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """Helper for job-type specific statistics-based properties."""
         statistics = self._properties.get("statistics", {})
         return statistics.get(self._JOB_TYPE, {})
+
+    @property
+    def reservation_usage(self):
+        """Job resource usage breakdown by reservation.
+
+        Returns:
+            List[google.cloud.bigquery.job.ReservationUsage]:
+                Reservation usage stats. Can be empty if not set from the server.
+        """
+        usage_stats_raw = _helpers._get_sub_prop(
+            self._properties, ["statistics", "reservationUsage"], default=()
+        )
+        return [
+            ReservationUsage(name=usage["name"], slot_ms=int(usage["slotMs"]))
+            for usage in usage_stats_raw
+        ]
 
     @property
     def error_result(self):

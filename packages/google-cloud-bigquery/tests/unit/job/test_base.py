@@ -319,6 +319,30 @@ class Test_AsyncJob(unittest.TestCase):
         stats["endTime"] = millis
         self.assertEqual(job.ended, now)
 
+    def test_reservation_usage_no_stats(self):
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties["statistics"] = {}
+        self.assertEqual(job.reservation_usage, [])
+
+    def test_reservation_usage_stats_exist(self):
+        from google.cloud.bigquery.job import ReservationUsage
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, client)
+        job._properties["statistics"] = {
+            "reservationUsage": [
+                {"name": "slot_foo", "slotMs": "42"},
+                {"name": "slot_bar", "slotMs": "123"},
+            ],
+        }
+
+        expected = [
+            ReservationUsage(name="slot_foo", slot_ms=42),
+            ReservationUsage(name="slot_bar", slot_ms=123),
+        ]
+        self.assertEqual(job.reservation_usage, expected)
+
     def test__job_statistics(self):
         statistics = {"foo": "bar"}
         client = _make_client(project=self.PROJECT)

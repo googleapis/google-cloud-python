@@ -19,6 +19,7 @@ from google.cloud.bigquery.job.base import _error_result_to_exception
 from google.cloud.bigquery.job.base import _DONE_STATE
 from google.cloud.bigquery.job.base import _JobConfig
 from google.cloud.bigquery.job.base import _JobReference
+from google.cloud.bigquery.job.base import ReservationUsage
 from google.cloud.bigquery.job.base import ScriptStatistics
 from google.cloud.bigquery.job.base import ScriptStackFrame
 from google.cloud.bigquery.job.base import UnknownJob
@@ -51,6 +52,7 @@ __all__ = [
     "_DONE_STATE",
     "_JobConfig",
     "_JobReference",
+    "ReservationUsage",
     "ScriptStatistics",
     "ScriptStackFrame",
     "UnknownJob",
