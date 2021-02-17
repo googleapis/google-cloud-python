@@ -234,3 +234,20 @@ class WriteDisposition(object):
     WRITE_EMPTY = "WRITE_EMPTY"
     """If the table already exists and contains data, a 'duplicate' error is
     returned in the job result."""
+
+
+class DeterminismLevel:
+    """Specifies determinism level for JavaScript user-defined functions (UDFs).
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/routines#DeterminismLevel
+    """
+
+    DETERMINISM_LEVEL_UNSPECIFIED = "DETERMINISM_LEVEL_UNSPECIFIED"
+    """The determinism of the UDF is unspecified."""
+
+    DETERMINISTIC = "DETERMINISTIC"
+    """The UDF is deterministic, meaning that 2 function calls with the same inputs
+    always produce the same result, even across 2 query runs."""
+
+    NOT_DETERMINISTIC = "NOT_DETERMINISTIC"
+    """The UDF is not deterministic."""

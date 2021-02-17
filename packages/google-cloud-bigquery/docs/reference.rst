@@ -110,6 +110,7 @@ Routine
 .. autosummary::
     :toctree: generated
 
+    routine.DeterminismLevel
     routine.Routine
     routine.RoutineArgument
     routine.RoutineReference

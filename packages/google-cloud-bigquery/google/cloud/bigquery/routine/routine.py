@@ -50,6 +50,7 @@ class Routine(object):
         "return_type": "returnType",
         "type_": "routineType",
         "description": "description",
+        "determinism_level": "determinismLevel",
     }
 
     def __init__(self, routine_ref, **kwargs):
@@ -252,6 +253,17 @@ class Routine(object):
     @description.setter
     def description(self, value):
         self._properties[self._PROPERTY_TO_API_FIELD["description"]] = value
+
+    @property
+    def determinism_level(self):
+        """Optional[str]: (experimental) The determinism level of the JavaScript UDF
+        if defined.
+        """
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["determinism_level"])
+
+    @determinism_level.setter
+    def determinism_level(self, value):
+        self._properties[self._PROPERTY_TO_API_FIELD["determinism_level"]] = value
 
     @classmethod
     def from_api_repr(cls, resource):

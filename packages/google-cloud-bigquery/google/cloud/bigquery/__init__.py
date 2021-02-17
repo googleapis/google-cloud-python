@@ -70,6 +70,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+from google.cloud.bigquery.routine import DeterminismLevel
 from google.cloud.bigquery.routine import Routine
 from google.cloud.bigquery.routine import RoutineArgument
 from google.cloud.bigquery.routine import RoutineReference
@@ -134,6 +135,7 @@ __all__ = [
     "Compression",
     "CreateDisposition",
     "DestinationFormat",
+    "DeterminismLevel",
     "ExternalSourceFormat",
     "Encoding",
     "QueryPriority",

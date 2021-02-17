@@ -2682,6 +2682,7 @@ class TestBigQuery(unittest.TestCase):
             )
         ]
         routine.body = "return maxValue(arr)"
+        routine.determinism_level = bigquery.DeterminismLevel.DETERMINISTIC
         query_string = "SELECT `{}`([-100.0, 3.14, 100.0, 42.0]) as max_value;".format(
             str(routine.reference)
         )
