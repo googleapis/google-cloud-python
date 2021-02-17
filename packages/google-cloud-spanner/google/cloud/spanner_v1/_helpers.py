@@ -118,7 +118,7 @@ def _make_value_pb(value):
     if isinstance(value, datetime_helpers.DatetimeWithNanoseconds):
         return Value(string_value=value.rfc3339())
     if isinstance(value, datetime.datetime):
-        return Value(string_value=_datetime_to_rfc3339(value))
+        return Value(string_value=_datetime_to_rfc3339(value, ignore_zone=False))
     if isinstance(value, datetime.date):
         return Value(string_value=value.isoformat())
     if isinstance(value, six.binary_type):
