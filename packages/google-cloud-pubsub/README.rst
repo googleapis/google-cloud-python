@@ -111,7 +111,8 @@ messages to it
         topic='MY_TOPIC_NAME',  # Set this to something appropriate.
     )
     publisher.create_topic(topic_name)
-    publisher.publish(topic_name, b'My first message!', spam='eggs')
+    future = publisher.publish(topic_name, b'My first message!', spam='eggs')
+    future.result()
 
 To learn more, consult the `publishing documentation`_.
 
@@ -129,23 +130,24 @@ the topic, and subscribe to that, passing a callback function.
     import os
     from google.cloud import pubsub_v1
 
-    subscriber = pubsub_v1.SubscriberClient()
     topic_name = 'projects/{project_id}/topics/{topic}'.format(
         project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
         topic='MY_TOPIC_NAME',  # Set this to something appropriate.
     )
+
     subscription_name = 'projects/{project_id}/subscriptions/{sub}'.format(
         project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
         sub='MY_SUBSCRIPTION_NAME',  # Set this to something appropriate.
     )
-    subscriber.create_subscription(
-        name=subscription_name, topic=topic_name)
 
     def callback(message):
         print(message.data)
         message.ack()
 
-    future = subscriber.subscribe(subscription_name, callback)
+    with pubsub_v1.SubscriberClient() as subscriber:
+        subscriber.create_subscription(
+            name=subscription_name, topic=topic_name)  
+        future = subscriber.subscribe(subscription_name, callback)
 
 The future returned by the call to ``subscriber.subscribe`` can be used to
 block the current thread until a given condition obtains:

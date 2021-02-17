@@ -33,7 +33,7 @@ Therefore, a very basic publishing call looks like:
 .. code-block:: python
 
     topic = 'projects/{project}/topics/{topic}'
-    publish_client.publish(topic, b'This is my message.')
+    future = publish_client.publish(topic, b'This is my message.')
 
 .. note::
 
@@ -52,7 +52,7 @@ If you want to include attributes, simply add keyword arguments:
 .. code-block:: python
 
     topic = 'projects/{project}/topics/{topic}'
-    publish_client.publish(topic, b'This is my message.', foo='bar')
+    future = publish_client.publish(topic, b'This is my message.', foo='bar')
 
 
 Batching
