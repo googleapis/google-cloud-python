@@ -874,6 +874,19 @@ class TestStorageWriteFiles(TestStorageFiles):
         blob.content_type = "image/png"
         self.assertEqual(blob.content_type, "image/png")
 
+        metadata = {"foo": "Foo", "bar": "Bar"}
+        blob.metadata = metadata
+        blob.patch()
+        blob.reload()
+        self.assertEqual(blob.metadata, metadata)
+
+        # Ensure that metadata keys can be deleted by setting equal to None.
+        new_metadata = {"foo": "Foo", "bar": None}
+        blob.metadata = new_metadata
+        blob.patch()
+        blob.reload()
+        self.assertEqual(blob.metadata, {"foo": "Foo"})
+
     def test_direct_write_and_read_into_file(self):
         blob = self.bucket.blob("MyBuffer")
         file_contents = b"Hello World"

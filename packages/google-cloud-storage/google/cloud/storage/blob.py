@@ -3620,13 +3620,16 @@ class Blob(_PropertyMixin):
     def metadata(self, value):
         """Update arbitrary/application specific metadata for the object.
 
+        Values are stored to GCS as strings. To delete a key, set its value to
+        None and call blob.patch().
+
         See https://cloud.google.com/storage/docs/json_api/v1/objects
 
         :type value: dict
         :param value: The blob metadata to set.
         """
         if value is not None:
-            value = {k: str(v) for k, v in value.items()}
+            value = {k: str(v) if v is not None else None for k, v in value.items()}
         self._patch_property("metadata", value)
 
     @property
