@@ -255,7 +255,7 @@ class Test_get_signed_query_params_v2(unittest.TestCase):
             "Signature": base64.b64encode(sig_bytes),
         }
         self.assertEqual(result, expected)
-        credentials.sign_bytes.assert_called_once_with(string_to_sign)
+        credentials.sign_bytes.assert_called_once_with(string_to_sign.encode("ascii"))
 
 
 class Test_get_canonical_headers(unittest.TestCase):
@@ -420,7 +420,7 @@ class Test_generate_signed_url_v2(unittest.TestCase):
 
         string_to_sign = "\n".join(elements)
 
-        credentials.sign_bytes.assert_called_once_with(string_to_sign)
+        credentials.sign_bytes.assert_called_once_with(string_to_sign.encode("ascii"))
 
         scheme, netloc, path, qs, frag = urllib_parse.urlsplit(url)
         expected_scheme, expected_netloc, _, _, _ = urllib_parse.urlsplit(

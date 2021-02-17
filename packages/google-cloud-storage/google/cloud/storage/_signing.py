@@ -77,7 +77,7 @@ def get_signed_query_params_v2(credentials, expiration, string_to_sign):
               signed payload.
     """
     ensure_signed_credentials(credentials)
-    signature_bytes = credentials.sign_bytes(string_to_sign)
+    signature_bytes = credentials.sign_bytes(string_to_sign.encode("ascii"))
     signature = base64.b64encode(signature_bytes)
     service_account_name = credentials.signer_email
     return {
