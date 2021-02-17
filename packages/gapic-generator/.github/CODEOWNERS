@@ -4,4 +4,5 @@
 # For syntax help see:
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
 
-* @googleapis/actools-python @googleapis/yoshi-python
+* @googleapis/actools-python @googleapis/yoshi-python @lukesneeringer
+*.yaml @googleapis/actools @googleapis/yoshi-python @googleapis/actools-python @lukesneeringer

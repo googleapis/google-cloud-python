@@ -13,6 +13,10 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -25,6 +29,10 @@ jobs:
   mypy:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -73,6 +81,10 @@ jobs:
         target: [showcase, showcase_alternative_templates]
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -109,6 +121,10 @@ jobs:
         target: [showcase_mtls, showcase_mtls_alternative_templates]
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Setup temp directory
         run: |
@@ -159,8 +175,16 @@ jobs:
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
+        variant: ['', _alternative_templates]
+        exclude:
+          - python: 3.6
+            variant: _alternative_templates
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
@@ -181,37 +205,14 @@ jobs:
       - name: Install nox.
         run: python -m pip install nox
       - name: Run unit tests.
-        run: nox -s showcase_unit-${{ matrix.python }}
-  showcase-unit-alternative-templates:
-    strategy:
-      matrix:
-        python: [3.7, 3.8, 3.9]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python }}
-      - name: Install system dependencies.
-        run: |
-            sudo apt-get update
-            sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
-        run: |
-            sudo mkdir -p /usr/src/protoc/
-            sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
-            cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
-            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - name: Install nox.
-        run: python -m pip install nox
-      - name: Run unit tests.
-        run: nox -s showcase_unit_alternative_templates-${{ matrix.python }}
+        run: nox -s showcase_unit${{ matrix.variant }}-${{ matrix.python }}
   showcase-unit-add-iam-methods:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -232,10 +233,17 @@ jobs:
       - name: Install nox.
         run: python -m pip install nox
       - name: Run unit tests.
-        run: nox -s showcase_unit_add_iam_methods-3.8
+        run: nox -s showcase_unit_add_iam_methods
   showcase-mypy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant: ['', _alternative_templates]
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -256,37 +264,17 @@ jobs:
       - name: Install nox.
         run: python -m pip install nox
       - name: Typecheck the generated output.
-        run: nox -s showcase_mypy
-  showcase-mypy-alternative-templates:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Install system dependencies.
-        run: |
-            sudo apt-get update
-            sudo apt-get install -y curl pandoc unzip gcc
-      - name: Install protoc 3.12.1.
-        run: |
-            sudo mkdir -p /usr/src/protoc/
-            sudo chown -R ${USER} /usr/src/
-            curl --location https://github.com/google/protobuf/releases/download/v3.12.1/protoc-3.12.1-linux-x86_64.zip --output /usr/src/protoc/protoc-3.12.1.zip
-            cd /usr/src/protoc/
-            unzip protoc-3.12.1.zip
-            sudo ln -s /usr/src/protoc/bin/protoc /usr/local/bin/protoc
-      - name: Install nox.
-        run: python -m pip install nox
-      - name: Typecheck the generated output.
-        run: nox -s showcase_mypy_alternative_templates
+        run: nox -s showcase_mypy${{ matrix.variant }}
   unit:
     strategy:
       matrix:
         python: [3.6, 3.7, 3.8, 3.9]
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python }}
         uses: actions/setup-python@v2
@@ -308,6 +296,10 @@ jobs:
   style-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
