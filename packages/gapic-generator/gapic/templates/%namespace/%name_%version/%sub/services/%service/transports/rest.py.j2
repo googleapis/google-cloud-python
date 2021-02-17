@@ -207,7 +207,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- if not method.void %}
 
         # Return the response
-        return {{ method.output.ident }}.from_json(response.content)
+        return {{ method.output.ident }}.from_json(
+            response.content,
+            ignore_unknown_fields=True
+        )
         {%- endif %}
     {%- endif %}
     {%- endfor %}
