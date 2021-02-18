@@ -2146,9 +2146,8 @@ class TestPickleProperty:
         prop = model.PickleProperty(name="pkl")
         assert prop._from_base_type(self.PICKLED) == self.UNPICKLED
 
-    # @pytest.mark.usefixtures("in_context")
-    @pytest.mark.usefixtures("client_context")
-    def test__legacy_from_base_type(self, client_context):
+    @pytest.mark.usefixtures("in_context")
+    def test__legacy_from_base_type(self):
         # GAE NDB stores pickled properties as bytes and with GAE NDB structures.
         # Validate we can unpickle to a Cloud NDB structure.
         # See https://github.com/googleapis/python-ndb/issues/587
