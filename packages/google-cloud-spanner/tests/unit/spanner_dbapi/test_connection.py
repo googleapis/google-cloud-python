@@ -379,6 +379,25 @@ class TestConnection(unittest.TestCase):
 
         self.assertEqual(len(connection._statements), 0)
 
+    def test_run_statement_w_homogeneous_insert_statements(self):
+        """Check that Connection executed homogeneous insert statements."""
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.cursor import Statement
+
+        sql = "INSERT INTO T (f1, f2) VALUES (%s, %s), (%s, %s)"
+        params = ["a", "b", "c", "d"]
+        param_types = {"f1": str, "f2": str}
+
+        connection = self._make_connection()
+
+        statement = Statement(sql, params, param_types, ResultsChecksum(), True)
+        with mock.patch(
+            "google.cloud.spanner_dbapi.connection.Connection.transaction_checkout"
+        ):
+            connection.run_statement(statement, retried=True)
+
+        self.assertEqual(len(connection._statements), 0)
+
     def test_clear_statements_on_commit(self):
         """
         Check that all the saved statements are
