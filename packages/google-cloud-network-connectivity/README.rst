@@ -20,7 +20,7 @@ inconsistencies, etc.
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-network-connectivity.svg
    :target: https://pypi.org/project/google-cloud-network-connectivity/
 .. _Network Connectivity Center: https://cloud.google.com/network-connectivity/
-.. _Client Library Documentation: https://googleapis.dev/python/privateca/latest
+.. _Client Library Documentation: https://googleapis.dev/python/networkconnectivity/latest
 .. _Product Documentation:  https://cloud.google.com/network-connectivity/
 
 Quick Start
@@ -35,7 +35,7 @@ In order to use this library, you first need to go through the following steps:
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Network Connectivity Center.:  https://cloud.google.com/privateca/docs
+.. _Enable the Network Connectivity Center.:  https://cloud.google.com/network-connectivity/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -83,5 +83,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Network Connectivity Center Product documentation:  https://cloud.google.com/privateca/docs
+.. _Network Connectivity Center Product documentation:  https://cloud.google.com/network-connectivity/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
