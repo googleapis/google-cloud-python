@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+### [2.0.1](https://www.github.com/googleapis/python-monitoring/compare/v2.0.0...v2.0.1) (2021-02-18)
+
+
+### Bug Fixes
+
+* allow any set query_params to work with `query.iter()` ([#83](https://www.github.com/googleapis/python-monitoring/issues/83)) ([4279c92](https://www.github.com/googleapis/python-monitoring/commit/4279c9252c21e24a43d2613de7fdb1af35dc30fc))
+* remove gRPC send/recv limits and expose client transport ([#62](https://www.github.com/googleapis/python-monitoring/issues/62)) ([bec9e87](https://www.github.com/googleapis/python-monitoring/commit/bec9e87551baf9ef5d60c81810e3efa01e96377f))
+
 ## [2.0.0](https://www.github.com/googleapis/python-monitoring/compare/v1.1.0...v2.0.0) (2020-10-06)
 
 
