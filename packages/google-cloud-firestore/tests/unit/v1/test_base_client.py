@@ -138,6 +138,13 @@ class TestBaseClient(unittest.TestCase):
         )
 
     def test_emulator_channel(self):
+        from google.cloud.firestore_v1.services.firestore.transports.grpc import (
+            FirestoreGrpcTransport,
+        )
+        from google.cloud.firestore_v1.services.firestore.transports.grpc_asyncio import (
+            FirestoreGrpcAsyncIOTransport,
+        )
+
         emulator_host = "localhost:8081"
         with mock.patch("os.getenv") as getenv:
             getenv.return_value = emulator_host
@@ -149,8 +156,10 @@ class TestBaseClient(unittest.TestCase):
             )
 
         # checks that a channel is created
-        channel = client._emulator_channel()
-        self.assertTrue(isinstance(channel, grpc._channel.Channel))
+        channel = client._emulator_channel(FirestoreGrpcTransport)
+        self.assertTrue(isinstance(channel, grpc.Channel))
+        channel = client._emulator_channel(FirestoreGrpcAsyncIOTransport)
+        self.assertTrue(isinstance(channel, grpc.aio.Channel))
         # checks that the credentials are composite ones using a local channel from grpc
         composite_credentials = client._local_composite_credentials()
         self.assertTrue(isinstance(composite_credentials, grpc.ChannelCredentials))

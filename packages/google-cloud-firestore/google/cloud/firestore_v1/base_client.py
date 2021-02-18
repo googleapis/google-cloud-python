@@ -148,7 +148,7 @@ class BaseClient(ClientWithProject):
             # We need this in order to set appropriate keepalive options.
 
             if self._emulator_host is not None:
-                channel = self._emulator_channel()
+                channel = self._emulator_channel(transport)
             else:
                 channel = transport.create_channel(
                     self._target,
@@ -165,25 +165,30 @@ class BaseClient(ClientWithProject):
 
         return self._firestore_api_internal
 
-    def _emulator_channel(self):
+    def _emulator_channel(self, transport):
         """
         Creates a channel using self._credentials in a similar way to grpc.secure_channel but
         using grpc.local_channel_credentials() rather than grpc.ssh_channel_credentials() to allow easy connection
         to a local firestore emulator. This allows local testing of firestore rules if the credentials have been
         created from a signed custom token.
 
-        :return: grcp.Channel
+        :return: grpc.Channel or grpc.aio.Channel
         """
-        return grpc._channel.Channel(
-            self._emulator_host,
-            (),
-            self._local_composite_credentials()._credentials,
-            None,
-        )
+        # TODO: Implement a special credentials type for emulator and use
+        # "transport.create_channel" to create gRPC channels once google-auth
+        # extends it's allowed credentials types.
+        if "GrpcAsyncIOTransport" in str(transport.__name__):
+            return grpc.aio.secure_channel(
+                self._emulator_host, self._local_composite_credentials()
+            )
+        else:
+            return grpc.secure_channel(
+                self._emulator_host, self._local_composite_credentials()
+            )
 
     def _local_composite_credentials(self):
         """
-        Ceates the credentials for the local emulator channel
+        Creates the credentials for the local emulator channel
         :return: grpc.ChannelCredentials
         """
         credentials = google.auth.credentials.with_scopes_if_required(
