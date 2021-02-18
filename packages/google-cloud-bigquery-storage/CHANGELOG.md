@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.2.1...v2.3.0) (2021-02-18)
+
+
+### Features
+
+* add `client_cert_source_for_mtls` argument to transports ([#135](https://www.github.com/googleapis/python-bigquery-storage/issues/135)) ([072850d](https://www.github.com/googleapis/python-bigquery-storage/commit/072850dd341909fdc22f330117a17e48da12fdd1))
+
+
+### Documentation
+
+* update python contributing guide ([#140](https://www.github.com/googleapis/python-bigquery-storage/issues/140)) ([1671056](https://www.github.com/googleapis/python-bigquery-storage/commit/1671056bfe181660440b1bf4415005e3eed01eb2))
+
 ### [2.2.1](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.2.0...v2.2.1) (2021-01-25)
 
 
