@@ -45,7 +45,7 @@ class Model(proto.Message):
     Attributes:
         etag (str):
             Output only. A hash of this resource.
-        model_reference (~.gcb_model_reference.ModelReference):
+        model_reference (google.cloud.bigquery_v2.types.ModelReference):
             Required. Unique identifier for this model.
         creation_time (int):
             Output only. The time when this model was
@@ -58,7 +58,7 @@ class Model(proto.Message):
             model.
         friendly_name (str):
             Optional. A descriptive name for this model.
-        labels (Sequence[~.gcb_model.Model.LabelsEntry]):
+        labels (Sequence[google.cloud.bigquery_v2.types.Model.LabelsEntry]):
             The labels associated with this model. You
             can use these to organize and group your models.
             Label keys and values can be no longer than 63
@@ -81,22 +81,22 @@ class Model(proto.Message):
             Output only. The geographic location where
             the model resides. This value is inherited from
             the dataset.
-        encryption_configuration (~.encryption_config.EncryptionConfiguration):
+        encryption_configuration (google.cloud.bigquery_v2.types.EncryptionConfiguration):
             Custom encryption configuration (e.g., Cloud
             KMS keys). This shows the encryption
             configuration of the model data while stored in
             BigQuery storage. This field can be used with
             PatchModel to update encryption key for an
             already encrypted model.
-        model_type (~.gcb_model.Model.ModelType):
+        model_type (google.cloud.bigquery_v2.types.Model.ModelType):
             Output only. Type of the model resource.
-        training_runs (Sequence[~.gcb_model.Model.TrainingRun]):
+        training_runs (Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun]):
             Output only. Information for all training runs in increasing
             order of start_time.
-        feature_columns (Sequence[~.standard_sql.StandardSqlField]):
+        feature_columns (Sequence[google.cloud.bigquery_v2.types.StandardSqlField]):
             Output only. Input feature columns that were
             used to train this model.
-        label_columns (Sequence[~.standard_sql.StandardSqlField]):
+        label_columns (Sequence[google.cloud.bigquery_v2.types.StandardSqlField]):
             Output only. Label columns that were used to train this
             model. The output of the model will have a `predicted_`
             prefix to these columns.
@@ -280,15 +280,15 @@ class Model(proto.Message):
         matrix factorization models.
 
         Attributes:
-            mean_absolute_error (~.wrappers.DoubleValue):
+            mean_absolute_error (google.protobuf.wrappers_pb2.DoubleValue):
                 Mean absolute error.
-            mean_squared_error (~.wrappers.DoubleValue):
+            mean_squared_error (google.protobuf.wrappers_pb2.DoubleValue):
                 Mean squared error.
-            mean_squared_log_error (~.wrappers.DoubleValue):
+            mean_squared_log_error (google.protobuf.wrappers_pb2.DoubleValue):
                 Mean squared log error.
-            median_absolute_error (~.wrappers.DoubleValue):
+            median_absolute_error (google.protobuf.wrappers_pb2.DoubleValue):
                 Median absolute error.
-            r_squared (~.wrappers.DoubleValue):
+            r_squared (google.protobuf.wrappers_pb2.DoubleValue):
                 R^2 score.
         """
 
@@ -319,33 +319,33 @@ class Model(proto.Message):
         by counting the total number of correctly predicted rows.
 
         Attributes:
-            precision (~.wrappers.DoubleValue):
+            precision (google.protobuf.wrappers_pb2.DoubleValue):
                 Precision is the fraction of actual positive
                 predictions that had positive actual labels. For
                 multiclass this is a macro-averaged metric
                 treating each class as a binary classifier.
-            recall (~.wrappers.DoubleValue):
+            recall (google.protobuf.wrappers_pb2.DoubleValue):
                 Recall is the fraction of actual positive
                 labels that were given a positive prediction.
                 For multiclass this is a macro-averaged metric.
-            accuracy (~.wrappers.DoubleValue):
+            accuracy (google.protobuf.wrappers_pb2.DoubleValue):
                 Accuracy is the fraction of predictions given
                 the correct label. For multiclass this is a
                 micro-averaged metric.
-            threshold (~.wrappers.DoubleValue):
+            threshold (google.protobuf.wrappers_pb2.DoubleValue):
                 Threshold at which the metrics are computed.
                 For binary classification models this is the
                 positive class threshold. For multi-class
                 classfication models this is the confidence
                 threshold.
-            f1_score (~.wrappers.DoubleValue):
+            f1_score (google.protobuf.wrappers_pb2.DoubleValue):
                 The F1 score is an average of recall and
                 precision. For multiclass this is a macro-
                 averaged metric.
-            log_loss (~.wrappers.DoubleValue):
+            log_loss (google.protobuf.wrappers_pb2.DoubleValue):
                 Logarithmic Loss. For multiclass this is a
                 macro-averaged metric.
-            roc_auc (~.wrappers.DoubleValue):
+            roc_auc (google.protobuf.wrappers_pb2.DoubleValue):
                 Area Under a ROC Curve. For multiclass this
                 is a macro-averaged metric.
         """
@@ -369,9 +369,9 @@ class Model(proto.Message):
         models.
 
         Attributes:
-            aggregate_classification_metrics (~.gcb_model.Model.AggregateClassificationMetrics):
+            aggregate_classification_metrics (google.cloud.bigquery_v2.types.Model.AggregateClassificationMetrics):
                 Aggregate classification metrics.
-            binary_confusion_matrix_list (Sequence[~.gcb_model.Model.BinaryClassificationMetrics.BinaryConfusionMatrix]):
+            binary_confusion_matrix_list (Sequence[google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics.BinaryConfusionMatrix]):
                 Binary confusion matrix at multiple
                 thresholds.
             positive_label (str):
@@ -384,27 +384,27 @@ class Model(proto.Message):
             r"""Confusion matrix for binary classification models.
 
             Attributes:
-                positive_class_threshold (~.wrappers.DoubleValue):
+                positive_class_threshold (google.protobuf.wrappers_pb2.DoubleValue):
                     Threshold value used when computing each of
                     the following metric.
-                true_positives (~.wrappers.Int64Value):
+                true_positives (google.protobuf.wrappers_pb2.Int64Value):
                     Number of true samples predicted as true.
-                false_positives (~.wrappers.Int64Value):
+                false_positives (google.protobuf.wrappers_pb2.Int64Value):
                     Number of false samples predicted as true.
-                true_negatives (~.wrappers.Int64Value):
+                true_negatives (google.protobuf.wrappers_pb2.Int64Value):
                     Number of true samples predicted as false.
-                false_negatives (~.wrappers.Int64Value):
+                false_negatives (google.protobuf.wrappers_pb2.Int64Value):
                     Number of false samples predicted as false.
-                precision (~.wrappers.DoubleValue):
+                precision (google.protobuf.wrappers_pb2.DoubleValue):
                     The fraction of actual positive predictions
                     that had positive actual labels.
-                recall (~.wrappers.DoubleValue):
+                recall (google.protobuf.wrappers_pb2.DoubleValue):
                     The fraction of actual positive labels that
                     were given a positive prediction.
-                f1_score (~.wrappers.DoubleValue):
+                f1_score (google.protobuf.wrappers_pb2.DoubleValue):
                     The equally weighted average of recall and
                     precision.
-                accuracy (~.wrappers.DoubleValue):
+                accuracy (google.protobuf.wrappers_pb2.DoubleValue):
                     The fraction of predictions given the correct
                     label.
             """
@@ -462,9 +462,9 @@ class Model(proto.Message):
         models.
 
         Attributes:
-            aggregate_classification_metrics (~.gcb_model.Model.AggregateClassificationMetrics):
+            aggregate_classification_metrics (google.cloud.bigquery_v2.types.Model.AggregateClassificationMetrics):
                 Aggregate classification metrics.
-            confusion_matrix_list (Sequence[~.gcb_model.Model.MultiClassClassificationMetrics.ConfusionMatrix]):
+            confusion_matrix_list (Sequence[google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics.ConfusionMatrix]):
                 Confusion matrix at different thresholds.
         """
 
@@ -472,10 +472,10 @@ class Model(proto.Message):
             r"""Confusion matrix for multi-class classification models.
 
             Attributes:
-                confidence_threshold (~.wrappers.DoubleValue):
+                confidence_threshold (google.protobuf.wrappers_pb2.DoubleValue):
                     Confidence threshold used when computing the
                     entries of the confusion matrix.
-                rows (Sequence[~.gcb_model.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row]):
+                rows (Sequence[google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics.ConfusionMatrix.Row]):
                     One row per actual label.
             """
 
@@ -487,7 +487,7 @@ class Model(proto.Message):
                         The predicted label. For confidence_threshold > 0, we will
                         also add an entry indicating the number of items under the
                         confidence threshold.
-                    item_count (~.wrappers.Int64Value):
+                    item_count (google.protobuf.wrappers_pb2.Int64Value):
                         Number of items being predicted as this
                         label.
                 """
@@ -504,7 +504,7 @@ class Model(proto.Message):
                 Attributes:
                     actual_label (str):
                         The original label of this row.
-                    entries (Sequence[~.gcb_model.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry]):
+                    entries (Sequence[google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics.ConfusionMatrix.Entry]):
                         Info describing predicted label distribution.
                 """
 
@@ -540,12 +540,12 @@ class Model(proto.Message):
         r"""Evaluation metrics for clustering models.
 
         Attributes:
-            davies_bouldin_index (~.wrappers.DoubleValue):
+            davies_bouldin_index (google.protobuf.wrappers_pb2.DoubleValue):
                 Davies-Bouldin index.
-            mean_squared_distance (~.wrappers.DoubleValue):
+            mean_squared_distance (google.protobuf.wrappers_pb2.DoubleValue):
                 Mean of squared distances between each sample
                 to its cluster centroid.
-            clusters (Sequence[~.gcb_model.Model.ClusteringMetrics.Cluster]):
+            clusters (Sequence[google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster]):
                 [Beta] Information for all clusters.
         """
 
@@ -555,10 +555,10 @@ class Model(proto.Message):
             Attributes:
                 centroid_id (int):
                     Centroid id.
-                feature_values (Sequence[~.gcb_model.Model.ClusteringMetrics.Cluster.FeatureValue]):
+                feature_values (Sequence[google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue]):
                     Values of highly variant features for this
                     cluster.
-                count (~.wrappers.Int64Value):
+                count (google.protobuf.wrappers_pb2.Int64Value):
                     Count of training data rows that were
                     assigned to this cluster.
             """
@@ -569,10 +569,10 @@ class Model(proto.Message):
                 Attributes:
                     feature_column (str):
                         The feature column name.
-                    numerical_value (~.wrappers.DoubleValue):
+                    numerical_value (google.protobuf.wrappers_pb2.DoubleValue):
                         The numerical feature value. This is the
                         centroid value for this feature.
-                    categorical_value (~.gcb_model.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue):
+                    categorical_value (google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue):
                         The categorical feature value.
                 """
 
@@ -580,7 +580,7 @@ class Model(proto.Message):
                     r"""Representative value of a categorical feature.
 
                     Attributes:
-                        category_counts (Sequence[~.gcb_model.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount]):
+                        category_counts (Sequence[google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount]):
                             Counts of all categories for the categorical feature. If
                             there are more than ten categories, we return top ten (by
                             count) and return one more CategoryCount with category
@@ -594,7 +594,7 @@ class Model(proto.Message):
                         Attributes:
                             category (str):
                                 The name of category.
-                            count (~.wrappers.Int64Value):
+                            count (google.protobuf.wrappers_pb2.Int64Value):
                                 The count of training samples matching the
                                 category within the cluster.
                         """
@@ -654,23 +654,23 @@ class Model(proto.Message):
         feedback_type=implicit.
 
         Attributes:
-            mean_average_precision (~.wrappers.DoubleValue):
+            mean_average_precision (google.protobuf.wrappers_pb2.DoubleValue):
                 Calculates a precision per user for all the
                 items by ranking them and then averages all the
                 precisions across all the users.
-            mean_squared_error (~.wrappers.DoubleValue):
+            mean_squared_error (google.protobuf.wrappers_pb2.DoubleValue):
                 Similar to the mean squared error computed in
                 regression and explicit recommendation models
                 except instead of computing the rating directly,
                 the output from evaluate is computed against a
                 preference which is 1 or 0 depending on if the
                 rating exists or not.
-            normalized_discounted_cumulative_gain (~.wrappers.DoubleValue):
+            normalized_discounted_cumulative_gain (google.protobuf.wrappers_pb2.DoubleValue):
                 A metric to determine the goodness of a
                 ranking calculated from the predicted confidence
                 by comparing it to an ideal rank measured by the
                 original ratings.
-            average_rank (~.wrappers.DoubleValue):
+            average_rank (google.protobuf.wrappers_pb2.DoubleValue):
                 Determines the goodness of a ranking by
                 computing the percentile rank from the predicted
                 confidence and dividing it by the original rank.
@@ -696,11 +696,11 @@ class Model(proto.Message):
         r"""Model evaluation metrics for ARIMA forecasting models.
 
         Attributes:
-            non_seasonal_order (Sequence[~.gcb_model.Model.ArimaOrder]):
+            non_seasonal_order (Sequence[google.cloud.bigquery_v2.types.Model.ArimaOrder]):
                 Non-seasonal order.
-            arima_fitting_metrics (Sequence[~.gcb_model.Model.ArimaFittingMetrics]):
+            arima_fitting_metrics (Sequence[google.cloud.bigquery_v2.types.Model.ArimaFittingMetrics]):
                 Arima model fitting metrics.
-            seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+            seasonal_periods (Sequence[google.cloud.bigquery_v2.types.Model.SeasonalPeriod.SeasonalPeriodType]):
                 Seasonal periods. Repeated because multiple
                 periods are supported for one time series.
             has_drift (Sequence[bool]):
@@ -709,7 +709,7 @@ class Model(proto.Message):
             time_series_id (Sequence[str]):
                 Id to differentiate different time series for
                 the large-scale case.
-            arima_single_model_forecasting_metrics (Sequence[~.gcb_model.Model.ArimaForecastingMetrics.ArimaSingleModelForecastingMetrics]):
+            arima_single_model_forecasting_metrics (Sequence[google.cloud.bigquery_v2.types.Model.ArimaForecastingMetrics.ArimaSingleModelForecastingMetrics]):
                 Repeated as there can be many metric sets
                 (one for each model) in auto-arima and the
                 large-scale case.
@@ -720,16 +720,16 @@ class Model(proto.Message):
             model.
 
             Attributes:
-                non_seasonal_order (~.gcb_model.Model.ArimaOrder):
+                non_seasonal_order (google.cloud.bigquery_v2.types.Model.ArimaOrder):
                     Non-seasonal order.
-                arima_fitting_metrics (~.gcb_model.Model.ArimaFittingMetrics):
+                arima_fitting_metrics (google.cloud.bigquery_v2.types.Model.ArimaFittingMetrics):
                     Arima fitting metrics.
                 has_drift (bool):
                     Is arima model fitted with drift or not. It
                     is always false when d is not 1.
                 time_series_id (str):
                     The id to indicate different time series.
-                seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                seasonal_periods (Sequence[google.cloud.bigquery_v2.types.Model.SeasonalPeriod.SeasonalPeriodType]):
                     Seasonal periods. Repeated because multiple
                     periods are supported for one time series.
             """
@@ -779,21 +779,21 @@ class Model(proto.Message):
         imported models.
 
         Attributes:
-            regression_metrics (~.gcb_model.Model.RegressionMetrics):
+            regression_metrics (google.cloud.bigquery_v2.types.Model.RegressionMetrics):
                 Populated for regression models and explicit
                 feedback type matrix factorization models.
-            binary_classification_metrics (~.gcb_model.Model.BinaryClassificationMetrics):
+            binary_classification_metrics (google.cloud.bigquery_v2.types.Model.BinaryClassificationMetrics):
                 Populated for binary
                 classification/classifier models.
-            multi_class_classification_metrics (~.gcb_model.Model.MultiClassClassificationMetrics):
+            multi_class_classification_metrics (google.cloud.bigquery_v2.types.Model.MultiClassClassificationMetrics):
                 Populated for multi-class
                 classification/classifier models.
-            clustering_metrics (~.gcb_model.Model.ClusteringMetrics):
+            clustering_metrics (google.cloud.bigquery_v2.types.Model.ClusteringMetrics):
                 Populated for clustering models.
-            ranking_metrics (~.gcb_model.Model.RankingMetrics):
+            ranking_metrics (google.cloud.bigquery_v2.types.Model.RankingMetrics):
                 Populated for implicit feedback type matrix
                 factorization models.
-            arima_forecasting_metrics (~.gcb_model.Model.ArimaForecastingMetrics):
+            arima_forecasting_metrics (google.cloud.bigquery_v2.types.Model.ArimaForecastingMetrics):
                 Populated for ARIMA models.
         """
 
@@ -835,10 +835,10 @@ class Model(proto.Message):
         and evaluation data tables that were used to train the model.
 
         Attributes:
-            training_table (~.table_reference.TableReference):
+            training_table (google.cloud.bigquery_v2.types.TableReference):
                 Table reference of the training data after
                 split.
-            evaluation_table (~.table_reference.TableReference):
+            evaluation_table (google.cloud.bigquery_v2.types.TableReference):
                 Table reference of the evaluation data after
                 split.
         """
@@ -893,7 +893,7 @@ class Model(proto.Message):
         features after training.
 
         Attributes:
-            explanations (Sequence[~.gcb_model.Model.GlobalExplanation.Explanation]):
+            explanations (Sequence[google.cloud.bigquery_v2.types.Model.GlobalExplanation.Explanation]):
                 A list of the top global explanations. Sorted
                 by absolute value of attribution in descending
                 order.
@@ -913,7 +913,7 @@ class Model(proto.Message):
                     be formatted like <column_name>.<encoded_feature_name>.
                     Overall size of feature name will always be truncated to
                     first 120 characters.
-                attribution (~.wrappers.DoubleValue):
+                attribution (google.protobuf.wrappers_pb2.DoubleValue):
                     Attribution of feature.
             """
 
@@ -933,22 +933,22 @@ class Model(proto.Message):
         r"""Information about a single training query run for the model.
 
         Attributes:
-            training_options (~.gcb_model.Model.TrainingRun.TrainingOptions):
+            training_options (google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions):
                 Options that were used for this training run,
                 includes user specified and default options that
                 were used.
-            start_time (~.timestamp.Timestamp):
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
                 The start time of this training run.
-            results (Sequence[~.gcb_model.Model.TrainingRun.IterationResult]):
+            results (Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult]):
                 Output of each iteration run, results.size() <=
                 max_iterations.
-            evaluation_metrics (~.gcb_model.Model.EvaluationMetrics):
+            evaluation_metrics (google.cloud.bigquery_v2.types.Model.EvaluationMetrics):
                 The evaluation metrics over training/eval
                 data that were computed at the end of training.
-            data_split_result (~.gcb_model.Model.DataSplitResult):
+            data_split_result (google.cloud.bigquery_v2.types.Model.DataSplitResult):
                 Data split result of the training run. Only
                 set when the input data is actually split.
-            global_explanations (Sequence[~.gcb_model.Model.GlobalExplanation]):
+            global_explanations (Sequence[google.cloud.bigquery_v2.types.Model.GlobalExplanation]):
                 Global explanations for important features of
                 the model. For multi-class models, there is one
                 entry for each label class. For other models,
@@ -962,30 +962,30 @@ class Model(proto.Message):
                 max_iterations (int):
                     The maximum number of iterations in training.
                     Used only for iterative training algorithms.
-                loss_type (~.gcb_model.Model.LossType):
+                loss_type (google.cloud.bigquery_v2.types.Model.LossType):
                     Type of loss function used during training
                     run.
                 learn_rate (float):
                     Learning rate in training. Used only for
                     iterative training algorithms.
-                l1_regularization (~.wrappers.DoubleValue):
+                l1_regularization (google.protobuf.wrappers_pb2.DoubleValue):
                     L1 regularization coefficient.
-                l2_regularization (~.wrappers.DoubleValue):
+                l2_regularization (google.protobuf.wrappers_pb2.DoubleValue):
                     L2 regularization coefficient.
-                min_relative_progress (~.wrappers.DoubleValue):
+                min_relative_progress (google.protobuf.wrappers_pb2.DoubleValue):
                     When early_stop is true, stops training when accuracy
                     improvement is less than 'min_relative_progress'. Used only
                     for iterative training algorithms.
-                warm_start (~.wrappers.BoolValue):
+                warm_start (google.protobuf.wrappers_pb2.BoolValue):
                     Whether to train a model from the last
                     checkpoint.
-                early_stop (~.wrappers.BoolValue):
+                early_stop (google.protobuf.wrappers_pb2.BoolValue):
                     Whether to stop early when the loss doesn't improve
                     significantly any more (compared to min_relative_progress).
                     Used only for iterative training algorithms.
                 input_label_columns (Sequence[str]):
                     Name of input label columns in training data.
-                data_split_method (~.gcb_model.Model.DataSplitMethod):
+                data_split_method (google.cloud.bigquery_v2.types.Model.DataSplitMethod):
                     The data split type for training and
                     evaluation, e.g. RANDOM.
                 data_split_eval_fraction (float):
@@ -1007,13 +1007,13 @@ class Model(proto.Message):
                        and the rest are eval data. It respects the order in
                        Orderable data types:
                        https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data-type-properties
-                learn_rate_strategy (~.gcb_model.Model.LearnRateStrategy):
+                learn_rate_strategy (google.cloud.bigquery_v2.types.Model.LearnRateStrategy):
                     The strategy to determine learn rate for the
                     current iteration.
                 initial_learn_rate (float):
                     Specifies the initial learning rate for the
                     line search learn rate strategy.
-                label_class_weights (Sequence[~.gcb_model.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry]):
+                label_class_weights (Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry]):
                     Weights associated with each label class, for
                     rebalancing the training data. Only applicable
                     for classification models.
@@ -1023,21 +1023,21 @@ class Model(proto.Message):
                 item_column (str):
                     Item column specified for matrix
                     factorization models.
-                distance_type (~.gcb_model.Model.DistanceType):
+                distance_type (google.cloud.bigquery_v2.types.Model.DistanceType):
                     Distance type for clustering models.
                 num_clusters (int):
                     Number of clusters for clustering models.
                 model_uri (str):
                     [Beta] Google Cloud Storage URI from which the model was
                     imported. Only applicable for imported models.
-                optimization_strategy (~.gcb_model.Model.OptimizationStrategy):
+                optimization_strategy (google.cloud.bigquery_v2.types.Model.OptimizationStrategy):
                     Optimization strategy for training linear
                     regression models.
                 hidden_units (Sequence[int]):
                     Hidden units for dnn models.
                 batch_size (int):
                     Batch size for dnn models.
-                dropout (~.wrappers.DoubleValue):
+                dropout (google.protobuf.wrappers_pb2.DoubleValue):
                     Dropout probability for dnn models.
                 max_tree_depth (int):
                     Maximum depth of a tree for boosted tree
@@ -1046,18 +1046,18 @@ class Model(proto.Message):
                     Subsample fraction of the training data to
                     grow tree to prevent overfitting for boosted
                     tree models.
-                min_split_loss (~.wrappers.DoubleValue):
+                min_split_loss (google.protobuf.wrappers_pb2.DoubleValue):
                     Minimum split loss for boosted tree models.
                 num_factors (int):
                     Num factors specified for matrix
                     factorization models.
-                feedback_type (~.gcb_model.Model.FeedbackType):
+                feedback_type (google.cloud.bigquery_v2.types.Model.FeedbackType):
                     Feedback type that specifies which algorithm
                     to run for matrix factorization.
-                wals_alpha (~.wrappers.DoubleValue):
+                wals_alpha (google.protobuf.wrappers_pb2.DoubleValue):
                     Hyperparameter for matrix factoration when
                     implicit feedback type is specified.
-                kmeans_initialization_method (~.gcb_model.Model.KmeansEnums.KmeansInitializationMethod):
+                kmeans_initialization_method (google.cloud.bigquery_v2.types.Model.KmeansEnums.KmeansInitializationMethod):
                     The method used to initialize the centroids
                     for kmeans algorithm.
                 kmeans_initialization_column (str):
@@ -1071,16 +1071,16 @@ class Model(proto.Message):
                     for ARIMA model.
                 auto_arima (bool):
                     Whether to enable auto ARIMA or not.
-                non_seasonal_order (~.gcb_model.Model.ArimaOrder):
+                non_seasonal_order (google.cloud.bigquery_v2.types.Model.ArimaOrder):
                     A specification of the non-seasonal part of
                     the ARIMA model: the three components (p, d, q)
                     are the AR order, the degree of differencing,
                     and the MA order.
-                data_frequency (~.gcb_model.Model.DataFrequency):
+                data_frequency (google.cloud.bigquery_v2.types.Model.DataFrequency):
                     The data frequency of a time series.
                 include_drift (bool):
                     Include drift when fitting an ARIMA model.
-                holiday_region (~.gcb_model.Model.HolidayRegion):
+                holiday_region (google.cloud.bigquery_v2.types.Model.HolidayRegion):
                     The geographical region based on which the
                     holidays are considered in time series modeling.
                     If a valid value is specified, then holiday
@@ -1226,23 +1226,23 @@ class Model(proto.Message):
             r"""Information about a single iteration of the training run.
 
             Attributes:
-                index (~.wrappers.Int32Value):
+                index (google.protobuf.wrappers_pb2.Int32Value):
                     Index of the iteration, 0 based.
-                duration_ms (~.wrappers.Int64Value):
+                duration_ms (google.protobuf.wrappers_pb2.Int64Value):
                     Time taken to run the iteration in
                     milliseconds.
-                training_loss (~.wrappers.DoubleValue):
+                training_loss (google.protobuf.wrappers_pb2.DoubleValue):
                     Loss computed on the training data at the end
                     of iteration.
-                eval_loss (~.wrappers.DoubleValue):
+                eval_loss (google.protobuf.wrappers_pb2.DoubleValue):
                     Loss computed on the eval data at the end of
                     iteration.
                 learn_rate (float):
                     Learn rate used for this iteration.
-                cluster_infos (Sequence[~.gcb_model.Model.TrainingRun.IterationResult.ClusterInfo]):
+                cluster_infos (Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult.ClusterInfo]):
                     Information about top clusters for clustering
                     models.
-                arima_result (~.gcb_model.Model.TrainingRun.IterationResult.ArimaResult):
+                arima_result (google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult.ArimaResult):
 
             """
 
@@ -1252,10 +1252,10 @@ class Model(proto.Message):
                 Attributes:
                     centroid_id (int):
                         Centroid id.
-                    cluster_radius (~.wrappers.DoubleValue):
+                    cluster_radius (google.protobuf.wrappers_pb2.DoubleValue):
                         Cluster radius, the average distance from
                         centroid to each point assigned to the cluster.
-                    cluster_size (~.wrappers.Int64Value):
+                    cluster_size (google.protobuf.wrappers_pb2.Int64Value):
                         Cluster size, the total number of points
                         assigned to the cluster.
                 """
@@ -1276,11 +1276,11 @@ class Model(proto.Message):
                 iteration results.
 
                 Attributes:
-                    arima_model_info (Sequence[~.gcb_model.Model.TrainingRun.IterationResult.ArimaResult.ArimaModelInfo]):
+                    arima_model_info (Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult.ArimaResult.ArimaModelInfo]):
                         This message is repeated because there are
                         multiple arima models fitted in auto-arima. For
                         non-auto-arima model, its size is one.
-                    seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                    seasonal_periods (Sequence[google.cloud.bigquery_v2.types.Model.SeasonalPeriod.SeasonalPeriodType]):
                         Seasonal periods. Repeated because multiple
                         periods are supported for one time series.
                 """
@@ -1314,18 +1314,18 @@ class Model(proto.Message):
                     r"""Arima model information.
 
                     Attributes:
-                        non_seasonal_order (~.gcb_model.Model.ArimaOrder):
+                        non_seasonal_order (google.cloud.bigquery_v2.types.Model.ArimaOrder):
                             Non-seasonal order.
-                        arima_coefficients (~.gcb_model.Model.TrainingRun.IterationResult.ArimaResult.ArimaCoefficients):
+                        arima_coefficients (google.cloud.bigquery_v2.types.Model.TrainingRun.IterationResult.ArimaResult.ArimaCoefficients):
                             Arima coefficients.
-                        arima_fitting_metrics (~.gcb_model.Model.ArimaFittingMetrics):
+                        arima_fitting_metrics (google.cloud.bigquery_v2.types.Model.ArimaFittingMetrics):
                             Arima fitting metrics.
                         has_drift (bool):
                             Whether Arima model fitted with drift or not.
                             It is always false when d is not 1.
                         time_series_id (str):
                             The id to indicate different time series.
-                        seasonal_periods (Sequence[~.gcb_model.Model.SeasonalPeriod.SeasonalPeriodType]):
+                        seasonal_periods (Sequence[google.cloud.bigquery_v2.types.Model.SeasonalPeriod.SeasonalPeriodType]):
                             Seasonal periods. Repeated because multiple
                             periods are supported for one time series.
                     """
@@ -1482,7 +1482,7 @@ class PatchModelRequest(proto.Message):
             Required. Dataset ID of the model to patch.
         model_id (str):
             Required. Model ID of the model to patch.
-        model (~.gcb_model.Model):
+        model (google.cloud.bigquery_v2.types.Model):
             Required. Patched model.
             Follows RFC5789 patch semantics. Missing fields
             are not updated. To clear a field, explicitly
@@ -1525,7 +1525,7 @@ class ListModelsRequest(proto.Message):
             Required. Project ID of the models to list.
         dataset_id (str):
             Required. Dataset ID of the models to list.
-        max_results (~.wrappers.UInt32Value):
+        max_results (google.protobuf.wrappers_pb2.UInt32Value):
             The maximum number of results to return in a
             single response page. Leverage the page tokens
             to iterate through the entire collection.
@@ -1547,7 +1547,7 @@ class ListModelsResponse(proto.Message):
     r"""
 
     Attributes:
-        models (Sequence[~.gcb_model.Model]):
+        models (Sequence[google.cloud.bigquery_v2.types.Model]):
             Models in the requested dataset. Only the following fields
             are populated: model_reference, model_type, creation_time,
             last_modified_time and labels.

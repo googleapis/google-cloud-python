@@ -33,6 +33,8 @@ s.move(
     library,
     excludes=[
         "docs/index.rst",
+        "docs/bigquery_v2/*_service.rst",
+        "docs/bigquery_v2/services.rst",
         "README.rst",
         "noxfile.py",
         "setup.py",

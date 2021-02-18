@@ -33,13 +33,13 @@ class StandardSqlDataType(proto.Message):
     array_element_type="DATE"}} ]}}
 
     Attributes:
-        type_kind (~.standard_sql.StandardSqlDataType.TypeKind):
+        type_kind (google.cloud.bigquery_v2.types.StandardSqlDataType.TypeKind):
             Required. The top level type of this field.
             Can be any standard SQL data type (e.g.,
             "INT64", "DATE", "ARRAY").
-        array_element_type (~.standard_sql.StandardSqlDataType):
+        array_element_type (google.cloud.bigquery_v2.types.StandardSqlDataType):
             The type of the array's elements, if type_kind = "ARRAY".
-        struct_type (~.standard_sql.StandardSqlStructType):
+        struct_type (google.cloud.bigquery_v2.types.StandardSqlStructType):
             The fields of this struct, in order, if type_kind =
             "STRUCT".
     """
@@ -80,7 +80,7 @@ class StandardSqlField(proto.Message):
         name (str):
             Optional. The name of this field. Can be
             absent for struct fields.
-        type (~.standard_sql.StandardSqlDataType):
+        type (google.cloud.bigquery_v2.types.StandardSqlDataType):
             Optional. The type of this parameter. Absent
             if not explicitly specified (e.g., CREATE
             FUNCTION statement can omit the return type; in
@@ -97,7 +97,7 @@ class StandardSqlStructType(proto.Message):
     r"""
 
     Attributes:
-        fields (Sequence[~.standard_sql.StandardSqlField]):
+        fields (Sequence[google.cloud.bigquery_v2.types.StandardSqlField]):
 
     """
 

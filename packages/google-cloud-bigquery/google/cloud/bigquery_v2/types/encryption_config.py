@@ -30,7 +30,7 @@ class EncryptionConfiguration(proto.Message):
     r"""
 
     Attributes:
-        kms_key_name (~.wrappers.StringValue):
+        kms_key_name (google.protobuf.wrappers_pb2.StringValue):
             Optional. Describes the Cloud KMS encryption
             key that will be used to protect destination
             BigQuery table. The BigQuery Service Account
