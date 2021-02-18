@@ -394,6 +394,10 @@ class TestQuery(unittest.TestCase):
         client = self._create_client(channel)
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_interval(start_time=T0, end_time=T1)
+
+        # add a temporal alignment to test that "aggregation" query params is
+        # correctly processed
+        query = query.align(monitoring_v3.Aggregation.Aligner.ALIGN_MAX, seconds=3600)
         response = list(query.iter(headers_only=True))
 
         self.assertEqual(len(response), 2)
@@ -412,6 +416,10 @@ class TestQuery(unittest.TestCase):
             filter='metric.type = "{type}"'.format(type=METRIC_TYPE),
             interval=self._make_interval(T1, T0),
             view=monitoring_v3.ListTimeSeriesRequest.TimeSeriesView.HEADERS,
+            aggregation=monitoring_v3.Aggregation(
+                per_series_aligner=monitoring_v3.Aggregation.Aligner.ALIGN_MAX,
+                alignment_period={"seconds": 3600},
+            ),
         )
         request = channel.requests[0][1]
         self.assertEqual(request, expected_request)

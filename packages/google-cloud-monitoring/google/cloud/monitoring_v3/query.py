@@ -443,7 +443,9 @@ class Query(object):
             raise ValueError("Query time interval not specified.")
 
         params = self._build_query_params(headers_only, page_size)
-        for ts in self._client.list_time_series(**params):
+
+        request = monitoring_v3.ListTimeSeriesRequest(**params)
+        for ts in self._client.list_time_series(request):
             yield ts
 
     def _build_query_params(self, headers_only=False, page_size=None):
