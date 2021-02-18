@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.10](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.9...v0.40.10) (2021-02-17)
+
+
+### Bug Fixes
+
+* ignore unknown fields returned from server for REST ([#777](https://www.github.com/googleapis/gapic-generator-python/issues/777)) ([a70b078](https://www.github.com/googleapis/gapic-generator-python/commit/a70b0787f7e3d40642a4f68574f0cc493cc4e054))
+
 ### [0.40.9](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.8...v0.40.9) (2021-02-10)
 
 
