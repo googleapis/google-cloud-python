@@ -26,7 +26,7 @@ class ListDocumentsPager:
     """A pager for iterating through ``list_documents`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.firestore_v1.types.ListDocumentsResponse` object, and
+    :class:`~.firestore.ListDocumentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``documents`` field.
 
@@ -35,7 +35,7 @@ class ListDocumentsPager:
     through the ``documents`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.firestore_v1.types.ListDocumentsResponse`
+    All the usual :class:`~.firestore.ListDocumentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +53,9 @@ class ListDocumentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.firestore_v1.types.ListDocumentsRequest):
+            request (:class:`~.firestore.ListDocumentsRequest`):
                 The initial request object.
-            response (google.cloud.firestore_v1.types.ListDocumentsResponse):
+            response (:class:`~.firestore.ListDocumentsResponse`):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +88,7 @@ class ListDocumentsAsyncPager:
     """A pager for iterating through ``list_documents`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.firestore_v1.types.ListDocumentsResponse` object, and
+    :class:`~.firestore.ListDocumentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``documents`` field.
 
@@ -97,7 +97,7 @@ class ListDocumentsAsyncPager:
     through the ``documents`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.firestore_v1.types.ListDocumentsResponse`
+    All the usual :class:`~.firestore.ListDocumentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +115,9 @@ class ListDocumentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.firestore_v1.types.ListDocumentsRequest):
+            request (:class:`~.firestore.ListDocumentsRequest`):
                 The initial request object.
-            response (google.cloud.firestore_v1.types.ListDocumentsResponse):
+            response (:class:`~.firestore.ListDocumentsResponse`):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -154,7 +154,7 @@ class PartitionQueryPager:
     """A pager for iterating through ``partition_query`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.firestore_v1.types.PartitionQueryResponse` object, and
+    :class:`~.firestore.PartitionQueryResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``partitions`` field.
 
@@ -163,7 +163,7 @@ class PartitionQueryPager:
     through the ``partitions`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.firestore_v1.types.PartitionQueryResponse`
+    All the usual :class:`~.firestore.PartitionQueryResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -181,9 +181,9 @@ class PartitionQueryPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.firestore_v1.types.PartitionQueryRequest):
+            request (:class:`~.firestore.PartitionQueryRequest`):
                 The initial request object.
-            response (google.cloud.firestore_v1.types.PartitionQueryResponse):
+            response (:class:`~.firestore.PartitionQueryResponse`):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -216,7 +216,7 @@ class PartitionQueryAsyncPager:
     """A pager for iterating through ``partition_query`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.firestore_v1.types.PartitionQueryResponse` object, and
+    :class:`~.firestore.PartitionQueryResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``partitions`` field.
 
@@ -225,7 +225,7 @@ class PartitionQueryAsyncPager:
     through the ``partitions`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.firestore_v1.types.PartitionQueryResponse`
+    All the usual :class:`~.firestore.PartitionQueryResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -243,9 +243,9 @@ class PartitionQueryAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.firestore_v1.types.PartitionQueryRequest):
+            request (:class:`~.firestore.PartitionQueryRequest`):
                 The initial request object.
-            response (google.cloud.firestore_v1.types.PartitionQueryResponse):
+            response (:class:`~.firestore.PartitionQueryResponse`):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -282,7 +282,7 @@ class ListCollectionIdsPager:
     """A pager for iterating through ``list_collection_ids`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.firestore_v1.types.ListCollectionIdsResponse` object, and
+    :class:`~.firestore.ListCollectionIdsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``collection_ids`` field.
 
@@ -291,7 +291,7 @@ class ListCollectionIdsPager:
     through the ``collection_ids`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.firestore_v1.types.ListCollectionIdsResponse`
+    All the usual :class:`~.firestore.ListCollectionIdsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -309,9 +309,9 @@ class ListCollectionIdsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.firestore_v1.types.ListCollectionIdsRequest):
+            request (:class:`~.firestore.ListCollectionIdsRequest`):
                 The initial request object.
-            response (google.cloud.firestore_v1.types.ListCollectionIdsResponse):
+            response (:class:`~.firestore.ListCollectionIdsResponse`):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -344,7 +344,7 @@ class ListCollectionIdsAsyncPager:
     """A pager for iterating through ``list_collection_ids`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.firestore_v1.types.ListCollectionIdsResponse` object, and
+    :class:`~.firestore.ListCollectionIdsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``collection_ids`` field.
 
@@ -353,7 +353,7 @@ class ListCollectionIdsAsyncPager:
     through the ``collection_ids`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.firestore_v1.types.ListCollectionIdsResponse`
+    All the usual :class:`~.firestore.ListCollectionIdsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -371,9 +371,9 @@ class ListCollectionIdsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.firestore_v1.types.ListCollectionIdsRequest):
+            request (:class:`~.firestore.ListCollectionIdsRequest`):
                 The initial request object.
-            response (google.cloud.firestore_v1.types.ListCollectionIdsResponse):
+            response (:class:`~.firestore.ListCollectionIdsResponse`):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

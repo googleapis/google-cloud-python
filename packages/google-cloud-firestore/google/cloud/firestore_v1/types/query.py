@@ -31,13 +31,13 @@ class StructuredQuery(proto.Message):
     r"""A Firestore query.
 
     Attributes:
-        select (google.cloud.firestore_v1.types.StructuredQuery.Projection):
+        select (~.query.StructuredQuery.Projection):
             The projection to return.
-        from_ (Sequence[google.cloud.firestore_v1.types.StructuredQuery.CollectionSelector]):
+        from_ (Sequence[~.query.StructuredQuery.CollectionSelector]):
             The collections to query.
-        where (google.cloud.firestore_v1.types.StructuredQuery.Filter):
+        where (~.query.StructuredQuery.Filter):
             The filter to apply.
-        order_by (Sequence[google.cloud.firestore_v1.types.StructuredQuery.Order]):
+        order_by (Sequence[~.query.StructuredQuery.Order]):
             The order to apply to the query results.
 
             Firestore guarantees a stable ordering through the following
@@ -59,15 +59,15 @@ class StructuredQuery(proto.Message):
                ``SELECT * FROM Foo ORDER BY A DESC, __name__ DESC``
             -  ``SELECT * FROM Foo WHERE A > 1`` becomes
                ``SELECT * FROM Foo WHERE A > 1 ORDER BY A, __name__``
-        start_at (google.cloud.firestore_v1.types.Cursor):
+        start_at (~.query.Cursor):
             A starting point for the query results.
-        end_at (google.cloud.firestore_v1.types.Cursor):
+        end_at (~.query.Cursor):
             A end point for the query results.
         offset (int):
             The number of results to skip.
             Applies before limit, but after all other
             constraints. Must be >= 0 if specified.
-        limit (google.protobuf.wrappers_pb2.Int32Value):
+        limit (~.wrappers.Int32Value):
             The maximum number of results to return.
             Applies after all other constraints.
             Must be >= 0 if specified.
@@ -101,11 +101,11 @@ class StructuredQuery(proto.Message):
         r"""A filter.
 
         Attributes:
-            composite_filter (google.cloud.firestore_v1.types.StructuredQuery.CompositeFilter):
+            composite_filter (~.query.StructuredQuery.CompositeFilter):
                 A composite filter.
-            field_filter (google.cloud.firestore_v1.types.StructuredQuery.FieldFilter):
+            field_filter (~.query.StructuredQuery.FieldFilter):
                 A filter on a document field.
-            unary_filter (google.cloud.firestore_v1.types.StructuredQuery.UnaryFilter):
+            unary_filter (~.query.StructuredQuery.UnaryFilter):
                 A filter that takes exactly one argument.
         """
 
@@ -135,9 +135,9 @@ class StructuredQuery(proto.Message):
         operator.
 
         Attributes:
-            op (google.cloud.firestore_v1.types.StructuredQuery.CompositeFilter.Operator):
+            op (~.query.StructuredQuery.CompositeFilter.Operator):
                 The operator for combining multiple filters.
-            filters (Sequence[google.cloud.firestore_v1.types.StructuredQuery.Filter]):
+            filters (Sequence[~.query.StructuredQuery.Filter]):
                 The list of filters to combine.
                 Must contain at least one filter.
         """
@@ -159,11 +159,11 @@ class StructuredQuery(proto.Message):
         r"""A filter on a specific field.
 
         Attributes:
-            field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
+            field (~.query.StructuredQuery.FieldReference):
                 The field to filter by.
-            op (google.cloud.firestore_v1.types.StructuredQuery.FieldFilter.Operator):
+            op (~.query.StructuredQuery.FieldFilter.Operator):
                 The operator to filter by.
-            value (google.cloud.firestore_v1.types.Value):
+            value (~.document.Value):
                 The value to compare to.
         """
 
@@ -195,9 +195,9 @@ class StructuredQuery(proto.Message):
         r"""A filter with a single operand.
 
         Attributes:
-            op (google.cloud.firestore_v1.types.StructuredQuery.UnaryFilter.Operator):
+            op (~.query.StructuredQuery.UnaryFilter.Operator):
                 The unary operator to apply.
-            field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
+            field (~.query.StructuredQuery.FieldReference):
                 The field to which to apply the operator.
         """
 
@@ -224,9 +224,9 @@ class StructuredQuery(proto.Message):
         r"""An order on a field.
 
         Attributes:
-            field (google.cloud.firestore_v1.types.StructuredQuery.FieldReference):
+            field (~.query.StructuredQuery.FieldReference):
                 The field to order by.
-            direction (google.cloud.firestore_v1.types.StructuredQuery.Direction):
+            direction (~.query.StructuredQuery.Direction):
                 The direction to order by. Defaults to ``ASCENDING``.
         """
 
@@ -250,7 +250,7 @@ class StructuredQuery(proto.Message):
         r"""The projection of document's fields to return.
 
         Attributes:
-            fields (Sequence[google.cloud.firestore_v1.types.StructuredQuery.FieldReference]):
+            fields (Sequence[~.query.StructuredQuery.FieldReference]):
                 The fields to return.
 
                 If empty, all fields are returned. To only return the name
@@ -282,7 +282,7 @@ class Cursor(proto.Message):
     r"""A position in a query result set.
 
     Attributes:
-        values (Sequence[google.cloud.firestore_v1.types.Value]):
+        values (Sequence[~.document.Value]):
             The values that represent a position, in the
             order they appear in the order by clause of a
             query.

@@ -69,7 +69,7 @@ class GetDocumentRequest(proto.Message):
             Required. The resource name of the Document to get. In the
             format:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        mask (google.cloud.firestore_v1.types.DocumentMask):
+        mask (~.common.DocumentMask):
             The fields to return. If not set, returns all
             fields.
             If the document has a field that is not present
@@ -77,7 +77,7 @@ class GetDocumentRequest(proto.Message):
             the response.
         transaction (bytes):
             Reads the document in a transaction.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             Reads the version of the document at the
             given time. This may not be older than 270
             seconds.
@@ -121,7 +121,7 @@ class ListDocumentsRequest(proto.Message):
         order_by (str):
             The order to sort results by. For example:
             ``priority desc, name``.
-        mask (google.cloud.firestore_v1.types.DocumentMask):
+        mask (~.common.DocumentMask):
             The fields to return. If not set, returns all
             fields.
             If a document has a field that is not present in
@@ -129,7 +129,7 @@ class ListDocumentsRequest(proto.Message):
             the response.
         transaction (bytes):
             Reads documents in a transaction.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             Reads documents as they were at the given
             time. This may not be older than 270 seconds.
         show_missing (bool):
@@ -175,7 +175,7 @@ class ListDocumentsResponse(proto.Message):
     [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
 
     Attributes:
-        documents (Sequence[google.cloud.firestore_v1.types.Document]):
+        documents (Sequence[~.gf_document.Document]):
             The Documents found.
         next_page_token (str):
             The next page token.
@@ -210,9 +210,9 @@ class CreateDocumentRequest(proto.Message):
             this document.
             Optional. If not specified, an ID will be
             assigned by the service.
-        document (google.cloud.firestore_v1.types.Document):
+        document (~.gf_document.Document):
             Required. The document to create. ``name`` must not be set.
-        mask (google.cloud.firestore_v1.types.DocumentMask):
+        mask (~.common.DocumentMask):
             The fields to return. If not set, returns all
             fields.
             If the document has a field that is not present
@@ -236,11 +236,11 @@ class UpdateDocumentRequest(proto.Message):
     [Firestore.UpdateDocument][google.firestore.v1.Firestore.UpdateDocument].
 
     Attributes:
-        document (google.cloud.firestore_v1.types.Document):
+        document (~.gf_document.Document):
             Required. The updated document.
             Creates the document if it does not already
             exist.
-        update_mask (google.cloud.firestore_v1.types.DocumentMask):
+        update_mask (~.common.DocumentMask):
             The fields to update.
             None of the field paths in the mask may contain
             a reserved name.
@@ -250,13 +250,13 @@ class UpdateDocumentRequest(proto.Message):
             Fields referenced in the mask, but not present
             in the input document, are deleted from the
             document on the server.
-        mask (google.cloud.firestore_v1.types.DocumentMask):
+        mask (~.common.DocumentMask):
             The fields to return. If not set, returns all
             fields.
             If the document has a field that is not present
             in this mask, that field will not be returned in
             the response.
-        current_document (google.cloud.firestore_v1.types.Precondition):
+        current_document (~.common.Precondition):
             An optional precondition on the document.
             The request will fail if this is set and not met
             by the target document.
@@ -282,7 +282,7 @@ class DeleteDocumentRequest(proto.Message):
             Required. The resource name of the Document to delete. In
             the format:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        current_document (google.cloud.firestore_v1.types.Precondition):
+        current_document (~.common.Precondition):
             An optional precondition on the document.
             The request will fail if this is set and not met
             by the target document.
@@ -309,7 +309,7 @@ class BatchGetDocumentsRequest(proto.Message):
             The request will fail if any of the document is not a child
             resource of the given ``database``. Duplicate names will be
             elided.
-        mask (google.cloud.firestore_v1.types.DocumentMask):
+        mask (~.common.DocumentMask):
             The fields to return. If not set, returns all
             fields.
             If a document has a field that is not present in
@@ -317,12 +317,12 @@ class BatchGetDocumentsRequest(proto.Message):
             the response.
         transaction (bytes):
             Reads documents in a transaction.
-        new_transaction (google.cloud.firestore_v1.types.TransactionOptions):
+        new_transaction (~.common.TransactionOptions):
             Starts a new transaction and reads the
             documents. Defaults to a read-only transaction.
             The new transaction ID will be returned as the
             first response in the stream.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             Reads documents as they were at the given
             time. This may not be older than 270 seconds.
     """
@@ -355,7 +355,7 @@ class BatchGetDocumentsResponse(proto.Message):
     [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
 
     Attributes:
-        found (google.cloud.firestore_v1.types.Document):
+        found (~.gf_document.Document):
             A document that was requested.
         missing (str):
             A document name that was requested but does not exist. In
@@ -366,7 +366,7 @@ class BatchGetDocumentsResponse(proto.Message):
             Will only be set in the first response, and only if
             [BatchGetDocumentsRequest.new_transaction][google.firestore.v1.BatchGetDocumentsRequest.new_transaction]
             was set in the request.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             The time at which the document was read. This may be
             monotically increasing, in this case the previous documents
             in the result stream are guaranteed not to have changed
@@ -392,7 +392,7 @@ class BeginTransactionRequest(proto.Message):
         database (str):
             Required. The database name. In the format:
             ``projects/{project_id}/databases/{database_id}``.
-        options (google.cloud.firestore_v1.types.TransactionOptions):
+        options (~.common.TransactionOptions):
             The options for the transaction.
             Defaults to a read-write transaction.
     """
@@ -422,7 +422,7 @@ class CommitRequest(proto.Message):
         database (str):
             Required. The database name. In the format:
             ``projects/{project_id}/databases/{database_id}``.
-        writes (Sequence[google.cloud.firestore_v1.types.Write]):
+        writes (Sequence[~.write.Write]):
             The writes to apply.
             Always executed atomically and in order.
         transaction (bytes):
@@ -442,11 +442,11 @@ class CommitResponse(proto.Message):
     [Firestore.Commit][google.firestore.v1.Firestore.Commit].
 
     Attributes:
-        write_results (Sequence[google.cloud.firestore_v1.types.WriteResult]):
+        write_results (Sequence[~.write.WriteResult]):
             The result of applying the writes.
             This i-th write result corresponds to the i-th
             write in the request.
-        commit_time (google.protobuf.timestamp_pb2.Timestamp):
+        commit_time (~.timestamp.Timestamp):
             The time at which the commit occurred. Any read with an
             equal or greater ``read_time`` is guaranteed to see the
             effects of the commit.
@@ -489,16 +489,16 @@ class RunQueryRequest(proto.Message):
             For example:
             ``projects/my-project/databases/my-database/documents`` or
             ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
-        structured_query (google.cloud.firestore_v1.types.StructuredQuery):
+        structured_query (~.gf_query.StructuredQuery):
             A structured query.
         transaction (bytes):
             Reads documents in a transaction.
-        new_transaction (google.cloud.firestore_v1.types.TransactionOptions):
+        new_transaction (~.common.TransactionOptions):
             Starts a new transaction and reads the
             documents. Defaults to a read-only transaction.
             The new transaction ID will be returned as the
             first response in the stream.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             Reads documents as they were at the given
             time. This may not be older than 270 seconds.
     """
@@ -537,10 +537,10 @@ class RunQueryResponse(proto.Message):
             [RunQueryRequest.new_transaction][google.firestore.v1.RunQueryRequest.new_transaction]
             was set in the request. If set, no other fields will be set
             in this response.
-        document (google.cloud.firestore_v1.types.Document):
+        document (~.gf_document.Document):
             A query result.
             Not set when reporting partial progress.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             The time at which the document was read. This may be
             monotonically increasing; in this case, the previous
             documents in the result stream are guaranteed not to have
@@ -574,7 +574,7 @@ class PartitionQueryRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/documents``.
             Document resource names are not supported; only database
             resource names can be specified.
-        structured_query (google.cloud.firestore_v1.types.StructuredQuery):
+        structured_query (~.gf_query.StructuredQuery):
             A structured query.
             Query must specify collection with all
             descendants and be ordered by name ascending.
@@ -639,7 +639,7 @@ class PartitionQueryResponse(proto.Message):
     [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
 
     Attributes:
-        partitions (Sequence[google.cloud.firestore_v1.types.Cursor]):
+        partitions (Sequence[~.gf_query.Cursor]):
             Partition results. Each partition is a split point that can
             be used by RunQuery as a starting or end point for the query
             results. The RunQuery requests must be made with the same
@@ -696,7 +696,7 @@ class WriteRequest(proto.Message):
             The ID of the write stream to resume.
             This may only be set in the first message. When
             left empty, a new write stream will be created.
-        writes (Sequence[google.cloud.firestore_v1.types.Write]):
+        writes (Sequence[~.write.Write]):
             The writes to apply.
             Always executed atomically and in order.
             This must be empty on the first request.
@@ -719,7 +719,7 @@ class WriteRequest(proto.Message):
             ``stream_id`` field.
 
             Leave this field unset when creating a new stream.
-        labels (Sequence[google.cloud.firestore_v1.types.WriteRequest.LabelsEntry]):
+        labels (Sequence[~.firestore.WriteRequest.LabelsEntry]):
             Labels associated with this write request.
     """
 
@@ -748,11 +748,11 @@ class WriteResponse(proto.Message):
             response in the stream. This can be used by a
             client to resume the stream at this point.
             This field is always set.
-        write_results (Sequence[google.cloud.firestore_v1.types.WriteResult]):
+        write_results (Sequence[~.write.WriteResult]):
             The result of applying the writes.
             This i-th write result corresponds to the i-th
             write in the request.
-        commit_time (google.protobuf.timestamp_pb2.Timestamp):
+        commit_time (~.timestamp.Timestamp):
             The time at which the commit occurred. Any read with an
             equal or greater ``read_time`` is guaranteed to see the
             effects of the write.
@@ -777,12 +777,12 @@ class ListenRequest(proto.Message):
         database (str):
             Required. The database name. In the format:
             ``projects/{project_id}/databases/{database_id}``.
-        add_target (google.cloud.firestore_v1.types.Target):
+        add_target (~.firestore.Target):
             A target to add to this stream.
         remove_target (int):
             The ID of a target to remove from this
             stream.
-        labels (Sequence[google.cloud.firestore_v1.types.ListenRequest.LabelsEntry]):
+        labels (Sequence[~.firestore.ListenRequest.LabelsEntry]):
             Labels associated with this target change.
     """
 
@@ -802,17 +802,17 @@ class ListenResponse(proto.Message):
     [Firestore.Listen][google.firestore.v1.Firestore.Listen].
 
     Attributes:
-        target_change (google.cloud.firestore_v1.types.TargetChange):
+        target_change (~.firestore.TargetChange):
             Targets have changed.
-        document_change (google.cloud.firestore_v1.types.DocumentChange):
+        document_change (~.write.DocumentChange):
             A [Document][google.firestore.v1.Document] has changed.
-        document_delete (google.cloud.firestore_v1.types.DocumentDelete):
+        document_delete (~.write.DocumentDelete):
             A [Document][google.firestore.v1.Document] has been deleted.
-        document_remove (google.cloud.firestore_v1.types.DocumentRemove):
+        document_remove (~.write.DocumentRemove):
             A [Document][google.firestore.v1.Document] has been removed
             from a target (because it is no longer relevant to that
             target).
-        filter (google.cloud.firestore_v1.types.ExistenceFilter):
+        filter (~.write.ExistenceFilter):
             A filter to apply to the set of documents
             previously returned for the given target.
 
@@ -846,9 +846,9 @@ class Target(proto.Message):
     r"""A specification of a set of documents to listen to.
 
     Attributes:
-        query (google.cloud.firestore_v1.types.Target.QueryTarget):
+        query (~.firestore.Target.QueryTarget):
             A target specified by a query.
-        documents (google.cloud.firestore_v1.types.Target.DocumentsTarget):
+        documents (~.firestore.Target.DocumentsTarget):
             A target specified by a set of document
             names.
         resume_token (bytes):
@@ -858,7 +858,7 @@ class Target(proto.Message):
 
             Using a resume token with a different target is unsupported
             and may fail.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             Start listening after a specific ``read_time``.
 
             The client must know the state of matching documents at this
@@ -898,7 +898,7 @@ class Target(proto.Message):
                 For example:
                 ``projects/my-project/databases/my-database/documents`` or
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
-            structured_query (google.cloud.firestore_v1.types.StructuredQuery):
+            structured_query (~.gf_query.StructuredQuery):
                 A structured query.
         """
 
@@ -934,14 +934,14 @@ class TargetChange(proto.Message):
     r"""Targets being watched have changed.
 
     Attributes:
-        target_change_type (google.cloud.firestore_v1.types.TargetChange.TargetChangeType):
+        target_change_type (~.firestore.TargetChange.TargetChangeType):
             The type of change that occurred.
         target_ids (Sequence[int]):
             The target IDs of targets that have changed.
             If empty, the change applies to all targets.
 
             The order of the target IDs is not defined.
-        cause (google.rpc.status_pb2.Status):
+        cause (~.gr_status.Status):
             The error that resulted in this change, if
             applicable.
         resume_token (bytes):
@@ -949,7 +949,7 @@ class TargetChange(proto.Message):
             ``target_ids``, or all targets if ``target_ids`` is empty.
 
             Not set on every target change.
-        read_time (google.protobuf.timestamp_pb2.Timestamp):
+        read_time (~.timestamp.Timestamp):
             The consistent ``read_time`` for the given ``target_ids``
             (omitted when the target_ids are not at a consistent
             snapshot).
@@ -1036,13 +1036,13 @@ class BatchWriteRequest(proto.Message):
         database (str):
             Required. The database name. In the format:
             ``projects/{project_id}/databases/{database_id}``.
-        writes (Sequence[google.cloud.firestore_v1.types.Write]):
+        writes (Sequence[~.write.Write]):
             The writes to apply.
             Method does not apply writes atomically and does
             not guarantee ordering. Each write succeeds or
             fails independently. You cannot write to the
             same document more than once per request.
-        labels (Sequence[google.cloud.firestore_v1.types.BatchWriteRequest.LabelsEntry]):
+        labels (Sequence[~.firestore.BatchWriteRequest.LabelsEntry]):
             Labels associated with this batch write.
     """
 
@@ -1058,11 +1058,11 @@ class BatchWriteResponse(proto.Message):
     [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
 
     Attributes:
-        write_results (Sequence[google.cloud.firestore_v1.types.WriteResult]):
+        write_results (Sequence[~.write.WriteResult]):
             The result of applying the writes.
             This i-th write result corresponds to the i-th
             write in the request.
-        status (Sequence[google.rpc.status_pb2.Status]):
+        status (Sequence[~.gr_status.Status]):
             The status of applying the writes.
             This i-th write status corresponds to the i-th
             write in the request.

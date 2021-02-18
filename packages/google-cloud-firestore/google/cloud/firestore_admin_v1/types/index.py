@@ -31,7 +31,7 @@ class Index(proto.Message):
             of this name for composite indexes will be:
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{composite_index_id}``
             For single field indexes, this field will be empty.
-        query_scope (google.cloud.firestore_admin_v1.types.Index.QueryScope):
+        query_scope (~.index.Index.QueryScope):
             Indexes with a collection query scope
             specified allow queries against a collection
             that is the child of a specific document,
@@ -42,7 +42,7 @@ class Index(proto.Message):
             descended from a specific document, specified at
             query time, and that have the same collection id
             as this index.
-        fields (Sequence[google.cloud.firestore_admin_v1.types.Index.IndexField]):
+        fields (Sequence[~.index.Index.IndexField]):
             The fields supported by this index.
 
             For composite indexes, this is always 2 or more fields. The
@@ -57,7 +57,7 @@ class Index(proto.Message):
             For single field indexes, this will always be exactly one
             entry with a field path equal to the field path of the
             associated field.
-        state (google.cloud.firestore_admin_v1.types.Index.State):
+        state (~.index.Index.State):
             Output only. The serving state of the index.
     """
 
@@ -89,11 +89,11 @@ class Index(proto.Message):
             field_path (str):
                 Can be **name**. For single field indexes, this must match
                 the name of the field or may be omitted.
-            order (google.cloud.firestore_admin_v1.types.Index.IndexField.Order):
+            order (~.index.Index.IndexField.Order):
                 Indicates that this field supports ordering
                 by the specified order or comparing using =, <,
                 <=, >, >=.
-            array_config (google.cloud.firestore_admin_v1.types.Index.IndexField.ArrayConfig):
+            array_config (~.index.Index.IndexField.ArrayConfig):
                 Indicates that this field supports operations on
                 ``array_value``\ s.
         """

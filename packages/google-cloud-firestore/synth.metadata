@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-firestore.git",
-        "sha": "15b579f0b94aa8de3310b8bbc14916e97ac0c060"
+        "sha": "448c96580da9e6db039cc3c69d2ac0b87ae9a05e"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d1bb9173100f62c0cfc8f3138b62241e7f47ca6a"
+        "sha": "33366574ffb9e11737b3547eb6f020ecae0536e8"
       }
     }
   ],

@@ -156,21 +156,21 @@ Running System Tests
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
     for more details.
 
-- Once you have downloaded your json keys, set the environment variable
+- Once you have downloaded your json keys, set the environment variable 
   ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
 
    $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
 
 
 **************************
-Updating Conformance Tests
-**************************
+Updating Conformance Tests	
+**************************	
 
-The firestore client libraries use a shared set of conformance tests, the source of which can be found at https://github.com/googleapis/conformance-tests.
+The firestore client libraries use a shared set of conformance tests, the source of which can be found at https://github.com/googleapis/conformance-tests.	
 
-To update the copy of these conformance tests used by this repository, run the provided Makefile:
+To update the copy of these conformance tests used by this repository, run the provided Makefile:	
 
-   $ make -f Makefile_v1
+   $ make -f Makefile_v1	
 
 *************
 Test Coverage

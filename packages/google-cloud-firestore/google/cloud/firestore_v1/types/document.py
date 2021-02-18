@@ -37,7 +37,7 @@ class Document(proto.Message):
         name (str):
             The resource name of the document, for example
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        fields (Sequence[google.cloud.firestore_v1.types.Document.FieldsEntry]):
+        fields (Sequence[~.document.Document.FieldsEntry]):
             The document's fields.
 
             The map keys represent field names.
@@ -64,13 +64,13 @@ class Document(proto.Message):
             characters, including :literal:`\``, must be escaped using a
             ``\``. For example, :literal:`\`x&y\`` represents ``x&y``
             and :literal:`\`bak\`tik\`` represents :literal:`bak`tik`.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
+        create_time (~.timestamp.Timestamp):
             Output only. The time at which the document was created.
 
             This value increases monotonically when a document is
             deleted then recreated. It can also be compared to values
             from other documents and the ``read_time`` of a query.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
+        update_time (~.timestamp.Timestamp):
             Output only. The time at which the document was last
             changed.
 
@@ -93,7 +93,7 @@ class Value(proto.Message):
     r"""A message that can hold any of the supported value types.
 
     Attributes:
-        null_value (google.protobuf.struct_pb2.NullValue):
+        null_value (~.struct.NullValue):
             A null value.
         boolean_value (bool):
             A boolean value.
@@ -101,7 +101,7 @@ class Value(proto.Message):
             An integer value.
         double_value (float):
             A double value.
-        timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
+        timestamp_value (~.timestamp.Timestamp):
             A timestamp value.
             Precise only to microseconds. When stored, any
             additional precision is rounded down.
@@ -119,15 +119,15 @@ class Value(proto.Message):
         reference_value (str):
             A reference to a document. For example:
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        geo_point_value (google.type.latlng_pb2.LatLng):
+        geo_point_value (~.latlng.LatLng):
             A geo point value representing a point on the
             surface of Earth.
-        array_value (google.cloud.firestore_v1.types.ArrayValue):
+        array_value (~.document.ArrayValue):
             An array value.
             Cannot directly contain another array value,
             though can contain an map which contains another
             array.
-        map_value (google.cloud.firestore_v1.types.MapValue):
+        map_value (~.document.MapValue):
             A map value.
     """
 
@@ -168,7 +168,7 @@ class ArrayValue(proto.Message):
     r"""An array value.
 
     Attributes:
-        values (Sequence[google.cloud.firestore_v1.types.Value]):
+        values (Sequence[~.document.Value]):
             Values in the array.
     """
 
@@ -179,7 +179,7 @@ class MapValue(proto.Message):
     r"""A map value.
 
     Attributes:
-        fields (Sequence[google.cloud.firestore_v1.types.MapValue.FieldsEntry]):
+        fields (Sequence[~.document.MapValue.FieldsEntry]):
             The map's fields.
 
             The map keys represent field names. Field names matching the
