@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-containeranalysis.git",
-        "sha": "362499e713ca726f83bb1320f3bc9df18bf5bfcf"
+        "sha": "e5bb6c9f095a4db273a9546ea02ed19c2846b738"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
+        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
+        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
       }
     }
   ],
