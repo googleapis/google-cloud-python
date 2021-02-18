@@ -7,7 +7,7 @@
 
 # The firestore-dpe team is the default owner for anything not
 # explicitly taken by someone else.
-*                       @googleapis/firestore-dpe @googleapis/api-firestore 
+*                       @googleapis/firestore-dpe @googleapis/api-firestore @googleapis/yoshi-python
 
 
 /samples/   @googleapis/firestore-dpe @googleapis/python-samples-owners
