@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-container/compare/v2.3.0...v2.3.1) (2021-02-18)
+
+
+### Bug Fixes
+
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#60](https://www.github.com/googleapis/python-container/issues/60)) ([9207193](https://www.github.com/googleapis/python-container/commit/9207193fbaae7c6d91d87ffb9db57223f02544d6))
+
 ## [2.3.0](https://www.github.com/googleapis/python-container/compare/v2.2.0...v2.3.0) (2020-12-08)
 
 
