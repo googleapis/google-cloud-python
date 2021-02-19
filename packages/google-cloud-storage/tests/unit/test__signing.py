@@ -653,7 +653,22 @@ class Test_generate_signed_url_v4(unittest.TestCase):
     def test_w_custom_query_parameters_w_none_value(self):
         self._generate_helper(query_parameters={"qux": None})
 
-    def test_with_access_token(self):
+    def test_with_access_token_and_service_account_email(self):
+        resource = "/name/path"
+        credentials = _make_credentials()
+        email = mock.sentinel.service_account_email
+        with mock.patch(
+            "google.cloud.storage._signing._sign_message", return_value=b"DEADBEEF"
+        ):
+            self._call_fut(
+                credentials,
+                resource=resource,
+                expiration=datetime.timedelta(days=5),
+                service_account_email=email,
+                access_token="token",
+            )
+
+    def test_with_access_token_and_service_account_email_and_signer_email(self):
         resource = "/name/path"
         signer_email = "service@example.com"
         credentials = _make_credentials(signer_email=signer_email)
@@ -667,6 +682,39 @@ class Test_generate_signed_url_v4(unittest.TestCase):
                 service_account_email=signer_email,
                 access_token="token",
             )
+
+    def test_with_signer_email(self):
+        resource = "/name/path"
+        signer_email = "service@example.com"
+        credentials = _make_credentials(signer_email=signer_email)
+        credentials.sign_bytes.return_value = b"DEADBEEF"
+        self._call_fut(
+            credentials, resource=resource, expiration=datetime.timedelta(days=5),
+        )
+
+    def test_with_service_account_email_and_signer_email(self):
+        resource = "/name/path"
+        signer_email = "service@example.com"
+        credentials = _make_credentials(signer_email=signer_email)
+        credentials.sign_bytes.return_value = b"DEADBEEF"
+        self._call_fut(
+            credentials,
+            resource=resource,
+            expiration=datetime.timedelta(days=5),
+            service_account_email=signer_email,
+        )
+
+    def test_with_token_and_signer_email(self):
+        resource = "/name/path"
+        signer_email = "service@example.com"
+        credentials = _make_credentials(signer_email=signer_email)
+        credentials.sign_bytes.return_value = b"DEADBEEF"
+        self._call_fut(
+            credentials,
+            resource=resource,
+            expiration=datetime.timedelta(days=5),
+            access_token="token",
+        )
 
 
 class Test_sign_message(unittest.TestCase):
