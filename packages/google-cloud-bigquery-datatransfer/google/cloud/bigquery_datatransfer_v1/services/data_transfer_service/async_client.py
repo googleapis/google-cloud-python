@@ -94,6 +94,7 @@ class DataTransferServiceAsyncClient:
         DataTransferServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = DataTransferServiceClient.from_service_account_info
     from_service_account_file = DataTransferServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -172,7 +173,7 @@ class DataTransferServiceAsyncClient:
         settings, which can be used for UI rendering.
 
         Args:
-            request (:class:`~.datatransfer.GetDataSourceRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.GetDataSourceRequest`):
                 The request object. A request to get data source info.
             name (:class:`str`):
                 Required. The field will contain name of the resource
@@ -180,6 +181,7 @@ class DataTransferServiceAsyncClient:
                 ``projects/{project_id}/dataSources/{data_source_id}``
                 or
                 ``projects/{project_id}/locations/{location_id}/dataSources/{data_source_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -191,7 +193,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datatransfer.DataSource:
+            google.cloud.bigquery_datatransfer_v1.types.DataSource:
                 Represents data source metadata.
                 Metadata is sufficient to render UI and
                 request proper OAuth tokens.
@@ -256,7 +258,7 @@ class DataTransferServiceAsyncClient:
         settings, which can be used for UI rendering.
 
         Args:
-            request (:class:`~.datatransfer.ListDataSourcesRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest`):
                 The request object. Request to list supported data
                 sources and their data transfer settings.
             parent (:class:`str`):
@@ -264,6 +266,7 @@ class DataTransferServiceAsyncClient:
                 should be returned. Must be in the form:
                 ``projects/{project_id}`` or
                 \`projects/{project_id}/locations/{location_id}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -275,7 +278,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListDataSourcesAsyncPager:
+            google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.pagers.ListDataSourcesAsyncPager:
                 Returns list of supported data
                 sources and their metadata.
                 Iterating over this object will yield
@@ -348,7 +351,7 @@ class DataTransferServiceAsyncClient:
         r"""Creates a new data transfer configuration.
 
         Args:
-            request (:class:`~.datatransfer.CreateTransferConfigRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest`):
                 The request object. A request to create a data transfer
                 configuration. If new credentials are needed for this
                 transfer configuration, an authorization code must be
@@ -364,12 +367,14 @@ class DataTransferServiceAsyncClient:
                 projects/{project_id}. If specified location and
                 location of the destination bigquery dataset do not
                 match - the request will fail.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            transfer_config (:class:`~.transfer.TransferConfig`):
+            transfer_config (:class:`google.cloud.bigquery_datatransfer_v1.types.TransferConfig`):
                 Required. Data transfer configuration
                 to create.
+
                 This corresponds to the ``transfer_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -381,14 +386,15 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.transfer.TransferConfig:
-                Represents a data transfer configuration. A transfer
-                configuration contains all metadata needed to perform a
-                data transfer. For example, ``destination_dataset_id``
-                specifies where data should be stored. When a new
-                transfer configuration is created, the specified
-                ``destination_dataset_id`` is created when needed and
-                shared with the appropriate data source service account.
+            google.cloud.bigquery_datatransfer_v1.types.TransferConfig:
+                Represents a data transfer configuration. A transfer configuration
+                   contains all metadata needed to perform a data
+                   transfer. For example, destination_dataset_id
+                   specifies where data should be stored. When a new
+                   transfer configuration is created, the specified
+                   destination_dataset_id is created when needed and
+                   shared with the appropriate data source service
+                   account.
 
         """
         # Create or coerce a protobuf request object.
@@ -445,20 +451,22 @@ class DataTransferServiceAsyncClient:
         All fields must be set, even if they are not updated.
 
         Args:
-            request (:class:`~.datatransfer.UpdateTransferConfigRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest`):
                 The request object. A request to update a transfer
                 configuration. To update the user id of the transfer
                 configuration, an authorization code needs to be
                 provided.
-            transfer_config (:class:`~.transfer.TransferConfig`):
+            transfer_config (:class:`google.cloud.bigquery_datatransfer_v1.types.TransferConfig`):
                 Required. Data transfer configuration
                 to create.
+
                 This corresponds to the ``transfer_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Required list of fields to
                 be updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -470,14 +478,15 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.transfer.TransferConfig:
-                Represents a data transfer configuration. A transfer
-                configuration contains all metadata needed to perform a
-                data transfer. For example, ``destination_dataset_id``
-                specifies where data should be stored. When a new
-                transfer configuration is created, the specified
-                ``destination_dataset_id`` is created when needed and
-                shared with the appropriate data source service account.
+            google.cloud.bigquery_datatransfer_v1.types.TransferConfig:
+                Represents a data transfer configuration. A transfer configuration
+                   contains all metadata needed to perform a data
+                   transfer. For example, destination_dataset_id
+                   specifies where data should be stored. When a new
+                   transfer configuration is created, the specified
+                   destination_dataset_id is created when needed and
+                   shared with the appropriate data source service
+                   account.
 
         """
         # Create or coerce a protobuf request object.
@@ -535,7 +544,7 @@ class DataTransferServiceAsyncClient:
         including any associated transfer runs and logs.
 
         Args:
-            request (:class:`~.datatransfer.DeleteTransferConfigRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest`):
                 The request object. A request to delete data transfer
                 information. All associated transfer runs and log
                 messages will be deleted as well.
@@ -544,6 +553,7 @@ class DataTransferServiceAsyncClient:
                 requested, for example:
                 ``projects/{project_id}/transferConfigs/{config_id}`` or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -611,7 +621,7 @@ class DataTransferServiceAsyncClient:
         r"""Returns information about a data transfer config.
 
         Args:
-            request (:class:`~.datatransfer.GetTransferConfigRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.GetTransferConfigRequest`):
                 The request object. A request to get data transfer
                 information.
             name (:class:`str`):
@@ -619,6 +629,7 @@ class DataTransferServiceAsyncClient:
                 requested, for example:
                 ``projects/{project_id}/transferConfigs/{config_id}`` or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -630,14 +641,15 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.transfer.TransferConfig:
-                Represents a data transfer configuration. A transfer
-                configuration contains all metadata needed to perform a
-                data transfer. For example, ``destination_dataset_id``
-                specifies where data should be stored. When a new
-                transfer configuration is created, the specified
-                ``destination_dataset_id`` is created when needed and
-                shared with the appropriate data source service account.
+            google.cloud.bigquery_datatransfer_v1.types.TransferConfig:
+                Represents a data transfer configuration. A transfer configuration
+                   contains all metadata needed to perform a data
+                   transfer. For example, destination_dataset_id
+                   specifies where data should be stored. When a new
+                   transfer configuration is created, the specified
+                   destination_dataset_id is created when needed and
+                   shared with the appropriate data source service
+                   account.
 
         """
         # Create or coerce a protobuf request object.
@@ -699,13 +711,14 @@ class DataTransferServiceAsyncClient:
         project.
 
         Args:
-            request (:class:`~.datatransfer.ListTransferConfigsRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest`):
                 The request object. A request to list data transfers
                 configured for a BigQuery project.
             parent (:class:`str`):
                 Required. The BigQuery project id for which data sources
                 should be returned: ``projects/{project_id}`` or
                 ``projects/{project_id}/locations/{location_id}``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -717,7 +730,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTransferConfigsAsyncPager:
+            google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.pagers.ListTransferConfigsAsyncPager:
                 The returned list of pipelines in the
                 project.
                 Iterating over this object will yield
@@ -795,25 +808,28 @@ class DataTransferServiceAsyncClient:
         StartManualTransferRuns instead.
 
         Args:
-            request (:class:`~.datatransfer.ScheduleTransferRunsRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsRequest`):
                 The request object. A request to schedule transfer runs
                 for a time range.
             parent (:class:`str`):
                 Required. Transfer configuration name in the form:
                 ``projects/{project_id}/transferConfigs/{config_id}`` or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            start_time (:class:`~.timestamp.Timestamp`):
+            start_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
                 Required. Start time of the range of transfer runs. For
                 example, ``"2017-05-25T00:00:00+00:00"``.
+
                 This corresponds to the ``start_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            end_time (:class:`~.timestamp.Timestamp`):
+            end_time (:class:`google.protobuf.timestamp_pb2.Timestamp`):
                 Required. End time of the range of transfer runs. For
                 example, ``"2017-05-30T00:00:00+00:00"``.
+
                 This corresponds to the ``end_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -825,7 +841,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datatransfer.ScheduleTransferRunsResponse:
+            google.cloud.bigquery_datatransfer_v1.types.ScheduleTransferRunsResponse:
                 A response to schedule transfer runs
                 for a time range.
 
@@ -886,7 +902,7 @@ class DataTransferServiceAsyncClient:
         and end_time (exclusive), or for a specific run_time.
 
         Args:
-            request (:class:`~.datatransfer.StartManualTransferRunsRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest`):
                 The request object. A request to start manual transfer
                 runs.
 
@@ -897,7 +913,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datatransfer.StartManualTransferRunsResponse:
+            google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsResponse:
                 A response to start manual transfer
                 runs.
 
@@ -939,7 +955,7 @@ class DataTransferServiceAsyncClient:
         run.
 
         Args:
-            request (:class:`~.datatransfer.GetTransferRunRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.GetTransferRunRequest`):
                 The request object. A request to get data transfer run
                 information.
             name (:class:`str`):
@@ -948,6 +964,7 @@ class DataTransferServiceAsyncClient:
                 ``projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}``
                 or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -959,7 +976,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.transfer.TransferRun:
+            google.cloud.bigquery_datatransfer_v1.types.TransferRun:
                 Represents a data transfer run.
         """
         # Create or coerce a protobuf request object.
@@ -1020,7 +1037,7 @@ class DataTransferServiceAsyncClient:
         r"""Deletes the specified transfer run.
 
         Args:
-            request (:class:`~.datatransfer.DeleteTransferRunRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest`):
                 The request object. A request to delete data transfer
                 run information.
             name (:class:`str`):
@@ -1029,6 +1046,7 @@ class DataTransferServiceAsyncClient:
                 ``projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}``
                 or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1096,7 +1114,7 @@ class DataTransferServiceAsyncClient:
         r"""Returns information about running and completed jobs.
 
         Args:
-            request (:class:`~.datatransfer.ListTransferRunsRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest`):
                 The request object. A request to list data transfer
                 runs. UI can use this method to show/filter specific
                 data transfer runs. The data source can use this method
@@ -1107,6 +1125,7 @@ class DataTransferServiceAsyncClient:
                 configuration resource name is:
                 ``projects/{project_id}/transferConfigs/{config_id}`` or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1118,7 +1137,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTransferRunsAsyncPager:
+            google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.pagers.ListTransferRunsAsyncPager:
                 The returned list of pipelines in the
                 project.
                 Iterating over this object will yield
@@ -1191,7 +1210,7 @@ class DataTransferServiceAsyncClient:
         transfer run.
 
         Args:
-            request (:class:`~.datatransfer.ListTransferLogsRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest`):
                 The request object. A request to get user facing log
                 messages associated with data transfer run.
             parent (:class:`str`):
@@ -1199,6 +1218,7 @@ class DataTransferServiceAsyncClient:
                 ``projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}``
                 or
                 ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1210,7 +1230,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTransferLogsAsyncPager:
+            google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.pagers.ListTransferLogsAsyncPager:
                 The returned list transfer run
                 messages.
                 Iterating over this object will yield
@@ -1288,7 +1308,7 @@ class DataTransferServiceAsyncClient:
         can create a transfer config.
 
         Args:
-            request (:class:`~.datatransfer.CheckValidCredsRequest`):
+            request (:class:`google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsRequest`):
                 The request object. A request to determine whether the
                 user has valid credentials. This method is used to limit
                 the number of OAuth popups in the user interface. The
@@ -1302,6 +1322,7 @@ class DataTransferServiceAsyncClient:
                 ``projects/{project_id}/dataSources/{data_source_id}``
                 or
                 ``projects/{project_id}/locations/{location_id}/dataSources/{data_source_id}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1313,7 +1334,7 @@ class DataTransferServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.datatransfer.CheckValidCredsResponse:
+            google.cloud.bigquery_datatransfer_v1.types.CheckValidCredsResponse:
                 A response indicating whether the
                 credentials exist and are valid.
 

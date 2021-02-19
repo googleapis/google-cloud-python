@@ -78,7 +78,7 @@ class ScheduleOptions(proto.Message):
             basis using StartManualTransferRuns API. When
             automatic scheduling is disabled, the
             TransferConfig.schedule field will be ignored.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Specifies time to start scheduling transfer
             runs. The first run will be scheduled at or
             after the start time according to a recurrence
@@ -86,7 +86,7 @@ class ScheduleOptions(proto.Message):
             start time can be changed at any moment. The
             time when a data transfer can be trigerred
             manually is not limited by this option.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Defines time to stop scheduling transfer
             runs. A transfer run cannot be scheduled at or
             after the end time. The end time can be changed
@@ -128,7 +128,7 @@ class TransferConfig(proto.Message):
         data_source_id (str):
             Data source id. Cannot be changed once data
             transfer is created.
-        params (~.struct.Struct):
+        params (google.protobuf.struct_pb2.Struct):
             Data transfer specific parameters.
         schedule (str):
             Data transfer schedule. If the data source does not support
@@ -142,7 +142,7 @@ class TransferConfig(proto.Message):
             https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
             NOTE: the granularity should be at least 8 hours, or less
             frequent.
-        schedule_options (~.transfer.ScheduleOptions):
+        schedule_options (google.cloud.bigquery_datatransfer_v1.types.ScheduleOptions):
             Options customizing the data transfer
             schedule.
         data_refresh_window_days (int):
@@ -155,13 +155,13 @@ class TransferConfig(proto.Message):
         disabled (bool):
             Is this config disabled. When set to true, no
             runs are scheduled for a given transfer.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Data transfer modification time.
             Ignored by server on input.
-        next_run_time (~.timestamp.Timestamp):
+        next_run_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Next time when data transfer
             will run.
-        state (~.transfer.TransferState):
+        state (google.cloud.bigquery_datatransfer_v1.types.TransferState):
             Output only. State of the most recently
             updated transfer run.
         user_id (int):
@@ -174,7 +174,7 @@ class TransferConfig(proto.Message):
             Pub/Sub topic where notifications will be
             sent after transfer runs associated with this
             transfer config finish.
-        email_preferences (~.transfer.EmailPreferences):
+        email_preferences (google.cloud.bigquery_datatransfer_v1.types.EmailPreferences):
             Email notifications will be sent according to
             these preferences to the email address of the
             user who owns this transfer config.
@@ -224,32 +224,32 @@ class TransferRun(proto.Message):
             have the form
             ``projects/{project_id}/locations/{location}/transferConfigs/{config_id}/runs/{run_id}``.
             The name is ignored when creating a transfer run.
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Minimum time after which a transfer run can
             be started.
-        run_time (~.timestamp.Timestamp):
+        run_time (google.protobuf.timestamp_pb2.Timestamp):
             For batch transfer runs, specifies the date
             and time of the data should be ingested.
-        error_status (~.status.Status):
+        error_status (google.rpc.status_pb2.Status):
             Status of the transfer run.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when transfer run was
             started. Parameter ignored by server for input
             requests.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when transfer run ended.
             Parameter ignored by server for input requests.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Last time the data transfer run
             state was updated.
-        params (~.struct.Struct):
+        params (google.protobuf.struct_pb2.Struct):
             Output only. Data transfer specific
             parameters.
         destination_dataset_id (str):
             Output only. The BigQuery target dataset id.
         data_source_id (str):
             Output only. Data source id.
-        state (~.transfer.TransferState):
+        state (google.cloud.bigquery_datatransfer_v1.types.TransferState):
             Data transfer run state. Ignored for input
             requests.
         user_id (int):
@@ -266,7 +266,7 @@ class TransferRun(proto.Message):
             Output only. Pub/Sub topic where a
             notification will be sent after this transfer
             run finishes
-        email_preferences (~.transfer.EmailPreferences):
+        email_preferences (google.cloud.bigquery_datatransfer_v1.types.EmailPreferences):
             Output only. Email notifications will be sent
             according to these preferences to the email
             address of the user who owns the transfer config
@@ -311,9 +311,9 @@ class TransferMessage(proto.Message):
     transfer run.
 
     Attributes:
-        message_time (~.timestamp.Timestamp):
+        message_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when message was logged.
-        severity (~.transfer.TransferMessage.MessageSeverity):
+        severity (google.cloud.bigquery_datatransfer_v1.types.TransferMessage.MessageSeverity):
             Message severity.
         message_text (str):
             Message text.

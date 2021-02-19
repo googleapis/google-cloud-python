@@ -1,6 +1,6 @@
 Services for Google Cloud Bigquery Datatransfer v1 API
 ======================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.bigquery_datatransfer_v1.services.data_transfer_service
-    :members:
-    :inherited-members:
+    data_transfer_service

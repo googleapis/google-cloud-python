@@ -25,7 +25,7 @@ class ListDataSourcesPager:
     """A pager for iterating through ``list_data_sources`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListDataSourcesResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``data_sources`` field.
 
@@ -34,7 +34,7 @@ class ListDataSourcesPager:
     through the ``data_sources`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListDataSourcesResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +52,9 @@ class ListDataSourcesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListDataSourcesRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListDataSourcesResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +87,7 @@ class ListDataSourcesAsyncPager:
     """A pager for iterating through ``list_data_sources`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListDataSourcesResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``data_sources`` field.
 
@@ -96,7 +96,7 @@ class ListDataSourcesAsyncPager:
     through the ``data_sources`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListDataSourcesResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +114,9 @@ class ListDataSourcesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListDataSourcesRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListDataSourcesResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListDataSourcesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +153,7 @@ class ListTransferConfigsPager:
     """A pager for iterating through ``list_transfer_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListTransferConfigsResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``transfer_configs`` field.
 
@@ -162,7 +162,7 @@ class ListTransferConfigsPager:
     through the ``transfer_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListTransferConfigsResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +180,9 @@ class ListTransferConfigsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListTransferConfigsRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListTransferConfigsResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +215,7 @@ class ListTransferConfigsAsyncPager:
     """A pager for iterating through ``list_transfer_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListTransferConfigsResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``transfer_configs`` field.
 
@@ -224,7 +224,7 @@ class ListTransferConfigsAsyncPager:
     through the ``transfer_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListTransferConfigsResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +242,9 @@ class ListTransferConfigsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListTransferConfigsRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListTransferConfigsResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListTransferConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -281,7 +281,7 @@ class ListTransferRunsPager:
     """A pager for iterating through ``list_transfer_runs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListTransferRunsResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``transfer_runs`` field.
 
@@ -290,7 +290,7 @@ class ListTransferRunsPager:
     through the ``transfer_runs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListTransferRunsResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -308,9 +308,9 @@ class ListTransferRunsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListTransferRunsRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListTransferRunsResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -343,7 +343,7 @@ class ListTransferRunsAsyncPager:
     """A pager for iterating through ``list_transfer_runs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListTransferRunsResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``transfer_runs`` field.
 
@@ -352,7 +352,7 @@ class ListTransferRunsAsyncPager:
     through the ``transfer_runs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListTransferRunsResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -370,9 +370,9 @@ class ListTransferRunsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListTransferRunsRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListTransferRunsResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -409,7 +409,7 @@ class ListTransferLogsPager:
     """A pager for iterating through ``list_transfer_logs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListTransferLogsResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``transfer_messages`` field.
 
@@ -418,7 +418,7 @@ class ListTransferLogsPager:
     through the ``transfer_messages`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListTransferLogsResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -436,9 +436,9 @@ class ListTransferLogsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListTransferLogsRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListTransferLogsResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -471,7 +471,7 @@ class ListTransferLogsAsyncPager:
     """A pager for iterating through ``list_transfer_logs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.datatransfer.ListTransferLogsResponse` object, and
+    :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``transfer_messages`` field.
 
@@ -480,7 +480,7 @@ class ListTransferLogsAsyncPager:
     through the ``transfer_messages`` field on the
     corresponding responses.
 
-    All the usual :class:`~.datatransfer.ListTransferLogsResponse`
+    All the usual :class:`google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -498,9 +498,9 @@ class ListTransferLogsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.datatransfer.ListTransferLogsRequest`):
+            request (google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsRequest):
                 The initial request object.
-            response (:class:`~.datatransfer.ListTransferLogsResponse`):
+            response (google.cloud.bigquery_datatransfer_v1.types.ListTransferLogsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

@@ -70,7 +70,7 @@ class DataSourceParameter(proto.Message):
             Parameter display name in the user interface.
         description (str):
             Parameter description.
-        type_ (~.datatransfer.DataSourceParameter.Type):
+        type_ (google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter.Type):
             Parameter type.
         required (bool):
             Is parameter required.
@@ -81,13 +81,13 @@ class DataSourceParameter(proto.Message):
             parameter validation.
         allowed_values (Sequence[str]):
             All possible values for the parameter.
-        min_value (~.wrappers.DoubleValue):
+        min_value (google.protobuf.wrappers_pb2.DoubleValue):
             For integer and double values specifies
             minimum allowed value.
-        max_value (~.wrappers.DoubleValue):
+        max_value (google.protobuf.wrappers_pb2.DoubleValue):
             For integer and double values specifies
             maxminum allowed value.
-        fields (Sequence[~.datatransfer.DataSourceParameter]):
+        fields (Sequence[google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter]):
             Deprecated. This field has no effect.
         validation_description (str):
             Description of the requirements for this
@@ -173,7 +173,7 @@ class DataSource(proto.Message):
             data source to prepare data and ingest them into
             BigQuery, e.g.,
             https://www.googleapis.com/auth/bigquery
-        transfer_type (~.transfer.TransferType):
+        transfer_type (google.cloud.bigquery_datatransfer_v1.types.TransferType):
             Deprecated. This field has no effect.
         supports_multiple_transfers (bool):
             Deprecated. This field has no effect.
@@ -190,14 +190,14 @@ class DataSource(proto.Message):
             Specifies whether the data source supports a user defined
             schedule, or operates on the default schedule. When set to
             ``true``, user can override default schedule.
-        parameters (Sequence[~.datatransfer.DataSourceParameter]):
+        parameters (Sequence[google.cloud.bigquery_datatransfer_v1.types.DataSourceParameter]):
             Data source parameters.
         help_url (str):
             Url for the help document for this data
             source.
-        authorization_type (~.datatransfer.DataSource.AuthorizationType):
+        authorization_type (google.cloud.bigquery_datatransfer_v1.types.DataSource.AuthorizationType):
             Indicates the type of authorization.
-        data_refresh_type (~.datatransfer.DataSource.DataRefreshType):
+        data_refresh_type (google.cloud.bigquery_datatransfer_v1.types.DataSource.DataRefreshType):
             Specifies whether the data source supports
             automatic data refresh for the past few days,
             and how it's supported. For some data sources,
@@ -210,7 +210,7 @@ class DataSource(proto.Message):
         manual_runs_disabled (bool):
             Disables backfilling and manual run
             scheduling for the data source.
-        minimum_schedule_interval (~.duration.Duration):
+        minimum_schedule_interval (google.protobuf.duration_pb2.Duration):
             The minimum interval for scheduler to
             schedule runs.
     """
@@ -315,7 +315,7 @@ class ListDataSourcesResponse(proto.Message):
     r"""Returns list of supported data sources and their metadata.
 
     Attributes:
-        data_sources (Sequence[~.datatransfer.DataSource]):
+        data_sources (Sequence[google.cloud.bigquery_datatransfer_v1.types.DataSource]):
             List of supported data sources and their
             transfer settings.
         next_page_token (str):
@@ -350,7 +350,7 @@ class CreateTransferConfigRequest(proto.Message):
             projects/{project_id}. If specified location and location of
             the destination bigquery dataset do not match - the request
             will fail.
-        transfer_config (~.transfer.TransferConfig):
+        transfer_config (google.cloud.bigquery_datatransfer_v1.types.TransferConfig):
             Required. Data transfer configuration to
             create.
         authorization_code (str):
@@ -408,7 +408,7 @@ class UpdateTransferConfigRequest(proto.Message):
     needs to be provided.
 
     Attributes:
-        transfer_config (~.transfer.TransferConfig):
+        transfer_config (google.cloud.bigquery_datatransfer_v1.types.TransferConfig):
             Required. Data transfer configuration to
             create.
         authorization_code (str):
@@ -431,7 +431,7 @@ class UpdateTransferConfigRequest(proto.Message):
                should be returned in the title bar of the browser, with
                the page text prompting the user to copy the code and
                paste it in the application.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Required list of fields to be
             updated in this request.
         version_info (str):
@@ -558,7 +558,7 @@ class ListTransferConfigsResponse(proto.Message):
     r"""The returned list of pipelines in the project.
 
     Attributes:
-        transfer_configs (Sequence[~.transfer.TransferConfig]):
+        transfer_configs (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferConfig]):
             Output only. The stored pipeline transfer
             configurations.
         next_page_token (str):
@@ -591,7 +591,7 @@ class ListTransferRunsRequest(proto.Message):
             resource name is:
             ``projects/{project_id}/transferConfigs/{config_id}`` or
             ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
-        states (Sequence[~.transfer.TransferState]):
+        states (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferState]):
             When specified, only transfer runs with
             requested states are returned.
         page_token (str):
@@ -604,7 +604,7 @@ class ListTransferRunsRequest(proto.Message):
         page_size (int):
             Page size. The default page size is the
             maximum value of 1000 results.
-        run_attempt (~.datatransfer.ListTransferRunsRequest.RunAttempt):
+        run_attempt (google.cloud.bigquery_datatransfer_v1.types.ListTransferRunsRequest.RunAttempt):
             Indicates how run attempts are to be pulled.
     """
 
@@ -628,7 +628,7 @@ class ListTransferRunsResponse(proto.Message):
     r"""The returned list of pipelines in the project.
 
     Attributes:
-        transfer_runs (Sequence[~.transfer.TransferRun]):
+        transfer_runs (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferRun]):
             Output only. The stored pipeline transfer
             runs.
         next_page_token (str):
@@ -669,7 +669,7 @@ class ListTransferLogsRequest(proto.Message):
         page_size (int):
             Page size. The default page size is the
             maximum value of 1000 results.
-        message_types (Sequence[~.transfer.TransferMessage.MessageSeverity]):
+        message_types (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferMessage.MessageSeverity]):
             Message types to return. If not populated -
             INFO, WARNING and ERROR messages are returned.
     """
@@ -689,7 +689,7 @@ class ListTransferLogsResponse(proto.Message):
     r"""The returned list transfer run messages.
 
     Attributes:
-        transfer_messages (Sequence[~.transfer.TransferMessage]):
+        transfer_messages (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferMessage]):
             Output only. The stored pipeline transfer
             messages.
         next_page_token (str):
@@ -749,10 +749,10 @@ class ScheduleTransferRunsRequest(proto.Message):
             Required. Transfer configuration name in the form:
             ``projects/{project_id}/transferConfigs/{config_id}`` or
             ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. Start time of the range of transfer runs. For
             example, ``"2017-05-25T00:00:00+00:00"``.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. End time of the range of transfer runs. For
             example, ``"2017-05-30T00:00:00+00:00"``.
     """
@@ -768,7 +768,7 @@ class ScheduleTransferRunsResponse(proto.Message):
     r"""A response to schedule transfer runs for a time range.
 
     Attributes:
-        runs (Sequence[~.transfer.TransferRun]):
+        runs (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferRun]):
             The transfer runs that were scheduled.
     """
 
@@ -783,10 +783,10 @@ class StartManualTransferRunsRequest(proto.Message):
             Transfer configuration name in the form:
             ``projects/{project_id}/transferConfigs/{config_id}`` or
             ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
-        requested_time_range (~.datatransfer.StartManualTransferRunsRequest.TimeRange):
+        requested_time_range (google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange):
             Time range for the transfer runs that should
             be started.
-        requested_run_time (~.timestamp.Timestamp):
+        requested_run_time (google.protobuf.timestamp_pb2.Timestamp):
             Specific run_time for a transfer run to be started. The
             requested_run_time must not be in the future.
     """
@@ -797,13 +797,13 @@ class StartManualTransferRunsRequest(proto.Message):
         (exclusive).
 
         Attributes:
-            start_time (~.timestamp.Timestamp):
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
                 Start time of the range of transfer runs. For example,
                 ``"2017-05-25T00:00:00+00:00"``. The start_time must be
                 strictly less than the end_time. Creates transfer runs where
                 run_time is in the range betwen start_time (inclusive) and
                 end_time (exlusive).
-            end_time (~.timestamp.Timestamp):
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
                 End time of the range of transfer runs. For example,
                 ``"2017-05-30T00:00:00+00:00"``. The end_time must not be in
                 the future. Creates transfer runs where run_time is in the
@@ -829,7 +829,7 @@ class StartManualTransferRunsResponse(proto.Message):
     r"""A response to start manual transfer runs.
 
     Attributes:
-        runs (Sequence[~.transfer.TransferRun]):
+        runs (Sequence[google.cloud.bigquery_datatransfer_v1.types.TransferRun]):
             The transfer runs that were created.
     """
 
