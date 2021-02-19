@@ -84,6 +84,13 @@ def get_application_default_credentials_path():
     return os.path.join(config_path, _CREDENTIALS_FILENAME)
 
 
+def _run_subprocess_ignore_stderr(command):
+    """ Return subprocess.check_output with the given command and ignores stderr."""
+    with open(os.devnull, "w") as devnull:
+        output = subprocess.check_output(command, stderr=devnull)
+    return output
+
+
 def get_project_id():
     """Gets the project ID from the Cloud SDK.
 
@@ -96,9 +103,9 @@ def get_project_id():
         command = _CLOUD_SDK_POSIX_COMMAND
 
     try:
-        output = subprocess.check_output(
-            (command,) + _CLOUD_SDK_CONFIG_COMMAND, stderr=subprocess.STDOUT
-        )
+        # Ignore the stderr coming from gcloud, so it won't be mixed into the output.
+        # https://github.com/googleapis/google-auth-library-python/issues/673
+        output = _run_subprocess_ignore_stderr((command,) + _CLOUD_SDK_CONFIG_COMMAND)
     except (subprocess.CalledProcessError, OSError, IOError):
         return None
 

@@ -71,6 +71,25 @@ def test_get_project_id_call_error(check_output):
     assert check_output.called
 
 
+def test__run_subprocess_ignore_stderr():
+    command = [
+        "python",
+        "-c",
+        "from __future__ import print_function;"
+        + "import sys;"
+        + "print('error', file=sys.stderr);"
+        + "print('output', file=sys.stdout)",
+    ]
+
+    # If we ignore stderr, then the output only has stdout
+    output = _cloud_sdk._run_subprocess_ignore_stderr(command)
+    assert output == b"output\n"
+
+    # If we pipe stderr to stdout, then the output is mixed with stdout and stderr.
+    output = subprocess.check_output(command, stderr=subprocess.STDOUT)
+    assert output == b"output\nerror\n" or output == b"error\noutput\n"
+
+
 @mock.patch("os.name", new="nt")
 def test_get_project_id_windows():
     check_output_patch = mock.patch(
