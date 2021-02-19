@@ -1,17 +1,27 @@
 # 3.0.0 Migration Guide
 
-The 3.0 release of the `google-cloud-datacatalog` client is a significant upgrade based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for earlier versions of this library will likely require updates to use this version. This document describes the changes that have been made, and what you need to do to update your usage.
+This document describes the breaking changes that have been made, and what you need to do to update your usage.
+
+The most significant change was introduced at v2.0 release based on a [next-gen code generator](https://github.com/googleapis/gapic-generator-python), and includes substantial interface changes. Existing code written for eariler versions of this library will likely require updates to use this version.
 
 If you experience issues or have questions, please file an [issue](https://github.com/googleapis/python-datacatalog/issues).
 
 ## Supported Python Versions
 
+| Applicable previous versions |
+|:-----------------------------|
+| v1.0.0 or lower              |
+
 > **WARNING**: Breaking change
 > 
-> The 3.0.0 release requires Python 3.6+.
+> The 2.0.0 release requires Python 3.6+.
 
 
 ## Method Calls
+
+| Applicable previous versions |
+|:-----------------------------|
+| v1.0.0 or lower              |
 
 > **WARNING**: Breaking change
 >
@@ -62,7 +72,7 @@ In `google-cloud-datacatalog<=1.0.0`, parameters required by the API were positi
     ):
 ```
 
-In the 3.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
+Since the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
 
 Some methods have additional keyword only parameters. The available parameters depend on the `google.api.method_signature` annotation specified by the API producer.
 
@@ -122,6 +132,9 @@ response = client.create_entry_group(
 
 ## Enums and Types
 
+| Applicable previous versions |
+|:-----------------------------|
+| v2.0.0 or lower              |
 
 > **WARNING**: Breaking changes
 > 
@@ -142,7 +155,22 @@ entry = datacatalog_v1.Entry()
 entry.type_ = datacatalog_v1.EntryType.FILESET
 ```
 
+The renamed attributes are:
+
+* `TagTemplateField.type` -> `TagTemplatedField.type_`
+* `ColumnSchema.type` -> `ColumnSchema.type_`
+* `Entry.type` -> `Entry.type_`
+
 ## Common Resource Path Helper Methods
 
-The `location_path` method existing in `google-cloud-datacatalog<=1.0.0` was renamed to `common_location_path`.
-And more resource path helper methods were added: `common_billing_account_path`, `common_folder_path`, `common_organization_path`, and `common_project_path`.
+| Applicable previous versions |
+|:-----------------------------|
+| v1.0.0 or lower              |
+
+The `location_path` method existing in `google-cloud-datacatalog<=1.0.0` was renamed to `common_location_path` in v3.0.0.
+
+If you are upgrading from v1.0.0 or lower, modify your code to use new method name.
+
+If you are upgrading from v2.0.0, and constructing paths manually as described in [previous upgrade guide](https://github.com/googleapis/python-datacatalog/blob/v2.0.0/UPGRADING.md#project-path-helper-methods), now you can use `common_location_path` method.
+
+There are also more resource path helper methods were added: `common_billing_account_path`, `common_folder_path`, `common_organization_path`, and `common_project_path`.
