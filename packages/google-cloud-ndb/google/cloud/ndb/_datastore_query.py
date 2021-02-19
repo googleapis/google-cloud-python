@@ -826,7 +826,7 @@ class _Result(object):
                     entity = context.cache.get_and_validate(key)
                 except KeyError:
                     pass
-            if entity is _KEY_NOT_IN_CACHE:
+            if entity is None or entity is _KEY_NOT_IN_CACHE:
                 # entity not in cache, create one.
                 entity = model._entity_from_protobuf(self.result_pb.entity)
             return entity
