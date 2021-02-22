@@ -24,6 +24,10 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+scripts = (
+    ["lower-bound-checker=test_utils.lower_bound_checker.lower_bound_checker:main"],
+)
+
 setuptools.setup(
     name="google-cloud-testutils",
     version=version,
@@ -33,9 +37,15 @@ setuptools.setup(
     license="Apache 2.0",
     url="https://github.com/googleapis/python-test-utils",
     packages=setuptools.PEP420PackageFinder.find(),
+    entry_points={"console_scripts": scripts},
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
-    install_requires=("google-auth >= 0.4.0", "six"),
+    install_requires=(
+        "google-auth >= 0.4.0",
+        "six>=1.9.0",
+        "click>=7.0.0",
+        "packaging>=19.0",
+    ),
     python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
     classifiers=[
         "Development Status :: 4 - Beta",
