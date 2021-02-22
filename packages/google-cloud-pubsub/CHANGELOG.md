@@ -5,6 +5,21 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## 2.4.0
+
+02-22-2021 05:02 PST
+
+
+### Implementation Changes
+
+### New Features
+
+- Add graceful streaming pull shutdown. ([#292](https://github.com/googleapis/python-pubsub/pull/292))
+
+### Documentation
+
+- Update samples with using the subscriber client as a context manager. ([#254](https://github.com/googleapis/python-pubsub/pull/254))
+
 ## [2.3.0](https://www.github.com/googleapis/python-pubsub/compare/v2.2.0...v2.3.0) (2021-02-08)
 
 
