@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-recommender/compare/v2.0.0...v2.1.0) (2021-01-29)
+
+
+### Features
+
+* add support for billingAccounts as another parent resource ([#59](https://www.github.com/googleapis/python-recommender/issues/59)) ([61d2c7b](https://www.github.com/googleapis/python-recommender/commit/61d2c7b0440c79a938cecd5a75822055934d8915))
+
+
+### Bug Fixes
+
+* remove client side gRPC receive limit ([#56](https://www.github.com/googleapis/python-recommender/issues/56)) ([10043cc](https://www.github.com/googleapis/python-recommender/commit/10043cc32d9c13ab92da62e214a972918336e88d))
+
+
+### Documentation
+
+* **python:** document adding Python 3.9 support, dropping 3.5 support ([#63](https://www.github.com/googleapis/python-recommender/issues/63)) ([5bb9b2c](https://www.github.com/googleapis/python-recommender/commit/5bb9b2c6b627e58a831be24d038f7b3f6bf55e3b)), closes [#787](https://www.github.com/googleapis/python-recommender/issues/787)
+
 ## [2.0.0](https://www.github.com/googleapis/python-recommender/compare/v1.1.1...v2.0.0) (2020-11-19)
 
 
