@@ -355,6 +355,62 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
         database_ids = [database.name for database in Config.INSTANCE.list_databases()]
         self.assertIn(temp_db.name, database_ids)
 
+    @unittest.skipIf(
+        USE_EMULATOR, "PITR-lite features are not supported by the emulator"
+    )
+    def test_create_database_pitr_invalid_retention_period(self):
+        pool = BurstyPool(labels={"testcase": "create_database_pitr"})
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        retention_period = "0d"
+        ddl_statements = [
+            "ALTER DATABASE {}"
+            " SET OPTIONS (version_retention_period = '{}')".format(
+                temp_db_id, retention_period
+            )
+        ]
+        temp_db = Config.INSTANCE.database(
+            temp_db_id, pool=pool, ddl_statements=ddl_statements
+        )
+        with self.assertRaises(exceptions.InvalidArgument):
+            temp_db.create()
+
+    @unittest.skipIf(
+        USE_EMULATOR, "PITR-lite features are not supported by the emulator"
+    )
+    def test_create_database_pitr_success(self):
+        pool = BurstyPool(labels={"testcase": "create_database_pitr"})
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        retention_period = "7d"
+        ddl_statements = [
+            "ALTER DATABASE {}"
+            " SET OPTIONS (version_retention_period = '{}')".format(
+                temp_db_id, retention_period
+            )
+        ]
+        temp_db = Config.INSTANCE.database(
+            temp_db_id, pool=pool, ddl_statements=ddl_statements
+        )
+        operation = temp_db.create()
+        self.to_delete.append(temp_db)
+
+        # We want to make sure the operation completes.
+        operation.result(30)  # raises on failure / timeout.
+
+        database_ids = [database.name for database in Config.INSTANCE.list_databases()]
+        self.assertIn(temp_db.name, database_ids)
+
+        temp_db.reload()
+        self.assertEqual(temp_db.version_retention_period, retention_period)
+
+        with temp_db.snapshot() as snapshot:
+            results = snapshot.execute_sql(
+                "SELECT OPTION_VALUE AS version_retention_period "
+                "FROM INFORMATION_SCHEMA.DATABASE_OPTIONS "
+                "WHERE SCHEMA_NAME = '' AND OPTION_NAME = 'version_retention_period'"
+            )
+            for result in results:
+                self.assertEqual(result[0], retention_period)
+
     def test_table_not_found(self):
         temp_db_id = "temp_db" + unique_resource_id("_")
 
@@ -405,6 +461,62 @@ class TestDatabaseAPI(unittest.TestCase, _TestData):
 
         temp_db.reload()
 
+        self.assertEqual(len(temp_db.ddl_statements), len(ddl_statements))
+
+    @unittest.skipIf(
+        USE_EMULATOR, "PITR-lite features are not supported by the emulator"
+    )
+    def test_update_database_ddl_pitr_invalid(self):
+        pool = BurstyPool(labels={"testcase": "update_database_ddl_pitr"})
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        retention_period = "0d"
+        temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
+        create_op = temp_db.create()
+        self.to_delete.append(temp_db)
+
+        # We want to make sure the operation completes.
+        create_op.result(240)  # raises on failure / timeout.
+
+        self.assertIsNone(temp_db.version_retention_period)
+
+        ddl_statements = DDL_STATEMENTS + [
+            "ALTER DATABASE {}"
+            " SET OPTIONS (version_retention_period = '{}')".format(
+                temp_db_id, retention_period
+            )
+        ]
+        with self.assertRaises(exceptions.InvalidArgument):
+            temp_db.update_ddl(ddl_statements)
+
+    @unittest.skipIf(
+        USE_EMULATOR, "PITR-lite features are not supported by the emulator"
+    )
+    def test_update_database_ddl_pitr_success(self):
+        pool = BurstyPool(labels={"testcase": "update_database_ddl_pitr"})
+        temp_db_id = "temp_db" + unique_resource_id("_")
+        retention_period = "7d"
+        temp_db = Config.INSTANCE.database(temp_db_id, pool=pool)
+        create_op = temp_db.create()
+        self.to_delete.append(temp_db)
+
+        # We want to make sure the operation completes.
+        create_op.result(240)  # raises on failure / timeout.
+
+        self.assertIsNone(temp_db.version_retention_period)
+
+        ddl_statements = DDL_STATEMENTS + [
+            "ALTER DATABASE {}"
+            " SET OPTIONS (version_retention_period = '{}')".format(
+                temp_db_id, retention_period
+            )
+        ]
+        operation = temp_db.update_ddl(ddl_statements)
+
+        # We want to make sure the operation completes.
+        operation.result(240)  # raises on failure / timeout.
+
+        temp_db.reload()
+        self.assertEqual(temp_db.version_retention_period, retention_period)
         self.assertEqual(len(temp_db.ddl_statements), len(ddl_statements))
 
     def test_db_batch_insert_then_db_snapshot_read(self):
@@ -486,6 +598,8 @@ class TestBackupAPI(unittest.TestCase, _TestData):
 
     @classmethod
     def setUpClass(cls):
+        from datetime import datetime
+
         pool = BurstyPool(labels={"testcase": "database_api"})
         ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
         db1 = Config.INSTANCE.database(
@@ -498,6 +612,7 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         op2 = db2.create()
         op1.result(SPANNER_OPERATION_TIMEOUT_IN_SECONDS)  # raises on failure / timeout.
         op2.result(SPANNER_OPERATION_TIMEOUT_IN_SECONDS)  # raises on failure / timeout.
+        cls.database_version_time = datetime.utcnow().replace(tzinfo=UTC)
 
         current_config = Config.INSTANCE.configuration_name
         same_config_instance_id = "same-config" + unique_resource_id("-")
@@ -573,7 +688,12 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         expire_time = expire_time.replace(tzinfo=UTC)
 
         # Create backup.
-        backup = instance.backup(backup_id, database=self._db, expire_time=expire_time)
+        backup = instance.backup(
+            backup_id,
+            database=self._db,
+            expire_time=expire_time,
+            version_time=self.database_version_time,
+        )
         operation = backup.create()
         self.to_delete.append(backup)
 
@@ -588,6 +708,7 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         self.assertEqual(self._db.name, backup._database)
         self.assertEqual(expire_time, backup.expire_time)
         self.assertIsNotNone(backup.create_time)
+        self.assertEqual(self.database_version_time, backup.version_time)
         self.assertIsNotNone(backup.size_bytes)
         self.assertIsNotNone(backup.state)
 
@@ -602,11 +723,91 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         database = instance.database(restored_id)
         self.to_drop.append(database)
         operation = database.restore(source=backup)
-        operation.result()
+        restored_db = operation.result()
+        self.assertEqual(
+            self.database_version_time, restored_db.restore_info.backup_info.create_time
+        )
+
+        metadata = operation.metadata
+        self.assertEqual(self.database_version_time, metadata.backup_info.create_time)
 
         database.drop()
         backup.delete()
         self.assertFalse(backup.exists())
+
+    def test_backup_version_time_defaults_to_create_time(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        instance = Config.INSTANCE
+        backup_id = "backup_id" + unique_resource_id("_")
+        expire_time = datetime.utcnow() + timedelta(days=3)
+        expire_time = expire_time.replace(tzinfo=UTC)
+
+        # Create backup.
+        backup = instance.backup(backup_id, database=self._db, expire_time=expire_time,)
+        operation = backup.create()
+        self.to_delete.append(backup)
+
+        # Check metadata.
+        metadata = operation.metadata
+        self.assertEqual(backup.name, metadata.name)
+        self.assertEqual(self._db.name, metadata.database)
+        operation.result()
+
+        # Check backup object.
+        backup.reload()
+        self.assertEqual(self._db.name, backup._database)
+        self.assertIsNotNone(backup.create_time)
+        self.assertEqual(backup.create_time, backup.version_time)
+
+        backup.delete()
+        self.assertFalse(backup.exists())
+
+    def test_create_backup_invalid_version_time_past(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        backup_id = "backup_id" + unique_resource_id("_")
+        expire_time = datetime.utcnow() + timedelta(days=3)
+        expire_time = expire_time.replace(tzinfo=UTC)
+        version_time = datetime.utcnow() - timedelta(days=10)
+        version_time = version_time.replace(tzinfo=UTC)
+
+        backup = Config.INSTANCE.backup(
+            backup_id,
+            database=self._db,
+            expire_time=expire_time,
+            version_time=version_time,
+        )
+
+        with self.assertRaises(exceptions.InvalidArgument):
+            op = backup.create()
+            op.result()
+
+    def test_create_backup_invalid_version_time_future(self):
+        from datetime import datetime
+        from datetime import timedelta
+        from pytz import UTC
+
+        backup_id = "backup_id" + unique_resource_id("_")
+        expire_time = datetime.utcnow() + timedelta(days=3)
+        expire_time = expire_time.replace(tzinfo=UTC)
+        version_time = datetime.utcnow() + timedelta(days=2)
+        version_time = version_time.replace(tzinfo=UTC)
+
+        backup = Config.INSTANCE.backup(
+            backup_id,
+            database=self._db,
+            expire_time=expire_time,
+            version_time=version_time,
+        )
+
+        with self.assertRaises(exceptions.InvalidArgument):
+            op = backup.create()
+            op.result()
 
     def test_restore_to_diff_instance(self):
         from datetime import datetime
@@ -706,7 +907,10 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         expire_time_1 = expire_time_1.replace(tzinfo=UTC)
 
         backup1 = Config.INSTANCE.backup(
-            backup_id_1, database=self._dbs[0], expire_time=expire_time_1
+            backup_id_1,
+            database=self._dbs[0],
+            expire_time=expire_time_1,
+            version_time=self.database_version_time,
         )
 
         expire_time_2 = datetime.utcnow() + timedelta(days=1)
@@ -741,6 +945,13 @@ class TestBackupAPI(unittest.TestCase, _TestData):
 
         # List backups filtered by create time.
         filter_ = 'create_time > "{0}"'.format(
+            create_time_compare.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        )
+        for backup in instance.list_backups(filter_=filter_):
+            self.assertEqual(backup.name, backup2.name)
+
+        # List backups filtered by version time.
+        filter_ = 'version_time > "{0}"'.format(
             create_time_compare.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         )
         for backup in instance.list_backups(filter_=filter_):

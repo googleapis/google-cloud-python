@@ -400,7 +400,7 @@ class Instance(object):
         )
         return page_iter
 
-    def backup(self, backup_id, database="", expire_time=None):
+    def backup(self, backup_id, database="", expire_time=None, version_time=None):
         """Factory to create a backup within this instance.
 
         :type backup_id: str
@@ -415,13 +415,29 @@ class Instance(object):
         :param expire_time:
             Optional. The expire time that will be used when creating the backup.
             Required if the create method needs to be called.
+
+        :type version_time: :class:`datetime.datetime`
+        :param version_time:
+            Optional. The version time that will be used to create the externally
+            consistent copy of the database. If not present, it is the same as
+            the `create_time` of the backup.
         """
         try:
             return Backup(
-                backup_id, self, database=database.name, expire_time=expire_time
+                backup_id,
+                self,
+                database=database.name,
+                expire_time=expire_time,
+                version_time=version_time,
             )
         except AttributeError:
-            return Backup(backup_id, self, database=database, expire_time=expire_time)
+            return Backup(
+                backup_id,
+                self,
+                database=database,
+                expire_time=expire_time,
+                version_time=version_time,
+            )
 
     def list_backups(self, filter_="", page_size=None):
         """List backups for the instance.

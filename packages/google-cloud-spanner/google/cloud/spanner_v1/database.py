@@ -107,6 +107,8 @@ class Database(object):
         self._state = None
         self._create_time = None
         self._restore_info = None
+        self._version_retention_period = None
+        self._earliest_version_time = None
 
         if pool is None:
             pool = BurstyPool()
@@ -203,6 +205,25 @@ class Database(object):
         :returns: an object representing the restore info for this database
         """
         return self._restore_info
+
+    @property
+    def version_retention_period(self):
+        """The period in which Cloud Spanner retains all versions of data
+        for the database.
+
+        :rtype: str
+        :returns: a string representing the duration of the version retention period
+        """
+        return self._version_retention_period
+
+    @property
+    def earliest_version_time(self):
+        """The earliest time at which older versions of the data can be read.
+
+        :rtype: :class:`datetime.datetime`
+        :returns: a datetime object representing the earliest version time
+        """
+        return self._earliest_version_time
 
     @property
     def ddl_statements(self):
@@ -313,6 +334,8 @@ class Database(object):
         self._state = DatabasePB.State(response.state)
         self._create_time = response.create_time
         self._restore_info = response.restore_info
+        self._version_retention_period = response.version_retention_period
+        self._earliest_version_time = response.earliest_version_time
 
     def update_ddl(self, ddl_statements, operation_id=""):
         """Update DDL for this database.

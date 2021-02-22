@@ -51,14 +51,23 @@ class Backup(object):
     :param expire_time: (Optional) The expire time that will be used to
                         create the backup. Required if the create method
                         needs to be called.
+
+    :type version_time: :class:`datetime.datetime`
+    :param version_time: (Optional) The version time that was specified for
+                        the externally consistent copy of the database. If
+                        not present, it is the same as the `create_time` of
+                        the backup.
     """
 
-    def __init__(self, backup_id, instance, database="", expire_time=None):
+    def __init__(
+        self, backup_id, instance, database="", expire_time=None, version_time=None
+    ):
         self.backup_id = backup_id
         self._instance = instance
         self._database = database
         self._expire_time = expire_time
         self._create_time = None
+        self._version_time = version_time
         self._size_bytes = None
         self._state = None
         self._referencing_databases = None
@@ -108,6 +117,16 @@ class Backup(object):
             this backup
         """
         return self._create_time
+
+    @property
+    def version_time(self):
+        """Version time of this backup.
+
+        :rtype: :class:`datetime.datetime`
+        :returns: a datetime object representing the version time of
+            this backup
+        """
+        return self._version_time
 
     @property
     def size_bytes(self):
@@ -190,7 +209,11 @@ class Backup(object):
             raise ValueError("database not set")
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        backup = BackupPB(database=self._database, expire_time=self.expire_time,)
+        backup = BackupPB(
+            database=self._database,
+            expire_time=self.expire_time,
+            version_time=self.version_time,
+        )
 
         future = api.create_backup(
             parent=self._instance.name,
@@ -228,6 +251,7 @@ class Backup(object):
         self._database = pb.database
         self._expire_time = pb.expire_time
         self._create_time = pb.create_time
+        self._version_time = pb.version_time
         self._size_bytes = pb.size_bytes
         self._state = BackupPB.State(pb.state)
         self._referencing_databases = pb.referencing_databases

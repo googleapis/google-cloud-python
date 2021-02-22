@@ -249,6 +249,20 @@ class TestDatabase(_BaseTest):
         )
         self.assertEqual(database.restore_info, restore_info)
 
+    def test_version_retention_period(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        version_retention_period = database._version_retention_period = "1d"
+        self.assertEqual(database.version_retention_period, version_retention_period)
+
+    def test_earliest_version_time(self):
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        earliest_version_time = database._earliest_version_time = self._make_timestamp()
+        self.assertEqual(database.earliest_version_time, earliest_version_time)
+
     def test_spanner_api_property_w_scopeless_creds(self):
 
         client = _Client()
@@ -581,6 +595,8 @@ class TestDatabase(_BaseTest):
             state=2,
             create_time=_datetime_to_pb_timestamp(timestamp),
             restore_info=restore_info,
+            version_retention_period="1d",
+            earliest_version_time=_datetime_to_pb_timestamp(timestamp),
         )
         api.get_database.return_value = db_pb
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -591,6 +607,8 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database._state, Database.State.READY)
         self.assertEqual(database._create_time, timestamp)
         self.assertEqual(database._restore_info, restore_info)
+        self.assertEqual(database._version_retention_period, "1d")
+        self.assertEqual(database._earliest_version_time, timestamp)
         self.assertEqual(database._ddl_statements, tuple(DDL_STATEMENTS))
 
         api.get_database_ddl.assert_called_once_with(
