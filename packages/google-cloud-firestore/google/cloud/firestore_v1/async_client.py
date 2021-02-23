@@ -49,7 +49,7 @@ from google.cloud.firestore_v1.services.firestore import (
 from google.cloud.firestore_v1.services.firestore.transports import (
     grpc_asyncio as firestore_grpc_transport,
 )
-from typing import Any, AsyncGenerator, Iterable
+from typing import Any, AsyncGenerator, Iterable, List
 
 
 class AsyncClient(BaseClient):
@@ -209,7 +209,7 @@ class AsyncClient(BaseClient):
 
     async def get_all(
         self,
-        references: list,
+        references: List[AsyncDocumentReference],
         field_paths: Iterable[str] = None,
         transaction=None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,

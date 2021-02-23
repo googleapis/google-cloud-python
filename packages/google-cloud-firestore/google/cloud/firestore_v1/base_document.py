@@ -268,7 +268,7 @@ class BaseDocumentReference(object):
     ) -> NoReturn:
         raise NotImplementedError
 
-    def _prep_get(
+    def _prep_batch_get(
         self,
         field_paths: Iterable[str] = None,
         transaction=None,
@@ -285,7 +285,8 @@ class BaseDocumentReference(object):
             mask = None
 
         request = {
-            "name": self._document_path,
+            "database": self._client._database_string,
+            "documents": [self._document_path],
             "mask": mask,
             "transaction": _helpers.get_transaction_id(transaction),
         }

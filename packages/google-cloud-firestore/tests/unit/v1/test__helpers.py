@@ -13,11 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import aiounittest
 import datetime
 import sys
 import unittest
 
 import mock
+import pytest
+from typing import List
 
 
 class AsyncMock(mock.MagicMock):
@@ -26,10 +29,14 @@ class AsyncMock(mock.MagicMock):
 
 
 class AsyncIter:
+    """Utility to help recreate the effect of an async generator. Useful when
+    you need to mock a system that requires `async for`.
+    """
+
     def __init__(self, items):
         self.items = items
 
-    async def __aiter__(self, **_):
+    async def __aiter__(self):
         for i in self.items:
             yield i
 
@@ -2422,6 +2429,15 @@ class Test_make_retry_timeout_kwargs(unittest.TestCase):
         kwargs = self._call_fut(retry, timeout)
         expected = {"retry": retry, "timeout": timeout}
         self.assertEqual(kwargs, expected)
+
+
+class TestAsyncGenerator(aiounittest.AsyncTestCase):
+    @pytest.mark.asyncio
+    async def test_async_iter(self):
+        consumed: List[int] = []
+        async for el in AsyncIter([1, 2, 3]):
+            consumed.append(el)
+        self.assertEqual(consumed, [1, 2, 3])
 
 
 def _value_pb(**kwargs):

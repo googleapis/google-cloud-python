@@ -17,7 +17,7 @@ import types
 import aiounittest
 
 import mock
-from tests.unit.v1.test__helpers import AsyncMock, AsyncIter
+from tests.unit.v1.test__helpers import AsyncIter, AsyncMock
 
 
 class TestAsyncCollectionReference(aiounittest.AsyncTestCase):

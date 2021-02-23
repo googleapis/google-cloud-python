@@ -23,6 +23,7 @@ import pytest
 from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1.types import write
+from google.protobuf.timestamp_pb2 import Timestamp
 
 from tests.unit.v1 import conformance_tests
 
@@ -134,20 +135,28 @@ def test_create_testprotos(test_proto):
 @pytest.mark.parametrize("test_proto", _GET_TESTPROTOS)
 def test_get_testprotos(test_proto):
     testcase = test_proto.get
-    firestore_api = mock.Mock(spec=["get_document"])
-    response = document.Document()
-    firestore_api.get_document.return_value = response
+    firestore_api = mock.Mock(spec=["batch_get_documents", "_client"])
+    response = firestore.BatchGetDocumentsResponse()
+    response.read_time = Timestamp(seconds=0, nanos=0)
+    response.found = document.Document()
+    response.found.fields = {}
+    response.found.create_time = Timestamp(seconds=0, nanos=0)
+    response.found.update_time = Timestamp(seconds=0, nanos=0)
+    firestore_api.batch_get_documents.return_value = iter([response])
+    firestore_api._client._database_string = "projects/projectID/databases/(default)"
     client, doc = _make_client_document(firestore_api, testcase)
+    response.found.name = doc._document_path
 
     doc.get()  # No '.textprotos' for errors, field_paths.
 
     expected_request = {
-        "name": doc._document_path,
+        "database": firestore_api._client._database_string,
+        "documents": [doc._document_path],
         "mask": None,
         "transaction": None,
     }
 
-    firestore_api.get_document.assert_called_once_with(
+    firestore_api.batch_get_documents.assert_called_once_with(
         request=expected_request, metadata=client._rpc_metadata,
     )
 

@@ -13,22 +13,26 @@
 # limitations under the License.
 
 """Classes for representing documents for the Google Cloud Firestore API."""
+import datetime
+import logging
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
+from google.cloud._helpers import _datetime_to_pb_timestamp  # type: ignore
 
 from google.cloud.firestore_v1.base_document import (
     BaseDocumentReference,
     DocumentSnapshot,
     _first_write_result,
 )
-
-from google.api_core import exceptions  # type: ignore
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.types import write
 from google.cloud.firestore_v1.watch import Watch
-from google.protobuf import timestamp_pb2
+from google.protobuf.timestamp_pb2 import Timestamp
 from typing import Any, Callable, Generator, Iterable
+
+
+logger = logging.getLogger(__name__)
 
 
 class DocumentReference(BaseDocumentReference):
@@ -325,7 +329,7 @@ class DocumentReference(BaseDocumentReference):
         option: _helpers.WriteOption = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> timestamp_pb2.Timestamp:
+    ) -> Timestamp:
         """Delete the current document in the Firestore database.
 
         Args:
@@ -389,31 +393,35 @@ class DocumentReference(BaseDocumentReference):
                 :attr:`create_time` attributes will all be ``None`` and
                 its :attr:`exists` attribute will be ``False``.
         """
-        request, kwargs = self._prep_get(field_paths, transaction, retry, timeout)
+        from google.cloud.firestore_v1.base_client import _parse_batch_get
 
-        firestore_api = self._client._firestore_api
-        try:
-            document_pb = firestore_api.get_document(
-                request=request, metadata=self._client._rpc_metadata, **kwargs,
+        request, kwargs = self._prep_batch_get(field_paths, transaction, retry, timeout)
+
+        response_iter = self._client._firestore_api.batch_get_documents(
+            request=request, metadata=self._client._rpc_metadata, **kwargs,
+        )
+
+        get_doc_response = next(response_iter, None)
+
+        if get_doc_response is not None:
+            return _parse_batch_get(
+                get_doc_response=get_doc_response,
+                reference_map={self._document_path: self},
+                client=self._client,
             )
-        except exceptions.NotFound:
-            data = None
-            exists = False
-            create_time = None
-            update_time = None
-        else:
-            data = _helpers.decode_dict(document_pb.fields, self._client)
-            exists = True
-            create_time = document_pb.create_time
-            update_time = document_pb.update_time
+
+        logger.warning(
+            "`batch_get_documents` unexpectedly returned empty "
+            "stream. Expected one object.",
+        )
 
         return DocumentSnapshot(
-            reference=self,
-            data=data,
-            exists=exists,
-            read_time=None,  # No server read_time available
-            create_time=create_time,
-            update_time=update_time,
+            self,
+            None,
+            exists=False,
+            read_time=_datetime_to_pb_timestamp(datetime.datetime.now()),
+            create_time=None,
+            update_time=None,
         )
 
     def collections(

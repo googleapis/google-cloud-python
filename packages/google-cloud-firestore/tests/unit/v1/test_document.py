@@ -366,33 +366,45 @@ class TestDocumentReference(unittest.TestCase):
         field_paths=None,
         use_transaction=False,
         not_found=False,
+        # This should be an impossible case, but we test against it for
+        # completeness
+        return_empty=False,
         retry=None,
         timeout=None,
     ):
-        from google.api_core.exceptions import NotFound
         from google.cloud.firestore_v1 import _helpers
         from google.cloud.firestore_v1.types import common
         from google.cloud.firestore_v1.types import document
+        from google.cloud.firestore_v1.types import firestore
         from google.cloud.firestore_v1.transaction import Transaction
 
         # Create a minimal fake GAPIC with a dummy response.
         create_time = 123
         update_time = 234
-        firestore_api = mock.Mock(spec=["get_document"])
-        response = mock.create_autospec(document.Document)
-        response.fields = {}
-        response.create_time = create_time
-        response.update_time = update_time
-
-        if not_found:
-            firestore_api.get_document.side_effect = NotFound("testing")
-        else:
-            firestore_api.get_document.return_value = response
+        read_time = 345
+        firestore_api = mock.Mock(spec=["batch_get_documents"])
+        response = mock.create_autospec(firestore.BatchGetDocumentsResponse)
+        response.read_time = read_time
+        response.found = mock.create_autospec(document.Document)
+        response.found.fields = {}
+        response.found.create_time = create_time
+        response.found.update_time = update_time
 
         client = _make_client("donut-base")
         client._firestore_api_internal = firestore_api
+        document_reference = self._make_one("where", "we-are", client=client)
 
-        document = self._make_one("where", "we-are", client=client)
+        response.found.name = None if not_found else document_reference._document_path
+        response.missing = document_reference._document_path if not_found else None
+
+        def WhichOneof(val):
+            return "missing" if not_found else "found"
+
+        response._pb = response
+        response._pb.WhichOneof = WhichOneof
+        firestore_api.batch_get_documents.return_value = iter(
+            [response] if not return_empty else []
+        )
 
         if use_transaction:
             transaction = Transaction(client)
@@ -402,21 +414,21 @@ class TestDocumentReference(unittest.TestCase):
 
         kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-        snapshot = document.get(
+        snapshot = document_reference.get(
             field_paths=field_paths, transaction=transaction, **kwargs
         )
 
-        self.assertIs(snapshot.reference, document)
-        if not_found:
+        self.assertIs(snapshot.reference, document_reference)
+        if not_found or return_empty:
             self.assertIsNone(snapshot._data)
             self.assertFalse(snapshot.exists)
-            self.assertIsNone(snapshot.read_time)
+            self.assertIsNotNone(snapshot.read_time)
             self.assertIsNone(snapshot.create_time)
             self.assertIsNone(snapshot.update_time)
         else:
             self.assertEqual(snapshot.to_dict(), {})
             self.assertTrue(snapshot.exists)
-            self.assertIsNone(snapshot.read_time)
+            self.assertIs(snapshot.read_time, read_time)
             self.assertIs(snapshot.create_time, create_time)
             self.assertIs(snapshot.update_time, update_time)
 
@@ -431,9 +443,10 @@ class TestDocumentReference(unittest.TestCase):
         else:
             expected_transaction_id = None
 
-        firestore_api.get_document.assert_called_once_with(
+        firestore_api.batch_get_documents.assert_called_once_with(
             request={
-                "name": document._document_path,
+                "database": client._database_string,
+                "documents": [document_reference._document_path],
                 "mask": mask,
                 "transaction": expected_transaction_id,
             },
@@ -446,6 +459,9 @@ class TestDocumentReference(unittest.TestCase):
 
     def test_get_default(self):
         self._get_helper()
+
+    def test_get_return_empty(self):
+        self._get_helper(return_empty=True)
 
     def test_get_w_retry_timeout(self):
         from google.api_core.retry import Retry
