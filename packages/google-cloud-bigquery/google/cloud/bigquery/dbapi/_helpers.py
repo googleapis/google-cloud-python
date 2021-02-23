@@ -19,6 +19,11 @@ import decimal
 import functools
 import numbers
 
+try:
+    import pyarrow
+except ImportError:  # pragma: NO COVER
+    pyarrow = None
+
 from google.cloud import bigquery
 from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import exceptions
@@ -184,7 +189,12 @@ def bigquery_scalar_type(value):
     elif isinstance(value, numbers.Real):
         return "FLOAT64"
     elif isinstance(value, decimal.Decimal):
-        return "NUMERIC"
+        # We check for NUMERIC before BIGNUMERIC in order to support pyarrow < 3.0.
+        scalar_object = pyarrow.scalar(value)
+        if isinstance(scalar_object, pyarrow.Decimal128Scalar):
+            return "NUMERIC"
+        else:
+            return "BIGNUMERIC"
     elif isinstance(value, str):
         return "STRING"
     elif isinstance(value, bytes):

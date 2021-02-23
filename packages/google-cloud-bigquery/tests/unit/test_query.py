@@ -166,6 +166,16 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         param = klass.positional(type_="NUMERIC", value="123456789.123456789")
         self.assertEqual(param.to_api_repr(), EXPECTED)
 
+    def test_to_api_repr_w_bignumeric(self):
+        big_num_string = "{d38}.{d38}".format(d38="9" * 38)
+        EXPECTED = {
+            "parameterType": {"type": "BIGNUMERIC"},
+            "parameterValue": {"value": big_num_string},
+        }
+        klass = self._get_target_class()
+        param = klass.positional(type_="BIGNUMERIC", value=big_num_string)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
     def test_to_api_repr_w_bool(self):
         EXPECTED = {
             "parameterType": {"type": "BOOL"},

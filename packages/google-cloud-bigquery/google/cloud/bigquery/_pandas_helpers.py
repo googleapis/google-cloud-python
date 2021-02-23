@@ -20,6 +20,7 @@ import logging
 import queue
 import warnings
 
+from packaging import version
 
 try:
     import pandas
@@ -80,6 +81,10 @@ def pyarrow_numeric():
     return pyarrow.decimal128(38, 9)
 
 
+def pyarrow_bignumeric():
+    return pyarrow.decimal256(76, 38)
+
+
 def pyarrow_time():
     return pyarrow.time64("us")
 
@@ -128,14 +133,23 @@ if pyarrow:
         pyarrow.date64().id: "DATETIME",  # because millisecond resolution
         pyarrow.binary().id: "BYTES",
         pyarrow.string().id: "STRING",  # also alias for pyarrow.utf8()
+        # The exact scale and precision don't matter, see below.
         pyarrow.decimal128(38, scale=9).id: "NUMERIC",
-        # The exact decimal's scale and precision are not important, as only
-        # the type ID matters, and it's the same for all decimal128 instances.
     }
+
+    if version.parse(pyarrow.__version__) >= version.parse("3.0.0"):
+        BQ_TO_ARROW_SCALARS["BIGNUMERIC"] = pyarrow_bignumeric
+        # The exact decimal's scale and precision are not important, as only
+        # the type ID matters, and it's the same for all decimal256 instances.
+        ARROW_SCALAR_IDS_TO_BQ[pyarrow.decimal256(76, scale=38).id] = "BIGNUMERIC"
+        _BIGNUMERIC_SUPPORT = True
+    else:
+        _BIGNUMERIC_SUPPORT = False
 
 else:  # pragma: NO COVER
     BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
     ARROW_SCALAR_IDS_TO_BQ = {}  # pragma: NO_COVER
+    _BIGNUMERIC_SUPPORT = False  # pragma: NO COVER
 
 
 def bq_to_arrow_struct_data_type(field):

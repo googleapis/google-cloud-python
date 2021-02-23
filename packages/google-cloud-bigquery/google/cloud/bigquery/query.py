@@ -83,7 +83,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 
         type_ (str):
             Name of parameter type.  One of 'STRING', 'INT64',
-            'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
+            'FLOAT64', 'NUMERIC', 'BIGNUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
             'DATE'.
 
         value (Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]):
@@ -102,7 +102,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         Args:
             type_ (str):
                 Name of parameter type.  One of 'STRING', 'INT64',
-                'FLOAT64', 'NUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
+                'FLOAT64', 'NUMERIC', 'BIGNUMERIC', 'BOOL', 'TIMESTAMP', 'DATETIME', or
                 'DATE'.
 
             value (Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]):
@@ -186,7 +186,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
 
         array_type (str):
             Name of type of array elements.  One of `'STRING'`, `'INT64'`,
-            `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+            `'FLOAT64'`, `'NUMERIC'`, `'BIGNUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
         values (List[appropriate scalar type]): The parameter array values.
     """
@@ -203,7 +203,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         Args:
             array_type (str):
                 Name of type of array elements.  One of `'STRING'`, `'INT64'`,
-                `'FLOAT64'`, `'NUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
+                `'FLOAT64'`, `'NUMERIC'`, `'BIGNUMERIC'`, `'BOOL'`, `'TIMESTAMP'`, or `'DATE'`.
 
             values (List[appropriate scalar type]): The parameter array values.
 

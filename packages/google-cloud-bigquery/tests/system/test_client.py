@@ -65,6 +65,7 @@ from google.api_core.exceptions import TooManyRequests
 from google.api_core.iam import Policy
 from google.cloud import bigquery
 from google.cloud import bigquery_v2
+from google.cloud.bigquery._pandas_helpers import _BIGNUMERIC_SUPPORT
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
@@ -891,6 +892,9 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField("time_col", "TIME"),
             bigquery.SchemaField("ts_col", "TIMESTAMP"),
         )
+        if _BIGNUMERIC_SUPPORT:
+            scalars_schema += (bigquery.SchemaField("bignum_col", "BIGNUMERIC"),)
+
         table_schema = scalars_schema + (
             # TODO: Array columns can't be read due to NULLABLE versus REPEATED
             #       mode mismatch. See:
@@ -902,21 +906,22 @@ class TestBigQuery(unittest.TestCase):
         )
         num_rows = 100
         nulls = [None] * num_rows
-        df_data = collections.OrderedDict(
-            [
-                ("bool_col", nulls),
-                ("bytes_col", nulls),
-                ("date_col", nulls),
-                ("dt_col", nulls),
-                ("float_col", nulls),
-                ("geo_col", nulls),
-                ("int_col", nulls),
-                ("num_col", nulls),
-                ("str_col", nulls),
-                ("time_col", nulls),
-                ("ts_col", nulls),
-            ]
-        )
+        df_data = [
+            ("bool_col", nulls),
+            ("bytes_col", nulls),
+            ("date_col", nulls),
+            ("dt_col", nulls),
+            ("float_col", nulls),
+            ("geo_col", nulls),
+            ("int_col", nulls),
+            ("num_col", nulls),
+            ("str_col", nulls),
+            ("time_col", nulls),
+            ("ts_col", nulls),
+        ]
+        if _BIGNUMERIC_SUPPORT:
+            df_data.append(("bignum_col", nulls))
+        df_data = collections.OrderedDict(df_data)
         dataframe = pandas.DataFrame(df_data, columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
@@ -1003,6 +1008,9 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField("time_col", "TIME"),
             bigquery.SchemaField("ts_col", "TIMESTAMP"),
         )
+        if _BIGNUMERIC_SUPPORT:
+            scalars_schema += (bigquery.SchemaField("bignum_col", "BIGNUMERIC"),)
+
         table_schema = scalars_schema + (
             # TODO: Array columns can't be read due to NULLABLE versus REPEATED
             #       mode mismatch. See:
@@ -1012,57 +1020,65 @@ class TestBigQuery(unittest.TestCase):
             #       https://jira.apache.org/jira/browse/ARROW-2587
             # bigquery.SchemaField("struct_col", "RECORD", fields=scalars_schema),
         )
-        df_data = collections.OrderedDict(
-            [
-                ("bool_col", [True, None, False]),
-                ("bytes_col", [b"abc", None, b"def"]),
+
+        df_data = [
+            ("bool_col", [True, None, False]),
+            ("bytes_col", [b"abc", None, b"def"]),
+            ("date_col", [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)]),
+            # (
+            #     "dt_col",
+            #     [
+            #         datetime.datetime(1, 1, 1, 0, 0, 0),
+            #         None,
+            #         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
+            #     ],
+            # ),
+            ("float_col", [float("-inf"), float("nan"), float("inf")]),
+            (
+                "geo_col",
+                [
+                    "POINT(30 10)",
+                    None,
+                    "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+                ],
+            ),
+            ("int_col", [-9223372036854775808, None, 9223372036854775807]),
+            (
+                "num_col",
+                [
+                    decimal.Decimal("-99999999999999999999999999999.999999999"),
+                    None,
+                    decimal.Decimal("99999999999999999999999999999.999999999"),
+                ],
+            ),
+            ("str_col", [u"abc", None, u"def"]),
+            (
+                "time_col",
+                [datetime.time(0, 0, 0), None, datetime.time(23, 59, 59, 999999)],
+            ),
+            (
+                "ts_col",
+                [
+                    datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
+                    None,
+                    datetime.datetime(
+                        9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
+                    ),
+                ],
+            ),
+        ]
+        if _BIGNUMERIC_SUPPORT:
+            df_data.append(
                 (
-                    "date_col",
-                    [datetime.date(1, 1, 1), None, datetime.date(9999, 12, 31)],
-                ),
-                # (
-                #     "dt_col",
-                #     [
-                #         datetime.datetime(1, 1, 1, 0, 0, 0),
-                #         None,
-                #         datetime.datetime(9999, 12, 31, 23, 59, 59, 999999),
-                #     ],
-                # ),
-                ("float_col", [float("-inf"), float("nan"), float("inf")]),
-                (
-                    "geo_col",
+                    "bignum_col",
                     [
-                        "POINT(30 10)",
+                        decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38)),
                         None,
-                        "POLYGON ((30 10, 40 40, 20 40, 10 20, 30 10))",
+                        decimal.Decimal("{d38}.{d38}".format(d38="9" * 38)),
                     ],
-                ),
-                ("int_col", [-9223372036854775808, None, 9223372036854775807]),
-                (
-                    "num_col",
-                    [
-                        decimal.Decimal("-99999999999999999999999999999.999999999"),
-                        None,
-                        decimal.Decimal("99999999999999999999999999999.999999999"),
-                    ],
-                ),
-                ("str_col", [u"abc", None, u"def"]),
-                (
-                    "time_col",
-                    [datetime.time(0, 0, 0), None, datetime.time(23, 59, 59, 999999)],
-                ),
-                (
-                    "ts_col",
-                    [
-                        datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=pytz.utc),
-                        None,
-                        datetime.datetime(
-                            9999, 12, 31, 23, 59, 59, 999999, tzinfo=pytz.utc
-                        ),
-                    ],
-                ),
-            ]
-        )
+                )
+            )
+        df_data = collections.OrderedDict(df_data)
         dataframe = pandas.DataFrame(df_data, dtype="object", columns=df_data.keys())
 
         dataset_id = _make_dataset_id("bq_load_test")
@@ -1172,6 +1188,7 @@ class TestBigQuery(unittest.TestCase):
             bigquery.SchemaField("geo_col", "GEOGRAPHY"),
             bigquery.SchemaField("int_col", "INTEGER"),
             bigquery.SchemaField("num_col", "NUMERIC"),
+            bigquery.SchemaField("bignum_col", "BIGNUMERIC"),
             bigquery.SchemaField("str_col", "STRING"),
             bigquery.SchemaField("time_col", "TIME"),
             bigquery.SchemaField("ts_col", "TIMESTAMP"),
@@ -1208,6 +1225,14 @@ class TestBigQuery(unittest.TestCase):
                         decimal.Decimal("-99999999999999999999999999999.999999999"),
                         None,
                         decimal.Decimal("99999999999999999999999999999.999999999"),
+                    ],
+                ),
+                (
+                    "bignum_col",
+                    [
+                        decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38)),
+                        None,
+                        decimal.Decimal("{d38}.{d38}".format(d38="9" * 38)),
                     ],
                 ),
                 ("str_col", [u"abc", None, u"def"]),
@@ -2157,6 +2182,10 @@ class TestBigQuery(unittest.TestCase):
         pi_numeric_param = ScalarQueryParameter(
             name="pi_numeric_param", type_="NUMERIC", value=pi_numeric
         )
+        bignum = decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38))
+        bignum_param = ScalarQueryParameter(
+            name="bignum_param", type_="BIGNUMERIC", value=bignum
+        )
         truthy = True
         truthy_param = ScalarQueryParameter(name="truthy", type_="BOOL", value=truthy)
         beef = b"DEADBEEF"
@@ -2302,6 +2331,15 @@ class TestBigQuery(unittest.TestCase):
                 "query_parameters": [with_friends_param],
             },
         ]
+        if _BIGNUMERIC_SUPPORT:
+            examples.append(
+                {
+                    "sql": "SELECT @bignum_param",
+                    "expected": bignum,
+                    "query_parameters": [bignum_param],
+                }
+            )
+
         for example in examples:
             jconfig = QueryJobConfig()
             jconfig.query_parameters = example["query_parameters"]

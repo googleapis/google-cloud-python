@@ -32,6 +32,7 @@ LEGACY_TO_STANDARD_TYPES = {
     "FLOAT": types.StandardSqlDataType.TypeKind.FLOAT64,
     "FLOAT64": types.StandardSqlDataType.TypeKind.FLOAT64,
     "NUMERIC": types.StandardSqlDataType.TypeKind.NUMERIC,
+    "BIGNUMERIC": types.StandardSqlDataType.TypeKind.BIGNUMERIC,
     "BOOLEAN": types.StandardSqlDataType.TypeKind.BOOL,
     "BOOL": types.StandardSqlDataType.TypeKind.BOOL,
     "GEOGRAPHY": types.StandardSqlDataType.TypeKind.GEOGRAPHY,

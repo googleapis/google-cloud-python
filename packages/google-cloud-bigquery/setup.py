@@ -33,6 +33,7 @@ dependencies = [
     "proto-plus >= 1.10.0",
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "google-resumable-media >= 0.6.0, < 2.0dev",
+    "packaging >= 14.3",
     "protobuf >= 3.12.0",
 ]
 extras = {
@@ -48,6 +49,7 @@ extras = {
         "pyarrow >= 1.0.0, < 4.0dev",
     ],
     "pandas": ["pandas>=0.23.0", "pyarrow >= 1.0.0, < 4.0dev",],
+    "bignumeric_type": ["pyarrow >= 3.0.0, < 4.0dev"],
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
         "opentelemetry-api==0.11b0",
