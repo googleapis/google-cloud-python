@@ -614,7 +614,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """Checks if the job is complete.
 
         Args:
-            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC. If the job state is ``DONE``, retrying is aborted
+                early, as the job will not change anymore.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -635,7 +637,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         """Start the job and wait for it to complete and get the result.
 
         Args:
-            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC. If the job state is ``DONE``, retrying is aborted
+                early, as the job will not change anymore.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.

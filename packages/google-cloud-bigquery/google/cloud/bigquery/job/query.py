@@ -979,7 +979,8 @@ class QueryJob(_AsyncJob):
 
         Args:
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the call that retrieves query results.
+                How to retry the call that retrieves query results. If the job state is
+                ``DONE``, retrying is aborted early, as the job will not change anymore.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -1128,7 +1129,9 @@ class QueryJob(_AsyncJob):
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
             retry (Optional[google.api_core.retry.Retry]):
-                How to retry the call that retrieves rows.
+                How to retry the call that retrieves rows. If the job state is
+                ``DONE``, retrying is aborted early even if the results are not
+                available, as this will not change anymore.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
