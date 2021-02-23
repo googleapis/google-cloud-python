@@ -146,13 +146,6 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.number_value, 3.14159)
 
-    def test_w_float_str(self):
-        from google.protobuf.struct_pb2 import Value
-
-        value_pb = self._callFUT(3.14159)
-        self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.number_value, 3.14159)
-
     def test_w_float_nan(self):
         from google.protobuf.struct_pb2 import Value
 
@@ -307,174 +300,6 @@ class Test_make_list_value_pbs(unittest.TestCase):
             self.assertEqual(len(found.values), 2)
             self.assertEqual(found.values[0].string_value, str(expected[0]))
             self.assertEqual(found.values[1].string_value, expected[1])
-
-
-class Test_parse_value(unittest.TestCase):
-    def _callFUT(self, *args, **kw):
-        from google.cloud.spanner_v1._helpers import _parse_value
-
-        return _parse_value(*args, **kw)
-
-    def test_w_null(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.STRING)
-        value = expected_value = None
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_string(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.STRING)
-        value = expected_value = u"Value"
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_bytes(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.BYTES)
-        value = "Value"
-        expected_value = b"Value"
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_bool(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.BOOL)
-        value = expected_value = True
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_int(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.INT64)
-        value = "12345"
-        expected_value = 12345
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_float(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.FLOAT64)
-        value = "3.14159"
-        expected_value = 3.14159
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_date(self):
-        import datetime
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        value = "2020-09-22"
-        expected_value = datetime.date(2020, 9, 22)
-        field_type = Type(code=TypeCode.DATE)
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_timestamp_wo_nanos(self):
-        import pytz
-        from google.api_core import datetime_helpers
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.TIMESTAMP)
-        value = "2016-12-20T21:13:47.123456Z"
-        expected_value = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, microsecond=123456, tzinfo=pytz.UTC
-        )
-
-        parsed = self._callFUT(value, field_type)
-        self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
-        self.assertEqual(parsed, expected_value)
-
-    def test_w_timestamp_w_nanos(self):
-        import pytz
-        from google.api_core import datetime_helpers
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.TIMESTAMP)
-        value = "2016-12-20T21:13:47.123456789Z"
-        expected_value = datetime_helpers.DatetimeWithNanoseconds(
-            2016, 12, 20, 21, 13, 47, nanosecond=123456789, tzinfo=pytz.UTC
-        )
-
-        parsed = self._callFUT(value, field_type)
-        self.assertIsInstance(parsed, datetime_helpers.DatetimeWithNanoseconds)
-        self.assertEqual(parsed, expected_value)
-
-    def test_w_array_empty(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(
-            code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.INT64)
-        )
-        value = []
-
-        self.assertEqual(self._callFUT(value, field_type), [])
-
-    def test_w_array_non_empty(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(
-            code=TypeCode.ARRAY, array_element_type=Type(code=TypeCode.INT64)
-        )
-        values = ["32", "19", "5"]
-        expected_values = [32, 19, 5]
-
-        self.assertEqual(self._callFUT(values, field_type), expected_values)
-
-    def test_w_struct(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import StructType
-        from google.cloud.spanner_v1 import TypeCode
-
-        struct_type_pb = StructType(
-            fields=[
-                StructType.Field(name="name", type_=Type(code=TypeCode.STRING)),
-                StructType.Field(name="age", type_=Type(code=TypeCode.INT64)),
-            ]
-        )
-        field_type = Type(code=TypeCode.STRUCT, struct_type=struct_type_pb)
-        values = [u"phred", "32"]
-        expected_values = [u"phred", 32]
-
-        self.assertEqual(self._callFUT(values, field_type), expected_values)
-
-    def test_w_numeric(self):
-        import decimal
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.NUMERIC)
-        expected_value = decimal.Decimal("99999999999999999999999999999.999999999")
-        value = "99999999999999999999999999999.999999999"
-
-        self.assertEqual(self._callFUT(value, field_type), expected_value)
-
-    def test_w_unknown_type(self):
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.TYPE_CODE_UNSPECIFIED)
-        value_pb = object()
-
-        with self.assertRaises(ValueError):
-            self._callFUT(value_pb, field_type)
 
 
 class Test_parse_value_pb(unittest.TestCase):
@@ -672,17 +497,6 @@ class Test_parse_value_pb(unittest.TestCase):
 
         field_type = Type(code=TypeCode.TYPE_CODE_UNSPECIFIED)
         value_pb = Value(string_value="Borked")
-
-        with self.assertRaises(ValueError):
-            self._callFUT(value_pb, field_type)
-
-    def test_w_empty_value(self):
-        from google.protobuf.struct_pb2 import Value
-        from google.cloud.spanner_v1 import Type
-        from google.cloud.spanner_v1 import TypeCode
-
-        field_type = Type(code=TypeCode.STRING)
-        value_pb = Value()
 
         with self.assertRaises(ValueError):
             self._callFUT(value_pb, field_type)

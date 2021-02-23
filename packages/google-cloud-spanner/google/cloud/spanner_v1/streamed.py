@@ -14,12 +14,15 @@
 
 """Wrapper for streaming results."""
 
+from google.protobuf.struct_pb2 import ListValue
+from google.protobuf.struct_pb2 import Value
 from google.cloud import exceptions
+from google.cloud.spanner_v1 import PartialResultSet
 from google.cloud.spanner_v1 import TypeCode
 import six
 
 # pylint: disable=ungrouped-imports
-from google.cloud.spanner_v1._helpers import _parse_value
+from google.cloud.spanner_v1._helpers import _parse_value_pb
 
 # pylint: enable=ungrouped-imports
 
@@ -88,7 +91,7 @@ class StreamedResultSet(object):
         field = self.fields[current_column]
         merged = _merge_by_type(self._pending_chunk, value, field.type_)
         self._pending_chunk = None
-        return _parse_value(merged, field.type_)
+        return merged
 
     def _merge_values(self, values):
         """Merge values into rows.
@@ -96,14 +99,17 @@ class StreamedResultSet(object):
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set.
         """
-        width = len(self.fields)
+        print(self.fields)
+        field_types = [field.type_ for field in self.fields]
+        width = len(field_types)
+        index = len(self._current_row)
         for value in values:
-            index = len(self._current_row)
-            field = self.fields[index]
-            self._current_row.append(_parse_value(value, field.type_))
-            if len(self._current_row) == width:
+            self._current_row.append(_parse_value_pb(value, field_types[index]))
+            index += 1
+            if index == width:
                 self._rows.append(self._current_row)
                 self._current_row = []
+                index = 0
 
     def _consume_next(self):
         """Consume the next partial result set from the stream.
@@ -111,6 +117,7 @@ class StreamedResultSet(object):
         Parse the result set into new/existing rows in :attr:`_rows`
         """
         response = six.next(self._response_iterator)
+        response_pb = PartialResultSet.pb(response)
 
         if self._metadata is None:  # first response
             metadata = self._metadata = response.metadata
@@ -119,29 +126,27 @@ class StreamedResultSet(object):
             if source is not None and source._transaction_id is None:
                 source._transaction_id = metadata.transaction.id
 
-        if "stats" in response:  # last response
+        if response_pb.HasField("stats"):  # last response
             self._stats = response.stats
 
-        values = list(response.values)
+        values = list(response_pb.values)
         if self._pending_chunk is not None:
             values[0] = self._merge_chunk(values[0])
 
-        if response.chunked_value:
+        if response_pb.chunked_value:
             self._pending_chunk = values.pop()
 
         self._merge_values(values)
 
     def __iter__(self):
-        iter_rows, self._rows[:] = self._rows[:], ()
         while True:
-            if not iter_rows:
-                try:
-                    self._consume_next()
-                except StopIteration:
-                    return
-                iter_rows, self._rows[:] = self._rows[:], ()
+            iter_rows, self._rows[:] = self._rows[:], ()
             while iter_rows:
                 yield iter_rows.pop(0)
+            try:
+                self._consume_next()
+            except StopIteration:
+                return
 
     def one(self):
         """Return exactly one result, or raise an exception.
@@ -213,9 +218,15 @@ def _unmergeable(lhs, rhs, type_):
 
 def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
     """Helper for '_merge_by_type'."""
-    if type(lhs) == str:
-        return float(lhs + rhs)
-    array_continuation = type(lhs) == float and type(rhs) == str and rhs == ""
+    lhs_kind = lhs.WhichOneof("kind")
+    if lhs_kind == "string_value":
+        return Value(string_value=lhs.string_value + rhs.string_value)
+    rhs_kind = rhs.WhichOneof("kind")
+    array_continuation = (
+        lhs_kind == "number_value"
+        and rhs_kind == "string_value"
+        and rhs.string_value == ""
+    )
     if array_continuation:
         return lhs
     raise Unmergeable(lhs, rhs, type_)
@@ -223,7 +234,7 @@ def _merge_float64(lhs, rhs, type_):  # pylint: disable=unused-argument
 
 def _merge_string(lhs, rhs, type_):  # pylint: disable=unused-argument
     """Helper for '_merge_by_type'."""
-    return str(lhs) + str(rhs)
+    return Value(string_value=lhs.string_value + rhs.string_value)
 
 
 _UNMERGEABLE_TYPES = (TypeCode.BOOL,)
@@ -234,17 +245,17 @@ def _merge_array(lhs, rhs, type_):
     element_type = type_.array_element_type
     if element_type.code in _UNMERGEABLE_TYPES:
         # Individual values cannot be merged, just concatenate
-        lhs.extend(rhs)
+        lhs.list_value.values.extend(rhs.list_value.values)
         return lhs
+    lhs, rhs = list(lhs.list_value.values), list(rhs.list_value.values)
 
     # Sanity check: If either list is empty, short-circuit.
     # This is effectively a no-op.
     if not len(lhs) or not len(rhs):
-        lhs.extend(rhs)
-        return lhs
+        return Value(list_value=ListValue(values=(lhs + rhs)))
 
     first = rhs.pop(0)
-    if first is None:  # can't merge
+    if first.HasField("null_value"):  # can't merge
         lhs.append(first)
     else:
         last = lhs.pop()
@@ -255,23 +266,22 @@ def _merge_array(lhs, rhs, type_):
             lhs.append(first)
         else:
             lhs.append(merged)
-    lhs.extend(rhs)
-    return lhs
+    return Value(list_value=ListValue(values=(lhs + rhs)))
 
 
 def _merge_struct(lhs, rhs, type_):
     """Helper for '_merge_by_type'."""
     fields = type_.struct_type.fields
+    lhs, rhs = list(lhs.list_value.values), list(rhs.list_value.values)
 
     # Sanity check: If either list is empty, short-circuit.
     # This is effectively a no-op.
     if not len(lhs) or not len(rhs):
-        lhs.extend(rhs)
-        return lhs
+        return Value(list_value=ListValue(values=(lhs + rhs)))
 
     candidate_type = fields[len(lhs) - 1].type_
     first = rhs.pop(0)
-    if first is None or candidate_type.code in _UNMERGEABLE_TYPES:
+    if first.HasField("null_value") or candidate_type.code in _UNMERGEABLE_TYPES:
         lhs.append(first)
     else:
         last = lhs.pop()
@@ -282,8 +292,7 @@ def _merge_struct(lhs, rhs, type_):
             lhs.append(first)
         else:
             lhs.append(merged)
-    lhs.extend(rhs)
-    return lhs
+    return Value(list_value=ListValue(values=lhs + rhs))
 
 
 _MERGE_BY_TYPE = {

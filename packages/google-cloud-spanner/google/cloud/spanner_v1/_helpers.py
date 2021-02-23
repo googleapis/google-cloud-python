@@ -161,41 +161,6 @@ def _make_list_value_pbs(values):
 
 
 # pylint: disable=too-many-branches
-def _parse_value(value, field_type):
-    if value is None:
-        return None
-    if field_type.code == TypeCode.STRING:
-        result = value
-    elif field_type.code == TypeCode.BYTES:
-        result = value.encode("utf8")
-    elif field_type.code == TypeCode.BOOL:
-        result = value
-    elif field_type.code == TypeCode.INT64:
-        result = int(value)
-    elif field_type.code == TypeCode.FLOAT64:
-        if isinstance(value, str):
-            result = float(value)
-        else:
-            result = value
-    elif field_type.code == TypeCode.DATE:
-        result = _date_from_iso8601_date(value)
-    elif field_type.code == TypeCode.TIMESTAMP:
-        DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
-        result = DatetimeWithNanoseconds.from_rfc3339(value)
-    elif field_type.code == TypeCode.ARRAY:
-        result = [_parse_value(item, field_type.array_element_type) for item in value]
-    elif field_type.code == TypeCode.STRUCT:
-        result = [
-            _parse_value(item, field_type.struct_type.fields[i].type_)
-            for (i, item) in enumerate(value)
-        ]
-    elif field_type.code == TypeCode.NUMERIC:
-        result = decimal.Decimal(value)
-    else:
-        raise ValueError("Unknown type: %s" % (field_type,))
-    return result
-
-
 def _parse_value_pb(value_pb, field_type):
     """Convert a Value protobuf to cell data.
 
@@ -209,17 +174,41 @@ def _parse_value_pb(value_pb, field_type):
     :returns: value extracted from value_pb
     :raises ValueError: if unknown type is passed
     """
+    type_code = field_type.code
     if value_pb.HasField("null_value"):
         return None
-    if value_pb.HasField("string_value"):
-        return _parse_value(value_pb.string_value, field_type)
-    if value_pb.HasField("bool_value"):
-        return _parse_value(value_pb.bool_value, field_type)
-    if value_pb.HasField("number_value"):
-        return _parse_value(value_pb.number_value, field_type)
-    if value_pb.HasField("list_value"):
-        return _parse_value(value_pb.list_value, field_type)
-    raise ValueError("No value set in Value: %s" % (value_pb,))
+    if type_code == TypeCode.STRING:
+        return value_pb.string_value
+    elif type_code == TypeCode.BYTES:
+        return value_pb.string_value.encode("utf8")
+    elif type_code == TypeCode.BOOL:
+        return value_pb.bool_value
+    elif type_code == TypeCode.INT64:
+        return int(value_pb.string_value)
+    elif type_code == TypeCode.FLOAT64:
+        if value_pb.HasField("string_value"):
+            return float(value_pb.string_value)
+        else:
+            return value_pb.number_value
+    elif type_code == TypeCode.DATE:
+        return _date_from_iso8601_date(value_pb.string_value)
+    elif type_code == TypeCode.TIMESTAMP:
+        DatetimeWithNanoseconds = datetime_helpers.DatetimeWithNanoseconds
+        return DatetimeWithNanoseconds.from_rfc3339(value_pb.string_value)
+    elif type_code == TypeCode.ARRAY:
+        return [
+            _parse_value_pb(item_pb, field_type.array_element_type)
+            for item_pb in value_pb.list_value.values
+        ]
+    elif type_code == TypeCode.STRUCT:
+        return [
+            _parse_value_pb(item_pb, field_type.struct_type.fields[i].type_)
+            for (i, item_pb) in enumerate(value_pb.list_value.values)
+        ]
+    elif field_type.code == TypeCode.NUMERIC:
+        return decimal.Decimal(value_pb.string_value)
+    else:
+        raise ValueError("Unknown type: %s" % (field_type,))
 
 
 # pylint: enable=too-many-branches

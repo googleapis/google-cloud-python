@@ -90,6 +90,16 @@ class TestStreamedResultSet(unittest.TestCase):
         return _make_value_pb(value)
 
     @staticmethod
+    def _make_list_value(values=(), value_pbs=None):
+        from google.protobuf.struct_pb2 import ListValue
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1._helpers import _make_list_value_pb
+
+        if value_pbs is not None:
+            return Value(list_value=ListValue(values=value_pbs))
+        return Value(list_value=_make_list_value_pb(values))
+
+    @staticmethod
     def _make_result_set_metadata(fields=(), transaction_id=None):
         from google.cloud.spanner_v1 import ResultSetMetadata
         from google.cloud.spanner_v1 import StructType
@@ -161,26 +171,25 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_scalar_field("age", TypeCode.INT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = 42
-        chunk = 13
+        streamed._pending_chunk = self._make_value(42)
+        chunk = self._make_value(13)
 
         merged = streamed._merge_chunk(chunk)
-        self.assertEqual(merged, 4213)
+        self.assertEqual(merged.string_value, "4213")
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_float64_nan_string(self):
         from google.cloud.spanner_v1 import TypeCode
-        from math import isnan
 
         iterator = _MockCancellableIterator()
         streamed = self._make_one(iterator)
         FIELDS = [self._make_scalar_field("weight", TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = u"Na"
-        chunk = u"N"
+        streamed._pending_chunk = self._make_value(u"Na")
+        chunk = self._make_value(u"N")
 
         merged = streamed._merge_chunk(chunk)
-        self.assertTrue(isnan(merged))
+        self.assertEqual(merged.string_value, u"NaN")
 
     def test__merge_chunk_float64_w_empty(self):
         from google.cloud.spanner_v1 import TypeCode
@@ -189,11 +198,11 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_scalar_field("weight", TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = 3.14159
-        chunk = ""
+        streamed._pending_chunk = self._make_value(3.14159)
+        chunk = self._make_value("")
 
         merged = streamed._merge_chunk(chunk)
-        self.assertEqual(merged, 3.14159)
+        self.assertEqual(merged.number_value, 3.14159)
 
     def test__merge_chunk_float64_w_float64(self):
         from google.cloud.spanner_v1.streamed import Unmergeable
@@ -203,8 +212,8 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_scalar_field("weight", TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = 3.14159
-        chunk = 2.71828
+        streamed._pending_chunk = self._make_value(3.14159)
+        chunk = self._make_value(2.71828)
 
         with self.assertRaises(Unmergeable):
             streamed._merge_chunk(chunk)
@@ -216,12 +225,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_scalar_field("name", TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = u"phred"
-        chunk = u"wylma"
+        streamed._pending_chunk = self._make_value(u"phred")
+        chunk = self._make_value(u"wylma")
 
         merged = streamed._merge_chunk(chunk)
 
-        self.assertEqual(merged, u"phredwylma")
+        self.assertEqual(merged.string_value, u"phredwylma")
         self.assertIsNone(streamed._pending_chunk)
 
     def test__merge_chunk_string_w_bytes(self):
@@ -231,11 +240,11 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_scalar_field("image", TypeCode.BYTES)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = (
+        streamed._pending_chunk = self._make_value(
             u"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA"
             u"6fptVAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA\n"
         )
-        chunk = (
+        chunk = self._make_value(
             u"B3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0FNUExF"
             u"MG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n"
         )
@@ -243,10 +252,10 @@ class TestStreamedResultSet(unittest.TestCase):
         merged = streamed._merge_chunk(chunk)
 
         self.assertEqual(
-            merged,
-            b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAAL"
-            b"EwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0"
-            b"FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n",
+            merged.string_value,
+            u"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACXBIWXMAAAsTAAAL"
+            u"EwEAmpwYAAAA\nB3RJTUUH4QQGFwsBTL3HMwAAABJpVFh0Q29tbWVudAAAAAAAU0"
+            u"FNUExFMG3E+AAAAApJREFUCNdj\nYAAAAAIAAeIhvDMAAAAASUVORK5CYII=\n",
         )
         self.assertIsNone(streamed._pending_chunk)
 
@@ -257,12 +266,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.BOOL)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [True, True]
-        chunk = [False, False, False]
+        streamed._pending_chunk = self._make_list_value([True, True])
+        chunk = self._make_list_value([False, False, False])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [True, True, False, False, False]
+        expected = self._make_list_value([True, True, False, False, False])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -273,12 +282,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.INT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [0, 1, 2]
-        chunk = [3, 4, 5]
+        streamed._pending_chunk = self._make_list_value([0, 1, 2])
+        chunk = self._make_list_value([3, 4, 5])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [0, 1, 23, 4, 5]
+        expected = self._make_list_value([0, 1, 23, 4, 5])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -294,12 +303,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.FLOAT64)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [PI, SQRT_2]
-        chunk = ["", EULER, LOG_10]
+        streamed._pending_chunk = self._make_list_value([PI, SQRT_2])
+        chunk = self._make_list_value(["", EULER, LOG_10])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [PI, SQRT_2, EULER, LOG_10]
+        expected = self._make_list_value([PI, SQRT_2, EULER, LOG_10])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -310,12 +319,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [u"A", u"B", u"C"]
-        chunk = []
+        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
+        chunk = self._make_list_value([])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [u"A", u"B", u"C"]
+        expected = self._make_list_value([u"A", u"B", u"C"])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -326,12 +335,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [u"A", u"B", u"C"]
-        chunk = [None, u"D", u"E"]
+        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
+        chunk = self._make_list_value([None, u"D", u"E"])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [u"A", u"B", u"C", None, u"D", u"E"]
+        expected = self._make_list_value([u"A", u"B", u"C", None, u"D", u"E"])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -342,12 +351,12 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [u"A", u"B", u"C"]
-        chunk = [u"D", u"E"]
+        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
+        chunk = self._make_list_value([u"D", u"E"])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [u"A", u"B", u"CD", u"E"]
+        expected = self._make_list_value([u"A", u"B", u"CD", u"E"])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -364,17 +373,22 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [StructType.Field(name="loloi", type_=array_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [[0, 1], [2]]
-        chunk = [[3], [4, 5]]
+        streamed._pending_chunk = self._make_list_value(
+            value_pbs=[self._make_list_value([0, 1]), self._make_list_value([2])]
+        )
+        chunk = self._make_list_value(
+            value_pbs=[self._make_list_value([3]), self._make_list_value([4, 5])]
+        )
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [
-            [0, 1],
-            [23],
-            [4, 5],
-        ]
-
+        expected = self._make_list_value(
+            value_pbs=[
+                self._make_list_value([0, 1]),
+                self._make_list_value([23]),
+                self._make_list_value([4, 5]),
+            ]
+        )
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -391,23 +405,28 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed = self._make_one(iterator)
         FIELDS = [StructType.Field(name="lolos", type_=array_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = [
-            [u"A", u"B"],
-            [u"C"],
-        ]
-        chunk = [
-            [u"D"],
-            [u"E", u"F"],
-        ]
+        streamed._pending_chunk = self._make_list_value(
+            value_pbs=[
+                self._make_list_value([u"A", u"B"]),
+                self._make_list_value([u"C"]),
+            ]
+        )
+        chunk = self._make_list_value(
+            value_pbs=[
+                self._make_list_value([u"D"]),
+                self._make_list_value([u"E", u"F"]),
+            ]
+        )
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [
-            [u"A", u"B"],
-            [u"CD"],
-            [u"E", u"F"],
-        ]
-
+        expected = self._make_list_value(
+            value_pbs=[
+                self._make_list_value([u"A", u"B"]),
+                self._make_list_value([u"CD"]),
+                self._make_list_value([u"E", u"F"]),
+            ]
+        )
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -421,15 +440,15 @@ class TestStreamedResultSet(unittest.TestCase):
         )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = [u"Phred "]
-        streamed._pending_chunk = [partial]
-        rest = [u"Phlyntstone", 31]
-        chunk = [rest]
+        partial = self._make_list_value([u"Phred "])
+        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
+        rest = self._make_list_value([u"Phlyntstone", 31])
+        chunk = self._make_list_value(value_pbs=[rest])
 
         merged = streamed._merge_chunk(chunk)
 
-        struct = [u"Phred Phlyntstone", 31]
-        expected = [struct]
+        struct = self._make_list_value([u"Phred Phlyntstone", 31])
+        expected = self._make_list_value(value_pbs=[struct])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -443,14 +462,14 @@ class TestStreamedResultSet(unittest.TestCase):
         )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = [u"Phred "]
-        streamed._pending_chunk = [partial]
-        rest = []
-        chunk = [rest]
+        partial = self._make_list_value([u"Phred "])
+        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
+        rest = self._make_list_value([])
+        chunk = self._make_list_value(value_pbs=[rest])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = [partial]
+        expected = self._make_list_value(value_pbs=[partial])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -468,15 +487,15 @@ class TestStreamedResultSet(unittest.TestCase):
         )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = [u"Phred Phlyntstone", True]
-        streamed._pending_chunk = [partial]
-        rest = [True]
-        chunk = [rest]
+        partial = self._make_list_value([u"Phred Phlyntstone", True])
+        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
+        rest = self._make_list_value([True])
+        chunk = self._make_list_value(value_pbs=[rest])
 
         merged = streamed._merge_chunk(chunk)
 
-        struct = [u"Phred Phlyntstone", True, True]
-        expected = [struct]
+        struct = self._make_list_value([u"Phred Phlyntstone", True, True])
+        expected = self._make_list_value(value_pbs=[struct])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -488,15 +507,15 @@ class TestStreamedResultSet(unittest.TestCase):
         )
         FIELDS = [self._make_array_field("test", element_type=struct_type)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        partial = [u"Phred Phlyntstone", 1.65]
-        streamed._pending_chunk = [partial]
-        rest = ["brown"]
-        chunk = [rest]
+        partial = self._make_list_value([u"Phred Phlyntstone", 1.65])
+        streamed._pending_chunk = self._make_list_value(value_pbs=[partial])
+        rest = self._make_list_value(["brown"])
+        chunk = self._make_list_value(value_pbs=[rest])
 
         merged = streamed._merge_chunk(chunk)
 
-        struct = [u"Phred Phlyntstone", 1.65, "brown"]
-        expected = [struct]
+        struct = self._make_list_value([u"Phred Phlyntstone", 1.65, "brown"])
+        expected = self._make_list_value(value_pbs=[struct])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -527,8 +546,8 @@ class TestStreamedResultSet(unittest.TestCase):
             self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        VALUES = [u"Phred Phlyntstone", "42"]
         BARE = [u"Phred Phlyntstone", 42]
+        VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
         self.assertEqual(list(streamed), [])
@@ -545,8 +564,8 @@ class TestStreamedResultSet(unittest.TestCase):
             self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        VALUES = [u"Phred Phlyntstone", "42", True]
         BARE = [u"Phred Phlyntstone", 42, True]
+        VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
         self.assertEqual(list(streamed), [BARE])
@@ -563,15 +582,6 @@ class TestStreamedResultSet(unittest.TestCase):
             self._make_scalar_field("married", TypeCode.BOOL),
         ]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        VALUES = [
-            u"Phred Phlyntstone",
-            "42",
-            True,
-            u"Bharney Rhubble",
-            "39",
-            True,
-            u"Wylma Phlyntstone",
-        ]
         BARE = [
             u"Phred Phlyntstone",
             42,
@@ -581,6 +591,7 @@ class TestStreamedResultSet(unittest.TestCase):
             True,
             u"Wylma Phlyntstone",
         ]
+        VALUES = [self._make_value(bare) for bare in BARE]
         streamed._current_row = []
         streamed._merge_values(VALUES)
         self.assertEqual(list(streamed), [BARE[0:3], BARE[3:6]])
@@ -616,8 +627,8 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [u"Phred Phlyntstone"]
         streamed._current_row[:] = BEFORE
-        TO_MERGE = ["42"]
         MERGED = [42]
+        TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
         self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, BEFORE + MERGED)
@@ -635,8 +646,8 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [u"Phred Phlyntstone"]
         streamed._current_row[:] = BEFORE
-        TO_MERGE = ["42", True]
         MERGED = [42, True]
+        TO_MERGE = [self._make_value(item) for item in MERGED]
         streamed._merge_values(TO_MERGE)
         self.assertEqual(list(streamed), [BEFORE + MERGED])
         self.assertEqual(streamed._current_row, [])
@@ -654,8 +665,8 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         BEFORE = [self._make_value(u"Phred Phlyntstone")]
         streamed._current_row[:] = BEFORE
-        TO_MERGE = ["42", True, u"Bharney Rhubble", "39", True, u"Wylma Phlyntstone"]
         MERGED = [42, True, u"Bharney Rhubble", 39, True, u"Wylma Phlyntstone"]
+        TO_MERGE = [self._make_value(item) for item in MERGED]
         VALUES = BEFORE + MERGED
         streamed._merge_values(TO_MERGE)
         self.assertEqual(list(streamed), [VALUES[0:3], VALUES[3:6]])
@@ -720,7 +731,8 @@ class TestStreamedResultSet(unittest.TestCase):
         ]
         metadata = self._make_result_set_metadata(FIELDS, transaction_id=TXN_ID)
         BARE = [u"Phred Phlyntstone", 42]
-        result_set = self._make_partial_result_set(BARE, metadata=metadata)
+        VALUES = [self._make_value(bare) for bare in BARE]
+        result_set = self._make_partial_result_set(VALUES, metadata=metadata)
         iterator = _MockCancellableIterator(result_set)
         source = mock.Mock(_transaction_id=None, spec=["_transaction_id"])
         streamed = self._make_one(iterator, source=source)
@@ -768,7 +780,7 @@ class TestStreamedResultSet(unittest.TestCase):
         streamed._consume_next()
         self.assertEqual(list(streamed), [])
         self.assertEqual(streamed._current_row, [])
-        self.assertEqual(streamed._pending_chunk, VALUES[0].string_value)
+        self.assertEqual(streamed._pending_chunk, VALUES[0])
 
     def test_consume_next_w_pending_chunk(self):
         from google.cloud.spanner_v1 import TypeCode
@@ -792,7 +804,7 @@ class TestStreamedResultSet(unittest.TestCase):
         iterator = _MockCancellableIterator(result_set)
         streamed = self._make_one(iterator)
         streamed._metadata = self._make_result_set_metadata(FIELDS)
-        streamed._pending_chunk = u"Phred "
+        streamed._pending_chunk = self._make_value(u"Phred ")
         streamed._consume_next()
         self.assertEqual(
             list(streamed),

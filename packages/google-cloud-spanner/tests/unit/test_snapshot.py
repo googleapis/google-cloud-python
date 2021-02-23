@@ -393,6 +393,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
         VALUES = [[u"bharney", 31], [u"phred", 32]]
+        VALUE_PBS = [[_make_value_pb(item) for item in row] for row in VALUES]
         struct_type_pb = StructType(
             fields=[
                 StructType.Field(name="name", type_=Type(code=TypeCode.STRING)),
@@ -408,7 +409,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             PartialResultSet(stats=stats_pb),
         ]
         for i in range(len(result_sets)):
-            result_sets[i].values.extend(VALUES[i])
+            result_sets[i].values.extend(VALUE_PBS[i])
         KEYS = [["bharney@example.com"], ["phred@example.com"]]
         keyset = KeySet(keys=KEYS)
         INDEX = "email-address-index"
@@ -561,6 +562,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
 
         VALUES = [[u"bharney", u"rhubbyl", 31], [u"phred", u"phlyntstone", 32]]
+        VALUE_PBS = [[_make_value_pb(item) for item in row] for row in VALUES]
         MODE = 2  # PROFILE
         struct_type_pb = StructType(
             fields=[
@@ -578,7 +580,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             PartialResultSet(stats=stats_pb),
         ]
         for i in range(len(result_sets)):
-            result_sets[i].values.extend(VALUES[i])
+            result_sets[i].values.extend(VALUE_PBS[i])
         iterator = _MockIterator(*result_sets)
         database = _Database()
         api = database.spanner_api = self._make_spanner_api()
