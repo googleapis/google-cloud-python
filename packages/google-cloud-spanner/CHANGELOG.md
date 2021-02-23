@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.1.0](https://www.github.com/googleapis/python-spanner/compare/v3.0.0...v3.1.0) (2021-02-23)
+
+
+### Features
+
+* add support for Point In Time Recovery (PITR) ([#148](https://www.github.com/googleapis/python-spanner/issues/148)) ([a082e5d](https://www.github.com/googleapis/python-spanner/commit/a082e5d7d2195ab9429a8e0bef4a664b59fdf771))
+* add support to log commit stats ([#205](https://www.github.com/googleapis/python-spanner/issues/205)) ([434967e](https://www.github.com/googleapis/python-spanner/commit/434967e3a433b6516f5792dcbfef7ba950f091c5))
+
+
+### Bug Fixes
+
+* connection attribute of connection class and include related unit tests ([#228](https://www.github.com/googleapis/python-spanner/issues/228)) ([4afea77](https://www.github.com/googleapis/python-spanner/commit/4afea77812e021859377216cd950e1d9fc965ba8))
+* **db_api:** add dummy lastrowid attribute ([#227](https://www.github.com/googleapis/python-spanner/issues/227)) ([0375914](https://www.github.com/googleapis/python-spanner/commit/0375914342de98e3903bae2097142325028d18d9))
+* fix execute insert for homogeneous statement ([#233](https://www.github.com/googleapis/python-spanner/issues/233)) ([36b12a7](https://www.github.com/googleapis/python-spanner/commit/36b12a7b53cdbedf543d2b3bb132fb9e13cefb65))
+* use datetime timezone info when generating timestamp strings ([#236](https://www.github.com/googleapis/python-spanner/issues/236)) ([539f145](https://www.github.com/googleapis/python-spanner/commit/539f14533afd348a328716aa511d453ca3bb19f5))
+
+
+### Performance Improvements
+
+* improve streaming performance ([#240](https://www.github.com/googleapis/python-spanner/issues/240)) ([3e35d4a](https://www.github.com/googleapis/python-spanner/commit/3e35d4a0217081bcab4ee31b642cd3bff5e6f4b5))
+
 ## [3.0.0](https://www.github.com/googleapis/python-spanner/compare/v2.1.0...v3.0.0) (2021-01-15)
 
 
