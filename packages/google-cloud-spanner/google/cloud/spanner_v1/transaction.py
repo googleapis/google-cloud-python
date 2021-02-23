@@ -21,6 +21,7 @@ from google.cloud.spanner_v1._helpers import (
     _merge_query_options,
     _metadata_with_prefix,
 )
+from google.cloud.spanner_v1 import CommitRequest
 from google.cloud.spanner_v1 import ExecuteBatchDmlRequest
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import TransactionSelector
@@ -42,6 +43,7 @@ class Transaction(_SnapshotBase, _BatchBase):
     committed = None
     """Timestamp at which the transaction was successfully committed."""
     rolled_back = False
+    commit_stats = None
     _multi_use = True
     _execute_sql_count = 0
 
@@ -119,8 +121,12 @@ class Transaction(_SnapshotBase, _BatchBase):
         self.rolled_back = True
         del self._session._transaction
 
-    def commit(self):
+    def commit(self, return_commit_stats=False):
         """Commit mutations to the database.
+
+        :type return_commit_stats: bool
+        :param return_commit_stats:
+          If true, the response will return commit stats which can be accessed though commit_stats.
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
@@ -132,14 +138,17 @@ class Transaction(_SnapshotBase, _BatchBase):
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
         trace_attributes = {"num_mutations": len(self._mutations)}
+        request = CommitRequest(
+            session=self._session.name,
+            mutations=self._mutations,
+            transaction_id=self._transaction_id,
+            return_commit_stats=return_commit_stats,
+        )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
-            response = api.commit(
-                session=self._session.name,
-                mutations=self._mutations,
-                transaction_id=self._transaction_id,
-                metadata=metadata,
-            )
+            response = api.commit(request=request, metadata=metadata,)
         self.committed = response.commit_timestamp
+        if return_commit_stats:
+            self.commit_stats = response.commit_stats
         del self._session._transaction
         return self.committed
 

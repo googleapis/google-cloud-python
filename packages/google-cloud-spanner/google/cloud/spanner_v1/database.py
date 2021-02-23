@@ -17,6 +17,7 @@
 import copy
 import functools
 import grpc
+import logging
 import re
 import threading
 
@@ -95,11 +96,19 @@ class Database(object):
     :param pool: (Optional) session pool to be used by database.  If not
                  passed, the database will construct an instance of
                  :class:`~google.cloud.spanner_v1.pool.BurstyPool`.
+
+    :type logger: `logging.Logger`
+    :param logger: (Optional) a custom logger that is used if `log_commit_stats`
+                   is `True` to log commit statistics. If not passed, a logger
+                   will be created when needed that will log the commit statistics
+                   to stdout.
     """
 
     _spanner_api = None
 
-    def __init__(self, database_id, instance, ddl_statements=(), pool=None):
+    def __init__(
+        self, database_id, instance, ddl_statements=(), pool=None, logger=None
+    ):
         self.database_id = database_id
         self._instance = instance
         self._ddl_statements = _check_ddl_statements(ddl_statements)
@@ -109,6 +118,8 @@ class Database(object):
         self._restore_info = None
         self._version_retention_period = None
         self._earliest_version_time = None
+        self.log_commit_stats = False
+        self._logger = logger
 
         if pool is None:
             pool = BurstyPool()
@@ -236,6 +247,25 @@ class Database(object):
         :returns: the statements
         """
         return self._ddl_statements
+
+    @property
+    def logger(self):
+        """Logger used by the database.
+
+        The default logger will log commit stats at the log level INFO using
+        `sys.stderr`.
+
+        :rtype: :class:`logging.Logger` or `None`
+        :returns: the logger
+        """
+        if self._logger is None:
+            self._logger = logging.getLogger(self.name)
+            self._logger.setLevel(logging.INFO)
+
+            ch = logging.StreamHandler()
+            ch.setLevel(logging.INFO)
+            self._logger.addHandler(ch)
+        return self._logger
 
     @property
     def spanner_api(self):
@@ -647,8 +677,13 @@ class BatchCheckout(object):
         """End ``with`` block."""
         try:
             if exc_type is None:
-                self._batch.commit()
+                self._batch.commit(return_commit_stats=self._database.log_commit_stats)
         finally:
+            if self._database.log_commit_stats and self._batch.commit_stats:
+                self._database.logger.info(
+                    "CommitStats: {}".format(self._batch.commit_stats),
+                    extra={"commit_stats": self._batch.commit_stats},
+                )
             self._database._pool.put(self._session)
 
 

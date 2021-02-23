@@ -14,6 +14,7 @@
 
 """Context manager for Cloud Spanner batched writes."""
 
+from google.cloud.spanner_v1 import CommitRequest
 from google.cloud.spanner_v1 import Mutation
 from google.cloud.spanner_v1 import TransactionOptions
 
@@ -123,6 +124,7 @@ class Batch(_BatchBase):
     """
 
     committed = None
+    commit_stats = None
     """Timestamp at which the batch was successfully committed."""
 
     def _check_state(self):
@@ -136,8 +138,12 @@ class Batch(_BatchBase):
         if self.committed is not None:
             raise ValueError("Batch already committed")
 
-    def commit(self):
+    def commit(self, return_commit_stats=False):
         """Commit mutations to the database.
+
+        :type return_commit_stats: bool
+        :param return_commit_stats:
+          If true, the response will return commit stats which can be accessed though commit_stats.
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
@@ -148,14 +154,16 @@ class Batch(_BatchBase):
         metadata = _metadata_with_prefix(database.name)
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         trace_attributes = {"num_mutations": len(self._mutations)}
+        request = CommitRequest(
+            session=self._session.name,
+            mutations=self._mutations,
+            single_use_transaction=txn_options,
+            return_commit_stats=return_commit_stats,
+        )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
-            response = api.commit(
-                session=self._session.name,
-                mutations=self._mutations,
-                single_use_transaction=txn_options,
-                metadata=metadata,
-            )
+            response = api.commit(request=request, metadata=metadata,)
         self.committed = response.commit_timestamp
+        self.commit_stats = response.commit_stats
         return self.committed
 
     def __enter__(self):

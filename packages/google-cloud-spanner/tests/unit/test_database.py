@@ -104,6 +104,8 @@ class TestDatabase(_BaseTest):
         self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIsInstance(database._pool, BurstyPool)
+        self.assertFalse(database.log_commit_stats)
+        self.assertIsNone(database._logger)
         # BurstyPool does not create sessions during 'bind()'.
         self.assertTrue(database._pool._sessions.empty())
 
@@ -144,6 +146,18 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database.database_id, self.DATABASE_ID)
         self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)
+
+    def test_ctor_w_explicit_logger(self):
+        from logging import Logger
+
+        instance = _Instance(self.INSTANCE_NAME)
+        logger = mock.create_autospec(Logger, instance=True)
+        database = self._make_one(self.DATABASE_ID, instance, logger=logger)
+        self.assertEqual(database.database_id, self.DATABASE_ID)
+        self.assertIs(database._instance, instance)
+        self.assertEqual(list(database.ddl_statements), [])
+        self.assertFalse(database.log_commit_stats)
+        self.assertEqual(database._logger, logger)
 
     def test_from_pb_bad_database_name(self):
         from google.cloud.spanner_admin_database_v1 import Database
@@ -262,6 +276,24 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         earliest_version_time = database._earliest_version_time = self._make_timestamp()
         self.assertEqual(database.earliest_version_time, earliest_version_time)
+
+    def test_logger_property_default(self):
+        import logging
+
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        logger = logging.getLogger(database.name)
+        self.assertEqual(database.logger, logger)
+
+    def test_logger_property_custom(self):
+        import logging
+
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        logger = database._logger = mock.create_autospec(logging.Logger, instance=True)
+        self.assertEqual(database.logger, logger)
 
     def test_spanner_api_property_w_scopeless_creds(self):
 
@@ -1281,6 +1313,7 @@ class TestBatchCheckout(_BaseTest):
 
     def test_context_mgr_success(self):
         import datetime
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import TransactionOptions
         from google.cloud._helpers import UTC
@@ -1308,12 +1341,97 @@ class TestBatchCheckout(_BaseTest):
 
         expected_txn_options = TransactionOptions(read_write={})
 
-        api.commit.assert_called_once_with(
+        request = CommitRequest(
             session=self.SESSION_NAME,
             mutations=[],
             single_use_transaction=expected_txn_options,
-            metadata=[("google-cloud-resource-prefix", database.name)],
         )
+        api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_context_mgr_w_commit_stats_success(self):
+        import datetime
+        from google.cloud.spanner_v1 import CommitRequest
+        from google.cloud.spanner_v1 import CommitResponse
+        from google.cloud.spanner_v1 import TransactionOptions
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_v1.batch import Batch
+
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        commit_stats = CommitResponse.CommitStats(mutation_count=4)
+        response = CommitResponse(commit_timestamp=now_pb, commit_stats=commit_stats)
+        database = _Database(self.DATABASE_NAME)
+        database.log_commit_stats = True
+        api = database.spanner_api = self._make_spanner_client()
+        api.commit.return_value = response
+        pool = database._pool = _Pool()
+        session = _Session(database)
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        with checkout as batch:
+            self.assertIsNone(pool._session)
+            self.assertIsInstance(batch, Batch)
+            self.assertIs(batch._session, session)
+
+        self.assertIs(pool._session, session)
+        self.assertEqual(batch.committed, now)
+
+        expected_txn_options = TransactionOptions(read_write={})
+
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=[],
+            single_use_transaction=expected_txn_options,
+            return_commit_stats=True,
+        )
+        api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        database.logger.info.assert_called_once_with(
+            "CommitStats: mutation_count: 4\n", extra={"commit_stats": commit_stats}
+        )
+
+    def test_context_mgr_w_commit_stats_error(self):
+        from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_v1 import CommitRequest
+        from google.cloud.spanner_v1 import TransactionOptions
+        from google.cloud.spanner_v1.batch import Batch
+
+        database = _Database(self.DATABASE_NAME)
+        database.log_commit_stats = True
+        api = database.spanner_api = self._make_spanner_client()
+        api.commit.side_effect = Unknown("testing")
+        pool = database._pool = _Pool()
+        session = _Session(database)
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        with self.assertRaises(Unknown):
+            with checkout as batch:
+                self.assertIsNone(pool._session)
+                self.assertIsInstance(batch, Batch)
+                self.assertIs(batch._session, session)
+
+        self.assertIs(pool._session, session)
+
+        expected_txn_options = TransactionOptions(read_write={})
+
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=[],
+            single_use_transaction=expected_txn_options,
+            return_commit_stats=True,
+        )
+        api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+        database.logger.info.assert_not_called()
 
     def test_context_mgr_failure(self):
         from google.cloud.spanner_v1.batch import Batch
@@ -1901,10 +2019,15 @@ class _Backup(object):
 
 
 class _Database(object):
+    log_commit_stats = False
+
     def __init__(self, name, instance=None):
         self.name = name
         self.database_id = name.rsplit("/", 1)[1]
         self._instance = instance
+        from logging import Logger
+
+        self.logger = mock.create_autospec(Logger, instance=True)
 
 
 class _Pool(object):

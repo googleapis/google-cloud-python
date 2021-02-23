@@ -484,10 +484,12 @@ class TestInstance(unittest.TestCase):
         self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), [])
         self.assertIsInstance(database._pool, BurstyPool)
+        self.assertIsNone(database._logger)
         pool = database._pool
         self.assertIs(pool._database, database)
 
     def test_database_factory_explicit(self):
+        from logging import Logger
         from google.cloud.spanner_v1.database import Database
         from tests._fixtures import DDL_STATEMENTS
 
@@ -495,9 +497,10 @@ class TestInstance(unittest.TestCase):
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         DATABASE_ID = "database-id"
         pool = _Pool()
+        logger = mock.create_autospec(Logger, instance=True)
 
         database = instance.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool
+            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool, logger=logger
         )
 
         self.assertIsInstance(database, Database)
@@ -505,6 +508,7 @@ class TestInstance(unittest.TestCase):
         self.assertIs(database._instance, instance)
         self.assertEqual(list(database.ddl_statements), DDL_STATEMENTS)
         self.assertIs(database._pool, pool)
+        self.assertIs(database._logger, logger)
         self.assertIs(pool._bound, database)
 
     def test_list_databases(self):

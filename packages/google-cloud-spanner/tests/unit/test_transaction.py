@@ -309,7 +309,7 @@ class TestTransaction(OpenTelemetryBase):
             attributes=dict(TestTransaction.BASE_ATTRIBUTES, num_mutations=1),
         )
 
-    def _commit_helper(self, mutate=True):
+    def _commit_helper(self, mutate=True, return_commit_stats=False):
         import datetime
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1.keyset import KeySet
@@ -319,6 +319,8 @@ class TestTransaction(OpenTelemetryBase):
         keys = [[0], [1], [2]]
         keyset = KeySet(keys=keys)
         response = CommitResponse(commit_timestamp=now)
+        if return_commit_stats:
+            response.commit_stats.mutation_count = 4
         database = _Database()
         api = database.spanner_api = _FauxSpannerAPI(_commit_response=response)
         session = _Session(database)
@@ -328,7 +330,7 @@ class TestTransaction(OpenTelemetryBase):
         if mutate:
             transaction.delete(TABLE_NAME, keyset)
 
-        transaction.commit()
+        transaction.commit(return_commit_stats=return_commit_stats)
 
         self.assertEqual(transaction.committed, now)
         self.assertIsNone(session._transaction)
@@ -338,6 +340,9 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+
+        if return_commit_stats:
+            self.assertEqual(transaction.commit_stats.mutation_count, 4)
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit",
@@ -352,6 +357,9 @@ class TestTransaction(OpenTelemetryBase):
 
     def test_commit_w_mutations(self):
         self._commit_helper(mutate=True)
+
+    def test_commit_w_return_commit_stats(self):
+        self._commit_helper(return_commit_stats=True)
 
     def test__make_params_pb_w_params_wo_param_types(self):
         session = _Session()
@@ -719,13 +727,13 @@ class _FauxSpannerAPI(object):
         return self._rollback_response
 
     def commit(
-        self,
-        session=None,
-        mutations=None,
-        transaction_id="",
-        single_use_transaction=None,
-        metadata=None,
+        self, request=None, metadata=None,
     ):
-        assert single_use_transaction is None
-        self._committed = (session, mutations, transaction_id, metadata)
+        assert not request.single_use_transaction
+        self._committed = (
+            request.session,
+            request.mutations,
+            request.transaction_id,
+            metadata,
+        )
         return self._commit_response

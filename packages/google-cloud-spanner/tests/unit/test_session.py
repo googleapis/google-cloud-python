@@ -65,6 +65,7 @@ class TestSession(OpenTelemetryBase):
 
         database = mock.create_autospec(Database, instance=True)
         database.name = name
+        database.log_commit_stats = False
         return database
 
     @staticmethod
@@ -769,6 +770,7 @@ class TestSession(OpenTelemetryBase):
 
     def test_run_in_transaction_w_args_w_kwargs_wo_abort(self):
         import datetime
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
@@ -820,15 +822,18 @@ class TestSession(OpenTelemetryBase):
             options=expected_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
-        gax_api.commit.assert_called_once_with(
+        request = CommitRequest(
             session=self.SESSION_NAME,
             mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        gax_api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_commit_error(self):
         from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1.transaction import Transaction
 
         TABLE_NAME = "citizens"
@@ -867,16 +872,19 @@ class TestSession(OpenTelemetryBase):
         self.assertEqual(kw, {})
 
         gax_api.begin_transaction.assert_not_called()
-        gax_api.commit.assert_called_once_with(
+        request = CommitRequest(
             session=self.SESSION_NAME,
             mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        gax_api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_abort_no_retry_metadata(self):
         import datetime
         from google.api_core.exceptions import Aborted
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
@@ -934,13 +942,16 @@ class TestSession(OpenTelemetryBase):
             ]
             * 2,
         )
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=txn._mutations,
+            transaction_id=TRANSACTION_ID,
+        )
         self.assertEqual(
             gax_api.commit.call_args_list,
             [
                 mock.call(
-                    session=self.SESSION_NAME,
-                    mutations=txn._mutations,
-                    transaction_id=TRANSACTION_ID,
+                    request=request,
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
@@ -952,6 +963,7 @@ class TestSession(OpenTelemetryBase):
         from google.api_core.exceptions import Aborted
         from google.protobuf.duration_pb2 import Duration
         from google.rpc.error_details_pb2 import RetryInfo
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
@@ -1022,13 +1034,16 @@ class TestSession(OpenTelemetryBase):
             ]
             * 2,
         )
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=txn._mutations,
+            transaction_id=TRANSACTION_ID,
+        )
         self.assertEqual(
             gax_api.commit.call_args_list,
             [
                 mock.call(
-                    session=self.SESSION_NAME,
-                    mutations=txn._mutations,
-                    transaction_id=TRANSACTION_ID,
+                    request=request,
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
@@ -1040,6 +1055,7 @@ class TestSession(OpenTelemetryBase):
         from google.api_core.exceptions import Aborted
         from google.protobuf.duration_pb2 import Duration
         from google.rpc.error_details_pb2 import RetryInfo
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
@@ -1110,11 +1126,13 @@ class TestSession(OpenTelemetryBase):
             ]
             * 2,
         )
-        gax_api.commit.assert_called_once_with(
+        request = CommitRequest(
             session=self.SESSION_NAME,
             mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        gax_api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_abort_w_retry_metadata_deadline(self):
@@ -1122,6 +1140,7 @@ class TestSession(OpenTelemetryBase):
         from google.api_core.exceptions import Aborted
         from google.protobuf.duration_pb2 import Duration
         from google.rpc.error_details_pb2 import RetryInfo
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
@@ -1197,15 +1216,18 @@ class TestSession(OpenTelemetryBase):
             options=expected_options,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
-        gax_api.commit.assert_called_once_with(
+        request = CommitRequest(
             session=self.SESSION_NAME,
             mutations=txn._mutations,
             transaction_id=TRANSACTION_ID,
-            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        gax_api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_timeout(self):
         from google.api_core.exceptions import Aborted
+        from google.cloud.spanner_v1 import CommitRequest
         from google.cloud.spanner_v1 import (
             Transaction as TransactionPB,
             TransactionOptions,
@@ -1275,18 +1297,150 @@ class TestSession(OpenTelemetryBase):
             ]
             * 3,
         )
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=txn._mutations,
+            transaction_id=TRANSACTION_ID,
+        )
         self.assertEqual(
             gax_api.commit.call_args_list,
             [
                 mock.call(
-                    session=self.SESSION_NAME,
-                    mutations=txn._mutations,
-                    transaction_id=TRANSACTION_ID,
+                    request=request,
                     metadata=[("google-cloud-resource-prefix", database.name)],
                 )
             ]
             * 3,
         )
+
+    def test_run_in_transaction_w_commit_stats_success(self):
+        import datetime
+        from google.cloud.spanner_v1 import CommitRequest
+        from google.cloud.spanner_v1 import CommitResponse
+        from google.cloud.spanner_v1 import (
+            Transaction as TransactionPB,
+            TransactionOptions,
+        )
+        from google.cloud._helpers import UTC
+        from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.spanner_v1.transaction import Transaction
+
+        TABLE_NAME = "citizens"
+        COLUMNS = ["email", "first_name", "last_name", "age"]
+        VALUES = [
+            ["phred@exammple.com", "Phred", "Phlyntstone", 32],
+            ["bharney@example.com", "Bharney", "Rhubble", 31],
+        ]
+        TRANSACTION_ID = b"FACEDACE"
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now_pb = _datetime_to_pb_timestamp(now)
+        commit_stats = CommitResponse.CommitStats(mutation_count=4)
+        response = CommitResponse(commit_timestamp=now_pb, commit_stats=commit_stats)
+        gax_api = self._make_spanner_api()
+        gax_api.begin_transaction.return_value = transaction_pb
+        gax_api.commit.return_value = response
+        database = self._make_database()
+        database.log_commit_stats = True
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        called_with = []
+
+        def unit_of_work(txn, *args, **kw):
+            called_with.append((txn, args, kw))
+            txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            return 42
+
+        return_value = session.run_in_transaction(unit_of_work, "abc", some_arg="def")
+
+        self.assertIsNone(session._transaction)
+        self.assertEqual(len(called_with), 1)
+        txn, args, kw = called_with[0]
+        self.assertIsInstance(txn, Transaction)
+        self.assertEqual(return_value, 42)
+        self.assertEqual(args, ("abc",))
+        self.assertEqual(kw, {"some_arg": "def"})
+
+        expected_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
+        gax_api.begin_transaction.assert_called_once_with(
+            session=self.SESSION_NAME,
+            options=expected_options,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=txn._mutations,
+            transaction_id=TRANSACTION_ID,
+            return_commit_stats=True,
+        )
+        gax_api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        database.logger.info.assert_called_once_with(
+            "CommitStats: mutation_count: 4\n", extra={"commit_stats": commit_stats}
+        )
+
+    def test_run_in_transaction_w_commit_stats_error(self):
+        from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_v1 import CommitRequest
+        from google.cloud.spanner_v1 import (
+            Transaction as TransactionPB,
+            TransactionOptions,
+        )
+        from google.cloud.spanner_v1.transaction import Transaction
+
+        TABLE_NAME = "citizens"
+        COLUMNS = ["email", "first_name", "last_name", "age"]
+        VALUES = [
+            ["phred@exammple.com", "Phred", "Phlyntstone", 32],
+            ["bharney@example.com", "Bharney", "Rhubble", 31],
+        ]
+        TRANSACTION_ID = b"FACEDACE"
+        transaction_pb = TransactionPB(id=TRANSACTION_ID)
+        gax_api = self._make_spanner_api()
+        gax_api.begin_transaction.return_value = transaction_pb
+        gax_api.commit.side_effect = Unknown("testing")
+        database = self._make_database()
+        database.log_commit_stats = True
+        database.spanner_api = gax_api
+        session = self._make_one(database)
+        session._session_id = self.SESSION_ID
+
+        called_with = []
+
+        def unit_of_work(txn, *args, **kw):
+            called_with.append((txn, args, kw))
+            txn.insert(TABLE_NAME, COLUMNS, VALUES)
+            return 42
+
+        with self.assertRaises(Unknown):
+            session.run_in_transaction(unit_of_work, "abc", some_arg="def")
+
+        self.assertIsNone(session._transaction)
+        self.assertEqual(len(called_with), 1)
+        txn, args, kw = called_with[0]
+        self.assertIsInstance(txn, Transaction)
+        self.assertEqual(args, ("abc",))
+        self.assertEqual(kw, {"some_arg": "def"})
+
+        expected_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
+        gax_api.begin_transaction.assert_called_once_with(
+            session=self.SESSION_NAME,
+            options=expected_options,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        request = CommitRequest(
+            session=self.SESSION_NAME,
+            mutations=txn._mutations,
+            transaction_id=TRANSACTION_ID,
+            return_commit_stats=True,
+        )
+        gax_api.commit.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+        database.logger.info.assert_not_called()
 
     def test_delay_helper_w_no_delay(self):
         from google.cloud.spanner_v1.session import _delay_until_retry

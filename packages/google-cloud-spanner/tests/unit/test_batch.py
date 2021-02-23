@@ -339,17 +339,17 @@ class _FauxSpannerAPI:
         self.__dict__.update(**kwargs)
 
     def commit(
-        self,
-        session,
-        mutations,
-        transaction_id="",
-        single_use_transaction=None,
-        metadata=None,
+        self, request=None, metadata=None,
     ):
         from google.api_core.exceptions import Unknown
 
-        assert transaction_id == ""
-        self._committed = (session, mutations, single_use_transaction, metadata)
+        assert request.transaction_id == b""
+        self._committed = (
+            request.session,
+            request.mutations,
+            request.single_use_transaction,
+            metadata,
+        )
         if self._rpc_error:
             raise Unknown("error")
         return self._commit_response
