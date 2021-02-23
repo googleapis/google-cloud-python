@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.0.2](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.1...v3.0.2) (2021-02-19)
+
+
+### Documentation
+
+* update python contributing guide ([#63](https://www.github.com/googleapis/python-cloudbuild/issues/63)) ([f199171](https://www.github.com/googleapis/python-cloudbuild/commit/f199171267bcec8cbddf5aa5be420647370dadee))
+
 ### [3.0.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.0.0...v3.0.1) (2021-02-08)
 
 
