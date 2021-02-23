@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.36.1](https://www.github.com/googleapis/python-storage/compare/v1.36.0...v1.36.1) (2021-02-19)
+
+
+### Bug Fixes
+
+* allow metadata keys to be cleared ([#383](https://www.github.com/googleapis/python-storage/issues/383)) ([79d27da](https://www.github.com/googleapis/python-storage/commit/79d27da9fe842e44a9091076ea0ef52c5ef5ff72)), closes [#381](https://www.github.com/googleapis/python-storage/issues/381)
+* allow signed url version v4 without signed credentials ([#356](https://www.github.com/googleapis/python-storage/issues/356)) ([3e69bf9](https://www.github.com/googleapis/python-storage/commit/3e69bf92496616c5de28094dd42260b35c3bf982))
+* correctly encode bytes for V2 signature ([#382](https://www.github.com/googleapis/python-storage/issues/382)) ([f44212b](https://www.github.com/googleapis/python-storage/commit/f44212b7b91a67ca661898400fe632f9fb3ec8f6))
+
 ## [1.36.0](https://www.github.com/googleapis/python-storage/compare/v1.35.1...v1.36.0) (2021-02-10)
 
 
