@@ -24,6 +24,7 @@ from google.cloud.logging_v2._helpers import LogSeverity
 from time import sleep
 from datetime import datetime
 from datetime import timezone
+from datetime import timedelta
 import os
 import sys
 import uuid
@@ -38,25 +39,24 @@ class Common:
     # environment name must be set by subclass
     environment = None
 
-    def _get_logs(self, timestamp=None):
+    def _add_time_condition_to_filter(self, filter_str, timestamp=None):
         time_format = "%Y-%m-%dT%H:%M:%S.%f%z"
         if not timestamp:
             timestamp = datetime.now(timezone.utc) - timedelta(minutes=10)
-        _, filter_str = self._script.run_command(Command.GetFilter)
-        filter_str += ' AND timestamp > "%s"' % timestamp.strftime(time_format)
+        return f'"{filter_str}" AND timestamp > "{timestamp.strftime(time_format)}"'
+
+
+    def _get_logs(self, filter_str=None):
+        if not filter_str:
+            _, filter_str = self._script.run_command(Command.GetFilter)
         iterator = self._client.list_entries(filter_=filter_str)
         entries = list(iterator)
         return entries
 
-    def _trigger(self, function, return_logs=True, **kwargs):
+    def _trigger(self, function, **kwargs):
         timestamp = datetime.now(timezone.utc)
         args_str = ",".join([f'{k}="{v}"' for k, v in kwargs.items()])
         self._script.run_command(Command.Trigger, [function, args_str])
-        # give the command time to be received
-        sleep(30)
-        if return_logs:
-            log_list = self._get_logs(timestamp)
-            return log_list
 
     @classmethod
     def setUpClass(cls):
@@ -90,7 +90,15 @@ class Common:
 
     def test_receive_log(self):
         log_text = f"{inspect.currentframe().f_code.co_name}: {uuid.uuid1()}"
-        log_list = self._trigger("pylogging", log_text=log_text)
+        self._trigger("pylogging", log_text=log_text)
+        # give the command time to be received
+        sleep(30)
+        filter_str = self._add_time_condition_to_filter(log_text)
+        # retrieve resulting logs
+        log_list = self._get_logs(filter_str)
+
+        self.assertEqual(len(log_list), 1)
+
         found_log = None
         for log in log_list:
             message = (

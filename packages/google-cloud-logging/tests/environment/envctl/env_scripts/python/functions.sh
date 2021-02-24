@@ -48,7 +48,7 @@ deploy() {
   set +e
   gcloud pubsub topics create $SERVICE_NAME 2>/dev/null
   set -e
-  local RUNTIME="${2:-python37}"
+  local RUNTIME="${2:-python38}"
   # set up deployment directory
   # copy over local copy of library
   pushd $SUPERREPO_ROOT

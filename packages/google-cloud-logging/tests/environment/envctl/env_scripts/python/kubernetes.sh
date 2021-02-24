@@ -58,7 +58,7 @@ attach_or_create_gke_cluster(){
     echo "cluster not found. creating..."
     gcloud container clusters create $SERVICE_NAME \
       --zone $ZONE \
-      --scopes "https://www.googleapis.com/auth/pubsub"
+      --scopes=gke-default,pubsub
   fi
   set -e
 }
@@ -98,6 +98,7 @@ EOF
   set -e
   # deploy test container
   kubectl apply -f $TMP_DIR
+  sleep 60
   # wait for pod to spin up
   kubectl wait --for=condition=ready pod -l app=$SERVICE_NAME
   # wait for the pub/sub subscriber to start
