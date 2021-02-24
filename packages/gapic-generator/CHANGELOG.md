@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.11](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.10...v0.40.11) (2021-02-24)
+
+
+### Bug Fixes
+
+* remove duplicate field entries ([#786](https://www.github.com/googleapis/gapic-generator-python/issues/786)) ([9f4dfa4](https://www.github.com/googleapis/gapic-generator-python/commit/9f4dfa46cb6a67081563ce096452fedd9e35051d))
+
 ### [0.40.10](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.9...v0.40.10) (2021-02-17)
 
 
