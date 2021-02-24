@@ -47,6 +47,14 @@ s.move(library / "google/cloud/bigtable_admin_v2")
 s.move(library / "tests")
 s.move(library / "scripts")
 
+# temporary workaround for https://github.com/googleapis/gapic-generator-python/issues/778
+s.replace(
+    "google/cloud/**/client.py",
+    """\s+if permissions:
+\s+request\.permissions\.extend\(permissions\)""",
+    "",
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

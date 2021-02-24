@@ -621,11 +621,10 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 request.table_name = table_name
             if row_key is not None:
                 request.row_key = row_key
+            if mutations is not None:
+                request.mutations = mutations
             if app_profile_id is not None:
                 request.app_profile_id = app_profile_id
-
-            if mutations:
-                request.mutations.extend(mutations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -730,11 +729,10 @@ class BigtableClient(metaclass=BigtableClientMeta):
 
             if table_name is not None:
                 request.table_name = table_name
+            if entries is not None:
+                request.entries = entries
             if app_profile_id is not None:
                 request.app_profile_id = app_profile_id
-
-            if entries:
-                request.entries.extend(entries)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -881,13 +879,12 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 request.row_key = row_key
             if predicate_filter is not None:
                 request.predicate_filter = predicate_filter
+            if true_mutations is not None:
+                request.true_mutations = true_mutations
+            if false_mutations is not None:
+                request.false_mutations = false_mutations
             if app_profile_id is not None:
                 request.app_profile_id = app_profile_id
-
-            if true_mutations:
-                request.true_mutations.extend(true_mutations)
-            if false_mutations:
-                request.false_mutations.extend(false_mutations)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1005,11 +1002,10 @@ class BigtableClient(metaclass=BigtableClientMeta):
                 request.table_name = table_name
             if row_key is not None:
                 request.row_key = row_key
+            if rules is not None:
+                request.rules = rules
             if app_profile_id is not None:
                 request.app_profile_id = app_profile_id
-
-            if rules:
-                request.rules.extend(rules)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

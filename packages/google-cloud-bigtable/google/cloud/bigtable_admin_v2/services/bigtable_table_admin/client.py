@@ -952,9 +952,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
             if name is not None:
                 request.name = name
-
-            if modifications:
-                request.modifications.extend(modifications)
+            if modifications is not None:
+                request.modifications = modifications
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2236,6 +2235,9 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         elif not request:
             request = iam_policy.GetIamPolicyRequest(resource=resource,)
 
+            if resource is not None:
+                request.resource = resource
+
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
@@ -2361,6 +2363,9 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         elif not request:
             request = iam_policy.SetIamPolicyRequest(resource=resource,)
 
+            if resource is not None:
+                request.resource = resource
+
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
@@ -2442,6 +2447,9 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             request = iam_policy.TestIamPermissionsRequest(
                 resource=resource, permissions=permissions,
             )
+
+            if resource is not None:
+                request.resource = resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
