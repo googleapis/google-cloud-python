@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-tasks/compare/v2.1.0...v2.2.0) (2021-02-24)
+
+
+### Features
+
+* add from_service_account_info method to clients ([e1fdc76](https://www.github.com/googleapis/python-tasks/commit/e1fdc76f5369e53067a1748aecce9fa3940d9ee1))
+* **v2beta3, v2beta2:** introducing fields: ListQueuesRequest.read_mask, GetQueueRequest.read_mask, Queue.task_ttl, Queue.tombstone_ttl, Queue.stats and introducing messages: QueueStats ([e1fdc76](https://www.github.com/googleapis/python-tasks/commit/e1fdc76f5369e53067a1748aecce9fa3940d9ee1))
+
+
+### Bug Fixes
+
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#56](https://www.github.com/googleapis/python-tasks/issues/56)) ([6a5bfaf](https://www.github.com/googleapis/python-tasks/commit/6a5bfaf63b46567897c36907772b10ea4b0dff43))
+* Update sample comments ([#58](https://www.github.com/googleapis/python-tasks/issues/58)) ([3eb30b3](https://www.github.com/googleapis/python-tasks/commit/3eb30b349b9092a2a2fb08116855139418ebd371))
+
+
+### Documentation
+
+* fix type references in docstrings ([e1fdc76](https://www.github.com/googleapis/python-tasks/commit/e1fdc76f5369e53067a1748aecce9fa3940d9ee1))
+* **v2beta2:** updates to AppEngineHttpRequest description ([e1fdc76](https://www.github.com/googleapis/python-tasks/commit/e1fdc76f5369e53067a1748aecce9fa3940d9ee1))
+* **v2beta3:** updates to max burst size description ([e1fdc76](https://www.github.com/googleapis/python-tasks/commit/e1fdc76f5369e53067a1748aecce9fa3940d9ee1))
+
 ## [2.1.0](https://www.github.com/googleapis/python-tasks/compare/v2.0.0...v2.1.0) (2020-12-07)
 
 
