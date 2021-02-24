@@ -18,6 +18,7 @@ import enum
 import itertools
 
 from google.cloud.bigquery_v2 import types as gapic_types
+from google.cloud.bigquery.query import ScalarQueryParameterType
 
 
 class Compression(object):
@@ -213,6 +214,26 @@ class SqlTypeNames(str, enum.Enum):
     DATE = "DATE"
     TIME = "TIME"
     DATETIME = "DATETIME"
+
+
+class SqlParameterScalarTypes:
+    """Supported scalar SQL query parameter types as type objects."""
+
+    STRING = ScalarQueryParameterType("STRING")
+    BYTES = ScalarQueryParameterType("BYTES")
+    INTEGER = ScalarQueryParameterType("INT64")
+    INT64 = ScalarQueryParameterType("INT64")
+    FLOAT = ScalarQueryParameterType("FLOAT64")
+    FLOAT64 = ScalarQueryParameterType("FLOAT64")
+    NUMERIC = ScalarQueryParameterType("NUMERIC")
+    BIGNUMERIC = ScalarQueryParameterType("BIGNUMERIC")
+    BOOLEAN = ScalarQueryParameterType("BOOL")
+    BOOL = ScalarQueryParameterType("BOOL")
+    GEOGRAPHY = ScalarQueryParameterType("GEOGRAPHY")
+    TIMESTAMP = ScalarQueryParameterType("TIMESTAMP")
+    DATE = ScalarQueryParameterType("DATE")
+    TIME = ScalarQueryParameterType("TIME")
+    DATETIME = ScalarQueryParameterType("DATETIME")
 
 
 class WriteDisposition(object):

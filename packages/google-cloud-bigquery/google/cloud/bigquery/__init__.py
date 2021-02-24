@@ -66,8 +66,11 @@ from google.cloud.bigquery.job import WriteDisposition
 from google.cloud.bigquery.model import Model
 from google.cloud.bigquery.model import ModelReference
 from google.cloud.bigquery.query import ArrayQueryParameter
+from google.cloud.bigquery.query import ArrayQueryParameterType
 from google.cloud.bigquery.query import ScalarQueryParameter
+from google.cloud.bigquery.query import ScalarQueryParameterType
 from google.cloud.bigquery.query import StructQueryParameter
+from google.cloud.bigquery.query import StructQueryParameterType
 from google.cloud.bigquery.query import UDFResource
 from google.cloud.bigquery.retry import DEFAULT_RETRY
 from google.cloud.bigquery.routine import DeterminismLevel
@@ -93,6 +96,9 @@ __all__ = [
     "ArrayQueryParameter",
     "ScalarQueryParameter",
     "StructQueryParameter",
+    "ArrayQueryParameterType",
+    "ScalarQueryParameterType",
+    "StructQueryParameterType",
     # Datasets
     "Dataset",
     "DatasetReference",

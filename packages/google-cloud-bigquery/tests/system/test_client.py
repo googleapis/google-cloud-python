@@ -2168,7 +2168,9 @@ class TestBigQuery(unittest.TestCase):
         from google.cloud.bigquery.job import QueryJobConfig
         from google.cloud.bigquery.query import ArrayQueryParameter
         from google.cloud.bigquery.query import ScalarQueryParameter
+        from google.cloud.bigquery.query import ScalarQueryParameterType
         from google.cloud.bigquery.query import StructQueryParameter
+        from google.cloud.bigquery.query import StructQueryParameterType
 
         question = "What is the answer to life, the universe, and everything?"
         question_param = ScalarQueryParameter(
@@ -2226,6 +2228,14 @@ class TestBigQuery(unittest.TestCase):
         )
         characters_param = ArrayQueryParameter(
             name=None, array_type="RECORD", values=[phred_param, bharney_param]
+        )
+        empty_struct_array_param = ArrayQueryParameter(
+            name="empty_array_param",
+            values=[],
+            array_type=StructQueryParameterType(
+                ScalarQueryParameterType(name="foo", type_="INT64"),
+                ScalarQueryParameterType(name="bar", type_="STRING"),
+            ),
         )
         hero_param = StructQueryParameter("hero", phred_name_param, phred_age_param)
         sidekick_param = StructQueryParameter(
@@ -2316,6 +2326,11 @@ class TestBigQuery(unittest.TestCase):
                     {"name": bharney_name, "age": bharney_age},
                 ],
                 "query_parameters": [characters_param],
+            },
+            {
+                "sql": "SELECT @empty_array_param",
+                "expected": [],
+                "query_parameters": [empty_struct_array_param],
             },
             {
                 "sql": "SELECT @roles",
