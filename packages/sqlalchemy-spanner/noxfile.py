@@ -22,7 +22,7 @@ import nox
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.7"
+DEFAULT_PYTHON_VERSION = "3.8"
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -68,5 +68,10 @@ def lint_setup_py(session):
 def compliance_test(session):
     """Run SQLAlchemy dialect compliance test suite."""
     session.install("pytest")
-    session.install(".")
+    session.install("sqlalchemy")
+    session.install(
+        "git+https://github.com/googleapis/python-spanner.git#egg=google-cloud-spanner"
+    )
+    session.install("-e", ".")
+    session.run("python", "create_test_database.py")
     session.run("pytest", "-v")

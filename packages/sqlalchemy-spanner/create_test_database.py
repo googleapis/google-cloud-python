@@ -14,4 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
+import os
+
+from google.cloud.spanner_v1 import Client
+
+project = os.getenv(
+    "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+)
+
+client = Client(project=project)
+
+config = f"{client.project_name}/instanceConfigs/regional-us-central1"
+
+instance = client.instance("sqlalchemy-dialect-test", config)
+created_op = instance.create()
+created_op.result(120)  # block until completion
+
+database = instance.database("compliance-test")
+created_op = database.create()
+created_op.result(120)
