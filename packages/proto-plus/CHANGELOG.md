@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.14.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.13.1...v1.14.0) (2021-02-24)
+
+
+### Features
+
+* Pypi publish ghub actions ([#189](https://www.github.com/googleapis/proto-plus-python/issues/189)) ([4c967b0](https://www.github.com/googleapis/proto-plus-python/commit/4c967b0bb2ead29156bcc53c1f3b227b3afb2e8b))
+
+
+### Bug Fixes
+
+* proper __setitem__ and insert for RepeatedComposite ([#178](https://www.github.com/googleapis/proto-plus-python/issues/178)) ([1157a76](https://www.github.com/googleapis/proto-plus-python/commit/1157a76bb608d72389f46dc4d8e9aa00cc14ccc6))
+* proper native marshal for repeated enumeration fields ([#180](https://www.github.com/googleapis/proto-plus-python/issues/180)) ([30265d6](https://www.github.com/googleapis/proto-plus-python/commit/30265d654d7f3589cbd0994d2ac564db1fd44265))
+
 ### [1.13.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.13.0...v1.13.1) (2021-02-09)
 
 
