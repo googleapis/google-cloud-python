@@ -37,6 +37,7 @@ from .types.cloudtasks import ResumeQueueRequest
 from .types.cloudtasks import RunTaskRequest
 from .types.cloudtasks import UpdateQueueRequest
 from .types.queue import Queue
+from .types.queue import QueueStats
 from .types.queue import RateLimits
 from .types.queue import RetryConfig
 from .types.target import AppEngineHttpRequest
@@ -75,6 +76,7 @@ __all__ = (
     "PullTarget",
     "PurgeQueueRequest",
     "Queue",
+    "QueueStats",
     "RateLimits",
     "RenewLeaseRequest",
     "ResumeQueueRequest",

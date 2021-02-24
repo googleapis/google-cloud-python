@@ -92,6 +92,11 @@ class ListQueuesRequest(proto.Message):
             method. It is an error to switch the value of the
             [filter][google.cloud.tasks.v2beta2.ListQueuesRequest.filter]
             while iterating through pages.
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Read mask is used for a more granular control over
+            what the API returns. If the mask is not present all fields
+            will be returned except [Queue.stats]. [Queue.stats] will be
+            returned only if it was explicitly specified in the mask.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -102,13 +107,15 @@ class ListQueuesRequest(proto.Message):
 
     page_token = proto.Field(proto.STRING, number=4)
 
+    read_mask = proto.Field(proto.MESSAGE, number=5, message=field_mask.FieldMask,)
+
 
 class ListQueuesResponse(proto.Message):
     r"""Response message for
     [ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues].
 
     Attributes:
-        queues (Sequence[~.gct_queue.Queue]):
+        queues (Sequence[google.cloud.tasks_v2beta2.types.Queue]):
             The list of queues.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -140,9 +147,16 @@ class GetQueueRequest(proto.Message):
         name (str):
             Required. The resource name of the queue. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Read mask is used for a more granular control over
+            what the API returns. If the mask is not present all fields
+            will be returned except [Queue.stats]. [Queue.stats] will be
+            returned only if it was explicitly specified in the mask.
     """
 
     name = proto.Field(proto.STRING, number=1)
+
+    read_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
 
 
 class CreateQueueRequest(proto.Message):
@@ -158,7 +172,7 @@ class CreateQueueRequest(proto.Message):
             The list of allowed locations can be obtained by calling
             Cloud Tasks' implementation of
             [ListLocations][google.cloud.location.Locations.ListLocations].
-        queue (~.gct_queue.Queue):
+        queue (google.cloud.tasks_v2beta2.types.Queue):
             Required. The queue to create.
 
             [Queue's name][google.cloud.tasks.v2beta2.Queue.name] cannot
@@ -175,7 +189,7 @@ class UpdateQueueRequest(proto.Message):
     [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue].
 
     Attributes:
-        queue (~.gct_queue.Queue):
+        queue (google.cloud.tasks_v2beta2.types.Queue):
             Required. The queue to create or update.
 
             The queue's [name][google.cloud.tasks.v2beta2.Queue.name]
@@ -185,7 +199,7 @@ class UpdateQueueRequest(proto.Message):
             value specified for an output only field will be ignored.
             The queue's [name][google.cloud.tasks.v2beta2.Queue.name]
             cannot be changed.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             A mask used to specify which fields of the
             queue are being updated.
             If empty, then all fields will be updated.
@@ -256,7 +270,7 @@ class ListTasksRequest(proto.Message):
         parent (str):
             Required. The queue name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 
@@ -310,7 +324,7 @@ class ListTasksResponse(proto.Message):
     [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
 
     Attributes:
-        tasks (Sequence[~.gct_task.Task]):
+        tasks (Sequence[google.cloud.tasks_v2beta2.types.Task]):
             The list of tasks.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -340,7 +354,7 @@ class GetTaskRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 
@@ -373,7 +387,7 @@ class CreateTaskRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
 
             The queue must already exist.
-        task (~.gct_task.Task):
+        task (google.cloud.tasks_v2beta2.types.Task):
             Required. The task to add.
 
             Task names have the following format:
@@ -414,7 +428,7 @@ class CreateTaskRequest(proto.Message):
             The infrastructure relies on an approximately uniform
             distribution of task ids to store and serve tasks
             efficiently.
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 
@@ -472,7 +486,7 @@ class LeaseTasksRequest(proto.Message):
             response][google.cloud.tasks.v2beta2.LeaseTasksResponse] is
             32 MB. If the sum of all task sizes requested reaches this
             limit, fewer tasks than requested are returned.
-        lease_duration (~.duration.Duration):
+        lease_duration (google.protobuf.duration_pb2.Duration):
             Required. The duration of the lease.
 
             Each task returned in the
@@ -498,7 +512,7 @@ class LeaseTasksRequest(proto.Message):
 
             The maximum lease duration is 1 week. ``lease_duration``
             will be truncated to the nearest second.
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 
@@ -569,7 +583,7 @@ class LeaseTasksResponse(proto.Message):
     [LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks].
 
     Attributes:
-        tasks (Sequence[~.gct_task.Task]):
+        tasks (Sequence[google.cloud.tasks_v2beta2.types.Task]):
             The leased tasks.
     """
 
@@ -584,7 +598,7 @@ class AcknowledgeTaskRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The task's current schedule time, available in the
             [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time]
             returned by
@@ -608,7 +622,7 @@ class RenewLeaseRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The task's current schedule time, available in the
             [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time]
             returned by
@@ -617,12 +631,12 @@ class RenewLeaseRequest(proto.Message):
             [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease]
             response. This restriction is to ensure that your worker
             currently holds the lease.
-        lease_duration (~.duration.Duration):
+        lease_duration (google.protobuf.duration_pb2.Duration):
             Required. The desired new lease duration, starting from now.
 
             The maximum lease duration is 1 week. ``lease_duration``
             will be truncated to the nearest second.
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 
@@ -657,7 +671,7 @@ class CancelLeaseRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The task's current schedule time, available in the
             [schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time]
             returned by
@@ -666,7 +680,7 @@ class CancelLeaseRequest(proto.Message):
             [RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease]
             response. This restriction is to ensure that your worker
             currently holds the lease.
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 
@@ -699,7 +713,7 @@ class RunTaskRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2beta2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2beta2.Task] will be returned.
 

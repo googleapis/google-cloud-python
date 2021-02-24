@@ -1,6 +1,6 @@
 Services for Google Cloud Tasks v2 API
 ======================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.tasks_v2.services.cloud_tasks
-    :members:
-    :inherited-members:
+    cloud_tasks

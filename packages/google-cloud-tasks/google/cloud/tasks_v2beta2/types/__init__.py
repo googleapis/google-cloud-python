@@ -27,6 +27,7 @@ from .queue import (
     Queue,
     RateLimits,
     RetryConfig,
+    QueueStats,
 )
 from .task import (
     Task,
@@ -66,6 +67,7 @@ __all__ = (
     "Queue",
     "RateLimits",
     "RetryConfig",
+    "QueueStats",
     "Task",
     "TaskStatus",
     "AttemptStatus",

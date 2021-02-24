@@ -16,6 +16,7 @@
 #
 
 from .target import (
+    PullMessage,
     HttpRequest,
     AppEngineHttpQueue,
     AppEngineHttpRequest,
@@ -29,6 +30,7 @@ from .queue import (
     RateLimits,
     RetryConfig,
     StackdriverLoggingConfig,
+    QueueStats,
 )
 from .task import (
     Task,
@@ -53,6 +55,7 @@ from .cloudtasks import (
 )
 
 __all__ = (
+    "PullMessage",
     "HttpRequest",
     "AppEngineHttpQueue",
     "AppEngineHttpRequest",
@@ -64,6 +67,7 @@ __all__ = (
     "RateLimits",
     "RetryConfig",
     "StackdriverLoggingConfig",
+    "QueueStats",
     "Task",
     "Attempt",
     "ListQueuesRequest",

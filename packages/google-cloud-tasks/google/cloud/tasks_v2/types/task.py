@@ -58,28 +58,28 @@ class Task(proto.Message):
             -  ``TASK_ID`` can contain only letters ([A-Za-z]), numbers
                ([0-9]), hyphens (-), or underscores (_). The maximum
                length is 500 characters.
-        app_engine_http_request (~.target.AppEngineHttpRequest):
+        app_engine_http_request (google.cloud.tasks_v2.types.AppEngineHttpRequest):
             HTTP request that is sent to the App Engine app handler.
 
             An App Engine task is a task that has
             [AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest]
             set.
-        http_request (~.target.HttpRequest):
+        http_request (google.cloud.tasks_v2.types.HttpRequest):
             HTTP request that is sent to the worker.
 
             An HTTP task is a task that has
             [HttpRequest][google.cloud.tasks.v2.HttpRequest] set.
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the task is scheduled to be attempted or
             retried.
 
             ``schedule_time`` will be truncated to the nearest
             microsecond.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that the task was created.
 
             ``create_time`` will be truncated to the nearest second.
-        dispatch_deadline (~.duration.Duration):
+        dispatch_deadline (google.protobuf.duration_pb2.Duration):
             The deadline for requests sent to the worker. If the worker
             does not respond by this deadline then the request is
             cancelled and the attempt is marked as a
@@ -126,7 +126,7 @@ class Task(proto.Message):
         response_count (int):
             Output only. The number of attempts which
             have received a response.
-        first_attempt (~.task.Attempt):
+        first_attempt (google.cloud.tasks_v2.types.Attempt):
             Output only. The status of the task's first attempt.
 
             Only
@@ -134,10 +134,10 @@ class Task(proto.Message):
             will be set. The other
             [Attempt][google.cloud.tasks.v2.Attempt] information is not
             retained by Cloud Tasks.
-        last_attempt (~.task.Attempt):
+        last_attempt (google.cloud.tasks_v2.types.Attempt):
             Output only. The status of the task's last
             attempt.
-        view (~.task.Task.View):
+        view (google.cloud.tasks_v2.types.Task.View):
             Output only. The view specifies which subset of the
             [Task][google.cloud.tasks.v2.Task] has been returned.
     """
@@ -189,23 +189,23 @@ class Attempt(proto.Message):
     r"""The status of a task attempt.
 
     Attributes:
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that this attempt was scheduled.
 
             ``schedule_time`` will be truncated to the nearest
             microsecond.
-        dispatch_time (~.timestamp.Timestamp):
+        dispatch_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that this attempt was dispatched.
 
             ``dispatch_time`` will be truncated to the nearest
             microsecond.
-        response_time (~.timestamp.Timestamp):
+        response_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that this attempt response was
             received.
 
             ``response_time`` will be truncated to the nearest
             microsecond.
-        response_status (~.status.Status):
+        response_status (google.rpc.status_pb2.Status):
             Output only. The response from the worker for this attempt.
 
             If ``response_time`` is unset, then the task has not been

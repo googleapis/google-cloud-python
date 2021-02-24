@@ -32,6 +32,7 @@ from .types.cloudtasks import ResumeQueueRequest
 from .types.cloudtasks import RunTaskRequest
 from .types.cloudtasks import UpdateQueueRequest
 from .types.queue import Queue
+from .types.queue import QueueStats
 from .types.queue import RateLimits
 from .types.queue import RetryConfig
 from .types.queue import StackdriverLoggingConfig
@@ -42,6 +43,7 @@ from .types.target import HttpMethod
 from .types.target import HttpRequest
 from .types.target import OAuthToken
 from .types.target import OidcToken
+from .types.target import PullMessage
 from .types.task import Attempt
 from .types.task import Task
 
@@ -66,8 +68,10 @@ __all__ = (
     "OAuthToken",
     "OidcToken",
     "PauseQueueRequest",
+    "PullMessage",
     "PurgeQueueRequest",
     "Queue",
+    "QueueStats",
     "RateLimits",
     "ResumeQueueRequest",
     "RetryConfig",

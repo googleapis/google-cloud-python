@@ -59,7 +59,7 @@ class Queue(proto.Message):
             -  ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers
                ([0-9]), or hyphens (-). The maximum length is 100
                characters.
-        app_engine_routing_override (~.target.AppEngineRouting):
+        app_engine_routing_override (google.cloud.tasks_v2.types.AppEngineRouting):
             Overrides for [task-level
             app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
             These settings apply only to [App Engine
@@ -71,7 +71,7 @@ class Queue(proto.Message):
             Engine tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in
             the queue, no matter what the setting is for the [task-level
             app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
-        rate_limits (~.queue.RateLimits):
+        rate_limits (google.cloud.tasks_v2.types.RateLimits):
             Rate limits for task dispatches.
 
             [rate_limits][google.cloud.tasks.v2.Queue.rate_limits] and
@@ -102,7 +102,7 @@ class Queue(proto.Message):
                ``503`` (Service Unavailable) responses from the worker,
                high error rates, or to smooth sudden large traffic
                spikes.
-        retry_config (~.queue.RetryConfig):
+        retry_config (google.cloud.tasks_v2.types.RetryConfig):
             Settings that determine the retry behavior.
 
             -  For tasks created using Cloud Tasks: the queue-level
@@ -115,7 +115,7 @@ class Queue(proto.Message):
                the task and were created by the App Engine SDK. See `App
                Engine
                documentation <https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks>`__.
-        state (~.queue.Queue.State):
+        state (google.cloud.tasks_v2.types.Queue.State):
             Output only. The state of the queue.
 
             ``state`` can only be changed by called
@@ -125,7 +125,7 @@ class Queue(proto.Message):
             `queue.yaml/xml <https://cloud.google.com/appengine/docs/python/config/queueref>`__.
             [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue]
             cannot be used to change ``state``.
-        purge_time (~.timestamp.Timestamp):
+        purge_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last time this queue was purged.
 
             All tasks that were
@@ -139,7 +139,7 @@ class Queue(proto.Message):
 
             Purge time will be truncated to the nearest microsecond.
             Purge time will be unset if the queue has never been purged.
-        stackdriver_logging_config (~.queue.StackdriverLoggingConfig):
+        stackdriver_logging_config (google.cloud.tasks_v2.types.StackdriverLoggingConfig):
             Configuration options for writing logs to `Stackdriver
             Logging <https://cloud.google.com/logging/docs/>`__. If this
             field is unset, then no logs are written.
@@ -273,7 +273,7 @@ class RetryConfig(proto.Message):
 
             This field has the same meaning as `task_retry_limit in
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
-        max_retry_duration (~.duration.Duration):
+        max_retry_duration (google.protobuf.duration_pb2.Duration):
             If positive, ``max_retry_duration`` specifies the time limit
             for retrying a failed task, measured from when the task was
             first attempted. Once ``max_retry_duration`` time has passed
@@ -292,7 +292,7 @@ class RetryConfig(proto.Message):
 
             This field has the same meaning as `task_age_limit in
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
-        min_backoff (~.duration.Duration):
+        min_backoff (google.protobuf.duration_pb2.Duration):
             A task will be
             [scheduled][google.cloud.tasks.v2.Task.schedule_time] for
             retry between
@@ -310,7 +310,7 @@ class RetryConfig(proto.Message):
 
             This field has the same meaning as `min_backoff_seconds in
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
-        max_backoff (~.duration.Duration):
+        max_backoff (google.protobuf.duration_pb2.Duration):
             A task will be
             [scheduled][google.cloud.tasks.v2.Task.schedule_time] for
             retry between

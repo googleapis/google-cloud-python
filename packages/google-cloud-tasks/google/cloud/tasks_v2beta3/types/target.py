@@ -22,6 +22,7 @@ __protobuf__ = proto.module(
     package="google.cloud.tasks.v2beta3",
     manifest={
         "HttpMethod",
+        "PullMessage",
         "HttpRequest",
         "AppEngineHttpQueue",
         "AppEngineHttpRequest",
@@ -42,6 +43,39 @@ class HttpMethod(proto.Enum):
     DELETE = 5
     PATCH = 6
     OPTIONS = 7
+
+
+class PullMessage(proto.Message):
+    r"""Pull Message.
+
+    This proto can only be used for tasks in a queue which has
+    [PULL][google.cloud.tasks.v2beta3.Queue.type] type. It currently
+    exists for backwards compatibility with the App Engine Task Queue
+    SDK. This message type maybe returned with methods
+    [list][google.cloud.tasks.v2beta3.CloudTask.ListTasks] and
+    [get][google.cloud.tasks.v2beta3.CloudTask.ListTasks], when the
+    response view is [FULL][google.cloud.tasks.v2beta3.Task.View.Full].
+
+    Attributes:
+        payload (bytes):
+            A data payload consumed by the worker to
+            execute the task.
+        tag (str):
+            The tasks's tag.
+
+            The tag is less than 500 characters.
+
+            SDK compatibility: Although the SDK allows tags to be either
+            string or
+            `bytes <https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/TaskOptions.html#tag-byte:A->`__,
+            only UTF-8 encoded tags can be used in Cloud Tasks. If a tag
+            isn't UTF-8 encoded, the tag will be empty when the task is
+            returned by Cloud Tasks.
+    """
+
+    payload = proto.Field(proto.BYTES, number=1)
+
+    tag = proto.Field(proto.STRING, number=2)
 
 
 class HttpRequest(proto.Message):
@@ -94,10 +128,10 @@ class HttpRequest(proto.Message):
             The ``Location`` header response from a redirect response
             [``300`` - ``399``] may be followed. The redirect is not
             counted as a separate attempt.
-        http_method (~.target.HttpMethod):
+        http_method (google.cloud.tasks_v2beta3.types.HttpMethod):
             The HTTP method to use for the request. The
             default is POST.
-        headers (Sequence[~.target.HttpRequest.HeadersEntry]):
+        headers (Sequence[google.cloud.tasks_v2beta3.types.HttpRequest.HeadersEntry]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -138,7 +172,7 @@ class HttpRequest(proto.Message):
             is POST, PUT, or PATCH. It is an error to set body on a task
             with an incompatible
             [HttpMethod][google.cloud.tasks.v2beta3.HttpMethod].
-        oauth_token (~.target.OAuthToken):
+        oauth_token (google.cloud.tasks_v2beta3.types.OAuthToken):
             If specified, an `OAuth
             token <https://developers.google.com/identity/protocols/OAuth2>`__
             will be generated and attached as an ``Authorization``
@@ -146,7 +180,7 @@ class HttpRequest(proto.Message):
 
             This type of authorization should generally only be used
             when calling Google APIs hosted on \*.googleapis.com.
-        oidc_token (~.target.OidcToken):
+        oidc_token (google.cloud.tasks_v2beta3.types.OidcToken):
             If specified, an
             `OIDC <https://developers.google.com/identity/protocols/OpenIDConnect>`__
             token will be generated and attached as an ``Authorization``
@@ -195,7 +229,7 @@ class AppEngineHttpQueue(proto.Message):
     ``https://www.googleapis.com/auth/cloud-platform``
 
     Attributes:
-        app_engine_routing_override (~.target.AppEngineRouting):
+        app_engine_routing_override (google.cloud.tasks_v2beta3.types.AppEngineRouting):
             Overrides for the [task-level
             app_engine_routing][google.cloud.tasks.v2beta3.AppEngineHttpRequest.app_engine_routing].
 
@@ -275,7 +309,7 @@ class AppEngineHttpRequest(proto.Message):
     congestion control to throttle the queue.
 
     Attributes:
-        http_method (~.target.HttpMethod):
+        http_method (google.cloud.tasks_v2beta3.types.HttpMethod):
             The HTTP method to use for the request. The default is POST.
 
             The app's request handler for the task's target URL must be
@@ -286,7 +320,7 @@ class AppEngineHttpRequest(proto.Message):
             and the App Engine documentation for your runtime on `How
             Requests are
             Handled <https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled>`__.
-        app_engine_routing (~.target.AppEngineRouting):
+        app_engine_routing (google.cloud.tasks_v2beta3.types.AppEngineRouting):
             Task-level setting for App Engine routing.
 
             If set,
@@ -302,7 +336,7 @@ class AppEngineHttpRequest(proto.Message):
             is empty, then the root path "/" will be used.
             No spaces are allowed, and the maximum length
             allowed is 2083 characters.
-        headers (Sequence[~.target.AppEngineHttpRequest.HeadersEntry]):
+        headers (Sequence[google.cloud.tasks_v2beta3.types.AppEngineHttpRequest.HeadersEntry]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers

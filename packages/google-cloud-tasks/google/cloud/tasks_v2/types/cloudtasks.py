@@ -101,7 +101,7 @@ class ListQueuesResponse(proto.Message):
     [ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues].
 
     Attributes:
-        queues (Sequence[~.gct_queue.Queue]):
+        queues (Sequence[google.cloud.tasks_v2.types.Queue]):
             The list of queues.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -151,7 +151,7 @@ class CreateQueueRequest(proto.Message):
             The list of allowed locations can be obtained by calling
             Cloud Tasks' implementation of
             [ListLocations][google.cloud.location.Locations.ListLocations].
-        queue (~.gct_queue.Queue):
+        queue (google.cloud.tasks_v2.types.Queue):
             Required. The queue to create.
 
             [Queue's name][google.cloud.tasks.v2.Queue.name] cannot be
@@ -168,7 +168,7 @@ class UpdateQueueRequest(proto.Message):
     [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue].
 
     Attributes:
-        queue (~.gct_queue.Queue):
+        queue (google.cloud.tasks_v2.types.Queue):
             Required. The queue to create or update.
 
             The queue's [name][google.cloud.tasks.v2.Queue.name] must be
@@ -178,7 +178,7 @@ class UpdateQueueRequest(proto.Message):
             value specified for an output only field will be ignored.
             The queue's [name][google.cloud.tasks.v2.Queue.name] cannot
             be changed.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             A mask used to specify which fields of the
             queue are being updated.
             If empty, then all fields will be updated.
@@ -249,7 +249,7 @@ class ListTasksRequest(proto.Message):
         parent (str):
             Required. The queue name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2.Task] will be returned.
 
@@ -303,7 +303,7 @@ class ListTasksResponse(proto.Message):
     [ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks].
 
     Attributes:
-        tasks (Sequence[~.gct_task.Task]):
+        tasks (Sequence[google.cloud.tasks_v2.types.Task]):
             The list of tasks.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -333,7 +333,7 @@ class GetTaskRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2.Task] will be returned.
 
@@ -366,7 +366,7 @@ class CreateTaskRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
 
             The queue must already exist.
-        task (~.gct_task.Task):
+        task (google.cloud.tasks_v2.types.Task):
             Required. The task to add.
 
             Task names have the following format:
@@ -406,7 +406,7 @@ class CreateTaskRequest(proto.Message):
             The infrastructure relies on an approximately uniform
             distribution of task ids to store and serve tasks
             efficiently.
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2.Task] will be returned.
 
@@ -452,7 +452,7 @@ class RunTaskRequest(proto.Message):
         name (str):
             Required. The task name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID``
-        response_view (~.gct_task.Task.View):
+        response_view (google.cloud.tasks_v2.types.Task.View):
             The response_view specifies which subset of the
             [Task][google.cloud.tasks.v2.Task] will be returned.
 

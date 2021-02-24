@@ -108,7 +108,7 @@ class AppEngineHttpTarget(proto.Message):
     ``https://www.googleapis.com/auth/cloud-platform``
 
     Attributes:
-        app_engine_routing_override (~.target.AppEngineRouting):
+        app_engine_routing_override (google.cloud.tasks_v2beta2.types.AppEngineRouting):
             Overrides for the [task-level
             app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
 
@@ -192,18 +192,18 @@ class AppEngineHttpRequest(proto.Message):
     congestion control to throttle the queue.
 
     Attributes:
-        http_method (~.target.HttpMethod):
+        http_method (google.cloud.tasks_v2beta2.types.HttpMethod):
             The HTTP method to use for the request. The default is POST.
 
             The app's request handler for the task's target URL must be
             able to handle HTTP requests with this http_method,
-            otherwise the task attempt will fail with error code 405
-            (Method Not Allowed). See `Writing a push task request
+            otherwise the task attempt fails with error code 405 (Method
+            Not Allowed). See `Writing a push task request
             handler <https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler>`__
-            and the documentation for the request handlers in the
-            language your app is written in e.g. `Python Request
-            Handler <https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass>`__.
-        app_engine_routing (~.target.AppEngineRouting):
+            and the App Engine documentation for your runtime on `How
+            Requests are
+            Handled <https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled>`__.
+        app_engine_routing (google.cloud.tasks_v2beta2.types.AppEngineRouting):
             Task-level setting for App Engine routing.
 
             If set,
@@ -219,7 +219,7 @@ class AppEngineHttpRequest(proto.Message):
             is empty, then the root path "/" will be used.
             No spaces are allowed, and the maximum length
             allowed is 2083 characters.
-        headers (Sequence[~.target.AppEngineHttpRequest.HeadersEntry]):
+        headers (Sequence[google.cloud.tasks_v2beta2.types.AppEngineHttpRequest.HeadersEntry]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers

@@ -25,7 +25,7 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.tasks.v2beta2",
-    manifest={"Queue", "RateLimits", "RetryConfig",},
+    manifest={"Queue", "RateLimits", "RetryConfig", "QueueStats",},
 )
 
 
@@ -59,17 +59,17 @@ class Queue(proto.Message):
             -  ``QUEUE_ID`` can contain letters ([A-Za-z]), numbers
                ([0-9]), or hyphens (-). The maximum length is 100
                characters.
-        app_engine_http_target (~.target.AppEngineHttpTarget):
+        app_engine_http_target (google.cloud.tasks_v2beta2.types.AppEngineHttpTarget):
             App Engine HTTP target.
 
             An App Engine queue is a queue that has an
             [AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget].
-        pull_target (~.target.PullTarget):
+        pull_target (google.cloud.tasks_v2beta2.types.PullTarget):
             Pull target.
 
             A pull queue is a queue that has a
             [PullTarget][google.cloud.tasks.v2beta2.PullTarget].
-        rate_limits (~.queue.RateLimits):
+        rate_limits (google.cloud.tasks_v2beta2.types.RateLimits):
             Rate limits for task dispatches.
 
             [rate_limits][google.cloud.tasks.v2beta2.Queue.rate_limits]
@@ -88,7 +88,7 @@ class Queue(proto.Message):
                [retry_config][google.cloud.tasks.v2beta2.Queue.retry_config]
                controls task retries (the second attempt, third attempt,
                etc).
-        retry_config (~.queue.RetryConfig):
+        retry_config (google.cloud.tasks_v2beta2.types.RetryConfig):
             Settings that determine the retry behavior.
 
             -  For tasks created using Cloud Tasks: the queue-level
@@ -101,7 +101,7 @@ class Queue(proto.Message):
                the task and were created by the App Engine SDK. See `App
                Engine
                documentation <https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks>`__.
-        state (~.queue.Queue.State):
+        state (google.cloud.tasks_v2beta2.types.Queue.State):
             Output only. The state of the queue.
 
             ``state`` can only be changed by called
@@ -111,7 +111,7 @@ class Queue(proto.Message):
             `queue.yaml/xml <https://cloud.google.com/appengine/docs/python/config/queueref>`__.
             [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue]
             cannot be used to change ``state``.
-        purge_time (~.timestamp.Timestamp):
+        purge_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last time this queue was purged.
 
             All tasks that were
@@ -125,6 +125,39 @@ class Queue(proto.Message):
 
             Purge time will be truncated to the nearest microsecond.
             Purge time will be unset if the queue has never been purged.
+        task_ttl (google.protobuf.duration_pb2.Duration):
+            The maximum amount of time that a task will be retained in
+            this queue.
+
+            Queues created by Cloud Tasks have a default ``task_ttl`` of
+            31 days. After a task has lived for ``task_ttl``, the task
+            will be deleted regardless of whether it was dispatched or
+            not.
+
+            The ``task_ttl`` for queues created via queue.yaml/xml is
+            equal to the maximum duration because there is a `storage
+            quota <https://cloud.google.com/appengine/quotas#Task_Queue>`__
+            for these queues. To view the maximum valid duration, see
+            the documentation for [Duration][google.protobuf.Duration].
+        tombstone_ttl (google.protobuf.duration_pb2.Duration):
+            The task tombstone time to live (TTL).
+
+            After a task is deleted or completed, the task's tombstone
+            is retained for the length of time specified by
+            ``tombstone_ttl``. The tombstone is used by task
+            de-duplication; another task with the same name can't be
+            created until the tombstone has expired. For more
+            information about task de-duplication, see the documentation
+            for
+            [CreateTaskRequest][google.cloud.tasks.v2beta2.CreateTaskRequest.task].
+
+            Queues created by Cloud Tasks have a default
+            ``tombstone_ttl`` of 1 hour.
+        stats (google.cloud.tasks_v2beta2.types.QueueStats):
+            Output only. The realtime, informational
+            statistics for a queue. In order to receive the
+            statistics the caller should include this field
+            in the FieldMask.
     """
 
     class State(proto.Enum):
@@ -154,6 +187,12 @@ class Queue(proto.Message):
     state = proto.Field(proto.ENUM, number=7, enum=State,)
 
     purge_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
+
+    task_ttl = proto.Field(proto.MESSAGE, number=9, message=duration.Duration,)
+
+    tombstone_ttl = proto.Field(proto.MESSAGE, number=10, message=duration.Duration,)
+
+    stats = proto.Field(proto.MESSAGE, number=16, message="QueueStats",)
 
 
 class RateLimits(proto.Message):
@@ -189,7 +228,7 @@ class RateLimits(proto.Message):
             This field has the same meaning as `rate in
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate>`__.
         max_burst_size (int):
-            Output only. The max burst size.
+            The max burst size.
 
             Max burst size limits how fast tasks in queue are processed
             when many tasks are in the queue and the rate is high. This
@@ -207,23 +246,25 @@ class RateLimits(proto.Message):
             be dispatched until the queue's bucket runs out of tokens.
             The bucket will be continuously refilled with new tokens
             based on
-            [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second].
+            [max_dispatches_per_second][RateLimits.max_dispatches_per_second].
 
-            Cloud Tasks will pick the value of ``max_burst_size`` based
-            on the value of
-            [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second].
+            The default value of ``max_burst_size`` is picked by Cloud
+            Tasks based on the value of
+            [max_dispatches_per_second][RateLimits.max_dispatches_per_second].
+
+            The maximum value of ``max_burst_size`` is 500.
 
             For App Engine queues that were created or updated using
             ``queue.yaml/xml``, ``max_burst_size`` is equal to
             `bucket_size <https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size>`__.
-            Since ``max_burst_size`` is output only, if
+            If
             [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue]
-            is called on a queue created by ``queue.yaml/xml``,
-            ``max_burst_size`` will be reset based on the value of
-            [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second],
-            regardless of whether
-            [max_tasks_dispatched_per_second][google.cloud.tasks.v2beta2.RateLimits.max_tasks_dispatched_per_second]
-            is updated.
+            is called on a queue without explicitly setting a value for
+            ``max_burst_size``, ``max_burst_size`` value will get
+            updated if
+            [UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue]
+            is updating
+            [max_dispatches_per_second][RateLimits.max_dispatches_per_second].
         max_concurrent_tasks (int):
             The maximum number of concurrent tasks that Cloud Tasks
             allows to be dispatched for this queue. After this threshold
@@ -266,7 +307,7 @@ class RetryConfig(proto.Message):
         unlimited_attempts (bool):
             If true, then the number of attempts is
             unlimited.
-        max_retry_duration (~.duration.Duration):
+        max_retry_duration (google.protobuf.duration_pb2.Duration):
             If positive, ``max_retry_duration`` specifies the time limit
             for retrying a failed task, measured from when the task was
             first attempted. Once ``max_retry_duration`` time has passed
@@ -288,7 +329,7 @@ class RetryConfig(proto.Message):
 
             This field has the same meaning as `task_age_limit in
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
-        min_backoff (~.duration.Duration):
+        min_backoff (google.protobuf.duration_pb2.Duration):
             A task will be
             [scheduled][google.cloud.tasks.v2beta2.Task.schedule_time]
             for retry between
@@ -309,7 +350,7 @@ class RetryConfig(proto.Message):
 
             This field has the same meaning as `min_backoff_seconds in
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
-        max_backoff (~.duration.Duration):
+        max_backoff (google.protobuf.duration_pb2.Duration):
             A task will be
             [scheduled][google.cloud.tasks.v2beta2.Task.schedule_time]
             for retry between
@@ -337,7 +378,7 @@ class RetryConfig(proto.Message):
             A task's retry interval starts at
             [min_backoff][google.cloud.tasks.v2beta2.RetryConfig.min_backoff],
             then doubles ``max_doublings`` times, then increases
-            linearly, and finally retries retries at intervals of
+            linearly, and finally retries at intervals of
             [max_backoff][google.cloud.tasks.v2beta2.RetryConfig.max_backoff]
             up to
             [max_attempts][google.cloud.tasks.v2beta2.RetryConfig.max_attempts]
@@ -380,6 +421,52 @@ class RetryConfig(proto.Message):
     max_backoff = proto.Field(proto.MESSAGE, number=5, message=duration.Duration,)
 
     max_doublings = proto.Field(proto.INT32, number=6)
+
+
+class QueueStats(proto.Message):
+    r"""Statistics for a queue.
+
+    Attributes:
+        tasks_count (int):
+            Output only. An estimation of the number of
+            tasks in the queue, that is, the tasks in the
+            queue that haven't been executed, the tasks in
+            the queue which the queue has dispatched but has
+            not yet received a reply for, and the failed
+            tasks that the queue is retrying.
+        oldest_estimated_arrival_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. An estimation of the nearest
+            time in the future where a task in the queue is
+            scheduled to be executed.
+        executed_last_minute_count (int):
+            Output only. The number of tasks that the
+            queue has dispatched and received a reply for
+            during the last minute. This variable counts
+            both successful and non-successful executions.
+        concurrent_dispatches_count (int):
+            Output only. The number of requests that the
+            queue has dispatched but has not received a
+            reply for yet.
+        effective_execution_rate (float):
+            Output only. The current maximum number of
+            tasks per second executed by the queue. The
+            maximum value of this variable is controlled by
+            the RateLimits of the Queue. However, this value
+            could be less to avoid overloading the endpoints
+            tasks in the queue are targeting.
+    """
+
+    tasks_count = proto.Field(proto.INT64, number=1)
+
+    oldest_estimated_arrival_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp.Timestamp,
+    )
+
+    executed_last_minute_count = proto.Field(proto.INT64, number=3)
+
+    concurrent_dispatches_count = proto.Field(proto.INT64, number=4)
+
+    effective_execution_rate = proto.Field(proto.DOUBLE, number=5)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

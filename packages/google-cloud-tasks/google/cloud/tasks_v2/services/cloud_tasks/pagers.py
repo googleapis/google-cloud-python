@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.tasks_v2.types import cloudtasks
 from google.cloud.tasks_v2.types import queue
@@ -26,7 +35,7 @@ class ListQueuesPager:
     """A pager for iterating through ``list_queues`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloudtasks.ListQueuesResponse` object, and
+    :class:`google.cloud.tasks_v2.types.ListQueuesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``queues`` field.
 
@@ -35,7 +44,7 @@ class ListQueuesPager:
     through the ``queues`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloudtasks.ListQueuesResponse`
+    All the usual :class:`google.cloud.tasks_v2.types.ListQueuesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +62,9 @@ class ListQueuesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloudtasks.ListQueuesRequest`):
+            request (google.cloud.tasks_v2.types.ListQueuesRequest):
                 The initial request object.
-            response (:class:`~.cloudtasks.ListQueuesResponse`):
+            response (google.cloud.tasks_v2.types.ListQueuesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +97,7 @@ class ListQueuesAsyncPager:
     """A pager for iterating through ``list_queues`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloudtasks.ListQueuesResponse` object, and
+    :class:`google.cloud.tasks_v2.types.ListQueuesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``queues`` field.
 
@@ -97,7 +106,7 @@ class ListQueuesAsyncPager:
     through the ``queues`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloudtasks.ListQueuesResponse`
+    All the usual :class:`google.cloud.tasks_v2.types.ListQueuesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListQueuesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloudtasks.ListQueuesRequest`):
+            request (google.cloud.tasks_v2.types.ListQueuesRequest):
                 The initial request object.
-            response (:class:`~.cloudtasks.ListQueuesResponse`):
+            response (google.cloud.tasks_v2.types.ListQueuesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -154,7 +163,7 @@ class ListTasksPager:
     """A pager for iterating through ``list_tasks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloudtasks.ListTasksResponse` object, and
+    :class:`google.cloud.tasks_v2.types.ListTasksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``tasks`` field.
 
@@ -163,7 +172,7 @@ class ListTasksPager:
     through the ``tasks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloudtasks.ListTasksResponse`
+    All the usual :class:`google.cloud.tasks_v2.types.ListTasksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -181,9 +190,9 @@ class ListTasksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloudtasks.ListTasksRequest`):
+            request (google.cloud.tasks_v2.types.ListTasksRequest):
                 The initial request object.
-            response (:class:`~.cloudtasks.ListTasksResponse`):
+            response (google.cloud.tasks_v2.types.ListTasksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -216,7 +225,7 @@ class ListTasksAsyncPager:
     """A pager for iterating through ``list_tasks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloudtasks.ListTasksResponse` object, and
+    :class:`google.cloud.tasks_v2.types.ListTasksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``tasks`` field.
 
@@ -225,7 +234,7 @@ class ListTasksAsyncPager:
     through the ``tasks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloudtasks.ListTasksResponse`
+    All the usual :class:`google.cloud.tasks_v2.types.ListTasksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -243,9 +252,9 @@ class ListTasksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloudtasks.ListTasksRequest`):
+            request (google.cloud.tasks_v2.types.ListTasksRequest):
                 The initial request object.
-            response (:class:`~.cloudtasks.ListTasksResponse`):
+            response (google.cloud.tasks_v2.types.ListTasksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
