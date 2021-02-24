@@ -3,7 +3,7 @@ google-api-core==1.26.0
 googleapis-common-protos==1.52.0
 jinja2==2.11.3
 MarkupSafe==1.1.1
-protobuf==3.15.0
+protobuf==3.15.2
 pypandoc==1.5
 PyYAML==5.4.1
 dataclasses==0.6  # TODO(busunkim) remove when 3.6 support is dropped
