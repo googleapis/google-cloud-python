@@ -365,7 +365,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             request = {{ method.input.ident }}(**request)
         {% if method.flattened_fields -%}{# Cross-package req and flattened fields #}
         elif not request:
-            request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
+            request = {{ method.input.ident }}()
         {% endif -%}{# Cross-package req and flattened fields #}
         {%- else %}
         # Minor optimization to avoid making a copy if the user passes
