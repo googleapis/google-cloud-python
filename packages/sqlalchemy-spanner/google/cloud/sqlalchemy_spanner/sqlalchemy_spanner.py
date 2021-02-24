@@ -17,7 +17,12 @@ import re
 from sqlalchemy import types
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect
-from sqlalchemy.sql.compiler import DDLCompiler, GenericTypeCompiler
+from sqlalchemy.sql.compiler import (
+    selectable,
+    DDLCompiler,
+    GenericTypeCompiler,
+    SQLCompiler,
+)
 from google.cloud import spanner_dbapi
 
 # Spanner-to-SQLAlchemy types map
@@ -33,6 +38,21 @@ _type_map = {
     "TIME": types.TIME,
     "TIMESTAMP": types.TIMESTAMP,
 }
+
+_compound_keywords = {
+    selectable.CompoundSelect.UNION: "UNION DISTINCT",
+    selectable.CompoundSelect.UNION_ALL: "UNION ALL",
+    selectable.CompoundSelect.EXCEPT: "EXCEPT DISTINCT",
+    selectable.CompoundSelect.EXCEPT_ALL: "EXCEPT ALL",
+    selectable.CompoundSelect.INTERSECT: "INTERSECT DISTINCT",
+    selectable.CompoundSelect.INTERSECT_ALL: "INTERSECT ALL",
+}
+
+
+class SpannerSQLCompiler(SQLCompiler):
+    """Spanner SQL statements compiler."""
+
+    compound_keywords = _compound_keywords
 
 
 class SpannerDDLCompiler(DDLCompiler):
@@ -60,7 +80,6 @@ class SpannerDDLCompiler(DDLCompiler):
         cols = [col.name for col in table.primary_key.columns]
 
         return " PRIMARY KEY ({})".format(", ".join(cols))
-
 
 
 class SpannerTypeCompiler(GenericTypeCompiler):
@@ -123,6 +142,7 @@ class SpannerDialect(DefaultDialect):
     supports_native_boolean = True
 
     ddl_compiler = SpannerDDLCompiler
+    statement_compiler = SpannerSQLCompiler
     type_compiler = SpannerTypeCompiler
 
     @classmethod
