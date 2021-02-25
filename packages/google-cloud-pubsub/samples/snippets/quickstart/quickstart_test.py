@@ -17,6 +17,7 @@
 import os
 import uuid
 
+from flaky import flaky
 from google.api_core.exceptions import AlreadyExists
 from google.cloud import pubsub_v1
 import pytest
@@ -79,6 +80,7 @@ def test_pub(topic_path, capsys):
     assert "Hello, World!" in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_sub(publisher_client, topic_path, subscription_path, capsys):
     publisher_client.publish(topic_path, b"Hello World!")
 

@@ -17,6 +17,7 @@ import sys
 import uuid
 
 import backoff
+from flaky import flaky
 from google.api_core.exceptions import NotFound
 from google.cloud import pubsub_v1
 import pytest
@@ -228,6 +229,7 @@ def test_create_subscription_with_dead_letter_policy(
     assert f"After {DEFAULT_MAX_DELIVERY_ATTEMPTS} delivery attempts." in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_receive_with_delivery_attempts(
     publisher_client, topic, dead_letter_topic, subscription_dlq, capsys
 ):
@@ -255,6 +257,7 @@ def test_update_dead_letter_policy(subscription_dlq, dead_letter_topic, capsys):
     assert f"max_delivery_attempts: {UPDATED_MAX_DELIVERY_ATTEMPTS}" in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_remove_dead_letter_policy(subscription_dlq, capsys):
     subscription_after_update = subscriber.remove_dead_letter_policy(
         PROJECT_ID, TOPIC, SUBSCRIPTION_DLQ
@@ -389,6 +392,7 @@ def test_receive_synchronously(publisher_client, topic, subscription_sync, capsy
     assert f"{subscription_sync}" in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_receive_synchronously_with_lease(
     publisher_client, topic, subscription_sync, capsys
 ):
