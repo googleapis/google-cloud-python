@@ -16,25 +16,23 @@
 #
 
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
+from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google.api_core import grpc_helpers_async  # type: ignore
 from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.analytics.data_v1alpha.types import analytics_data_api
+from google.analytics.data_v1beta.types import analytics_data_api
 
-from .base import AlphaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
-from .grpc import AlphaAnalyticsDataGrpcTransport
+from .base import BetaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
 
 
-class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
-    """gRPC AsyncIO backend transport for AlphaAnalyticsData.
+class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
+    """gRPC backend transport for BetaAnalyticsData.
 
     Google Analytics reporting data service.
 
@@ -46,63 +44,21 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "analyticsdata.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            address (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-        scopes = scopes or cls.AUTH_SCOPES
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            scopes=scopes,
-            quota_project_id=quota_project_id,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
         *,
         host: str = "analyticsdata.googleapis.com",
         credentials: credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
@@ -118,10 +74,9 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -139,14 +94,14 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -230,6 +185,8 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
                 ],
             )
 
+        self._stubs = {}  # type: Dict[str, Callable]
+
         # Run the base constructor.
         super().__init__(
             host=host,
@@ -240,24 +197,62 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
             client_info=client_info,
         )
 
-        self._stubs = {}
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "analyticsdata.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
+
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
 
     @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service.
         """
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property
     def run_report(
         self,
     ) -> Callable[
-        [analytics_data_api.RunReportRequest],
-        Awaitable[analytics_data_api.RunReportResponse],
+        [analytics_data_api.RunReportRequest], analytics_data_api.RunReportResponse
     ]:
         r"""Return a callable for the run report method over gRPC.
 
@@ -273,7 +268,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
 
         Returns:
             Callable[[~.RunReportRequest],
-                    Awaitable[~.RunReportResponse]]:
+                    ~.RunReportResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -283,7 +278,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "run_report" not in self._stubs:
             self._stubs["run_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunReport",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/RunReport",
                 request_serializer=analytics_data_api.RunReportRequest.serialize,
                 response_deserializer=analytics_data_api.RunReportResponse.deserialize,
             )
@@ -294,7 +289,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         self,
     ) -> Callable[
         [analytics_data_api.RunPivotReportRequest],
-        Awaitable[analytics_data_api.RunPivotReportResponse],
+        analytics_data_api.RunPivotReportResponse,
     ]:
         r"""Return a callable for the run pivot report method over gRPC.
 
@@ -307,7 +302,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
 
         Returns:
             Callable[[~.RunPivotReportRequest],
-                    Awaitable[~.RunPivotReportResponse]]:
+                    ~.RunPivotReportResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -317,7 +312,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "run_pivot_report" not in self._stubs:
             self._stubs["run_pivot_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunPivotReport",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/RunPivotReport",
                 request_serializer=analytics_data_api.RunPivotReportRequest.serialize,
                 response_deserializer=analytics_data_api.RunPivotReportResponse.deserialize,
             )
@@ -328,16 +323,16 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         self,
     ) -> Callable[
         [analytics_data_api.BatchRunReportsRequest],
-        Awaitable[analytics_data_api.BatchRunReportsResponse],
+        analytics_data_api.BatchRunReportsResponse,
     ]:
         r"""Return a callable for the batch run reports method over gRPC.
 
         Returns multiple reports in a batch. All reports must
-        be for the same Entity.
+        be for the same GA4 Property.
 
         Returns:
             Callable[[~.BatchRunReportsRequest],
-                    Awaitable[~.BatchRunReportsResponse]]:
+                    ~.BatchRunReportsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -347,7 +342,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "batch_run_reports" not in self._stubs:
             self._stubs["batch_run_reports"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunReports",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/BatchRunReports",
                 request_serializer=analytics_data_api.BatchRunReportsRequest.serialize,
                 response_deserializer=analytics_data_api.BatchRunReportsResponse.deserialize,
             )
@@ -358,16 +353,16 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         self,
     ) -> Callable[
         [analytics_data_api.BatchRunPivotReportsRequest],
-        Awaitable[analytics_data_api.BatchRunPivotReportsResponse],
+        analytics_data_api.BatchRunPivotReportsResponse,
     ]:
         r"""Return a callable for the batch run pivot reports method over gRPC.
 
         Returns multiple pivot reports in a batch. All
-        reports must be for the same Entity.
+        reports must be for the same GA4 Property.
 
         Returns:
             Callable[[~.BatchRunPivotReportsRequest],
-                    Awaitable[~.BatchRunPivotReportsResponse]]:
+                    ~.BatchRunPivotReportsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -377,7 +372,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "batch_run_pivot_reports" not in self._stubs:
             self._stubs["batch_run_pivot_reports"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunPivotReports",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/BatchRunPivotReports",
                 request_serializer=analytics_data_api.BatchRunPivotReportsRequest.serialize,
                 response_deserializer=analytics_data_api.BatchRunPivotReportsResponse.deserialize,
             )
@@ -386,9 +381,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
     @property
     def get_metadata(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetMetadataRequest], Awaitable[analytics_data_api.Metadata]
-    ]:
+    ) -> Callable[[analytics_data_api.GetMetadataRequest], analytics_data_api.Metadata]:
         r"""Return a callable for the get metadata method over gRPC.
 
         Returns metadata for dimensions and metrics available in
@@ -405,7 +398,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
 
         Returns:
             Callable[[~.GetMetadataRequest],
-                    Awaitable[~.Metadata]]:
+                    ~.Metadata]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -415,7 +408,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "get_metadata" not in self._stubs:
             self._stubs["get_metadata"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/GetMetadata",
                 request_serializer=analytics_data_api.GetMetadataRequest.serialize,
                 response_deserializer=analytics_data_api.Metadata.deserialize,
             )
@@ -426,7 +419,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         self,
     ) -> Callable[
         [analytics_data_api.RunRealtimeReportRequest],
-        Awaitable[analytics_data_api.RunRealtimeReportResponse],
+        analytics_data_api.RunRealtimeReportResponse,
     ]:
         r"""Return a callable for the run realtime report method over gRPC.
 
@@ -437,7 +430,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
 
         Returns:
             Callable[[~.RunRealtimeReportRequest],
-                    Awaitable[~.RunRealtimeReportResponse]]:
+                    ~.RunRealtimeReportResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -447,11 +440,11 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "run_realtime_report" not in self._stubs:
             self._stubs["run_realtime_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunRealtimeReport",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/RunRealtimeReport",
                 request_serializer=analytics_data_api.RunRealtimeReportRequest.serialize,
                 response_deserializer=analytics_data_api.RunRealtimeReportResponse.deserialize,
             )
         return self._stubs["run_realtime_report"]
 
 
-__all__ = ("AlphaAnalyticsDataGrpcAsyncIOTransport",)
+__all__ = ("BetaAnalyticsDataGrpcTransport",)

@@ -4,7 +4,7 @@
   "product_documentation": "https://developers.google.com/analytics/",
   "client_documentation": "https://googleapis.dev/python/analyticsdata/latest",
   "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:187400%2B%20",
-  "release_level": "alpha",
+  "release_level": "beta",
   "language": "python",
   "repo": "googleapis/python-analytics-data",
   "distribution_name": "google-analytics-data",

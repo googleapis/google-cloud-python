@@ -46,9 +46,8 @@ setuptools.setup(
         "proto-plus >= 1.4.0",
     ),
     python_requires=">=3.6",
-    scripts=["scripts/fixup_data_v1alpha_keywords.py",],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",

@@ -32,16 +32,17 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.analytics.data_v1alpha.types import analytics_data_api
-from google.analytics.data_v1alpha.types import data
+from google.analytics.data_v1beta.services.beta_analytics_data import pagers
+from google.analytics.data_v1beta.types import analytics_data_api
+from google.analytics.data_v1beta.types import data
 
-from .transports.base import AlphaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import AlphaAnalyticsDataGrpcTransport
-from .transports.grpc_asyncio import AlphaAnalyticsDataGrpcAsyncIOTransport
+from .transports.base import BetaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import BetaAnalyticsDataGrpcTransport
+from .transports.grpc_asyncio import BetaAnalyticsDataGrpcAsyncIOTransport
 
 
-class AlphaAnalyticsDataClientMeta(type):
-    """Metaclass for the AlphaAnalyticsData client.
+class BetaAnalyticsDataClientMeta(type):
+    """Metaclass for the BetaAnalyticsData client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -50,13 +51,13 @@ class AlphaAnalyticsDataClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[AlphaAnalyticsDataTransport]]
-    _transport_registry["grpc"] = AlphaAnalyticsDataGrpcTransport
-    _transport_registry["grpc_asyncio"] = AlphaAnalyticsDataGrpcAsyncIOTransport
+    )  # type: Dict[str, Type[BetaAnalyticsDataTransport]]
+    _transport_registry["grpc"] = BetaAnalyticsDataGrpcTransport
+    _transport_registry["grpc_asyncio"] = BetaAnalyticsDataGrpcAsyncIOTransport
 
     def get_transport_class(
         cls, label: str = None,
-    ) -> Type[AlphaAnalyticsDataTransport]:
+    ) -> Type[BetaAnalyticsDataTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -75,7 +76,7 @@ class AlphaAnalyticsDataClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
+class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
     """Google Analytics reporting data service."""
 
     @staticmethod
@@ -122,7 +123,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            AlphaAnalyticsDataClient: The constructed client.
+            BetaAnalyticsDataClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -140,7 +141,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            AlphaAnalyticsDataClient: The constructed client.
+            BetaAnalyticsDataClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -149,11 +150,11 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> AlphaAnalyticsDataTransport:
+    def transport(self) -> BetaAnalyticsDataTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            AlphaAnalyticsDataTransport: The transport used by the client instance.
+            BetaAnalyticsDataTransport: The transport used by the client instance.
         """
         return self._transport
 
@@ -231,11 +232,11 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         self,
         *,
         credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, AlphaAnalyticsDataTransport, None] = None,
+        transport: Union[str, BetaAnalyticsDataTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the alpha analytics data client.
+        """Instantiate the beta analytics data client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -243,7 +244,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AlphaAnalyticsDataTransport]): The
+            transport (Union[str, BetaAnalyticsDataTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
@@ -315,8 +316,8 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, AlphaAnalyticsDataTransport):
-            # transport is a AlphaAnalyticsDataTransport instance.
+        if isinstance(transport, BetaAnalyticsDataTransport):
+            # transport is a BetaAnalyticsDataTransport instance.
             if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -347,7 +348,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> analytics_data_api.RunReportResponse:
+    ) -> pagers.RunReportPager:
         r"""Returns a customized report of your Google Analytics
         event data. Reports contain statistics derived from data
         collected by the Google Analytics tracking code. The
@@ -359,7 +360,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         criteria, such as country or event name.
 
         Args:
-            request (google.analytics.data_v1alpha.types.RunReportRequest):
+            request (google.analytics.data_v1beta.types.RunReportRequest):
                 The request object. The request to generate a report.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -369,9 +370,12 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.RunReportResponse:
+            google.analytics.data_v1beta.services.beta_analytics_data.pagers.RunReportPager:
                 The response report table
                 corresponding to a request.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -387,8 +391,20 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.run_report]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.RunReportPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -409,7 +425,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         dissect your data.
 
         Args:
-            request (google.analytics.data_v1alpha.types.RunPivotReportRequest):
+            request (google.analytics.data_v1beta.types.RunPivotReportRequest):
                 The request object. The request to generate a pivot
                 report.
 
@@ -420,7 +436,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.RunPivotReportResponse:
+            google.analytics.data_v1beta.types.RunPivotReportResponse:
                 The response pivot report table
                 corresponding to a pivot request.
 
@@ -438,6 +454,12 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.run_pivot_report]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
@@ -453,10 +475,10 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunReportsResponse:
         r"""Returns multiple reports in a batch. All reports must
-        be for the same Entity.
+        be for the same GA4 Property.
 
         Args:
-            request (google.analytics.data_v1alpha.types.BatchRunReportsRequest):
+            request (google.analytics.data_v1beta.types.BatchRunReportsRequest):
                 The request object. The batch request containing
                 multiple report requests.
 
@@ -467,7 +489,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.BatchRunReportsResponse:
+            google.analytics.data_v1beta.types.BatchRunReportsResponse:
                 The batch response containing
                 multiple reports.
 
@@ -485,6 +507,12 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.batch_run_reports]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
+        )
+
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
@@ -500,10 +528,10 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analytics_data_api.BatchRunPivotReportsResponse:
         r"""Returns multiple pivot reports in a batch. All
-        reports must be for the same Entity.
+        reports must be for the same GA4 Property.
 
         Args:
-            request (google.analytics.data_v1alpha.types.BatchRunPivotReportsRequest):
+            request (google.analytics.data_v1beta.types.BatchRunPivotReportsRequest):
                 The request object. The batch request containing
                 multiple pivot report requests.
 
@@ -514,7 +542,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.BatchRunPivotReportsResponse:
+            google.analytics.data_v1beta.types.BatchRunPivotReportsResponse:
                 The batch response containing
                 multiple pivot reports.
 
@@ -531,6 +559,12 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.batch_run_pivot_reports]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("property", request.property),)),
+        )
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -560,7 +594,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         such as ``country`` and ``totalUsers``.
 
         Args:
-            request (google.analytics.data_v1alpha.types.GetMetadataRequest):
+            request (google.analytics.data_v1beta.types.GetMetadataRequest):
                 The request object. Request for a property's dimension
                 and metric metadata.
             name (str):
@@ -588,7 +622,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.Metadata:
+            google.analytics.data_v1beta.types.Metadata:
                 The dimensions and metrics currently
                 accepted in reporting methods.
 
@@ -646,7 +680,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         last 30 minutes.
 
         Args:
-            request (google.analytics.data_v1alpha.types.RunRealtimeReportRequest):
+            request (google.analytics.data_v1beta.types.RunRealtimeReportRequest):
                 The request object. The request to generate a realtime
                 report.
 
@@ -657,7 +691,7 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1alpha.types.RunRealtimeReportResponse:
+            google.analytics.data_v1beta.types.RunRealtimeReportResponse:
                 The response realtime report table
                 corresponding to a request.
 
@@ -696,4 +730,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("AlphaAnalyticsDataClient",)
+__all__ = ("BetaAnalyticsDataClient",)

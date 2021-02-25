@@ -15,75 +15,70 @@
 # limitations under the License.
 #
 
-from google.analytics.data_v1alpha.services.alpha_analytics_data.async_client import (
-    AlphaAnalyticsDataAsyncClient,
+from google.analytics.data_v1beta.services.beta_analytics_data.async_client import (
+    BetaAnalyticsDataAsyncClient,
 )
-from google.analytics.data_v1alpha.services.alpha_analytics_data.client import (
-    AlphaAnalyticsDataClient,
+from google.analytics.data_v1beta.services.beta_analytics_data.client import (
+    BetaAnalyticsDataClient,
 )
-from google.analytics.data_v1alpha.types.analytics_data_api import (
+from google.analytics.data_v1beta.types.analytics_data_api import (
     BatchRunPivotReportsRequest,
 )
-from google.analytics.data_v1alpha.types.analytics_data_api import (
+from google.analytics.data_v1beta.types.analytics_data_api import (
     BatchRunPivotReportsResponse,
 )
-from google.analytics.data_v1alpha.types.analytics_data_api import (
-    BatchRunReportsRequest,
-)
-from google.analytics.data_v1alpha.types.analytics_data_api import (
+from google.analytics.data_v1beta.types.analytics_data_api import BatchRunReportsRequest
+from google.analytics.data_v1beta.types.analytics_data_api import (
     BatchRunReportsResponse,
 )
-from google.analytics.data_v1alpha.types.analytics_data_api import GetMetadataRequest
-from google.analytics.data_v1alpha.types.analytics_data_api import Metadata
-from google.analytics.data_v1alpha.types.analytics_data_api import RunPivotReportRequest
-from google.analytics.data_v1alpha.types.analytics_data_api import (
-    RunPivotReportResponse,
-)
-from google.analytics.data_v1alpha.types.analytics_data_api import (
+from google.analytics.data_v1beta.types.analytics_data_api import GetMetadataRequest
+from google.analytics.data_v1beta.types.analytics_data_api import Metadata
+from google.analytics.data_v1beta.types.analytics_data_api import RunPivotReportRequest
+from google.analytics.data_v1beta.types.analytics_data_api import RunPivotReportResponse
+from google.analytics.data_v1beta.types.analytics_data_api import (
     RunRealtimeReportRequest,
 )
-from google.analytics.data_v1alpha.types.analytics_data_api import (
+from google.analytics.data_v1beta.types.analytics_data_api import (
     RunRealtimeReportResponse,
 )
-from google.analytics.data_v1alpha.types.analytics_data_api import RunReportRequest
-from google.analytics.data_v1alpha.types.analytics_data_api import RunReportResponse
-from google.analytics.data_v1alpha.types.data import Cohort
-from google.analytics.data_v1alpha.types.data import CohortReportSettings
-from google.analytics.data_v1alpha.types.data import CohortSpec
-from google.analytics.data_v1alpha.types.data import CohortsRange
-from google.analytics.data_v1alpha.types.data import DateRange
-from google.analytics.data_v1alpha.types.data import Dimension
-from google.analytics.data_v1alpha.types.data import DimensionExpression
-from google.analytics.data_v1alpha.types.data import DimensionHeader
-from google.analytics.data_v1alpha.types.data import DimensionMetadata
-from google.analytics.data_v1alpha.types.data import DimensionValue
-from google.analytics.data_v1alpha.types.data import Entity
-from google.analytics.data_v1alpha.types.data import Filter
-from google.analytics.data_v1alpha.types.data import FilterExpression
-from google.analytics.data_v1alpha.types.data import FilterExpressionList
-from google.analytics.data_v1alpha.types.data import Metric
-from google.analytics.data_v1alpha.types.data import MetricAggregation
-from google.analytics.data_v1alpha.types.data import MetricHeader
-from google.analytics.data_v1alpha.types.data import MetricMetadata
-from google.analytics.data_v1alpha.types.data import MetricType
-from google.analytics.data_v1alpha.types.data import MetricValue
-from google.analytics.data_v1alpha.types.data import NumericValue
-from google.analytics.data_v1alpha.types.data import OrderBy
-from google.analytics.data_v1alpha.types.data import Pivot
-from google.analytics.data_v1alpha.types.data import PivotDimensionHeader
-from google.analytics.data_v1alpha.types.data import PivotHeader
-from google.analytics.data_v1alpha.types.data import PropertyQuota
-from google.analytics.data_v1alpha.types.data import QuotaStatus
-from google.analytics.data_v1alpha.types.data import ResponseMetaData
-from google.analytics.data_v1alpha.types.data import Row
+from google.analytics.data_v1beta.types.analytics_data_api import RunReportRequest
+from google.analytics.data_v1beta.types.analytics_data_api import RunReportResponse
+from google.analytics.data_v1beta.types.data import Cohort
+from google.analytics.data_v1beta.types.data import CohortReportSettings
+from google.analytics.data_v1beta.types.data import CohortSpec
+from google.analytics.data_v1beta.types.data import CohortsRange
+from google.analytics.data_v1beta.types.data import DateRange
+from google.analytics.data_v1beta.types.data import Dimension
+from google.analytics.data_v1beta.types.data import DimensionExpression
+from google.analytics.data_v1beta.types.data import DimensionHeader
+from google.analytics.data_v1beta.types.data import DimensionMetadata
+from google.analytics.data_v1beta.types.data import DimensionValue
+from google.analytics.data_v1beta.types.data import Filter
+from google.analytics.data_v1beta.types.data import FilterExpression
+from google.analytics.data_v1beta.types.data import FilterExpressionList
+from google.analytics.data_v1beta.types.data import Metric
+from google.analytics.data_v1beta.types.data import MetricAggregation
+from google.analytics.data_v1beta.types.data import MetricHeader
+from google.analytics.data_v1beta.types.data import MetricMetadata
+from google.analytics.data_v1beta.types.data import MetricType
+from google.analytics.data_v1beta.types.data import MetricValue
+from google.analytics.data_v1beta.types.data import NumericValue
+from google.analytics.data_v1beta.types.data import OrderBy
+from google.analytics.data_v1beta.types.data import Pivot
+from google.analytics.data_v1beta.types.data import PivotDimensionHeader
+from google.analytics.data_v1beta.types.data import PivotHeader
+from google.analytics.data_v1beta.types.data import PropertyQuota
+from google.analytics.data_v1beta.types.data import QuotaStatus
+from google.analytics.data_v1beta.types.data import ResponseMetaData
+from google.analytics.data_v1beta.types.data import Row
 
 __all__ = (
-    "AlphaAnalyticsDataAsyncClient",
-    "AlphaAnalyticsDataClient",
     "BatchRunPivotReportsRequest",
     "BatchRunPivotReportsResponse",
     "BatchRunReportsRequest",
     "BatchRunReportsResponse",
+    "BetaAnalyticsDataAsyncClient",
+    "BetaAnalyticsDataClient",
     "Cohort",
     "CohortReportSettings",
     "CohortSpec",
@@ -94,7 +89,6 @@ __all__ = (
     "DimensionHeader",
     "DimensionMetadata",
     "DimensionValue",
-    "Entity",
     "Filter",
     "FilterExpression",
     "FilterExpressionList",

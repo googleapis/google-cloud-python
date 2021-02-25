@@ -22,24 +22,27 @@ from synthtool.languages import python
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
+versions = ["v1alpha", "v1beta"]
+
 # ----------------------------------------------------------------------------
 # Generate analytics data GAPIC layer
 # ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="analyticsdata",
-    version="v1alpha1",
-    bazel_target="//google/analytics/data/v1alpha:google-analytics-data-v1alpha-py",
-)
+for version in versions:
+    library = gapic.py_library(
+        service="analyticsdata",
+        version=version,
+        bazel_target=f"//google/analytics/data/{version}:google-analytics-data-{version}-py",
+    )
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "README.rst",
-        "docs/index.rst",
-        "scripts/fixup_data_v1alpha_keywords.py",
-    ],
-)
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "README.rst",
+            "docs/index.rst",
+            f"scripts/fixup_data_{version}_keywords.py",
+        ],
+    )
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -52,10 +55,15 @@ s.move(
 # fix coverage target
 s.replace(
     "noxfile.py",
-    """["']--cov=google\.cloud\.analyticsdata",
-(\s+)[""]--cov=google.cloud["'],""",
-    """"--cov=google.analytics.data",
-\g<1>"--cov=google.analytics",""",
+    """(\s+)["']--cov=google.cloud["'],""",
+    """"--cov=google.analytics",""",
+)
+
+# Wrap regex in docstring that sphinx thinks is a link with ``
+s.replace(
+    "google/**/data.py",
+    '''"\^\[a-zA-Z0-9_\]\$"''',
+    """``^[a-zA-Z0-9_]$``""",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

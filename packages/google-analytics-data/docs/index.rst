@@ -7,6 +7,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
+    data_v1beta/services
+    data_v1beta/types
     data_v1alpha/services
     data_v1alpha/types
 

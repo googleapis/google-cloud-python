@@ -1,15 +1,15 @@
 Python Client for Analytics Data
 =================================================
 
-|alpha| |pypi| |versions|
+|beta| |pypi| |versions|
 
 `Analytics Data API`_: Access report data in Google Analytics.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
    :target: https://pypi.org/project/google-analytics-data/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-analytics-data.svg

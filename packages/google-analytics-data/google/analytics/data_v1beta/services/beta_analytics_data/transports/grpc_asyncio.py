@@ -27,14 +27,14 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.analytics.data_v1alpha.types import analytics_data_api
+from google.analytics.data_v1beta.types import analytics_data_api
 
-from .base import AlphaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
-from .grpc import AlphaAnalyticsDataGrpcTransport
+from .base import BetaAnalyticsDataTransport, DEFAULT_CLIENT_INFO
+from .grpc import BetaAnalyticsDataGrpcTransport
 
 
-class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
-    """gRPC AsyncIO backend transport for AlphaAnalyticsData.
+class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
+    """gRPC AsyncIO backend transport for BetaAnalyticsData.
 
     Google Analytics reporting data service.
 
@@ -283,7 +283,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "run_report" not in self._stubs:
             self._stubs["run_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunReport",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/RunReport",
                 request_serializer=analytics_data_api.RunReportRequest.serialize,
                 response_deserializer=analytics_data_api.RunReportResponse.deserialize,
             )
@@ -317,7 +317,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "run_pivot_report" not in self._stubs:
             self._stubs["run_pivot_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunPivotReport",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/RunPivotReport",
                 request_serializer=analytics_data_api.RunPivotReportRequest.serialize,
                 response_deserializer=analytics_data_api.RunPivotReportResponse.deserialize,
             )
@@ -333,7 +333,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         r"""Return a callable for the batch run reports method over gRPC.
 
         Returns multiple reports in a batch. All reports must
-        be for the same Entity.
+        be for the same GA4 Property.
 
         Returns:
             Callable[[~.BatchRunReportsRequest],
@@ -347,7 +347,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "batch_run_reports" not in self._stubs:
             self._stubs["batch_run_reports"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunReports",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/BatchRunReports",
                 request_serializer=analytics_data_api.BatchRunReportsRequest.serialize,
                 response_deserializer=analytics_data_api.BatchRunReportsResponse.deserialize,
             )
@@ -363,7 +363,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         r"""Return a callable for the batch run pivot reports method over gRPC.
 
         Returns multiple pivot reports in a batch. All
-        reports must be for the same Entity.
+        reports must be for the same GA4 Property.
 
         Returns:
             Callable[[~.BatchRunPivotReportsRequest],
@@ -377,7 +377,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "batch_run_pivot_reports" not in self._stubs:
             self._stubs["batch_run_pivot_reports"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/BatchRunPivotReports",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/BatchRunPivotReports",
                 request_serializer=analytics_data_api.BatchRunPivotReportsRequest.serialize,
                 response_deserializer=analytics_data_api.BatchRunPivotReportsResponse.deserialize,
             )
@@ -415,7 +415,7 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "get_metadata" not in self._stubs:
             self._stubs["get_metadata"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetMetadata",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/GetMetadata",
                 request_serializer=analytics_data_api.GetMetadataRequest.serialize,
                 response_deserializer=analytics_data_api.Metadata.deserialize,
             )
@@ -447,11 +447,11 @@ class AlphaAnalyticsDataGrpcAsyncIOTransport(AlphaAnalyticsDataTransport):
         # to pass in the functions for each.
         if "run_realtime_report" not in self._stubs:
             self._stubs["run_realtime_report"] = self.grpc_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/RunRealtimeReport",
+                "/google.analytics.data.v1beta.BetaAnalyticsData/RunRealtimeReport",
                 request_serializer=analytics_data_api.RunRealtimeReportRequest.serialize,
                 response_deserializer=analytics_data_api.RunRealtimeReportResponse.deserialize,
             )
         return self._stubs["run_realtime_report"]
 
 
-__all__ = ("AlphaAnalyticsDataGrpcAsyncIOTransport",)
+__all__ = ("BetaAnalyticsDataGrpcAsyncIOTransport",)

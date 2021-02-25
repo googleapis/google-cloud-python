@@ -59,7 +59,7 @@ To install the latest published package dependency, execute the following:
 import argparse
 
 # [START ga_data_run_report]
-from google.analytics.data import AlphaAnalyticsDataClient
+from google.analytics.data_v1alpha import AlphaAnalyticsDataClient
 from google.analytics.data_v1alpha.types import DateRange
 from google.analytics.data_v1alpha.types import Dimension
 from google.analytics.data_v1alpha.types import Entity
