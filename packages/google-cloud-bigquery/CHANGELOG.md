@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.10.0](https://www.github.com/googleapis/python-bigquery/compare/v2.9.0...v2.10.0) (2021-02-25)
+
+
+### Features
+
+* add BIGNUMERIC support ([#527](https://www.github.com/googleapis/python-bigquery/issues/527)) ([cc3394f](https://www.github.com/googleapis/python-bigquery/commit/cc3394f80934419eb00c2029bb81c92a696e7d88))
+
+
+### Bug Fixes
+
+* error using empty array of structs parameter ([#474](https://www.github.com/googleapis/python-bigquery/issues/474)) ([c1d15f4](https://www.github.com/googleapis/python-bigquery/commit/c1d15f4e5da4b7e10c00afffd59a5c7f3ded027a))
+* QueryJob.exception() *returns* the errors, not raises them ([#467](https://www.github.com/googleapis/python-bigquery/issues/467)) ([d763279](https://www.github.com/googleapis/python-bigquery/commit/d7632799769248b09a8558ba18f5025ebdd9675a))
+
+
+### Documentation
+
+* **bigquery:** Add alternative approach to setting credentials ([#517](https://www.github.com/googleapis/python-bigquery/issues/517)) ([60fbf28](https://www.github.com/googleapis/python-bigquery/commit/60fbf287b0d34d5db2e61cce7a5b42735ed43d0e))
+* explain retry behavior for DONE jobs ([#532](https://www.github.com/googleapis/python-bigquery/issues/532)) ([696c443](https://www.github.com/googleapis/python-bigquery/commit/696c443f0a6740be0767e12b706a7771bc1460c3))
+
 ## [2.9.0](https://www.github.com/googleapis/python-bigquery/compare/v2.8.0...v2.9.0) (2021-02-18)
 
 
