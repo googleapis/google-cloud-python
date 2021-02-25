@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.3.0...v0.4.0) (2021-02-25)
+
+
+### Features
+
+* add v1beta ([#35](https://www.github.com/googleapis/python-analytics-data/issues/35)) ([8b43efe](https://www.github.com/googleapis/python-analytics-data/commit/8b43efe93086e1846ad68173fac3929492e98e0a))
+
 ## [0.3.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.2.0...v0.3.0) (2021-01-06)
 
 
