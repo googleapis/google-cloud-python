@@ -30,9 +30,14 @@ import sys
 import uuid
 import inspect
 
+from test_utils.retry import RetryErrors
+
 from .script_utils import ScriptRunner
 from .script_utils import Command
 
+class LogsNotFound(RuntimeError):
+    """raised when filter returns no logs."""
+    pass
 
 class Common:
     _client = Client()
@@ -51,6 +56,8 @@ class Common:
             _, filter_str = self._script.run_command(Command.GetFilter)
         iterator = self._client.list_entries(filter_=filter_str)
         entries = list(iterator)
+        if not entries:
+            raise LogsNotFound
         return entries
 
     def _trigger(self, function, **kwargs):
@@ -88,6 +95,7 @@ class Common:
         if not os.getenv("NO_CLEAN"):
             cls._script.run_command(Command.Destroy)
 
+    @RetryErrors(exception=LogsNotFound)
     def test_receive_log(self):
         log_text = f"{inspect.currentframe().f_code.co_name}: {uuid.uuid1()}"
         self._trigger("pylogging", log_text=log_text)
@@ -96,8 +104,6 @@ class Common:
         filter_str = self._add_time_condition_to_filter(log_text)
         # retrieve resulting logs
         log_list = self._get_logs(filter_str)
-
-        self.assertEqual(len(log_list), 1)
 
         found_log = None
         for log in log_list:
