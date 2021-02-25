@@ -16,11 +16,11 @@ import io
 import os
 
 import setuptools
-from setuptools import setup, find_packages
+
 
 name = "googleapis-common-protos"
 description = "Common protobufs used in Google APIs"
-version = "1.53.0.dev1"
+version = "1.53.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = ["protobuf >= 3.12.0"]
 
@@ -32,6 +32,11 @@ readme_filename = os.path.join(package_root, "README.md")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
+packages = [
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
+]
 
 setuptools.setup(
     name=name,
@@ -56,7 +61,7 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require=extras_require,
     license="Apache-2.0",
-    packages=find_packages(),
+    packages=packages,
     package_data={"": ["*.proto"]},
     python_requires=">=3.6",
     namespace_packages=["google", "google.logging"],

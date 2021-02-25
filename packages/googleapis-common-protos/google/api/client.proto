@@ -1,10 +1,10 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,43 +23,6 @@ option java_multiple_files = true;
 option java_outer_classname = "ClientProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
-
-
-extend google.protobuf.ServiceOptions {
-  // The hostname for this service.
-  // This should be specified with no prefix or protocol.
-  //
-  // Example:
-  //
-  //   service Foo {
-  //     option (google.api.default_host) = "foo.googleapi.com";
-  //     ...
-  //   }
-  string default_host = 1049;
-
-  // OAuth scopes needed for the client.
-  //
-  // Example:
-  //
-  //   service Foo {
-  //     option (google.api.oauth_scopes) = \
-  //       "https://www.googleapis.com/auth/cloud-platform";
-  //     ...
-  //   }
-  //
-  // If there is more than one scope, use a comma-separated string:
-  //
-  // Example:
-  //
-  //   service Foo {
-  //     option (google.api.oauth_scopes) = \
-  //       "https://www.googleapis.com/auth/cloud-platform,"
-  //       "https://www.googleapis.com/auth/monitoring";
-  //     ...
-  //   }
-  string oauth_scopes = 1050;
-}
-
 
 extend google.protobuf.MethodOptions {
   // A definition of a client library method signature.
@@ -98,4 +61,39 @@ extend google.protobuf.MethodOptions {
   //   * Re-ordering existing method signature annotations is a breaking
   //     change.
   repeated string method_signature = 1051;
+}
+
+extend google.protobuf.ServiceOptions {
+  // The hostname for this service.
+  // This should be specified with no prefix or protocol.
+  //
+  // Example:
+  //
+  //   service Foo {
+  //     option (google.api.default_host) = "foo.googleapi.com";
+  //     ...
+  //   }
+  string default_host = 1049;
+
+  // OAuth scopes needed for the client.
+  //
+  // Example:
+  //
+  //   service Foo {
+  //     option (google.api.oauth_scopes) = \
+  //       "https://www.googleapis.com/auth/cloud-platform";
+  //     ...
+  //   }
+  //
+  // If there is more than one scope, use a comma-separated string:
+  //
+  // Example:
+  //
+  //   service Foo {
+  //     option (google.api.oauth_scopes) = \
+  //       "https://www.googleapis.com/auth/cloud-platform,"
+  //       "https://www.googleapis.com/auth/monitoring";
+  //     ...
+  //   }
+  string oauth_scopes = 1050;
 }

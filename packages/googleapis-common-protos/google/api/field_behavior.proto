@@ -1,10 +1,10 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     https://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,6 +24,21 @@ option java_outer_classname = "FieldBehaviorProto";
 option java_package = "com.google.api";
 option objc_class_prefix = "GAPI";
 
+extend google.protobuf.FieldOptions {
+  // A designation of a specific field behavior (required, output only, etc.)
+  // in protobuf messages.
+  //
+  // Examples:
+  //
+  //   string name = 1 [(google.api.field_behavior) = REQUIRED];
+  //   State state = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+  //   google.protobuf.Duration ttl = 1
+  //     [(google.api.field_behavior) = INPUT_ONLY];
+  //   google.protobuf.Timestamp expire_time = 1
+  //     [(google.api.field_behavior) = OUTPUT_ONLY,
+  //      (google.api.field_behavior) = IMMUTABLE];
+  repeated google.api.FieldBehavior field_behavior = 1052;
+}
 
 // An indicator of the behavior of a given field (for example, that a field
 // is required in requests, or given as output but ignored as input).
@@ -60,21 +75,10 @@ enum FieldBehavior {
   // This indicates that the field may be set once in a request to create a
   // resource, but may not be changed thereafter.
   IMMUTABLE = 5;
-}
 
-
-extend google.protobuf.FieldOptions {
-  // A designation of a specific field behavior (required, output only, etc.)
-  // in protobuf messages.
-  //
-  // Examples:
-  //
-  //   string name = 1 [(google.api.field_behavior) = REQUIRED];
-  //   State state = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
-  //   google.protobuf.Duration ttl = 1
-  //     [(google.api.field_behavior) = INPUT_ONLY];
-  //   google.protobuf.Timestamp expire_time = 1
-  //     [(google.api.field_behavior) = OUTPUT_ONLY,
-  //      (google.api.field_behavior) = IMMUTABLE];
-  repeated FieldBehavior field_behavior = 1052;
+  // Denotes that a (repeated) field is an unordered list.
+  // This indicates that the service may provide the elements of the list
+  // in any arbitrary order, rather than the order the user originally
+  // provided. Additionally, the list's order may or may not be stable.
+  UNORDERED_LIST = 6;
 }

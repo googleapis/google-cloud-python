@@ -21,21 +21,34 @@ from synthtool.languages import python
 from synthtool.sources import git
 
 API_COMMON_PROTOS_REPO = "googleapis/api-common-protos"
+GOOGLEAPIS_REPO = "googleapis/googleapis"
 # ----------------------------------------------------------------------------
 #  Get api-common-protos
 # ----------------------------------------------------------------------------
 
 # Use api-common-protos as a proper synthtool git source
 api_common_protos_url = git.make_repo_clone_url(API_COMMON_PROTOS_REPO)
-api_common_protos = git.clone(api_common_protos_url) / "google"
-
+api_common_protos = git.clone(api_common_protos_url)
 
 excludes = [
     # Exclude iam protos (they are released in a separate package)
     "iam/**/*",
     "**/BUILD.bazel",
 ]
-s.copy(api_common_protos, excludes=excludes)
+s.copy(api_common_protos / "google", excludes=excludes)
+
+# ----------------------------------------------------------------------------
+#  Get gapic metadata proto from googleapis
+# ----------------------------------------------------------------------------
+
+# Use googleapis as a proper synthtool git source
+googleapis_url = git.make_repo_clone_url(GOOGLEAPIS_REPO)
+googleapis_protos = git.clone(googleapis_url)
+
+# Gapic metadata proto needed by gapic-generator-python
+# Desired import is "from google.gapic.metadata import gapic_metadata_pb2"
+s.copy(googleapis_protos / "gapic",  "google/gapic", excludes=["lang/", "packaging/", "**/BUILD.bazel"],)
+
 
 # ----------------------------------------------------------------------------
 #  Add templated files

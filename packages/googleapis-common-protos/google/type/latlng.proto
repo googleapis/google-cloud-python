@@ -1,4 +1,4 @@
-// Copyright 2019 Google LLC.
+// Copyright 2020 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
 syntax = "proto3";
 
@@ -24,8 +23,8 @@ option java_outer_classname = "LatLngProto";
 option java_package = "com.google.type";
 option objc_class_prefix = "GTP";
 
-// An object representing a latitude/longitude pair. This is expressed as a pair
-// of doubles representing degrees latitude and degrees longitude. Unless
+// An object that represents a latitude/longitude pair. This is expressed as a
+// pair of doubles to represent degrees latitude and degrees longitude. Unless
 // specified otherwise, this must conform to the
 // <a href="http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84
 // standard</a>. Values must be within normalized ranges.
