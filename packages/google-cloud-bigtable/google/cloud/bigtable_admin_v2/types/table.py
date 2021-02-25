@@ -20,6 +20,7 @@ import proto  # type: ignore
 
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.rpc import status_pb2 as status  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -30,6 +31,7 @@ __protobuf__ = proto.module(
         "Table",
         "ColumnFamily",
         "GcRule",
+        "EncryptionInfo",
         "Snapshot",
         "Backup",
         "BackupInfo",
@@ -68,9 +70,8 @@ class Table(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The unique name of the table. Values are of the
-            form
-            ``projects/<project>/instances/<instance>/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            The unique name of the table. Values are of the form
+            ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
             Views: ``NAME_ONLY``, ``SCHEMA_VIEW``, ``REPLICATION_VIEW``,
             ``FULL``
         cluster_states (Sequence[google.cloud.bigtable_admin_v2.types.Table.ClusterStatesEntry]):
@@ -79,7 +80,7 @@ class Table(proto.Message):
             data in a particular cluster (for example, if its zone is
             unavailable), then there will be an entry for the cluster
             with UNKNOWN ``replication_status``. Views:
-            ``REPLICATION_VIEW``, ``FULL``
+            ``REPLICATION_VIEW``, ``ENCRYPTION_VIEW``, ``FULL``
         column_families (Sequence[google.cloud.bigtable_admin_v2.types.Table.ColumnFamiliesEntry]):
             (``CreationOnly``) The column families configured for this
             table, mapped by column family ID. Views: ``SCHEMA_VIEW``,
@@ -110,6 +111,7 @@ class Table(proto.Message):
         NAME_ONLY = 1
         SCHEMA_VIEW = 2
         REPLICATION_VIEW = 3
+        ENCRYPTION_VIEW = 5
         FULL = 4
 
     class ClusterState(proto.Message):
@@ -119,6 +121,15 @@ class Table(proto.Message):
             replication_state (google.cloud.bigtable_admin_v2.types.Table.ClusterState.ReplicationState):
                 Output only. The state of replication for the
                 table in this cluster.
+            encryption_info (Sequence[google.cloud.bigtable_admin_v2.types.EncryptionInfo]):
+                Output only. The encryption information for
+                the table in this cluster. If the encryption key
+                protecting this resource is customer managed,
+                then its version can be rotated in Cloud Key
+                Management Service (Cloud KMS). The primary
+                version of the key and its status will be
+                reflected here when changes propagate from Cloud
+                KMS.
         """
 
         class ReplicationState(proto.Enum):
@@ -132,6 +143,10 @@ class Table(proto.Message):
 
         replication_state = proto.Field(
             proto.ENUM, number=1, enum="Table.ClusterState.ReplicationState",
+        )
+
+        encryption_info = proto.RepeatedField(
+            proto.MESSAGE, number=2, message="EncryptionInfo",
         )
 
     name = proto.Field(proto.STRING, number=1)
@@ -222,6 +237,40 @@ class GcRule(proto.Message):
     union = proto.Field(proto.MESSAGE, number=4, oneof="rule", message=Union,)
 
 
+class EncryptionInfo(proto.Message):
+    r"""Encryption information for a given resource.
+    If this resource is protected with customer managed encryption,
+    the in-use Cloud Key Management Service (Cloud KMS) key version
+    is specified along with its status.
+
+    Attributes:
+        encryption_type (google.cloud.bigtable_admin_v2.types.EncryptionInfo.EncryptionType):
+            Output only. The type of encryption used to
+            protect this resource.
+        encryption_status (google.rpc.status_pb2.Status):
+            Output only. The status of encrypt/decrypt
+            calls on underlying data for this resource.
+            Regardless of status, the existing data is
+            always encrypted at rest.
+        kms_key_version (str):
+            Output only. The version of the Cloud KMS key
+            specified in the parent cluster that is in use
+            for the data underlying this table.
+    """
+
+    class EncryptionType(proto.Enum):
+        r"""Possible encryption types for a resource."""
+        ENCRYPTION_TYPE_UNSPECIFIED = 0
+        GOOGLE_DEFAULT_ENCRYPTION = 1
+        CUSTOMER_MANAGED_ENCRYPTION = 2
+
+    encryption_type = proto.Field(proto.ENUM, number=3, enum=EncryptionType,)
+
+    encryption_status = proto.Field(proto.MESSAGE, number=4, message=status.Status,)
+
+    kms_key_version = proto.Field(proto.STRING, number=2)
+
+
 class Snapshot(proto.Message):
     r"""A snapshot of a table at a particular time. A snapshot can be
     used as a checkpoint for data restoration or a data source for a
@@ -236,7 +285,7 @@ class Snapshot(proto.Message):
         name (str):
             Output only. The unique name of the snapshot. Values are of
             the form
-            ``projects/<project>/instances/<instance>/clusters/<cluster>/snapshots/<snapshot>``.
+            ``projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}``.
         source_table (google.cloud.bigtable_admin_v2.types.Table):
             Output only. The source table at the time the
             snapshot was taken.
@@ -322,6 +371,9 @@ class Backup(proto.Message):
             Output only. Size of the backup in bytes.
         state (google.cloud.bigtable_admin_v2.types.Backup.State):
             Output only. The current state of the backup.
+        encryption_info (google.cloud.bigtable_admin_v2.types.EncryptionInfo):
+            Output only. The encryption information for
+            the backup.
     """
 
     class State(proto.Enum):
@@ -343,6 +395,8 @@ class Backup(proto.Message):
     size_bytes = proto.Field(proto.INT64, number=6)
 
     state = proto.Field(proto.ENUM, number=7, enum=State,)
+
+    encryption_info = proto.Field(proto.MESSAGE, number=9, message="EncryptionInfo",)
 
 
 class BackupInfo(proto.Message):

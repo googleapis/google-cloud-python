@@ -76,6 +76,7 @@ from .types.instance import Instance
 from .types.table import Backup
 from .types.table import BackupInfo
 from .types.table import ColumnFamily
+from .types.table import EncryptionInfo
 from .types.table import GcRule
 from .types.table import RestoreInfo
 from .types.table import RestoreSourceType
@@ -87,7 +88,7 @@ __all__ = (
     "AppProfile",
     "Backup",
     "BackupInfo",
-    "BigtableInstanceAdminClient",
+    "BigtableTableAdminClient",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
     "Cluster",
@@ -109,6 +110,7 @@ __all__ = (
     "DeleteSnapshotRequest",
     "DeleteTableRequest",
     "DropRowRangeRequest",
+    "EncryptionInfo",
     "GcRule",
     "GenerateConsistencyTokenRequest",
     "GenerateConsistencyTokenResponse",
@@ -149,5 +151,5 @@ __all__ = (
     "UpdateBackupRequest",
     "UpdateClusterMetadata",
     "UpdateInstanceMetadata",
-    "BigtableTableAdminClient",
+    "BigtableInstanceAdminClient",
 )

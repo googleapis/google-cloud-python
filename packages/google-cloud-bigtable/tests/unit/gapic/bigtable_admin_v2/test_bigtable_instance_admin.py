@@ -5171,9 +5171,38 @@ def test_parse_cluster_path():
     assert expected == actual
 
 
-def test_instance_path():
+def test_crypto_key_path():
     project = "squid"
-    instance = "clam"
+    location = "clam"
+    key_ring = "whelk"
+    crypto_key = "octopus"
+
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project, location=location, key_ring=key_ring, crypto_key=crypto_key,
+    )
+    actual = BigtableInstanceAdminClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "key_ring": "cuttlefish",
+        "crypto_key": "mussel",
+    }
+    path = BigtableInstanceAdminClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BigtableInstanceAdminClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_instance_path():
+    project = "winkle"
+    instance = "nautilus"
 
     expected = "projects/{project}/instances/{instance}".format(
         project=project, instance=instance,
@@ -5184,8 +5213,8 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "whelk",
-        "instance": "octopus",
+        "project": "scallop",
+        "instance": "abalone",
     }
     path = BigtableInstanceAdminClient.instance_path(**expected)
 
@@ -5195,7 +5224,7 @@ def test_parse_instance_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -5206,7 +5235,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = BigtableInstanceAdminClient.common_billing_account_path(**expected)
 
@@ -5216,7 +5245,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = BigtableInstanceAdminClient.common_folder_path(folder)
@@ -5225,7 +5254,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = BigtableInstanceAdminClient.common_folder_path(**expected)
 
@@ -5235,7 +5264,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = BigtableInstanceAdminClient.common_organization_path(organization)
@@ -5244,7 +5273,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = BigtableInstanceAdminClient.common_organization_path(**expected)
 
@@ -5254,7 +5283,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
 
     expected = "projects/{project}".format(project=project,)
     actual = BigtableInstanceAdminClient.common_project_path(project)
@@ -5263,7 +5292,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = BigtableInstanceAdminClient.common_project_path(**expected)
 
@@ -5273,8 +5302,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -5285,8 +5314,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = BigtableInstanceAdminClient.common_location_path(**expected)
 

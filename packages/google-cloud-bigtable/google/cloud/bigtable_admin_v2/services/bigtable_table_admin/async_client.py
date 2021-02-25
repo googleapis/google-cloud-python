@@ -61,6 +61,12 @@ class BigtableTableAdminAsyncClient:
     parse_backup_path = staticmethod(BigtableTableAdminClient.parse_backup_path)
     cluster_path = staticmethod(BigtableTableAdminClient.cluster_path)
     parse_cluster_path = staticmethod(BigtableTableAdminClient.parse_cluster_path)
+    crypto_key_version_path = staticmethod(
+        BigtableTableAdminClient.crypto_key_version_path
+    )
+    parse_crypto_key_version_path = staticmethod(
+        BigtableTableAdminClient.parse_crypto_key_version_path
+    )
     instance_path = staticmethod(BigtableTableAdminClient.instance_path)
     parse_instance_path = staticmethod(BigtableTableAdminClient.parse_instance_path)
     snapshot_path = staticmethod(BigtableTableAdminClient.snapshot_path)

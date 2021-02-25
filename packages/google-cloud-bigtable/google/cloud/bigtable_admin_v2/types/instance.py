@@ -110,6 +110,9 @@ class Cluster(proto.Message):
             (``CreationOnly``) The type of storage used by this cluster
             to serve its parent instance's tables, unless explicitly
             overridden.
+        encryption_config (google.cloud.bigtable_admin_v2.types.Cluster.EncryptionConfig):
+            Immutable. The encryption configuration for
+            CMEK-protected clusters.
     """
 
     class State(proto.Enum):
@@ -119,6 +122,28 @@ class Cluster(proto.Message):
         CREATING = 2
         RESIZING = 3
         DISABLED = 4
+
+    class EncryptionConfig(proto.Message):
+        r"""Cloud Key Management Service (Cloud KMS) settings for a CMEK-
+        rotected cluster.
+
+        Attributes:
+            kms_key_name (str):
+                Describes the Cloud KMS encryption key that will be used to
+                protect the destination Bigtable cluster. The requirements
+                for this key are:
+
+                1) The Cloud Bigtable service account associated with the
+                   project that contains this cluster must be granted the
+                   ``cloudkms.cryptoKeyEncrypterDecrypter`` role on the CMEK
+                   key.
+                2) Only regional keys can be used and the region of the CMEK
+                   key must match the region of the cluster.
+                3) All clusters within an instance must use the same CMEK
+                   key.
+        """
+
+        kms_key_name = proto.Field(proto.STRING, number=1)
 
     name = proto.Field(proto.STRING, number=1)
 
@@ -130,6 +155,8 @@ class Cluster(proto.Message):
 
     default_storage_type = proto.Field(proto.ENUM, number=5, enum=common.StorageType,)
 
+    encryption_config = proto.Field(proto.MESSAGE, number=6, message=EncryptionConfig,)
+
 
 class AppProfile(proto.Message):
     r"""A configuration object describing how Cloud Bigtable should
@@ -139,7 +166,7 @@ class AppProfile(proto.Message):
         name (str):
             (``OutputOnly``) The unique name of the app profile. Values
             are of the form
-            ``projects/<project>/instances/<instance>/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+            ``projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
         etag (str):
             Strongly validated etag for optimistic concurrency control.
             Preserve the value returned from ``GetAppProfile`` when

@@ -77,7 +77,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
     'test_iam_permissions': ('resource', 'permissions', ),
     'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
     'update_backup': ('backup', 'update_mask', ),
-    'update_cluster': ('serve_nodes', 'name', 'location', 'state', 'default_storage_type', ),
+    'update_cluster': ('serve_nodes', 'name', 'location', 'state', 'default_storage_type', 'encryption_config', ),
     'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', ),
 
     }
