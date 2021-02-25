@@ -16,6 +16,7 @@ import concurrent
 import copy
 import http
 import textwrap
+import types
 
 import freezegun
 from google.api_core import exceptions
@@ -308,7 +309,7 @@ class TestQueryJob(_Base):
 
         self.assertTrue(job.cancelled())
 
-    def test_done(self):
+    def test_done_job_complete(self):
         client = _make_client(project=self.PROJECT)
         resource = self._make_resource(ended=True)
         job = self._get_target_class().from_api_repr(resource, client)
@@ -355,6 +356,84 @@ class TestQueryJob(_Base):
 
         call_args = fake_reload.call_args
         self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
+
+    def test_done_w_query_results_error_reload_ok_job_finished(self):
+        client = _make_client(project=self.PROJECT)
+        bad_request_error = exceptions.BadRequest("Error in query")
+        client._get_query_results = mock.Mock(side_effect=bad_request_error)
+
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+        job._exception = None
+
+        def fake_reload(self, *args, **kwargs):
+            self._properties["status"]["state"] = "DONE"
+            self.set_exception(copy.copy(bad_request_error))
+
+        fake_reload_method = types.MethodType(fake_reload, job)
+
+        with mock.patch.object(job, "reload", new=fake_reload_method):
+            is_done = job.done()
+
+        assert is_done
+        assert isinstance(job._exception, exceptions.BadRequest)
+
+    def test_done_w_query_results_error_reload_ok_job_still_running(self):
+        client = _make_client(project=self.PROJECT)
+        retry_error = exceptions.RetryError("Too many retries", cause=TimeoutError)
+        client._get_query_results = mock.Mock(side_effect=retry_error)
+
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+        job._exception = None
+
+        def fake_reload(self, *args, **kwargs):
+            self._properties["status"]["state"] = "RUNNING"
+
+        fake_reload_method = types.MethodType(fake_reload, job)
+
+        with mock.patch.object(job, "reload", new=fake_reload_method):
+            is_done = job.done()
+
+        assert not is_done
+        assert job._exception is None
+
+    def test_done_w_query_results_error_reload_error(self):
+        client = _make_client(project=self.PROJECT)
+        bad_request_error = exceptions.BadRequest("Error in query")
+        client._get_query_results = mock.Mock(side_effect=bad_request_error)
+
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+        reload_error = exceptions.DataLoss("Oops, sorry!")
+        job.reload = mock.Mock(side_effect=reload_error)
+        job._exception = None
+
+        is_done = job.done()
+
+        assert is_done
+        assert job._exception is bad_request_error
+
+    def test_done_w_job_query_results_ok_reload_error(self):
+        client = _make_client(project=self.PROJECT)
+        query_results = google.cloud.bigquery.query._QueryResults(
+            properties={
+                "jobComplete": True,
+                "jobReference": {"projectId": self.PROJECT, "jobId": "12345"},
+            }
+        )
+        client._get_query_results = mock.Mock(return_value=query_results)
+
+        resource = self._make_resource(ended=False)
+        job = self._get_target_class().from_api_repr(resource, client)
+        retry_error = exceptions.RetryError("Too many retries", cause=TimeoutError)
+        job.reload = mock.Mock(side_effect=retry_error)
+        job._exception = None
+
+        is_done = job.done()
+
+        assert is_done
+        assert job._exception is retry_error
 
     def test_query_plan(self):
         from google.cloud._helpers import _RFC3339_MICROS
@@ -973,7 +1052,7 @@ class TestQueryJob(_Base):
             initial=0.001,
             maximum=0.001,
             multiplier=1.0,
-            deadline=0.001,
+            deadline=0.1,
             predicate=custom_predicate,
         )
 

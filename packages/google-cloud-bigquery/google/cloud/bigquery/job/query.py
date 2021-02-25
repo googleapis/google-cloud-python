@@ -989,7 +989,8 @@ class QueryJob(_AsyncJob):
                 unfinished jobs before checking. Default ``True``.
 
         Returns:
-            bool: True if the job is complete, False otherwise.
+            bool: ``True`` if the job is complete or if fetching its status resulted in
+                an error, ``False`` otherwise.
         """
         # Do not refresh if the state is already done, as the job will not
         # change once complete.
@@ -997,17 +998,34 @@ class QueryJob(_AsyncJob):
         if not reload or is_done:
             return is_done
 
-        self._reload_query_results(retry=retry, timeout=timeout)
-
         # If an explicit timeout is not given, fall back to the transport timeout
         # stored in _blocking_poll() in the process of polling for job completion.
         transport_timeout = timeout if timeout is not None else self._transport_timeout
+
+        try:
+            self._reload_query_results(retry=retry, timeout=transport_timeout)
+        except exceptions.GoogleAPIError as exc:
+            # Reloading also updates error details on self, thus no need for an
+            # explicit self.set_exception() call if reloading succeeds.
+            try:
+                self.reload(retry=retry, timeout=transport_timeout)
+            except exceptions.GoogleAPIError:
+                # Use the query results reload exception, as it generally contains
+                # much more useful error information.
+                self.set_exception(exc)
+                return True
+            else:
+                return self.state == _DONE_STATE
 
         # Only reload the job once we know the query is complete.
         # This will ensure that fields such as the destination table are
         # correctly populated.
         if self._query_results.complete:
-            self.reload(retry=retry, timeout=transport_timeout)
+            try:
+                self.reload(retry=retry, timeout=transport_timeout)
+            except exceptions.GoogleAPIError as exc:
+                self.set_exception(exc)
+                return True
 
         return self.state == _DONE_STATE
 
