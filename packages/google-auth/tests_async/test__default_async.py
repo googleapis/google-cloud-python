@@ -187,6 +187,24 @@ def test__get_explicit_environ_credentials_no_project_id(load, monkeypatch):
     assert project_id is None
 
 
+@mock.patch(
+    "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
+)
+@mock.patch("google.auth._default_async._get_gcloud_sdk_credentials", autospec=True)
+def test__get_explicit_environ_credentials_fallback_to_gcloud(
+    get_gcloud_creds, get_adc_path, monkeypatch
+):
+    # Set explicit credentials path to cloud sdk credentials path.
+    get_adc_path.return_value = "filename"
+    monkeypatch.setenv(environment_vars.CREDENTIALS, "filename")
+
+    _default._get_explicit_environ_credentials()
+
+    # Check we fall back to cloud sdk flow since explicit credentials path is
+    # cloud sdk credentials path
+    get_gcloud_creds.assert_called_once()
+
+
 @LOAD_FILE_PATCH
 @mock.patch(
     "google.auth._cloud_sdk.get_application_default_credentials_path", autospec=True
