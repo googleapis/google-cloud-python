@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery.git",
-        "sha": "1c6681aba872c00afb16a904a2ba9bae8e9618d3"
+        "sha": "1823cadee3acf95c516d0479400e4175349ea199"
       }
     },
     {
@@ -93,7 +93,6 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
-    "bigquery-v2-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/bigquery_v2/model_service.rst",

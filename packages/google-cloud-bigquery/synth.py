@@ -32,6 +32,7 @@ library = gapic.py_library(
 s.move(
     library,
     excludes=[
+        "*.tar.gz",
         "docs/index.rst",
         "docs/bigquery_v2/*_service.rst",
         "docs/bigquery_v2/services.rst",
