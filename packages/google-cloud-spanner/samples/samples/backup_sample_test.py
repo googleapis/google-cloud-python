@@ -38,8 +38,10 @@ def unique_backup_id():
 
 INSTANCE_ID = unique_instance_id()
 DATABASE_ID = unique_database_id()
+RETENTION_DATABASE_ID = unique_database_id()
 RESTORE_DB_ID = unique_database_id()
 BACKUP_ID = unique_backup_id()
+RETENTION_PERIOD = "7d"
 
 
 @pytest.fixture(scope="module")
@@ -70,6 +72,7 @@ def test_create_backup(capsys, database):
     assert BACKUP_ID in out
 
 
+# Depends on test_create_backup having run first
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_restore_database(capsys):
     backup_sample.restore_database(INSTANCE_ID, RESTORE_DB_ID, BACKUP_ID)
@@ -79,6 +82,7 @@ def test_restore_database(capsys):
     assert BACKUP_ID in out
 
 
+# Depends on test_create_backup having run first
 def test_list_backup_operations(capsys, spanner_instance):
     backup_sample.list_backup_operations(INSTANCE_ID, DATABASE_ID)
     out, _ = capsys.readouterr()
@@ -86,6 +90,7 @@ def test_list_backup_operations(capsys, spanner_instance):
     assert DATABASE_ID in out
 
 
+# Depends on test_create_backup having run first
 def test_list_backups(capsys, spanner_instance):
     backup_sample.list_backups(INSTANCE_ID, DATABASE_ID, BACKUP_ID)
     out, _ = capsys.readouterr()
@@ -93,18 +98,21 @@ def test_list_backups(capsys, spanner_instance):
     assert id_count == 7
 
 
+# Depends on test_create_backup having run first
 def test_update_backup(capsys):
     backup_sample.update_backup(INSTANCE_ID, BACKUP_ID)
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
 
 
+# Depends on test_create_backup having run first
 def test_delete_backup(capsys, spanner_instance):
     backup_sample.delete_backup(INSTANCE_ID, BACKUP_ID)
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
 
 
+# Depends on test_create_backup having run first
 def test_cancel_backup(capsys):
     backup_sample.cancel_backup(INSTANCE_ID, DATABASE_ID, BACKUP_ID)
     out, _ = capsys.readouterr()
@@ -113,3 +121,13 @@ def test_cancel_backup(capsys):
         "Backup deleted." in out
     )
     assert cancel_success or cancel_failure
+
+
+@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+def test_create_database_with_retention_period(capsys, spanner_instance):
+    backup_sample.create_database_with_version_retention_period(INSTANCE_ID, RETENTION_DATABASE_ID, RETENTION_PERIOD)
+    out, _ = capsys.readouterr()
+    assert (RETENTION_DATABASE_ID + " created with ") in out
+    assert ("retention period " + RETENTION_PERIOD) in out
+    database = spanner_instance.database(RETENTION_DATABASE_ID)
+    database.drop()

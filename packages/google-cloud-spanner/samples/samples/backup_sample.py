@@ -34,7 +34,8 @@ def create_backup(instance_id, database_id, backup_id):
 
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)
-    backup = instance.backup(backup_id, database=database, expire_time=expire_time)
+    version_time = database.earliest_version_time
+    backup = instance.backup(backup_id, database=database, expire_time=expire_time, version_time=version_time)
     operation = backup.create()
 
     # Wait for backup operation to complete.
@@ -47,8 +48,8 @@ def create_backup(instance_id, database_id, backup_id):
     # Get the name, create time and backup size.
     backup.reload()
     print(
-        "Backup {} of size {} bytes was created at {}".format(
-            backup.name, backup.size_bytes, backup.create_time
+        "Backup {} of size {} bytes was created at {} for version of database at {}".format(
+            backup.name, backup.size_bytes, backup.create_time, backup.version_time
         )
     )
 
@@ -63,7 +64,7 @@ def restore_database(instance_id, new_database_id, backup_id):
     instance = spanner_client.instance(instance_id)
     # Create a backup on database_id.
 
-    # Start restoring backup to a new database.
+    # Start restoring an existing backup to a new database.
     backup = instance.backup(backup_id)
     new_database = instance.database(new_database_id)
     operation = new_database.restore(backup)
@@ -75,10 +76,11 @@ def restore_database(instance_id, new_database_id, backup_id):
     new_database.reload()
     restore_info = new_database.restore_info
     print(
-        "Database {} restored to {} from backup {}.".format(
+        "Database {} restored to {} from backup {} with version time {}.".format(
             restore_info.backup_info.source_database,
             new_database_id,
             restore_info.backup_info.backup,
+            restore_info.backup_info.version_time
         )
     )
 
@@ -267,6 +269,45 @@ def update_backup(instance_id, backup_id):
 
 
 # [END spanner_update_backup]
+
+
+# [START spanner_create_database_with_version_retention_period]
+def create_database_with_version_retention_period(instance_id, database_id, retention_period):
+    """Creates a database with a version retention period."""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    ddl_statements = [
+        "CREATE TABLE Singers ("
+        + "  SingerId   INT64 NOT NULL,"
+        + "  FirstName  STRING(1024),"
+        + "  LastName   STRING(1024),"
+        + "  SingerInfo BYTES(MAX)"
+        + ") PRIMARY KEY (SingerId)",
+        "CREATE TABLE Albums ("
+        + "  SingerId     INT64 NOT NULL,"
+        + "  AlbumId      INT64 NOT NULL,"
+        + "  AlbumTitle   STRING(MAX)"
+        + ") PRIMARY KEY (SingerId, AlbumId),"
+        + "  INTERLEAVE IN PARENT Singers ON DELETE CASCADE",
+        "ALTER DATABASE `{}`"
+        " SET OPTIONS (version_retention_period = '{}')".format(
+            database_id, retention_period
+        )
+    ]
+    db = instance.database(database_id, ddl_statements)
+    operation = db.create()
+
+    operation.result(30)
+
+    db.reload()
+
+    print("Database {} created with version retention period {} and earliest version time {}".format(
+        db.database_id, db.version_retention_period, db.earliest_version_time
+    ))
+
+    db.drop()
+
+# [END spanner_create_database_with_version_retention_period]
 
 
 if __name__ == "__main__":  # noqa: C901
