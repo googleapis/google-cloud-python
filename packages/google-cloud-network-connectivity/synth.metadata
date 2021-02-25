@@ -4,29 +4,29 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-network-connectivity.git",
-        "sha": "7c5e2683ff1774acf4a16bc928706709c0c70f91"
+        "sha": "47311e98c3a67fd67a711e9ea9b5cecfd7b06bc2"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "d99d5d592f3d1d5526511c90120b1e9ab3ce6e17",
-        "internalRef": "354148500"
+        "sha": "e53f05caf2fcc77c92be82bc2654e5d6000c5148",
+        "internalRef": "358007902"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
+        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
+        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
       }
     }
   ],

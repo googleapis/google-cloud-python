@@ -32,6 +32,7 @@ from .hub import (
     UpdateSpokeRequest,
     DeleteSpokeRequest,
     RouterApplianceInstance,
+    State,
 )
 
 __all__ = (
@@ -51,4 +52,5 @@ __all__ = (
     "UpdateSpokeRequest",
     "DeleteSpokeRequest",
     "RouterApplianceInstance",
+    "State",
 )

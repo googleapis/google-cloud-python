@@ -35,6 +35,7 @@ from google.cloud.networkconnectivity_v1alpha1.types.hub import ListSpokesReques
 from google.cloud.networkconnectivity_v1alpha1.types.hub import ListSpokesResponse
 from google.cloud.networkconnectivity_v1alpha1.types.hub import RouterApplianceInstance
 from google.cloud.networkconnectivity_v1alpha1.types.hub import Spoke
+from google.cloud.networkconnectivity_v1alpha1.types.hub import State
 from google.cloud.networkconnectivity_v1alpha1.types.hub import UpdateHubRequest
 from google.cloud.networkconnectivity_v1alpha1.types.hub import UpdateSpokeRequest
 
@@ -55,6 +56,7 @@ __all__ = (
     "OperationMetadata",
     "RouterApplianceInstance",
     "Spoke",
+    "State",
     "UpdateHubRequest",
     "UpdateSpokeRequest",
 )

@@ -25,6 +25,7 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.networkconnectivity.v1alpha1",
     manifest={
+        "State",
         "Hub",
         "Spoke",
         "ListHubsRequest",
@@ -44,12 +45,22 @@ __protobuf__ = proto.module(
 )
 
 
+class State(proto.Enum):
+    r"""The State enum represents the lifecycle of a Network
+    Connectivity Center resource.
+    """
+    STATE_UNSPECIFIED = 0
+    CREATING = 1
+    ACTIVE = 2
+    DELETING = 3
+
+
 class Hub(proto.Message):
-    r"""The Connectivity Hub is a hub-and-spoke abstraction for
-    network connectivity management in Google Cloud. It aims to
-    reduce operational complexity through a simple, centralized
-    connectivity management model. Here is the resource message of a
-    Hub.
+    r"""Network Connectivity Center is a hub-and-spoke abstraction
+    for network connectivity management in Google Cloud. It reduces
+    operational complexity through a simple, centralized
+    connectivity management model. Following is the resource message
+    of a hub.
 
     Attributes:
         name (str):
@@ -70,6 +81,9 @@ class Hub(proto.Message):
             is unique across all Hub resources. If a Hub resource is
             deleted and another with the same name is created, it gets a
             different unique_id.
+        state (google.cloud.networkconnectivity_v1alpha1.types.State):
+            Output only. The current lifecycle state of
+            this Hub.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -85,6 +99,8 @@ class Hub(proto.Message):
     spokes = proto.RepeatedField(proto.STRING, number=6)
 
     unique_id = proto.Field(proto.STRING, number=8)
+
+    state = proto.Field(proto.ENUM, number=9, enum="State",)
 
 
 class Spoke(proto.Message):
@@ -118,6 +134,9 @@ class Spoke(proto.Message):
             is unique across all Spoke resources. If a Spoke resource is
             deleted and another with the same name is created, it gets a
             different unique_id.
+        state (google.cloud.networkconnectivity_v1alpha1.types.State):
+            Output only. The current lifecycle state of
+            this Hub.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -141,6 +160,8 @@ class Spoke(proto.Message):
     )
 
     unique_id = proto.Field(proto.STRING, number=11)
+
+    state = proto.Field(proto.ENUM, number=15, enum="State",)
 
 
 class ListHubsRequest(proto.Message):
