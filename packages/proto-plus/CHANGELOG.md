@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.14.2](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.1...v1.14.2) (2021-02-26)
+
+
+### Bug Fixes
+
+* use the correct environment for uploading to pypi ([#199](https://www.github.com/googleapis/proto-plus-python/issues/199)) ([babdc5c](https://www.github.com/googleapis/proto-plus-python/commit/babdc5cddf08235cac3cda66200babab44204688))
+
 ### [1.14.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.0...v1.14.1) (2021-02-26)
 
 
