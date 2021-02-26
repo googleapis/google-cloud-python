@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.40.12](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.11...v0.40.12) (2021-02-26)
+
+
+### Bug Fixes
+
+* exclude 'input' from reserved names list ([#788](https://www.github.com/googleapis/gapic-generator-python/issues/788)) ([da2ff71](https://www.github.com/googleapis/gapic-generator-python/commit/da2ff717b82357359baeeafad9a3e48a70e194cb))
+
 ### [0.40.11](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.10...v0.40.11) (2021-02-24)
 
 
