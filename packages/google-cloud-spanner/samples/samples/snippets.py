@@ -24,6 +24,7 @@ import argparse
 import base64
 import datetime
 import decimal
+import logging
 
 from google.cloud import spanner
 from google.cloud.spanner_v1 import param_types
@@ -969,6 +970,44 @@ def insert_data_with_dml(instance_id, database_id):
     # [END spanner_dml_standard_insert]
 
 
+# [START spanner_get_commit_stats]
+def log_commit_stats(instance_id, database_id):
+    """Inserts sample data using DML and displays the commit statistics. """
+    # By default, commit statistics are logged via stdout at level Info.
+    # This sample uses a custom logger to access the commit statistics.
+    class CommitStatsSampleLogger(logging.Logger):
+        def __init__(self):
+            self.last_commit_stats = None
+            super().__init__("commit_stats_sample")
+
+        def info(self, msg, *args, **kwargs):
+            if kwargs["extra"] and "commit_stats" in kwargs["extra"]:
+                self.last_commit_stats = kwargs["extra"]["commit_stats"]
+            super().info(msg)
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id, logger=CommitStatsSampleLogger())
+    database.log_commit_stats = True
+
+    def insert_singers(transaction):
+        row_ct = transaction.execute_update(
+            "INSERT Singers (SingerId, FirstName, LastName) "
+            " VALUES (110, 'Virginia', 'Watson')"
+        )
+
+        print("{} record(s) inserted.".format(row_ct))
+
+    database.run_in_transaction(insert_singers)
+    commit_stats = database.logger.last_commit_stats
+    print(
+        "{} mutation(s) in transaction.".format(
+            commit_stats.mutation_count
+        )
+    )
+# [END spanner_get_commit_stats]
+
+
 def update_data_with_dml(instance_id, database_id):
     """Updates sample data from the database using a DML statement. """
     # [START spanner_dml_standard_update]
@@ -1710,6 +1749,7 @@ if __name__ == "__main__":  # noqa: C901
         "query_nested_struct_field", help=query_nested_struct_field.__doc__
     )
     subparsers.add_parser("insert_data_with_dml", help=insert_data_with_dml.__doc__)
+    subparsers.add_parser("log_commit_stats", help=log_commit_stats.__doc__)
     subparsers.add_parser("update_data_with_dml", help=update_data_with_dml.__doc__)
     subparsers.add_parser("delete_data_with_dml", help=delete_data_with_dml.__doc__)
     subparsers.add_parser(
@@ -1820,6 +1860,8 @@ if __name__ == "__main__":  # noqa: C901
         query_nested_struct_field(args.instance_id, args.database_id)
     elif args.command == "insert_data_with_dml":
         insert_data_with_dml(args.instance_id, args.database_id)
+    elif args.command == "log_commit_stats":
+        log_commit_stats(args.instance_id, args.database_id)
     elif args.command == "update_data_with_dml":
         update_data_with_dml(args.instance_id, args.database_id)
     elif args.command == "delete_data_with_dml":
