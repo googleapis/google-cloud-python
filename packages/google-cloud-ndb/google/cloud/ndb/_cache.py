@@ -16,6 +16,8 @@ import functools
 import itertools
 import warnings
 
+from google.api_core import retry as core_retry
+
 from google.cloud.ndb import _batch
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import tasklets
@@ -132,9 +134,33 @@ def _handle_transient_errors(read=False):
     Will log as warning or reraise transient errors according to `strict_read` and
     `strict_write` attributes of the global cache and whether the operation is a read or
     a write.
+
+    If in strict mode, will retry the wrapped function up to 5 times before reraising
+    the transient error.
     """
 
     def wrap(wrapped):
+        def retry(wrapped, transient_errors):
+            @functools.wraps(wrapped)
+            @tasklets.tasklet
+            def retry_wrapper(*args, **kwargs):
+                sleep_generator = core_retry.exponential_sleep_generator(0.1, 1)
+                attempts = 5
+                for sleep_time in sleep_generator:  # pragma: NO BRANCH
+                    # pragma is required because loop never exits normally, it only gets
+                    # raised out of.
+                    attempts -= 1
+                    try:
+                        result = yield wrapped(*args, **kwargs)
+                        raise tasklets.Return(result)
+                    except transient_errors:
+                        if not attempts:
+                            raise
+
+                    yield tasklets.sleep(sleep_time)
+
+            return retry_wrapper
+
         @functools.wraps(wrapped)
         @tasklets.tasklet
         def wrapper(*args, **kwargs):
@@ -145,16 +171,21 @@ def _handle_transient_errors(read=False):
                     cache.clear()
                     cache.clear_cache_soon = False
 
-                result = yield wrapped(*args, **kwargs)
+                is_read = read
+                if not is_read:
+                    is_read = kwargs.get("read", False)
+
+                strict = cache.strict_read if is_read else cache.strict_write
+                if strict:
+                    function = retry(wrapped, cache.transient_errors)
+                else:
+                    function = wrapped
+
+                result = yield function(*args, **kwargs)
                 raise tasklets.Return(result)
 
             except cache.transient_errors as error:
                 cache.clear_cache_soon = True
-
-                strict_read = read
-                if not strict_read:
-                    strict_read = kwargs.get("read", False)
-                strict = cache.strict_read if strict_read else cache.strict_write
 
                 if strict:
                     raise
