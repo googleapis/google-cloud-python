@@ -52,11 +52,11 @@ class RecognizeRequest(proto.Message):
     method.
 
     Attributes:
-        config (~.cloud_speech.RecognitionConfig):
+        config (google.cloud.speech_v1.types.RecognitionConfig):
             Required. Provides information to the
             recognizer that specifies how to process the
             request.
-        audio (~.cloud_speech.RecognitionAudio):
+        audio (google.cloud.speech_v1.types.RecognitionAudio):
             Required. The audio data to be recognized.
     """
 
@@ -70,11 +70,11 @@ class LongRunningRecognizeRequest(proto.Message):
     ``LongRunningRecognize`` method.
 
     Attributes:
-        config (~.cloud_speech.RecognitionConfig):
+        config (google.cloud.speech_v1.types.RecognitionConfig):
             Required. Provides information to the
             recognizer that specifies how to process the
             request.
-        audio (~.cloud_speech.RecognitionAudio):
+        audio (google.cloud.speech_v1.types.RecognitionAudio):
             Required. The audio data to be recognized.
     """
 
@@ -93,7 +93,7 @@ class StreamingRecognizeRequest(proto.Message):
     message.
 
     Attributes:
-        streaming_config (~.cloud_speech.StreamingRecognitionConfig):
+        streaming_config (google.cloud.speech_v1.types.StreamingRecognitionConfig):
             Provides information to the recognizer that specifies how to
             process the request. The first ``StreamingRecognizeRequest``
             message must contain a ``streaming_config`` message.
@@ -125,7 +125,7 @@ class StreamingRecognitionConfig(proto.Message):
     process the request.
 
     Attributes:
-        config (~.cloud_speech.RecognitionConfig):
+        config (google.cloud.speech_v1.types.RecognitionConfig):
             Required. Provides information to the
             recognizer that specifies how to process the
             request.
@@ -163,7 +163,7 @@ class RecognitionConfig(proto.Message):
     process the request.
 
     Attributes:
-        encoding (~.cloud_speech.RecognitionConfig.AudioEncoding):
+        encoding (google.cloud.speech_v1.types.RecognitionConfig.AudioEncoding):
             Encoding of audio data sent in all ``RecognitionAudio``
             messages. This field is optional for ``FLAC`` and ``WAV``
             audio files and required for all other audio formats. For
@@ -217,7 +217,7 @@ class RecognitionConfig(proto.Message):
             profanities, replacing all but the initial character in each
             filtered word with asterisks, e.g. "f***". If set to
             ``false`` or omitted, profanities won't be filtered out.
-        speech_contexts (Sequence[~.cloud_speech.SpeechContext]):
+        speech_contexts (Sequence[google.cloud.speech_v1.types.SpeechContext]):
             Array of
             [SpeechContext][google.cloud.speech.v1.SpeechContext]. A
             means to provide context to assist the speech recognition.
@@ -239,7 +239,7 @@ class RecognitionConfig(proto.Message):
             complimentary to all users. In the future this
             may be exclusively available as a premium
             feature.
-        diarization_config (~.cloud_speech.SpeakerDiarizationConfig):
+        diarization_config (google.cloud.speech_v1.types.SpeakerDiarizationConfig):
             Config to enable speaker diarization and set
             additional parameters to make diarization better
             suited for your application. Note: When this is
@@ -252,7 +252,7 @@ class RecognitionConfig(proto.Message):
             requests, the diarization results will be
             provided only in the top alternative of the
             FINAL SpeechRecognitionResult.
-        metadata (~.cloud_speech.RecognitionMetadata):
+        metadata (google.cloud.speech_v1.types.RecognitionMetadata):
             Metadata regarding this request.
         model (str):
             Which model to select for the given request. Select the
@@ -408,7 +408,7 @@ class RecognitionMetadata(proto.Message):
     r"""Description of audio data to be recognized.
 
     Attributes:
-        interaction_type (~.cloud_speech.RecognitionMetadata.InteractionType):
+        interaction_type (google.cloud.speech_v1.types.RecognitionMetadata.InteractionType):
             The use case most closely describing the
             audio content to be recognized.
         industry_naics_code_of_audio (int):
@@ -418,13 +418,13 @@ class RecognitionMetadata(proto.Message):
             the audio.  Use the 6-digit NAICS code to
             identify the industry vertical - see
             https://www.naics.com/search/.
-        microphone_distance (~.cloud_speech.RecognitionMetadata.MicrophoneDistance):
+        microphone_distance (google.cloud.speech_v1.types.RecognitionMetadata.MicrophoneDistance):
             The audio type that most closely describes
             the audio being recognized.
-        original_media_type (~.cloud_speech.RecognitionMetadata.OriginalMediaType):
+        original_media_type (google.cloud.speech_v1.types.RecognitionMetadata.OriginalMediaType):
             The original media the speech was recorded
             on.
-        recording_device_type (~.cloud_speech.RecognitionMetadata.RecordingDeviceType):
+        recording_device_type (google.cloud.speech_v1.types.RecognitionMetadata.RecordingDeviceType):
             The type of device the speech was recorded
             with.
         recording_device_name (str):
@@ -562,7 +562,7 @@ class RecognizeResponse(proto.Message):
     ``SpeechRecognitionResult`` messages.
 
     Attributes:
-        results (Sequence[~.cloud_speech.SpeechRecognitionResult]):
+        results (Sequence[google.cloud.speech_v1.types.SpeechRecognitionResult]):
             Sequential list of transcription results
             corresponding to sequential portions of audio.
     """
@@ -581,7 +581,7 @@ class LongRunningRecognizeResponse(proto.Message):
     service.
 
     Attributes:
-        results (Sequence[~.cloud_speech.SpeechRecognitionResult]):
+        results (Sequence[google.cloud.speech_v1.types.SpeechRecognitionResult]):
             Sequential list of transcription results
             corresponding to sequential portions of audio.
     """
@@ -602,9 +602,9 @@ class LongRunningRecognizeMetadata(proto.Message):
             Approximate percentage of audio processed
             thus far. Guaranteed to be 100 when the audio is
             fully processed and the results are available.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the request was received.
-        last_update_time (~.timestamp.Timestamp):
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time of the most recent processing update.
     """
 
@@ -673,16 +673,16 @@ class StreamingRecognizeResponse(proto.Message):
        ``results``.
 
     Attributes:
-        error (~.status.Status):
+        error (google.rpc.status_pb2.Status):
             If set, returns a [google.rpc.Status][google.rpc.Status]
             message that specifies the error for the operation.
-        results (Sequence[~.cloud_speech.StreamingRecognitionResult]):
+        results (Sequence[google.cloud.speech_v1.types.StreamingRecognitionResult]):
             This repeated list contains zero or more results that
             correspond to consecutive portions of the audio currently
             being processed. It contains zero or one ``is_final=true``
             result (the newly settled portion), followed by zero or more
             ``is_final=false`` results (the interim results).
-        speech_event_type (~.cloud_speech.StreamingRecognizeResponse.SpeechEventType):
+        speech_event_type (google.cloud.speech_v1.types.StreamingRecognizeResponse.SpeechEventType):
             Indicates the type of speech event.
     """
 
@@ -705,7 +705,7 @@ class StreamingRecognitionResult(proto.Message):
     portion of the audio that is currently being processed.
 
     Attributes:
-        alternatives (Sequence[~.cloud_speech.SpeechRecognitionAlternative]):
+        alternatives (Sequence[google.cloud.speech_v1.types.SpeechRecognitionAlternative]):
             May contain one or more recognition hypotheses (up to the
             maximum specified in ``max_alternatives``). These
             alternatives are ordered in terms of accuracy, with the top
@@ -725,7 +725,7 @@ class StreamingRecognitionResult(proto.Message):
             This field is only provided for interim results
             (``is_final=false``). The default of 0.0 is a sentinel value
             indicating ``stability`` was not set.
-        result_end_time (~.duration.Duration):
+        result_end_time (google.protobuf.duration_pb2.Duration):
             Time offset of the end of this result
             relative to the beginning of the audio.
         channel_tag (int):
@@ -761,7 +761,7 @@ class SpeechRecognitionResult(proto.Message):
     audio.
 
     Attributes:
-        alternatives (Sequence[~.cloud_speech.SpeechRecognitionAlternative]):
+        alternatives (Sequence[google.cloud.speech_v1.types.SpeechRecognitionAlternative]):
             May contain one or more recognition hypotheses (up to the
             maximum specified in ``max_alternatives``). These
             alternatives are ordered in terms of accuracy, with the top
@@ -797,7 +797,7 @@ class SpeechRecognitionAlternative(proto.Message):
             to be accurate and users should not rely on it to be always
             provided. The default of 0.0 is a sentinel value indicating
             ``confidence`` was not set.
-        words (Sequence[~.cloud_speech.WordInfo]):
+        words (Sequence[google.cloud.speech_v1.types.WordInfo]):
             A list of word-specific information for each recognized
             word. Note: When ``enable_speaker_diarization`` is true, you
             will see all the words from the beginning of the audio.
@@ -814,13 +814,13 @@ class WordInfo(proto.Message):
     r"""Word-specific information for recognized words.
 
     Attributes:
-        start_time (~.duration.Duration):
+        start_time (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the audio, and
             corresponding to the start of the spoken word. This field is
             only set if ``enable_word_time_offsets=true`` and only in
             the top hypothesis. This is an experimental feature and the
             accuracy of the time offset can vary.
-        end_time (~.duration.Duration):
+        end_time (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the audio, and
             corresponding to the end of the spoken word. This field is
             only set if ``enable_word_time_offsets=true`` and only in

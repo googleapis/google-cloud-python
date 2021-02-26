@@ -35,8 +35,8 @@ class CustomClass(proto.Message):
             The resource name of the custom class.
         custom_class_id (str):
             If this custom class is a resource, the custom_class_id is
-            the resource id of the CustomClass.
-        items (Sequence[~.resource.CustomClass.ClassItem]):
+            the resource id of the CustomClass. Case sensitive.
+        items (Sequence[google.cloud.speech_v1p1beta1.types.CustomClass.ClassItem]):
             A collection of class items.
     """
 
@@ -64,7 +64,7 @@ class PhraseSet(proto.Message):
     Attributes:
         name (str):
             The resource name of the phrase set.
-        phrases (Sequence[~.resource.PhraseSet.Phrase]):
+        phrases (Sequence[google.cloud.speech_v1p1beta1.types.PhraseSet.Phrase]):
             A list of word and phrases.
         boost (float):
             Hint Boost. Positive value will increase the probability
@@ -137,11 +137,14 @@ class SpeechAdaptation(proto.Message):
     r"""Speech adaptation configuration.
 
     Attributes:
-        phrase_sets (Sequence[~.resource.PhraseSet]):
+        phrase_sets (Sequence[google.cloud.speech_v1p1beta1.types.PhraseSet]):
             A collection of phrase sets. To specify the hints inline,
             leave the phrase set's ``name`` blank and fill in the rest
             of its fields. Any phrase set can use any custom class.
-        custom_classes (Sequence[~.resource.CustomClass]):
+        phrase_set_references (Sequence[str]):
+            A collection of phrase set resource names to
+            use.
+        custom_classes (Sequence[google.cloud.speech_v1p1beta1.types.CustomClass]):
             A collection of custom classes. To specify the classes
             inline, leave the class' ``name`` blank and fill in the rest
             of its fields, giving it a unique ``custom_class_id``. Refer
@@ -151,8 +154,10 @@ class SpeechAdaptation(proto.Message):
 
     phrase_sets = proto.RepeatedField(proto.MESSAGE, number=1, message="PhraseSet",)
 
+    phrase_set_references = proto.RepeatedField(proto.STRING, number=2)
+
     custom_classes = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="CustomClass",
+        proto.MESSAGE, number=3, message="CustomClass",
     )
 
 
