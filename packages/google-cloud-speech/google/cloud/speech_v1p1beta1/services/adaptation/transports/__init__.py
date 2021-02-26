@@ -14,3 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+from collections import OrderedDict
+from typing import Dict, Type
+
+from .base import AdaptationTransport
+from .grpc import AdaptationGrpcTransport
+from .grpc_asyncio import AdaptationGrpcAsyncIOTransport
+
+
+# Compile a registry of transports.
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AdaptationTransport]]
+_transport_registry["grpc"] = AdaptationGrpcTransport
+_transport_registry["grpc_asyncio"] = AdaptationGrpcAsyncIOTransport
+
+__all__ = (
+    "AdaptationTransport",
+    "AdaptationGrpcTransport",
+    "AdaptationGrpcAsyncIOTransport",
+)

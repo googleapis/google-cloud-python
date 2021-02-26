@@ -1,6 +1,7 @@
 Services for Google Cloud Speech v1p1beta1 API
 ==============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.speech_v1p1beta1.services.speech
-    :members:
-    :inherited-members:
+    adaptation
+    speech

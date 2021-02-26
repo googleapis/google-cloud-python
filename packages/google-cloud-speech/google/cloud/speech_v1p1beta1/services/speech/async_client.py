@@ -79,7 +79,36 @@ class SpeechAsyncClient:
     common_location_path = staticmethod(SpeechClient.common_location_path)
     parse_common_location_path = staticmethod(SpeechClient.parse_common_location_path)
 
-    from_service_account_file = SpeechClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpeechAsyncClient: The constructed client.
+        """
+        return SpeechClient.from_service_account_info.__func__(SpeechAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpeechAsyncClient: The constructed client.
+        """
+        return SpeechClient.from_service_account_file.__func__(SpeechAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -157,19 +186,21 @@ class SpeechAsyncClient:
         results after all audio has been sent and processed.
 
         Args:
-            request (:class:`~.cloud_speech.RecognizeRequest`):
+            request (:class:`google.cloud.speech_v1p1beta1.types.RecognizeRequest`):
                 The request object. The top-level message sent by the
                 client for the `Recognize` method.
-            config (:class:`~.cloud_speech.RecognitionConfig`):
+            config (:class:`google.cloud.speech_v1p1beta1.types.RecognitionConfig`):
                 Required. Provides information to the
                 recognizer that specifies how to process
                 the request.
+
                 This corresponds to the ``config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            audio (:class:`~.cloud_speech.RecognitionAudio`):
+            audio (:class:`google.cloud.speech_v1p1beta1.types.RecognitionAudio`):
                 Required. The audio data to be
                 recognized.
+
                 This corresponds to the ``audio`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -181,10 +212,10 @@ class SpeechAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloud_speech.RecognizeResponse:
-                The only message returned to the client by the
-                ``Recognize`` method. It contains the result as zero or
-                more sequential ``SpeechRecognitionResult`` messages.
+            google.cloud.speech_v1p1beta1.types.RecognizeResponse:
+                The only message returned to the client by the Recognize method. It
+                   contains the result as zero or more sequential
+                   SpeechRecognitionResult messages.
 
         """
         # Create or coerce a protobuf request object.
@@ -247,19 +278,21 @@ class SpeechAsyncClient:
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
 
         Args:
-            request (:class:`~.cloud_speech.LongRunningRecognizeRequest`):
+            request (:class:`google.cloud.speech_v1p1beta1.types.LongRunningRecognizeRequest`):
                 The request object. The top-level message sent by the
                 client for the `LongRunningRecognize` method.
-            config (:class:`~.cloud_speech.RecognitionConfig`):
+            config (:class:`google.cloud.speech_v1p1beta1.types.RecognitionConfig`):
                 Required. Provides information to the
                 recognizer that specifies how to process
                 the request.
+
                 This corresponds to the ``config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            audio (:class:`~.cloud_speech.RecognitionAudio`):
+            audio (:class:`google.cloud.speech_v1p1beta1.types.RecognitionAudio`):
                 Required. The audio data to be
                 recognized.
+
                 This corresponds to the ``audio`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -271,18 +304,15 @@ class SpeechAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.cloud_speech.LongRunningRecognizeResponse``:
-                The only message returned to the client by the
-                ``LongRunningRecognize`` method. It contains the result
-                as zero or more sequential ``SpeechRecognitionResult``
-                messages. It is included in the ``result.response``
-                field of the ``Operation`` returned by the
-                ``GetOperation`` call of the
-                ``google::longrunning::Operations`` service.
+                The result type for the operation will be :class:`google.cloud.speech_v1p1beta1.types.LongRunningRecognizeResponse` The only message returned to the client by the LongRunningRecognize method.
+                   It contains the result as zero or more sequential
+                   SpeechRecognitionResult messages. It is included in
+                   the result.response field of the Operation returned
+                   by the GetOperation call of the
+                   google::longrunning::Operations service.
 
         """
         # Create or coerce a protobuf request object.
@@ -340,7 +370,7 @@ class SpeechAsyncClient:
         available via the gRPC API (not REST).
 
         Args:
-            requests (AsyncIterator[`~.cloud_speech.StreamingRecognizeRequest`]):
+            requests (AsyncIterator[`google.cloud.speech_v1p1beta1.types.StreamingRecognizeRequest`]):
                 The request object AsyncIterator. The top-level message sent by the
                 client for the `StreamingRecognize` method. Multiple
                 `StreamingRecognizeRequest` messages are sent. The first
@@ -355,66 +385,67 @@ class SpeechAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.cloud_speech.StreamingRecognizeResponse]:
-                ``StreamingRecognizeResponse`` is the only message
-                returned to the client by ``StreamingRecognize``. A
-                series of zero or more ``StreamingRecognizeResponse``
-                messages are streamed back to the client. If there is no
-                recognizable audio, and ``single_utterance`` is set to
-                false, then no messages are streamed back to the client.
+            AsyncIterable[google.cloud.speech_v1p1beta1.types.StreamingRecognizeResponse]:
+                StreamingRecognizeResponse is the only message returned to the client by
+                   StreamingRecognize. A series of zero or more
+                   StreamingRecognizeResponse messages are streamed back
+                   to the client. If there is no recognizable audio, and
+                   single_utterance is set to false, then no messages
+                   are streamed back to the client.
 
-                Here's an example of a series of ten
-                ``StreamingRecognizeResponse``\ s that might be returned
-                while processing audio:
+                   Here's an example of a series of ten
+                   StreamingRecognizeResponses that might be returned
+                   while processing audio:
 
-                1. results { alternatives { transcript: "tube" }
-                   stability: 0.01 }
+                   1. results { alternatives { transcript: "tube" }
+                      stability: 0.01 }
+                   2. results { alternatives { transcript: "to be a" }
+                      stability: 0.01 }
+                   3. results { alternatives { transcript: "to be" }
+                      stability: 0.9 } results { alternatives {
+                      transcript: " or not to be" } stability: 0.01 }
+                   4.
 
-                2. results { alternatives { transcript: "to be a" }
-                   stability: 0.01 }
+                      results { alternatives { transcript: "to be or not to be"
+                         confidence: 0.92 }
 
-                3. results { alternatives { transcript: "to be" }
-                   stability: 0.9 } results { alternatives { transcript:
-                   " or not to be" } stability: 0.01 }
+                      alternatives { transcript: "to bee or not to bee" }
+                         is_final: true }
 
-                4. results { alternatives { transcript: "to be or not to
-                   be" confidence: 0.92 } alternatives { transcript: "to
-                   bee or not to bee" } is_final: true }
+                   5. results { alternatives { transcript: " that's" }
+                      stability: 0.01 }
+                   6. results { alternatives { transcript: " that is" }
+                      stability: 0.9 } results { alternatives {
+                      transcript: " the question" } stability: 0.01 }
+                   7.
 
-                5. results { alternatives { transcript: " that's" }
-                   stability: 0.01 }
+                      results { alternatives { transcript: " that is the question"
+                         confidence: 0.98 }
 
-                6. results { alternatives { transcript: " that is" }
-                   stability: 0.9 } results { alternatives { transcript:
-                   " the question" } stability: 0.01 }
+                      alternatives { transcript: " that was the question" }
+                         is_final: true }
 
-                7. results { alternatives { transcript: " that is the
-                   question" confidence: 0.98 } alternatives {
-                   transcript: " that was the question" } is_final: true
-                   }
+                   Notes:
 
-                Notes:
+                   -  Only two of the above responses #4 and #7 contain
+                      final results; they are indicated by
+                      is_final: true. Concatenating these together
+                      generates the full transcript: "to be or not to be
+                      that is the question".
+                   -  The others contain interim results. #3 and #6
+                      contain two interim \`results`: the first portion
+                      has a high stability and is less likely to change;
+                      the second portion has a low stability and is very
+                      likely to change. A UI designer might choose to
+                      show only high stability results.
+                   -  The specific stability and confidence values shown
+                      above are only for illustrative purposes. Actual
+                      values may vary.
+                   -
 
-                -  Only two of the above responses #4 and #7 contain
-                   final results; they are indicated by
-                   ``is_final: true``. Concatenating these together
-                   generates the full transcript: "to be or not to be
-                   that is the question".
-
-                -  The others contain interim ``results``. #3 and #6
-                   contain two interim ``results``: the first portion
-                   has a high stability and is less likely to change;
-                   the second portion has a low stability and is very
-                   likely to change. A UI designer might choose to show
-                   only high stability ``results``.
-
-                -  The specific ``stability`` and ``confidence`` values
-                   shown above are only for illustrative purposes.
-                   Actual values may vary.
-
-                -  In each response, only one of these fields will be
-                   set: ``error``, ``speech_event_type``, or one or more
-                   (repeated) ``results``.
+                      In each response, only one of these fields will be set:
+                         error, speech_event_type, or one or more
+                         (repeated) results.
 
         """
 

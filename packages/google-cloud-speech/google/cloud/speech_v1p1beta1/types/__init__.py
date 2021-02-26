@@ -39,6 +39,20 @@ from .cloud_speech import (
     SpeechRecognitionAlternative,
     WordInfo,
 )
+from .cloud_speech_adaptation import (
+    CreatePhraseSetRequest,
+    UpdatePhraseSetRequest,
+    GetPhraseSetRequest,
+    ListPhraseSetRequest,
+    ListPhraseSetResponse,
+    DeletePhraseSetRequest,
+    CreateCustomClassRequest,
+    UpdateCustomClassRequest,
+    GetCustomClassRequest,
+    ListCustomClassesRequest,
+    ListCustomClassesResponse,
+    DeleteCustomClassRequest,
+)
 
 __all__ = (
     "CustomClass",
@@ -61,4 +75,16 @@ __all__ = (
     "SpeechRecognitionResult",
     "SpeechRecognitionAlternative",
     "WordInfo",
+    "CreatePhraseSetRequest",
+    "UpdatePhraseSetRequest",
+    "GetPhraseSetRequest",
+    "ListPhraseSetRequest",
+    "ListPhraseSetResponse",
+    "DeletePhraseSetRequest",
+    "CreateCustomClassRequest",
+    "UpdateCustomClassRequest",
+    "GetCustomClassRequest",
+    "ListCustomClassesRequest",
+    "ListCustomClassesResponse",
+    "DeleteCustomClassRequest",
 )
