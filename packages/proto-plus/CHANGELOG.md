@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.14.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.0...v1.14.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* install the wheel dependency ([#197](https://www.github.com/googleapis/proto-plus-python/issues/197)) ([923ab31](https://www.github.com/googleapis/proto-plus-python/commit/923ab31e4685b47acae793198be55335e5eeae38))
+
 ## [1.14.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.13.1...v1.14.0) (2021-02-24)
 
 
