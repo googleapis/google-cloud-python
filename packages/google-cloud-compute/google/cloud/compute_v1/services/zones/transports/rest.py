@@ -146,7 +146,7 @@ class ZonesRestTransport(ZonesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Zone.from_json(response.content)
+        return compute.Zone.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -200,7 +200,7 @@ class ZonesRestTransport(ZonesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ZoneList.from_json(response.content)
+        return compute.ZoneList.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("ZonesRestTransport",)

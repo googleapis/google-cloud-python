@@ -163,7 +163,7 @@ class RegionDiskTypesRestTransport(RegionDiskTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.DiskType.from_json(response.content)
+        return compute.DiskType.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -218,7 +218,9 @@ class RegionDiskTypesRestTransport(RegionDiskTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RegionDiskTypeList.from_json(response.content)
+        return compute.RegionDiskTypeList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("RegionDiskTypesRestTransport",)

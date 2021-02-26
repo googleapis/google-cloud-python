@@ -172,7 +172,7 @@ class TargetGrpcProxiesRestTransport(TargetGrpcProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -231,7 +231,9 @@ class TargetGrpcProxiesRestTransport(TargetGrpcProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetGrpcProxy.from_json(response.content)
+        return compute.TargetGrpcProxy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -317,7 +319,7 @@ class TargetGrpcProxiesRestTransport(TargetGrpcProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -372,7 +374,9 @@ class TargetGrpcProxiesRestTransport(TargetGrpcProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetGrpcProxyList.from_json(response.content)
+        return compute.TargetGrpcProxyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -460,7 +464,7 @@ class TargetGrpcProxiesRestTransport(TargetGrpcProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("TargetGrpcProxiesRestTransport",)

@@ -163,7 +163,9 @@ class RegionInstanceGroupsRestTransport(RegionInstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroup.from_json(response.content)
+        return compute.InstanceGroup.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list(
         self,
@@ -220,7 +222,9 @@ class RegionInstanceGroupsRestTransport(RegionInstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RegionInstanceGroupList.from_json(response.content)
+        return compute.RegionInstanceGroupList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_instances(
         self,
@@ -285,7 +289,9 @@ class RegionInstanceGroupsRestTransport(RegionInstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RegionInstanceGroupsListInstances.from_json(response.content)
+        return compute.RegionInstanceGroupsListInstances.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_named_ports(
         self,
@@ -374,7 +380,7 @@ class RegionInstanceGroupsRestTransport(RegionInstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("RegionInstanceGroupsRestTransport",)

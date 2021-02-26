@@ -147,7 +147,9 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpsProxyAggregatedList.from_json(response.content)
+        return compute.TargetHttpsProxyAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -228,7 +230,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -301,7 +303,9 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpsProxy.from_json(response.content)
+        return compute.TargetHttpsProxy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -387,7 +391,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -444,7 +448,9 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpsProxyList.from_json(response.content)
+        return compute.TargetHttpsProxyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_quic_override(
         self,
@@ -532,7 +538,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_ssl_certificates(
         self,
@@ -620,7 +626,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_ssl_policy(
         self,
@@ -708,7 +714,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_url_map(
         self,
@@ -796,7 +802,7 @@ class TargetHttpsProxiesRestTransport(TargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("TargetHttpsProxiesRestTransport",)

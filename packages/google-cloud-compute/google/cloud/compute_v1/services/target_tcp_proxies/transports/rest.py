@@ -172,7 +172,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -231,7 +231,9 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetTcpProxy.from_json(response.content)
+        return compute.TargetTcpProxy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -317,7 +319,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -374,7 +376,9 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetTcpProxyList.from_json(response.content)
+        return compute.TargetTcpProxyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_backend_service(
         self,
@@ -462,7 +466,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_proxy_header(
         self,
@@ -550,7 +554,7 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("TargetTcpProxiesRestTransport",)

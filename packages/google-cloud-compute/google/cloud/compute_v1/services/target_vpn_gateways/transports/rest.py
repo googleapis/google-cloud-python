@@ -147,7 +147,9 @@ class TargetVpnGatewaysRestTransport(TargetVpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetVpnGatewayAggregatedList.from_json(response.content)
+        return compute.TargetVpnGatewayAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class TargetVpnGatewaysRestTransport(TargetVpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -287,7 +289,9 @@ class TargetVpnGatewaysRestTransport(TargetVpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetVpnGateway.from_json(response.content)
+        return compute.TargetVpnGateway.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -373,7 +377,7 @@ class TargetVpnGatewaysRestTransport(TargetVpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -430,7 +434,9 @@ class TargetVpnGatewaysRestTransport(TargetVpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetVpnGatewayList.from_json(response.content)
+        return compute.TargetVpnGatewayList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("TargetVpnGatewaysRestTransport",)

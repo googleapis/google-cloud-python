@@ -180,7 +180,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def aggregated_list(
         self,
@@ -236,7 +236,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeGroupAggregatedList.from_json(response.content)
+        return compute.NodeGroupAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -318,7 +320,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete_nodes(
         self,
@@ -407,7 +409,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -467,7 +469,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeGroup.from_json(response.content)
+        return compute.NodeGroup.from_json(response.content, ignore_unknown_fields=True)
 
     def get_iam_policy(
         self,
@@ -571,7 +573,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -658,7 +660,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -713,7 +715,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeGroupList.from_json(response.content)
+        return compute.NodeGroupList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_nodes(
         self,
@@ -771,7 +775,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeGroupsListNodes.from_json(response.content)
+        return compute.NodeGroupsListNodes.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -860,7 +866,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_iam_policy(
         self,
@@ -969,7 +975,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def set_node_template(
         self,
@@ -1058,7 +1064,7 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -1117,7 +1123,9 @@ class NodeGroupsRestTransport(NodeGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("NodeGroupsRestTransport",)

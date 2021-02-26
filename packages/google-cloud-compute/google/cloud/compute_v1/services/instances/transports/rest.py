@@ -181,7 +181,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def add_resource_policies(
         self,
@@ -270,7 +270,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def aggregated_list(
         self,
@@ -326,7 +326,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceAggregatedList.from_json(response.content)
+        return compute.InstanceAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def attach_disk(
         self,
@@ -416,7 +418,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -498,7 +500,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete_access_config(
         self,
@@ -582,7 +584,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def detach_disk(
         self,
@@ -665,7 +667,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -722,7 +724,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Instance.from_json(response.content)
+        return compute.Instance.from_json(response.content, ignore_unknown_fields=True)
 
     def get_guest_attributes(
         self,
@@ -777,7 +779,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.GuestAttributes.from_json(response.content)
+        return compute.GuestAttributes.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_iam_policy(
         self,
@@ -881,7 +885,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def get_screenshot(
         self,
@@ -933,7 +937,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Screenshot.from_json(response.content)
+        return compute.Screenshot.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_serial_port_output(
         self,
@@ -988,7 +994,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SerialPortOutput.from_json(response.content)
+        return compute.SerialPortOutput.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_shielded_instance_identity(
         self,
@@ -1041,7 +1049,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ShieldedInstanceIdentity.from_json(response.content)
+        return compute.ShieldedInstanceIdentity.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -1128,7 +1138,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -1182,7 +1192,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceList.from_json(response.content)
+        return compute.InstanceList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_referrers(
         self,
@@ -1242,7 +1254,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceListReferrers.from_json(response.content)
+        return compute.InstanceListReferrers.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def remove_resource_policies(
         self,
@@ -1331,7 +1345,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def reset(
         self,
@@ -1413,7 +1427,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_deletion_protection(
         self,
@@ -1496,7 +1510,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_disk_auto_delete(
         self,
@@ -1580,7 +1594,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_iam_policy(
         self,
@@ -1689,7 +1703,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def set_labels(
         self,
@@ -1778,7 +1792,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_machine_resources(
         self,
@@ -1867,7 +1881,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_machine_type(
         self,
@@ -1956,7 +1970,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_metadata(
         self,
@@ -2045,7 +2059,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_min_cpu_platform(
         self,
@@ -2134,7 +2148,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_scheduling(
         self,
@@ -2223,7 +2237,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_service_account(
         self,
@@ -2312,7 +2326,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_shielded_instance_integrity_policy(
         self,
@@ -2402,7 +2416,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_tags(
         self,
@@ -2491,7 +2505,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def simulate_maintenance_event(
         self,
@@ -2572,7 +2586,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def start(
         self,
@@ -2654,7 +2668,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def start_with_encryption_key(
         self,
@@ -2743,7 +2757,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def stop(
         self,
@@ -2824,7 +2838,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -2883,7 +2897,9 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def update(
         self,
@@ -2974,7 +2990,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update_access_config(
         self,
@@ -3064,7 +3080,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update_display_device(
         self,
@@ -3153,7 +3169,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update_network_interface(
         self,
@@ -3243,7 +3259,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update_shielded_instance_config(
         self,
@@ -3333,7 +3349,7 @@ class InstancesRestTransport(InstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("InstancesRestTransport",)

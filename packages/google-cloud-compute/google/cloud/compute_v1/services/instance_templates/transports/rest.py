@@ -172,7 +172,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -229,7 +229,9 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceTemplate.from_json(response.content)
+        return compute.InstanceTemplate.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_iam_policy(
         self,
@@ -330,7 +332,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -416,7 +418,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -471,7 +473,9 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceTemplateList.from_json(response.content)
+        return compute.InstanceTemplateList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_iam_policy(
         self,
@@ -577,7 +581,7 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -633,7 +637,9 @@ class InstanceTemplatesRestTransport(InstanceTemplatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("InstanceTemplatesRestTransport",)

@@ -180,7 +180,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def aggregated_list(
         self,
@@ -236,7 +236,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroupManagerAggregatedList.from_json(response.content)
+        return compute.InstanceGroupManagerAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def apply_updates_to_instances(
         self,
@@ -324,7 +326,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def create_instances(
         self,
@@ -413,7 +415,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -495,7 +497,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete_instances(
         self,
@@ -584,7 +586,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete_per_instance_configs(
         self,
@@ -672,7 +674,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -738,7 +740,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroupManager.from_json(response.content)
+        return compute.InstanceGroupManager.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -824,7 +828,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -879,7 +883,9 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroupManagerList.from_json(response.content)
+        return compute.InstanceGroupManagerList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_errors(
         self,
@@ -938,7 +944,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # Return the response
         return compute.InstanceGroupManagersListErrorsResponse.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def list_managed_instances(
@@ -998,7 +1004,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # Return the response
         return compute.InstanceGroupManagersListManagedInstancesResponse.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def list_per_instance_configs(
@@ -1058,7 +1064,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # Return the response
         return compute.InstanceGroupManagersListPerInstanceConfigsResp.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def patch(
@@ -1148,7 +1154,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def patch_per_instance_configs(
         self,
@@ -1238,7 +1244,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def recreate_instances(
         self,
@@ -1327,7 +1333,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def resize(
         self,
@@ -1410,7 +1416,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_instance_template(
         self,
@@ -1499,7 +1505,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_target_pools(
         self,
@@ -1588,7 +1594,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update_per_instance_configs(
         self,
@@ -1678,7 +1684,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("InstanceGroupManagersRestTransport",)

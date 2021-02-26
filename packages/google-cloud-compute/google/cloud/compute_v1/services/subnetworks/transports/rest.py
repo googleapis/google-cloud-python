@@ -147,7 +147,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SubnetworkAggregatedList.from_json(response.content)
+        return compute.SubnetworkAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def expand_ip_cidr_range(
         self,
@@ -318,7 +320,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -377,7 +379,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Subnetwork.from_json(response.content)
+        return compute.Subnetwork.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_iam_policy(
         self,
@@ -481,7 +485,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -567,7 +571,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -624,7 +628,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SubnetworkList.from_json(response.content)
+        return compute.SubnetworkList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_usable(
         self,
@@ -679,7 +685,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.UsableSubnetworksAggregatedList.from_json(response.content)
+        return compute.UsableSubnetworksAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -769,7 +777,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_iam_policy(
         self,
@@ -878,7 +886,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def set_private_ip_google_access(
         self,
@@ -968,7 +976,7 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -1027,7 +1035,9 @@ class SubnetworksRestTransport(SubnetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("SubnetworksRestTransport",)

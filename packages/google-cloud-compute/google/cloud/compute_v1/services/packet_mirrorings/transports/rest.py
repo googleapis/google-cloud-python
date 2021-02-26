@@ -147,7 +147,9 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.PacketMirroringAggregatedList.from_json(response.content)
+        return compute.PacketMirroringAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -290,7 +292,9 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.PacketMirroring.from_json(response.content)
+        return compute.PacketMirroring.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -376,7 +380,7 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -433,7 +437,9 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.PacketMirroringList.from_json(response.content)
+        return compute.PacketMirroringList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -522,7 +528,7 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -581,7 +587,9 @@ class PacketMirroringsRestTransport(PacketMirroringsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("PacketMirroringsRestTransport",)

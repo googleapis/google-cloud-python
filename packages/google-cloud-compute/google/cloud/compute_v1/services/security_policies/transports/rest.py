@@ -177,7 +177,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -258,7 +258,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -316,7 +316,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SecurityPolicy.from_json(response.content)
+        return compute.SecurityPolicy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_rule(
         self,
@@ -373,7 +375,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SecurityPolicyRule.from_json(response.content)
+        return compute.SecurityPolicyRule.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -459,7 +463,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -514,7 +518,9 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SecurityPolicyList.from_json(response.content)
+        return compute.SecurityPolicyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_preconfigured_expression_sets(
         self,
@@ -571,7 +577,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
 
         # Return the response
         return compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def patch(
@@ -660,7 +666,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def patch_rule(
         self,
@@ -748,7 +754,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def remove_rule(
         self,
@@ -829,7 +835,7 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("SecurityPoliciesRestTransport",)

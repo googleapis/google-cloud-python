@@ -173,7 +173,7 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -253,7 +253,9 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.HealthCheck.from_json(response.content)
+        return compute.HealthCheck.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -339,7 +341,7 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -396,7 +398,9 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.HealthCheckList.from_json(response.content)
+        return compute.HealthCheckList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -485,7 +489,7 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update(
         self,
@@ -574,7 +578,7 @@ class RegionHealthChecksRestTransport(RegionHealthChecksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("RegionHealthChecksRestTransport",)

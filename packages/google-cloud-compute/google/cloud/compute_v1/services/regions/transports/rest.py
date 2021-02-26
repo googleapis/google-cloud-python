@@ -144,7 +144,7 @@ class RegionsRestTransport(RegionsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Region.from_json(response.content)
+        return compute.Region.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -198,7 +198,9 @@ class RegionsRestTransport(RegionsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RegionList.from_json(response.content)
+        return compute.RegionList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("RegionsRestTransport",)

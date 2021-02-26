@@ -173,7 +173,7 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -245,7 +245,9 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Autoscaler.from_json(response.content)
+        return compute.Autoscaler.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -331,7 +333,7 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -386,7 +388,9 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RegionAutoscalerList.from_json(response.content)
+        return compute.RegionAutoscalerList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -473,7 +477,7 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update(
         self,
@@ -560,7 +564,7 @@ class RegionAutoscalersRestTransport(RegionAutoscalersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("RegionAutoscalersRestTransport",)

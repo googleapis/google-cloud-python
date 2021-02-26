@@ -147,7 +147,9 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpProxyAggregatedList.from_json(response.content)
+        return compute.TargetHttpProxyAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -228,7 +230,7 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -302,7 +304,9 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpProxy.from_json(response.content)
+        return compute.TargetHttpProxy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -388,7 +392,7 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -443,7 +447,9 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpProxyList.from_json(response.content)
+        return compute.TargetHttpProxyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -531,7 +537,7 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_url_map(
         self,
@@ -619,7 +625,7 @@ class TargetHttpProxiesRestTransport(TargetHttpProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("TargetHttpProxiesRestTransport",)

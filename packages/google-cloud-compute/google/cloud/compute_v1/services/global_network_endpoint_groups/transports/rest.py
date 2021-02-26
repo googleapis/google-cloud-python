@@ -179,7 +179,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -260,7 +260,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def detach_network_endpoints(
         self,
@@ -348,7 +348,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -412,7 +412,9 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.NetworkEndpointGroup.from_json(response.content)
+        return compute.NetworkEndpointGroup.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -498,7 +500,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -553,7 +555,9 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.NetworkEndpointGroupList.from_json(response.content)
+        return compute.NetworkEndpointGroupList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_network_endpoints(
         self,
@@ -611,7 +615,7 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
 
         # Return the response
         return compute.NetworkEndpointGroupsListNetworkEndpoints.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
 

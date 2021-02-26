@@ -146,7 +146,9 @@ class ZoneOperationsRestTransport(ZoneOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.DeleteZoneOperationResponse.from_json(response.content)
+        return compute.DeleteZoneOperationResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -226,7 +228,7 @@ class ZoneOperationsRestTransport(ZoneOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -283,7 +285,9 @@ class ZoneOperationsRestTransport(ZoneOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.OperationList.from_json(response.content)
+        return compute.OperationList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def wait(
         self,
@@ -363,7 +367,7 @@ class ZoneOperationsRestTransport(ZoneOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("ZoneOperationsRestTransport",)

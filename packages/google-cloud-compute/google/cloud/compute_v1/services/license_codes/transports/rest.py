@@ -147,7 +147,9 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.LicenseCode.from_json(response.content)
+        return compute.LicenseCode.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def test_iam_permissions(
         self,
@@ -203,7 +205,9 @@ class LicenseCodesRestTransport(LicenseCodesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("LicenseCodesRestTransport",)

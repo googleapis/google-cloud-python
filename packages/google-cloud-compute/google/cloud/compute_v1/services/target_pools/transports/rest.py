@@ -180,7 +180,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def add_instance(
         self,
@@ -269,7 +269,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def aggregated_list(
         self,
@@ -325,7 +325,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetPoolAggregatedList.from_json(response.content)
+        return compute.TargetPoolAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -407,7 +409,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -467,7 +469,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetPool.from_json(response.content)
+        return compute.TargetPool.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_health(
         self,
@@ -526,7 +530,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetPoolInstanceHealth.from_json(response.content)
+        return compute.TargetPoolInstanceHealth.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -612,7 +618,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -669,7 +675,9 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetPoolList.from_json(response.content)
+        return compute.TargetPoolList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def remove_health_check(
         self,
@@ -758,7 +766,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def remove_instance(
         self,
@@ -847,7 +855,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_backup(
         self,
@@ -937,7 +945,7 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("TargetPoolsRestTransport",)

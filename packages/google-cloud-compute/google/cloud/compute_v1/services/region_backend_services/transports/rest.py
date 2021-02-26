@@ -173,7 +173,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -247,7 +247,9 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.BackendService.from_json(response.content)
+        return compute.BackendService.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_health(
         self,
@@ -306,7 +308,9 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.BackendServiceGroupHealth.from_json(response.content)
+        return compute.BackendServiceGroupHealth.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -392,7 +396,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -449,7 +453,9 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.BackendServiceList.from_json(response.content)
+        return compute.BackendServiceList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -538,7 +544,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update(
         self,
@@ -627,7 +633,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("RegionBackendServicesRestTransport",)

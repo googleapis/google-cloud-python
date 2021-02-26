@@ -147,7 +147,9 @@ class DiskTypesRestTransport(DiskTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.DiskTypeAggregatedList.from_json(response.content)
+        return compute.DiskTypeAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -218,7 +220,7 @@ class DiskTypesRestTransport(DiskTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.DiskType.from_json(response.content)
+        return compute.DiskType.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -272,7 +274,9 @@ class DiskTypesRestTransport(DiskTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.DiskTypeList.from_json(response.content)
+        return compute.DiskTypeList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("DiskTypesRestTransport",)

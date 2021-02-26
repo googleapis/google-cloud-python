@@ -147,7 +147,9 @@ class TargetInstancesRestTransport(TargetInstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetInstanceAggregatedList.from_json(response.content)
+        return compute.TargetInstanceAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class TargetInstancesRestTransport(TargetInstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -289,7 +291,9 @@ class TargetInstancesRestTransport(TargetInstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetInstance.from_json(response.content)
+        return compute.TargetInstance.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -375,7 +379,7 @@ class TargetInstancesRestTransport(TargetInstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -432,7 +436,9 @@ class TargetInstancesRestTransport(TargetInstancesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetInstanceList.from_json(response.content)
+        return compute.TargetInstanceList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("TargetInstancesRestTransport",)

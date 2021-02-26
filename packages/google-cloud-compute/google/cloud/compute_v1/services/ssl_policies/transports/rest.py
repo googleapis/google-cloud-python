@@ -170,7 +170,7 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -226,7 +226,7 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslPolicy.from_json(response.content)
+        return compute.SslPolicy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -312,7 +312,7 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -367,7 +367,9 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslPoliciesList.from_json(response.content)
+        return compute.SslPoliciesList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_available_features(
         self,
@@ -423,7 +425,7 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
 
         # Return the response
         return compute.SslPoliciesListAvailableFeaturesResponse.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def patch(
@@ -510,7 +512,7 @@ class SslPoliciesRestTransport(SslPoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("SslPoliciesRestTransport",)

@@ -170,7 +170,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def disable_xpn_resource(
         self,
@@ -256,7 +256,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def enable_xpn_host(
         self,
@@ -335,7 +335,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def enable_xpn_resource(
         self,
@@ -421,7 +421,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -475,7 +475,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Project.from_json(response.content)
+        return compute.Project.from_json(response.content, ignore_unknown_fields=True)
 
     def get_xpn_host(
         self,
@@ -530,7 +530,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Project.from_json(response.content)
+        return compute.Project.from_json(response.content, ignore_unknown_fields=True)
 
     def get_xpn_resources(
         self,
@@ -585,7 +585,9 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ProjectsGetXpnResources.from_json(response.content)
+        return compute.ProjectsGetXpnResources.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_xpn_hosts(
         self,
@@ -647,7 +649,9 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.XpnHostList.from_json(response.content)
+        return compute.XpnHostList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def move_disk(
         self,
@@ -733,7 +737,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def move_instance(
         self,
@@ -819,7 +823,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_common_instance_metadata(
         self,
@@ -906,7 +910,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_default_network_tier(
         self,
@@ -992,7 +996,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_usage_export_bucket(
         self,
@@ -1078,7 +1082,7 @@ class ProjectsRestTransport(ProjectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("ProjectsRestTransport",)

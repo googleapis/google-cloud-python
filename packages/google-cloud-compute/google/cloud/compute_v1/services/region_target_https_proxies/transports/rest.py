@@ -173,7 +173,7 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -247,7 +247,9 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpsProxy.from_json(response.content)
+        return compute.TargetHttpsProxy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -333,7 +335,7 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -390,7 +392,9 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TargetHttpsProxyList.from_json(response.content)
+        return compute.TargetHttpsProxyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_ssl_certificates(
         self,
@@ -479,7 +483,7 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_url_map(
         self,
@@ -568,7 +572,7 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("RegionTargetHttpsProxiesRestTransport",)

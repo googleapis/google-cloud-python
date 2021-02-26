@@ -170,7 +170,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -226,7 +226,9 @@ class InterconnectsRestTransport(InterconnectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Interconnect.from_json(response.content)
+        return compute.Interconnect.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_diagnostics(
         self,
@@ -277,7 +279,9 @@ class InterconnectsRestTransport(InterconnectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectsGetDiagnosticsResponse.from_json(response.content)
+        return compute.InterconnectsGetDiagnosticsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -363,7 +367,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -420,7 +424,9 @@ class InterconnectsRestTransport(InterconnectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectList.from_json(response.content)
+        return compute.InterconnectList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -506,7 +512,7 @@ class InterconnectsRestTransport(InterconnectsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("InterconnectsRestTransport",)

@@ -147,7 +147,9 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ResourcePolicyAggregatedList.from_json(response.content)
+        return compute.ResourcePolicyAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -287,7 +289,9 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ResourcePolicy.from_json(response.content)
+        return compute.ResourcePolicy.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_iam_policy(
         self,
@@ -391,7 +395,7 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -477,7 +481,7 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -532,7 +536,9 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ResourcePolicyList.from_json(response.content)
+        return compute.ResourcePolicyList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_iam_policy(
         self,
@@ -641,7 +647,7 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -700,7 +706,9 @@ class ResourcePoliciesRestTransport(ResourcePoliciesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("ResourcePoliciesRestTransport",)

@@ -147,7 +147,9 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.VpnGatewayAggregatedList.from_json(response.content)
+        return compute.VpnGatewayAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -290,7 +292,9 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.VpnGateway.from_json(response.content)
+        return compute.VpnGateway.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_status(
         self,
@@ -342,7 +346,9 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.VpnGatewaysGetStatusResponse.from_json(response.content)
+        return compute.VpnGatewaysGetStatusResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -428,7 +434,7 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -485,7 +491,9 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.VpnGatewayList.from_json(response.content)
+        return compute.VpnGatewayList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_labels(
         self,
@@ -574,7 +582,7 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -633,7 +641,9 @@ class VpnGatewaysRestTransport(VpnGatewaysTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("VpnGatewaysRestTransport",)

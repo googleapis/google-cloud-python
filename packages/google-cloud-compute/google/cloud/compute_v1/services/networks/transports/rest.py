@@ -177,7 +177,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -256,7 +256,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -310,7 +310,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Network.from_json(response.content)
+        return compute.Network.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -396,7 +396,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -450,7 +450,9 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NetworkList.from_json(response.content)
+        return compute.NetworkList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_peering_routes(
         self,
@@ -508,7 +510,9 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ExchangedPeeringRoutesList.from_json(response.content)
+        return compute.ExchangedPeeringRoutesList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -593,7 +597,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def remove_peering(
         self,
@@ -679,7 +683,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def switch_to_custom_mode(
         self,
@@ -758,7 +762,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update_peering(
         self,
@@ -844,7 +848,7 @@ class NetworksRestTransport(NetworksTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("NetworksRestTransport",)

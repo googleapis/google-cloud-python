@@ -1495,7 +1495,6 @@ __all__ = (
     "GetZoneOperationRequest",
     "GetZoneRequest",
     "GlobalAddressesClient",
-    "GlobalForwardingRulesClient",
     "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
     "GlobalNetworkEndpointGroupsClient",
     "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
@@ -2226,6 +2225,7 @@ __all__ = (
     "UrlMapTest",
     "UrlMapValidationResult",
     "UrlMapsAggregatedList",
+    "UrlMapsClient",
     "UrlMapsScopedList",
     "UrlMapsValidateRequest",
     "UrlMapsValidateResponse",
@@ -2271,5 +2271,5 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "UrlMapsClient",
+    "GlobalForwardingRulesClient",
 )

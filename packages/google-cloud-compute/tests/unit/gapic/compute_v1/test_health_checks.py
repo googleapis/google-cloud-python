@@ -82,15 +82,17 @@ def test__get_default_mtls_endpoint():
     assert HealthChecksClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_health_checks_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [HealthChecksClient,])
+def test_health_checks_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = HealthChecksClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "compute.googleapis.com:443"
 
@@ -104,9 +106,11 @@ def test_health_checks_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "compute.googleapis.com:443"
 

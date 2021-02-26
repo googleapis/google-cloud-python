@@ -147,7 +147,9 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslCertificateAggregatedList.from_json(response.content)
+        return compute.SslCertificateAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -228,7 +230,7 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -305,7 +307,9 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslCertificate.from_json(response.content)
+        return compute.SslCertificate.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -391,7 +395,7 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -448,7 +452,9 @@ class SslCertificatesRestTransport(SslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslCertificateList.from_json(response.content)
+        return compute.SslCertificateList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("SslCertificatesRestTransport",)

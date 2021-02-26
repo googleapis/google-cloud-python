@@ -173,7 +173,7 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -251,7 +251,9 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslCertificate.from_json(response.content)
+        return compute.SslCertificate.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -337,7 +339,7 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -394,7 +396,9 @@ class RegionSslCertificatesRestTransport(RegionSslCertificatesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.SslCertificateList.from_json(response.content)
+        return compute.SslCertificateList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("RegionSslCertificatesRestTransport",)

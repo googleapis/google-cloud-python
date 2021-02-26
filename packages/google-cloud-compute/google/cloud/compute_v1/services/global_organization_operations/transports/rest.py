@@ -146,7 +146,7 @@ class GlobalOrganizationOperationsRestTransport(GlobalOrganizationOperationsTran
 
         # Return the response
         return compute.DeleteGlobalOrganizationOperationResponse.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def get(
@@ -226,7 +226,7 @@ class GlobalOrganizationOperationsRestTransport(GlobalOrganizationOperationsTran
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -284,7 +284,9 @@ class GlobalOrganizationOperationsRestTransport(GlobalOrganizationOperationsTran
         response.raise_for_status()
 
         # Return the response
-        return compute.OperationList.from_json(response.content)
+        return compute.OperationList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("GlobalOrganizationOperationsRestTransport",)

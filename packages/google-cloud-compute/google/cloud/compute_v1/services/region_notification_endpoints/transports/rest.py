@@ -173,7 +173,7 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -235,7 +235,9 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.NotificationEndpoint.from_json(response.content)
+        return compute.NotificationEndpoint.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -321,7 +323,7 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -376,7 +378,9 @@ class RegionNotificationEndpointsRestTransport(RegionNotificationEndpointsTransp
         response.raise_for_status()
 
         # Return the response
-        return compute.NotificationEndpointList.from_json(response.content)
+        return compute.NotificationEndpointList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("RegionNotificationEndpointsRestTransport",)

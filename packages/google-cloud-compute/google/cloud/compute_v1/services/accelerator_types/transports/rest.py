@@ -148,7 +148,9 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.AcceleratorTypeAggregatedList.from_json(response.content)
+        return compute.AcceleratorTypeAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -208,7 +210,9 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.AcceleratorType.from_json(response.content)
+        return compute.AcceleratorType.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list(
         self,
@@ -263,7 +267,9 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.AcceleratorTypeList.from_json(response.content)
+        return compute.AcceleratorTypeList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("AcceleratorTypesRestTransport",)

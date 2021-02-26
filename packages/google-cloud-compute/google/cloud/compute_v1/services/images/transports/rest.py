@@ -169,7 +169,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def deprecate(
         self,
@@ -255,7 +255,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -308,7 +308,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Image.from_json(response.content)
+        return compute.Image.from_json(response.content, ignore_unknown_fields=True)
 
     def get_from_family(
         self,
@@ -362,7 +362,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Image.from_json(response.content)
+        return compute.Image.from_json(response.content, ignore_unknown_fields=True)
 
     def get_iam_policy(
         self,
@@ -463,7 +463,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -549,7 +549,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -603,7 +603,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ImageList.from_json(response.content)
+        return compute.ImageList.from_json(response.content, ignore_unknown_fields=True)
 
     def patch(
         self,
@@ -688,7 +688,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_iam_policy(
         self,
@@ -794,7 +794,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def set_labels(
         self,
@@ -878,7 +878,7 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -934,7 +934,9 @@ class ImagesRestTransport(ImagesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("ImagesRestTransport",)

@@ -179,7 +179,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -260,7 +260,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete_signed_url_key(
         self,
@@ -342,7 +342,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -399,7 +399,9 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.BackendBucket.from_json(response.content)
+        return compute.BackendBucket.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -485,7 +487,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -542,7 +544,9 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.BackendBucketList.from_json(response.content)
+        return compute.BackendBucketList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -630,7 +634,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update(
         self,
@@ -718,7 +722,7 @@ class BackendBucketsRestTransport(BackendBucketsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("BackendBucketsRestTransport",)

@@ -147,7 +147,9 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.CommitmentAggregatedList.from_json(response.content)
+        return compute.CommitmentAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -208,7 +210,9 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Commitment.from_json(response.content)
+        return compute.Commitment.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -294,7 +298,7 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -351,7 +355,9 @@ class RegionCommitmentsRestTransport(RegionCommitmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.CommitmentList.from_json(response.content)
+        return compute.CommitmentList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("RegionCommitmentsRestTransport",)

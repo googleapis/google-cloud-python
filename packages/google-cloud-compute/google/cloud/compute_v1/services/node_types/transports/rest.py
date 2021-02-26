@@ -147,7 +147,9 @@ class NodeTypesRestTransport(NodeTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeTypeAggregatedList.from_json(response.content)
+        return compute.NodeTypeAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -207,7 +209,7 @@ class NodeTypesRestTransport(NodeTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeType.from_json(response.content)
+        return compute.NodeType.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -261,7 +263,9 @@ class NodeTypesRestTransport(NodeTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NodeTypeList.from_json(response.content)
+        return compute.NodeTypeList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("NodeTypesRestTransport",)

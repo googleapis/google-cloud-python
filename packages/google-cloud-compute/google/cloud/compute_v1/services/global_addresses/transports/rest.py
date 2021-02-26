@@ -170,7 +170,7 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -247,7 +247,7 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Address.from_json(response.content)
+        return compute.Address.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -333,7 +333,7 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -388,7 +388,9 @@ class GlobalAddressesRestTransport(GlobalAddressesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.AddressList.from_json(response.content)
+        return compute.AddressList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("GlobalAddressesRestTransport",)

@@ -149,7 +149,9 @@ class InterconnectLocationsRestTransport(InterconnectLocationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectLocation.from_json(response.content)
+        return compute.InterconnectLocation.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list(
         self,
@@ -207,7 +209,9 @@ class InterconnectLocationsRestTransport(InterconnectLocationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectLocationList.from_json(response.content)
+        return compute.InterconnectLocationList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("InterconnectLocationsRestTransport",)

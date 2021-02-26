@@ -147,7 +147,9 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RouterAggregatedList.from_json(response.content)
+        return compute.RouterAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -228,7 +230,7 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -282,7 +284,7 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Router.from_json(response.content)
+        return compute.Router.from_json(response.content, ignore_unknown_fields=True)
 
     def get_nat_mapping_info(
         self,
@@ -342,7 +344,9 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.VmEndpointNatMappingsList.from_json(response.content)
+        return compute.VmEndpointNatMappingsList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get_router_status(
         self,
@@ -394,7 +398,9 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RouterStatusResponse.from_json(response.content)
+        return compute.RouterStatusResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -479,7 +485,7 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -533,7 +539,9 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RouterList.from_json(response.content)
+        return compute.RouterList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -621,7 +629,7 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def preview(
         self,
@@ -680,7 +688,9 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.RoutersPreviewResponse.from_json(response.content)
+        return compute.RoutersPreviewResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def update(
         self,
@@ -768,7 +778,7 @@ class RoutersRestTransport(RoutersTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("RoutersRestTransport",)

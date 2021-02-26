@@ -147,7 +147,9 @@ class MachineTypesRestTransport(MachineTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.MachineTypeAggregatedList.from_json(response.content)
+        return compute.MachineTypeAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -205,7 +207,9 @@ class MachineTypesRestTransport(MachineTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.MachineType.from_json(response.content)
+        return compute.MachineType.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list(
         self,
@@ -260,7 +264,9 @@ class MachineTypesRestTransport(MachineTypesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.MachineTypeList.from_json(response.content)
+        return compute.MachineTypeList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("MachineTypesRestTransport",)

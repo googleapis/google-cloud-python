@@ -147,7 +147,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NetworkEndpointGroupAggregatedList.from_json(response.content)
+        return compute.NetworkEndpointGroupAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def attach_network_endpoints(
         self,
@@ -236,7 +238,7 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def delete(
         self,
@@ -318,7 +320,7 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def detach_network_endpoints(
         self,
@@ -407,7 +409,7 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -472,7 +474,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NetworkEndpointGroup.from_json(response.content)
+        return compute.NetworkEndpointGroup.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -558,7 +562,7 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -613,7 +617,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.NetworkEndpointGroupList.from_json(response.content)
+        return compute.NetworkEndpointGroupList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_network_endpoints(
         self,
@@ -679,7 +685,7 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
 
         # Return the response
         return compute.NetworkEndpointGroupsListNetworkEndpoints.from_json(
-            response.content
+            response.content, ignore_unknown_fields=True
         )
 
     def test_iam_permissions(
@@ -739,7 +745,9 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("NetworkEndpointGroupsRestTransport",)

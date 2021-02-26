@@ -171,7 +171,7 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -228,7 +228,7 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.License.from_json(response.content)
+        return compute.License.from_json(response.content, ignore_unknown_fields=True)
 
     def get_iam_policy(
         self,
@@ -329,7 +329,7 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -415,7 +415,7 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -469,7 +469,9 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.LicensesListResponse.from_json(response.content)
+        return compute.LicensesListResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def set_iam_policy(
         self,
@@ -575,7 +577,7 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Policy.from_json(response.content)
+        return compute.Policy.from_json(response.content, ignore_unknown_fields=True)
 
     def test_iam_permissions(
         self,
@@ -631,7 +633,9 @@ class LicensesRestTransport(LicensesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.TestPermissionsResponse.from_json(response.content)
+        return compute.TestPermissionsResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("LicensesRestTransport",)

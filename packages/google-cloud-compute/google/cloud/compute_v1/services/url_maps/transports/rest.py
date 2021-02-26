@@ -147,7 +147,9 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.UrlMapsAggregatedList.from_json(response.content)
+        return compute.UrlMapsAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -225,7 +227,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -305,7 +307,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.UrlMap.from_json(response.content)
+        return compute.UrlMap.from_json(response.content, ignore_unknown_fields=True)
 
     def insert(
         self,
@@ -390,7 +392,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def invalidate_cache(
         self,
@@ -476,7 +478,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -530,7 +532,9 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.UrlMapList.from_json(response.content)
+        return compute.UrlMapList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -615,7 +619,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def update(
         self,
@@ -700,7 +704,7 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def validate(
         self,
@@ -756,7 +760,9 @@ class UrlMapsRestTransport(UrlMapsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.UrlMapsValidateResponse.from_json(response.content)
+        return compute.UrlMapsValidateResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
 
 __all__ = ("UrlMapsRestTransport",)

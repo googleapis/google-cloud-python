@@ -147,7 +147,9 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectAttachmentAggregatedList.from_json(response.content)
+        return compute.InterconnectAttachmentAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -288,7 +290,9 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectAttachment.from_json(response.content)
+        return compute.InterconnectAttachment.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -375,7 +379,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -433,7 +437,9 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InterconnectAttachmentList.from_json(response.content)
+        return compute.InterconnectAttachmentList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -522,7 +528,7 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("InterconnectAttachmentsRestTransport",)

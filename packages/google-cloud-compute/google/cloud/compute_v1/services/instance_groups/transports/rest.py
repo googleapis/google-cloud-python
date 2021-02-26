@@ -180,7 +180,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def aggregated_list(
         self,
@@ -236,7 +236,9 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroupAggregatedList.from_json(response.content)
+        return compute.InstanceGroupAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -318,7 +320,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -390,7 +392,9 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroup.from_json(response.content)
+        return compute.InstanceGroup.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -476,7 +480,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -531,7 +535,9 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroupList.from_json(response.content)
+        return compute.InstanceGroupList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def list_instances(
         self,
@@ -596,7 +602,9 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.InstanceGroupsListInstances.from_json(response.content)
+        return compute.InstanceGroupsListInstances.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def remove_instances(
         self,
@@ -685,7 +693,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_named_ports(
         self,
@@ -774,7 +782,7 @@ class InstanceGroupsRestTransport(InstanceGroupsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("InstanceGroupsRestTransport",)

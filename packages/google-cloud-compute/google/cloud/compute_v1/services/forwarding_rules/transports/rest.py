@@ -147,7 +147,9 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ForwardingRuleAggregatedList.from_json(response.content)
+        return compute.ForwardingRuleAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -229,7 +231,7 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def get(
         self,
@@ -303,7 +305,9 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ForwardingRule.from_json(response.content)
+        return compute.ForwardingRule.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def insert(
         self,
@@ -389,7 +393,7 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -446,7 +450,9 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.ForwardingRuleList.from_json(response.content)
+        return compute.ForwardingRuleList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def patch(
         self,
@@ -535,7 +541,7 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def set_target(
         self,
@@ -624,7 +630,7 @@ class ForwardingRulesRestTransport(ForwardingRulesTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("ForwardingRulesRestTransport",)

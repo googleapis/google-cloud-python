@@ -147,7 +147,9 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.OperationAggregatedList.from_json(response.content)
+        return compute.OperationAggregatedList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def delete(
         self,
@@ -199,7 +201,9 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.DeleteGlobalOperationResponse.from_json(response.content)
+        return compute.DeleteGlobalOperationResponse.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def get(
         self,
@@ -276,7 +280,7 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
     def list(
         self,
@@ -333,7 +337,9 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.OperationList.from_json(response.content)
+        return compute.OperationList.from_json(
+            response.content, ignore_unknown_fields=True
+        )
 
     def wait(
         self,
@@ -410,7 +416,7 @@ class GlobalOperationsRestTransport(GlobalOperationsTransport):
         response.raise_for_status()
 
         # Return the response
-        return compute.Operation.from_json(response.content)
+        return compute.Operation.from_json(response.content, ignore_unknown_fields=True)
 
 
 __all__ = ("GlobalOperationsRestTransport",)
