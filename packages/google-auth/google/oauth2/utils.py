@@ -101,7 +101,7 @@ class OAuthClientAuthHandler(object):
 
         Args:
             headers (Mapping[str, str]): The HTTP request header.
-            request_body (Optional[Mapping[str, str]): The HTTP request body
+            request_body (Optional[Mapping[str, str]]): The HTTP request body
                 dictionary. For requests that do not support request body, this
                 is None and will be ignored.
             bearer_token (Optional[str]): The optional bearer token.

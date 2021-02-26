@@ -424,12 +424,14 @@ class IDTokenCredentials(credentials.Signing, credentials.CredentialsWithQuotaPr
             service_account.IDTokenCredentials.from_service_account_file(
                 'service-account.json'))
 
+
     Or if you already have the service account file loaded::
 
         service_account_info = json.load(open('service_account.json'))
         credentials = (
             service_account.IDTokenCredentials.from_service_account_info(
                 service_account_info))
+
 
     Both helper methods pass on arguments to the constructor, so you can
     specify additional scopes and a subject if necessary::
@@ -439,7 +441,8 @@ class IDTokenCredentials(credentials.Signing, credentials.CredentialsWithQuotaPr
                 'service-account.json',
                 scopes=['email'],
                 subject='user@example.com'))
-`
+
+
     The credentials are considered immutable. If you want to modify the scopes
     or the subject used for delegation, use :meth:`with_scopes` or
     :meth:`with_subject`::

@@ -520,7 +520,6 @@ A sample end-to-end flow using an ID Token against a Cloud Run endpoint maybe ::
 .. _App Engine: https://cloud.google.com/appengine/
 .. _Cloud Functions: https://cloud.google.com/functions/
 .. _Cloud Run: https://cloud.google.com/run/
-.. _Compute Engine: https://cloud.google.com/compute/
 .. _Identity Aware Proxy: https://cloud.google.com/iap/
 .. _Google OpenID Connect: https://developers.google.com/identity/protocols/OpenIDConnect
 .. _Google ID Token: https://developers.google.com/identity/protocols/OpenIDConnect#validatinganidtoken

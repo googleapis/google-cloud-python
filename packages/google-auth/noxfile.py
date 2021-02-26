@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import shutil
+import os
 import nox
 
 TEST_DEPENDENCIES = [
@@ -134,9 +136,26 @@ def docgen(session):
 
 @nox.session(python="3.7")
 def docs(session):
-    session.install("sphinx", "-r", "docs/requirements-docs.txt")
-    session.install(".")
-    session.run("make", "-C", "docs", "html")
+    """Build the docs for this library."""
+
+    session.install("-e", ".[aiohttp]")
+    session.install(
+        "sphinx<3.0.0", "alabaster", "recommonmark", "sphinx-docstring-typing"
+    )
+
+    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    session.run(
+        "sphinx-build",
+        "-T",  # show full traceback on exception
+        "-W",  # warnings as errors
+        "-N",  # no colors
+        "-b",
+        "html",
+        "-d",
+        os.path.join("docs", "_build", "doctrees", ""),
+        os.path.join("docs", ""),
+        os.path.join("docs", "_build", "html", ""),
+    )
 
 
 @nox.session(python="pypy")

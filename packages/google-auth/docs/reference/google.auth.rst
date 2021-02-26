@@ -33,4 +33,4 @@ Submodules
    google.auth.identity_pool
    google.auth.impersonated_credentials
    google.auth.jwt
-   google.auth.jwt_async
+   google.auth._jwt_async

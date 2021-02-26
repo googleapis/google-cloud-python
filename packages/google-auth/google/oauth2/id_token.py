@@ -50,7 +50,7 @@ library like `CacheControl`_ to create a cache-aware
     cached_session = cachecontrol.CacheControl(session)
     request = google.auth.transport.requests.Request(session=cached_session)
 
-.. _OpenID Connect ID Token:
+.. _OpenID Connect ID Tokens:
     http://openid.net/specs/openid-connect-core-1_0.html#IDToken
 .. _CacheControl: https://cachecontrol.readthedocs.io
 """

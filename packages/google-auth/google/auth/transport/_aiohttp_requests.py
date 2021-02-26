@@ -131,7 +131,7 @@ class Request(transport.Request):
         credentials.refresh(request)
 
     Args:
-        session (aiohttp.ClientSession): An instance :class: aiohttp.ClientSession used
+        session (aiohttp.ClientSession): An instance :class:`aiohttp.ClientSession` used
             to make HTTP requests. If not specified, a session will be created.
 
     .. automethod:: __call__
@@ -154,15 +154,17 @@ class Request(transport.Request):
 
         Args:
             url (str): The URL to be requested.
-            method (str): The HTTP method to use for the request. Defaults
-                to 'GET'.
-            body (bytes): The payload / body in HTTP request.
-            headers (Mapping[str, str]): Request headers.
+            method (Optional[str]):
+                The HTTP method to use for the request. Defaults to 'GET'.
+            body (Optional[bytes]):
+                The payload or body in HTTP request.
+            headers (Optional[Mapping[str, str]]):
+                Request headers.
             timeout (Optional[int]): The number of seconds to wait for a
                 response from the server. If not specified or if None, the
                 requests default timeout will be used.
             kwargs: Additional arguments passed through to the underlying
-                requests :meth:`~requests.Session.request` method.
+                requests :meth:`requests.Session.request` method.
 
         Returns:
             google.auth.transport.Response: The HTTP response.
@@ -211,8 +213,8 @@ class AuthorizedSession(aiohttp.ClientSession):
     credentials' headers to the request and refreshing credentials as needed.
 
     Args:
-        credentials (google.auth._credentials_async.Credentials): The credentials to
-            add to the request.
+        credentials (google.auth._credentials_async.Credentials):
+            The credentials to add to the request.
         refresh_status_codes (Sequence[int]): Which HTTP status codes indicate
             that credentials should be refreshed and the request should be
             retried.
@@ -264,29 +266,26 @@ class AuthorizedSession(aiohttp.ClientSession):
         """Implementation of Authorized Session aiohttp request.
 
         Args:
-            method: The http request method used (e.g. GET, PUT, DELETE)
-
-            url: The url at which the http request is sent.
-
-            data, headers: These fields parallel the associated data and headers
-            fields of a regular http request. Using the aiohttp client session to
-            send the http request allows us to use this parallel corresponding structure
-            in our Authorized Session class.
-
+            method (str):
+                The http request method used (e.g. GET, PUT, DELETE)
+            url (str):
+                The url at which the http request is sent.
+            data (Optional[dict]): Dictionary, list of tuples, bytes, or file-like
+                object to send in the body of the Request.
+            headers (Optional[dict]): Dictionary of HTTP Headers to send with the
+                Request.
             timeout (Optional[Union[float, aiohttp.ClientTimeout]]):
                 The amount of time in seconds to wait for the server response
-                with each individual request.
-
-                Can also be passed as an `aiohttp.ClientTimeout` object.
-
+                with each individual request. Can also be passed as an
+                ``aiohttp.ClientTimeout`` object.
             max_allowed_time (Optional[float]):
                 If the method runs longer than this, a ``Timeout`` exception is
-                automatically raised. Unlike the ``timeout` parameter, this
+                automatically raised. Unlike the ``timeout`` parameter, this
                 value applies to the total method execution time, even if
                 multiple requests are made under the hood.
 
                 Mind that it is not guaranteed that the timeout error is raised
-                at ``max_allowed_time`. It might take longer, for example, if
+                at ``max_allowed_time``. It might take longer, for example, if
                 an underlying request takes a lot of time, but the request
                 itself does not timeout, e.g. if a large file is being
                 transmitted. The timout error will be raised after such

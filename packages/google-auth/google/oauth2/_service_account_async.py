@@ -112,7 +112,7 @@ class IDTokenCredentials(
                 'service-account.json',
                 scopes=['email'],
                 subject='user@example.com'))
-`
+
     The credentials are considered immutable. If you want to modify the scopes
     or the subject used for delegation, use :meth:`with_scopes` or
     :meth:`with_subject`::
