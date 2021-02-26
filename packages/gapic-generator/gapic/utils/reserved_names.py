@@ -22,6 +22,6 @@ import keyword
 RESERVED_NAMES = frozenset(
     itertools.chain(
         keyword.kwlist,
-        set(dir(builtins)) - {"filter", "map", "id", "property"},
+        set(dir(builtins)) - {"filter", "map", "id", "input", "property"},
     )
 )
