@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-compute/compare/v0.2.0...v0.2.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* ignore unknown fields in response ([#25](https://www.github.com/googleapis/python-compute/issues/25)) ([a8c37b4](https://www.github.com/googleapis/python-compute/commit/a8c37b4b9dacc54e00a7ad3850e7c9c12ef477cf))
+
 ## [0.2.0](https://www.github.com/googleapis/python-compute/compare/v0.1.0...v0.2.0) (2021-02-11)
 
 
