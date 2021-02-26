@@ -20,7 +20,6 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google.api_core import operations_v1  # type: ignore
 from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -28,17 +27,18 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.speech_v1.types import cloud_speech
-from google.longrunning import operations_pb2 as operations  # type: ignore
+from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
+from google.cloud.speech_v1p1beta1.types import resource
+from google.protobuf import empty_pb2 as empty  # type: ignore
 
-from .base import SpeechTransport, DEFAULT_CLIENT_INFO
-from .grpc import SpeechGrpcTransport
+from .base import AdaptationTransport, DEFAULT_CLIENT_INFO
+from .grpc import AdaptationGrpcTransport
 
 
-class SpeechGrpcAsyncIOTransport(SpeechTransport):
-    """gRPC AsyncIO backend transport for Speech.
+class AdaptationGrpcAsyncIOTransport(AdaptationTransport):
+    """gRPC AsyncIO backend transport for Adaptation.
 
-    Service that implements Google Cloud Speech API.
+    Service that implements Google Cloud Speech Adaptation API.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -243,7 +243,6 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         )
 
         self._stubs = {}
-        self._operations_client = None
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -256,35 +255,21 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Sanity check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def recognize(
+    def create_phrase_set(
         self,
     ) -> Callable[
-        [cloud_speech.RecognizeRequest], Awaitable[cloud_speech.RecognizeResponse]
+        [cloud_speech_adaptation.CreatePhraseSetRequest], Awaitable[resource.PhraseSet]
     ]:
-        r"""Return a callable for the recognize method over gRPC.
+        r"""Return a callable for the create phrase set method over gRPC.
 
-        Performs synchronous speech recognition: receive
-        results after all audio has been sent and processed.
+        Create a set of phrase hints. Each item in the set
+        can be a single word or a multi-word phrase. The items
+        in the PhraseSet are favored by the recognition model
+        when you send a call that includes the PhraseSet.
 
         Returns:
-            Callable[[~.RecognizeRequest],
-                    Awaitable[~.RecognizeResponse]]:
+            Callable[[~.CreatePhraseSetRequest],
+                    Awaitable[~.PhraseSet]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -292,32 +277,27 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "recognize" not in self._stubs:
-            self._stubs["recognize"] = self.grpc_channel.unary_unary(
-                "/google.cloud.speech.v1.Speech/Recognize",
-                request_serializer=cloud_speech.RecognizeRequest.serialize,
-                response_deserializer=cloud_speech.RecognizeResponse.deserialize,
+        if "create_phrase_set" not in self._stubs:
+            self._stubs["create_phrase_set"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/CreatePhraseSet",
+                request_serializer=cloud_speech_adaptation.CreatePhraseSetRequest.serialize,
+                response_deserializer=resource.PhraseSet.deserialize,
             )
-        return self._stubs["recognize"]
+        return self._stubs["create_phrase_set"]
 
     @property
-    def long_running_recognize(
+    def get_phrase_set(
         self,
     ) -> Callable[
-        [cloud_speech.LongRunningRecognizeRequest], Awaitable[operations.Operation]
+        [cloud_speech_adaptation.GetPhraseSetRequest], Awaitable[resource.PhraseSet]
     ]:
-        r"""Return a callable for the long running recognize method over gRPC.
+        r"""Return a callable for the get phrase set method over gRPC.
 
-        Performs asynchronous speech recognition: receive results via
-        the google.longrunning.Operations interface. Returns either an
-        ``Operation.error`` or an ``Operation.response`` which contains
-        a ``LongRunningRecognizeResponse`` message. For more information
-        on asynchronous speech recognition, see the
-        `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
+        Get a phrase set.
 
         Returns:
-            Callable[[~.LongRunningRecognizeRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.GetPhraseSetRequest],
+                    Awaitable[~.PhraseSet]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -325,30 +305,28 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "long_running_recognize" not in self._stubs:
-            self._stubs["long_running_recognize"] = self.grpc_channel.unary_unary(
-                "/google.cloud.speech.v1.Speech/LongRunningRecognize",
-                request_serializer=cloud_speech.LongRunningRecognizeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+        if "get_phrase_set" not in self._stubs:
+            self._stubs["get_phrase_set"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/GetPhraseSet",
+                request_serializer=cloud_speech_adaptation.GetPhraseSetRequest.serialize,
+                response_deserializer=resource.PhraseSet.deserialize,
             )
-        return self._stubs["long_running_recognize"]
+        return self._stubs["get_phrase_set"]
 
     @property
-    def streaming_recognize(
+    def list_phrase_set(
         self,
     ) -> Callable[
-        [cloud_speech.StreamingRecognizeRequest],
-        Awaitable[cloud_speech.StreamingRecognizeResponse],
+        [cloud_speech_adaptation.ListPhraseSetRequest],
+        Awaitable[cloud_speech_adaptation.ListPhraseSetResponse],
     ]:
-        r"""Return a callable for the streaming recognize method over gRPC.
+        r"""Return a callable for the list phrase set method over gRPC.
 
-        Performs bidirectional streaming speech recognition:
-        receive results while sending audio. This method is only
-        available via the gRPC API (not REST).
+        List phrase sets.
 
         Returns:
-            Callable[[~.StreamingRecognizeRequest],
-                    Awaitable[~.StreamingRecognizeResponse]]:
+            Callable[[~.ListPhraseSetRequest],
+                    Awaitable[~.ListPhraseSetResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -356,13 +334,212 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "streaming_recognize" not in self._stubs:
-            self._stubs["streaming_recognize"] = self.grpc_channel.stream_stream(
-                "/google.cloud.speech.v1.Speech/StreamingRecognize",
-                request_serializer=cloud_speech.StreamingRecognizeRequest.serialize,
-                response_deserializer=cloud_speech.StreamingRecognizeResponse.deserialize,
+        if "list_phrase_set" not in self._stubs:
+            self._stubs["list_phrase_set"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/ListPhraseSet",
+                request_serializer=cloud_speech_adaptation.ListPhraseSetRequest.serialize,
+                response_deserializer=cloud_speech_adaptation.ListPhraseSetResponse.deserialize,
             )
-        return self._stubs["streaming_recognize"]
+        return self._stubs["list_phrase_set"]
+
+    @property
+    def update_phrase_set(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.UpdatePhraseSetRequest], Awaitable[resource.PhraseSet]
+    ]:
+        r"""Return a callable for the update phrase set method over gRPC.
+
+        Update a phrase set.
+
+        Returns:
+            Callable[[~.UpdatePhraseSetRequest],
+                    Awaitable[~.PhraseSet]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_phrase_set" not in self._stubs:
+            self._stubs["update_phrase_set"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/UpdatePhraseSet",
+                request_serializer=cloud_speech_adaptation.UpdatePhraseSetRequest.serialize,
+                response_deserializer=resource.PhraseSet.deserialize,
+            )
+        return self._stubs["update_phrase_set"]
+
+    @property
+    def delete_phrase_set(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.DeletePhraseSetRequest], Awaitable[empty.Empty]
+    ]:
+        r"""Return a callable for the delete phrase set method over gRPC.
+
+        Delete a phrase set.
+
+        Returns:
+            Callable[[~.DeletePhraseSetRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_phrase_set" not in self._stubs:
+            self._stubs["delete_phrase_set"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/DeletePhraseSet",
+                request_serializer=cloud_speech_adaptation.DeletePhraseSetRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_phrase_set"]
+
+    @property
+    def create_custom_class(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.CreateCustomClassRequest],
+        Awaitable[resource.CustomClass],
+    ]:
+        r"""Return a callable for the create custom class method over gRPC.
+
+        Create a custom class.
+
+        Returns:
+            Callable[[~.CreateCustomClassRequest],
+                    Awaitable[~.CustomClass]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_custom_class" not in self._stubs:
+            self._stubs["create_custom_class"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/CreateCustomClass",
+                request_serializer=cloud_speech_adaptation.CreateCustomClassRequest.serialize,
+                response_deserializer=resource.CustomClass.deserialize,
+            )
+        return self._stubs["create_custom_class"]
+
+    @property
+    def get_custom_class(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.GetCustomClassRequest], Awaitable[resource.CustomClass]
+    ]:
+        r"""Return a callable for the get custom class method over gRPC.
+
+        Get a custom class.
+
+        Returns:
+            Callable[[~.GetCustomClassRequest],
+                    Awaitable[~.CustomClass]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_custom_class" not in self._stubs:
+            self._stubs["get_custom_class"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/GetCustomClass",
+                request_serializer=cloud_speech_adaptation.GetCustomClassRequest.serialize,
+                response_deserializer=resource.CustomClass.deserialize,
+            )
+        return self._stubs["get_custom_class"]
+
+    @property
+    def list_custom_classes(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.ListCustomClassesRequest],
+        Awaitable[cloud_speech_adaptation.ListCustomClassesResponse],
+    ]:
+        r"""Return a callable for the list custom classes method over gRPC.
+
+        List custom classes.
+
+        Returns:
+            Callable[[~.ListCustomClassesRequest],
+                    Awaitable[~.ListCustomClassesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_custom_classes" not in self._stubs:
+            self._stubs["list_custom_classes"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/ListCustomClasses",
+                request_serializer=cloud_speech_adaptation.ListCustomClassesRequest.serialize,
+                response_deserializer=cloud_speech_adaptation.ListCustomClassesResponse.deserialize,
+            )
+        return self._stubs["list_custom_classes"]
+
+    @property
+    def update_custom_class(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.UpdateCustomClassRequest],
+        Awaitable[resource.CustomClass],
+    ]:
+        r"""Return a callable for the update custom class method over gRPC.
+
+        Update a custom class.
+
+        Returns:
+            Callable[[~.UpdateCustomClassRequest],
+                    Awaitable[~.CustomClass]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_custom_class" not in self._stubs:
+            self._stubs["update_custom_class"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/UpdateCustomClass",
+                request_serializer=cloud_speech_adaptation.UpdateCustomClassRequest.serialize,
+                response_deserializer=resource.CustomClass.deserialize,
+            )
+        return self._stubs["update_custom_class"]
+
+    @property
+    def delete_custom_class(
+        self,
+    ) -> Callable[
+        [cloud_speech_adaptation.DeleteCustomClassRequest], Awaitable[empty.Empty]
+    ]:
+        r"""Return a callable for the delete custom class method over gRPC.
+
+        Delete a custom class.
+
+        Returns:
+            Callable[[~.DeleteCustomClassRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_custom_class" not in self._stubs:
+            self._stubs["delete_custom_class"] = self.grpc_channel.unary_unary(
+                "/google.cloud.speech.v1p1beta1.Adaptation/DeleteCustomClass",
+                request_serializer=cloud_speech_adaptation.DeleteCustomClassRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_custom_class"]
 
 
-__all__ = ("SpeechGrpcAsyncIOTransport",)
+__all__ = ("AdaptationGrpcAsyncIOTransport",)

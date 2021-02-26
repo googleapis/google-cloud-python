@@ -14,3 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+from .client import AdaptationClient
+from .async_client import AdaptationAsyncClient
+
+__all__ = (
+    "AdaptationClient",
+    "AdaptationAsyncClient",
+)
