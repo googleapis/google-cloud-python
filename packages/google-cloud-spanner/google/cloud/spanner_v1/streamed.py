@@ -99,7 +99,6 @@ class StreamedResultSet(object):
         :type values: list of :class:`~google.protobuf.struct_pb2.Value`
         :param values: non-chunked values from partial result set.
         """
-        print(self.fields)
         field_types = [field.type_ for field in self.fields]
         width = len(field_types)
         index = len(self._current_row)
