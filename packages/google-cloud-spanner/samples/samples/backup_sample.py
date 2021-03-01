@@ -32,9 +32,14 @@ def create_backup(instance_id, database_id, backup_id):
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
+    # Sets the version time as the current server time
+    version_time = None
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql("SELECT CURRENT_TIMESTAMP()")
+        version_time = list(results)[0][0]
+
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)
-    version_time = database.earliest_version_time
     backup = instance.backup(backup_id, database=database, expire_time=expire_time, version_time=version_time)
     operation = backup.create()
 
