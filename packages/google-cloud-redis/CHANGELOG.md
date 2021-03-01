@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-redis/compare/v2.0.0...v2.1.0) (2021-01-29)
+
+
+### Features
+
+* add common resource helpers; expose client transport; remove send/recv gRPC limits ([#38](https://www.github.com/googleapis/python-redis/issues/38)) ([f3f1a86](https://www.github.com/googleapis/python-redis/commit/f3f1a86a2f14ceeaf22362387b397d9b3f880684))
+
 ## [2.0.0](https://www.github.com/googleapis/python-redis/compare/v1.0.0...v2.0.0) (2020-09-14)
 
 
