@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-speech/compare/v2.0.1...v2.1.0) (2021-02-26)
+
+
+### Features
+
+* add common resource helpers; expose transport; remove gRPC send/recv limits ([#100](https://www.github.com/googleapis/python-speech/issues/100)) ([b4700a6](https://www.github.com/googleapis/python-speech/commit/b4700a60569cb917f176ae1f504dadac1edb6ae8))
+* add from_service_account_info factory ([3bed0b4](https://www.github.com/googleapis/python-speech/commit/3bed0b43c75be649e29475240c7f486fc9cd63dc))
+* adds new multi region sample ([#96](https://www.github.com/googleapis/python-speech/issues/96)) ([a103f09](https://www.github.com/googleapis/python-speech/commit/a103f09fe6173f3acd8402f8c2a669ea3001ac6f))
+* **v1p1beta1:** support Model Adaptation ([#104](https://www.github.com/googleapis/python-speech/issues/104)) ([3bed0b4](https://www.github.com/googleapis/python-speech/commit/3bed0b43c75be649e29475240c7f486fc9cd63dc))
+
+
+### Bug Fixes
+
+* Remove incorrect comment on enhanced models ([#95](https://www.github.com/googleapis/python-speech/issues/95)) ([8a02cee](https://www.github.com/googleapis/python-speech/commit/8a02ceeb5723b4d5075ab90bf64edefae9b81572))
+
+
+### Documentation
+
+* fix sphinx identifiers ([3bed0b4](https://www.github.com/googleapis/python-speech/commit/3bed0b43c75be649e29475240c7f486fc9cd63dc))
+* updated setup documentation to point to python-speech instead of python-docs-samples ([#89](https://www.github.com/googleapis/python-speech/issues/89)) ([722e86e](https://www.github.com/googleapis/python-speech/commit/722e86e726831f7e44dbc8f0fb620a1ccd45f116))
+
 ### [2.0.1](https://www.github.com/googleapis/python-speech/compare/v2.0.0...v2.0.1) (2020-11-16)
 
 
