@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-os-config/compare/v1.0.0...v1.1.0) (2021-02-12)
+
+
+### Features
+
+* add `from_service_account_info` ([#31](https://www.github.com/googleapis/python-os-config/issues/31)) ([d8d921f](https://www.github.com/googleapis/python-os-config/commit/d8d921fc28d294039c574e4dc327fbe1caa27337))
+
+
+### Bug Fixes
+
+* remove client side receive limits  ([#29](https://www.github.com/googleapis/python-os-config/issues/29)) ([628ada4](https://www.github.com/googleapis/python-os-config/commit/628ada4004b1add04f5c2d95b9b1cad48616cf2c))
+
 ## [1.0.0](https://www.github.com/googleapis/python-os-config/compare/v0.1.2...v1.0.0) (2020-11-18)
 
 
