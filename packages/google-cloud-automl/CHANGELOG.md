@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-automl/compare/v2.1.0...v2.2.0) (2021-02-16)
+
+
+### Features
+
+* add support for common resource paths and expose the client transport ([#93](https://www.github.com/googleapis/python-automl/issues/93)) ([4c910d3](https://www.github.com/googleapis/python-automl/commit/4c910d37dd882d8d4248c1b3716213e9aacbf5df))
+
+
+### Bug Fixes
+
+* Pass the 'params' parameter to the underlying 'BatchPredictRequest' object in 'batch_predict()' method ([#110](https://www.github.com/googleapis/python-automl/issues/110)) ([b89fb00](https://www.github.com/googleapis/python-automl/commit/b89fb0070fd4eeb0306d8f584e31da9d8b3fa52c))
+* remove gRPC send/recv limits; add enums to `types/__init__.py` ([#108](https://www.github.com/googleapis/python-automl/issues/108)) ([4a2e2cf](https://www.github.com/googleapis/python-automl/commit/4a2e2cf997fa0eaa87177a8e3ccbaded549b683e))
+
 ## [2.1.0](https://www.github.com/googleapis/python-automl/compare/v2.0.0...v2.1.0) (2020-10-27)
 
 
