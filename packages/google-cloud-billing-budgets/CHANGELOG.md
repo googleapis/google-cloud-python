@@ -1,4 +1,11 @@
 # Changelog
+### [1.1.1](https://www.github.com/googleapis/python-billingbudgets/compare/v1.1.0...v1.1.1) (2021-02-12)
+
+
+### Bug Fixes
+
+* remove grpc send/recv limit ([#62](https://www.github.com/googleapis/python-billingbudgets/issues/62)) ([62cd894](https://www.github.com/googleapis/python-billingbudgets/commit/62cd894af1cc1aeaca48725dcd4665c8ce48df20))
+
 ## [1.1.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.0.1...v1.1.0) (2020-11-05)
 
 
