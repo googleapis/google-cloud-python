@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+### [0.32.2](https://www.github.com/googleapis/python-dns/compare/v0.32.1...v0.32.2) (2021-02-11)
+
+
+### Documentation
+
+* **python:** update intersphinx for grpc and auth ([#30](https://www.github.com/googleapis/python-dns/issues/30)) ([142d2e7](https://www.github.com/googleapis/python-dns/commit/142d2e777ccaf857d5455c4640f6d0502fad89e0))
+
 ### [0.32.1](https://www.github.com/googleapis/python-dns/compare/v0.32.0...v0.32.1) (2020-10-12)
 
 
