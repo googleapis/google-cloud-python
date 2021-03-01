@@ -342,11 +342,22 @@ WHERE tc.TABLE_NAME="{table_name}" AND tc.CONSTRAINT_TYPE = "PRIMARY KEY"
             connection = connection.connect()
 
         sql = """
-SELECT ccu.COLUMN_NAME, ccu.TABLE_SCHEMA, ccu.TABLE_NAME, ccu.CONSTRAINT_NAME
-FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
-JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
-    ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
-WHERE tc.TABLE_NAME="{table_name}" AND tc.CONSTRAINT_TYPE = "FOREIGN KEY"
+SELECT
+    tc.constraint_name,
+    ctu.table_name,
+    ctu.table_schema,
+    ccu.column_name,
+    kcu.column_name
+FROM information_schema.table_constraints AS tc
+JOIN information_schema.constraint_column_usage AS ccu
+    ON ccu.constraint_name = tc.constraint_name
+JOIN information_schema.constraint_table_usage AS ctu
+    ON ctu.constraint_name = tc.constraint_name
+JOIN information_schema.key_column_usage AS kcu
+    ON kcu.constraint_name = tc.constraint_name
+WHERE
+    tc.table_name="{table_name}"
+    AND tc.constraint_type = "FOREIGN KEY"
 """.format(
             table_name=table_name
         )
@@ -358,11 +369,11 @@ WHERE tc.TABLE_NAME="{table_name}" AND tc.CONSTRAINT_TYPE = "FOREIGN KEY"
             for row in rows:
                 keys.append(
                     {
-                        "constrained_columns": [row[0]],
-                        "referred_schema": row[1],
-                        "referred_table": row[2],
-                        "referred_columns": [row[0]],
-                        "name": row[3],
+                        "name": row[0],
+                        "referred_table": row[1],
+                        "referred_schema": row[2] or None,
+                        "referred_columns": [row[3]],
+                        "constrained_columns": [row[4]],
                     }
                 )
         return keys
