@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.1.0...v0.2.0) (2021-01-29)
+
+
+### Features
+
+* add common resource paths, expose client transport ([#4](https://www.github.com/googleapis/python-area120-tables/issues/4)) ([e2367d0](https://www.github.com/googleapis/python-area120-tables/commit/e2367d0be19e5e8e353ad9757a5b2ba730168b4c))
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([#13](https://www.github.com/googleapis/python-area120-tables/issues/13)) ([302c071](https://www.github.com/googleapis/python-area120-tables/commit/302c071a8493f24b85938b48b66ff6eb83203eda))
+
 ## 0.1.0 (2020-09-14)
 
 
