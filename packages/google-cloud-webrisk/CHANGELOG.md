@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.1.0](https://www.github.com/googleapis/python-webrisk/compare/v1.0.1...v1.1.0) (2021-02-11)
+
+
+### Features
+
+* add common resource helpers; expose client transport; remove gRPC send/recv limits ([#40](https://www.github.com/googleapis/python-webrisk/issues/40)) ([3f09199](https://www.github.com/googleapis/python-webrisk/commit/3f09199d2a9aa40a74dc7f83ac3d4b27bb4e3791))
+
 ### [1.0.1](https://www.github.com/googleapis/python-webrisk/compare/v1.0.0...v1.0.1) (2020-07-15)
 
 
