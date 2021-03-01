@@ -153,6 +153,20 @@ class SpannerDialect(DefaultDialect):
         """
         return spanner_dbapi
 
+    @property
+    def default_isolation_level(self):
+        """Default isolation level name.
+
+        Returns:
+            str: default isolation level.
+        """
+        return "SERIALIZABLE"
+
+    @default_isolation_level.setter
+    def default_isolation_level(self, value):
+        """Default isolation level should not be changed."""
+        pass
+
     def _check_unicode_returns(self, connection, additional_tests=None):
         """Ensure requests are returning Unicode responses."""
         return True
@@ -489,3 +503,45 @@ LIMIT 1
                 return True
 
         return False
+
+    def set_isolation_level(self, conn_proxy, level):
+        """Set the connection isolation level.
+
+        Args:
+            conn_proxy (
+                Union[
+                    sqlalchemy.pool._ConnectionFairy,
+                    spanner_dbapi.connection.Connection,
+                ]
+            ):
+                Database connection proxy object or the connection iself.
+            level (string): Isolation level.
+        """
+        if isinstance(conn_proxy, spanner_dbapi.Connection):
+            conn = conn_proxy
+        else:
+            conn = conn_proxy.connection
+
+        conn.autocommit = level == "AUTOCOMMIT"
+
+    def get_isolation_level(self, conn_proxy):
+        """Get the connection isolation level.
+
+        Args:
+            conn_proxy (
+                Union[
+                    sqlalchemy.pool._ConnectionFairy,
+                    spanner_dbapi.connection.Connection,
+                ]
+            ):
+                Database connection proxy object or the connection iself.
+
+        Returns:
+            str: the connection isolation level.
+        """
+        if isinstance(conn_proxy, spanner_dbapi.Connection):
+            conn = conn_proxy
+        else:
+            conn = conn_proxy.connection
+
+        return "AUTOCOMMIT" if conn.autocommit else "SERIALIZABLE"
