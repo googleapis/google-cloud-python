@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-talent/compare/v2.0.0...v2.1.0) (2021-02-11)
+
+
+### Features
+
+* add common resource helper methods; expose client transport remove gRPC send/recv limits ([#57](https://www.github.com/googleapis/python-talent/issues/57)) ([6f17871](https://www.github.com/googleapis/python-talent/commit/6f17871a73d2112b5792ad87bf4a2d0e25beb03e))
+
 ## [2.0.0](https://www.github.com/googleapis/python-talent/compare/v1.0.0...v2.0.0) (2020-10-02)
 
 
