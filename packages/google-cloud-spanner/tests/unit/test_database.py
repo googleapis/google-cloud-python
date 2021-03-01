@@ -1293,6 +1293,26 @@ class TestDatabase(_BaseTest):
             filter_=expected_filter_, page_size=page_size
         )
 
+    def test_table_factory_defaults(self):
+        from google.cloud.spanner_v1.table import Table
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        my_table = database.table("my_table")
+        self.assertIsInstance(my_table, Table)
+        self.assertIs(my_table._database, database)
+        self.assertEqual(my_table.table_id, "my_table")
+
+    def test_list_tables(self):
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        tables = database.list_tables()
+        self.assertIsNotNone(tables)
+
 
 class TestBatchCheckout(_BaseTest):
     def _get_target_class(self):

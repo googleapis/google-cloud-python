@@ -10,6 +10,7 @@ Most likely, you will be interacting almost exclusively with these:
     client-api
     instance-api
     database-api
+    table-api
     session-api
     keyset-api
     snapshot-api

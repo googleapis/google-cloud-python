@@ -11,6 +11,7 @@ Usage Documentation
   client-usage
   instance-usage
   database-usage
+  table-usage
   batch-usage
   snapshot-usage
   transaction-usage

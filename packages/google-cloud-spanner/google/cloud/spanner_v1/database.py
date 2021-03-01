@@ -48,11 +48,12 @@ from google.cloud.spanner_v1.services.spanner.transports.grpc import (
 )
 from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
 from google.cloud.spanner_admin_database_v1 import UpdateDatabaseDdlRequest
-from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_v1 import (
+    ExecuteSqlRequest,
     TransactionSelector,
     TransactionOptions,
 )
+from google.cloud.spanner_v1.table import Table
 
 # pylint: enable=ungrouped-imports
 
@@ -67,6 +68,11 @@ _DATABASE_NAME_RE = re.compile(
 )
 
 _DATABASE_METADATA_FILTER = "name:{0}/operations/"
+
+_LIST_TABLES_QUERY = """SELECT TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE SPANNER_STATE = 'COMMITTED'
+"""
 
 DEFAULT_RETRY_BACKOFF = Retry(initial=0.02, maximum=32, multiplier=1.3)
 
@@ -648,6 +654,41 @@ class Database(object):
         return self._instance.list_database_operations(
             filter_=database_filter, page_size=page_size
         )
+
+    def table(self, table_id):
+        """Factory to create a table object within this database.
+
+        Note: This method does not create a table in Cloud Spanner, but it can
+        be used to check if a table exists.
+
+        .. code-block:: python
+
+           my_table = database.table("my_table")
+           if my_table.exists():
+               print("Table with ID 'my_table' exists.")
+           else:
+               print("Table with ID 'my_table' does not exist.")
+
+        :type table_id: str
+        :param table_id: The ID of the table.
+
+        :rtype: :class:`~google.cloud.spanner_v1.table.Table`
+        :returns: a table owned by this database.
+        """
+        return Table(table_id, self)
+
+    def list_tables(self):
+        """List tables within the database.
+
+        :type: Iterable
+        :returns:
+            Iterable of :class:`~google.cloud.spanner_v1.table.Table`
+            resources within the current database.
+        """
+        with self.snapshot() as snapshot:
+            results = snapshot.execute_sql(_LIST_TABLES_QUERY)
+            for row in results:
+                yield self.table(row[0])
 
 
 class BatchCheckout(object):

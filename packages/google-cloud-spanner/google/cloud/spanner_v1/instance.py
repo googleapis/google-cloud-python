@@ -361,7 +361,7 @@ class Instance(object):
         """Factory to create a database within this instance.
 
         :type database_id: str
-        :param database_id: The ID of the instance.
+        :param database_id: The ID of the database.
 
         :type ddl_statements: list of string
         :param ddl_statements: (Optional) DDL statements, excluding the
