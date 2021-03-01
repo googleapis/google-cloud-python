@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-functions/compare/v0.5.0...v0.5.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([#26](https://www.github.com/googleapis/python-functions/issues/26)) ([207db35](https://www.github.com/googleapis/python-functions/commit/207db35e31d203120f66d384932e54fafec44a08))
+
 ## [0.5.0](https://www.github.com/googleapis/python-functions/compare/v0.4.0...v0.5.0) (2020-12-07)
 
 
