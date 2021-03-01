@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-access-approval/compare/v1.1.0...v1.1.1) (2021-02-12)
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([#40](https://www.github.com/googleapis/python-access-approval/issues/40)) ([2333089](https://www.github.com/googleapis/python-access-approval/commit/2333089890db28aacf2c8386d7d7e78008f04812))
+
 ## [1.1.0](https://www.github.com/googleapis/python-access-approval/compare/v1.0.0...v1.1.0) (2020-11-16)
 
 
