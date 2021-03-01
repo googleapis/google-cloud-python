@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-service-directory/compare/v0.4.0...v0.4.1) (2021-02-11)
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limits ([#39](https://www.github.com/googleapis/python-service-directory/issues/39)) ([07908c0](https://www.github.com/googleapis/python-service-directory/commit/07908c009307485955886fc042c1c2b18b43adbd))
+
 ## [0.4.0](https://www.github.com/googleapis/python-service-directory/compare/v0.3.0...v0.4.0) (2020-12-03)
 
 
