@@ -1225,7 +1225,6 @@ __all__ = (
     "AutoscalerAggregatedList",
     "AutoscalerList",
     "AutoscalerStatusDetails",
-    "AutoscalersClient",
     "AutoscalersScopedList",
     "AutoscalingPolicy",
     "AutoscalingPolicyCpuUtilization",
@@ -1495,6 +1494,7 @@ __all__ = (
     "GetZoneOperationRequest",
     "GetZoneRequest",
     "GlobalAddressesClient",
+    "GlobalForwardingRulesClient",
     "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
     "GlobalNetworkEndpointGroupsClient",
     "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
@@ -2271,5 +2271,5 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "GlobalForwardingRulesClient",
+    "AutoscalersClient",
 )
