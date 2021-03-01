@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-notebooks/compare/v0.1.1...v0.1.2) (2021-02-08)
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limit ([#12](https://www.github.com/googleapis/python-notebooks/issues/12)) ([8faa7fc](https://www.github.com/googleapis/python-notebooks/commit/8faa7fc87f62590b5c4119dc63d08347ed8eb901))
+
 ### [0.1.1](https://www.github.com/googleapis/python-notebooks/compare/v0.1.0...v0.1.1) (2020-08-06)
 
 
