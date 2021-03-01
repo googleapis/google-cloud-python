@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-media-translation/compare/v0.2.0...v0.3.0) (2021-02-11)
+
+
+### Features
+
+* add async client; add common resource path helper methods ([#21](https://www.github.com/googleapis/python-media-translation/issues/21)) ([cb77463](https://www.github.com/googleapis/python-media-translation/commit/cb77463b297c2fcf194b714281ed82450b1594d3))
+
+
+### Documentation
+
+* fix product documentation url ([#19](https://www.github.com/googleapis/python-media-translation/issues/19)) ([0aae986](https://www.github.com/googleapis/python-media-translation/commit/0aae986b41e8326995f51d3e1f129f28c524b151))
+
 ## [0.2.0](https://www.github.com/googleapis/python-media-translation/compare/v0.1.1...v0.2.0) (2020-05-28)
 
 
