@@ -1,6 +1,0 @@
-google.cloud.orgpolicy.v1
-================================
-
-.. automodule:: google.cloud.orgpolicy.v1.orgpolicy_pb2
-    :members:
-    :inherited-members:

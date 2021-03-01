@@ -1,10 +1,12 @@
 {
     "name": "orgpolicy",
     "name_pretty": "Organization Policy",
+    "product_documentation": "https://cloud.google.com/resource-manager/docs/organization-policy/overview",
     "client_documentation": "https://googleapis.dev/python/orgpolicy/latest",
-    "issue_tracker": "https://github.com/googleapis/python-orgpolicy/issues",
+    "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
     "repo": "googleapis/python-org-policy",
-    "distribution_name": "google-cloud-org-policy"
+    "distribution_name": "google-cloud-org-policy",
+    "api_id": "orgpolicy.googleapis.com" 
 }

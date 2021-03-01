@@ -1,11 +1,16 @@
-.. include:: README.md
 
+.. include:: README.rst
+
+.. include:: multiprocessing.rst
+
+API Reference
+-------------
 .. toctree::
     :maxdepth: 2
 
-    v1
+    orgpolicy_v2/services
+    orgpolicy_v2/types
 
-.. include:: multiprocessing.rst
 
 Changelog
 ---------
@@ -13,6 +18,6 @@ Changelog
 For a list of all ``google-cloud-org-policy`` releases:
 
 .. toctree::
-  :maxdepth: 2
+   :maxdepth: 2
 
-  changelog
+   changelog

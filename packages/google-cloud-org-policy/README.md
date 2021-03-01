@@ -1,1 +1,0 @@
-Protobufs for Google Cloud Organization Policy.
