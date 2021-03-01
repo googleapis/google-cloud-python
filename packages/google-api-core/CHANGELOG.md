@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.26.1](https://www.github.com/googleapis/python-api-core/compare/v1.26.0...v1.26.1) (2021-02-12)
+
+
+### Bug Fixes
+
+* add operation name to x-goog-request-params in async client ([#137](https://www.github.com/googleapis/python-api-core/issues/137)) ([7271b23](https://www.github.com/googleapis/python-api-core/commit/7271b23afddb032e49e957525704d0cd5bfa4c65))
+
 ## [1.26.0](https://www.github.com/googleapis/python-api-core/compare/v1.25.1...v1.26.0) (2021-02-08)
 
 
