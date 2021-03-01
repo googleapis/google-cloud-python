@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-billing/compare/v1.1.0...v1.1.1) (2021-02-11)
+
+
+### Bug Fixes
+
+* update retry and timeout settings ([#38](https://www.github.com/googleapis/python-billing/issues/38)) ([8dbad86](https://www.github.com/googleapis/python-billing/commit/8dbad869521924fc3f7d7dc2d4f5d7e9100874b3))
+
 ## [1.1.0](https://www.github.com/googleapis/python-billing/compare/v1.0.0...v1.1.0) (2020-11-17)
 
 
