@@ -1850,7 +1850,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
             request = iam_policy.GetIamPolicyRequest(**request)
 
         elif not request:
-            request = iam_policy.GetIamPolicyRequest(resource=resource,)
+            request = iam_policy.GetIamPolicyRequest()
 
             if resource is not None:
                 request.resource = resource
@@ -1978,7 +1978,7 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
             request = iam_policy.SetIamPolicyRequest(**request)
 
         elif not request:
-            request = iam_policy.SetIamPolicyRequest(resource=resource,)
+            request = iam_policy.SetIamPolicyRequest()
 
             if resource is not None:
                 request.resource = resource
@@ -2061,12 +2061,13 @@ class BigtableInstanceAdminClient(metaclass=BigtableInstanceAdminClientMeta):
             request = iam_policy.TestIamPermissionsRequest(**request)
 
         elif not request:
-            request = iam_policy.TestIamPermissionsRequest(
-                resource=resource, permissions=permissions,
-            )
+            request = iam_policy.TestIamPermissionsRequest()
 
             if resource is not None:
                 request.resource = resource
+
+            if permissions:
+                request.permissions.extend(permissions)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

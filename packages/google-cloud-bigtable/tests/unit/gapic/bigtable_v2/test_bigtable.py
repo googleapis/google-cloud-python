@@ -79,15 +79,17 @@ def test__get_default_mtls_endpoint():
     assert BigtableClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_bigtable_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [BigtableClient, BigtableAsyncClient,])
+def test_bigtable_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = BigtableClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigtable.googleapis.com:443"
 
@@ -101,9 +103,11 @@ def test_bigtable_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigtable.googleapis.com:443"
 
@@ -440,6 +444,22 @@ def test_read_rows_from_dict():
     test_read_rows(request_type=dict)
 
 
+def test_read_rows_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
+        client.read_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == bigtable.ReadRowsRequest()
+
+
 @pytest.mark.asyncio
 async def test_read_rows_async(
     transport: str = "grpc_asyncio", request_type=bigtable.ReadRowsRequest
@@ -640,6 +660,22 @@ def test_sample_row_keys_from_dict():
     test_sample_row_keys(request_type=dict)
 
 
+def test_sample_row_keys_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.sample_row_keys), "__call__") as call:
+        client.sample_row_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == bigtable.SampleRowKeysRequest()
+
+
 @pytest.mark.asyncio
 async def test_sample_row_keys_async(
     transport: str = "grpc_asyncio", request_type=bigtable.SampleRowKeysRequest
@@ -836,6 +872,22 @@ def test_mutate_row(transport: str = "grpc", request_type=bigtable.MutateRowRequ
 
 def test_mutate_row_from_dict():
     test_mutate_row(request_type=dict)
+
+
+def test_mutate_row_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mutate_row), "__call__") as call:
+        client.mutate_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == bigtable.MutateRowRequest()
 
 
 @pytest.mark.asyncio
@@ -1077,6 +1129,22 @@ def test_mutate_rows_from_dict():
     test_mutate_rows(request_type=dict)
 
 
+def test_mutate_rows_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.mutate_rows), "__call__") as call:
+        client.mutate_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == bigtable.MutateRowsRequest()
+
+
 @pytest.mark.asyncio
 async def test_mutate_rows_async(
     transport: str = "grpc_asyncio", request_type=bigtable.MutateRowsRequest
@@ -1293,6 +1361,24 @@ def test_check_and_mutate_row(
 
 def test_check_and_mutate_row_from_dict():
     test_check_and_mutate_row(request_type=dict)
+
+
+def test_check_and_mutate_row_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.check_and_mutate_row), "__call__"
+    ) as call:
+        client.check_and_mutate_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == bigtable.CheckAndMutateRowRequest()
 
 
 @pytest.mark.asyncio
@@ -1644,6 +1730,24 @@ def test_read_modify_write_row(
 
 def test_read_modify_write_row_from_dict():
     test_read_modify_write_row(request_type=dict)
+
+
+def test_read_modify_write_row_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigtableClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.read_modify_write_row), "__call__"
+    ) as call:
+        client.read_modify_write_row()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == bigtable.ReadModifyWriteRowRequest()
 
 
 @pytest.mark.asyncio
