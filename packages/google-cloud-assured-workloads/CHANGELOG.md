@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.2.0...v0.2.1) (2021-02-11)
+
+
+### Bug Fixes
+
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#9](https://www.github.com/googleapis/python-assured-workloads/issues/9)) ([ebd9505](https://www.github.com/googleapis/python-assured-workloads/commit/ebd950596feaa2ebd90334a0ace89f70ce76b381))
+
 ## [0.2.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.1.0...v0.2.0) (2020-11-17)
 
 
