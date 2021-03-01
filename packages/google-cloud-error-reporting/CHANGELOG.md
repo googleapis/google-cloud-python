@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+### [1.1.1](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.0...v1.1.1) (2021-02-25)
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limit; add enums to `types/__init__.py` ([#57](https://www.github.com/googleapis/python-error-reporting/issues/57)) ([e23e5ba](https://www.github.com/googleapis/python-error-reporting/commit/e23e5ba7eba4482735d5f4897210a1ebb81bfb8a))
+
 ## [1.1.0](https://www.github.com/googleapis/python-error-reporting/compare/v1.0.0...v1.1.0) (2020-12-01)
 
 
