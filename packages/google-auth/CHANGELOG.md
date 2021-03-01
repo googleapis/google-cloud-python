@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.27.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.27.0...v1.27.1) (2021-02-26)
+
+
+### Bug Fixes
+
+* ignore gcloud warning when getting project id ([#708](https://www.github.com/googleapis/google-auth-library-python/issues/708)) ([3f2f3ea](https://www.github.com/googleapis/google-auth-library-python/commit/3f2f3eaf09006d3d0ec9c030d359114238479279))
+* use gcloud creds flow ([#705](https://www.github.com/googleapis/google-auth-library-python/issues/705)) ([333cb76](https://www.github.com/googleapis/google-auth-library-python/commit/333cb765b52028329ec3ca04edf32c5764b1db68))
+
 ## [1.27.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.26.1...v1.27.0) (2021-02-16)
 
 
