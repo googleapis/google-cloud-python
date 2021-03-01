@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+### [2.1.1](https://www.github.com/googleapis/python-scheduler/compare/v2.1.0...v2.1.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* remove client recv msg limit and add enums to `types/__init__.py` ([#46](https://www.github.com/googleapis/python-scheduler/issues/46)) ([b6a9feb](https://www.github.com/googleapis/python-scheduler/commit/b6a9feb31aec9ee1aa4eb46ccd44dcc8e6cc27a7))
+
 ## [2.1.0](https://www.github.com/googleapis/python-scheduler/compare/v2.0.0...v2.1.0) (2020-12-08)
 
 
