@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.2.1...v0.3.0) (2021-02-08)
+
+
+### Features
+
+* add async client, add common resource helpers, add from_service_account_info factory ([#30](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/30)) ([7f9db72](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/7f9db7203246c0911ad1760ffc8e56cc61acd224))
+
 ### [0.2.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.2.0...v0.2.1) (2020-06-01)
 
 
