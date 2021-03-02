@@ -60,7 +60,7 @@ class Schema(proto.Message):
         name (str):
             Required. Name of the schema. Format is
             ``projects/{project}/schemas/{schema}``.
-        type_ (~.gp_schema.Schema.Type):
+        type_ (google.pubsub_v1.types.Schema.Type):
             The type of the schema definition.
         definition (str):
             The definition of the schema. This should contain a string
@@ -88,7 +88,7 @@ class CreateSchemaRequest(proto.Message):
         parent (str):
             Required. The name of the project in which to create the
             schema. Format is ``projects/{project-id}``.
-        schema (~.gp_schema.Schema):
+        schema (google.pubsub_v1.types.Schema):
             Required. The schema object to create.
 
             This schema's ``name`` parameter is ignored. The schema
@@ -117,7 +117,7 @@ class GetSchemaRequest(proto.Message):
         name (str):
             Required. The name of the schema to get. Format is
             ``projects/{project}/schemas/{schema}``.
-        view (~.gp_schema.SchemaView):
+        view (google.pubsub_v1.types.SchemaView):
             The set of fields to return in the response. If not set,
             returns a Schema with ``name`` and ``type``, but not
             ``definition``. Set to ``FULL`` to retrieve all fields.
@@ -135,7 +135,7 @@ class ListSchemasRequest(proto.Message):
         parent (str):
             Required. The name of the project in which to list schemas.
             Format is ``projects/{project-id}``.
-        view (~.gp_schema.SchemaView):
+        view (google.pubsub_v1.types.SchemaView):
             The set of Schema fields to return in the response. If not
             set, returns Schemas with ``name`` and ``type``, but not
             ``definition``. Set to ``FULL`` to retrieve all fields.
@@ -161,7 +161,7 @@ class ListSchemasResponse(proto.Message):
     r"""Response for the ``ListSchemas`` method.
 
     Attributes:
-        schemas (Sequence[~.gp_schema.Schema]):
+        schemas (Sequence[google.pubsub_v1.types.Schema]):
             The resulting schemas.
         next_page_token (str):
             If not empty, indicates that there may be more schemas that
@@ -197,7 +197,7 @@ class ValidateSchemaRequest(proto.Message):
         parent (str):
             Required. The name of the project in which to validate
             schemas. Format is ``projects/{project-id}``.
-        schema (~.gp_schema.Schema):
+        schema (google.pubsub_v1.types.Schema):
             Required. The schema object to validate.
     """
 
@@ -221,11 +221,11 @@ class ValidateMessageRequest(proto.Message):
             Name of the schema against which to validate.
 
             Format is ``projects/{project}/schemas/{schema}``.
-        schema (~.gp_schema.Schema):
+        schema (google.pubsub_v1.types.Schema):
             Ad-hoc schema against which to validate
         message (bytes):
             Message to validate against the provided ``schema_spec``.
-        encoding (~.gp_schema.Encoding):
+        encoding (google.pubsub_v1.types.Encoding):
             The encoding expected for messages
     """
 

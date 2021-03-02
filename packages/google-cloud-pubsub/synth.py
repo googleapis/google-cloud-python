@@ -79,6 +79,50 @@ count = s.replace(
 if count < 18:
     raise Exception("Expected replacements for gRPC channel options not made.")
 
+# If the emulator is used, force an insecure gRPC channel to avoid SSL errors.
+clients_to_patch = [
+    "google/pubsub_v1/services/publisher/client.py",
+    "google/pubsub_v1/services/subscriber/client.py",
+]
+err_msg = "Expected replacements for gRPC channel to use with the emulator not made."
+
+count = s.replace(
+    clients_to_patch,
+    r"import os",
+    "import functools\n\g<0>"
+)
+
+if count < len(clients_to_patch):
+    raise Exception(err_msg)
+
+count = s.replace(
+    clients_to_patch,
+    r"from google\.pubsub_v1\.types import pubsub",
+    "\g<0>\n\nimport grpc"
+)
+
+if count < len(clients_to_patch):
+    raise Exception(err_msg)
+
+count = s.replace(
+    clients_to_patch,
+    r"Transport = type\(self\)\.get_transport_class\(transport\)",
+    """\g<0>
+
+            emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
+            if emulator_host:
+                if issubclass(Transport, type(self)._transport_registry["grpc"]):
+                    channel = grpc.insecure_channel(target=emulator_host)
+                else:
+                    channel = grpc.aio.insecure_channel(target=emulator_host)
+                Transport = functools.partial(Transport, channel=channel)
+
+    """,
+)
+
+if count < len(clients_to_patch):
+    raise Exception(err_msg)
+
 # Monkey patch the streaming_pull() GAPIC method to disable pre-fetching stream
 # results.
 s.replace(

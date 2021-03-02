@@ -91,6 +91,7 @@ class SubscriberAsyncClient:
         SubscriberClient.parse_common_location_path
     )
 
+    from_service_account_info = SubscriberClient.from_service_account_info
     from_service_account_file = SubscriberClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -182,7 +183,7 @@ class SubscriberAsyncClient:
         request.
 
         Args:
-            request (:class:`~.pubsub.Subscription`):
+            request (:class:`google.pubsub_v1.types.Subscription`):
                 The request object. A subscription resource.
             name (:class:`str`):
                 Required. The name of the subscription. It must have the
@@ -194,6 +195,7 @@ class SubscriberAsyncClient:
                 (``~``), plus (``+``) or percent signs (``%``). It must
                 be between 3 and 255 characters in length, and it must
                 not start with ``"goog"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -203,14 +205,16 @@ class SubscriberAsyncClient:
                 ``projects/{project}/topics/{topic}``. The value of this
                 field will be ``_deleted-topic_`` if the topic has been
                 deleted.
+
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            push_config (:class:`~.pubsub.PushConfig`):
+            push_config (:class:`google.pubsub_v1.types.PushConfig`):
                 If push delivery is used with this subscription, this
                 field is used to configure it. An empty ``pushConfig``
                 signifies that the subscriber will pull and ack messages
                 using API methods.
+
                 This corresponds to the ``push_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -239,6 +243,7 @@ class SubscriberAsyncClient:
 
                 If the subscriber never acknowledges the message, the
                 Pub/Sub system will eventually redeliver the message.
+
                 This corresponds to the ``ack_deadline_seconds`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -250,7 +255,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Subscription:
+            google.pubsub_v1.types.Subscription:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
@@ -319,12 +324,13 @@ class SubscriberAsyncClient:
         r"""Gets the configuration details of a subscription.
 
         Args:
-            request (:class:`~.pubsub.GetSubscriptionRequest`):
+            request (:class:`google.pubsub_v1.types.GetSubscriptionRequest`):
                 The request object. Request for the GetSubscription
                 method.
             subscription (:class:`str`):
                 Required. The name of the subscription to get. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -336,7 +342,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Subscription:
+            google.pubsub_v1.types.Subscription:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
@@ -402,7 +408,7 @@ class SubscriberAsyncClient:
         modifiable.
 
         Args:
-            request (:class:`~.pubsub.UpdateSubscriptionRequest`):
+            request (:class:`google.pubsub_v1.types.UpdateSubscriptionRequest`):
                 The request object. Request for the UpdateSubscription
                 method.
 
@@ -413,7 +419,7 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Subscription:
+            google.pubsub_v1.types.Subscription:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
@@ -460,12 +466,13 @@ class SubscriberAsyncClient:
         r"""Lists matching subscriptions.
 
         Args:
-            request (:class:`~.pubsub.ListSubscriptionsRequest`):
+            request (:class:`google.pubsub_v1.types.ListSubscriptionsRequest`):
                 The request object. Request for the `ListSubscriptions`
                 method.
             project (:class:`str`):
                 Required. The name of the project in which to list
                 subscriptions. Format is ``projects/{project-id}``.
+
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -477,8 +484,8 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSubscriptionsAsyncPager:
-                Response for the ``ListSubscriptions`` method.
+            google.pubsub_v1.services.subscriber.pagers.ListSubscriptionsAsyncPager:
+                Response for the ListSubscriptions method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -555,12 +562,13 @@ class SubscriberAsyncClient:
         topic unless the same topic is specified.
 
         Args:
-            request (:class:`~.pubsub.DeleteSubscriptionRequest`):
+            request (:class:`google.pubsub_v1.types.DeleteSubscriptionRequest`):
                 The request object. Request for the DeleteSubscription
                 method.
             subscription (:class:`str`):
                 Required. The subscription to delete. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -635,12 +643,13 @@ class SubscriberAsyncClient:
         used for subsequent messages.
 
         Args:
-            request (:class:`~.pubsub.ModifyAckDeadlineRequest`):
+            request (:class:`google.pubsub_v1.types.ModifyAckDeadlineRequest`):
                 The request object. Request for the ModifyAckDeadline
                 method.
             subscription (:class:`str`):
                 Required. The name of the subscription. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -661,6 +670,7 @@ class SubscriberAsyncClient:
                 minimum deadline you can specify is 0 seconds. The
                 maximum deadline you can specify is 600 seconds (10
                 minutes).
+
                 This corresponds to the ``ack_deadline_seconds`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -741,12 +751,13 @@ class SubscriberAsyncClient:
         error.
 
         Args:
-            request (:class:`~.pubsub.AcknowledgeRequest`):
+            request (:class:`google.pubsub_v1.types.AcknowledgeRequest`):
                 The request object. Request for the Acknowledge method.
             subscription (:class:`str`):
                 Required. The subscription whose message is being
                 acknowledged. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -754,6 +765,7 @@ class SubscriberAsyncClient:
                 Required. The acknowledgment ID for the messages being
                 acknowledged that was returned by the Pub/Sub system in
                 the ``Pull`` response. Must not be empty.
+
                 This corresponds to the ``ack_ids`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -828,12 +840,13 @@ class SubscriberAsyncClient:
         pending for the given subscription.
 
         Args:
-            request (:class:`~.pubsub.PullRequest`):
+            request (:class:`google.pubsub_v1.types.PullRequest`):
                 The request object. Request for the `Pull` method.
             subscription (:class:`str`):
                 Required. The subscription from which messages should be
                 pulled. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -847,6 +860,7 @@ class SubscriberAsyncClient:
                 discouraged because it adversely impacts the performance
                 of ``Pull`` operations. We recommend that users do not
                 set this field.
+
                 This corresponds to the ``return_immediately`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -856,6 +870,7 @@ class SubscriberAsyncClient:
                 Must be a positive integer. The Pub/Sub
                 system may return fewer than the number
                 specified.
+
                 This corresponds to the ``max_messages`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -867,8 +882,8 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.PullResponse:
-                Response for the ``Pull`` method.
+            google.pubsub_v1.types.PullResponse:
+                Response for the Pull method.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -942,7 +957,7 @@ class SubscriberAsyncClient:
         configuring the underlying RPC channel.
 
         Args:
-            requests (AsyncIterator[`~.pubsub.StreamingPullRequest`]):
+            requests (AsyncIterator[`google.pubsub_v1.types.StreamingPullRequest`]):
                 The request object AsyncIterator. Request for the `StreamingPull`
                 streaming RPC method. This request is used to establish
                 the initial stream as well as to stream acknowledgements
@@ -955,10 +970,9 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.pubsub.StreamingPullResponse]:
-                Response for the ``StreamingPull`` method. This response
-                is used to stream messages from the server to the
-                client.
+            AsyncIterable[google.pubsub_v1.types.StreamingPullResponse]:
+                Response for the StreamingPull method. This response is used to stream
+                   messages from the server to the client.
 
         """
 
@@ -1007,16 +1021,17 @@ class SubscriberAsyncClient:
         call regardless of changes to the ``PushConfig``.
 
         Args:
-            request (:class:`~.pubsub.ModifyPushConfigRequest`):
+            request (:class:`google.pubsub_v1.types.ModifyPushConfigRequest`):
                 The request object. Request for the ModifyPushConfig
                 method.
             subscription (:class:`str`):
                 Required. The name of the subscription. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            push_config (:class:`~.pubsub.PushConfig`):
+            push_config (:class:`google.pubsub_v1.types.PushConfig`):
                 Required. The push configuration for future deliveries.
 
                 An empty ``pushConfig`` indicates that the Pub/Sub
@@ -1024,6 +1039,7 @@ class SubscriberAsyncClient:
                 subscription and allow messages to be pulled and
                 acknowledged - effectively pausing the subscription if
                 ``Pull`` or ``StreamingPull`` is not called.
+
                 This corresponds to the ``push_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1099,11 +1115,12 @@ class SubscriberAsyncClient:
         subscription to the state captured by a snapshot.
 
         Args:
-            request (:class:`~.pubsub.GetSnapshotRequest`):
+            request (:class:`google.pubsub_v1.types.GetSnapshotRequest`):
                 The request object. Request for the GetSnapshot method.
             snapshot (:class:`str`):
                 Required. The name of the snapshot to get. Format is
                 ``projects/{project}/snapshots/{snap}``.
+
                 This corresponds to the ``snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1115,13 +1132,13 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Snapshot:
+            google.pubsub_v1.types.Snapshot:
                 A snapshot resource. Snapshots are used in
-                `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-                operations, which allow you to manage message
-                acknowledgments in bulk. That is, you can set the
-                acknowledgment state of messages in an existing
-                subscription to the state captured by a snapshot.
+                   [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+                   operations, which allow you to manage message
+                   acknowledgments in bulk. That is, you can set the
+                   acknowledgment state of messages in an existing
+                   subscription to the state captured by a snapshot.
 
         """
         # Create or coerce a protobuf request object.
@@ -1188,12 +1205,13 @@ class SubscriberAsyncClient:
         in an existing subscription to the state captured by a snapshot.
 
         Args:
-            request (:class:`~.pubsub.ListSnapshotsRequest`):
+            request (:class:`google.pubsub_v1.types.ListSnapshotsRequest`):
                 The request object. Request for the `ListSnapshots`
                 method.
             project (:class:`str`):
                 Required. The name of the project in which to list
                 snapshots. Format is ``projects/{project-id}``.
+
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1205,8 +1223,8 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSnapshotsAsyncPager:
-                Response for the ``ListSnapshots`` method.
+            google.pubsub_v1.services.subscriber.pagers.ListSnapshotsAsyncPager:
+                Response for the ListSnapshots method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1297,7 +1315,7 @@ class SubscriberAsyncClient:
         request.
 
         Args:
-            request (:class:`~.pubsub.CreateSnapshotRequest`):
+            request (:class:`google.pubsub_v1.types.CreateSnapshotRequest`):
                 The request object. Request for the `CreateSnapshot`
                 method.
             name (:class:`str`):
@@ -1308,6 +1326,7 @@ class SubscriberAsyncClient:
                 requests, you must specify a name. See the resource name
                 rules. Format is
                 ``projects/{project}/snapshots/{snap}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1322,6 +1341,7 @@ class SubscriberAsyncClient:
                 published to the subscription's topic following the
                 successful completion of the CreateSnapshot request.
                 Format is ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1333,13 +1353,13 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Snapshot:
+            google.pubsub_v1.types.Snapshot:
                 A snapshot resource. Snapshots are used in
-                `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-                operations, which allow you to manage message
-                acknowledgments in bulk. That is, you can set the
-                acknowledgment state of messages in an existing
-                subscription to the state captured by a snapshot.
+                   [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+                   operations, which allow you to manage message
+                   acknowledgments in bulk. That is, you can set the
+                   acknowledgment state of messages in an existing
+                   subscription to the state captured by a snapshot.
 
         """
         # Create or coerce a protobuf request object.
@@ -1405,7 +1425,7 @@ class SubscriberAsyncClient:
         snapshot.
 
         Args:
-            request (:class:`~.pubsub.UpdateSnapshotRequest`):
+            request (:class:`google.pubsub_v1.types.UpdateSnapshotRequest`):
                 The request object. Request for the UpdateSnapshot
                 method.
 
@@ -1416,13 +1436,13 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Snapshot:
+            google.pubsub_v1.types.Snapshot:
                 A snapshot resource. Snapshots are used in
-                `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-                operations, which allow you to manage message
-                acknowledgments in bulk. That is, you can set the
-                acknowledgment state of messages in an existing
-                subscription to the state captured by a snapshot.
+                   [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+                   operations, which allow you to manage message
+                   acknowledgments in bulk. That is, you can set the
+                   acknowledgment state of messages in an existing
+                   subscription to the state captured by a snapshot.
 
         """
         # Create or coerce a protobuf request object.
@@ -1478,12 +1498,13 @@ class SubscriberAsyncClient:
         the same subscription is specified.
 
         Args:
-            request (:class:`~.pubsub.DeleteSnapshotRequest`):
+            request (:class:`google.pubsub_v1.types.DeleteSnapshotRequest`):
                 The request object. Request for the `DeleteSnapshot`
                 method.
             snapshot (:class:`str`):
                 Required. The name of the snapshot to delete. Format is
                 ``projects/{project}/snapshots/{snap}``.
+
                 This corresponds to the ``snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1556,7 +1577,7 @@ class SubscriberAsyncClient:
         same topic.
 
         Args:
-            request (:class:`~.pubsub.SeekRequest`):
+            request (:class:`google.pubsub_v1.types.SeekRequest`):
                 The request object. Request for the `Seek` method.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1566,10 +1587,8 @@ class SubscriberAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.SeekResponse:
-                Response for the ``Seek`` method (this response is
-                empty).
-
+            google.pubsub_v1.types.SeekResponse:
+                Response for the Seek method (this response is empty).
         """
         # Create or coerce a protobuf request object.
 

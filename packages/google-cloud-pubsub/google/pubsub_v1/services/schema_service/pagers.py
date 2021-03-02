@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.pubsub_v1.types import schema
 
@@ -24,7 +33,7 @@ class ListSchemasPager:
     """A pager for iterating through ``list_schemas`` requests.
 
     This class thinly wraps an initial
-    :class:`~.schema.ListSchemasResponse` object, and
+    :class:`google.pubsub_v1.types.ListSchemasResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``schemas`` field.
 
@@ -33,7 +42,7 @@ class ListSchemasPager:
     through the ``schemas`` field on the
     corresponding responses.
 
-    All the usual :class:`~.schema.ListSchemasResponse`
+    All the usual :class:`google.pubsub_v1.types.ListSchemasResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListSchemasPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.schema.ListSchemasRequest`):
+            request (google.pubsub_v1.types.ListSchemasRequest):
                 The initial request object.
-            response (:class:`~.schema.ListSchemasResponse`):
+            response (google.pubsub_v1.types.ListSchemasResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListSchemasAsyncPager:
     """A pager for iterating through ``list_schemas`` requests.
 
     This class thinly wraps an initial
-    :class:`~.schema.ListSchemasResponse` object, and
+    :class:`google.pubsub_v1.types.ListSchemasResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``schemas`` field.
 
@@ -95,7 +104,7 @@ class ListSchemasAsyncPager:
     through the ``schemas`` field on the
     corresponding responses.
 
-    All the usual :class:`~.schema.ListSchemasResponse`
+    All the usual :class:`google.pubsub_v1.types.ListSchemasResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListSchemasAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.schema.ListSchemasRequest`):
+            request (google.pubsub_v1.types.ListSchemasRequest):
                 The initial request object.
-            response (:class:`~.schema.ListSchemasResponse`):
+            response (google.pubsub_v1.types.ListSchemasResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

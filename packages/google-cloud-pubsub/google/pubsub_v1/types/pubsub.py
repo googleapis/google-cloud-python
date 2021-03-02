@@ -104,7 +104,7 @@ class SchemaSettings(proto.Message):
             ``projects/{project}/schemas/{schema}``. The value of this
             field will be ``_deleted-schema_`` if the schema has been
             deleted.
-        encoding (~.gp_schema.Encoding):
+        encoding (google.pubsub_v1.types.Encoding):
             The encoding of messages validated against ``schema``.
     """
 
@@ -126,10 +126,10 @@ class Topic(proto.Message):
             (``+``) or percent signs (``%``). It must be between 3 and
             255 characters in length, and it must not start with
             ``"goog"``.
-        labels (Sequence[~.pubsub.Topic.LabelsEntry]):
+        labels (Sequence[google.pubsub_v1.types.Topic.LabelsEntry]):
             See [Creating and managing labels]
             (https://cloud.google.com/pubsub/docs/labels).
-        message_storage_policy (~.pubsub.MessageStoragePolicy):
+        message_storage_policy (google.pubsub_v1.types.MessageStoragePolicy):
             Policy constraining the set of Google Cloud
             Platform regions where messages published to the
             topic may be stored. If not present, then no
@@ -140,7 +140,7 @@ class Topic(proto.Message):
 
             The expected format is
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
-        schema_settings (~.pubsub.SchemaSettings):
+        schema_settings (google.pubsub_v1.types.SchemaSettings):
             Settings for validating messages published
             against a schema.
             EXPERIMENTAL: Schema support is in development
@@ -182,7 +182,7 @@ class PubsubMessage(proto.Message):
             The message data field. If this field is
             empty, the message must contain at least one
             attribute.
-        attributes (Sequence[~.pubsub.PubsubMessage.AttributesEntry]):
+        attributes (Sequence[google.pubsub_v1.types.PubsubMessage.AttributesEntry]):
             Attributes for this message. If this field is
             empty, the message must contain non-empty data.
             This can be used to filter messages on the
@@ -194,7 +194,7 @@ class PubsubMessage(proto.Message):
             ``PubsubMessage`` via a ``Pull`` call or a push delivery. It
             must not be populated by the publisher in a ``Publish``
             call.
-        publish_time (~.timestamp.Timestamp):
+        publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the message was published, populated by
             the server when it receives the ``Publish`` call. It must
             not be populated by the publisher in a ``Publish`` call.
@@ -236,9 +236,9 @@ class UpdateTopicRequest(proto.Message):
     r"""Request for the UpdateTopic method.
 
     Attributes:
-        topic (~.pubsub.Topic):
+        topic (google.pubsub_v1.types.Topic):
             Required. The updated topic object.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Indicates which fields in the provided topic to
             update. Must be specified and non-empty. Note that if
             ``update_mask`` contains "message_storage_policy" but the
@@ -259,7 +259,7 @@ class PublishRequest(proto.Message):
         topic (str):
             Required. The messages in the request will be published on
             this topic. Format is ``projects/{project}/topics/{topic}``.
-        messages (Sequence[~.pubsub.PubsubMessage]):
+        messages (Sequence[google.pubsub_v1.types.PubsubMessage]):
             Required. The messages to publish.
     """
 
@@ -309,7 +309,7 @@ class ListTopicsResponse(proto.Message):
     r"""Response for the ``ListTopics`` method.
 
     Attributes:
-        topics (Sequence[~.pubsub.Topic]):
+        topics (Sequence[google.pubsub_v1.types.Topic]):
             The resulting topics.
         next_page_token (str):
             If not empty, indicates that there may be more topics that
@@ -468,7 +468,7 @@ class Subscription(proto.Message):
             ``projects/{project}/topics/{topic}``. The value of this
             field will be ``_deleted-topic_`` if the topic has been
             deleted.
-        push_config (~.pubsub.PushConfig):
+        push_config (google.pubsub_v1.types.PushConfig):
             If push delivery is used with this subscription, this field
             is used to configure it. An empty ``pushConfig`` signifies
             that the subscriber will pull and ack messages using API
@@ -503,7 +503,7 @@ class Subscription(proto.Message):
             of the ``message_retention_duration`` window. This must be
             true if you would like to [Seek to a timestamp]
             (https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time).
-        message_retention_duration (~.duration.Duration):
+        message_retention_duration (google.protobuf.duration_pb2.Duration):
             How long to retain unacknowledged messages in the
             subscription's backlog, from the moment a message is
             published. If ``retain_acked_messages`` is true, then this
@@ -511,7 +511,7 @@ class Subscription(proto.Message):
             thus configures how far back in time a ``Seek`` can be done.
             Defaults to 7 days. Cannot be more than 7 days or less than
             10 minutes.
-        labels (Sequence[~.pubsub.Subscription.LabelsEntry]):
+        labels (Sequence[google.pubsub_v1.types.Subscription.LabelsEntry]):
             See <a
             href="https://cloud.google.com/pubsub/docs/labels">
             Creating and managing labels</a>.
@@ -520,7 +520,7 @@ class Subscription(proto.Message):
             in ``PubsubMessage`` will be delivered to the subscribers in
             the order in which they are received by the Pub/Sub system.
             Otherwise, they may be delivered in any order.
-        expiration_policy (~.pubsub.ExpirationPolicy):
+        expiration_policy (google.pubsub_v1.types.ExpirationPolicy):
             A policy that specifies the conditions for this
             subscription's expiration. A subscription is considered
             active as long as any connected subscriber is successfully
@@ -536,7 +536,7 @@ class Subscription(proto.Message):
             ``attributes`` field matches the filter are delivered on
             this subscription. If empty, then no messages are filtered
             out.
-        dead_letter_policy (~.pubsub.DeadLetterPolicy):
+        dead_letter_policy (google.pubsub_v1.types.DeadLetterPolicy):
             A policy that specifies the conditions for dead lettering
             messages in this subscription. If dead_letter_policy is not
             set, dead lettering is disabled.
@@ -546,7 +546,7 @@ class Subscription(proto.Message):
             service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com)
             must have permission to Acknowledge() messages on this
             subscription.
-        retry_policy (~.pubsub.RetryPolicy):
+        retry_policy (google.pubsub_v1.types.RetryPolicy):
             A policy that specifies how Pub/Sub retries
             message delivery for this subscription.
 
@@ -613,12 +613,12 @@ class RetryPolicy(proto.Message):
     backoff.
 
     Attributes:
-        minimum_backoff (~.duration.Duration):
+        minimum_backoff (google.protobuf.duration_pb2.Duration):
             The minimum delay between consecutive
             deliveries of a given message. Value should be
             between 0 and 600 seconds. Defaults to 10
             seconds.
-        maximum_backoff (~.duration.Duration):
+        maximum_backoff (google.protobuf.duration_pb2.Duration):
             The maximum delay between consecutive
             deliveries of a given message. Value should be
             between 0 and 600 seconds. Defaults to 600
@@ -679,7 +679,7 @@ class ExpirationPolicy(proto.Message):
     expiration (i.e., automatic resource deletion).
 
     Attributes:
-        ttl (~.duration.Duration):
+        ttl (google.protobuf.duration_pb2.Duration):
             Specifies the "time-to-live" duration for an associated
             resource. The resource expires if it is not active for a
             period of ``ttl``. The definition of "activity" depends on
@@ -700,7 +700,7 @@ class PushConfig(proto.Message):
             A URL locating the endpoint to which messages should be
             pushed. For example, a Webhook endpoint might use
             ``https://example.com/push``.
-        attributes (Sequence[~.pubsub.PushConfig.AttributesEntry]):
+        attributes (Sequence[google.pubsub_v1.types.PushConfig.AttributesEntry]):
             Endpoint configuration attributes that can be used to
             control different aspects of the message delivery.
 
@@ -730,7 +730,7 @@ class PushConfig(proto.Message):
             .. raw:: html
 
                 <pre><code>attributes { "x-goog-version": "v1" } </code></pre>
-        oidc_token (~.pubsub.PushConfig.OidcToken):
+        oidc_token (google.pubsub_v1.types.PushConfig.OidcToken):
             If specified, Pub/Sub will generate and attach an OIDC JWT
             token as an ``Authorization`` header in the HTTP request for
             every pushed message.
@@ -781,7 +781,7 @@ class ReceivedMessage(proto.Message):
         ack_id (str):
             This ID can be used to acknowledge the
             received message.
-        message (~.pubsub.PubsubMessage):
+        message (google.pubsub_v1.types.PubsubMessage):
             The message.
         delivery_attempt (int):
             The approximate number of times that Cloud Pub/Sub has
@@ -827,9 +827,9 @@ class UpdateSubscriptionRequest(proto.Message):
     r"""Request for the UpdateSubscription method.
 
     Attributes:
-        subscription (~.pubsub.Subscription):
+        subscription (google.pubsub_v1.types.Subscription):
             Required. The updated subscription object.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Indicates which fields in the
             provided subscription to update. Must be
             specified and non-empty.
@@ -867,7 +867,7 @@ class ListSubscriptionsResponse(proto.Message):
     r"""Response for the ``ListSubscriptions`` method.
 
     Attributes:
-        subscriptions (Sequence[~.pubsub.Subscription]):
+        subscriptions (Sequence[google.pubsub_v1.types.Subscription]):
             The subscriptions that match the request.
         next_page_token (str):
             If not empty, indicates that there may be more subscriptions
@@ -905,7 +905,7 @@ class ModifyPushConfigRequest(proto.Message):
         subscription (str):
             Required. The name of the subscription. Format is
             ``projects/{project}/subscriptions/{sub}``.
-        push_config (~.pubsub.PushConfig):
+        push_config (google.pubsub_v1.types.PushConfig):
             Required. The push configuration for future deliveries.
 
             An empty ``pushConfig`` indicates that the Pub/Sub system
@@ -955,7 +955,7 @@ class PullResponse(proto.Message):
     r"""Response for the ``Pull`` method.
 
     Attributes:
-        received_messages (Sequence[~.pubsub.ReceivedMessage]):
+        received_messages (Sequence[google.pubsub_v1.types.ReceivedMessage]):
             Received Pub/Sub messages. The list will be empty if there
             are no more messages available in the backlog. For JSON, the
             response can be entirely empty. The Pub/Sub system may
@@ -1122,7 +1122,7 @@ class StreamingPullResponse(proto.Message):
     stream messages from the server to the client.
 
     Attributes:
-        received_messages (Sequence[~.pubsub.ReceivedMessage]):
+        received_messages (Sequence[google.pubsub_v1.types.ReceivedMessage]):
             Received Pub/Sub messages. This will not be
             empty.
     """
@@ -1154,7 +1154,7 @@ class CreateSnapshotRequest(proto.Message):
             topic following the successful completion of the
             CreateSnapshot request. Format is
             ``projects/{project}/subscriptions/{sub}``.
-        labels (Sequence[~.pubsub.CreateSnapshotRequest.LabelsEntry]):
+        labels (Sequence[google.pubsub_v1.types.CreateSnapshotRequest.LabelsEntry]):
             See <a
             href="https://cloud.google.com/pubsub/docs/labels">
             Creating and managing labels</a>.
@@ -1171,9 +1171,9 @@ class UpdateSnapshotRequest(proto.Message):
     r"""Request for the UpdateSnapshot method.
 
     Attributes:
-        snapshot (~.pubsub.Snapshot):
+        snapshot (google.pubsub_v1.types.Snapshot):
             Required. The updated snapshot object.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Indicates which fields in the
             provided snapshot to update. Must be specified
             and non-empty.
@@ -1197,7 +1197,7 @@ class Snapshot(proto.Message):
         topic (str):
             The name of the topic from which this
             snapshot is retaining messages.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The snapshot is guaranteed to exist up until this time. A
             newly-created snapshot expires no later than 7 days from the
             time of its creation. Its exact lifetime is determined at
@@ -1211,7 +1211,7 @@ class Snapshot(proto.Message):
             expire in 4 days. The service will refuse to create a
             snapshot that would expire in less than 1 hour after
             creation.
-        labels (Sequence[~.pubsub.Snapshot.LabelsEntry]):
+        labels (Sequence[google.pubsub_v1.types.Snapshot.LabelsEntry]):
             See [Creating and managing labels]
             (https://cloud.google.com/pubsub/docs/labels).
     """
@@ -1264,7 +1264,7 @@ class ListSnapshotsResponse(proto.Message):
     r"""Response for the ``ListSnapshots`` method.
 
     Attributes:
-        snapshots (Sequence[~.pubsub.Snapshot]):
+        snapshots (Sequence[google.pubsub_v1.types.Snapshot]):
             The resulting snapshots.
         next_page_token (str):
             If not empty, indicates that there may be more snapshot that
@@ -1299,7 +1299,7 @@ class SeekRequest(proto.Message):
     Attributes:
         subscription (str):
             Required. The subscription to affect.
-        time (~.timestamp.Timestamp):
+        time (google.protobuf.timestamp_pb2.Timestamp):
             The time to seek to. Messages retained in the subscription
             that were published before this time are marked as
             acknowledged, and messages retained in the subscription that

@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.pubsub_v1.types import pubsub
 
@@ -24,7 +33,7 @@ class ListTopicsPager:
     """A pager for iterating through ``list_topics`` requests.
 
     This class thinly wraps an initial
-    :class:`~.pubsub.ListTopicsResponse` object, and
+    :class:`google.pubsub_v1.types.ListTopicsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``topics`` field.
 
@@ -33,7 +42,7 @@ class ListTopicsPager:
     through the ``topics`` field on the
     corresponding responses.
 
-    All the usual :class:`~.pubsub.ListTopicsResponse`
+    All the usual :class:`google.pubsub_v1.types.ListTopicsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListTopicsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.pubsub.ListTopicsRequest`):
+            request (google.pubsub_v1.types.ListTopicsRequest):
                 The initial request object.
-            response (:class:`~.pubsub.ListTopicsResponse`):
+            response (google.pubsub_v1.types.ListTopicsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListTopicsAsyncPager:
     """A pager for iterating through ``list_topics`` requests.
 
     This class thinly wraps an initial
-    :class:`~.pubsub.ListTopicsResponse` object, and
+    :class:`google.pubsub_v1.types.ListTopicsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``topics`` field.
 
@@ -95,7 +104,7 @@ class ListTopicsAsyncPager:
     through the ``topics`` field on the
     corresponding responses.
 
-    All the usual :class:`~.pubsub.ListTopicsResponse`
+    All the usual :class:`google.pubsub_v1.types.ListTopicsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListTopicsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.pubsub.ListTopicsRequest`):
+            request (google.pubsub_v1.types.ListTopicsRequest):
                 The initial request object.
-            response (:class:`~.pubsub.ListTopicsResponse`):
+            response (google.pubsub_v1.types.ListTopicsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +161,7 @@ class ListTopicSubscriptionsPager:
     """A pager for iterating through ``list_topic_subscriptions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.pubsub.ListTopicSubscriptionsResponse` object, and
+    :class:`google.pubsub_v1.types.ListTopicSubscriptionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``subscriptions`` field.
 
@@ -161,7 +170,7 @@ class ListTopicSubscriptionsPager:
     through the ``subscriptions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.pubsub.ListTopicSubscriptionsResponse`
+    All the usual :class:`google.pubsub_v1.types.ListTopicSubscriptionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +188,9 @@ class ListTopicSubscriptionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.pubsub.ListTopicSubscriptionsRequest`):
+            request (google.pubsub_v1.types.ListTopicSubscriptionsRequest):
                 The initial request object.
-            response (:class:`~.pubsub.ListTopicSubscriptionsResponse`):
+            response (google.pubsub_v1.types.ListTopicSubscriptionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +223,7 @@ class ListTopicSubscriptionsAsyncPager:
     """A pager for iterating through ``list_topic_subscriptions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.pubsub.ListTopicSubscriptionsResponse` object, and
+    :class:`google.pubsub_v1.types.ListTopicSubscriptionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``subscriptions`` field.
 
@@ -223,7 +232,7 @@ class ListTopicSubscriptionsAsyncPager:
     through the ``subscriptions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.pubsub.ListTopicSubscriptionsResponse`
+    All the usual :class:`google.pubsub_v1.types.ListTopicSubscriptionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +250,9 @@ class ListTopicSubscriptionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.pubsub.ListTopicSubscriptionsRequest`):
+            request (google.pubsub_v1.types.ListTopicSubscriptionsRequest):
                 The initial request object.
-            response (:class:`~.pubsub.ListTopicSubscriptionsResponse`):
+            response (google.pubsub_v1.types.ListTopicSubscriptionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -280,7 +289,7 @@ class ListTopicSnapshotsPager:
     """A pager for iterating through ``list_topic_snapshots`` requests.
 
     This class thinly wraps an initial
-    :class:`~.pubsub.ListTopicSnapshotsResponse` object, and
+    :class:`google.pubsub_v1.types.ListTopicSnapshotsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``snapshots`` field.
 
@@ -289,7 +298,7 @@ class ListTopicSnapshotsPager:
     through the ``snapshots`` field on the
     corresponding responses.
 
-    All the usual :class:`~.pubsub.ListTopicSnapshotsResponse`
+    All the usual :class:`google.pubsub_v1.types.ListTopicSnapshotsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -307,9 +316,9 @@ class ListTopicSnapshotsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.pubsub.ListTopicSnapshotsRequest`):
+            request (google.pubsub_v1.types.ListTopicSnapshotsRequest):
                 The initial request object.
-            response (:class:`~.pubsub.ListTopicSnapshotsResponse`):
+            response (google.pubsub_v1.types.ListTopicSnapshotsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -342,7 +351,7 @@ class ListTopicSnapshotsAsyncPager:
     """A pager for iterating through ``list_topic_snapshots`` requests.
 
     This class thinly wraps an initial
-    :class:`~.pubsub.ListTopicSnapshotsResponse` object, and
+    :class:`google.pubsub_v1.types.ListTopicSnapshotsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``snapshots`` field.
 
@@ -351,7 +360,7 @@ class ListTopicSnapshotsAsyncPager:
     through the ``snapshots`` field on the
     corresponding responses.
 
-    All the usual :class:`~.pubsub.ListTopicSnapshotsResponse`
+    All the usual :class:`google.pubsub_v1.types.ListTopicSnapshotsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -369,9 +378,9 @@ class ListTopicSnapshotsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.pubsub.ListTopicSnapshotsRequest`):
+            request (google.pubsub_v1.types.ListTopicSnapshotsRequest):
                 The initial request object.
-            response (:class:`~.pubsub.ListTopicSnapshotsResponse`):
+            response (google.pubsub_v1.types.ListTopicSnapshotsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

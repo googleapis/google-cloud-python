@@ -17,6 +17,7 @@
 
 from collections import OrderedDict
 from distutils import util
+import functools
 import os
 import re
 from typing import (
@@ -48,6 +49,8 @@ from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.pubsub_v1.services.subscriber import pagers
 from google.pubsub_v1.types import pubsub
+
+import grpc
 
 from .transports.base import SubscriberTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SubscriberGrpcTransport
@@ -139,6 +142,23 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SubscriberClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -151,7 +171,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SubscriberClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -283,10 +303,10 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SubscriberTransport]): The
+            transport (Union[str, SubscriberTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -322,21 +342,17 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -374,12 +390,21 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
             self._transport = transport
         else:
             Transport = type(self).get_transport_class(transport)
+
+            emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
+            if emulator_host:
+                if issubclass(Transport, type(self)._transport_registry["grpc"]):
+                    channel = grpc.insecure_channel(target=emulator_host)
+                else:
+                    channel = grpc.aio.insecure_channel(target=emulator_host)
+                Transport = functools.partial(Transport, channel=channel)
+
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -412,9 +437,9 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.Subscription`):
+            request (google.pubsub_v1.types.Subscription):
                 The request object. A subscription resource.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the subscription. It must have the
                 format
                 ``"projects/{project}/subscriptions/{subscription}"``.
@@ -424,27 +449,30 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 (``~``), plus (``+``) or percent signs (``%``). It must
                 be between 3 and 255 characters in length, and it must
                 not start with ``"goog"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            topic (:class:`str`):
+            topic (str):
                 Required. The name of the topic from which this
                 subscription is receiving messages. Format is
                 ``projects/{project}/topics/{topic}``. The value of this
                 field will be ``_deleted-topic_`` if the topic has been
                 deleted.
+
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            push_config (:class:`~.pubsub.PushConfig`):
+            push_config (google.pubsub_v1.types.PushConfig):
                 If push delivery is used with this subscription, this
                 field is used to configure it. An empty ``pushConfig``
                 signifies that the subscriber will pull and ack messages
                 using API methods.
+
                 This corresponds to the ``push_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ack_deadline_seconds (:class:`int`):
+            ack_deadline_seconds (int):
                 The approximate amount of time (on a best-effort basis)
                 Pub/Sub waits for the subscriber to acknowledge receipt
                 before resending the message. In the interval after the
@@ -469,6 +497,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
                 If the subscriber never acknowledges the message, the
                 Pub/Sub system will eventually redeliver the message.
+
                 This corresponds to the ``ack_deadline_seconds`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -480,7 +509,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Subscription:
+            google.pubsub_v1.types.Subscription:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
@@ -541,12 +570,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.GetSubscriptionRequest`):
+            request (google.pubsub_v1.types.GetSubscriptionRequest):
                 The request object. Request for the GetSubscription
                 method.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The name of the subscription to get. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -558,7 +588,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Subscription:
+            google.pubsub_v1.types.Subscription:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
@@ -616,7 +646,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.UpdateSubscriptionRequest`):
+            request (google.pubsub_v1.types.UpdateSubscriptionRequest):
                 The request object. Request for the UpdateSubscription
                 method.
 
@@ -627,7 +657,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Subscription:
+            google.pubsub_v1.types.Subscription:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
@@ -670,12 +700,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.ListSubscriptionsRequest`):
+            request (google.pubsub_v1.types.ListSubscriptionsRequest):
                 The request object. Request for the `ListSubscriptions`
                 method.
-            project (:class:`str`):
+            project (str):
                 Required. The name of the project in which to list
                 subscriptions. Format is ``projects/{project-id}``.
+
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -687,8 +718,8 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSubscriptionsPager:
-                Response for the ``ListSubscriptions`` method.
+            google.pubsub_v1.services.subscriber.pagers.ListSubscriptionsPager:
+                Response for the ListSubscriptions method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -757,12 +788,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.DeleteSubscriptionRequest`):
+            request (google.pubsub_v1.types.DeleteSubscriptionRequest):
                 The request object. Request for the DeleteSubscription
                 method.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The subscription to delete. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -833,21 +865,22 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.ModifyAckDeadlineRequest`):
+            request (google.pubsub_v1.types.ModifyAckDeadlineRequest):
                 The request object. Request for the ModifyAckDeadline
                 method.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The name of the subscription. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ack_ids (:class:`Sequence[str]`):
+            ack_ids (Sequence[str]):
                 Required. List of acknowledgment IDs.
                 This corresponds to the ``ack_ids`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ack_deadline_seconds (:class:`int`):
+            ack_deadline_seconds (int):
                 Required. The new ack deadline with respect to the time
                 this request was sent to the Pub/Sub system. For
                 example, if the value is 10, the new ack deadline will
@@ -859,6 +892,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 minimum deadline you can specify is 0 seconds. The
                 maximum deadline you can specify is 600 seconds (10
                 minutes).
+
                 This corresponds to the ``ack_deadline_seconds`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -891,11 +925,10 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
             if subscription is not None:
                 request.subscription = subscription
+            if ack_ids is not None:
+                request.ack_ids = ack_ids
             if ack_deadline_seconds is not None:
                 request.ack_deadline_seconds = ack_deadline_seconds
-
-            if ack_ids:
-                request.ack_ids.extend(ack_ids)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -935,19 +968,21 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.AcknowledgeRequest`):
+            request (google.pubsub_v1.types.AcknowledgeRequest):
                 The request object. Request for the Acknowledge method.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The subscription whose message is being
                 acknowledged. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ack_ids (:class:`Sequence[str]`):
+            ack_ids (Sequence[str]):
                 Required. The acknowledgment ID for the messages being
                 acknowledged that was returned by the Pub/Sub system in
                 the ``Pull`` response. Must not be empty.
+
                 This corresponds to the ``ack_ids`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -980,9 +1015,8 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
             if subscription is not None:
                 request.subscription = subscription
-
-            if ack_ids:
-                request.ack_ids.extend(ack_ids)
+            if ack_ids is not None:
+                request.ack_ids = ack_ids
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1018,16 +1052,17 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.PullRequest`):
+            request (google.pubsub_v1.types.PullRequest):
                 The request object. Request for the `Pull` method.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The subscription from which messages should be
                 pulled. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            return_immediately (:class:`bool`):
+            return_immediately (bool):
                 Optional. If this field set to true, the system will
                 respond immediately even if it there are no messages
                 available to return in the ``Pull`` response. Otherwise,
@@ -1037,15 +1072,17 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 discouraged because it adversely impacts the performance
                 of ``Pull`` operations. We recommend that users do not
                 set this field.
+
                 This corresponds to the ``return_immediately`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            max_messages (:class:`int`):
+            max_messages (int):
                 Required. The maximum number of
                 messages to return for this request.
                 Must be a positive integer. The Pub/Sub
                 system may return fewer than the number
                 specified.
+
                 This corresponds to the ``max_messages`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1057,8 +1094,8 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.PullResponse:
-                Response for the ``Pull`` method.
+            google.pubsub_v1.types.PullResponse:
+                Response for the Pull method.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -1124,7 +1161,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            requests (Iterator[`~.pubsub.StreamingPullRequest`]):
+            requests (Iterator[google.pubsub_v1.types.StreamingPullRequest]):
                 The request object iterator. Request for the `StreamingPull`
                 streaming RPC method. This request is used to establish
                 the initial stream as well as to stream acknowledgements
@@ -1137,10 +1174,9 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.pubsub.StreamingPullResponse]:
-                Response for the ``StreamingPull`` method. This response
-                is used to stream messages from the server to the
-                client.
+            Iterable[google.pubsub_v1.types.StreamingPullResponse]:
+                Response for the StreamingPull method. This response is used to stream
+                   messages from the server to the client.
 
         """
 
@@ -1179,16 +1215,17 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.ModifyPushConfigRequest`):
+            request (google.pubsub_v1.types.ModifyPushConfigRequest):
                 The request object. Request for the ModifyPushConfig
                 method.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The name of the subscription. Format is
                 ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            push_config (:class:`~.pubsub.PushConfig`):
+            push_config (google.pubsub_v1.types.PushConfig):
                 Required. The push configuration for future deliveries.
 
                 An empty ``pushConfig`` indicates that the Pub/Sub
@@ -1196,6 +1233,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 subscription and allow messages to be pulled and
                 acknowledged - effectively pausing the subscription if
                 ``Pull`` or ``StreamingPull`` is not called.
+
                 This corresponds to the ``push_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1267,11 +1305,12 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.GetSnapshotRequest`):
+            request (google.pubsub_v1.types.GetSnapshotRequest):
                 The request object. Request for the GetSnapshot method.
-            snapshot (:class:`str`):
+            snapshot (str):
                 Required. The name of the snapshot to get. Format is
                 ``projects/{project}/snapshots/{snap}``.
+
                 This corresponds to the ``snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1283,13 +1322,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Snapshot:
+            google.pubsub_v1.types.Snapshot:
                 A snapshot resource. Snapshots are used in
-                `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-                operations, which allow you to manage message
-                acknowledgments in bulk. That is, you can set the
-                acknowledgment state of messages in an existing
-                subscription to the state captured by a snapshot.
+                   [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+                   operations, which allow you to manage message
+                   acknowledgments in bulk. That is, you can set the
+                   acknowledgment state of messages in an existing
+                   subscription to the state captured by a snapshot.
 
         """
         # Create or coerce a protobuf request object.
@@ -1348,12 +1387,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.ListSnapshotsRequest`):
+            request (google.pubsub_v1.types.ListSnapshotsRequest):
                 The request object. Request for the `ListSnapshots`
                 method.
-            project (:class:`str`):
+            project (str):
                 Required. The name of the project in which to list
                 snapshots. Format is ``projects/{project-id}``.
+
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1365,8 +1405,8 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSnapshotsPager:
-                Response for the ``ListSnapshots`` method.
+            google.pubsub_v1.services.subscriber.pagers.ListSnapshotsPager:
+                Response for the ListSnapshots method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1449,10 +1489,10 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.CreateSnapshotRequest`):
+            request (google.pubsub_v1.types.CreateSnapshotRequest):
                 The request object. Request for the `CreateSnapshot`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. User-provided name for this snapshot. If the
                 name is not provided in the request, the server will
                 assign a random name for this snapshot on the same
@@ -1460,10 +1500,11 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 requests, you must specify a name. See the resource name
                 rules. Format is
                 ``projects/{project}/snapshots/{snap}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            subscription (:class:`str`):
+            subscription (str):
                 Required. The subscription whose backlog the snapshot
                 retains. Specifically, the created snapshot is
                 guaranteed to retain: (a) The existing backlog on the
@@ -1474,6 +1515,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 published to the subscription's topic following the
                 successful completion of the CreateSnapshot request.
                 Format is ``projects/{project}/subscriptions/{sub}``.
+
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1485,13 +1527,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Snapshot:
+            google.pubsub_v1.types.Snapshot:
                 A snapshot resource. Snapshots are used in
-                `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-                operations, which allow you to manage message
-                acknowledgments in bulk. That is, you can set the
-                acknowledgment state of messages in an existing
-                subscription to the state captured by a snapshot.
+                   [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+                   operations, which allow you to manage message
+                   acknowledgments in bulk. That is, you can set the
+                   acknowledgment state of messages in an existing
+                   subscription to the state captured by a snapshot.
 
         """
         # Create or coerce a protobuf request object.
@@ -1553,7 +1595,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.UpdateSnapshotRequest`):
+            request (google.pubsub_v1.types.UpdateSnapshotRequest):
                 The request object. Request for the UpdateSnapshot
                 method.
 
@@ -1564,13 +1606,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.Snapshot:
+            google.pubsub_v1.types.Snapshot:
                 A snapshot resource. Snapshots are used in
-                `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
-                operations, which allow you to manage message
-                acknowledgments in bulk. That is, you can set the
-                acknowledgment state of messages in an existing
-                subscription to the state captured by a snapshot.
+                   [Seek](https://cloud.google.com/pubsub/docs/replay-overview)
+                   operations, which allow you to manage message
+                   acknowledgments in bulk. That is, you can set the
+                   acknowledgment state of messages in an existing
+                   subscription to the state captured by a snapshot.
 
         """
         # Create or coerce a protobuf request object.
@@ -1622,12 +1664,13 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.DeleteSnapshotRequest`):
+            request (google.pubsub_v1.types.DeleteSnapshotRequest):
                 The request object. Request for the `DeleteSnapshot`
                 method.
-            snapshot (:class:`str`):
+            snapshot (str):
                 Required. The name of the snapshot to delete. Format is
                 ``projects/{project}/snapshots/{snap}``.
+
                 This corresponds to the ``snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1696,7 +1739,7 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
 
 
         Args:
-            request (:class:`~.pubsub.SeekRequest`):
+            request (google.pubsub_v1.types.SeekRequest):
                 The request object. Request for the `Seek` method.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1706,10 +1749,8 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pubsub.SeekResponse:
-                Response for the ``Seek`` method (this response is
-                empty).
-
+            google.pubsub_v1.types.SeekResponse:
+                Response for the Seek method (this response is empty).
         """
         # Create or coerce a protobuf request object.
 
