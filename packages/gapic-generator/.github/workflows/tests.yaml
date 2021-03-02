@@ -310,4 +310,4 @@ jobs:
             python -m pip install autopep8
       - name: Check diff
         run: |
-            find gapic tests -name "*.py" | xargs autopep8 --in-place --exit-code
+            find gapic tests -name "*.py" | xargs autopep8 --diff --exit-code

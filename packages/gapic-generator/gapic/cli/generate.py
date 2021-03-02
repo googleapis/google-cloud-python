@@ -47,10 +47,11 @@ def generate(
     # This generator uses a slightly different mechanism for determining
     # which files to generate; it tracks at package level rather than file
     # level.
-    package = os.path.commonprefix([i.package for i in filter(
-        lambda p: p.name in req.file_to_generate,
-        req.proto_file,
-    )]).rstrip('.')
+    package = os.path.commonprefix([
+        p.package
+        for p in req.proto_file
+        if p.name in req.file_to_generate
+    ]).rstrip('.')
 
     # Build the API model object.
     # This object is a frozen representation of the whole API, and is sent
