@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.41.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.12...v0.41.0) (2021-03-02)
+
+
+### Features
+
+* add gapic metadata file ([#781](https://www.github.com/googleapis/gapic-generator-python/issues/781)) ([5dd8fcc](https://www.github.com/googleapis/gapic-generator-python/commit/5dd8fccf6b4da57edef0347beb07102634daa992))
+
 ### [0.40.12](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.11...v0.40.12) (2021-02-26)
 
 
