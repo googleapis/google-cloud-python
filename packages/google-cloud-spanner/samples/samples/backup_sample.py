@@ -26,17 +26,11 @@ from google.cloud import spanner
 
 
 # [START spanner_create_backup]
-def create_backup(instance_id, database_id, backup_id):
+def create_backup(instance_id, database_id, backup_id, version_time):
     """Creates a backup for a database."""
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
-
-    # Sets the version time as the current server time
-    version_time = None
-    with database.snapshot() as snapshot:
-        results = snapshot.execute_sql("SELECT CURRENT_TIMESTAMP()")
-        version_time = list(results)[0][0]
 
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)

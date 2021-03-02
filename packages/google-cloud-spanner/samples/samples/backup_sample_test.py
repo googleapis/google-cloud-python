@@ -67,7 +67,12 @@ def database(spanner_instance):
 
 
 def test_create_backup(capsys, database):
-    backup_sample.create_backup(INSTANCE_ID, DATABASE_ID, BACKUP_ID)
+    version_time = None
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql("SELECT CURRENT_TIMESTAMP()")
+        version_time = list(results)[0][0]
+
+    backup_sample.create_backup(INSTANCE_ID, DATABASE_ID, BACKUP_ID, version_time)
     out, _ = capsys.readouterr()
     assert BACKUP_ID in out
 
