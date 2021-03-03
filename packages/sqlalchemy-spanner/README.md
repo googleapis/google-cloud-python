@@ -1,6 +1,8 @@
 # python-sqlalchemy-spanner
 
-Usage example:
+**NOTE: This project is still in DEVELOPMENT. It may make breaking changes without prior notice and should not yet be used for production purposes.**  
+
+**Usage example**:
 
 ```python
 from sqlalchemy import create_engine, select, MetaData, Table
