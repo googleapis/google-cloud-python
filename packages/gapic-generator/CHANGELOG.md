@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.42.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.41.0...v0.42.0) (2021-03-03)
+
+
+### Features
+
+* add flag for gapic metadata ([#795](https://www.github.com/googleapis/gapic-generator-python/issues/795)) ([9cd7664](https://www.github.com/googleapis/gapic-generator-python/commit/9cd7664141835edcd8970629d9cf3abe4b7fd7c4))
+
 ## [0.41.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.40.12...v0.41.0) (2021-03-02)
 
 
