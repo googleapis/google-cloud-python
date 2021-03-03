@@ -88,15 +88,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_schema_service_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [SchemaServiceClient, SchemaServiceAsyncClient,]
+)
+def test_schema_service_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = SchemaServiceClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "pubsub.googleapis.com:443"
 
@@ -112,9 +116,11 @@ def test_schema_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "pubsub.googleapis.com:443"
 
@@ -483,6 +489,22 @@ def test_create_schema_from_dict():
     test_create_schema(request_type=dict)
 
 
+def test_create_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_schema), "__call__") as call:
+        client.create_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gp_schema.CreateSchemaRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_schema_async(
     transport: str = "grpc_asyncio", request_type=gp_schema.CreateSchemaRequest
@@ -706,6 +728,22 @@ def test_get_schema_from_dict():
     test_get_schema(request_type=dict)
 
 
+def test_get_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_schema), "__call__") as call:
+        client.get_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == schema.GetSchemaRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_schema_async(
     transport: str = "grpc_asyncio", request_type=schema.GetSchemaRequest
@@ -899,6 +937,22 @@ def test_list_schemas(transport: str = "grpc", request_type=schema.ListSchemasRe
 
 def test_list_schemas_from_dict():
     test_list_schemas(request_type=dict)
+
+
+def test_list_schemas_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_schemas), "__call__") as call:
+        client.list_schemas()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == schema.ListSchemasRequest()
 
 
 @pytest.mark.asyncio
@@ -1203,6 +1257,22 @@ def test_delete_schema_from_dict():
     test_delete_schema(request_type=dict)
 
 
+def test_delete_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_schema), "__call__") as call:
+        client.delete_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == schema.DeleteSchemaRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_schema_async(
     transport: str = "grpc_asyncio", request_type=schema.DeleteSchemaRequest
@@ -1382,6 +1452,22 @@ def test_validate_schema(
 
 def test_validate_schema_from_dict():
     test_validate_schema(request_type=dict)
+
+
+def test_validate_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_schema), "__call__") as call:
+        client.validate_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gp_schema.ValidateSchemaRequest()
 
 
 @pytest.mark.asyncio
@@ -1581,6 +1667,22 @@ def test_validate_message(
 
 def test_validate_message_from_dict():
     test_validate_message(request_type=dict)
+
+
+def test_validate_message_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SchemaServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_message), "__call__") as call:
+        client.validate_message()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == schema.ValidateMessageRequest()
 
 
 @pytest.mark.asyncio

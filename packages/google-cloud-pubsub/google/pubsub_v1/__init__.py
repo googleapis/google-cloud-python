@@ -110,6 +110,7 @@ __all__ = (
     "ModifyPushConfigRequest",
     "PublishRequest",
     "PublishResponse",
+    "PublisherClient",
     "PubsubMessage",
     "PullRequest",
     "PullResponse",
@@ -125,7 +126,6 @@ __all__ = (
     "Snapshot",
     "StreamingPullRequest",
     "StreamingPullResponse",
-    "SubscriberClient",
     "Subscription",
     "Topic",
     "UpdateSnapshotRequest",
@@ -135,5 +135,5 @@ __all__ = (
     "ValidateMessageResponse",
     "ValidateSchemaRequest",
     "ValidateSchemaResponse",
-    "PublisherClient",
+    "SubscriberClient",
 )
