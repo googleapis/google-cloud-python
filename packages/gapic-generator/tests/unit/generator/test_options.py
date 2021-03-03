@@ -14,6 +14,7 @@
 
 import os
 import pytest
+import re
 from unittest import mock
 import warnings
 
@@ -139,21 +140,24 @@ def test_options_service_config(fs):
     assert opts.retry == expected_cfg
 
 
-def test_options_lazy_import():
-    opts = Options.build('lazy-import')
-    assert opts.lazy_import
+def test_options_bool_flags():
+    # All these options are default False.
+    # If new options violate this assumption,
+    # this test may need to be tweaked.
+    # New options should follow the dash-case/snake_case convention.
+    opt_str_to_attr_name = {
+        name: re.sub(r"-", "_", name)
+        for name in
+        ["lazy-import",
+         "old-naming",
+         "add-iam-methods",
+         "metadata",
+         "warehouse-package-name",
+         ]}
 
+    for opt, attr in opt_str_to_attr_name.items():
+        options = Options.build("")
+        assert not getattr(options, attr)
 
-def test_options_old_naming():
-    opts = Options.build('old-naming')
-    assert opts.old_naming
-
-
-def test_options_add_iam_methods():
-    opts = Options.build('add-iam-methods')
-    assert opts.add_iam_methods
-
-
-def test_options_warehouse_package_name():
-    opts = Options.build('warehouse-package-name')
-    assert opts.warehouse_package_name
+        options = Options.build(opt)
+        assert getattr(options, attr)

@@ -116,6 +116,22 @@ def test_get_response_fails_invalid_file_paths():
         assert "%proto" in ex_str and "%service" in ex_str
 
 
+def test_get_response_ignore_gapic_metadata():
+    g = make_generator()
+    with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:
+        lt.return_value = ["gapic/gapic_metadata.json.j2"]
+        with mock.patch.object(jinja2.Environment, "get_template") as gt:
+            gt.return_value = jinja2.Template(
+                "This is not something we want to see")
+            res = g.get_response(
+                api_schema=make_api(),
+                opts=Options.build(""),
+            )
+
+            # We don't expect any files because opts.metadata is not set.
+            assert res.file == CodeGeneratorResponse().file
+
+
 def test_get_response_ignores_unwanted_transports_and_clients():
     g = make_generator()
     with mock.patch.object(jinja2.FileSystemLoader, "list_templates") as lt:

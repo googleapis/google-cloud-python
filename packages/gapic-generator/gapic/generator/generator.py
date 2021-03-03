@@ -105,11 +105,12 @@ class Generator:
                     template_name, api_schema=api_schema, opts=opts)
             )
 
-        output_files.update(
-            self._generate_samples_and_manifest(
-                api_schema, self._env.get_template(sample_templates[0]),
-            )
-        )
+        sample_output = self._generate_samples_and_manifest(
+            api_schema,
+            self._env.get_template(sample_templates[0]),
+        ) if sample_templates else {}
+
+        output_files.update(sample_output)
 
         # Return the CodeGeneratorResponse output.
         res = CodeGeneratorResponse(
@@ -232,6 +233,10 @@ class Generator:
         """
         answer: Dict[str, CodeGeneratorResponse.File] = OrderedDict()
         skip_subpackages = False
+
+        # Very, very special case. This flag exists to gate this one file.
+        if not opts.metadata and template_name.endswith("gapic_metadata.json.j2"):
+            return answer
 
         # Sanity check: Rendering per service and per proto would be a
         # combinatorial explosion and is almost certainly not what anyone
