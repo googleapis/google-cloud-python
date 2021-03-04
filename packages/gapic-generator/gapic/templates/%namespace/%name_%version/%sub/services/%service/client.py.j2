@@ -359,14 +359,13 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
         {% endif -%}
         {% if method.input.ident.package != method.ident.package -%} {# request lives in a different package, so there is no proto wrapper #}
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = {{ method.input.ident }}(**request)
-        {% if method.flattened_fields -%}{# Cross-package req and flattened fields #}
         elif not request:
+            # Null request, just make one.
             request = {{ method.input.ident }}()
-        {% endif -%}{# Cross-package req and flattened fields #}
         {%- else %}
         # Minor optimization to avoid making a copy if the user passes
         # in a {{ method.input.ident }}.
