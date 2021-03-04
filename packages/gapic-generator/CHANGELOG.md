@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.42.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.0...v0.42.1) (2021-03-04)
+
+
+### Bug Fixes
+
+* corner case fix for empty request generated test ([#801](https://www.github.com/googleapis/gapic-generator-python/issues/801)) ([039dc71](https://www.github.com/googleapis/gapic-generator-python/commit/039dc713fed291142058741e1138da5a4bec542f))
+
 ## [0.42.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.41.0...v0.42.0) (2021-03-03)
 
 
