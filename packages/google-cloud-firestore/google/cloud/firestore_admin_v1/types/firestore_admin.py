@@ -49,7 +49,7 @@ class CreateIndexRequest(proto.Message):
         parent (str):
             Required. A parent name of the form
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}``
-        index (~.gfa_index.Index):
+        index (google.cloud.firestore_admin_v1.types.Index):
             Required. The composite index to create.
     """
 
@@ -90,7 +90,7 @@ class ListIndexesResponse(proto.Message):
     [FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes].
 
     Attributes:
-        indexes (Sequence[~.gfa_index.Index]):
+        indexes (Sequence[google.cloud.firestore_admin_v1.types.Index]):
             The requested indexes.
         next_page_token (str):
             A page token that may be used to request
@@ -138,9 +138,9 @@ class UpdateFieldRequest(proto.Message):
     [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
 
     Attributes:
-        field (~.gfa_field.Field):
+        field (google.cloud.firestore_admin_v1.types.Field):
             Required. The field to be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             A mask, relative to the field. If specified, only
             configuration specified by this field_mask will be updated
             in the field.
@@ -202,7 +202,7 @@ class ListFieldsResponse(proto.Message):
     [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields].
 
     Attributes:
-        fields (Sequence[~.gfa_field.Field]):
+        fields (Sequence[google.cloud.firestore_admin_v1.types.Field]):
             The requested fields.
         next_page_token (str):
             A page token that may be used to request

@@ -55,7 +55,7 @@ class Field(proto.Message):
             Indexes defined on this ``Field`` will be applied to all
             fields which do not have their own ``Field`` index
             configuration.
-        index_config (~.field.Field.IndexConfig):
+        index_config (google.cloud.firestore_admin_v1.types.Field.IndexConfig):
             The index configuration for this field. If unset, field
             indexing will revert to the configuration defined by the
             ``ancestor_field``. To explicitly remove all indexes for
@@ -67,7 +67,7 @@ class Field(proto.Message):
         r"""The index configuration for this field.
 
         Attributes:
-            indexes (Sequence[~.index.Index]):
+            indexes (Sequence[google.cloud.firestore_admin_v1.types.Index]):
                 The indexes supported for this field.
             uses_ancestor_config (bool):
                 Output only. When true, the ``Field``'s index configuration

@@ -91,7 +91,36 @@ class FirestoreAsyncClient:
         FirestoreClient.parse_common_location_path
     )
 
-    from_service_account_file = FirestoreClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            FirestoreAsyncClient: The constructed client.
+        """
+        return FirestoreClient.from_service_account_info.__func__(FirestoreAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            FirestoreAsyncClient: The constructed client.
+        """
+        return FirestoreClient.from_service_account_file.__func__(FirestoreAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -166,7 +195,7 @@ class FirestoreAsyncClient:
         r"""Gets a single document.
 
         Args:
-            request (:class:`~.firestore.GetDocumentRequest`):
+            request (:class:`google.cloud.firestore_v1.types.GetDocumentRequest`):
                 The request object. The request for
                 [Firestore.GetDocument][google.firestore.v1.Firestore.GetDocument].
 
@@ -177,7 +206,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.document.Document:
+            google.cloud.firestore_v1.types.Document:
                 A Firestore document.
                 Must not exceed 1 MiB - 4 bytes.
 
@@ -227,7 +256,7 @@ class FirestoreAsyncClient:
         r"""Lists documents.
 
         Args:
-            request (:class:`~.firestore.ListDocumentsRequest`):
+            request (:class:`google.cloud.firestore_v1.types.ListDocumentsRequest`):
                 The request object. The request for
                 [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
 
@@ -238,7 +267,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListDocumentsAsyncPager:
+            google.cloud.firestore_v1.services.firestore.pagers.ListDocumentsAsyncPager:
                 The response for
                 [Firestore.ListDocuments][google.firestore.v1.Firestore.ListDocuments].
 
@@ -299,17 +328,18 @@ class FirestoreAsyncClient:
         r"""Updates or inserts a document.
 
         Args:
-            request (:class:`~.firestore.UpdateDocumentRequest`):
+            request (:class:`google.cloud.firestore_v1.types.UpdateDocumentRequest`):
                 The request object. The request for
                 [Firestore.UpdateDocument][google.firestore.v1.Firestore.UpdateDocument].
-            document (:class:`~.gf_document.Document`):
+            document (:class:`google.cloud.firestore_v1.types.Document`):
                 Required. The updated document.
                 Creates the document if it does not
                 already exist.
+
                 This corresponds to the ``document`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.common.DocumentMask`):
+            update_mask (:class:`google.cloud.firestore_v1.types.DocumentMask`):
                 The fields to update.
                 None of the field paths in the mask may
                 contain a reserved name.
@@ -319,6 +349,7 @@ class FirestoreAsyncClient:
                 Fields referenced in the mask, but not
                 present in the input document, are
                 deleted from the document on the server.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -330,7 +361,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gf_document.Document:
+            google.cloud.firestore_v1.types.Document:
                 A Firestore document.
                 Must not exceed 1 MiB - 4 bytes.
 
@@ -395,13 +426,14 @@ class FirestoreAsyncClient:
         r"""Deletes a document.
 
         Args:
-            request (:class:`~.firestore.DeleteDocumentRequest`):
+            request (:class:`google.cloud.firestore_v1.types.DeleteDocumentRequest`):
                 The request object. The request for
                 [Firestore.DeleteDocument][google.firestore.v1.Firestore.DeleteDocument].
             name (:class:`str`):
                 Required. The resource name of the Document to delete.
                 In the format:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -472,7 +504,7 @@ class FirestoreAsyncClient:
         be returned in the same order that they were requested.
 
         Args:
-            request (:class:`~.firestore.BatchGetDocumentsRequest`):
+            request (:class:`google.cloud.firestore_v1.types.BatchGetDocumentsRequest`):
                 The request object. The request for
                 [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
 
@@ -483,7 +515,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.firestore.BatchGetDocumentsResponse]:
+            AsyncIterable[google.cloud.firestore_v1.types.BatchGetDocumentsResponse]:
                 The streamed response for
                 [Firestore.BatchGetDocuments][google.firestore.v1.Firestore.BatchGetDocuments].
 
@@ -534,12 +566,13 @@ class FirestoreAsyncClient:
         r"""Starts a new transaction.
 
         Args:
-            request (:class:`~.firestore.BeginTransactionRequest`):
+            request (:class:`google.cloud.firestore_v1.types.BeginTransactionRequest`):
                 The request object. The request for
                 [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
             database (:class:`str`):
                 Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -551,7 +584,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.firestore.BeginTransactionResponse:
+            google.cloud.firestore_v1.types.BeginTransactionResponse:
                 The response for
                 [Firestore.BeginTransaction][google.firestore.v1.Firestore.BeginTransaction].
 
@@ -618,18 +651,20 @@ class FirestoreAsyncClient:
         documents.
 
         Args:
-            request (:class:`~.firestore.CommitRequest`):
+            request (:class:`google.cloud.firestore_v1.types.CommitRequest`):
                 The request object. The request for
                 [Firestore.Commit][google.firestore.v1.Firestore.Commit].
             database (:class:`str`):
                 Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            writes (:class:`Sequence[~.gf_write.Write]`):
+            writes (:class:`Sequence[google.cloud.firestore_v1.types.Write]`):
                 The writes to apply.
                 Always executed atomically and in order.
+
                 This corresponds to the ``writes`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -641,7 +676,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.firestore.CommitResponse:
+            google.cloud.firestore_v1.types.CommitResponse:
                 The response for
                 [Firestore.Commit][google.firestore.v1.Firestore.Commit].
 
@@ -706,18 +741,20 @@ class FirestoreAsyncClient:
         r"""Rolls back a transaction.
 
         Args:
-            request (:class:`~.firestore.RollbackRequest`):
+            request (:class:`google.cloud.firestore_v1.types.RollbackRequest`):
                 The request object. The request for
                 [Firestore.Rollback][google.firestore.v1.Firestore.Rollback].
             database (:class:`str`):
                 Required. The database name. In the format:
                 ``projects/{project_id}/databases/{database_id}``.
+
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             transaction (:class:`bytes`):
                 Required. The transaction to roll
                 back.
+
                 This corresponds to the ``transaction`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -788,7 +825,7 @@ class FirestoreAsyncClient:
         r"""Runs a query.
 
         Args:
-            request (:class:`~.firestore.RunQueryRequest`):
+            request (:class:`google.cloud.firestore_v1.types.RunQueryRequest`):
                 The request object. The request for
                 [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
 
@@ -799,7 +836,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.firestore.RunQueryResponse]:
+            AsyncIterable[google.cloud.firestore_v1.types.RunQueryResponse]:
                 The response for
                 [Firestore.RunQuery][google.firestore.v1.Firestore.RunQuery].
 
@@ -853,7 +890,7 @@ class FirestoreAsyncClient:
         results.
 
         Args:
-            request (:class:`~.firestore.PartitionQueryRequest`):
+            request (:class:`google.cloud.firestore_v1.types.PartitionQueryRequest`):
                 The request object. The request for
                 [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
 
@@ -864,7 +901,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.PartitionQueryAsyncPager:
+            google.cloud.firestore_v1.services.firestore.pagers.PartitionQueryAsyncPager:
                 The response for
                 [Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery].
 
@@ -924,7 +961,7 @@ class FirestoreAsyncClient:
         order.
 
         Args:
-            requests (AsyncIterator[`~.firestore.WriteRequest`]):
+            requests (AsyncIterator[`google.cloud.firestore_v1.types.WriteRequest`]):
                 The request object AsyncIterator. The request for
                 [Firestore.Write][google.firestore.v1.Firestore.Write].
                 The first request creates a stream, or resumes an
@@ -944,7 +981,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.firestore.WriteResponse]:
+            AsyncIterable[google.cloud.firestore_v1.types.WriteResponse]:
                 The response for
                 [Firestore.Write][google.firestore.v1.Firestore.Write].
 
@@ -979,7 +1016,7 @@ class FirestoreAsyncClient:
         r"""Listens to changes.
 
         Args:
-            requests (AsyncIterator[`~.firestore.ListenRequest`]):
+            requests (AsyncIterator[`google.cloud.firestore_v1.types.ListenRequest`]):
                 The request object AsyncIterator. A request for
                 [Firestore.Listen][google.firestore.v1.Firestore.Listen]
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -989,7 +1026,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.firestore.ListenResponse]:
+            AsyncIterable[google.cloud.firestore_v1.types.ListenResponse]:
                 The response for
                 [Firestore.Listen][google.firestore.v1.Firestore.Listen].
 
@@ -1035,7 +1072,7 @@ class FirestoreAsyncClient:
         r"""Lists all the collection IDs underneath a document.
 
         Args:
-            request (:class:`~.firestore.ListCollectionIdsRequest`):
+            request (:class:`google.cloud.firestore_v1.types.ListCollectionIdsRequest`):
                 The request object. The request for
                 [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
             parent (:class:`str`):
@@ -1043,6 +1080,7 @@ class FirestoreAsyncClient:
                 ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
                 For example:
                 ``projects/my-project/databases/my-database/documents/chatrooms/my-chatroom``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1054,7 +1092,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCollectionIdsAsyncPager:
+            google.cloud.firestore_v1.services.firestore.pagers.ListCollectionIdsAsyncPager:
                 The response from
                 [Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds].
 
@@ -1137,7 +1175,7 @@ class FirestoreAsyncClient:
         [Commit][google.firestore.v1.Firestore.Commit] instead.
 
         Args:
-            request (:class:`~.firestore.BatchWriteRequest`):
+            request (:class:`google.cloud.firestore_v1.types.BatchWriteRequest`):
                 The request object. The request for
                 [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
 
@@ -1148,7 +1186,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.firestore.BatchWriteResponse:
+            google.cloud.firestore_v1.types.BatchWriteResponse:
                 The response from
                 [Firestore.BatchWrite][google.firestore.v1.Firestore.BatchWrite].
 
@@ -1196,7 +1234,7 @@ class FirestoreAsyncClient:
         r"""Creates a new document.
 
         Args:
-            request (:class:`~.firestore.CreateDocumentRequest`):
+            request (:class:`google.cloud.firestore_v1.types.CreateDocumentRequest`):
                 The request object. The request for
                 [Firestore.CreateDocument][google.firestore.v1.Firestore.CreateDocument].
 
@@ -1207,7 +1245,7 @@ class FirestoreAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.document.Document:
+            google.cloud.firestore_v1.types.Document:
                 A Firestore document.
                 Must not exceed 1 MiB - 4 bytes.
 

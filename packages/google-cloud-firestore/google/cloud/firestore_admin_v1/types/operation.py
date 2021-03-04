@@ -55,21 +55,21 @@ class IndexOperationMetadata(proto.Message):
     [FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex].
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation started.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation completed. Will be
             unset if operation still in progress.
         index (str):
             The index resource that this operation is acting on. For
             example:
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
-        state (~.operation.OperationState):
+        state (google.cloud.firestore_admin_v1.types.OperationState):
             The state of the operation.
-        progress_documents (~.operation.Progress):
+        progress_documents (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in documents, of this
             operation.
-        progress_bytes (~.operation.Progress):
+        progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
     """
 
@@ -93,25 +93,25 @@ class FieldOperationMetadata(proto.Message):
     [FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField].
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation started.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation completed. Will be
             unset if operation still in progress.
         field (str):
             The field resource that this operation is acting on. For
             example:
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}``
-        index_config_deltas (Sequence[~.operation.FieldOperationMetadata.IndexConfigDelta]):
+        index_config_deltas (Sequence[google.cloud.firestore_admin_v1.types.FieldOperationMetadata.IndexConfigDelta]):
             A list of
             [IndexConfigDelta][google.firestore.admin.v1.FieldOperationMetadata.IndexConfigDelta],
             which describe the intent of this operation.
-        state (~.operation.OperationState):
+        state (google.cloud.firestore_admin_v1.types.OperationState):
             The state of the operation.
-        progress_documents (~.operation.Progress):
+        progress_documents (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in documents, of this
             operation.
-        progress_bytes (~.operation.Progress):
+        progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
     """
 
@@ -119,9 +119,9 @@ class FieldOperationMetadata(proto.Message):
         r"""Information about an index configuration change.
 
         Attributes:
-            change_type (~.operation.FieldOperationMetadata.IndexConfigDelta.ChangeType):
+            change_type (google.cloud.firestore_admin_v1.types.FieldOperationMetadata.IndexConfigDelta.ChangeType):
                 Specifies how the index is changing.
-            index (~.gfa_index.Index):
+            index (google.cloud.firestore_admin_v1.types.Index):
                 The index being changed.
         """
 
@@ -163,17 +163,17 @@ class ExportDocumentsMetadata(proto.Message):
     [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments].
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation started.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation completed. Will be
             unset if operation still in progress.
-        operation_state (~.operation.OperationState):
+        operation_state (google.cloud.firestore_admin_v1.types.OperationState):
             The state of the export operation.
-        progress_documents (~.operation.Progress):
+        progress_documents (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in documents, of this
             operation.
-        progress_bytes (~.operation.Progress):
+        progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
         collection_ids (Sequence[str]):
             Which collection ids are being exported.
@@ -203,17 +203,17 @@ class ImportDocumentsMetadata(proto.Message):
     [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments].
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation started.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time this operation completed. Will be
             unset if operation still in progress.
-        operation_state (~.operation.OperationState):
+        operation_state (google.cloud.firestore_admin_v1.types.OperationState):
             The state of the import operation.
-        progress_documents (~.operation.Progress):
+        progress_documents (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in documents, of this
             operation.
-        progress_bytes (~.operation.Progress):
+        progress_bytes (google.cloud.firestore_admin_v1.types.Progress):
             The progress, in bytes, of this operation.
         collection_ids (Sequence[str]):
             Which collection ids are being imported.
