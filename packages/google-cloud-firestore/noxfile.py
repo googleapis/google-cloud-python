@@ -102,6 +102,7 @@ def default(session):
     session.run(
         "py.test",
         "--quiet",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google/cloud",
         "--cov=tests/unit",
         "--cov-append",
@@ -131,6 +132,9 @@ def system(session):
     # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("FIRESTORE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
+    # Install pyopenssl for mTLS testing.
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
+        session.install("pyopenssl")
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
@@ -150,9 +154,21 @@ def system(session):
 
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--verbose", system_test_path, *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_path,
+            *session.posargs,
+        )
     if system_test_folder_exists:
-        session.run("py.test", "--verbose", system_test_folder_path, *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_folder_path,
+            *session.posargs,
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
