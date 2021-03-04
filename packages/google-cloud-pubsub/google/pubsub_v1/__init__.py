@@ -118,7 +118,6 @@ __all__ = (
     "ReceivedMessage",
     "RetryPolicy",
     "Schema",
-    "SchemaServiceClient",
     "SchemaSettings",
     "SchemaView",
     "SeekRequest",
@@ -126,6 +125,7 @@ __all__ = (
     "Snapshot",
     "StreamingPullRequest",
     "StreamingPullResponse",
+    "SubscriberClient",
     "Subscription",
     "Topic",
     "UpdateSnapshotRequest",
@@ -135,5 +135,5 @@ __all__ = (
     "ValidateMessageResponse",
     "ValidateSchemaRequest",
     "ValidateSchemaResponse",
-    "SubscriberClient",
+    "SchemaServiceClient",
 )

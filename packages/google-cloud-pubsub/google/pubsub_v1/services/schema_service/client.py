@@ -75,10 +75,7 @@ class SchemaServiceClientMeta(type):
 
 
 class SchemaServiceClient(metaclass=SchemaServiceClientMeta):
-    """ Service for doing schema-related operations.
-    EXPERIMENTAL: The Schema service is in development and may not
-    work yet.
-    """
+    """Service for doing schema-related operations."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):

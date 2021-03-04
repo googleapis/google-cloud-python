@@ -143,8 +143,6 @@ class Topic(proto.Message):
         schema_settings (google.pubsub_v1.types.SchemaSettings):
             Settings for validating messages published
             against a schema.
-            EXPERIMENTAL: Schema support is in development
-            and may not work yet.
         satisfies_pzs (bool):
             Reserved for future use. This field is set
             only in responses from the server; it is ignored

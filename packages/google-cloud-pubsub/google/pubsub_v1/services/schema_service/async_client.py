@@ -40,10 +40,7 @@ from .client import SchemaServiceClient
 
 
 class SchemaServiceAsyncClient:
-    """ Service for doing schema-related operations.
-    EXPERIMENTAL: The Schema service is in development and may not
-    work yet.
-    """
+    """Service for doing schema-related operations."""
 
     _client: SchemaServiceClient
 

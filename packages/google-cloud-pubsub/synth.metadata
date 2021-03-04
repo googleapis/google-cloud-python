@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsub.git",
-        "sha": "970924ec144a8dd2556fa7e1b55c14088935d5fd"
+        "sha": "6e43f4ca8411c6625bac1720172807632dc4b500"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "9adc11e84218d5e234392e7fe81676e778895525",
-        "internalRef": "359844338"
+        "sha": "3befd26ca55723d3e8111909331eac1249837987",
+        "internalRef": "360805639"
       }
     },
     {

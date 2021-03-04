@@ -38,9 +38,7 @@ from .base import SchemaServiceTransport, DEFAULT_CLIENT_INFO
 class SchemaServiceGrpcTransport(SchemaServiceTransport):
     """gRPC backend transport for SchemaService.
 
-     Service for doing schema-related operations.
-    EXPERIMENTAL: The Schema service is in development and may not
-    work yet.
+    Service for doing schema-related operations.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
