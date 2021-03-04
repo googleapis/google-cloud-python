@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.14.3](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.2...v1.14.3) (2021-03-04)
+
+
+### Bug Fixes
+
+* adding enums to a repeated field does not raise a TypeError ([#202](https://www.github.com/googleapis/proto-plus-python/issues/202)) ([2a10bbe](https://www.github.com/googleapis/proto-plus-python/commit/2a10bbecaf8955c7bf1956086aef42630112788b))
+
 ### [1.14.2](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.1...v1.14.2) (2021-02-26)
 
 
