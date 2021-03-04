@@ -58,3 +58,35 @@ def test_to_python_unknown_value():
     with mock.patch.object(warnings, "warn") as warn:
         assert enum_rule.to_python(4) == 4
         warn.assert_called_once_with("Unrecognized Foo enum value: 4")
+
+
+def test_enum_append():
+    class Bivalve(proto.Enum):
+        CLAM = 0
+        OYSTER = 1
+
+    class MolluscContainer(proto.Message):
+        bivalves = proto.RepeatedField(proto.ENUM, number=1, enum=Bivalve,)
+
+    mc = MolluscContainer()
+    clam = Bivalve.CLAM
+    mc.bivalves.append(clam)
+    mc.bivalves.append(1)
+
+    assert mc.bivalves == [clam, Bivalve.OYSTER]
+
+
+def test_enum_map_insert():
+    class Bivalve(proto.Enum):
+        CLAM = 0
+        OYSTER = 1
+
+    class MolluscContainer(proto.Message):
+        bivalves = proto.MapField(proto.STRING, proto.ENUM, number=1, enum=Bivalve,)
+
+    mc = MolluscContainer()
+    clam = Bivalve.CLAM
+    mc.bivalves["clam"] = clam
+    mc.bivalves["oyster"] = 1
+
+    assert mc.bivalves == {"clam": clam, "oyster": Bivalve.OYSTER}

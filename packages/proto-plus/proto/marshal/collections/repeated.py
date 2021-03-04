@@ -174,5 +174,5 @@ class RepeatedComposite(Repeated):
 
     def insert(self, index: int, value):
         """Insert ``value`` in the sequence before ``index``."""
-        pb_value = self._marshal.to_proto(self._pb_type, value, strict=True)
+        pb_value = self._marshal.to_proto(self._pb_type, value)
         self.pb.insert(index, pb_value)
