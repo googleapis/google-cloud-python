@@ -1363,7 +1363,7 @@ def test_gapic_metadata():
                             "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
                         },
                     ),
-                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                    "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusAsyncClient",
                         rpcs={
                             "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
@@ -1382,7 +1382,7 @@ def test_gapic_metadata():
                             "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
                         },
                     ),
-                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                    "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidAsyncClient",
                         rpcs={
                             "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),
@@ -1457,7 +1457,7 @@ def test_gapic_metadata():
                             "GiantPacific": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant_pacific"]),
                         },
                     ),
-                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                    "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="OctopusAsyncClient",
                         rpcs={
                             "BlueSpot": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["blue_spot"]),
@@ -1483,7 +1483,7 @@ def test_gapic_metadata():
                             "Ramshorn": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["ramshorn"]),
                         },
                     ),
-                    "grpcAsync": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
+                    "grpc-async": gapic_metadata_pb2.GapicMetadata.ServiceAsClient(
                         library_client="SquidAsyncClient",
                         rpcs={
                             "Giant": gapic_metadata_pb2.GapicMetadata.MethodList(methods=["giant"]),

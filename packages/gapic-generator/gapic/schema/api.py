@@ -415,7 +415,7 @@ class API:
             transports = []
             if "grpc" in options.transport:
                 transports.append(("grpc", service.client_name))
-                transports.append(("grpcAsync", service.async_client_name))
+                transports.append(("grpc-async", service.async_client_name))
 
             if "rest" in options.transport:
                 transports.append(("rest", service.client_name))
