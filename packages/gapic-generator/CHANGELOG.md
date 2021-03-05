@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.42.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.1...v0.42.2) (2021-03-05)
+
+
+### Bug Fixes
+
+* s/grpcAsync/grpc-async for gapic metadata ([#803](https://www.github.com/googleapis/gapic-generator-python/issues/803)) ([96f7864](https://www.github.com/googleapis/gapic-generator-python/commit/96f78640d90cf50c6b525924d14c6afe31874be6))
+
 ### [0.42.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.0...v0.42.1) (2021-03-04)
 
 
