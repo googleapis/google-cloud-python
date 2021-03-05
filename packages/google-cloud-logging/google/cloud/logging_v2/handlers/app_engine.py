@@ -22,8 +22,10 @@ import logging
 import os
 
 from google.cloud.logging_v2.handlers._helpers import get_request_data
+from google.cloud.logging_v2.handlers._monitored_resources import (
+    _create_app_engine_resource,
+)
 from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
-from google.cloud.logging_v2.resource import Resource
 
 _DEFAULT_GAE_LOGGER_NAME = "app"
 
@@ -75,15 +77,7 @@ class AppEngineHandler(logging.StreamHandler):
         Returns:
             google.cloud.logging_v2.resource.Resource: Monitored resource for GAE.
         """
-        gae_resource = Resource(
-            type="gae_app",
-            labels={
-                "project_id": self.project_id,
-                "module_id": self.module_id,
-                "version_id": self.version_id,
-            },
-        )
-        return gae_resource
+        return _create_app_engine_resource(self.project_id)
 
     def get_gae_labels(self):
         """Return the labels for GAE app.

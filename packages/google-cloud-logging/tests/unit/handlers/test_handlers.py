@@ -14,6 +14,7 @@
 
 import logging
 import unittest
+import mock
 
 
 class TestCloudLoggingHandler(unittest.TestCase):
@@ -31,19 +32,27 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
     def test_ctor_defaults(self):
         import sys
-        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+        from google.cloud.logging_v2.handlers._monitored_resources import (
+            _create_global_resource,
+        )
         from google.cloud.logging_v2.handlers.handlers import DEFAULT_LOGGER_NAME
 
-        client = _Client(self.PROJECT)
-        handler = self._make_one(client, transport=_Transport)
-        self.assertEqual(handler.name, DEFAULT_LOGGER_NAME)
-        self.assertIs(handler.client, client)
-        self.assertIsInstance(handler.transport, _Transport)
-        self.assertIs(handler.transport.client, client)
-        self.assertEqual(handler.transport.name, DEFAULT_LOGGER_NAME)
-        self.assertIs(handler.resource, _GLOBAL_RESOURCE)
-        self.assertIsNone(handler.labels)
-        self.assertIs(handler.stream, sys.stderr)
+        patch = mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            return_value=None,
+        )
+        with patch:
+            client = _Client(self.PROJECT)
+            handler = self._make_one(client, transport=_Transport)
+            self.assertEqual(handler.name, DEFAULT_LOGGER_NAME)
+            self.assertIs(handler.client, client)
+            self.assertIsInstance(handler.transport, _Transport)
+            self.assertIs(handler.transport.client, client)
+            self.assertEqual(handler.transport.name, DEFAULT_LOGGER_NAME)
+            global_resource = _create_global_resource(self.PROJECT)
+            self.assertEqual(handler.resource, global_resource)
+            self.assertIsNone(handler.labels)
+            self.assertIs(handler.stream, sys.stderr)
 
     def test_ctor_explicit(self):
         import io

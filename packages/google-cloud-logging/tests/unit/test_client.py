@@ -718,7 +718,7 @@ class TestClient(unittest.TestCase):
     def test_get_default_handler_app_engine(self):
         import os
         from google.cloud._testing import _Monkey
-        from google.cloud.logging_v2.client import _APPENGINE_FLEXIBLE_ENV_VM
+        from google.cloud.logging_v2.handlers._monitored_resources import _GAE_ENV_VARS
         from google.cloud.logging.handlers import AppEngineHandler
 
         credentials = _make_credentials()
@@ -726,7 +726,9 @@ class TestClient(unittest.TestCase):
             project=self.PROJECT, credentials=credentials, _use_grpc=False
         )
 
-        with _Monkey(os, environ={_APPENGINE_FLEXIBLE_ENV_VM: "True"}):
+        gae_env_vars = {var: "TRUE" for var in _GAE_ENV_VARS}
+
+        with _Monkey(os, environ=gae_env_vars):
             handler = client.get_default_handler()
 
         handler.transport.worker.stop()
@@ -742,7 +744,7 @@ class TestClient(unittest.TestCase):
         )
 
         patch = mock.patch(
-            "google.cloud.logging_v2.client.retrieve_metadata_server",
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
             return_value="test-gke-cluster",
         )
 
