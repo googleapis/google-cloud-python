@@ -14,6 +14,7 @@
 
 import logging
 import unittest
+import inspect
 
 import google.cloud.logging
 
@@ -24,3 +25,12 @@ class TestComputeEngine(Common, unittest.TestCase):
 
     environment = "compute"
     language = "python"
+
+    def test_monitored_resource(self):
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(log_text)
+        found_resource = log_list[0].resource
+
+        self.assertEqual(found_resource.type, "gce_instance")
+        self.assertTrue(found_resource.labels["zone"])
+        self.assertTrue(found_resource.labels["instance_id"])

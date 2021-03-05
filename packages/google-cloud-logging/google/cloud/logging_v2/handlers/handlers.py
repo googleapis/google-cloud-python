@@ -17,7 +17,7 @@
 import logging
 
 from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
-from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
 
 DEFAULT_LOGGER_NAME = "python"
 
@@ -59,7 +59,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         *,
         name=DEFAULT_LOGGER_NAME,
         transport=BackgroundThreadTransport,
-        resource=_GLOBAL_RESOURCE,
+        resource=None,
         labels=None,
         stream=None,
     ):
@@ -78,12 +78,15 @@ class CloudLoggingHandler(logging.StreamHandler):
                 :class:`.BackgroundThreadTransport`. The other
                 option is :class:`.SyncTransport`.
             resource (~logging_v2.resource.Resource):
-                Resource for this Handler. Defaults to ``GLOBAL_RESOURCE``.
+                Resource for this Handler. If not given, will be inferred from the environment.
             labels (Optional[dict]): Monitored resource of the entry, defaults
                 to the global resource type.
             stream (Optional[IO]): Stream to be used by the handler.
         """
         super(CloudLoggingHandler, self).__init__(stream)
+        if not resource:
+            # infer the correct monitored resource from the local environment
+            resource = detect_resource(client.project)
         self.name = name
         self.client = client
         self.transport = transport(client, name)

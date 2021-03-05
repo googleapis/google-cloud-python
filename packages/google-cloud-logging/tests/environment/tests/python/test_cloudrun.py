@@ -14,8 +14,11 @@
 
 import logging
 import unittest
+import inspect
+import uuid
 
 import google.cloud.logging
+from google.cloud.logging_v2.resource import Resource
 
 from ..common.common import Common
 
@@ -24,3 +27,15 @@ class TestCloudRun(Common, unittest.TestCase):
 
     environment = "cloudrun"
     language = "python"
+
+    def test_monitored_resource(self):
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(log_text)
+        found_resource = log_list[0].resource
+
+        self.assertEqual(found_resource.type, "cloud_run_revision")
+        self.assertTrue(found_resource.labels["project_id"])
+        self.assertTrue(found_resource.labels["service_name"])
+        self.assertTrue(found_resource.labels["revision_name"])
+        self.assertTrue(found_resource.labels["location"])
+        self.assertTrue(found_resource.labels["configuration_name"])

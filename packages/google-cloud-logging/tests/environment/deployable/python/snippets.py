@@ -15,8 +15,10 @@
 import logging
 import os
 
+
 try:
     import google.cloud.logging
+    from google.cloud.logging_v2._helpers import retrieve_metadata_server
 except ImportError:
     # import at runtime for GAE environments
     import pip
@@ -26,15 +28,16 @@ except ImportError:
     pip.main(["install", "-e", "./python-logging"])
     importlib.reload(site)
     import google.cloud.logging
+    from google.cloud.logging_v2._helpers import retrieve_metadata_server
 
 
-def simple_log(log_name=None, log_text="simple_log", **kwargs):
-    client = google.cloud.logging.Client()
-    logger = client.logger(log_name)
-    logger.log_text(log_text)
+# def simple_log(log_name=None, log_text="simple_log", **kwargs):
+#     client = google.cloud.logging.Client()
+#     logger = client.logger(log_name)
+#     logger.log_text(log_text)
 
 
-def pylogging(log_text="pylogging", severity="warning", **kwargs):
+def simplelog(log_text="pylogging", severity="warning", **kwargs):
     # allowed severity: debug, info, warning, error, critical
     if severity == "debug":
         logging.debug(log_text)
@@ -47,10 +50,12 @@ def pylogging(log_text="pylogging", severity="warning", **kwargs):
     else:
         logging.critical(log_text)
 
+
 def print_handlers(**kwargs):
     root_logger = logging.getLogger()
-    handlers_str = ', '.join([type(h).__name__ for h in root_logger.handlers])
+    handlers_str = ", ".join([type(h).__name__ for h in root_logger.handlers])
     logging.info(handlers_str)
+
 
 def remove_stream_handlers(**kwargs):
     logger = logging.getLogger()
@@ -58,6 +63,7 @@ def remove_stream_handlers(**kwargs):
         if isinstance(handler, logging.StreamHandler):
             logging.error(handler)
             logger.removeHandler(handler)
+
 
 def print_env_vars(env_var=None, **kwargs):
     if env_var:
@@ -69,3 +75,9 @@ def print_env_vars(env_var=None, **kwargs):
     else:
         logging.error(os.environ)
 
+
+def get_metadata_server(metadata_key=None, **kwargs):
+    if metadata_key is None:
+        metadata_key = ""
+    data = retrieve_metadata_server(metadata_key)
+    logging.error(f"key: {metadata_key}, data:{data}")

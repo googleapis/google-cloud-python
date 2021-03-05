@@ -18,10 +18,9 @@ import unittest
 import google.cloud.logging
 
 from ..common.common import Common
-from ..common.appengine import CommonAppEngine
 
 
-class TestAppEngineFlex(Common, CommonAppEngine, unittest.TestCase):
+class TestCloudRun(Common, unittest.TestCase):
 
-    environment = "appengine_flex_python"
-    language = "python"
+    environment = "cloudrun"
+    language = "go"

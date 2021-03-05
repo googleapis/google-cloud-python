@@ -54,7 +54,8 @@ Implementation code for each language/environment pair can be found in `envctl/e
   - destroys an existing environment
 - `envctl <language> <environment> trigger <snippet> <optional arguments>`
   - sends a pub/sub message to trigger a snippet in an environment
-- `envctl <language> <environment> filter_string`
+  - optional arguments are embedded as [custom attributes](https://cloud.google.com/pubsub/docs/publisher#using_attributes) in Pub/Sub messages
+- `envctl <language> <environment> filter-string`
   - returns a filter that finds logs created by the environment
 - `envctl <language> <environment> logs`
   - returns a list of recent logs from the environment
@@ -64,3 +65,10 @@ Implementation code for each language/environment pair can be found in `envctl/e
 Contains the pytest code that tests each environment. Common logic is stored as abstract super-classes in `tests/common`.
 Concrete implementations for each environment can be found in `tests/<language>/test_<environment>.py`. 
 Test files in `tests/<language>` can inherit from any file in `tests/common` logic as needed, in order to share test logic between environments.
+
+### Shared Tests
+
+| Test Name      | Optional Input       | Description                      |
+| -------------- | ----------------     | -------------------------------- |
+| `simplelog`    | `logname`, `logtext` |  Logs a simple text payload      |
+| `standardlog`  | `logname`, `logtext` |  Logs a simple text payload using a standard library wrapper |

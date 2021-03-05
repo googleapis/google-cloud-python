@@ -129,7 +129,7 @@ def blacken(session: nox.sessions.Session) -> None:
         "functions",
     ],
 )
-@nox.parametrize("language", ["python"])
+@nox.parametrize("language", ["python", "go"])
 def tests(session, language, platform):
     """Run the e2e environment test suite."""
     if os.environ.get("RUN_ENV_TESTS", "true") == "false":

@@ -18,9 +18,10 @@ import unittest
 import google.cloud.logging
 
 from ..common.common import Common
+from ..common.appengine import CommonAppEngine
 
 
-class TestAppEngineStandard(Common, unittest.TestCase):
+class TestAppEngineStandard(Common, CommonAppEngine, unittest.TestCase):
 
     environment = "appengine_standard"
     language = "python"

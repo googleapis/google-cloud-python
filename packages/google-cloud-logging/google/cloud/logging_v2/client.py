@@ -29,7 +29,6 @@ import google.api_core.client_options
 from google.cloud.client import ClientWithProject
 from google.cloud.environment_vars import DISABLE_GRPC
 from google.cloud.logging_v2._helpers import _add_defaults_to_filter
-from google.cloud.logging_v2._helpers import retrieve_metadata_server
 from google.cloud.logging_v2._http import Connection
 from google.cloud.logging_v2._http import _LoggingAPI as JSONLoggingAPI
 from google.cloud.logging_v2._http import _MetricsAPI as JSONMetricsAPI
@@ -39,6 +38,9 @@ from google.cloud.logging_v2.handlers import AppEngineHandler
 from google.cloud.logging_v2.handlers import ContainerEngineHandler
 from google.cloud.logging_v2.handlers import setup_logging
 from google.cloud.logging_v2.handlers.handlers import EXCLUDED_LOGGER_DEFAULTS
+from google.cloud.logging_v2.resource import Resource
+from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
+
 
 from google.cloud.logging_v2.logger import Logger
 from google.cloud.logging_v2.metric import Metric
@@ -48,14 +50,8 @@ from google.cloud.logging_v2.sink import Sink
 _DISABLE_GRPC = os.getenv(DISABLE_GRPC, False)
 _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
-_APPENGINE_FLEXIBLE_ENV_VM = "GAE_APPENGINE_HOSTNAME"
-"""Environment variable set in App Engine when vm:true is set."""
-
-_APPENGINE_INSTANCE_ID = "GAE_INSTANCE"
-"""Environment variable set in App Engine standard and flexible environment."""
-
-_GKE_CLUSTER_NAME = "instance/attributes/cluster-name"
-"""Attribute in metadata server when in GKE environment."""
+_GAE_RESOURCE_TYPE = "gae_app"
+_GKE_RESOURCE_TYPE = "k8s_container"
 
 
 class Client(ClientWithProject):
@@ -348,17 +344,20 @@ class Client(ClientWithProject):
         Returns:
             logging.Handler: The default log handler based on the environment
         """
-        gke_cluster_name = retrieve_metadata_server(_GKE_CLUSTER_NAME)
+        monitored_resource = kw.pop("resource", detect_resource(self.project))
 
         if (
-            _APPENGINE_FLEXIBLE_ENV_VM in os.environ
-            or _APPENGINE_INSTANCE_ID in os.environ
+            isinstance(monitored_resource, Resource)
+            and monitored_resource.type == _GAE_RESOURCE_TYPE
         ):
             return AppEngineHandler(self, **kw)
-        elif gke_cluster_name is not None:
+        elif (
+            isinstance(monitored_resource, Resource)
+            and monitored_resource.type == _GKE_RESOURCE_TYPE
+        ):
             return ContainerEngineHandler(**kw)
         else:
-            return CloudLoggingHandler(self, **kw)
+            return CloudLoggingHandler(self, resource=monitored_resource, **kw)
 
     def setup_logging(
         self, *, log_level=logging.INFO, excluded_loggers=EXCLUDED_LOGGER_DEFAULTS, **kw
