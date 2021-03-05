@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.3.0...v0.4.0) (2021-03-05)
+
+
+### Features
+
+* add from_service_account_info factory ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+* Add new Experiment service ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+* added support for test cases and agent validation ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+* allow to disable webhook invocation per request ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+* supports SentimentAnalysisResult in webhook request ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+
+
+### Documentation
+
+* test cases doc update ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+* update languages link ([d9bd192](https://www.github.com/googleapis/python-dialogflow-cx/commit/d9bd192a87bc8a4462da3bdbda362b359d86dd65))
+
 ## [0.3.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.2.0...v0.3.0) (2021-01-29)
 
 
