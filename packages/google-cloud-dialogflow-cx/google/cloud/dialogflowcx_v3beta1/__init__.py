@@ -347,7 +347,6 @@ __all__ = (
     "SecuritySettingsServiceClient",
     "SentimentAnalysisResult",
     "SessionEntityType",
-    "SessionEntityTypesClient",
     "SessionInfo",
     "SessionsClient",
     "SpeechModelVariant",
@@ -400,4 +399,5 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
+    "SessionEntityTypesClient",
 )
