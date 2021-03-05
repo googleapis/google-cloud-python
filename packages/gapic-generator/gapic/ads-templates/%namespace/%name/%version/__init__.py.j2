@@ -11,18 +11,18 @@ if sys.version_info < (3, 7):
 
 _lazy_type_to_package_map = {
     # Message types
-{%- for message in api.top_level_messages.values() %}
+{%- for _, message in api.top_level_messages|dictsort %}
     '{{ message.name }}': '{{ message.ident.package|join('.') }}.types.{{ message.ident.module }}',
 {%- endfor %}
-  
+
     # Enum types
-{%- for enum in api.top_level_enums.values() %}
+{%- for _, enum in api.top_level_enums|dictsort %}
     '{{ enum.name }}': '{{ enum.ident.package|join('.') }}.types.{{enum.ident.module }}',
 {%- endfor %}
-  
+
     {# TODO(yon-mg): add rest transport service once I know what this is #}
-    # Client classes and transports  
-{%- for service in api.services.values() %}
+    # Client classes and transports
+{%- for _, service in api.services|dictsort %}
     '{{ service.client_name }}': '{{ service.meta.address.package|join('.') }}.services.{{ service.meta.address.module }}',
     '{{ service.transport_name }}': '{{ service.meta.address.package|join('.') }}.services.{{ service.meta.address.module }}.transports',
     '{{ service.grpc_transport_name }}': '{{ service.meta.address.package|join('.') }}.services.{{ service.meta.address.module }}.transports',

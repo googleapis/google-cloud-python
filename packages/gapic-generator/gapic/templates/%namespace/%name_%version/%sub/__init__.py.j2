@@ -2,7 +2,7 @@
 
 {% block content %}
 {#  Import subpackages. -#}
-{% for subpackage in api.subpackages.keys() -%}
+{% for subpackage, _ in api.subpackages|dictsort -%}
 from . import {{ subpackage }}
 {% endfor -%}
 
