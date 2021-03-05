@@ -77,7 +77,7 @@ s.replace(
 s.replace(
     ".trampolinerc",
     "pass_down_envvars\+\=\(",
-    'pass_down_envvars+=(\n    "ENVIRONMENT"'
+    'pass_down_envvars+=(\n    "ENVIRONMENT"\n    "RUNTIME"'
 )
 
 # don't lint environment tests
