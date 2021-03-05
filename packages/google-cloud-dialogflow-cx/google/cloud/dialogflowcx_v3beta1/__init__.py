@@ -25,20 +25,24 @@ from .services.pages import PagesClient
 from .services.security_settings_service import SecuritySettingsServiceClient
 from .services.session_entity_types import SessionEntityTypesClient
 from .services.sessions import SessionsClient
+from .services.test_cases import TestCasesClient
 from .services.transition_route_groups import TransitionRouteGroupsClient
 from .services.versions import VersionsClient
 from .services.webhooks import WebhooksClient
 from .types.agent import Agent
+from .types.agent import AgentValidationResult
 from .types.agent import CreateAgentRequest
 from .types.agent import DeleteAgentRequest
 from .types.agent import ExportAgentRequest
 from .types.agent import ExportAgentResponse
 from .types.agent import GetAgentRequest
+from .types.agent import GetAgentValidationResultRequest
 from .types.agent import ListAgentsRequest
 from .types.agent import ListAgentsResponse
 from .types.agent import RestoreAgentRequest
 from .types.agent import SpeechToTextSettings
 from .types.agent import UpdateAgentRequest
+from .types.agent import ValidateAgentRequest
 from .types.audio_config import AudioEncoding
 from .types.audio_config import InputAudioConfig
 from .types.audio_config import OutputAudioConfig
@@ -78,12 +82,15 @@ from .types.experiment import VersionVariants
 from .types.flow import CreateFlowRequest
 from .types.flow import DeleteFlowRequest
 from .types.flow import Flow
+from .types.flow import FlowValidationResult
 from .types.flow import GetFlowRequest
+from .types.flow import GetFlowValidationResultRequest
 from .types.flow import ListFlowsRequest
 from .types.flow import ListFlowsResponse
 from .types.flow import NluSettings
 from .types.flow import TrainFlowRequest
 from .types.flow import UpdateFlowRequest
+from .types.flow import ValidateFlowRequest
 from .types.fulfillment import Fulfillment
 from .types.intent import CreateIntentRequest
 from .types.intent import DeleteIntentRequest
@@ -137,6 +144,39 @@ from .types.session_entity_type import ListSessionEntityTypesRequest
 from .types.session_entity_type import ListSessionEntityTypesResponse
 from .types.session_entity_type import SessionEntityType
 from .types.session_entity_type import UpdateSessionEntityTypeRequest
+from .types.test_case import BatchDeleteTestCasesRequest
+from .types.test_case import BatchRunTestCasesMetadata
+from .types.test_case import BatchRunTestCasesRequest
+from .types.test_case import BatchRunTestCasesResponse
+from .types.test_case import CalculateCoverageRequest
+from .types.test_case import CalculateCoverageResponse
+from .types.test_case import ConversationTurn
+from .types.test_case import CreateTestCaseRequest
+from .types.test_case import ExportTestCasesMetadata
+from .types.test_case import ExportTestCasesRequest
+from .types.test_case import ExportTestCasesResponse
+from .types.test_case import GetTestCaseRequest
+from .types.test_case import ImportTestCasesMetadata
+from .types.test_case import ImportTestCasesRequest
+from .types.test_case import ImportTestCasesResponse
+from .types.test_case import IntentCoverage
+from .types.test_case import ListTestCaseResultsRequest
+from .types.test_case import ListTestCaseResultsResponse
+from .types.test_case import ListTestCasesRequest
+from .types.test_case import ListTestCasesResponse
+from .types.test_case import RunTestCaseMetadata
+from .types.test_case import RunTestCaseRequest
+from .types.test_case import RunTestCaseResponse
+from .types.test_case import TestCase
+from .types.test_case import TestCaseError
+from .types.test_case import TestCaseResult
+from .types.test_case import TestConfig
+from .types.test_case import TestError
+from .types.test_case import TestResult
+from .types.test_case import TestRunDifference
+from .types.test_case import TransitionCoverage
+from .types.test_case import TransitionRouteGroupCoverage
+from .types.test_case import UpdateTestCaseRequest
 from .types.transition_route_group import CreateTransitionRouteGroupRequest
 from .types.transition_route_group import DeleteTransitionRouteGroupRequest
 from .types.transition_route_group import GetTransitionRouteGroupRequest
@@ -144,6 +184,8 @@ from .types.transition_route_group import ListTransitionRouteGroupsRequest
 from .types.transition_route_group import ListTransitionRouteGroupsResponse
 from .types.transition_route_group import TransitionRouteGroup
 from .types.transition_route_group import UpdateTransitionRouteGroupRequest
+from .types.validation_message import ResourceName
+from .types.validation_message import ValidationMessage
 from .types.version import CreateVersionOperationMetadata
 from .types.version import CreateVersionRequest
 from .types.version import DeleteVersionRequest
@@ -168,8 +210,17 @@ from .types.webhook import WebhookResponse
 
 __all__ = (
     "Agent",
+    "AgentValidationResult",
+    "AgentsClient",
     "AudioEncoding",
     "AudioInput",
+    "BatchDeleteTestCasesRequest",
+    "BatchRunTestCasesMetadata",
+    "BatchRunTestCasesRequest",
+    "BatchRunTestCasesResponse",
+    "CalculateCoverageRequest",
+    "CalculateCoverageResponse",
+    "ConversationTurn",
     "CreateAgentRequest",
     "CreateEntityTypeRequest",
     "CreateEnvironmentRequest",
@@ -179,6 +230,7 @@ __all__ = (
     "CreatePageRequest",
     "CreateSecuritySettingsRequest",
     "CreateSessionEntityTypeRequest",
+    "CreateTestCaseRequest",
     "CreateTransitionRouteGroupRequest",
     "CreateVersionOperationMetadata",
     "CreateVersionRequest",
@@ -199,6 +251,7 @@ __all__ = (
     "DetectIntentResponse",
     "DtmfInput",
     "EntityType",
+    "EntityTypesClient",
     "Environment",
     "EnvironmentsClient",
     "EventHandler",
@@ -207,26 +260,37 @@ __all__ = (
     "ExperimentsClient",
     "ExportAgentRequest",
     "ExportAgentResponse",
+    "ExportTestCasesMetadata",
+    "ExportTestCasesRequest",
+    "ExportTestCasesResponse",
     "Flow",
+    "FlowValidationResult",
     "FlowsClient",
     "Form",
     "FulfillIntentRequest",
     "FulfillIntentResponse",
     "Fulfillment",
     "GetAgentRequest",
+    "GetAgentValidationResultRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
     "GetExperimentRequest",
     "GetFlowRequest",
+    "GetFlowValidationResultRequest",
     "GetIntentRequest",
     "GetPageRequest",
     "GetSecuritySettingsRequest",
     "GetSessionEntityTypeRequest",
+    "GetTestCaseRequest",
     "GetTransitionRouteGroupRequest",
     "GetVersionRequest",
     "GetWebhookRequest",
+    "ImportTestCasesMetadata",
+    "ImportTestCasesRequest",
+    "ImportTestCasesResponse",
     "InputAudioConfig",
     "Intent",
+    "IntentCoverage",
     "IntentInput",
     "IntentView",
     "IntentsClient",
@@ -248,6 +312,10 @@ __all__ = (
     "ListSecuritySettingsResponse",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",
+    "ListTestCaseResultsRequest",
+    "ListTestCaseResultsResponse",
+    "ListTestCasesRequest",
+    "ListTestCasesResponse",
     "ListTransitionRouteGroupsRequest",
     "ListTransitionRouteGroupsResponse",
     "ListVersionsRequest",
@@ -269,8 +337,12 @@ __all__ = (
     "QueryInput",
     "QueryParameters",
     "QueryResult",
+    "ResourceName",
     "ResponseMessage",
     "RestoreAgentRequest",
+    "RunTestCaseMetadata",
+    "RunTestCaseRequest",
+    "RunTestCaseResponse",
     "SecuritySettings",
     "SecuritySettingsServiceClient",
     "SentimentAnalysisResult",
@@ -288,10 +360,20 @@ __all__ = (
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
     "SynthesizeSpeechConfig",
+    "TestCase",
+    "TestCaseError",
+    "TestCaseResult",
+    "TestCasesClient",
+    "TestConfig",
+    "TestError",
+    "TestResult",
+    "TestRunDifference",
     "TextInput",
     "TrainFlowRequest",
+    "TransitionCoverage",
     "TransitionRoute",
     "TransitionRouteGroup",
+    "TransitionRouteGroupCoverage",
     "TransitionRouteGroupsClient",
     "UpdateAgentRequest",
     "UpdateEntityTypeRequest",
@@ -302,9 +384,13 @@ __all__ = (
     "UpdatePageRequest",
     "UpdateSecuritySettingsRequest",
     "UpdateSessionEntityTypeRequest",
+    "UpdateTestCaseRequest",
     "UpdateTransitionRouteGroupRequest",
     "UpdateVersionRequest",
     "UpdateWebhookRequest",
+    "ValidateAgentRequest",
+    "ValidateFlowRequest",
+    "ValidationMessage",
     "VariantsHistory",
     "Version",
     "VersionVariants",
@@ -314,6 +400,4 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
-    "AgentsClient",
-    "EntityTypesClient",
 )

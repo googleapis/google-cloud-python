@@ -1,42 +1,19 @@
 Services for Google Cloud Dialogflowcx v3 API
 =============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.dialogflowcx_v3.services.agents
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.entity_types
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.environments
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.experiments
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.flows
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.intents
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.pages
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.security_settings_service
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.session_entity_types
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.sessions
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.transition_route_groups
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.versions
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.dialogflowcx_v3.services.webhooks
-    :members:
-    :inherited-members:
+    agents
+    entity_types
+    environments
+    experiments
+    flows
+    intents
+    pages
+    security_settings_service
+    session_entity_types
+    sessions
+    test_cases
+    transition_route_groups
+    versions
+    webhooks

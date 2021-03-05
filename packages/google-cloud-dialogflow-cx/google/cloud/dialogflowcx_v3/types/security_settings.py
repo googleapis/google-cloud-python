@@ -53,10 +53,10 @@ class UpdateSecuritySettingsRequest(proto.Message):
     [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
 
     Attributes:
-        security_settings (~.gcdc_security_settings.SecuritySettings):
+        security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
             Required. [SecuritySettings] object that contains values for
             each of the fields to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated. If the mask is not present, all
             fields will be updated.
@@ -95,7 +95,7 @@ class ListSecuritySettingsResponse(proto.Message):
     r"""The response message for [SecuritySettings.ListSecuritySettings][].
 
     Attributes:
-        security_settings (Sequence[~.gcdc_security_settings.SecuritySettings]):
+        security_settings (Sequence[google.cloud.dialogflowcx_v3.types.SecuritySettings]):
             The list of security settings.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -123,7 +123,7 @@ class CreateSecuritySettingsRequest(proto.Message):
             [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
             for. Format:
             ``projects/<Project ID>/locations/<Location ID>``.
-        security_settings (~.gcdc_security_settings.SecuritySettings):
+        security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
             Required. The security settings to create.
     """
 
@@ -161,9 +161,9 @@ class SecuritySettings(proto.Message):
         display_name (str):
             Required. The human-readable name of the
             security settings, unique within the location.
-        redaction_strategy (~.gcdc_security_settings.SecuritySettings.RedactionStrategy):
+        redaction_strategy (google.cloud.dialogflowcx_v3.types.SecuritySettings.RedactionStrategy):
             Strategy that defines how we do redaction.
-        redaction_scope (~.gcdc_security_settings.SecuritySettings.RedactionScope):
+        redaction_scope (google.cloud.dialogflowcx_v3.types.SecuritySettings.RedactionScope):
             Defines on what data we apply redaction. Note
             that we don't redact data to which we don't have
             access, e.g., Stackdriver logs.
@@ -183,7 +183,7 @@ class SecuritySettings(proto.Message):
             higher than that has no effect.
             A missing value or setting to 0 also means we
             use Dialogflow's default TTL.
-        purge_data_types (Sequence[~.gcdc_security_settings.SecuritySettings.PurgeDataType]):
+        purge_data_types (Sequence[google.cloud.dialogflowcx_v3.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when
             retention settings triggers purge.
     """

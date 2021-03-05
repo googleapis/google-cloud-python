@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3.types import webhook
 
@@ -24,7 +33,7 @@ class ListWebhooksPager:
     """A pager for iterating through ``list_webhooks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.webhook.ListWebhooksResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.ListWebhooksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``webhooks`` field.
 
@@ -33,7 +42,7 @@ class ListWebhooksPager:
     through the ``webhooks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.webhook.ListWebhooksResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.ListWebhooksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListWebhooksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.webhook.ListWebhooksRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListWebhooksRequest):
                 The initial request object.
-            response (:class:`~.webhook.ListWebhooksResponse`):
+            response (google.cloud.dialogflowcx_v3.types.ListWebhooksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListWebhooksAsyncPager:
     """A pager for iterating through ``list_webhooks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.webhook.ListWebhooksResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.ListWebhooksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``webhooks`` field.
 
@@ -95,7 +104,7 @@ class ListWebhooksAsyncPager:
     through the ``webhooks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.webhook.ListWebhooksResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.ListWebhooksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListWebhooksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.webhook.ListWebhooksRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListWebhooksRequest):
                 The initial request object.
-            response (:class:`~.webhook.ListWebhooksResponse`):
+            response (google.cloud.dialogflowcx_v3.types.ListWebhooksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

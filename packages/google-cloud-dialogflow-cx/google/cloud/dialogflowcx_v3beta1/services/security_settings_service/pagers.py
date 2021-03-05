@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3beta1.types import security_settings
 
@@ -24,7 +33,7 @@ class ListSecuritySettingsPager:
     """A pager for iterating through ``list_security_settings`` requests.
 
     This class thinly wraps an initial
-    :class:`~.security_settings.ListSecuritySettingsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``security_settings`` field.
 
@@ -33,7 +42,7 @@ class ListSecuritySettingsPager:
     through the ``security_settings`` field on the
     corresponding responses.
 
-    All the usual :class:`~.security_settings.ListSecuritySettingsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListSecuritySettingsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.security_settings.ListSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest):
                 The initial request object.
-            response (:class:`~.security_settings.ListSecuritySettingsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListSecuritySettingsAsyncPager:
     """A pager for iterating through ``list_security_settings`` requests.
 
     This class thinly wraps an initial
-    :class:`~.security_settings.ListSecuritySettingsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``security_settings`` field.
 
@@ -95,7 +104,7 @@ class ListSecuritySettingsAsyncPager:
     through the ``security_settings`` field on the
     corresponding responses.
 
-    All the usual :class:`~.security_settings.ListSecuritySettingsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListSecuritySettingsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.security_settings.ListSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsRequest):
                 The initial request object.
-            response (:class:`~.security_settings.ListSecuritySettingsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListSecuritySettingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

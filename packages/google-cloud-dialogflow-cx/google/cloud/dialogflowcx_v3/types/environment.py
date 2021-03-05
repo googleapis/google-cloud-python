@@ -62,12 +62,12 @@ class Environment(proto.Message):
             environment. The maximum length is 500
             characters. If exceeded, the request is
             rejected.
-        version_configs (Sequence[~.gcdc_environment.Environment.VersionConfig]):
+        version_configs (Sequence[google.cloud.dialogflowcx_v3.types.Environment.VersionConfig]):
             Required. A list of configurations for flow versions. You
             should include version configs for all flows that are
             reachable from [``Start Flow``][Agent.start_flow] in the
             agent. Otherwise, an error will be returned.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Update time of this environment.
     """
 
@@ -125,7 +125,7 @@ class ListEnvironmentsResponse(proto.Message):
     [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
 
     Attributes:
-        environments (Sequence[~.gcdc_environment.Environment]):
+        environments (Sequence[google.cloud.dialogflowcx_v3.types.Environment]):
             The list of environments. There will be a maximum number of
             items returned based on the page_size field in the request.
             The list may in some cases be empty or contain fewer entries
@@ -171,7 +171,7 @@ class CreateEnvironmentRequest(proto.Message):
             [Environment][google.cloud.dialogflow.cx.v3.Environment]
             for. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
-        environment (~.gcdc_environment.Environment):
+        environment (google.cloud.dialogflowcx_v3.types.Environment):
             Required. The environment to create.
     """
 
@@ -185,9 +185,9 @@ class UpdateEnvironmentRequest(proto.Message):
     [Environments.UpdateEnvironment][google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment].
 
     Attributes:
-        environment (~.gcdc_environment.Environment):
+        environment (google.cloud.dialogflowcx_v3.types.Environment):
             Required. The environment to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated.
     """
@@ -241,7 +241,7 @@ class LookupEnvironmentHistoryResponse(proto.Message):
     [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
 
     Attributes:
-        environments (Sequence[~.gcdc_environment.Environment]):
+        environments (Sequence[google.cloud.dialogflowcx_v3.types.Environment]):
             Represents a list of snapshots for an environment. Time of
             the snapshots is stored in
             [``update_time``][google.cloud.dialogflow.cx.v3.Environment.update_time].

@@ -74,7 +74,36 @@ class IntentsAsyncClient:
     common_location_path = staticmethod(IntentsClient.common_location_path)
     parse_common_location_path = staticmethod(IntentsClient.parse_common_location_path)
 
-    from_service_account_file = IntentsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            IntentsAsyncClient: The constructed client.
+        """
+        return IntentsClient.from_service_account_info.__func__(IntentsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            IntentsAsyncClient: The constructed client.
+        """
+        return IntentsClient.from_service_account_file.__func__(IntentsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -151,12 +180,13 @@ class IntentsAsyncClient:
         agent.
 
         Args:
-            request (:class:`~.intent.ListIntentsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.ListIntentsRequest`):
                 The request object. The request message for
                 [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
             parent (:class:`str`):
                 Required. The agent to list all intents for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -168,7 +198,7 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListIntentsAsyncPager:
+            google.cloud.dialogflowcx_v3.services.intents.pagers.ListIntentsAsyncPager:
                 The response message for
                 [Intents.ListIntents][google.cloud.dialogflow.cx.v3.Intents.ListIntents].
 
@@ -232,12 +262,13 @@ class IntentsAsyncClient:
         r"""Retrieves the specified intent.
 
         Args:
-            request (:class:`~.intent.GetIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.GetIntentRequest`):
                 The request object. The request message for
                 [Intents.GetIntent][google.cloud.dialogflow.cx.v3.Intents.GetIntent].
             name (:class:`str`):
                 Required. The name of the intent. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -249,7 +280,7 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.intent.Intent:
+            google.cloud.dialogflowcx_v3.types.Intent:
                 An intent represents a user's intent
                 to interact with a conversational agent.
                 You can provide information for the
@@ -310,16 +341,17 @@ class IntentsAsyncClient:
         r"""Creates an intent in the specified agent.
 
         Args:
-            request (:class:`~.gcdc_intent.CreateIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.CreateIntentRequest`):
                 The request object. The request message for
                 [Intents.CreateIntent][google.cloud.dialogflow.cx.v3.Intents.CreateIntent].
             parent (:class:`str`):
                 Required. The agent to create an intent for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            intent (:class:`~.gcdc_intent.Intent`):
+            intent (:class:`google.cloud.dialogflowcx_v3.types.Intent`):
                 Required. The intent to create.
                 This corresponds to the ``intent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -332,7 +364,7 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_intent.Intent:
+            google.cloud.dialogflowcx_v3.types.Intent:
                 An intent represents a user's intent
                 to interact with a conversational agent.
                 You can provide information for the
@@ -395,18 +427,19 @@ class IntentsAsyncClient:
         r"""Updates the specified intent.
 
         Args:
-            request (:class:`~.gcdc_intent.UpdateIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.UpdateIntentRequest`):
                 The request object. The request message for
                 [Intents.UpdateIntent][google.cloud.dialogflow.cx.v3.Intents.UpdateIntent].
-            intent (:class:`~.gcdc_intent.Intent`):
+            intent (:class:`google.cloud.dialogflowcx_v3.types.Intent`):
                 Required. The intent to update.
                 This corresponds to the ``intent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The mask to control which fields get
                 updated. If the mask is not present, all
                 fields will be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -418,7 +451,7 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_intent.Intent:
+            google.cloud.dialogflowcx_v3.types.Intent:
                 An intent represents a user's intent
                 to interact with a conversational agent.
                 You can provide information for the
@@ -482,12 +515,13 @@ class IntentsAsyncClient:
         r"""Deletes the specified intent.
 
         Args:
-            request (:class:`~.intent.DeleteIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.DeleteIntentRequest`):
                 The request object. The request message for
                 [Intents.DeleteIntent][google.cloud.dialogflow.cx.v3.Intents.DeleteIntent].
             name (:class:`str`):
                 Required. The name of the intent to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

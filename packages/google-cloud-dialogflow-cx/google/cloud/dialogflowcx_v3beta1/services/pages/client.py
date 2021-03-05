@@ -114,6 +114,22 @@ class PagesClient(metaclass=PagesClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PagesClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -125,7 +141,7 @@ class PagesClient(metaclass=PagesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            PagesClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -323,10 +339,10 @@ class PagesClient(metaclass=PagesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PagesTransport]): The
+            transport (Union[str, PagesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -362,21 +378,17 @@ class PagesClient(metaclass=PagesClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -419,7 +431,7 @@ class PagesClient(metaclass=PagesClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -436,12 +448,13 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Returns the list of all pages in the specified flow.
 
         Args:
-            request (:class:`~.page.ListPagesRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListPagesRequest):
                 The request object. The request message for
                 [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
-            parent (:class:`str`):
+            parent (str):
                 Required. The flow to list all pages for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -453,7 +466,7 @@ class PagesClient(metaclass=PagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPagesPager:
+            google.cloud.dialogflowcx_v3beta1.services.pages.pagers.ListPagesPager:
                 The response message for
                 [Pages.ListPages][google.cloud.dialogflow.cx.v3beta1.Pages.ListPages].
 
@@ -518,12 +531,13 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Retrieves the specified page.
 
         Args:
-            request (:class:`~.page.GetPageRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.GetPageRequest):
                 The request object. The request message for
                 [Pages.GetPage][google.cloud.dialogflow.cx.v3beta1.Pages.GetPage].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the page. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -535,28 +549,29 @@ class PagesClient(metaclass=PagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.page.Page:
-                A Dialogflow CX conversation (session) can be described
-                and visualized as a state machine. The states of a CX
-                session are represented by pages.
+            google.cloud.dialogflowcx_v3beta1.types.Page:
+                A Dialogflow CX conversation (session) can be described and visualized as a
+                   state machine. The states of a CX session are
+                   represented by pages.
 
-                For each flow, you define many pages, where your
-                combined pages can handle a complete conversation on the
-                topics the flow is designed for. At any given moment,
-                exactly one page is the current page, the current page
-                is considered active, and the flow associated with that
-                page is considered active. Every flow has a special
-                start page. When a flow initially becomes active, the
-                start page page becomes the current page. For each
-                conversational turn, the current page will either stay
-                the same or transition to another page.
+                   For each flow, you define many pages, where your
+                   combined pages can handle a complete conversation on
+                   the topics the flow is designed for. At any given
+                   moment, exactly one page is the current page, the
+                   current page is considered active, and the flow
+                   associated with that page is considered active. Every
+                   flow has a special start page. When a flow initially
+                   becomes active, the start page page becomes the
+                   current page. For each conversational turn, the
+                   current page will either stay the same or transition
+                   to another page.
 
-                You configure each page to collect information from the
-                end-user that is relevant for the conversational state
-                represented by the page.
+                   You configure each page to collect information from
+                   the end-user that is relevant for the conversational
+                   state represented by the page.
 
-                For more information, see the `Page
-                guide <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
+                   For more information, see the [Page
+                   guide](\ https://cloud.google.com/dialogflow/cx/docs/concept/page).
 
         """
         # Create or coerce a protobuf request object.
@@ -611,16 +626,17 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Creates a page in the specified flow.
 
         Args:
-            request (:class:`~.gcdc_page.CreatePageRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.CreatePageRequest):
                 The request object. The request message for
                 [Pages.CreatePage][google.cloud.dialogflow.cx.v3beta1.Pages.CreatePage].
-            parent (:class:`str`):
+            parent (str):
                 Required. The flow to create a page for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            page (:class:`~.gcdc_page.Page`):
+            page (google.cloud.dialogflowcx_v3beta1.types.Page):
                 Required. The page to create.
                 This corresponds to the ``page`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -633,28 +649,29 @@ class PagesClient(metaclass=PagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_page.Page:
-                A Dialogflow CX conversation (session) can be described
-                and visualized as a state machine. The states of a CX
-                session are represented by pages.
+            google.cloud.dialogflowcx_v3beta1.types.Page:
+                A Dialogflow CX conversation (session) can be described and visualized as a
+                   state machine. The states of a CX session are
+                   represented by pages.
 
-                For each flow, you define many pages, where your
-                combined pages can handle a complete conversation on the
-                topics the flow is designed for. At any given moment,
-                exactly one page is the current page, the current page
-                is considered active, and the flow associated with that
-                page is considered active. Every flow has a special
-                start page. When a flow initially becomes active, the
-                start page page becomes the current page. For each
-                conversational turn, the current page will either stay
-                the same or transition to another page.
+                   For each flow, you define many pages, where your
+                   combined pages can handle a complete conversation on
+                   the topics the flow is designed for. At any given
+                   moment, exactly one page is the current page, the
+                   current page is considered active, and the flow
+                   associated with that page is considered active. Every
+                   flow has a special start page. When a flow initially
+                   becomes active, the start page page becomes the
+                   current page. For each conversational turn, the
+                   current page will either stay the same or transition
+                   to another page.
 
-                You configure each page to collect information from the
-                end-user that is relevant for the conversational state
-                represented by the page.
+                   You configure each page to collect information from
+                   the end-user that is relevant for the conversational
+                   state represented by the page.
 
-                For more information, see the `Page
-                guide <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
+                   For more information, see the [Page
+                   guide](\ https://cloud.google.com/dialogflow/cx/docs/concept/page).
 
         """
         # Create or coerce a protobuf request object.
@@ -711,18 +728,19 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Updates the specified page.
 
         Args:
-            request (:class:`~.gcdc_page.UpdatePageRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.UpdatePageRequest):
                 The request object. The request message for
                 [Pages.UpdatePage][google.cloud.dialogflow.cx.v3beta1.Pages.UpdatePage].
-            page (:class:`~.gcdc_page.Page`):
+            page (google.cloud.dialogflowcx_v3beta1.types.Page):
                 Required. The page to update.
                 This corresponds to the ``page`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The mask to control which fields get
                 updated. If the mask is not present, all
                 fields will be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -734,28 +752,29 @@ class PagesClient(metaclass=PagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_page.Page:
-                A Dialogflow CX conversation (session) can be described
-                and visualized as a state machine. The states of a CX
-                session are represented by pages.
+            google.cloud.dialogflowcx_v3beta1.types.Page:
+                A Dialogflow CX conversation (session) can be described and visualized as a
+                   state machine. The states of a CX session are
+                   represented by pages.
 
-                For each flow, you define many pages, where your
-                combined pages can handle a complete conversation on the
-                topics the flow is designed for. At any given moment,
-                exactly one page is the current page, the current page
-                is considered active, and the flow associated with that
-                page is considered active. Every flow has a special
-                start page. When a flow initially becomes active, the
-                start page page becomes the current page. For each
-                conversational turn, the current page will either stay
-                the same or transition to another page.
+                   For each flow, you define many pages, where your
+                   combined pages can handle a complete conversation on
+                   the topics the flow is designed for. At any given
+                   moment, exactly one page is the current page, the
+                   current page is considered active, and the flow
+                   associated with that page is considered active. Every
+                   flow has a special start page. When a flow initially
+                   becomes active, the start page page becomes the
+                   current page. For each conversational turn, the
+                   current page will either stay the same or transition
+                   to another page.
 
-                You configure each page to collect information from the
-                end-user that is relevant for the conversational state
-                represented by the page.
+                   You configure each page to collect information from
+                   the end-user that is relevant for the conversational
+                   state represented by the page.
 
-                For more information, see the `Page
-                guide <https://cloud.google.com/dialogflow/cx/docs/concept/page>`__.
+                   For more information, see the [Page
+                   guide](\ https://cloud.google.com/dialogflow/cx/docs/concept/page).
 
         """
         # Create or coerce a protobuf request object.
@@ -813,12 +832,13 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Deletes the specified page.
 
         Args:
-            request (:class:`~.page.DeletePageRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.DeletePageRequest):
                 The request object. The request message for
                 [Pages.DeletePage][google.cloud.dialogflow.cx.v3beta1.Pages.DeletePage].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the page to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/Flows/<flow ID>/pages/<Page ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

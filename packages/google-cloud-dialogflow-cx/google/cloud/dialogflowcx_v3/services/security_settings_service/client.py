@@ -117,6 +117,22 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SecuritySettingsServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -128,7 +144,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SecuritySettingsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -238,10 +254,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SecuritySettingsServiceTransport]): The
+            transport (Union[str, SecuritySettingsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -277,21 +293,17 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -334,7 +346,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -352,20 +364,22 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         r"""Create security settings in the specified location.
 
         Args:
-            request (:class:`~.gcdc_security_settings.CreateSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.CreateSecuritySettingsRequest):
                 The request object. The request message for
                 [SecuritySettings.CreateSecuritySettings][].
-            parent (:class:`str`):
+            parent (str):
                 Required. The location to create an
                 [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            security_settings (:class:`~.gcdc_security_settings.SecuritySettings`):
+            security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
                 Required. The security settings to
                 create.
+
                 This corresponds to the ``security_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -377,7 +391,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_security_settings.SecuritySettings:
+            google.cloud.dialogflowcx_v3.types.SecuritySettings:
                 Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -443,12 +457,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         The returned settings may be stale by up to 1 minute.
 
         Args:
-            request (:class:`~.security_settings.GetSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.GetSecuritySettingsRequest):
                 The request object. The request message for
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings].
-            name (:class:`str`):
+            name (str):
                 Required. Resource name of the settings. Format:
                 ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -460,7 +475,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            ~.security_settings.SecuritySettings:
+            google.cloud.dialogflowcx_v3.types.SecuritySettings:
                 Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -522,19 +537,21 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
 
         Args:
-            request (:class:`~.gcdc_security_settings.UpdateSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.UpdateSecuritySettingsRequest):
                 The request object. The request message for
                 [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
-            security_settings (:class:`~.gcdc_security_settings.SecuritySettings`):
+            security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
                 Required. [SecuritySettings] object that contains values
                 for each of the fields to update.
+
                 This corresponds to the ``security_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The mask to control which
                 fields get updated. If the mask is not
                 present, all fields will be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -546,7 +563,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_security_settings.SecuritySettings:
+            google.cloud.dialogflowcx_v3.types.SecuritySettings:
                 Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -613,13 +630,14 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         specified location.
 
         Args:
-            request (:class:`~.security_settings.ListSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListSecuritySettingsRequest):
                 The request object. The request message for
                 [SecuritySettings.ListSecuritySettings][].
-            parent (:class:`str`):
+            parent (str):
                 Required. The location to list all security settings
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -631,7 +649,7 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSecuritySettingsPager:
+            google.cloud.dialogflowcx_v3.services.security_settings_service.pagers.ListSecuritySettingsPager:
                 The response message for
                 [SecuritySettings.ListSecuritySettings][].
 
@@ -697,14 +715,15 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
 
         Args:
-            request (:class:`~.security_settings.DeleteSecuritySettingsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.DeleteSecuritySettingsRequest):
                 The request object. The request message for
                 [SecuritySettings.DeleteSecuritySettings][].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the
                 [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
                 to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

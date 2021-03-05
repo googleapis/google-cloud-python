@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3beta1.types import intent
 
@@ -24,7 +33,7 @@ class ListIntentsPager:
     """A pager for iterating through ``list_intents`` requests.
 
     This class thinly wraps an initial
-    :class:`~.intent.ListIntentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListIntentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``intents`` field.
 
@@ -33,7 +42,7 @@ class ListIntentsPager:
     through the ``intents`` field on the
     corresponding responses.
 
-    All the usual :class:`~.intent.ListIntentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListIntentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListIntentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.intent.ListIntentsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListIntentsRequest):
                 The initial request object.
-            response (:class:`~.intent.ListIntentsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListIntentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListIntentsAsyncPager:
     """A pager for iterating through ``list_intents`` requests.
 
     This class thinly wraps an initial
-    :class:`~.intent.ListIntentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListIntentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``intents`` field.
 
@@ -95,7 +104,7 @@ class ListIntentsAsyncPager:
     through the ``intents`` field on the
     corresponding responses.
 
-    All the usual :class:`~.intent.ListIntentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListIntentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListIntentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.intent.ListIntentsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListIntentsRequest):
                 The initial request object.
-            response (:class:`~.intent.ListIntentsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListIntentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

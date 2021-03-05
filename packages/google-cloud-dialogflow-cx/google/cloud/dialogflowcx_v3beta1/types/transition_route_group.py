@@ -52,16 +52,9 @@ class TransitionRouteGroup(proto.Message):
             group, unique within the
             [Agent][google.cloud.dialogflow.cx.v3beta1.Agent]. The
             display name can be no longer than 30 characters.
-        transition_routes (Sequence[~.page.TransitionRoute]):
+        transition_routes (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRoute]):
             Transition routes associated with the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
-            Duplicate transition routes (i.e. using the same
-            [``intent``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.intent])
-            are not allowed.
-
-            Note that the
-            [``name``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute.name]
-            field is not used in the transition route group scope.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -97,7 +90,7 @@ class ListTransitionRouteGroupsRequest(proto.Message):
 
             If not specified, the agent's default language is used.
             `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
             are supported. Note: languages must be enabled in the agent
             before they can be used.
     """
@@ -116,7 +109,7 @@ class ListTransitionRouteGroupsResponse(proto.Message):
     [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
 
     Attributes:
-        transition_route_groups (Sequence[~.gcdc_transition_route_group.TransitionRouteGroup]):
+        transition_route_groups (Sequence[google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup]):
             The list of transition route groups. There will be a maximum
             number of items returned based on the page_size field in the
             request. The list may in some cases be empty or contain
@@ -158,7 +151,7 @@ class GetTransitionRouteGroupRequest(proto.Message):
 
             If not specified, the agent's default language is used.
             `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
             are supported. Note: languages must be enabled in the agent
             before they can be used.
     """
@@ -178,7 +171,7 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
             for. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
-        transition_route_group (~.gcdc_transition_route_group.TransitionRouteGroup):
+        transition_route_group (google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup):
             Required. The transition route group to
             create.
         language_code (str):
@@ -190,7 +183,7 @@ class CreateTransitionRouteGroupRequest(proto.Message):
 
             If not specified, the agent's default language is used.
             `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
             are supported. Note: languages must be enabled in the agent
             before they can be used.
     """
@@ -209,10 +202,10 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
     [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.UpdateTransitionRouteGroup].
 
     Attributes:
-        transition_route_group (~.gcdc_transition_route_group.TransitionRouteGroup):
+        transition_route_group (google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup):
             Required. The transition route group to
             update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
         language_code (str):
             The language to list transition route groups for. The field
@@ -223,7 +216,7 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
 
             If not specified, the agent's default language is used.
             `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            languages <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
             are supported. Note: languages must be enabled in the agent
             before they can be used.
     """

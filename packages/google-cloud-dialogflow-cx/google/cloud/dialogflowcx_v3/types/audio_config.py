@@ -96,12 +96,12 @@ class SpeechWordInfo(proto.Message):
     Attributes:
         word (str):
             The word this info is for.
-        start_offset (~.duration.Duration):
+        start_offset (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the
             audio that corresponds to the start of the
             spoken word. This is an experimental feature and
             the accuracy of the time offset can vary.
-        end_offset (~.duration.Duration):
+        end_offset (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the
             audio that corresponds to the end of the spoken
             word. This is an experimental feature and the
@@ -133,7 +133,7 @@ class InputAudioConfig(proto.Message):
     content.
 
     Attributes:
-        audio_encoding (~.audio_config.AudioEncoding):
+        audio_encoding (google.cloud.dialogflowcx_v3.types.AudioEncoding):
             Required. Audio encoding of the audio content
             to process.
         sample_rate_hertz (int):
@@ -169,7 +169,7 @@ class InputAudioConfig(proto.Message):
             `Cloud Speech API
             documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
             for more details.
-        model_variant (~.audio_config.SpeechModelVariant):
+        model_variant (google.cloud.dialogflowcx_v3.types.SpeechModelVariant):
             Optional. Which variant of the [Speech
             model][google.cloud.dialogflow.cx.v3.InputAudioConfig.model]
             to use.
@@ -208,15 +208,19 @@ class VoiceSelectionParams(proto.Message):
             will choose a voice based on the other parameters such as
             language_code and
             [ssml_gender][google.cloud.dialogflow.cx.v3.VoiceSelectionParams.ssml_gender].
-        ssml_gender (~.audio_config.SsmlVoiceGender):
+
+            For the list of available voices, please refer to `Supported
+            voices and
+            languages <https://cloud.google.com/text-to-speech/docs/voices>`__.
+        ssml_gender (google.cloud.dialogflowcx_v3.types.SsmlVoiceGender):
             Optional. The preferred gender of the voice. If not set, the
             service will choose a voice based on the other parameters
             such as language_code and
             [name][google.cloud.dialogflow.cx.v3.VoiceSelectionParams.name].
             Note that this is only a preference, not requirement. If a
             voice of the appropriate gender is not available, the
-            synthesizer should substitute a voice with a different
-            gender rather than failing the request.
+            synthesizer substitutes a voice with a different gender
+            rather than failing the request.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -255,7 +259,7 @@ class SynthesizeSpeechConfig(proto.Message):
             synthesized) text to speech. Effects are applied
             on top of each other in the order they are
             given.
-        voice (~.audio_config.VoiceSelectionParams):
+        voice (google.cloud.dialogflowcx_v3.types.VoiceSelectionParams):
             Optional. The desired voice of the
             synthesized audio.
     """
@@ -276,7 +280,7 @@ class OutputAudioConfig(proto.Message):
     audio content.
 
     Attributes:
-        audio_encoding (~.audio_config.OutputAudioEncoding):
+        audio_encoding (google.cloud.dialogflowcx_v3.types.OutputAudioEncoding):
             Required. Audio encoding of the synthesized
             audio content.
         sample_rate_hertz (int):
@@ -288,7 +292,7 @@ class OutputAudioConfig(proto.Message):
             then the synthesizer will honor this request by
             converting to the desired sample rate (which
             might result in worse audio quality).
-        synthesize_speech_config (~.audio_config.SynthesizeSpeechConfig):
+        synthesize_speech_config (google.cloud.dialogflowcx_v3.types.SynthesizeSpeechConfig):
             Optional. Configuration of how speech should
             be synthesized.
     """

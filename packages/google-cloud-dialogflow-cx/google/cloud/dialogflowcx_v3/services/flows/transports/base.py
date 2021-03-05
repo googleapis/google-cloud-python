@@ -131,6 +131,14 @@ class FlowsTransport(abc.ABC):
             self.train_flow: gapic_v1.method.wrap_method(
                 self.train_flow, default_timeout=None, client_info=client_info,
             ),
+            self.validate_flow: gapic_v1.method.wrap_method(
+                self.validate_flow, default_timeout=None, client_info=client_info,
+            ),
+            self.get_flow_validation_result: gapic_v1.method.wrap_method(
+                self.get_flow_validation_result,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     @property
@@ -188,6 +196,28 @@ class FlowsTransport(abc.ABC):
     ) -> typing.Callable[
         [flow.TrainFlowRequest],
         typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def validate_flow(
+        self,
+    ) -> typing.Callable[
+        [flow.ValidateFlowRequest],
+        typing.Union[
+            flow.FlowValidationResult, typing.Awaitable[flow.FlowValidationResult]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_flow_validation_result(
+        self,
+    ) -> typing.Callable[
+        [flow.GetFlowValidationResultRequest],
+        typing.Union[
+            flow.FlowValidationResult, typing.Awaitable[flow.FlowValidationResult]
+        ],
     ]:
         raise NotImplementedError()
 

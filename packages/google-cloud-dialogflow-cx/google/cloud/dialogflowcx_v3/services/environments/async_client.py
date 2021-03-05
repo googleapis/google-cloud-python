@@ -82,7 +82,36 @@ class EnvironmentsAsyncClient:
         EnvironmentsClient.parse_common_location_path
     )
 
-    from_service_account_file = EnvironmentsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            EnvironmentsAsyncClient: The constructed client.
+        """
+        return EnvironmentsClient.from_service_account_info.__func__(EnvironmentsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            EnvironmentsAsyncClient: The constructed client.
+        """
+        return EnvironmentsClient.from_service_account_file.__func__(EnvironmentsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -159,7 +188,7 @@ class EnvironmentsAsyncClient:
         [Agent][google.cloud.dialogflow.cx.v3.Agent].
 
         Args:
-            request (:class:`~.environment.ListEnvironmentsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest`):
                 The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
             parent (:class:`str`):
@@ -167,6 +196,7 @@ class EnvironmentsAsyncClient:
                 [Agent][google.cloud.dialogflow.cx.v3.Agent] to list all
                 environments for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -178,7 +208,7 @@ class EnvironmentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListEnvironmentsAsyncPager:
+            google.cloud.dialogflowcx_v3.services.environments.pagers.ListEnvironmentsAsyncPager:
                 The response message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.cx.v3.Environments.ListEnvironments].
 
@@ -243,7 +273,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`~.environment.GetEnvironmentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.GetEnvironmentRequest`):
                 The request object. The request message for
                 [Environments.GetEnvironment][google.cloud.dialogflow.cx.v3.Environments.GetEnvironment].
             name (:class:`str`):
@@ -251,6 +281,7 @@ class EnvironmentsAsyncClient:
                 [Environment][google.cloud.dialogflow.cx.v3.Environment].
                 Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -262,7 +293,7 @@ class EnvironmentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.environment.Environment:
+            google.cloud.dialogflowcx_v3.types.Environment:
                 Represents an environment for an
                 agent. You can create multiple versions
                 of your agent and publish them to
@@ -333,7 +364,7 @@ class EnvironmentsAsyncClient:
         specified [Agent][google.cloud.dialogflow.cx.v3.Agent].
 
         Args:
-            request (:class:`~.gcdc_environment.CreateEnvironmentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.CreateEnvironmentRequest`):
                 The request object. The request message for
                 [Environments.CreateEnvironment][google.cloud.dialogflow.cx.v3.Environments.CreateEnvironment].
             parent (:class:`str`):
@@ -343,10 +374,11 @@ class EnvironmentsAsyncClient:
                 [Environment][google.cloud.dialogflow.cx.v3.Environment]
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            environment (:class:`~.gcdc_environment.Environment`):
+            environment (:class:`google.cloud.dialogflowcx_v3.types.Environment`):
                 Required. The environment to create.
                 This corresponds to the ``environment`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -359,21 +391,20 @@ class EnvironmentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.gcdc_environment.Environment``: Represents an
-                environment for an agent. You can create multiple
-                versions of your agent and publish them to separate
-                environments. When you edit an agent, you are editing
-                the draft agent. At any point, you can save the draft
-                agent as an agent version, which is an immutable
-                snapshot of your agent. When you save the draft agent,
-                it is published to the default environment. When you
-                create agent versions, you can publish them to custom
-                environments. You can create a variety of custom
-                environments for testing, development, production, etc.
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.Environment` Represents an environment for an agent. You can create multiple versions
+                   of your agent and publish them to separate
+                   environments. When you edit an agent, you are editing
+                   the draft agent. At any point, you can save the draft
+                   agent as an agent version, which is an immutable
+                   snapshot of your agent. When you save the draft
+                   agent, it is published to the default environment.
+                   When you create agent versions, you can publish them
+                   to custom environments. You can create a variety of
+                   custom environments for testing, development,
+                   production, etc.
 
         """
         # Create or coerce a protobuf request object.
@@ -438,17 +469,18 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`~.gcdc_environment.UpdateEnvironmentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.UpdateEnvironmentRequest`):
                 The request object. The request message for
                 [Environments.UpdateEnvironment][google.cloud.dialogflow.cx.v3.Environments.UpdateEnvironment].
-            environment (:class:`~.gcdc_environment.Environment`):
+            environment (:class:`google.cloud.dialogflowcx_v3.types.Environment`):
                 Required. The environment to update.
                 This corresponds to the ``environment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. The mask to control which
                 fields get updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -460,21 +492,20 @@ class EnvironmentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.gcdc_environment.Environment``: Represents an
-                environment for an agent. You can create multiple
-                versions of your agent and publish them to separate
-                environments. When you edit an agent, you are editing
-                the draft agent. At any point, you can save the draft
-                agent as an agent version, which is an immutable
-                snapshot of your agent. When you save the draft agent,
-                it is published to the default environment. When you
-                create agent versions, you can publish them to custom
-                environments. You can create a variety of custom
-                environments for testing, development, production, etc.
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3.types.Environment` Represents an environment for an agent. You can create multiple versions
+                   of your agent and publish them to separate
+                   environments. When you edit an agent, you are editing
+                   the draft agent. At any point, you can save the draft
+                   agent as an agent version, which is an immutable
+                   snapshot of your agent. When you save the draft
+                   agent, it is published to the default environment.
+                   When you create agent versions, you can publish them
+                   to custom environments. You can create a variety of
+                   custom environments for testing, development,
+                   production, etc.
 
         """
         # Create or coerce a protobuf request object.
@@ -540,7 +571,7 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`~.environment.DeleteEnvironmentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.DeleteEnvironmentRequest`):
                 The request object. The request message for
                 [Environments.DeleteEnvironment][google.cloud.dialogflow.cx.v3.Environments.DeleteEnvironment].
             name (:class:`str`):
@@ -548,6 +579,7 @@ class EnvironmentsAsyncClient:
                 [Environment][google.cloud.dialogflow.cx.v3.Environment]
                 to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -608,13 +640,14 @@ class EnvironmentsAsyncClient:
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
         Args:
-            request (:class:`~.environment.LookupEnvironmentHistoryRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest`):
                 The request object. The request message for
                 [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
             name (:class:`str`):
                 Required. Resource name of the environment to look up
                 the history for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -626,7 +659,7 @@ class EnvironmentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.LookupEnvironmentHistoryAsyncPager:
+            google.cloud.dialogflowcx_v3.services.environments.pagers.LookupEnvironmentHistoryAsyncPager:
                 The response message for
                 [Environments.LookupEnvironmentHistory][google.cloud.dialogflow.cx.v3.Environments.LookupEnvironmentHistory].
 

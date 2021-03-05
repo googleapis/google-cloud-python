@@ -134,6 +134,14 @@ class AgentsTransport(abc.ABC):
             self.restore_agent: gapic_v1.method.wrap_method(
                 self.restore_agent, default_timeout=None, client_info=client_info,
             ),
+            self.validate_agent: gapic_v1.method.wrap_method(
+                self.validate_agent, default_timeout=None, client_info=client_info,
+            ),
+            self.get_agent_validation_result: gapic_v1.method.wrap_method(
+                self.get_agent_validation_result,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     @property
@@ -203,6 +211,28 @@ class AgentsTransport(abc.ABC):
     ) -> typing.Callable[
         [agent.RestoreAgentRequest],
         typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def validate_agent(
+        self,
+    ) -> typing.Callable[
+        [agent.ValidateAgentRequest],
+        typing.Union[
+            agent.AgentValidationResult, typing.Awaitable[agent.AgentValidationResult]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_agent_validation_result(
+        self,
+    ) -> typing.Callable[
+        [agent.GetAgentValidationResultRequest],
+        typing.Union[
+            agent.AgentValidationResult, typing.Awaitable[agent.AgentValidationResult]
+        ],
     ]:
         raise NotImplementedError()
 

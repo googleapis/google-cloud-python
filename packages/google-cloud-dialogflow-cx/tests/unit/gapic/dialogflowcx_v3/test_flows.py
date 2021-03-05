@@ -44,10 +44,12 @@ from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 from google.cloud.dialogflowcx_v3.types import fulfillment
 from google.cloud.dialogflowcx_v3.types import page
 from google.cloud.dialogflowcx_v3.types import response_message
+from google.cloud.dialogflowcx_v3.types import validation_message
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 
 def client_cert_source_callback():
@@ -88,7 +90,22 @@ def test__get_default_mtls_endpoint():
     assert FlowsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [FlowsClient, FlowsAsyncClient])
+@pytest.mark.parametrize("client_class", [FlowsClient, FlowsAsyncClient,])
+def test_flows_client_from_service_account_info(client_class):
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "dialogflow.googleapis.com:443"
+
+
+@pytest.mark.parametrize("client_class", [FlowsClient, FlowsAsyncClient,])
 def test_flows_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -97,16 +114,21 @@ def test_flows_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "dialogflow.googleapis.com:443"
 
 
 def test_flows_client_get_transport_class():
     transport = FlowsClient.get_transport_class()
-    assert transport == transports.FlowsGrpcTransport
+    available_transports = [
+        transports.FlowsGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = FlowsClient.get_transport_class("grpc")
     assert transport == transports.FlowsGrpcTransport
@@ -147,7 +169,7 @@ def test_flows_client_client_options(client_class, transport_class, transport_na
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -163,7 +185,7 @@ def test_flows_client_client_options(client_class, transport_class, transport_na
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -179,7 +201,7 @@ def test_flows_client_client_options(client_class, transport_class, transport_na
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -207,7 +229,7 @@ def test_flows_client_client_options(client_class, transport_class, transport_na
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -254,29 +276,25 @@ def test_flows_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -285,40 +303,31 @@ def test_flows_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -326,24 +335,20 @@ def test_flows_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -366,7 +371,7 @@ def test_flows_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -392,7 +397,7 @@ def test_flows_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -409,7 +414,7 @@ def test_flows_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -454,6 +459,22 @@ def test_create_flow(transport: str = "grpc", request_type=gcdc_flow.CreateFlowR
 
 def test_create_flow_from_dict():
     test_create_flow(request_type=dict)
+
+
+def test_create_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
+        client.create_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcdc_flow.CreateFlowRequest()
 
 
 @pytest.mark.asyncio
@@ -658,6 +679,22 @@ def test_delete_flow_from_dict():
     test_delete_flow(request_type=dict)
 
 
+def test_delete_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
+        client.delete_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.DeleteFlowRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.DeleteFlowRequest
@@ -839,6 +876,22 @@ def test_list_flows(transport: str = "grpc", request_type=flow.ListFlowsRequest)
 
 def test_list_flows_from_dict():
     test_list_flows(request_type=dict)
+
+
+def test_list_flows_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
+        client.list_flows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.ListFlowsRequest()
 
 
 @pytest.mark.asyncio
@@ -1140,6 +1193,22 @@ def test_get_flow_from_dict():
     test_get_flow(request_type=dict)
 
 
+def test_get_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
+        client.get_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.GetFlowRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.GetFlowRequest
@@ -1339,6 +1408,22 @@ def test_update_flow(transport: str = "grpc", request_type=gcdc_flow.UpdateFlowR
 
 def test_update_flow_from_dict():
     test_update_flow(request_type=dict)
+
+
+def test_update_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
+        client.update_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcdc_flow.UpdateFlowRequest()
 
 
 @pytest.mark.asyncio
@@ -1545,6 +1630,22 @@ def test_train_flow_from_dict():
     test_train_flow(request_type=dict)
 
 
+def test_train_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
+        client.train_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.TrainFlowRequest()
+
+
 @pytest.mark.asyncio
 async def test_train_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.TrainFlowRequest
@@ -1699,6 +1800,365 @@ async def test_train_flow_flattened_error_async():
         )
 
 
+def test_validate_flow(transport: str = "grpc", request_type=flow.ValidateFlowRequest):
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = flow.FlowValidationResult(name="name_value",)
+
+        response = client.validate_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.ValidateFlowRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, flow.FlowValidationResult)
+
+    assert response.name == "name_value"
+
+
+def test_validate_flow_from_dict():
+    test_validate_flow(request_type=dict)
+
+
+def test_validate_flow_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        client.validate_flow()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.ValidateFlowRequest()
+
+
+@pytest.mark.asyncio
+async def test_validate_flow_async(
+    transport: str = "grpc_asyncio", request_type=flow.ValidateFlowRequest
+):
+    client = FlowsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult(name="name_value",)
+        )
+
+        response = await client.validate_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.ValidateFlowRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, flow.FlowValidationResult)
+
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_validate_flow_async_from_dict():
+    await test_validate_flow_async(request_type=dict)
+
+
+def test_validate_flow_field_headers():
+    client = FlowsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = flow.ValidateFlowRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        call.return_value = flow.FlowValidationResult()
+
+        client.validate_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_validate_flow_field_headers_async():
+    client = FlowsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = flow.ValidateFlowRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult()
+        )
+
+        await client.validate_flow(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_flow_validation_result(
+    transport: str = "grpc", request_type=flow.GetFlowValidationResultRequest
+):
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = flow.FlowValidationResult(name="name_value",)
+
+        response = client.get_flow_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.GetFlowValidationResultRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, flow.FlowValidationResult)
+
+    assert response.name == "name_value"
+
+
+def test_get_flow_validation_result_from_dict():
+    test_get_flow_validation_result(request_type=dict)
+
+
+def test_get_flow_validation_result_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FlowsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        client.get_flow_validation_result()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.GetFlowValidationResultRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_async(
+    transport: str = "grpc_asyncio", request_type=flow.GetFlowValidationResultRequest
+):
+    client = FlowsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult(name="name_value",)
+        )
+
+        response = await client.get_flow_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == flow.GetFlowValidationResultRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, flow.FlowValidationResult)
+
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_async_from_dict():
+    await test_get_flow_validation_result_async(request_type=dict)
+
+
+def test_get_flow_validation_result_field_headers():
+    client = FlowsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = flow.GetFlowValidationResultRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        call.return_value = flow.FlowValidationResult()
+
+        client.get_flow_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_field_headers_async():
+    client = FlowsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = flow.GetFlowValidationResultRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult()
+        )
+
+        await client.get_flow_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_flow_validation_result_flattened():
+    client = FlowsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = flow.FlowValidationResult()
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_flow_validation_result(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].name == "name_value"
+
+
+def test_get_flow_validation_result_flattened_error():
+    client = FlowsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_flow_validation_result(
+            flow.GetFlowValidationResultRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_flattened_async():
+    client = FlowsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_flow_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = flow.FlowValidationResult()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            flow.FlowValidationResult()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_flow_validation_result(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_flow_validation_result_flattened_error_async():
+    client = FlowsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_flow_validation_result(
+            flow.GetFlowValidationResultRequest(), name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.FlowsGrpcTransport(
@@ -1755,7 +2215,7 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport],
+    [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1799,6 +2259,8 @@ def test_flows_base_transport():
         "get_flow",
         "update_flow",
         "train_flow",
+        "validate_flow",
+        "get_flow_validation_result",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -1874,6 +2336,51 @@ def test_flows_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport],
+)
+def test_flows_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dialogflow",
+            ),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_flows_host_no_port():
     client = FlowsClient(
         credentials=credentials.AnonymousCredentials(),
@@ -1895,7 +2402,7 @@ def test_flows_host_with_port():
 
 
 def test_flows_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.FlowsGrpcTransport(host="squid.clam.whelk", channel=channel,)
@@ -1905,7 +2412,7 @@ def test_flows_grpc_transport_channel():
 
 
 def test_flows_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.FlowsGrpcAsyncIOTransport(
@@ -1916,6 +2423,8 @@ def test_flows_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport],
@@ -1925,7 +2434,7 @@ def test_flows_transport_channel_mtls_with_client_cert_source(transport_class):
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -1966,6 +2475,8 @@ def test_flows_transport_channel_mtls_with_client_cert_source(transport_class):
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport],
@@ -1978,7 +2489,7 @@ def test_flows_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
@@ -2063,11 +2574,38 @@ def test_parse_flow_path():
     assert expected == actual
 
 
-def test_intent_path():
+def test_flow_validation_result_path():
     project = "winkle"
     location = "nautilus"
     agent = "scallop"
-    intent = "abalone"
+    flow = "abalone"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/validationResult".format(
+        project=project, location=location, agent=agent, flow=flow,
+    )
+    actual = FlowsClient.flow_validation_result_path(project, location, agent, flow)
+    assert expected == actual
+
+
+def test_parse_flow_validation_result_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "flow": "octopus",
+    }
+    path = FlowsClient.flow_validation_result_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FlowsClient.parse_flow_validation_result_path(path)
+    assert expected == actual
+
+
+def test_intent_path():
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    intent = "mussel"
 
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
         project=project, location=location, agent=agent, intent=intent,
@@ -2078,10 +2616,10 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "intent": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "intent": "abalone",
     }
     path = FlowsClient.intent_path(**expected)
 
@@ -2091,11 +2629,11 @@ def test_parse_intent_path():
 
 
 def test_page_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    flow = "mussel"
-    page = "winkle"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    flow = "octopus"
+    page = "oyster"
 
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
         project=project, location=location, agent=agent, flow=flow, page=page,
@@ -2106,11 +2644,11 @@ def test_page_path():
 
 def test_parse_page_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "agent": "abalone",
-        "flow": "squid",
-        "page": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "agent": "mussel",
+        "flow": "winkle",
+        "page": "nautilus",
     }
     path = FlowsClient.page_path(**expected)
 
@@ -2120,10 +2658,10 @@ def test_parse_page_path():
 
 
 def test_webhook_path():
-    project = "whelk"
-    location = "octopus"
-    agent = "oyster"
-    webhook = "nudibranch"
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    webhook = "clam"
 
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project, location=location, agent=agent, webhook=webhook,
@@ -2134,10 +2672,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "agent": "winkle",
-        "webhook": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "webhook": "nudibranch",
     }
     path = FlowsClient.webhook_path(**expected)
 
@@ -2147,7 +2685,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "cuttlefish"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -2158,7 +2696,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "mussel",
     }
     path = FlowsClient.common_billing_account_path(**expected)
 
@@ -2168,7 +2706,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "winkle"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = FlowsClient.common_folder_path(folder)
@@ -2177,7 +2715,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nautilus",
     }
     path = FlowsClient.common_folder_path(**expected)
 
@@ -2187,7 +2725,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "scallop"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = FlowsClient.common_organization_path(organization)
@@ -2196,7 +2734,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "abalone",
     }
     path = FlowsClient.common_organization_path(**expected)
 
@@ -2206,7 +2744,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "squid"
 
     expected = "projects/{project}".format(project=project,)
     actual = FlowsClient.common_project_path(project)
@@ -2215,7 +2753,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "clam",
     }
     path = FlowsClient.common_project_path(**expected)
 
@@ -2225,8 +2763,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "whelk"
+    location = "octopus"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -2237,8 +2775,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = FlowsClient.common_location_path(**expected)
 

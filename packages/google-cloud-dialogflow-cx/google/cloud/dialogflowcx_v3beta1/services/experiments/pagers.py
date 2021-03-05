@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3beta1.types import experiment
 
@@ -24,7 +33,7 @@ class ListExperimentsPager:
     """A pager for iterating through ``list_experiments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.experiment.ListExperimentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListExperimentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``experiments`` field.
 
@@ -33,7 +42,7 @@ class ListExperimentsPager:
     through the ``experiments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.experiment.ListExperimentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListExperimentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListExperimentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.experiment.ListExperimentsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest):
                 The initial request object.
-            response (:class:`~.experiment.ListExperimentsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListExperimentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListExperimentsAsyncPager:
     """A pager for iterating through ``list_experiments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.experiment.ListExperimentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListExperimentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``experiments`` field.
 
@@ -95,7 +104,7 @@ class ListExperimentsAsyncPager:
     through the ``experiments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.experiment.ListExperimentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListExperimentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListExperimentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.experiment.ListExperimentsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListExperimentsRequest):
                 The initial request object.
-            response (:class:`~.experiment.ListExperimentsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListExperimentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

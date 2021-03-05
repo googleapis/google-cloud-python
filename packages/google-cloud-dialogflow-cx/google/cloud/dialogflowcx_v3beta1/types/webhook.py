@@ -60,9 +60,9 @@ class Webhook(proto.Message):
         display_name (str):
             Required. The human-readable name of the
             webhook, unique within the agent.
-        generic_web_service (~.gcdc_webhook.Webhook.GenericWebService):
+        generic_web_service (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService):
             Configuration for a generic web service.
-        timeout (~.duration.Duration):
+        timeout (google.protobuf.duration_pb2.Duration):
             Webhook execution timeout. Execution is
             considered failed if Dialogflow doesn't receive
             a response from webhook at the end of the
@@ -83,7 +83,7 @@ class Webhook(proto.Message):
                 The user name for HTTP Basic authentication.
             password (str):
                 The password for HTTP Basic authentication.
-            request_headers (Sequence[~.gcdc_webhook.Webhook.GenericWebService.RequestHeadersEntry]):
+            request_headers (Sequence[google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.RequestHeadersEntry]):
                 The HTTP request headers to send together
                 with webhook requests.
         """
@@ -137,7 +137,7 @@ class ListWebhooksResponse(proto.Message):
     [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
 
     Attributes:
-        webhooks (Sequence[~.gcdc_webhook.Webhook]):
+        webhooks (Sequence[google.cloud.dialogflowcx_v3beta1.types.Webhook]):
             The list of webhooks. There will be a maximum number of
             items returned based on the page_size field in the request.
         next_page_token (str):
@@ -176,7 +176,7 @@ class CreateWebhookRequest(proto.Message):
         parent (str):
             Required. The agent to create a webhook for. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
-        webhook (~.gcdc_webhook.Webhook):
+        webhook (google.cloud.dialogflowcx_v3beta1.types.Webhook):
             Required. The webhook to create.
     """
 
@@ -190,9 +190,9 @@ class UpdateWebhookRequest(proto.Message):
     [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook].
 
     Attributes:
-        webhook (~.gcdc_webhook.Webhook):
+        webhook (google.cloud.dialogflowcx_v3beta1.types.Webhook):
             Required. The webhook to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
             If the mask is not present, all fields will be
             updated.
@@ -239,22 +239,27 @@ class WebhookRequest(proto.Message):
             Always present. The unique identifier of the
             [DetectIntentResponse][google.cloud.dialogflow.cx.v3beta1.DetectIntentResponse]
             that will be returned to the API caller.
-        fulfillment_info (~.gcdc_webhook.WebhookRequest.FulfillmentInfo):
+        fulfillment_info (google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.FulfillmentInfo):
             Always present. Information about the
             fulfillment that triggered this webhook call.
-        intent_info (~.gcdc_webhook.WebhookRequest.IntentInfo):
+        intent_info (google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.IntentInfo):
             Information about the last matched intent.
-        page_info (~.gcdc_webhook.PageInfo):
+        page_info (google.cloud.dialogflowcx_v3beta1.types.PageInfo):
             Information about page status.
-        session_info (~.gcdc_webhook.SessionInfo):
+        session_info (google.cloud.dialogflowcx_v3beta1.types.SessionInfo):
             Information about session status.
-        messages (Sequence[~.response_message.ResponseMessage]):
+        messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
             The list of rich message responses to present to the user.
             Webhook can choose to append or replace this list in
             [WebhookResponse.fulfillment_response][google.cloud.dialogflow.cx.v3beta1.WebhookResponse.fulfillment_response];
-        payload (~.struct.Struct):
+        payload (google.protobuf.struct_pb2.Struct):
             Custom data set in
             [QueryParameters.payload][google.cloud.dialogflow.cx.v3beta1.QueryParameters.payload].
+        sentiment_analysis_result (google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.SentimentAnalysisResult):
+            The sentiment analysis result of the current
+            user request. The field is filled when sentiment
+            analysis is configured to be enabled for the
+            request.
     """
 
     class FulfillmentInfo(proto.Message):
@@ -277,13 +282,20 @@ class WebhookRequest(proto.Message):
                 Always present. The unique identifier of the last matched
                 [intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
-            parameters (Sequence[~.gcdc_webhook.WebhookRequest.IntentInfo.ParametersEntry]):
+            display_name (str):
+                Always present. The display name of the last matched
+                [intent][google.cloud.dialogflow.cx.v3beta1.Intent].
+            parameters (Sequence[google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.IntentInfo.ParametersEntry]):
                 Parameters identified as a result of intent
                 matching. This is a map of the name of the
                 identified parameter to the value of the
                 parameter identified from the user's utterance.
                 All parameters defined in the matched intent
                 that are identified will be surfaced here.
+            confidence (float):
+                The confidence of the matched intent. Values
+                range from 0.0 (completely uncertain) to 1.0
+                (completely certain).
         """
 
         class IntentParameterValue(proto.Message):
@@ -293,7 +305,7 @@ class WebhookRequest(proto.Message):
                 original_value (str):
                     Always present. Original text value extracted
                     from user utterance.
-                resolved_value (~.struct.Value):
+                resolved_value (google.protobuf.struct_pb2.Value):
                     Always present. Structured value for the
                     parameter extracted from user utterance.
             """
@@ -304,12 +316,33 @@ class WebhookRequest(proto.Message):
 
         last_matched_intent = proto.Field(proto.STRING, number=1)
 
+        display_name = proto.Field(proto.STRING, number=3)
+
         parameters = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
             message="WebhookRequest.IntentInfo.IntentParameterValue",
         )
+
+        confidence = proto.Field(proto.FLOAT, number=4)
+
+    class SentimentAnalysisResult(proto.Message):
+        r"""Represents the result of sentiment analysis.
+
+        Attributes:
+            score (float):
+                Sentiment score between -1.0 (negative
+                sentiment) and 1.0 (positive sentiment).
+            magnitude (float):
+                A non-negative number in the [0, +inf) range, which
+                represents the absolute magnitude of sentiment, regardless
+                of score (positive or negative).
+        """
+
+        score = proto.Field(proto.FLOAT, number=1)
+
+        magnitude = proto.Field(proto.FLOAT, number=2)
 
     detect_intent_response_id = proto.Field(proto.STRING, number=1)
 
@@ -327,25 +360,29 @@ class WebhookRequest(proto.Message):
 
     payload = proto.Field(proto.MESSAGE, number=8, message=struct.Struct,)
 
+    sentiment_analysis_result = proto.Field(
+        proto.MESSAGE, number=9, message=SentimentAnalysisResult,
+    )
+
 
 class WebhookResponse(proto.Message):
     r"""The response message for a webhook call.
 
     Attributes:
-        fulfillment_response (~.gcdc_webhook.WebhookResponse.FulfillmentResponse):
+        fulfillment_response (google.cloud.dialogflowcx_v3beta1.types.WebhookResponse.FulfillmentResponse):
             The fulfillment response to send to the user.
             This field can be omitted by the webhook if it
             does not intend to send any response to the
             user.
-        page_info (~.gcdc_webhook.PageInfo):
+        page_info (google.cloud.dialogflowcx_v3beta1.types.PageInfo):
             Information about page status. This field can
             be omitted by the webhook if it does not intend
             to modify page status.
-        session_info (~.gcdc_webhook.SessionInfo):
+        session_info (google.cloud.dialogflowcx_v3beta1.types.SessionInfo):
             Information about session status. This field
             can be omitted by the webhook if it does not
             intend to modify session status.
-        payload (~.struct.Struct):
+        payload (google.protobuf.struct_pb2.Struct):
             Value to append directly to
             [QueryResult.webhook_payloads][google.cloud.dialogflow.cx.v3beta1.QueryResult.webhook_payloads].
         target_page (str):
@@ -360,10 +397,10 @@ class WebhookResponse(proto.Message):
         r"""Represents a fulfillment response to the user.
 
         Attributes:
-            messages (Sequence[~.response_message.ResponseMessage]):
+            messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
                 The list of rich message responses to present
                 to the user.
-            merge_behavior (~.gcdc_webhook.WebhookResponse.FulfillmentResponse.MergeBehavior):
+            merge_behavior (google.cloud.dialogflowcx_v3beta1.types.WebhookResponse.FulfillmentResponse.MergeBehavior):
                 Merge behavior for ``messages``.
         """
 
@@ -410,7 +447,7 @@ class PageInfo(proto.Message):
             [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
             The unique identifier of the current page. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
-        form_info (~.gcdc_webhook.PageInfo.FormInfo):
+        form_info (google.cloud.dialogflowcx_v3beta1.types.PageInfo.FormInfo):
             Optional for both
             [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]
             and
@@ -422,7 +459,7 @@ class PageInfo(proto.Message):
         r"""Represents form information.
 
         Attributes:
-            parameter_info (Sequence[~.gcdc_webhook.PageInfo.FormInfo.ParameterInfo]):
+            parameter_info (Sequence[google.cloud.dialogflowcx_v3beta1.types.PageInfo.FormInfo.ParameterInfo]):
                 Optional for both
                 [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]
                 and
@@ -451,7 +488,7 @@ class PageInfo(proto.Message):
                     parameters will not trigger prompts; however, they are
                     filled if the user specifies them. Required parameters must
                     be filled before form filling concludes.
-                state (~.gcdc_webhook.PageInfo.FormInfo.ParameterInfo.ParameterState):
+                state (google.cloud.dialogflowcx_v3beta1.types.PageInfo.FormInfo.ParameterInfo.ParameterState):
                     Always present for
                     [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
                     Required for
@@ -460,7 +497,7 @@ class PageInfo(proto.Message):
                     [INVALID][google.cloud.dialogflow.cx.v3beta1.PageInfo.FormInfo.ParameterInfo.ParameterState.INVALID]
                     by the webhook to invalidate the parameter; other values set
                     by the webhook will be ignored.
-                value (~.struct.Value):
+                value (google.protobuf.struct_pb2.Value):
                     Optional for both
                     [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest]
                     and
@@ -518,10 +555,13 @@ class SessionInfo(proto.Message):
             [WebhookResponse][google.cloud.dialogflow.cx.v3beta1.WebhookResponse].
             The unique identifier of the
             [session][google.cloud.dialogflow.cx.v3beta1.DetectIntentRequest.session].
-            This field can be used by the webhook to identify a user.
+            This field can be used by the webhook to identify a session.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``.
-        parameters (Sequence[~.gcdc_webhook.SessionInfo.ParametersEntry]):
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``
+            if environment is specified.
+        parameters (Sequence[google.cloud.dialogflowcx_v3beta1.types.SessionInfo.ParametersEntry]):
             Optional for
             [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
             Optional for

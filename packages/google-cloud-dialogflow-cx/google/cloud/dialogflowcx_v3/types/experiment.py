@@ -43,7 +43,6 @@ __protobuf__ = proto.module(
 
 class Experiment(proto.Message):
     r"""Represents an experiment in an environment.
-    Next ID: 13
 
     Attributes:
         name (str):
@@ -59,28 +58,28 @@ class Experiment(proto.Message):
         description (str):
             The human-readable description of the
             experiment.
-        state (~.gcdc_experiment.Experiment.State):
+        state (google.cloud.dialogflowcx_v3.types.Experiment.State):
             The current state of the experiment.
             Transition triggered by
             Expriments.StartExperiment: PENDING->RUNNING.
             Transition triggered by
             Expriments.CancelExperiment: PENDING->CANCELLED
             or RUNNING->CANCELLED.
-        definition (~.gcdc_experiment.Experiment.Definition):
+        definition (google.cloud.dialogflowcx_v3.types.Experiment.Definition):
             The definition of the experiment.
-        result (~.gcdc_experiment.Experiment.Result):
+        result (google.cloud.dialogflowcx_v3.types.Experiment.Result):
             Inference result of the experiment.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Creation time of this experiment.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of this experiment.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End time of this experiment.
-        last_update_time (~.timestamp.Timestamp):
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Last update time of this experiment.
-        experiment_length (~.duration.Duration):
+        experiment_length (google.protobuf.duration_pb2.Duration):
             Maximum number of days to run the experiment.
-        variants_history (Sequence[~.gcdc_experiment.VariantsHistory]):
+        variants_history (Sequence[google.cloud.dialogflowcx_v3.types.VariantsHistory]):
             The history of updates to the experiment
             variants.
     """
@@ -94,7 +93,6 @@ class Experiment(proto.Message):
 
     class Definition(proto.Message):
         r"""Definition of the experiment.
-        Next ID: 3
 
         Attributes:
             condition (str):
@@ -103,7 +101,7 @@ class Experiment(proto.Message):
                 eligible. E.g. "query_input.language_code=en" See the
                 `conditions
                 reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
-            version_variants (~.gcdc_experiment.VersionVariants):
+            version_variants (google.cloud.dialogflowcx_v3.types.VersionVariants):
                 The flow versions as the variants of this
                 experiment.
         """
@@ -119,22 +117,29 @@ class Experiment(proto.Message):
         optimize and the confidence interval.
 
         Attributes:
-            version_metrics (Sequence[~.gcdc_experiment.Experiment.Result.VersionMetrics]):
+            version_metrics (Sequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.VersionMetrics]):
                 Version variants and metrics.
-            last_update_time (~.timestamp.Timestamp):
+            last_update_time (google.protobuf.timestamp_pb2.Timestamp):
                 The last time the experiment's stats data was
                 updated. Will have default value if stats have
                 never been computed for this experiment.
         """
 
         class MetricType(proto.Enum):
-            r"""Types of metric for Dialogflow experiment."""
+            r"""Types of ratio-based metric for Dialogflow experiment."""
             METRIC_UNSPECIFIED = 0
             CONTAINED_SESSION_NO_CALLBACK_RATE = 1
             LIVE_AGENT_HANDOFF_RATE = 2
             CALLBACK_SESSION_RATE = 3
             ABANDONED_SESSION_RATE = 4
             SESSION_END_RATE = 5
+
+        class CountType(proto.Enum):
+            r"""Types of count-based metric for Dialogflow experiment."""
+            COUNT_TYPE_UNSPECIFIED = 0
+            TOTAL_NO_MATCH_COUNT = 1
+            TOTAL_TURN_COUNT = 2
+            AVERAGE_TURN_COUNT = 3
 
         class ConfidenceInterval(proto.Message):
             r"""A confidence interval is a range of possible values for the
@@ -166,11 +171,17 @@ class Experiment(proto.Message):
             r"""Metric and corresponding confidence intervals.
 
             Attributes:
-                type_ (~.gcdc_experiment.Experiment.Result.MetricType):
-                    The type of the metric.
+                type_ (google.cloud.dialogflowcx_v3.types.Experiment.Result.MetricType):
+                    Ratio-based metric type. Only one of type or count_type is
+                    specified in each Metric.
+                count_type (google.cloud.dialogflowcx_v3.types.Experiment.Result.CountType):
+                    Count-based metric type. Only one of type or count_type is
+                    specified in each Metric.
                 ratio (float):
                     Ratio value of a metric.
-                confidence_interval (~.gcdc_experiment.Experiment.Result.ConfidenceInterval):
+                count (float):
+                    Count value of a metric.
+                confidence_interval (google.cloud.dialogflowcx_v3.types.Experiment.Result.ConfidenceInterval):
                     The probability that the treatment is better
                     than all other treatments in the experiment
             """
@@ -179,7 +190,13 @@ class Experiment(proto.Message):
                 proto.ENUM, number=1, enum="Experiment.Result.MetricType",
             )
 
+            count_type = proto.Field(
+                proto.ENUM, number=5, enum="Experiment.Result.CountType",
+            )
+
             ratio = proto.Field(proto.DOUBLE, number=2, oneof="value")
+
+            count = proto.Field(proto.DOUBLE, number=4, oneof="value")
 
             confidence_interval = proto.Field(
                 proto.MESSAGE, number=3, message="Experiment.Result.ConfidenceInterval",
@@ -193,7 +210,7 @@ class Experiment(proto.Message):
                     The name of the flow
                     [Version][google.cloud.dialogflow.cx.v3.Version]. Format:
                     ``projects/<Project Number>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
-                metrics (Sequence[~.gcdc_experiment.Experiment.Result.Metric]):
+                metrics (Sequence[google.cloud.dialogflowcx_v3.types.Experiment.Result.Metric]):
                     The metrics and corresponding confidence
                     intervals in the inference result.
                 session_count (int):
@@ -252,7 +269,7 @@ class VersionVariants(proto.Message):
     r"""A list of flow version variants.
 
     Attributes:
-        variants (Sequence[~.gcdc_experiment.VersionVariants.Variant]):
+        variants (Sequence[google.cloud.dialogflowcx_v3.types.VersionVariants.Variant]):
             A list of flow version variants.
     """
 
@@ -284,9 +301,9 @@ class VariantsHistory(proto.Message):
     r"""The history of variants update.
 
     Attributes:
-        version_variants (~.gcdc_experiment.VersionVariants):
+        version_variants (google.cloud.dialogflowcx_v3.types.VersionVariants):
             The flow versions as the variants.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Update time of the variants.
     """
 
@@ -327,7 +344,7 @@ class ListExperimentsResponse(proto.Message):
     [Experiments.ListExperiments][google.cloud.dialogflow.cx.v3.Experiments.ListExperiments].
 
     Attributes:
-        experiments (Sequence[~.gcdc_experiment.Experiment]):
+        experiments (Sequence[google.cloud.dialogflowcx_v3.types.Experiment]):
             The list of experiments. There will be a maximum number of
             items returned based on the page_size field in the request.
             The list may in some cases be empty or contain fewer entries
@@ -373,7 +390,7 @@ class CreateExperimentRequest(proto.Message):
             [Environment][google.cloud.dialogflow.cx.v3.Environment]
             for. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
-        experiment (~.gcdc_experiment.Experiment):
+        experiment (google.cloud.dialogflowcx_v3.types.Experiment):
             Required. The experiment to create.
     """
 
@@ -387,9 +404,9 @@ class UpdateExperimentRequest(proto.Message):
     [Experiments.UpdateExperiment][google.cloud.dialogflow.cx.v3.Experiments.UpdateExperiment].
 
     Attributes:
-        experiment (~.gcdc_experiment.Experiment):
+        experiment (google.cloud.dialogflowcx_v3.types.Experiment):
             Required. The experiment to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated.
     """

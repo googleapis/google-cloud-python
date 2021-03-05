@@ -62,11 +62,11 @@ class SessionEntityType(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
-        entity_override_mode (~.gcdc_session_entity_type.SessionEntityType.EntityOverrideMode):
+        entity_override_mode (google.cloud.dialogflowcx_v3.types.SessionEntityType.EntityOverrideMode):
             Required. Indicates whether the additional
             data should override or supplement the custom
             entity type definition.
-        entities (Sequence[~.entity_type.EntityType.Entity]):
+        entities (Sequence[google.cloud.dialogflowcx_v3.types.EntityType.Entity]):
             Required. The collection of entities to
             override or supplement the custom entity type.
     """
@@ -119,7 +119,7 @@ class ListSessionEntityTypesResponse(proto.Message):
     [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.cx.v3.SessionEntityTypes.ListSessionEntityTypes].
 
     Attributes:
-        session_entity_types (Sequence[~.gcdc_session_entity_type.SessionEntityType]):
+        session_entity_types (Sequence[google.cloud.dialogflowcx_v3.types.SessionEntityType]):
             The list of session entity types. There will be a maximum
             number of items returned based on the page_size field in the
             request.
@@ -170,7 +170,7 @@ class CreateSessionEntityTypeRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
-        session_entity_type (~.gcdc_session_entity_type.SessionEntityType):
+        session_entity_type (google.cloud.dialogflowcx_v3.types.SessionEntityType):
             Required. The session entity type to create.
     """
 
@@ -186,14 +186,14 @@ class UpdateSessionEntityTypeRequest(proto.Message):
     [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.cx.v3.SessionEntityTypes.UpdateSessionEntityType].
 
     Attributes:
-        session_entity_type (~.gcdc_session_entity_type.SessionEntityType):
+        session_entity_type (google.cloud.dialogflowcx_v3.types.SessionEntityType):
             Required. The session entity type to update. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``
             or
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>/entityTypes/<Entity Type ID>``.
             If ``Environment ID`` is not specified, we assume default
             'draft' environment.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
     """
 

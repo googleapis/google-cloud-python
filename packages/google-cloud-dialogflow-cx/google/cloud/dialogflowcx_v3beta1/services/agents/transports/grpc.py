@@ -62,6 +62,7 @@ class AgentsGrpcTransport(AgentsTransport):
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -92,6 +93,10 @@ class AgentsGrpcTransport(AgentsTransport):
                 ``api_mtls_endpoint`` is None.
             ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
                 for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                A callback to provide client certificate bytes and private key bytes,
+                both in PEM format. It is used to configure mutual TLS channel. It is
+                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -108,6 +113,11 @@ class AgentsGrpcTransport(AgentsTransport):
         """
         self._ssl_channel_credentials = ssl_channel_credentials
 
+        if api_mtls_endpoint:
+            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
+        if client_cert_source:
+            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
+
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
@@ -117,11 +127,6 @@ class AgentsGrpcTransport(AgentsTransport):
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
         elif api_mtls_endpoint:
-            warnings.warn(
-                "api_mtls_endpoint and client_cert_source are deprecated",
-                DeprecationWarning,
-            )
-
             host = (
                 api_mtls_endpoint
                 if ":" in api_mtls_endpoint
@@ -165,12 +170,18 @@ class AgentsGrpcTransport(AgentsTransport):
                     scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
                 )
 
+            if client_cert_source_for_mtls and not ssl_channel_credentials:
+                cert, key = client_cert_source_for_mtls()
+                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+
             # create a new channel. The provided one is ignored.
             self._grpc_channel = type(self).create_channel(
                 host,
                 credentials=credentials,
                 credentials_file=credentials_file,
-                ssl_credentials=ssl_channel_credentials,
+                ssl_credentials=self._ssl_channel_credentials,
                 scopes=scopes or self.AUTH_SCOPES,
                 quota_project_id=quota_project_id,
                 options=[
@@ -438,6 +449,62 @@ class AgentsGrpcTransport(AgentsTransport):
                 response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["restore_agent"]
+
+    @property
+    def validate_agent(
+        self,
+    ) -> Callable[[agent.ValidateAgentRequest], agent.AgentValidationResult]:
+        r"""Return a callable for the validate agent method over gRPC.
+
+        Validates the specified agent and creates or updates
+        validation results. The agent in draft version is
+        validated. Please call this API after the training is
+        completed to get the complete validation results.
+
+        Returns:
+            Callable[[~.ValidateAgentRequest],
+                    ~.AgentValidationResult]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "validate_agent" not in self._stubs:
+            self._stubs["validate_agent"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Agents/ValidateAgent",
+                request_serializer=agent.ValidateAgentRequest.serialize,
+                response_deserializer=agent.AgentValidationResult.deserialize,
+            )
+        return self._stubs["validate_agent"]
+
+    @property
+    def get_agent_validation_result(
+        self,
+    ) -> Callable[[agent.GetAgentValidationResultRequest], agent.AgentValidationResult]:
+        r"""Return a callable for the get agent validation result method over gRPC.
+
+        Gets the latest agent validation result. Agent
+        validation is performed when ValidateAgent is called.
+
+        Returns:
+            Callable[[~.GetAgentValidationResultRequest],
+                    ~.AgentValidationResult]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_agent_validation_result" not in self._stubs:
+            self._stubs["get_agent_validation_result"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
+                request_serializer=agent.GetAgentValidationResultRequest.serialize,
+                response_deserializer=agent.AgentValidationResult.deserialize,
+            )
+        return self._stubs["get_agent_validation_result"]
 
 
 __all__ = ("AgentsGrpcTransport",)

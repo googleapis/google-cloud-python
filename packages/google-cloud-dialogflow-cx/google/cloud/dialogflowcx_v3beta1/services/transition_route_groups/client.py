@@ -120,6 +120,22 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TransitionRouteGroupsClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -131,7 +147,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            TransitionRouteGroupsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -311,10 +327,10 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TransitionRouteGroupsTransport]): The
+            transport (Union[str, TransitionRouteGroupsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -350,21 +366,17 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -407,7 +419,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -425,13 +437,14 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         the specified flow.
 
         Args:
-            request (:class:`~.transition_route_group.ListTransitionRouteGroupsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsRequest):
                 The request object. The request message for
                 [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
-            parent (:class:`str`):
+            parent (str):
                 Required. The flow to list all transition route groups
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -443,7 +456,7 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTransitionRouteGroupsPager:
+            google.cloud.dialogflowcx_v3beta1.services.transition_route_groups.pagers.ListTransitionRouteGroupsPager:
                 The response message for
                 [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
 
@@ -513,14 +526,15 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
         Args:
-            request (:class:`~.transition_route_group.GetTransitionRouteGroupRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.GetTransitionRouteGroupRequest):
                 The request object. The request message for
                 [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.GetTransitionRouteGroup].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
                 Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -532,11 +546,11 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.transition_route_group.TransitionRouteGroup:
+            google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
                 An TransitionRouteGroup represents a group of
-                [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-                to be used by a
-                [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+                   [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
+                   to be used by a
+                   [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
         """
         # Create or coerce a protobuf request object.
@@ -597,20 +611,22 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         in the specified flow.
 
         Args:
-            request (:class:`~.gcdc_transition_route_group.CreateTransitionRouteGroupRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.CreateTransitionRouteGroupRequest):
                 The request object. The request message for
                 [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup].
-            parent (:class:`str`):
+            parent (str):
                 Required. The flow to create an
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            transition_route_group (:class:`~.gcdc_transition_route_group.TransitionRouteGroup`):
+            transition_route_group (google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup):
                 Required. The transition route group
                 to create.
+
                 This corresponds to the ``transition_route_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -622,11 +638,11 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_transition_route_group.TransitionRouteGroup:
+            google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
                 An TransitionRouteGroup represents a group of
-                [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-                to be used by a
-                [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+                   [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
+                   to be used by a
+                   [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
         """
         # Create or coerce a protobuf request object.
@@ -690,18 +706,20 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
         Args:
-            request (:class:`~.gcdc_transition_route_group.UpdateTransitionRouteGroupRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.UpdateTransitionRouteGroupRequest):
                 The request object. The request message for
                 [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.UpdateTransitionRouteGroup].
-            transition_route_group (:class:`~.gcdc_transition_route_group.TransitionRouteGroup`):
+            transition_route_group (google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup):
                 Required. The transition route group
                 to update.
+
                 This corresponds to the ``transition_route_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The mask to control which fields get
                 updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -713,11 +731,11 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_transition_route_group.TransitionRouteGroup:
+            google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
                 An TransitionRouteGroup represents a group of
-                [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-                to be used by a
-                [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+                   [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
+                   to be used by a
+                   [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
         """
         # Create or coerce a protobuf request object.
@@ -782,14 +800,15 @@ class TransitionRouteGroupsClient(metaclass=TransitionRouteGroupsClientMeta):
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
         Args:
-            request (:class:`~.transition_route_group.DeleteTransitionRouteGroupRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.DeleteTransitionRouteGroupRequest):
                 The request object. The request message for
                 [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.DeleteTransitionRouteGroup].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

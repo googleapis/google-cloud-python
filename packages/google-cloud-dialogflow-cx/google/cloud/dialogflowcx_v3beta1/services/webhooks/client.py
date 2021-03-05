@@ -114,6 +114,22 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            WebhooksClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -125,7 +141,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            WebhooksClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -233,10 +249,10 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.WebhooksTransport]): The
+            transport (Union[str, WebhooksTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -272,21 +288,17 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -329,7 +341,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -347,12 +359,13 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         agent.
 
         Args:
-            request (:class:`~.webhook.ListWebhooksRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListWebhooksRequest):
                 The request object. The request message for
                 [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
-            parent (:class:`str`):
+            parent (str):
                 Required. The agent to list all webhooks for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -364,7 +377,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListWebhooksPager:
+            google.cloud.dialogflowcx_v3beta1.services.webhooks.pagers.ListWebhooksPager:
                 The response message for
                 [Webhooks.ListWebhooks][google.cloud.dialogflow.cx.v3beta1.Webhooks.ListWebhooks].
 
@@ -429,12 +442,13 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         r"""Retrieves the specified webhook.
 
         Args:
-            request (:class:`~.webhook.GetWebhookRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.GetWebhookRequest):
                 The request object. The request message for
                 [Webhooks.GetWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.GetWebhook].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the webhook. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -446,7 +460,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.webhook.Webhook:
+            google.cloud.dialogflowcx_v3beta1.types.Webhook:
                 Webhooks host the developer's
                 business logic. During a session,
                 webhooks allow the developer to use the
@@ -508,16 +522,17 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         r"""Creates a webhook in the specified agent.
 
         Args:
-            request (:class:`~.gcdc_webhook.CreateWebhookRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.CreateWebhookRequest):
                 The request object. The request message for
                 [Webhooks.CreateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.CreateWebhook].
-            parent (:class:`str`):
+            parent (str):
                 Required. The agent to create a webhook for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            webhook (:class:`~.gcdc_webhook.Webhook`):
+            webhook (google.cloud.dialogflowcx_v3beta1.types.Webhook):
                 Required. The webhook to create.
                 This corresponds to the ``webhook`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -530,7 +545,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_webhook.Webhook:
+            google.cloud.dialogflowcx_v3beta1.types.Webhook:
                 Webhooks host the developer's
                 business logic. During a session,
                 webhooks allow the developer to use the
@@ -594,18 +609,19 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         r"""Updates the specified webhook.
 
         Args:
-            request (:class:`~.gcdc_webhook.UpdateWebhookRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.UpdateWebhookRequest):
                 The request object. The request message for
                 [Webhooks.UpdateWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.UpdateWebhook].
-            webhook (:class:`~.gcdc_webhook.Webhook`):
+            webhook (google.cloud.dialogflowcx_v3beta1.types.Webhook):
                 Required. The webhook to update.
                 This corresponds to the ``webhook`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The mask to control which fields get
                 updated. If the mask is not present, all
                 fields will be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -617,7 +633,7 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_webhook.Webhook:
+            google.cloud.dialogflowcx_v3beta1.types.Webhook:
                 Webhooks host the developer's
                 business logic. During a session,
                 webhooks allow the developer to use the
@@ -682,12 +698,13 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         r"""Deletes the specified webhook.
 
         Args:
-            request (:class:`~.webhook.DeleteWebhookRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.DeleteWebhookRequest):
                 The request object. The request message for
                 [Webhooks.DeleteWebhook][google.cloud.dialogflow.cx.v3beta1.Webhooks.DeleteWebhook].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the webhook to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

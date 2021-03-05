@@ -102,7 +102,36 @@ class SessionsAsyncClient:
     common_location_path = staticmethod(SessionsClient.common_location_path)
     parse_common_location_path = staticmethod(SessionsClient.parse_common_location_path)
 
-    from_service_account_file = SessionsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SessionsAsyncClient: The constructed client.
+        """
+        return SessionsClient.from_service_account_info.__func__(SessionsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SessionsAsyncClient: The constructed client.
+        """
+        return SessionsClient.from_service_account_file.__func__(SessionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -184,7 +213,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Args:
-            request (:class:`~.session.DetectIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.DetectIntentRequest`):
                 The request object. The request to detect user's intent.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -194,7 +223,7 @@ class SessionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.session.DetectIntentResponse:
+            google.cloud.dialogflowcx_v3.types.DetectIntentResponse:
                 The message returned from the
                 DetectIntent method.
 
@@ -247,7 +276,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Args:
-            requests (AsyncIterator[`~.session.StreamingDetectIntentRequest`]):
+            requests (AsyncIterator[`google.cloud.dialogflowcx_v3.types.StreamingDetectIntentRequest`]):
                 The request object AsyncIterator. The top-level message sent by the
                 client to the
                 [Sessions.StreamingDetectIntent][google.cloud.dialogflow.cx.v3.Sessions.StreamingDetectIntent]
@@ -289,20 +318,18 @@ class SessionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.session.StreamingDetectIntentResponse]:
+            AsyncIterable[google.cloud.dialogflowcx_v3.types.StreamingDetectIntentResponse]:
                 The top-level message returned from the
-                ``StreamingDetectIntent`` method.
+                StreamingDetectIntent method.
 
-                Multiple response messages can be returned in order:
+                   Multiple response messages can be returned in order:
 
-                1. If the input was set to streaming audio, the first
-                   one or more messages contain ``recognition_result``.
-                   Each ``recognition_result`` represents a more
-                   complete transcript of what the user said. The last
-                   ``recognition_result`` has ``is_final`` set to
-                   ``true``.
-
-                2. The last message contains ``detect_intent_response``.
+                   1. If the input was set to streaming audio, the first
+                      one or more messages contain recognition_result.
+                      Each recognition_result represents a more complete
+                      transcript of what the user said. The last
+                      recognition_result has is_final set to true.
+                   2. The last message contains detect_intent_response.
 
         """
 
@@ -332,7 +359,7 @@ class SessionsAsyncClient:
         change the session status.
 
         Args:
-            request (:class:`~.session.MatchIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.MatchIntentRequest`):
                 The request object. Request of [MatchIntent][].
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -342,7 +369,7 @@ class SessionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.session.MatchIntentResponse:
+            google.cloud.dialogflowcx_v3.types.MatchIntentResponse:
                 Response of [MatchIntent][].
         """
         # Create or coerce a protobuf request object.
@@ -386,7 +413,7 @@ class SessionsAsyncClient:
         Otherwise, the behavior is undefined.
 
         Args:
-            request (:class:`~.session.FulfillIntentRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.FulfillIntentRequest`):
                 The request object. Request of [FulfillIntent][]
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -396,7 +423,7 @@ class SessionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.session.FulfillIntentResponse:
+            google.cloud.dialogflowcx_v3.types.FulfillIntentResponse:
                 Response of [FulfillIntent][]
         """
         # Create or coerce a protobuf request object.

@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3beta1.types import transition_route_group
 
@@ -24,7 +33,7 @@ class ListTransitionRouteGroupsPager:
     """A pager for iterating through ``list_transition_route_groups`` requests.
 
     This class thinly wraps an initial
-    :class:`~.transition_route_group.ListTransitionRouteGroupsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``transition_route_groups`` field.
 
@@ -33,7 +42,7 @@ class ListTransitionRouteGroupsPager:
     through the ``transition_route_groups`` field on the
     corresponding responses.
 
-    All the usual :class:`~.transition_route_group.ListTransitionRouteGroupsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListTransitionRouteGroupsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.transition_route_group.ListTransitionRouteGroupsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsRequest):
                 The initial request object.
-            response (:class:`~.transition_route_group.ListTransitionRouteGroupsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +97,7 @@ class ListTransitionRouteGroupsAsyncPager:
     """A pager for iterating through ``list_transition_route_groups`` requests.
 
     This class thinly wraps an initial
-    :class:`~.transition_route_group.ListTransitionRouteGroupsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``transition_route_groups`` field.
 
@@ -97,7 +106,7 @@ class ListTransitionRouteGroupsAsyncPager:
     through the ``transition_route_groups`` field on the
     corresponding responses.
 
-    All the usual :class:`~.transition_route_group.ListTransitionRouteGroupsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -117,9 +126,9 @@ class ListTransitionRouteGroupsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.transition_route_group.ListTransitionRouteGroupsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsRequest):
                 The initial request object.
-            response (:class:`~.transition_route_group.ListTransitionRouteGroupsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3.types import environment
 
@@ -24,7 +33,7 @@ class ListEnvironmentsPager:
     """A pager for iterating through ``list_environments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.environment.ListEnvironmentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.ListEnvironmentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``environments`` field.
 
@@ -33,7 +42,7 @@ class ListEnvironmentsPager:
     through the ``environments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.environment.ListEnvironmentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.ListEnvironmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListEnvironmentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.environment.ListEnvironmentsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest):
                 The initial request object.
-            response (:class:`~.environment.ListEnvironmentsResponse`):
+            response (google.cloud.dialogflowcx_v3.types.ListEnvironmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListEnvironmentsAsyncPager:
     """A pager for iterating through ``list_environments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.environment.ListEnvironmentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.ListEnvironmentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``environments`` field.
 
@@ -95,7 +104,7 @@ class ListEnvironmentsAsyncPager:
     through the ``environments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.environment.ListEnvironmentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.ListEnvironmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListEnvironmentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.environment.ListEnvironmentsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListEnvironmentsRequest):
                 The initial request object.
-            response (:class:`~.environment.ListEnvironmentsResponse`):
+            response (google.cloud.dialogflowcx_v3.types.ListEnvironmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +161,7 @@ class LookupEnvironmentHistoryPager:
     """A pager for iterating through ``lookup_environment_history`` requests.
 
     This class thinly wraps an initial
-    :class:`~.environment.LookupEnvironmentHistoryResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``environments`` field.
 
@@ -161,7 +170,7 @@ class LookupEnvironmentHistoryPager:
     through the ``environments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.environment.LookupEnvironmentHistoryResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +188,9 @@ class LookupEnvironmentHistoryPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.environment.LookupEnvironmentHistoryRequest`):
+            request (google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest):
                 The initial request object.
-            response (:class:`~.environment.LookupEnvironmentHistoryResponse`):
+            response (google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +223,7 @@ class LookupEnvironmentHistoryAsyncPager:
     """A pager for iterating through ``lookup_environment_history`` requests.
 
     This class thinly wraps an initial
-    :class:`~.environment.LookupEnvironmentHistoryResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``environments`` field.
 
@@ -223,7 +232,7 @@ class LookupEnvironmentHistoryAsyncPager:
     through the ``environments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.environment.LookupEnvironmentHistoryResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +250,9 @@ class LookupEnvironmentHistoryAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.environment.LookupEnvironmentHistoryRequest`):
+            request (google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryRequest):
                 The initial request object.
-            response (:class:`~.environment.LookupEnvironmentHistoryResponse`):
+            response (google.cloud.dialogflowcx_v3.types.LookupEnvironmentHistoryResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

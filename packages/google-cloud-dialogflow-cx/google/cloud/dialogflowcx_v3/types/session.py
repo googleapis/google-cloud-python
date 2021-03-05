@@ -77,11 +77,11 @@ class DetectIntentRequest(proto.Message):
             Note: Always use agent versions for production traffic. See
             `Versions and
             environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
-        query_params (~.gcdc_session.QueryParameters):
+        query_params (google.cloud.dialogflowcx_v3.types.QueryParameters):
             The parameters of this query.
-        query_input (~.gcdc_session.QueryInput):
+        query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
             Required. The input specification.
-        output_audio_config (~.audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio.
     """
@@ -106,7 +106,7 @@ class DetectIntentResponse(proto.Message):
             response. It can be used to locate a response in
             the training example set or for reporting
             issues.
-        query_result (~.gcdc_session.QueryResult):
+        query_result (google.cloud.dialogflowcx_v3.types.QueryResult):
             The result of the conversational query.
         output_audio (bytes):
             The audio data bytes encoded as specified in the request.
@@ -121,7 +121,7 @@ class DetectIntentResponse(proto.Message):
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
             top-most-level audio output has content.
-        output_audio_config (~.audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
     """
@@ -193,11 +193,11 @@ class StreamingDetectIntentRequest(proto.Message):
             Note: Always use agent versions for production traffic. See
             `Versions and
             environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
-        query_params (~.gcdc_session.QueryParameters):
+        query_params (google.cloud.dialogflowcx_v3.types.QueryParameters):
             The parameters of this query.
-        query_input (~.gcdc_session.QueryInput):
+        query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
             Required. The input specification.
-        output_audio_config (~.audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio.
     """
@@ -228,9 +228,9 @@ class StreamingDetectIntentResponse(proto.Message):
     2. The last message contains ``detect_intent_response``.
 
     Attributes:
-        recognition_result (~.gcdc_session.StreamingRecognitionResult):
+        recognition_result (google.cloud.dialogflowcx_v3.types.StreamingRecognitionResult):
             The result of speech recognition.
-        detect_intent_response (~.gcdc_session.DetectIntentResponse):
+        detect_intent_response (google.cloud.dialogflowcx_v3.types.DetectIntentResponse):
             The response from detect intent.
     """
 
@@ -277,7 +277,7 @@ class StreamingRecognitionResult(proto.Message):
     -  for ``END_OF_SINGLE_UTTERANCE``: only ``message_type``.
 
     Attributes:
-        message_type (~.gcdc_session.StreamingRecognitionResult.MessageType):
+        message_type (google.cloud.dialogflowcx_v3.types.StreamingRecognitionResult.MessageType):
             Type of the result message.
         transcript (str):
             Transcript text representing the words that the user spoke.
@@ -309,13 +309,13 @@ class StreamingRecognitionResult(proto.Message):
                ``is_final = false``.
             -  Otherwise, the value is in (0.0, 1.0] where 0.0 means
                completely unstable and 1.0 means completely stable.
-        speech_word_info (Sequence[~.audio_config.SpeechWordInfo]):
+        speech_word_info (Sequence[google.cloud.dialogflowcx_v3.types.SpeechWordInfo]):
             Word-specific information for the words recognized by Speech
             in
             [transcript][google.cloud.dialogflow.cx.v3.StreamingRecognitionResult.transcript].
             Populated if and only if ``message_type`` = ``TRANSCRIPT``
             and [InputAudioConfig.enable_word_info] is set.
-        speech_end_offset (~.duration.Duration):
+        speech_end_offset (google.protobuf.duration_pb2.Duration):
             Time offset of the end of this Speech recognition result
             relative to the beginning of the audio. Only populated for
             ``message_type`` = ``TRANSCRIPT``.
@@ -353,19 +353,19 @@ class QueryParameters(proto.Message):
             zone database <https://www.iana.org/time-zones>`__, e.g.,
             America/New_York, Europe/Paris. If not provided, the time
             zone specified in the agent is used.
-        geo_location (~.latlng.LatLng):
+        geo_location (google.type.latlng_pb2.LatLng):
             The geo location of this conversational
             query.
-        session_entity_types (Sequence[~.session_entity_type.SessionEntityType]):
+        session_entity_types (Sequence[google.cloud.dialogflowcx_v3.types.SessionEntityType]):
             Additional session entity types to replace or
             extend developer entity types with. The entity
             synonyms apply to all languages and persist for
             the session of this query.
-        payload (~.struct.Struct):
+        payload (google.protobuf.struct_pb2.Struct):
             This field can be used to pass custom data
             into the webhook associated with the agent.
             Arbitrary JSON objects are supported.
-        parameters (~.struct.Struct):
+        parameters (google.protobuf.struct_pb2.Struct):
             Additional parameters to be put into [session
             parameters][SessionInfo.parameters]. To remove a parameter
             from the session, clients should explicitly set the
@@ -390,11 +390,14 @@ class QueryParameters(proto.Message):
                   from composite entity property names to property
                   values
                -  Else: parameter value
+        disable_webhook (bool):
+            Whether to disable webhook calls for this
+            request.
         analyze_query_text_sentiment (bool):
             Configures whether sentiment analysis should
             be performed. If not provided, sentiment
             analysis is not performed.
-        webhook_headers (Sequence[~.gcdc_session.QueryParameters.WebhookHeadersEntry]):
+        webhook_headers (Sequence[google.cloud.dialogflowcx_v3.types.QueryParameters.WebhookHeadersEntry]):
             This field can be used to pass HTTP headers
             for a webhook call. These headers will be sent
             to webhook along with the headers that have been
@@ -421,6 +424,8 @@ class QueryParameters(proto.Message):
 
     parameters = proto.Field(proto.MESSAGE, number=5, message=struct.Struct,)
 
+    disable_webhook = proto.Field(proto.BOOL, number=7)
+
     analyze_query_text_sentiment = proto.Field(proto.BOOL, number=8)
 
     webhook_headers = proto.MapField(proto.STRING, proto.STRING, number=10)
@@ -436,20 +441,20 @@ class QueryInput(proto.Message):
     4.  An event to be triggered.
 
     Attributes:
-        text (~.gcdc_session.TextInput):
+        text (google.cloud.dialogflowcx_v3.types.TextInput):
             The natural language text to be processed.
-        intent (~.gcdc_session.IntentInput):
+        intent (google.cloud.dialogflowcx_v3.types.IntentInput):
             The intent to be triggered.
-        audio (~.gcdc_session.AudioInput):
+        audio (google.cloud.dialogflowcx_v3.types.AudioInput):
             The natural language speech audio to be
             processed.
-        event (~.gcdc_session.EventInput):
+        event (google.cloud.dialogflowcx_v3.types.EventInput):
             The event to be triggered.
-        dtmf (~.gcdc_session.DtmfInput):
+        dtmf (google.cloud.dialogflowcx_v3.types.DtmfInput):
             The DTMF event to be handled.
         language_code (str):
             Required. The language of the input. See `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
             for a list of the currently supported language codes. Note
             that queries in the same session do not necessarily need to
             specify the same language.
@@ -492,9 +497,9 @@ class QueryResult(proto.Message):
         language_code (str):
             The language that was triggered during intent detection. See
             `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
             for a list of the currently supported language codes.
-        parameters (~.struct.Struct):
+        parameters (google.protobuf.struct_pb2.Struct):
             The collected [session
             parameters][google.cloud.dialogflow.cx.v3.SessionInfo.parameters].
 
@@ -517,25 +522,25 @@ class QueryResult(proto.Message):
                   from composite entity property names to property
                   values
                -  Else: parameter value
-        response_messages (Sequence[~.response_message.ResponseMessage]):
+        response_messages (Sequence[google.cloud.dialogflowcx_v3.types.ResponseMessage]):
             The list of rich messages returned to the
             client. Responses vary from simple text messages
             to more sophisticated, structured payloads used
             to drive complex logic.
-        webhook_statuses (Sequence[~.status.Status]):
+        webhook_statuses (Sequence[google.rpc.status_pb2.Status]):
             The list of webhook call status in the order
             of call sequence.
-        webhook_payloads (Sequence[~.struct.Struct]):
+        webhook_payloads (Sequence[google.protobuf.struct_pb2.Struct]):
             The list of webhook payload in
             [WebhookResponse.payload][google.cloud.dialogflow.cx.v3.WebhookResponse.payload],
             in the order of call sequence. If some webhook call fails or
             doesn't return any payload, an empty ``Struct`` would be
             used instead.
-        current_page (~.page.Page):
+        current_page (google.cloud.dialogflowcx_v3.types.Page):
             The current [Page][google.cloud.dialogflow.cx.v3.Page].
             Some, not all fields are filled in this message, including
             but not limited to ``name`` and ``display_name``.
-        intent (~.gcdc_intent.Intent):
+        intent (google.cloud.dialogflowcx_v3.types.Intent):
             The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
             matched the conversational query. Some, not all fields are
             filled in this message, including but not limited to:
@@ -553,15 +558,15 @@ class QueryResult(proto.Message):
             in implementation. This field is deprecated, please use
             [QueryResult.match][google.cloud.dialogflow.cx.v3.QueryResult.match]
             instead.
-        match (~.gcdc_session.Match):
+        match (google.cloud.dialogflowcx_v3.types.Match):
             Intent match result, could be an intent or an
             event.
-        diagnostic_info (~.struct.Struct):
+        diagnostic_info (google.protobuf.struct_pb2.Struct):
             The free-form diagnostic info. For example,
             this field could contain webhook call latency.
             The string keys of the Struct's fields map can
             change without notice.
-        sentiment_analysis_result (~.gcdc_session.SentimentAnalysisResult):
+        sentiment_analysis_result (google.cloud.dialogflowcx_v3.types.SentimentAnalysisResult):
             The sentiment analyss result, which depends on
             [``analyze_query_text_sentiment``]
             [google.cloud.dialogflow.cx.v3.QueryParameters.analyze_query_text_sentiment],
@@ -637,7 +642,7 @@ class AudioInput(proto.Message):
     r"""Represents the natural speech audio to be processed.
 
     Attributes:
-        config (~.audio_config.InputAudioConfig):
+        config (google.cloud.dialogflowcx_v3.types.InputAudioConfig):
             Required. Instructs the speech recognizer how
             to process the speech audio.
         audio (bytes):
@@ -690,7 +695,7 @@ class Match(proto.Message):
     r"""Represents one match result of [MatchIntent][].
 
     Attributes:
-        intent (~.gcdc_intent.Intent):
+        intent (google.cloud.dialogflowcx_v3.types.Intent):
             The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
             matched the query. Some, not all fields are filled in this
             message, including but not limited to: ``name`` and
@@ -701,7 +706,7 @@ class Match(proto.Message):
             The event that matched the query. Only filled for
             [``EVENT``][google.cloud.dialogflow.cx.v3.Match.MatchType]
             match type.
-        parameters (~.struct.Struct):
+        parameters (google.protobuf.struct_pb2.Struct):
             The collection of parameters extracted from
             the query.
             Depending on your protocol or client library
@@ -726,7 +731,7 @@ class Match(proto.Message):
             MatchIntent. This value can be different from
             original input sent in request because of
             spelling correction or other processing.
-        match_type (~.gcdc_session.Match.MatchType):
+        match_type (google.cloud.dialogflowcx_v3.types.Match.MatchType):
             Type of this [Match][google.cloud.dialogflow.cx.v3.Match].
         confidence (float):
             The confidence of this match. Values range
@@ -781,9 +786,9 @@ class MatchIntentRequest(proto.Message):
 
             For more information, see the `sessions
             guide <https://cloud.google.com/dialogflow/cx/docs/concept/session>`__.
-        query_params (~.gcdc_session.QueryParameters):
+        query_params (google.cloud.dialogflowcx_v3.types.QueryParameters):
             The parameters of this query.
-        query_input (~.gcdc_session.QueryInput):
+        query_input (google.cloud.dialogflowcx_v3.types.QueryInput):
             Required. The input specification.
     """
 
@@ -815,11 +820,11 @@ class MatchIntentResponse(proto.Message):
             If an [event][google.cloud.dialogflow.cx.v3.EventInput] was
             provided as input, this field will contain a copy of the
             event name.
-        matches (Sequence[~.gcdc_session.Match]):
+        matches (Sequence[google.cloud.dialogflowcx_v3.types.Match]):
             Match results, if more than one, ordered
             descendingly by the confidence we have that the
             particular intent matches the query.
-        current_page (~.page.Page):
+        current_page (google.cloud.dialogflowcx_v3.types.Page):
             The current [Page][google.cloud.dialogflow.cx.v3.Page].
             Some, not all fields are filled in this message, including
             but not limited to ``name`` and ``display_name``.
@@ -842,12 +847,12 @@ class FulfillIntentRequest(proto.Message):
     r"""Request of [FulfillIntent][]
 
     Attributes:
-        match_intent_request (~.gcdc_session.MatchIntentRequest):
+        match_intent_request (google.cloud.dialogflowcx_v3.types.MatchIntentRequest):
             Must be same as the corresponding MatchIntent
             request, otherwise the behavior is undefined.
-        match (~.gcdc_session.Match):
+        match (google.cloud.dialogflowcx_v3.types.Match):
             The matched intent/event to fulfill.
-        output_audio_config (~.audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate output audio.
     """
@@ -872,7 +877,7 @@ class FulfillIntentResponse(proto.Message):
             response. It can be used to locate a response in
             the training example set or for reporting
             issues.
-        query_result (~.gcdc_session.QueryResult):
+        query_result (google.cloud.dialogflowcx_v3.types.QueryResult):
             The result of the conversational query.
         output_audio (bytes):
             The audio data bytes encoded as specified in the request.
@@ -887,7 +892,7 @@ class FulfillIntentResponse(proto.Message):
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
             top-most-level audio output has content.
-        output_audio_config (~.audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
     """

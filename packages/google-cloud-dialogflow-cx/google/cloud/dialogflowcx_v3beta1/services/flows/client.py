@@ -38,9 +38,11 @@ from google.cloud.dialogflowcx_v3beta1.services.flows import pagers
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
 from google.cloud.dialogflowcx_v3beta1.types import page
+from google.cloud.dialogflowcx_v3beta1.types import validation_message
 from google.protobuf import empty_pb2 as empty  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 from .transports.base import FlowsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import FlowsGrpcTransport
@@ -118,6 +120,22 @@ class FlowsClient(metaclass=FlowsClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            FlowsClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -129,7 +147,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            FlowsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -158,6 +176,24 @@ class FlowsClient(metaclass=FlowsClientMeta):
         """Parse a flow path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def flow_validation_result_path(
+        project: str, location: str, agent: str, flow: str,
+    ) -> str:
+        """Return a fully-qualified flow_validation_result string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/validationResult".format(
+            project=project, location=location, agent=agent, flow=flow,
+        )
+
+    @staticmethod
+    def parse_flow_validation_result_path(path: str) -> Dict[str, str]:
+        """Parse a flow_validation_result path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/validationResult$",
             path,
         )
         return m.groupdict() if m else {}
@@ -287,10 +323,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.FlowsTransport]): The
+            transport (Union[str, FlowsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -326,21 +362,17 @@ class FlowsClient(metaclass=FlowsClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -383,7 +415,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -401,16 +433,17 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Creates a flow in the specified agent.
 
         Args:
-            request (:class:`~.gcdc_flow.CreateFlowRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.CreateFlowRequest):
                 The request object. The request message for
                 [Flows.CreateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.CreateFlow].
-            parent (:class:`str`):
+            parent (str):
                 Required. The agent to create a flow for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            flow (:class:`~.gcdc_flow.Flow`):
+            flow (google.cloud.dialogflowcx_v3beta1.types.Flow):
                 Required. The flow to create.
                 This corresponds to the ``flow`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -423,7 +456,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_flow.Flow:
+            google.cloud.dialogflowcx_v3beta1.types.Flow:
                 Flows represents the conversation
                 flows when you build your chatbot agent.
                 A flow consists of many pages connected
@@ -502,12 +535,13 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Deletes a specified flow.
 
         Args:
-            request (:class:`~.flow.DeleteFlowRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.DeleteFlowRequest):
                 The request object. The request message for
                 [Flows.DeleteFlow][google.cloud.dialogflow.cx.v3beta1.Flows.DeleteFlow].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the flow to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -568,12 +602,13 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Returns the list of all flows in the specified agent.
 
         Args:
-            request (:class:`~.flow.ListFlowsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListFlowsRequest):
                 The request object. The request message for
                 [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
-            parent (:class:`str`):
+            parent (str):
                 Required. The agent containing the flows. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -585,7 +620,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListFlowsPager:
+            google.cloud.dialogflowcx_v3beta1.services.flows.pagers.ListFlowsPager:
                 The response message for
                 [Flows.ListFlows][google.cloud.dialogflow.cx.v3beta1.Flows.ListFlows].
 
@@ -650,12 +685,13 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Retrieves the specified flow.
 
         Args:
-            request (:class:`~.flow.GetFlowRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.GetFlowRequest):
                 The request object. The response message for
                 [Flows.GetFlow][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlow].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the flow to get. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -667,7 +703,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.flow.Flow:
+            google.cloud.dialogflowcx_v3beta1.types.Flow:
                 Flows represents the conversation
                 flows when you build your chatbot agent.
                 A flow consists of many pages connected
@@ -745,18 +781,19 @@ class FlowsClient(metaclass=FlowsClientMeta):
         r"""Updates the specified flow.
 
         Args:
-            request (:class:`~.gcdc_flow.UpdateFlowRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.UpdateFlowRequest):
                 The request object. The request message for
                 [Flows.UpdateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.UpdateFlow].
-            flow (:class:`~.gcdc_flow.Flow`):
+            flow (google.cloud.dialogflowcx_v3beta1.types.Flow):
                 Required. The flow to update.
                 This corresponds to the ``flow`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The mask to control which fields get updated.
                 If ``update_mask`` is not specified, an error will be
                 returned.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -768,7 +805,7 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_flow.Flow:
+            google.cloud.dialogflowcx_v3beta1.types.Flow:
                 Flows represents the conversation
                 flows when you build your chatbot agent.
                 A flow consists of many pages connected
@@ -850,12 +887,13 @@ class FlowsClient(metaclass=FlowsClientMeta):
         'draft' environment is trained.
 
         Args:
-            request (:class:`~.flow.TrainFlowRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.TrainFlowRequest):
                 The request object. The request message for
                 [Flows.TrainFlow][google.cloud.dialogflow.cx.v3beta1.Flows.TrainFlow].
-            name (:class:`str`):
+            name (str):
                 Required. The flow to train. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -867,24 +905,22 @@ class FlowsClient(metaclass=FlowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -930,6 +966,138 @@ class FlowsClient(metaclass=FlowsClientMeta):
             empty.Empty,
             metadata_type=struct.Struct,
         )
+
+        # Done; return the response.
+        return response
+
+    def validate_flow(
+        self,
+        request: flow.ValidateFlowRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> flow.FlowValidationResult:
+        r"""Validates the specified flow and creates or updates
+        validation results. Please call this API after the
+        training is completed to get the complete validation
+        results.
+
+        Args:
+            request (google.cloud.dialogflowcx_v3beta1.types.ValidateFlowRequest):
+                The request object. The request message for
+                [Flows.ValidateFlow][google.cloud.dialogflow.cx.v3beta1.Flows.ValidateFlow].
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.FlowValidationResult:
+                The response message for
+                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a flow.ValidateFlowRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, flow.ValidateFlowRequest):
+            request = flow.ValidateFlowRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.validate_flow]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def get_flow_validation_result(
+        self,
+        request: flow.GetFlowValidationResultRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> flow.FlowValidationResult:
+        r"""Gets the latest flow validation result. Flow
+        validation is performed when ValidateFlow is called.
+
+        Args:
+            request (google.cloud.dialogflowcx_v3beta1.types.GetFlowValidationResultRequest):
+                The request object. The request message for
+                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
+            name (str):
+                Required. The flow name. Format:
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/validationResult``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.FlowValidationResult:
+                The response message for
+                [Flows.GetFlowValidationResult][google.cloud.dialogflow.cx.v3beta1.Flows.GetFlowValidationResult].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a flow.GetFlowValidationResultRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, flow.GetFlowValidationResultRequest):
+            request = flow.GetFlowValidationResultRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_flow_validation_result
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response

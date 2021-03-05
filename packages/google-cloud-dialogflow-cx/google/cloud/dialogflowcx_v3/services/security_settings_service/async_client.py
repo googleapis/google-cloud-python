@@ -88,7 +88,36 @@ class SecuritySettingsServiceAsyncClient:
         SecuritySettingsServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = SecuritySettingsServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SecuritySettingsServiceAsyncClient: The constructed client.
+        """
+        return SecuritySettingsServiceClient.from_service_account_info.__func__(SecuritySettingsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SecuritySettingsServiceAsyncClient: The constructed client.
+        """
+        return SecuritySettingsServiceClient.from_service_account_file.__func__(SecuritySettingsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -166,7 +195,7 @@ class SecuritySettingsServiceAsyncClient:
         r"""Create security settings in the specified location.
 
         Args:
-            request (:class:`~.gcdc_security_settings.CreateSecuritySettingsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.CreateSecuritySettingsRequest`):
                 The request object. The request message for
                 [SecuritySettings.CreateSecuritySettings][].
             parent (:class:`str`):
@@ -174,12 +203,14 @@ class SecuritySettingsServiceAsyncClient:
                 [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            security_settings (:class:`~.gcdc_security_settings.SecuritySettings`):
+            security_settings (:class:`google.cloud.dialogflowcx_v3.types.SecuritySettings`):
                 Required. The security settings to
                 create.
+
                 This corresponds to the ``security_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -191,7 +222,7 @@ class SecuritySettingsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_security_settings.SecuritySettings:
+            google.cloud.dialogflowcx_v3.types.SecuritySettings:
                 Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -254,12 +285,13 @@ class SecuritySettingsServiceAsyncClient:
         The returned settings may be stale by up to 1 minute.
 
         Args:
-            request (:class:`~.security_settings.GetSecuritySettingsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.GetSecuritySettingsRequest`):
                 The request object. The request message for
                 [SecuritySettingsService.GetSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.GetSecuritySettings].
             name (:class:`str`):
                 Required. Resource name of the settings. Format:
                 ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -271,7 +303,7 @@ class SecuritySettingsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.security_settings.SecuritySettings:
+            google.cloud.dialogflowcx_v3.types.SecuritySettings:
                 Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -332,19 +364,21 @@ class SecuritySettingsServiceAsyncClient:
         [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
 
         Args:
-            request (:class:`~.gcdc_security_settings.UpdateSecuritySettingsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.UpdateSecuritySettingsRequest`):
                 The request object. The request message for
                 [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
-            security_settings (:class:`~.gcdc_security_settings.SecuritySettings`):
+            security_settings (:class:`google.cloud.dialogflowcx_v3.types.SecuritySettings`):
                 Required. [SecuritySettings] object that contains values
                 for each of the fields to update.
+
                 This corresponds to the ``security_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. The mask to control which
                 fields get updated. If the mask is not
                 present, all fields will be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -356,7 +390,7 @@ class SecuritySettingsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_security_settings.SecuritySettings:
+            google.cloud.dialogflowcx_v3.types.SecuritySettings:
                 Represents the settings related to
                 security issues, such as data redaction
                 and data retention. It may take hours
@@ -420,13 +454,14 @@ class SecuritySettingsServiceAsyncClient:
         specified location.
 
         Args:
-            request (:class:`~.security_settings.ListSecuritySettingsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.ListSecuritySettingsRequest`):
                 The request object. The request message for
                 [SecuritySettings.ListSecuritySettings][].
             parent (:class:`str`):
                 Required. The location to list all security settings
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -438,7 +473,7 @@ class SecuritySettingsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSecuritySettingsAsyncPager:
+            google.cloud.dialogflowcx_v3.services.security_settings_service.pagers.ListSecuritySettingsAsyncPager:
                 The response message for
                 [SecuritySettings.ListSecuritySettings][].
 
@@ -503,7 +538,7 @@ class SecuritySettingsServiceAsyncClient:
         [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings].
 
         Args:
-            request (:class:`~.security_settings.DeleteSecuritySettingsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3.types.DeleteSecuritySettingsRequest`):
                 The request object. The request message for
                 [SecuritySettings.DeleteSecuritySettings][].
             name (:class:`str`):
@@ -511,6 +546,7 @@ class SecuritySettingsServiceAsyncClient:
                 [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]
                 to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

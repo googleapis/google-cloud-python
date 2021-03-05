@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3beta1.types import flow
 
@@ -24,7 +33,7 @@ class ListFlowsPager:
     """A pager for iterating through ``list_flows`` requests.
 
     This class thinly wraps an initial
-    :class:`~.flow.ListFlowsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListFlowsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``flows`` field.
 
@@ -33,7 +42,7 @@ class ListFlowsPager:
     through the ``flows`` field on the
     corresponding responses.
 
-    All the usual :class:`~.flow.ListFlowsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListFlowsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListFlowsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.flow.ListFlowsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListFlowsRequest):
                 The initial request object.
-            response (:class:`~.flow.ListFlowsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListFlowsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListFlowsAsyncPager:
     """A pager for iterating through ``list_flows`` requests.
 
     This class thinly wraps an initial
-    :class:`~.flow.ListFlowsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListFlowsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``flows`` field.
 
@@ -95,7 +104,7 @@ class ListFlowsAsyncPager:
     through the ``flows`` field on the
     corresponding responses.
 
-    All the usual :class:`~.flow.ListFlowsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListFlowsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListFlowsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.flow.ListFlowsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListFlowsRequest):
                 The initial request object.
-            response (:class:`~.flow.ListFlowsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListFlowsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

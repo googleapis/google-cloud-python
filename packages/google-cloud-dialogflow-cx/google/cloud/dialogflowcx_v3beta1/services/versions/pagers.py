@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3beta1.types import version
 
@@ -24,7 +33,7 @@ class ListVersionsPager:
     """A pager for iterating through ``list_versions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.version.ListVersionsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListVersionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``versions`` field.
 
@@ -33,7 +42,7 @@ class ListVersionsPager:
     through the ``versions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.version.ListVersionsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListVersionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListVersionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.version.ListVersionsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListVersionsRequest):
                 The initial request object.
-            response (:class:`~.version.ListVersionsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListVersionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListVersionsAsyncPager:
     """A pager for iterating through ``list_versions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.version.ListVersionsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3beta1.types.ListVersionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``versions`` field.
 
@@ -95,7 +104,7 @@ class ListVersionsAsyncPager:
     through the ``versions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.version.ListVersionsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3beta1.types.ListVersionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListVersionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.version.ListVersionsRequest`):
+            request (google.cloud.dialogflowcx_v3beta1.types.ListVersionsRequest):
                 The initial request object.
-            response (:class:`~.version.ListVersionsResponse`):
+            response (google.cloud.dialogflowcx_v3beta1.types.ListVersionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

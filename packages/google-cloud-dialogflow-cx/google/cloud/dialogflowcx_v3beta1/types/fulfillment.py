@@ -49,7 +49,7 @@ class Fulfillment(proto.Message):
     or both.
 
     Attributes:
-        messages (Sequence[~.response_message.ResponseMessage]):
+        messages (Sequence[google.cloud.dialogflowcx_v3beta1.types.ResponseMessage]):
             The list of rich message responses to present
             to the user.
         webhook (str):
@@ -59,10 +59,10 @@ class Fulfillment(proto.Message):
             The tag used by the webhook to identify which fulfillment is
             being called. This field is required if ``webhook`` is
             specified.
-        set_parameter_actions (Sequence[~.fulfillment.Fulfillment.SetParameterAction]):
+        set_parameter_actions (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.SetParameterAction]):
             Set parameter values before executing the
             webhook.
-        conditional_cases (Sequence[~.fulfillment.Fulfillment.ConditionalCases]):
+        conditional_cases (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases]):
             Conditional cases for this fulfillment.
     """
 
@@ -72,7 +72,7 @@ class Fulfillment(proto.Message):
         Attributes:
             parameter (str):
                 Display name of the parameter.
-            value (~.struct.Value):
+            value (google.protobuf.struct_pb2.Value):
                 The new value of the parameter. A null value
                 clears the parameter.
         """
@@ -87,7 +87,7 @@ class Fulfillment(proto.Message):
         all the rest ignored.
 
         Attributes:
-            cases (Sequence[~.fulfillment.Fulfillment.ConditionalCases.Case]):
+            cases (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case]):
                 A list of cascading if-else conditions.
         """
 
@@ -105,7 +105,7 @@ class Fulfillment(proto.Message):
 
                     See the `conditions
                     reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
-                case_content (Sequence[~.fulfillment.Fulfillment.ConditionalCases.Case.CaseContent]):
+                case_content (Sequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case.CaseContent]):
                     A list of case content.
             """
 
@@ -114,9 +114,9 @@ class Fulfillment(proto.Message):
                 this case.
 
                 Attributes:
-                    message (~.response_message.ResponseMessage):
+                    message (google.cloud.dialogflowcx_v3beta1.types.ResponseMessage):
                         Returned message.
-                    additional_cases (~.fulfillment.Fulfillment.ConditionalCases):
+                    additional_cases (google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases):
                         Additional cases to be evaluated.
                 """
 

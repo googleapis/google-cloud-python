@@ -78,7 +78,36 @@ class VersionsAsyncClient:
     common_location_path = staticmethod(VersionsClient.common_location_path)
     parse_common_location_path = staticmethod(VersionsClient.parse_common_location_path)
 
-    from_service_account_file = VersionsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            VersionsAsyncClient: The constructed client.
+        """
+        return VersionsClient.from_service_account_info.__func__(VersionsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            VersionsAsyncClient: The constructed client.
+        """
+        return VersionsClient.from_service_account_file.__func__(VersionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -155,7 +184,7 @@ class VersionsAsyncClient:
         [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
 
         Args:
-            request (:class:`~.version.ListVersionsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListVersionsRequest`):
                 The request object. The request message for
                 [Versions.ListVersions][google.cloud.dialogflow.cx.v3beta1.Versions.ListVersions].
             parent (:class:`str`):
@@ -163,6 +192,7 @@ class VersionsAsyncClient:
                 [Flow][google.cloud.dialogflow.cx.v3beta1.Flow] to list
                 all versions for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -174,7 +204,7 @@ class VersionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListVersionsAsyncPager:
+            google.cloud.dialogflowcx_v3beta1.services.versions.pagers.ListVersionsAsyncPager:
                 The response message for
                 [Versions.ListVersions][google.cloud.dialogflow.cx.v3beta1.Versions.ListVersions].
 
@@ -239,7 +269,7 @@ class VersionsAsyncClient:
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
         Args:
-            request (:class:`~.version.GetVersionRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetVersionRequest`):
                 The request object. The request message for
                 [Versions.GetVersion][google.cloud.dialogflow.cx.v3beta1.Versions.GetVersion].
             name (:class:`str`):
@@ -247,6 +277,7 @@ class VersionsAsyncClient:
                 [Version][google.cloud.dialogflow.cx.v3beta1.Version].
                 Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -258,7 +289,7 @@ class VersionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.version.Version:
+            google.cloud.dialogflowcx_v3beta1.types.Version:
                 Represents a version of a flow.
         """
         # Create or coerce a protobuf request object.
@@ -314,7 +345,7 @@ class VersionsAsyncClient:
         [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
 
         Args:
-            request (:class:`~.gcdc_version.CreateVersionRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateVersionRequest`):
                 The request object. The request message for
                 [Versions.CreateVersion][google.cloud.dialogflow.cx.v3beta1.Versions.CreateVersion].
             parent (:class:`str`):
@@ -324,10 +355,11 @@ class VersionsAsyncClient:
                 [Version][google.cloud.dialogflow.cx.v3beta1.Version]
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            version (:class:`~.gcdc_version.Version`):
+            version (:class:`google.cloud.dialogflowcx_v3beta1.types.Version`):
                 Required. The version to create.
                 This corresponds to the ``version`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -340,12 +372,12 @@ class VersionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.gcdc_version.Version``: Represents a version
-                of a flow.
+                :class:`google.cloud.dialogflowcx_v3beta1.types.Version`
+                Represents a version of a flow.
 
         """
         # Create or coerce a protobuf request object.
@@ -410,18 +442,19 @@ class VersionsAsyncClient:
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
         Args:
-            request (:class:`~.gcdc_version.UpdateVersionRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateVersionRequest`):
                 The request object. The request message for
                 [Versions.UpdateVersion][google.cloud.dialogflow.cx.v3beta1.Versions.UpdateVersion].
-            version (:class:`~.gcdc_version.Version`):
+            version (:class:`google.cloud.dialogflowcx_v3beta1.types.Version`):
                 Required. The version to update.
                 This corresponds to the ``version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. The mask to control which fields get updated.
                 Currently only ``description`` and ``display_name`` can
                 be updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -433,7 +466,7 @@ class VersionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_version.Version:
+            google.cloud.dialogflowcx_v3beta1.types.Version:
                 Represents a version of a flow.
         """
         # Create or coerce a protobuf request object.
@@ -491,7 +524,7 @@ class VersionsAsyncClient:
         [Version][google.cloud.dialogflow.cx.v3beta1.Version].
 
         Args:
-            request (:class:`~.version.DeleteVersionRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteVersionRequest`):
                 The request object. The request message for
                 [Versions.DeleteVersion][google.cloud.dialogflow.cx.v3beta1.Versions.DeleteVersion].
             name (:class:`str`):
@@ -499,6 +532,7 @@ class VersionsAsyncClient:
                 [Version][google.cloud.dialogflow.cx.v3beta1.Version] to
                 delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -558,7 +592,7 @@ class VersionsAsyncClient:
         r"""Loads a specified version to draft version.
 
         Args:
-            request (:class:`~.version.LoadVersionRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.LoadVersionRequest`):
                 The request object. The request message for
                 [Versions.LoadVersion][google.cloud.dialogflow.cx.v3beta1.Versions.LoadVersion].
             name (:class:`str`):
@@ -566,6 +600,7 @@ class VersionsAsyncClient:
                 [Version][google.cloud.dialogflow.cx.v3beta1.Version] to
                 be loaded to draft version. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -577,24 +612,22 @@ class VersionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.

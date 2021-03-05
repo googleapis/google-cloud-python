@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflowcx_v3.types import agent
 
@@ -24,7 +33,7 @@ class ListAgentsPager:
     """A pager for iterating through ``list_agents`` requests.
 
     This class thinly wraps an initial
-    :class:`~.agent.ListAgentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.ListAgentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``agents`` field.
 
@@ -33,7 +42,7 @@ class ListAgentsPager:
     through the ``agents`` field on the
     corresponding responses.
 
-    All the usual :class:`~.agent.ListAgentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.ListAgentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListAgentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.agent.ListAgentsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListAgentsRequest):
                 The initial request object.
-            response (:class:`~.agent.ListAgentsResponse`):
+            response (google.cloud.dialogflowcx_v3.types.ListAgentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListAgentsAsyncPager:
     """A pager for iterating through ``list_agents`` requests.
 
     This class thinly wraps an initial
-    :class:`~.agent.ListAgentsResponse` object, and
+    :class:`google.cloud.dialogflowcx_v3.types.ListAgentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``agents`` field.
 
@@ -95,7 +104,7 @@ class ListAgentsAsyncPager:
     through the ``agents`` field on the
     corresponding responses.
 
-    All the usual :class:`~.agent.ListAgentsResponse`
+    All the usual :class:`google.cloud.dialogflowcx_v3.types.ListAgentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListAgentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.agent.ListAgentsRequest`):
+            request (google.cloud.dialogflowcx_v3.types.ListAgentsRequest):
                 The initial request object.
-            response (:class:`~.agent.ListAgentsResponse`):
+            response (google.cloud.dialogflowcx_v3.types.ListAgentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

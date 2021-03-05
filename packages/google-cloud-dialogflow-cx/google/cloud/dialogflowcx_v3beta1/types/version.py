@@ -69,12 +69,12 @@ class Version(proto.Message):
             The description of the version. The maximum
             length is 500 characters. If exceeded, the
             request is rejected.
-        nlu_settings (~.flow.NluSettings):
+        nlu_settings (google.cloud.dialogflowcx_v3beta1.types.NluSettings):
             Output only. The NLU settings of the flow at
             version creation.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Create time of the version.
-        state (~.gcdc_version.Version.State):
+        state (google.cloud.dialogflowcx_v3beta1.types.Version.State):
             Output only. The state of this version. This
             field is read-only and cannot be set by create
             and update methods.
@@ -130,7 +130,7 @@ class ListVersionsResponse(proto.Message):
     [Versions.ListVersions][google.cloud.dialogflow.cx.v3beta1.Versions.ListVersions].
 
     Attributes:
-        versions (Sequence[~.gcdc_version.Version]):
+        versions (Sequence[google.cloud.dialogflowcx_v3beta1.types.Version]):
             A list of versions. There will be a maximum number of items
             returned based on the page_size field in the request. The
             list may in some cases be empty or contain fewer entries
@@ -176,7 +176,7 @@ class CreateVersionRequest(proto.Message):
             [Version][google.cloud.dialogflow.cx.v3beta1.Version] for.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
-        version (~.gcdc_version.Version):
+        version (google.cloud.dialogflowcx_v3beta1.types.Version):
             Required. The version to create.
     """
 
@@ -190,9 +190,9 @@ class UpdateVersionRequest(proto.Message):
     [Versions.UpdateVersion][google.cloud.dialogflow.cx.v3beta1.Versions.UpdateVersion].
 
     Attributes:
-        version (~.gcdc_version.Version):
+        version (google.cloud.dialogflowcx_v3beta1.types.Version):
             Required. The version to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields get updated.
             Currently only ``description`` and ``display_name`` can be
             updated.

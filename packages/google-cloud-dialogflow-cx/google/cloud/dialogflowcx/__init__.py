@@ -53,6 +53,10 @@ from google.cloud.dialogflowcx_v3.services.sessions.async_client import (
     SessionsAsyncClient,
 )
 from google.cloud.dialogflowcx_v3.services.sessions.client import SessionsClient
+from google.cloud.dialogflowcx_v3.services.test_cases.async_client import (
+    TestCasesAsyncClient,
+)
+from google.cloud.dialogflowcx_v3.services.test_cases.client import TestCasesClient
 from google.cloud.dialogflowcx_v3.services.transition_route_groups.async_client import (
     TransitionRouteGroupsAsyncClient,
 )
@@ -68,16 +72,19 @@ from google.cloud.dialogflowcx_v3.services.webhooks.async_client import (
 )
 from google.cloud.dialogflowcx_v3.services.webhooks.client import WebhooksClient
 from google.cloud.dialogflowcx_v3.types.agent import Agent
+from google.cloud.dialogflowcx_v3.types.agent import AgentValidationResult
 from google.cloud.dialogflowcx_v3.types.agent import CreateAgentRequest
 from google.cloud.dialogflowcx_v3.types.agent import DeleteAgentRequest
 from google.cloud.dialogflowcx_v3.types.agent import ExportAgentRequest
 from google.cloud.dialogflowcx_v3.types.agent import ExportAgentResponse
 from google.cloud.dialogflowcx_v3.types.agent import GetAgentRequest
+from google.cloud.dialogflowcx_v3.types.agent import GetAgentValidationResultRequest
 from google.cloud.dialogflowcx_v3.types.agent import ListAgentsRequest
 from google.cloud.dialogflowcx_v3.types.agent import ListAgentsResponse
 from google.cloud.dialogflowcx_v3.types.agent import RestoreAgentRequest
 from google.cloud.dialogflowcx_v3.types.agent import SpeechToTextSettings
 from google.cloud.dialogflowcx_v3.types.agent import UpdateAgentRequest
+from google.cloud.dialogflowcx_v3.types.agent import ValidateAgentRequest
 from google.cloud.dialogflowcx_v3.types.audio_config import AudioEncoding
 from google.cloud.dialogflowcx_v3.types.audio_config import InputAudioConfig
 from google.cloud.dialogflowcx_v3.types.audio_config import OutputAudioConfig
@@ -121,12 +128,15 @@ from google.cloud.dialogflowcx_v3.types.experiment import VersionVariants
 from google.cloud.dialogflowcx_v3.types.flow import CreateFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import DeleteFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import Flow
+from google.cloud.dialogflowcx_v3.types.flow import FlowValidationResult
 from google.cloud.dialogflowcx_v3.types.flow import GetFlowRequest
+from google.cloud.dialogflowcx_v3.types.flow import GetFlowValidationResultRequest
 from google.cloud.dialogflowcx_v3.types.flow import ListFlowsRequest
 from google.cloud.dialogflowcx_v3.types.flow import ListFlowsResponse
 from google.cloud.dialogflowcx_v3.types.flow import NluSettings
 from google.cloud.dialogflowcx_v3.types.flow import TrainFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import UpdateFlowRequest
+from google.cloud.dialogflowcx_v3.types.flow import ValidateFlowRequest
 from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
 from google.cloud.dialogflowcx_v3.types.intent import CreateIntentRequest
 from google.cloud.dialogflowcx_v3.types.intent import DeleteIntentRequest
@@ -204,6 +214,39 @@ from google.cloud.dialogflowcx_v3.types.session_entity_type import SessionEntity
 from google.cloud.dialogflowcx_v3.types.session_entity_type import (
     UpdateSessionEntityTypeRequest,
 )
+from google.cloud.dialogflowcx_v3.types.test_case import BatchDeleteTestCasesRequest
+from google.cloud.dialogflowcx_v3.types.test_case import BatchRunTestCasesMetadata
+from google.cloud.dialogflowcx_v3.types.test_case import BatchRunTestCasesRequest
+from google.cloud.dialogflowcx_v3.types.test_case import BatchRunTestCasesResponse
+from google.cloud.dialogflowcx_v3.types.test_case import CalculateCoverageRequest
+from google.cloud.dialogflowcx_v3.types.test_case import CalculateCoverageResponse
+from google.cloud.dialogflowcx_v3.types.test_case import ConversationTurn
+from google.cloud.dialogflowcx_v3.types.test_case import CreateTestCaseRequest
+from google.cloud.dialogflowcx_v3.types.test_case import ExportTestCasesMetadata
+from google.cloud.dialogflowcx_v3.types.test_case import ExportTestCasesRequest
+from google.cloud.dialogflowcx_v3.types.test_case import ExportTestCasesResponse
+from google.cloud.dialogflowcx_v3.types.test_case import GetTestCaseRequest
+from google.cloud.dialogflowcx_v3.types.test_case import ImportTestCasesMetadata
+from google.cloud.dialogflowcx_v3.types.test_case import ImportTestCasesRequest
+from google.cloud.dialogflowcx_v3.types.test_case import ImportTestCasesResponse
+from google.cloud.dialogflowcx_v3.types.test_case import IntentCoverage
+from google.cloud.dialogflowcx_v3.types.test_case import ListTestCaseResultsRequest
+from google.cloud.dialogflowcx_v3.types.test_case import ListTestCaseResultsResponse
+from google.cloud.dialogflowcx_v3.types.test_case import ListTestCasesRequest
+from google.cloud.dialogflowcx_v3.types.test_case import ListTestCasesResponse
+from google.cloud.dialogflowcx_v3.types.test_case import RunTestCaseMetadata
+from google.cloud.dialogflowcx_v3.types.test_case import RunTestCaseRequest
+from google.cloud.dialogflowcx_v3.types.test_case import RunTestCaseResponse
+from google.cloud.dialogflowcx_v3.types.test_case import TestCase
+from google.cloud.dialogflowcx_v3.types.test_case import TestCaseError
+from google.cloud.dialogflowcx_v3.types.test_case import TestCaseResult
+from google.cloud.dialogflowcx_v3.types.test_case import TestConfig
+from google.cloud.dialogflowcx_v3.types.test_case import TestError
+from google.cloud.dialogflowcx_v3.types.test_case import TestResult
+from google.cloud.dialogflowcx_v3.types.test_case import TestRunDifference
+from google.cloud.dialogflowcx_v3.types.test_case import TransitionCoverage
+from google.cloud.dialogflowcx_v3.types.test_case import TransitionRouteGroupCoverage
+from google.cloud.dialogflowcx_v3.types.test_case import UpdateTestCaseRequest
 from google.cloud.dialogflowcx_v3.types.transition_route_group import (
     CreateTransitionRouteGroupRequest,
 )
@@ -225,6 +268,8 @@ from google.cloud.dialogflowcx_v3.types.transition_route_group import (
 from google.cloud.dialogflowcx_v3.types.transition_route_group import (
     UpdateTransitionRouteGroupRequest,
 )
+from google.cloud.dialogflowcx_v3.types.validation_message import ResourceName
+from google.cloud.dialogflowcx_v3.types.validation_message import ValidationMessage
 from google.cloud.dialogflowcx_v3.types.version import CreateVersionOperationMetadata
 from google.cloud.dialogflowcx_v3.types.version import CreateVersionRequest
 from google.cloud.dialogflowcx_v3.types.version import DeleteVersionRequest
@@ -248,10 +293,18 @@ from google.cloud.dialogflowcx_v3.types.webhook import WebhookResponse
 
 __all__ = (
     "Agent",
+    "AgentValidationResult",
     "AgentsAsyncClient",
     "AgentsClient",
     "AudioEncoding",
     "AudioInput",
+    "BatchDeleteTestCasesRequest",
+    "BatchRunTestCasesMetadata",
+    "BatchRunTestCasesRequest",
+    "BatchRunTestCasesResponse",
+    "CalculateCoverageRequest",
+    "CalculateCoverageResponse",
+    "ConversationTurn",
     "CreateAgentRequest",
     "CreateEntityTypeRequest",
     "CreateEnvironmentRequest",
@@ -261,6 +314,7 @@ __all__ = (
     "CreatePageRequest",
     "CreateSecuritySettingsRequest",
     "CreateSessionEntityTypeRequest",
+    "CreateTestCaseRequest",
     "CreateTransitionRouteGroupRequest",
     "CreateVersionOperationMetadata",
     "CreateVersionRequest",
@@ -293,7 +347,11 @@ __all__ = (
     "ExperimentsClient",
     "ExportAgentRequest",
     "ExportAgentResponse",
+    "ExportTestCasesMetadata",
+    "ExportTestCasesRequest",
+    "ExportTestCasesResponse",
     "Flow",
+    "FlowValidationResult",
     "FlowsAsyncClient",
     "FlowsClient",
     "Form",
@@ -301,19 +359,26 @@ __all__ = (
     "FulfillIntentResponse",
     "Fulfillment",
     "GetAgentRequest",
+    "GetAgentValidationResultRequest",
     "GetEntityTypeRequest",
     "GetEnvironmentRequest",
     "GetExperimentRequest",
     "GetFlowRequest",
+    "GetFlowValidationResultRequest",
     "GetIntentRequest",
     "GetPageRequest",
     "GetSecuritySettingsRequest",
     "GetSessionEntityTypeRequest",
+    "GetTestCaseRequest",
     "GetTransitionRouteGroupRequest",
     "GetVersionRequest",
     "GetWebhookRequest",
+    "ImportTestCasesMetadata",
+    "ImportTestCasesRequest",
+    "ImportTestCasesResponse",
     "InputAudioConfig",
     "Intent",
+    "IntentCoverage",
     "IntentInput",
     "IntentView",
     "IntentsAsyncClient",
@@ -336,6 +401,10 @@ __all__ = (
     "ListSecuritySettingsResponse",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",
+    "ListTestCaseResultsRequest",
+    "ListTestCaseResultsResponse",
+    "ListTestCasesRequest",
+    "ListTestCasesResponse",
     "ListTransitionRouteGroupsRequest",
     "ListTransitionRouteGroupsResponse",
     "ListVersionsRequest",
@@ -358,8 +427,12 @@ __all__ = (
     "QueryInput",
     "QueryParameters",
     "QueryResult",
+    "ResourceName",
     "ResponseMessage",
     "RestoreAgentRequest",
+    "RunTestCaseMetadata",
+    "RunTestCaseRequest",
+    "RunTestCaseResponse",
     "SecuritySettings",
     "SecuritySettingsServiceAsyncClient",
     "SecuritySettingsServiceClient",
@@ -380,10 +453,21 @@ __all__ = (
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
     "SynthesizeSpeechConfig",
+    "TestCase",
+    "TestCaseError",
+    "TestCaseResult",
+    "TestCasesAsyncClient",
+    "TestCasesClient",
+    "TestConfig",
+    "TestError",
+    "TestResult",
+    "TestRunDifference",
     "TextInput",
     "TrainFlowRequest",
+    "TransitionCoverage",
     "TransitionRoute",
     "TransitionRouteGroup",
+    "TransitionRouteGroupCoverage",
     "TransitionRouteGroupsAsyncClient",
     "TransitionRouteGroupsClient",
     "UpdateAgentRequest",
@@ -395,9 +479,13 @@ __all__ = (
     "UpdatePageRequest",
     "UpdateSecuritySettingsRequest",
     "UpdateSessionEntityTypeRequest",
+    "UpdateTestCaseRequest",
     "UpdateTransitionRouteGroupRequest",
     "UpdateVersionRequest",
     "UpdateWebhookRequest",
+    "ValidateAgentRequest",
+    "ValidateFlowRequest",
+    "ValidationMessage",
     "VariantsHistory",
     "Version",
     "VersionVariants",

@@ -41,6 +41,7 @@ from google.cloud.dialogflowcx_v3beta1.services.agents import pagers
 from google.cloud.dialogflowcx_v3beta1.services.agents import transports
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
+from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
@@ -85,7 +86,22 @@ def test__get_default_mtls_endpoint():
     assert AgentsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [AgentsClient, AgentsAsyncClient])
+@pytest.mark.parametrize("client_class", [AgentsClient, AgentsAsyncClient,])
+def test_agents_client_from_service_account_info(client_class):
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "dialogflow.googleapis.com:443"
+
+
+@pytest.mark.parametrize("client_class", [AgentsClient, AgentsAsyncClient,])
 def test_agents_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -94,16 +110,21 @@ def test_agents_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "dialogflow.googleapis.com:443"
 
 
 def test_agents_client_get_transport_class():
     transport = AgentsClient.get_transport_class()
-    assert transport == transports.AgentsGrpcTransport
+    available_transports = [
+        transports.AgentsGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = AgentsClient.get_transport_class("grpc")
     assert transport == transports.AgentsGrpcTransport
@@ -144,7 +165,7 @@ def test_agents_client_client_options(client_class, transport_class, transport_n
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -160,7 +181,7 @@ def test_agents_client_client_options(client_class, transport_class, transport_n
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -176,7 +197,7 @@ def test_agents_client_client_options(client_class, transport_class, transport_n
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -204,7 +225,7 @@ def test_agents_client_client_options(client_class, transport_class, transport_n
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -251,29 +272,25 @@ def test_agents_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -282,40 +299,31 @@ def test_agents_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -323,24 +331,20 @@ def test_agents_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -363,7 +367,7 @@ def test_agents_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -389,7 +393,7 @@ def test_agents_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -406,7 +410,7 @@ def test_agents_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -445,6 +449,22 @@ def test_list_agents(transport: str = "grpc", request_type=agent.ListAgentsReque
 
 def test_list_agents_from_dict():
     test_list_agents(request_type=dict)
+
+
+def test_list_agents_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agents), "__call__") as call:
+        client.list_agents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.ListAgentsRequest()
 
 
 @pytest.mark.asyncio
@@ -729,6 +749,7 @@ def test_get_agent(transport: str = "grpc", request_type=agent.GetAgentRequest):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
         )
@@ -759,6 +780,8 @@ def test_get_agent(transport: str = "grpc", request_type=agent.GetAgentRequest):
 
     assert response.start_flow == "start_flow_value"
 
+    assert response.security_settings == "security_settings_value"
+
     assert response.enable_stackdriver_logging is True
 
     assert response.enable_spell_correction is True
@@ -766,6 +789,22 @@ def test_get_agent(transport: str = "grpc", request_type=agent.GetAgentRequest):
 
 def test_get_agent_from_dict():
     test_get_agent(request_type=dict)
+
+
+def test_get_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent), "__call__") as call:
+        client.get_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.GetAgentRequest()
 
 
 @pytest.mark.asyncio
@@ -792,6 +831,7 @@ async def test_get_agent_async(
                 description="description_value",
                 avatar_uri="avatar_uri_value",
                 start_flow="start_flow_value",
+                security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
             )
@@ -821,6 +861,8 @@ async def test_get_agent_async(
     assert response.avatar_uri == "avatar_uri_value"
 
     assert response.start_flow == "start_flow_value"
+
+    assert response.security_settings == "security_settings_value"
 
     assert response.enable_stackdriver_logging is True
 
@@ -968,6 +1010,7 @@ def test_create_agent(
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
         )
@@ -998,6 +1041,8 @@ def test_create_agent(
 
     assert response.start_flow == "start_flow_value"
 
+    assert response.security_settings == "security_settings_value"
+
     assert response.enable_stackdriver_logging is True
 
     assert response.enable_spell_correction is True
@@ -1005,6 +1050,22 @@ def test_create_agent(
 
 def test_create_agent_from_dict():
     test_create_agent(request_type=dict)
+
+
+def test_create_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_agent), "__call__") as call:
+        client.create_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcdc_agent.CreateAgentRequest()
 
 
 @pytest.mark.asyncio
@@ -1031,6 +1092,7 @@ async def test_create_agent_async(
                 description="description_value",
                 avatar_uri="avatar_uri_value",
                 start_flow="start_flow_value",
+                security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
             )
@@ -1060,6 +1122,8 @@ async def test_create_agent_async(
     assert response.avatar_uri == "avatar_uri_value"
 
     assert response.start_flow == "start_flow_value"
+
+    assert response.security_settings == "security_settings_value"
 
     assert response.enable_stackdriver_logging is True
 
@@ -1219,6 +1283,7 @@ def test_update_agent(
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
         )
@@ -1249,6 +1314,8 @@ def test_update_agent(
 
     assert response.start_flow == "start_flow_value"
 
+    assert response.security_settings == "security_settings_value"
+
     assert response.enable_stackdriver_logging is True
 
     assert response.enable_spell_correction is True
@@ -1256,6 +1323,22 @@ def test_update_agent(
 
 def test_update_agent_from_dict():
     test_update_agent(request_type=dict)
+
+
+def test_update_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_agent), "__call__") as call:
+        client.update_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcdc_agent.UpdateAgentRequest()
 
 
 @pytest.mark.asyncio
@@ -1282,6 +1365,7 @@ async def test_update_agent_async(
                 description="description_value",
                 avatar_uri="avatar_uri_value",
                 start_flow="start_flow_value",
+                security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
             )
@@ -1311,6 +1395,8 @@ async def test_update_agent_async(
     assert response.avatar_uri == "avatar_uri_value"
 
     assert response.start_flow == "start_flow_value"
+
+    assert response.security_settings == "security_settings_value"
 
     assert response.enable_stackdriver_logging is True
 
@@ -1478,6 +1564,22 @@ def test_delete_agent(transport: str = "grpc", request_type=agent.DeleteAgentReq
 
 def test_delete_agent_from_dict():
     test_delete_agent(request_type=dict)
+
+
+def test_delete_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_agent), "__call__") as call:
+        client.delete_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.DeleteAgentRequest()
 
 
 @pytest.mark.asyncio
@@ -1658,6 +1760,22 @@ def test_export_agent_from_dict():
     test_export_agent(request_type=dict)
 
 
+def test_export_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_agent), "__call__") as call:
+        client.export_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.ExportAgentRequest()
+
+
 @pytest.mark.asyncio
 async def test_export_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.ExportAgentRequest
@@ -1775,6 +1893,22 @@ def test_restore_agent_from_dict():
     test_restore_agent(request_type=dict)
 
 
+def test_restore_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.restore_agent), "__call__") as call:
+        client.restore_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.RestoreAgentRequest()
+
+
 @pytest.mark.asyncio
 async def test_restore_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.RestoreAgentRequest
@@ -1862,6 +1996,367 @@ async def test_restore_agent_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
+def test_validate_agent(
+    transport: str = "grpc", request_type=agent.ValidateAgentRequest
+):
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = agent.AgentValidationResult(name="name_value",)
+
+        response = client.validate_agent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.ValidateAgentRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, agent.AgentValidationResult)
+
+    assert response.name == "name_value"
+
+
+def test_validate_agent_from_dict():
+    test_validate_agent(request_type=dict)
+
+
+def test_validate_agent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
+        client.validate_agent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.ValidateAgentRequest()
+
+
+@pytest.mark.asyncio
+async def test_validate_agent_async(
+    transport: str = "grpc_asyncio", request_type=agent.ValidateAgentRequest
+):
+    client = AgentsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            agent.AgentValidationResult(name="name_value",)
+        )
+
+        response = await client.validate_agent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.ValidateAgentRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, agent.AgentValidationResult)
+
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_validate_agent_async_from_dict():
+    await test_validate_agent_async(request_type=dict)
+
+
+def test_validate_agent_field_headers():
+    client = AgentsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent.ValidateAgentRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
+        call.return_value = agent.AgentValidationResult()
+
+        client.validate_agent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_validate_agent_field_headers_async():
+    client = AgentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent.ValidateAgentRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.validate_agent), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            agent.AgentValidationResult()
+        )
+
+        await client.validate_agent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_agent_validation_result(
+    transport: str = "grpc", request_type=agent.GetAgentValidationResultRequest
+):
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = agent.AgentValidationResult(name="name_value",)
+
+        response = client.get_agent_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.GetAgentValidationResultRequest()
+
+    # Establish that the response is the type that we expect.
+
+    assert isinstance(response, agent.AgentValidationResult)
+
+    assert response.name == "name_value"
+
+
+def test_get_agent_validation_result_from_dict():
+    test_get_agent_validation_result(request_type=dict)
+
+
+def test_get_agent_validation_result_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AgentsClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        client.get_agent_validation_result()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.GetAgentValidationResultRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_agent_validation_result_async(
+    transport: str = "grpc_asyncio", request_type=agent.GetAgentValidationResultRequest
+):
+    client = AgentsAsyncClient(
+        credentials=credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            agent.AgentValidationResult(name="name_value",)
+        )
+
+        response = await client.get_agent_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == agent.GetAgentValidationResultRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, agent.AgentValidationResult)
+
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_agent_validation_result_async_from_dict():
+    await test_get_agent_validation_result_async(request_type=dict)
+
+
+def test_get_agent_validation_result_field_headers():
+    client = AgentsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent.GetAgentValidationResultRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        call.return_value = agent.AgentValidationResult()
+
+        client.get_agent_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_agent_validation_result_field_headers_async():
+    client = AgentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = agent.GetAgentValidationResultRequest()
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            agent.AgentValidationResult()
+        )
+
+        await client.get_agent_validation_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_agent_validation_result_flattened():
+    client = AgentsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = agent.AgentValidationResult()
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_agent_validation_result(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].name == "name_value"
+
+
+def test_get_agent_validation_result_flattened_error():
+    client = AgentsClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_agent_validation_result(
+            agent.GetAgentValidationResultRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_agent_validation_result_flattened_async():
+    client = AgentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_agent_validation_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = agent.AgentValidationResult()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            agent.AgentValidationResult()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_agent_validation_result(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_agent_validation_result_flattened_error_async():
+    client = AgentsAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_agent_validation_result(
+            agent.GetAgentValidationResultRequest(), name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AgentsGrpcTransport(
@@ -1918,7 +2413,7 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport],
+    [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1963,6 +2458,8 @@ def test_agents_base_transport():
         "delete_agent",
         "export_agent",
         "restore_agent",
+        "validate_agent",
+        "get_agent_validation_result",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2038,6 +2535,51 @@ def test_agents_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport],
+)
+def test_agents_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/dialogflow",
+            ),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_agents_host_no_port():
     client = AgentsClient(
         credentials=credentials.AnonymousCredentials(),
@@ -2059,7 +2601,7 @@ def test_agents_host_with_port():
 
 
 def test_agents_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.AgentsGrpcTransport(
@@ -2071,7 +2613,7 @@ def test_agents_grpc_transport_channel():
 
 
 def test_agents_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.AgentsGrpcAsyncIOTransport(
@@ -2082,6 +2624,8 @@ def test_agents_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport],
@@ -2091,7 +2635,7 @@ def test_agents_transport_channel_mtls_with_client_cert_source(transport_class):
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -2132,6 +2676,8 @@ def test_agents_transport_channel_mtls_with_client_cert_source(transport_class):
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport],
@@ -2144,7 +2690,7 @@ def test_agents_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
@@ -2227,11 +2773,36 @@ def test_parse_agent_path():
     assert expected == actual
 
 
-def test_flow_path():
+def test_agent_validation_result_path():
     project = "cuttlefish"
     location = "mussel"
     agent = "winkle"
-    flow = "nautilus"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/validationResult".format(
+        project=project, location=location, agent=agent,
+    )
+    actual = AgentsClient.agent_validation_result_path(project, location, agent)
+    assert expected == actual
+
+
+def test_parse_agent_validation_result_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "agent": "abalone",
+    }
+    path = AgentsClient.agent_validation_result_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_agent_validation_result_path(path)
+    assert expected == actual
+
+
+def test_flow_path():
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    flow = "octopus"
 
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
         project=project, location=location, agent=agent, flow=flow,
@@ -2242,10 +2813,10 @@ def test_flow_path():
 
 def test_parse_flow_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "agent": "squid",
-        "flow": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "flow": "mussel",
     }
     path = AgentsClient.flow_path(**expected)
 
@@ -2254,8 +2825,60 @@ def test_parse_flow_path():
     assert expected == actual
 
 
+def test_flow_validation_result_path():
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    flow = "abalone"
+
+    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/validationResult".format(
+        project=project, location=location, agent=agent, flow=flow,
+    )
+    actual = AgentsClient.flow_validation_result_path(project, location, agent, flow)
+    assert expected == actual
+
+
+def test_parse_flow_validation_result_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "flow": "octopus",
+    }
+    path = AgentsClient.flow_validation_result_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_flow_validation_result_path(path)
+    assert expected == actual
+
+
+def test_security_settings_path():
+    project = "oyster"
+    location = "nudibranch"
+    security_settings = "cuttlefish"
+
+    expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
+        project=project, location=location, security_settings=security_settings,
+    )
+    actual = AgentsClient.security_settings_path(project, location, security_settings)
+    assert expected == actual
+
+
+def test_parse_security_settings_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "security_settings": "nautilus",
+    }
+    path = AgentsClient.security_settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_security_settings_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "scallop"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -2266,7 +2889,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "abalone",
     }
     path = AgentsClient.common_billing_account_path(**expected)
 
@@ -2276,7 +2899,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "squid"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = AgentsClient.common_folder_path(folder)
@@ -2285,7 +2908,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "clam",
     }
     path = AgentsClient.common_folder_path(**expected)
 
@@ -2295,7 +2918,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "whelk"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = AgentsClient.common_organization_path(organization)
@@ -2304,7 +2927,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "octopus",
     }
     path = AgentsClient.common_organization_path(**expected)
 
@@ -2314,7 +2937,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "oyster"
 
     expected = "projects/{project}".format(project=project,)
     actual = AgentsClient.common_project_path(project)
@@ -2323,7 +2946,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "nudibranch",
     }
     path = AgentsClient.common_project_path(**expected)
 
@@ -2333,8 +2956,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -2345,8 +2968,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = AgentsClient.common_location_path(**expected)
 

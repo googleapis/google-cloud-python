@@ -97,7 +97,36 @@ class TransitionRouteGroupsAsyncClient:
         TransitionRouteGroupsClient.parse_common_location_path
     )
 
-    from_service_account_file = TransitionRouteGroupsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TransitionRouteGroupsAsyncClient: The constructed client.
+        """
+        return TransitionRouteGroupsClient.from_service_account_info.__func__(TransitionRouteGroupsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TransitionRouteGroupsAsyncClient: The constructed client.
+        """
+        return TransitionRouteGroupsClient.from_service_account_file.__func__(TransitionRouteGroupsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -175,13 +204,14 @@ class TransitionRouteGroupsAsyncClient:
         the specified flow.
 
         Args:
-            request (:class:`~.transition_route_group.ListTransitionRouteGroupsRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.ListTransitionRouteGroupsRequest`):
                 The request object. The request message for
                 [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
             parent (:class:`str`):
                 Required. The flow to list all transition route groups
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -193,7 +223,7 @@ class TransitionRouteGroupsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTransitionRouteGroupsAsyncPager:
+            google.cloud.dialogflowcx_v3beta1.services.transition_route_groups.pagers.ListTransitionRouteGroupsAsyncPager:
                 The response message for
                 [TransitionRouteGroups.ListTransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.ListTransitionRouteGroups].
 
@@ -258,7 +288,7 @@ class TransitionRouteGroupsAsyncClient:
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
         Args:
-            request (:class:`~.transition_route_group.GetTransitionRouteGroupRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetTransitionRouteGroupRequest`):
                 The request object. The request message for
                 [TransitionRouteGroups.GetTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.GetTransitionRouteGroup].
             name (:class:`str`):
@@ -266,6 +296,7 @@ class TransitionRouteGroupsAsyncClient:
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
                 Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -277,11 +308,11 @@ class TransitionRouteGroupsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.transition_route_group.TransitionRouteGroup:
+            google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
                 An TransitionRouteGroup represents a group of
-                [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-                to be used by a
-                [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+                   [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
+                   to be used by a
+                   [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
         """
         # Create or coerce a protobuf request object.
@@ -337,7 +368,7 @@ class TransitionRouteGroupsAsyncClient:
         in the specified flow.
 
         Args:
-            request (:class:`~.gcdc_transition_route_group.CreateTransitionRouteGroupRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateTransitionRouteGroupRequest`):
                 The request object. The request message for
                 [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup].
             parent (:class:`str`):
@@ -345,12 +376,14 @@ class TransitionRouteGroupsAsyncClient:
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 for. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            transition_route_group (:class:`~.gcdc_transition_route_group.TransitionRouteGroup`):
+            transition_route_group (:class:`google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup`):
                 Required. The transition route group
                 to create.
+
                 This corresponds to the ``transition_route_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -362,11 +395,11 @@ class TransitionRouteGroupsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_transition_route_group.TransitionRouteGroup:
+            google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
                 An TransitionRouteGroup represents a group of
-                [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-                to be used by a
-                [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+                   [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
+                   to be used by a
+                   [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
         """
         # Create or coerce a protobuf request object.
@@ -423,18 +456,20 @@ class TransitionRouteGroupsAsyncClient:
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
         Args:
-            request (:class:`~.gcdc_transition_route_group.UpdateTransitionRouteGroupRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateTransitionRouteGroupRequest`):
                 The request object. The request message for
                 [TransitionRouteGroups.UpdateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.UpdateTransitionRouteGroup].
-            transition_route_group (:class:`~.gcdc_transition_route_group.TransitionRouteGroup`):
+            transition_route_group (:class:`google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup`):
                 Required. The transition route group
                 to update.
+
                 This corresponds to the ``transition_route_group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The mask to control which fields get
                 updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -446,11 +481,11 @@ class TransitionRouteGroupsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcdc_transition_route_group.TransitionRouteGroup:
+            google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
                 An TransitionRouteGroup represents a group of
-                [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-                to be used by a
-                [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+                   [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
+                   to be used by a
+                   [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
         """
         # Create or coerce a protobuf request object.
@@ -508,7 +543,7 @@ class TransitionRouteGroupsAsyncClient:
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
         Args:
-            request (:class:`~.transition_route_group.DeleteTransitionRouteGroupRequest`):
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteTransitionRouteGroupRequest`):
                 The request object. The request message for
                 [TransitionRouteGroups.DeleteTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.DeleteTransitionRouteGroup].
             name (:class:`str`):
@@ -516,6 +551,7 @@ class TransitionRouteGroupsAsyncClient:
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 to delete. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
