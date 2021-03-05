@@ -103,6 +103,7 @@ class TestClient(unittest.TestCase):
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    @mock.patch("os.environ", {})
     def test_constructor_defaults(self):
         from google.cloud.bigtable.client import _CLIENT_INFO
         from google.cloud.bigtable.client import DATA_SCOPE
