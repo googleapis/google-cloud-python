@@ -40,6 +40,7 @@ for version in versions:
         excludes=[
             "setup.py",
             "docs/index.rst",
+            "README.rst",
             "noxfile.py",
             f"scripts/fixup_dialogflowcx_{version}_keywords.py",
         ],
