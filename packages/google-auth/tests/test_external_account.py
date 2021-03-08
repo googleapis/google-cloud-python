@@ -363,9 +363,7 @@ class TestCredentials(object):
 
         credentials.refresh(request)
 
-        self.assert_token_request_kwargs(
-            request.call_args.kwargs, headers, request_data
-        )
+        self.assert_token_request_kwargs(request.call_args[1], headers, request_data)
         assert credentials.valid
         assert credentials.expiry == expected_expiry
         assert not credentials.expired
@@ -422,11 +420,11 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 2
         # Verify token exchange request parameters.
         self.assert_token_request_kwargs(
-            request.call_args_list[0].kwargs, token_headers, token_request_data
+            request.call_args_list[0][1], token_headers, token_request_data
         )
         # Verify service account impersonation request parameters.
         self.assert_impersonation_request_kwargs(
-            request.call_args_list[1].kwargs,
+            request.call_args_list[1][1],
             impersonation_headers,
             impersonation_request_data,
         )
@@ -436,7 +434,7 @@ class TestCredentials(object):
         assert credentials.token == impersonation_response["accessToken"]
 
     def test_refresh_without_client_auth_success_explicit_user_scopes_ignore_default_scopes(
-        self
+        self,
     ):
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         request_data = {
@@ -458,9 +456,7 @@ class TestCredentials(object):
 
         credentials.refresh(request)
 
-        self.assert_token_request_kwargs(
-            request.call_args.kwargs, headers, request_data
-        )
+        self.assert_token_request_kwargs(request.call_args[1], headers, request_data)
         assert credentials.valid
         assert not credentials.expired
         assert credentials.token == self.SUCCESS_RESPONSE["access_token"]
@@ -488,9 +484,7 @@ class TestCredentials(object):
 
         credentials.refresh(request)
 
-        self.assert_token_request_kwargs(
-            request.call_args.kwargs, headers, request_data
-        )
+        self.assert_token_request_kwargs(request.call_args[1], headers, request_data)
         assert credentials.valid
         assert not credentials.expired
         assert credentials.token == self.SUCCESS_RESPONSE["access_token"]
@@ -551,9 +545,7 @@ class TestCredentials(object):
 
         credentials.refresh(request)
 
-        self.assert_token_request_kwargs(
-            request.call_args.kwargs, headers, request_data
-        )
+        self.assert_token_request_kwargs(request.call_args[1], headers, request_data)
         assert credentials.valid
         assert not credentials.expired
         assert credentials.token == self.SUCCESS_RESPONSE["access_token"]
@@ -616,11 +608,11 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 2
         # Verify token exchange request parameters.
         self.assert_token_request_kwargs(
-            request.call_args_list[0].kwargs, token_headers, token_request_data
+            request.call_args_list[0][1], token_headers, token_request_data
         )
         # Verify service account impersonation request parameters.
         self.assert_impersonation_request_kwargs(
-            request.call_args_list[1].kwargs,
+            request.call_args_list[1][1],
             impersonation_headers,
             impersonation_request_data,
         )
@@ -687,11 +679,11 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 2
         # Verify token exchange request parameters.
         self.assert_token_request_kwargs(
-            request.call_args_list[0].kwargs, token_headers, token_request_data
+            request.call_args_list[0][1], token_headers, token_request_data
         )
         # Verify service account impersonation request parameters.
         self.assert_impersonation_request_kwargs(
-            request.call_args_list[1].kwargs,
+            request.call_args_list[1][1],
             impersonation_headers,
             impersonation_request_data,
         )
@@ -1045,11 +1037,11 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 3
         # Verify token exchange request parameters.
         self.assert_token_request_kwargs(
-            request.call_args_list[0].kwargs, token_headers, token_request_data
+            request.call_args_list[0][1], token_headers, token_request_data
         )
         # Verify service account impersonation request parameters.
         self.assert_impersonation_request_kwargs(
-            request.call_args_list[1].kwargs,
+            request.call_args_list[1][1],
             impersonation_headers,
             impersonation_request_data,
         )
@@ -1061,7 +1053,7 @@ class TestCredentials(object):
         assert credentials.token == impersonation_response["accessToken"]
         # Verify cloud resource manager request parameters.
         self.assert_resource_manager_request_kwargs(
-            request.call_args_list[2].kwargs,
+            request.call_args_list[2][1],
             self.PROJECT_NUMBER,
             {
                 "x-goog-user-project": self.QUOTA_PROJECT_ID,

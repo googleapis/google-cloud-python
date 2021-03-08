@@ -223,10 +223,10 @@ class TestCredentials(object):
 
         assert len(request.call_args_list) == len(requests)
         if credential_data:
-            cls.assert_credential_request_kwargs(request.call_args_list[0].kwargs, None)
+            cls.assert_credential_request_kwargs(request.call_args_list[0][1], None)
         # Verify token exchange request parameters.
         cls.assert_token_request_kwargs(
-            request.call_args_list[token_request_index].kwargs,
+            request.call_args_list[token_request_index][1],
             token_headers,
             token_request_data,
             token_url,
@@ -235,7 +235,7 @@ class TestCredentials(object):
         # is processed.
         if service_account_impersonation_url:
             cls.assert_impersonation_request_kwargs(
-                request.call_args_list[impersonation_request_index].kwargs,
+                request.call_args_list[impersonation_request_index][1],
                 impersonation_headers,
                 impersonation_request_data,
                 service_account_impersonation_url,
@@ -505,7 +505,7 @@ class TestCredentials(object):
         assert excinfo.match(r"File './not_found.txt' was not found")
 
     def test_refresh_text_file_success_without_impersonation_ignore_default_scopes(
-        self
+        self,
     ):
         credentials = self.make_credentials(
             client_id=CLIENT_ID,
@@ -677,7 +677,7 @@ class TestCredentials(object):
         subject_token = credentials.retrieve_subject_token(request)
 
         assert subject_token == TEXT_FILE_SUBJECT_TOKEN
-        self.assert_credential_request_kwargs(request.call_args_list[0].kwargs, None)
+        self.assert_credential_request_kwargs(request.call_args_list[0][1], None)
 
     def test_retrieve_subject_token_from_url_with_headers(self):
         credentials = self.make_credentials(
@@ -688,7 +688,7 @@ class TestCredentials(object):
 
         assert subject_token == TEXT_FILE_SUBJECT_TOKEN
         self.assert_credential_request_kwargs(
-            request.call_args_list[0].kwargs, {"foo": "bar"}
+            request.call_args_list[0][1], {"foo": "bar"}
         )
 
     def test_retrieve_subject_token_from_url_json(self):
@@ -699,7 +699,7 @@ class TestCredentials(object):
         subject_token = credentials.retrieve_subject_token(request)
 
         assert subject_token == JSON_FILE_SUBJECT_TOKEN
-        self.assert_credential_request_kwargs(request.call_args_list[0].kwargs, None)
+        self.assert_credential_request_kwargs(request.call_args_list[0][1], None)
 
     def test_retrieve_subject_token_from_url_json_with_headers(self):
         credentials = self.make_credentials(
@@ -714,7 +714,7 @@ class TestCredentials(object):
 
         assert subject_token == JSON_FILE_SUBJECT_TOKEN
         self.assert_credential_request_kwargs(
-            request.call_args_list[0].kwargs, {"foo": "bar"}
+            request.call_args_list[0][1], {"foo": "bar"}
         )
 
     def test_retrieve_subject_token_from_url_not_found(self):

@@ -203,18 +203,18 @@ class TestCredentials(object):
         assert "x-goog-user-project" not in headers
         assert "token" in headers["authorization"]
 
-    @mock.patch("google.auth.jwt.Credentials.from_signing_credentials", autospec=True)
-    def test__create_self_signed_jwt(self, from_signing_credentials):
+    @mock.patch("google.auth.jwt.Credentials", instance=True, autospec=True)
+    def test__create_self_signed_jwt(self, jwt):
         credentials = service_account.Credentials(
             SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI
         )
 
         audience = "https://pubsub.googleapis.com"
         credentials._create_self_signed_jwt(audience)
-        from_signing_credentials.assert_called_once_with(credentials, audience)
+        jwt.from_signing_credentials.assert_called_once_with(credentials, audience)
 
-    @mock.patch("google.auth.jwt.Credentials.from_signing_credentials", autospec=True)
-    def test__create_self_signed_jwt_with_user_scopes(self, from_signing_credentials):
+    @mock.patch("google.auth.jwt.Credentials", instance=True, autospec=True)
+    def test__create_self_signed_jwt_with_user_scopes(self, jwt):
         credentials = service_account.Credentials(
             SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI, scopes=["foo"]
         )
@@ -223,7 +223,7 @@ class TestCredentials(object):
         credentials._create_self_signed_jwt(audience)
 
         # JWT should not be created if there are user-defined scopes
-        from_signing_credentials.assert_not_called()
+        jwt.from_signing_credentials.assert_not_called()
 
     @mock.patch("google.oauth2._client.jwt_grant", autospec=True)
     def test_refresh_success(self, jwt_grant):

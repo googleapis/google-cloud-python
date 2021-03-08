@@ -128,7 +128,7 @@ class TestStsClient(object):
             self.ADDON_HEADERS,
         )
 
-        self.assert_request_kwargs(request.call_args.kwargs, headers, request_data)
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_partial_success_without_auth(self):
@@ -157,7 +157,7 @@ class TestStsClient(object):
             requested_token_type=self.REQUESTED_TOKEN_TYPE,
         )
 
-        self.assert_request_kwargs(request.call_args.kwargs, headers, request_data)
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_non200_without_auth(self):
@@ -227,7 +227,7 @@ class TestStsClient(object):
             self.ADDON_HEADERS,
         )
 
-        self.assert_request_kwargs(request.call_args.kwargs, headers, request_data)
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_partial_success_with_basic_auth(self):
@@ -259,7 +259,7 @@ class TestStsClient(object):
             requested_token_type=self.REQUESTED_TOKEN_TYPE,
         )
 
-        self.assert_request_kwargs(request.call_args.kwargs, headers, request_data)
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_non200_with_basic_auth(self):
@@ -331,7 +331,7 @@ class TestStsClient(object):
             self.ADDON_HEADERS,
         )
 
-        self.assert_request_kwargs(request.call_args.kwargs, headers, request_data)
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_partial_success_with_reqbody_auth(self):
@@ -362,7 +362,7 @@ class TestStsClient(object):
             requested_token_type=self.REQUESTED_TOKEN_TYPE,
         )
 
-        self.assert_request_kwargs(request.call_args.kwargs, headers, request_data)
+        self.assert_request_kwargs(request.call_args[1], headers, request_data)
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_non200_with_reqbody_auth(self):

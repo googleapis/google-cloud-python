@@ -959,15 +959,15 @@ class TestCredentials(object):
         )
         # Assert region request.
         self.assert_aws_metadata_request_kwargs(
-            request.call_args_list[0].kwargs, REGION_URL
+            request.call_args_list[0][1], REGION_URL
         )
         # Assert role request.
         self.assert_aws_metadata_request_kwargs(
-            request.call_args_list[1].kwargs, SECURITY_CREDS_URL
+            request.call_args_list[1][1], SECURITY_CREDS_URL
         )
         # Assert security credentials request.
         self.assert_aws_metadata_request_kwargs(
-            request.call_args_list[2].kwargs,
+            request.call_args_list[2][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {"Content-Type": "application/json"},
         )
@@ -986,11 +986,11 @@ class TestCredentials(object):
         assert len(new_request.call_args_list) == 2
         # Assert role request.
         self.assert_aws_metadata_request_kwargs(
-            new_request.call_args_list[0].kwargs, SECURITY_CREDS_URL
+            new_request.call_args_list[0][1], SECURITY_CREDS_URL
         )
         # Assert security credentials request.
         self.assert_aws_metadata_request_kwargs(
-            new_request.call_args_list[1].kwargs,
+            new_request.call_args_list[1][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {"Content-Type": "application/json"},
         )
@@ -1193,7 +1193,7 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 4
         # Fourth request should be sent to GCP STS endpoint.
         self.assert_token_request_kwargs(
-            request.call_args_list[3].kwargs, token_headers, token_request_data
+            request.call_args_list[3][1], token_headers, token_request_data
         )
         assert credentials.token == self.SUCCESS_RESPONSE["access_token"]
         assert credentials.quota_project_id == QUOTA_PROJECT_ID
@@ -1249,7 +1249,7 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 4
         # Fourth request should be sent to GCP STS endpoint.
         self.assert_token_request_kwargs(
-            request.call_args_list[3].kwargs, token_headers, token_request_data
+            request.call_args_list[3][1], token_headers, token_request_data
         )
         assert credentials.token == self.SUCCESS_RESPONSE["access_token"]
         assert credentials.quota_project_id == QUOTA_PROJECT_ID
@@ -1326,12 +1326,12 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 5
         # Fourth request should be sent to GCP STS endpoint.
         self.assert_token_request_kwargs(
-            request.call_args_list[3].kwargs, token_headers, token_request_data
+            request.call_args_list[3][1], token_headers, token_request_data
         )
         # Fifth request should be sent to iamcredentials endpoint for service
         # account impersonation.
         self.assert_impersonation_request_kwargs(
-            request.call_args_list[4].kwargs,
+            request.call_args_list[4][1],
             impersonation_headers,
             impersonation_request_data,
         )
@@ -1410,12 +1410,12 @@ class TestCredentials(object):
         assert len(request.call_args_list) == 5
         # Fourth request should be sent to GCP STS endpoint.
         self.assert_token_request_kwargs(
-            request.call_args_list[3].kwargs, token_headers, token_request_data
+            request.call_args_list[3][1], token_headers, token_request_data
         )
         # Fifth request should be sent to iamcredentials endpoint for service
         # account impersonation.
         self.assert_impersonation_request_kwargs(
-            request.call_args_list[4].kwargs,
+            request.call_args_list[4][1],
             impersonation_headers,
             impersonation_request_data,
         )

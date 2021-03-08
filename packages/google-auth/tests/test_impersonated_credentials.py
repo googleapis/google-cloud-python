@@ -203,7 +203,7 @@ class TestImpersonatedCredentials(object):
         assert credentials.valid
         assert not credentials.expired
         # Confirm override endpoint used.
-        request_kwargs = request.call_args.kwargs
+        request_kwargs = request.call_args[1]
         assert request_kwargs["url"] == self.IAM_ENDPOINT_OVERRIDE
 
     @pytest.mark.parametrize("time_skew", [100, -100])
@@ -378,7 +378,7 @@ class TestImpersonatedCredentials(object):
         assert quota_project_creds.valid
         assert not quota_project_creds.expired
         # Confirm override endpoint used.
-        request_kwargs = request.call_args.kwargs
+        request_kwargs = request.call_args[1]
         assert request_kwargs["url"] == self.IAM_ENDPOINT_OVERRIDE
 
     def test_id_token_success(

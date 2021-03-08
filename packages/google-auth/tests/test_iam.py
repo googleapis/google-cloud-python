@@ -89,7 +89,7 @@ class TestSigner(object):
         returned_signature = signer.sign("123")
 
         assert returned_signature == signature
-        kwargs = request.call_args.kwargs
+        kwargs = request.call_args[1]
         assert kwargs["headers"]["Content-Type"] == "application/json"
 
     def test_sign_bytes_failure(self):
