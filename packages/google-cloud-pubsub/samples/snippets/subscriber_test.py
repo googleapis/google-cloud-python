@@ -243,7 +243,8 @@ def test_receive_with_delivery_attempts(
 ):
 
     # The dlq subscription raises 404 before it's ready.
-    @backoff.on_exception(backoff.expo, (Unknown, NotFound), max_time=300)
+    # We keep retrying up to 10 minutes for mitigating the flakiness.
+    @backoff.on_exception(backoff.expo, (Unknown, NotFound), max_time=600)
     def run_sample():
         _publish_messages(publisher_client, topic)
 
