@@ -578,12 +578,10 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 request.log_name = log_name
             if resource is not None:
                 request.resource = resource
-
-            if labels:
-                request.labels.update(labels)
-
-            if entries:
-                request.entries.extend(entries)
+            if labels is not None:
+                request.labels = labels
+            if entries is not None:
+                request.entries = entries
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -699,13 +697,12 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
 
+            if resource_names is not None:
+                request.resource_names = resource_names
             if filter is not None:
                 request.filter = filter
             if order_by is not None:
                 request.order_by = order_by
-
-            if resource_names:
-                request.resource_names.extend(resource_names)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
