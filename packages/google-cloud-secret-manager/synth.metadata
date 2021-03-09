@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-secret-manager.git",
-        "sha": "4f3aab65f65fca38f826f6aa8d83c2860eaebcea"
+        "sha": "964c79e4c7006b7bfb64019635aa643964b65bab"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     }
   ],
