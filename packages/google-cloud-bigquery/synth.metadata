@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery.git",
-        "sha": "1823cadee3acf95c516d0479400e4175349ea199"
+        "sha": "f0259eb7ed4ff254ee238e87651992ff93481dae"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "e13001be33d69042a9505e698f792587a804a5cf",
-        "internalRef": "358152223"
+        "sha": "28a591963253d52ce3a25a918cafbdd9928de8cf",
+        "internalRef": "361662015"
       }
     },
     {
@@ -95,8 +95,6 @@
     "MANIFEST.in",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
-    "docs/bigquery_v2/model_service.rst",
-    "docs/bigquery_v2/services.rst",
     "docs/bigquery_v2/types.rst",
     "docs/conf.py",
     "google/cloud/bigquery_v2/__init__.py",

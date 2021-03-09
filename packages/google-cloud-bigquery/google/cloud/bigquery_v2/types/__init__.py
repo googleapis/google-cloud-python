@@ -16,6 +16,14 @@
 #
 
 from .encryption_config import EncryptionConfiguration
+from .model import (
+    DeleteModelRequest,
+    GetModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+    Model,
+    PatchModelRequest,
+)
 from .model_reference import ModelReference
 from .standard_sql import (
     StandardSqlDataType,
@@ -23,26 +31,18 @@ from .standard_sql import (
     StandardSqlStructType,
 )
 from .table_reference import TableReference
-from .model import (
-    Model,
-    GetModelRequest,
-    PatchModelRequest,
-    DeleteModelRequest,
-    ListModelsRequest,
-    ListModelsResponse,
-)
 
 __all__ = (
     "EncryptionConfiguration",
+    "DeleteModelRequest",
+    "GetModelRequest",
+    "ListModelsRequest",
+    "ListModelsResponse",
+    "Model",
+    "PatchModelRequest",
     "ModelReference",
     "StandardSqlDataType",
     "StandardSqlField",
     "StandardSqlStructType",
     "TableReference",
-    "Model",
-    "GetModelRequest",
-    "PatchModelRequest",
-    "DeleteModelRequest",
-    "ListModelsRequest",
-    "ListModelsResponse",
 )
