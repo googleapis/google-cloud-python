@@ -94,15 +94,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_big_query_write_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [BigQueryWriteClient, BigQueryWriteAsyncClient,]
+)
+def test_big_query_write_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = BigQueryWriteClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigquerystorage.googleapis.com:443"
 
@@ -118,9 +122,11 @@ def test_big_query_write_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigquerystorage.googleapis.com:443"
 
@@ -487,6 +493,24 @@ def test_create_write_stream_from_dict():
     test_create_write_stream(request_type=dict)
 
 
+def test_create_write_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryWriteClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_write_stream), "__call__"
+    ) as call:
+        client.create_write_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.CreateWriteStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_write_stream_async(
     transport: str = "grpc_asyncio", request_type=storage.CreateWriteStreamRequest
@@ -777,6 +801,22 @@ def test_get_write_stream_from_dict():
     test_get_write_stream(request_type=dict)
 
 
+def test_get_write_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryWriteClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_write_stream), "__call__") as call:
+        client.get_write_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.GetWriteStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_write_stream_async(
     transport: str = "grpc_asyncio", request_type=storage.GetWriteStreamRequest
@@ -968,6 +1008,24 @@ def test_finalize_write_stream(
 
 def test_finalize_write_stream_from_dict():
     test_finalize_write_stream(request_type=dict)
+
+
+def test_finalize_write_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryWriteClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.finalize_write_stream), "__call__"
+    ) as call:
+        client.finalize_write_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.FinalizeWriteStreamRequest()
 
 
 @pytest.mark.asyncio
@@ -1171,6 +1229,24 @@ def test_batch_commit_write_streams_from_dict():
     test_batch_commit_write_streams(request_type=dict)
 
 
+def test_batch_commit_write_streams_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryWriteClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_commit_write_streams), "__call__"
+    ) as call:
+        client.batch_commit_write_streams()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.BatchCommitWriteStreamsRequest()
+
+
 @pytest.mark.asyncio
 async def test_batch_commit_write_streams_async(
     transport: str = "grpc_asyncio", request_type=storage.BatchCommitWriteStreamsRequest
@@ -1366,6 +1442,22 @@ def test_flush_rows(transport: str = "grpc", request_type=storage.FlushRowsReque
 
 def test_flush_rows_from_dict():
     test_flush_rows(request_type=dict)
+
+
+def test_flush_rows_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryWriteClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.flush_rows), "__call__") as call:
+        client.flush_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.FlushRowsRequest()
 
 
 @pytest.mark.asyncio

@@ -86,15 +86,17 @@ def test__get_default_mtls_endpoint():
     assert BigQueryReadClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_big_query_read_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [BigQueryReadClient, BigQueryReadAsyncClient,])
+def test_big_query_read_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = BigQueryReadClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigquerystorage.googleapis.com:443"
 
@@ -108,9 +110,11 @@ def test_big_query_read_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigquerystorage.googleapis.com:443"
 
@@ -476,6 +480,24 @@ def test_create_read_session_from_dict():
     test_create_read_session(request_type=dict)
 
 
+def test_create_read_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryReadClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_read_session), "__call__"
+    ) as call:
+        client.create_read_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.CreateReadSessionRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_read_session_async(
     transport: str = "grpc_asyncio", request_type=storage.CreateReadSessionRequest
@@ -705,6 +727,22 @@ def test_read_rows_from_dict():
     test_read_rows(request_type=dict)
 
 
+def test_read_rows_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryReadClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.read_rows), "__call__") as call:
+        client.read_rows()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.ReadRowsRequest()
+
+
 @pytest.mark.asyncio
 async def test_read_rows_async(
     transport: str = "grpc_asyncio", request_type=storage.ReadRowsRequest
@@ -899,6 +937,24 @@ def test_split_read_stream(
 
 def test_split_read_stream_from_dict():
     test_split_read_stream(request_type=dict)
+
+
+def test_split_read_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BigQueryReadClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.split_read_stream), "__call__"
+    ) as call:
+        client.split_read_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == storage.SplitReadStreamRequest()
 
 
 @pytest.mark.asyncio
