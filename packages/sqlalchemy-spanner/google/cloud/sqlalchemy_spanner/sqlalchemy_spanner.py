@@ -171,6 +171,14 @@ class SpannerDialect(DefaultDialect):
         """Ensure requests are returning Unicode responses."""
         return True
 
+    def _get_default_schema_name(self, _):
+        """Get default Cloud Spanner schema name.
+
+        Returns:
+            str: Schema name.
+        """
+        return ""
+
     def create_connect_args(self, url):
         """Parse connection args from the given URL.
 

@@ -18,6 +18,10 @@ from sqlalchemy.testing.requirements import SuiteRequirements
 
 class Requirements(SuiteRequirements):
     @property
+    def schema_reflection(self):
+        return exclusions.open()
+
+    @property
     def implicitly_named_constraints(self):
         return exclusions.open()
 
