@@ -28,6 +28,12 @@ from google.cloud.ndb import tasklets
 from . import utils
 
 
+def mock_sleep(seconds):
+    future = tasklets.Future()
+    future.set_result(None)
+    return future
+
+
 class Test_retry:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -54,6 +60,7 @@ class Test_retry:
         assert retry().result() == "foo"
 
     @staticmethod
+    @mock.patch("google.cloud.ndb.tasklets.sleep", mock_sleep)
     @pytest.mark.usefixtures("in_context")
     def test_nested_retry_with_exception():
         error = Exception("Fail")
