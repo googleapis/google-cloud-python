@@ -20,6 +20,7 @@ from google.cloud.logging_v2.entries import ProtobufEntry
 from google.cloud.logging_v2.entries import StructEntry
 from google.cloud.logging_v2.entries import TextEntry
 from google.cloud.logging_v2.resource import Resource
+from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
 
 
 _GLOBAL_RESOURCE = Resource(type="global", labels={})
@@ -62,6 +63,7 @@ class Logger(object):
         self.name = name
         self._client = client
         self.labels = labels
+        self.default_resource = detect_resource(client.project)
 
     @property
     def client(self):
@@ -120,7 +122,7 @@ class Logger(object):
         # Apply defaults
         kw["log_name"] = kw.pop("log_name", self.full_name)
         kw["labels"] = kw.pop("labels", self.labels)
-        kw["resource"] = kw.pop("resource", _GLOBAL_RESOURCE)
+        kw["resource"] = kw.pop("resource", self.default_resource)
 
         if payload is not None:
             entry = _entry_class(payload=payload, **kw)
