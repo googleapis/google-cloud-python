@@ -147,7 +147,11 @@ class Batch(Connection):
     _MAX_BATCH_SIZE = 1000
 
     def __init__(self, client):
-        super(Batch, self).__init__(client)
+        api_endpoint = client._connection.API_BASE_URL
+        client_info = client._connection._client_info
+        super(Batch, self).__init__(
+            client, client_info=client_info, api_endpoint=api_endpoint
+        )
         self._requests = []
         self._target_objects = []
 

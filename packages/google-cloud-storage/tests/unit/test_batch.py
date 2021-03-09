@@ -136,7 +136,8 @@ class TestBatch(unittest.TestCase):
         url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        batch = self._make_one(connection)
+        client = _Client(connection)
+        batch = self._make_one(client)
         target = _MockObject()
 
         response = batch._make_request("GET", url, target_object=target)
@@ -164,7 +165,8 @@ class TestBatch(unittest.TestCase):
         url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        batch = self._make_one(connection)
+        client = _Client(connection)
+        batch = self._make_one(client)
         data = {"foo": 1}
         target = _MockObject()
 
@@ -191,7 +193,8 @@ class TestBatch(unittest.TestCase):
         url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        batch = self._make_one(connection)
+        client = _Client(connection)
+        batch = self._make_one(client)
         data = {"foo": 1}
         target = _MockObject()
 
@@ -218,7 +221,8 @@ class TestBatch(unittest.TestCase):
         url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        batch = self._make_one(connection)
+        client = _Client(connection)
+        batch = self._make_one(client)
         target = _MockObject()
 
         response = batch._make_request("DELETE", url, target_object=target)
@@ -243,7 +247,8 @@ class TestBatch(unittest.TestCase):
         url = "http://example.com/api"
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        batch = self._make_one(connection)
+        client = _Client(connection)
+        batch = self._make_one(client)
 
         batch._MAX_BATCH_SIZE = 1
         batch._requests.append(("POST", url, {}, {"bar": 2}))
@@ -254,7 +259,8 @@ class TestBatch(unittest.TestCase):
     def test_finish_empty(self):
         http = _make_requests_session([])
         connection = _Connection(http=http)
-        batch = self._make_one(connection)
+        client = _Client(connection)
+        batch = self._make_one(client)
 
         with self.assertRaises(ValueError):
             batch.finish()
@@ -518,6 +524,25 @@ class TestBatch(unittest.TestCase):
         self.assertIsInstance(target2._properties, _FutureDict)
         self.assertIsInstance(target3._properties, _FutureDict)
 
+    def test_respect_client_existing_connection(self):
+        client_endpoint = "http://localhost:9023"
+        http = _make_requests_session([])
+        connection = _Connection(http=http, api_endpoint=client_endpoint)
+        client = _Client(connection)
+        batch = self._make_one(client)
+        self.assertEqual(batch.API_BASE_URL, client_endpoint)
+        self.assertEqual(batch._client._connection.API_BASE_URL, client_endpoint)
+
+    def test_use_default_api_without_existing_connection(self):
+        default_api_endpoint = "https://storage.googleapis.com"
+        http = _make_requests_session([])
+        connection = _Connection(http=http)
+        client = _Client(connection)
+        batch = self._make_one(client)
+        self.assertEqual(batch.API_BASE_URL, default_api_endpoint)
+        self.assertIsNone(batch._client._connection.API_BASE_URL)
+        self.assertIsNone(batch._client._connection._client_info)
+
 
 class Test__unpack_batch_response(unittest.TestCase):
     def _call_fut(self, headers, content):
@@ -633,6 +658,8 @@ class _Connection(object):
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
+        self._client_info = kw.get("client_info", None)
+        self.API_BASE_URL = kw.get("api_endpoint", None)
 
     def _make_request(self, method, url, data=None, headers=None, timeout=None):
         return self.http.request(
@@ -647,3 +674,4 @@ class _MockObject(object):
 class _Client(object):
     def __init__(self, connection):
         self._base_connection = connection
+        self._connection = connection
