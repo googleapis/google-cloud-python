@@ -3423,6 +3423,12 @@ class Client(ClientWithProject):
         with open(destination, mode="w") as file_obj:
             return self._schema_to_json_file_object(json_schema_list, file_obj)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+
 
 # pylint: disable=unused-argument
 def _item_to_project(iterator, resource):

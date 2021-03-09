@@ -7218,6 +7218,28 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(TypeError):
             client.list_rows(1)
 
+    def test_context_manager_enter_returns_itself(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        with mock.patch.object(client, "close"), client as context_var:
+            pass
+
+        self.assertIs(client, context_var)
+
+    def test_context_manager_exit_closes_client(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        fake_close = mock.Mock()
+        with mock.patch.object(client, "close", fake_close):
+            with client:
+                pass
+
+        fake_close.assert_called_once()
+
 
 class Test_make_job_id(unittest.TestCase):
     def _call_fut(self, job_id, prefix=None):
