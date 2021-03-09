@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+### [3.0.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.0.0...v3.0.1) (2021-03-03)
+
+
+### Bug Fixes
+
+* remove recv msg limit, add enums to `types` ([#84](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/84)) ([3e2bbef](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/3e2bbef292ddda6a736be397be4e5a0fb213eeff))
+
+
+### Documentation
+
+* add sample for dataset copy ([#76](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/76)) ([f6d2c5b](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/f6d2c5b8f3c75426881dfce90ab713535416950e))
+* add scheduled query samples ([#83](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/83)) ([cd51970](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/cd519709228cda3bbcf2fd978d37ccd04ef27c82))
+* ensure minimum width for 'Parameters' / 'Returns' column ([#95](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/95)) ([5c8d7c1](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/5c8d7c1e860d1c50d892bfabc7ec936aaa40e714))
+* **python:** document adding Python 3.9 support, dropping 3.5 support ([#89](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/89)) ([dd84592](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/dd8459291a3ac0f98606b61ae566cb264ce96825)), closes [#787](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/787)
+* remove out-of-date sample from README ([#80](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/80)) ([af0406e](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/af0406eedac1dc8c663b5c8f67f56255caeea2fa))
+* remove redundant samples ([#86](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/86)) ([093e407](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/093e407c60b117a00d2cdf8d225f22d61bc221c4))
+* update contributing guide to Python 3.8 ([#105](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/105)) ([678c335](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/678c3355e1b2e8525005ad337048d60a51400fc0))
+
 ## [3.0.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v2.1.0...v3.0.0) (2020-12-09)
 
 
