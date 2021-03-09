@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.0.0...v1.0.1) (2021-02-03)
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limits ([#37](https://www.github.com/googleapis/python-bigquery-connection/issues/37)) ([c8d639a](https://www.github.com/googleapis/python-bigquery-connection/commit/c8d639a23d1800c37c2db1cf9f0fc41b51ac07b8))
+
+
+### Documentation
+
+* **python:** update intersphinx for grpc and auth ([#32](https://www.github.com/googleapis/python-bigquery-connection/issues/32)) ([f3ce3aa](https://www.github.com/googleapis/python-bigquery-connection/commit/f3ce3aa826173bf61b3b79803d0231c27f89e6fa))
+
 ## [1.0.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v0.3.0...v1.0.0) (2020-10-29)
 
 
