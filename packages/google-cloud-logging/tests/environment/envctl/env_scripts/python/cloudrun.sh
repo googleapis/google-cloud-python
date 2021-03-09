@@ -75,6 +75,7 @@ deploy() {
   gcloud run deploy  \
     --image $GCR_PATH \
     --update-env-vars ENABLE_FLASK=true \
+    --no-allow-unauthenticated \
     $SERVICE_NAME
   # create pubsub subscription
   add_service_accounts

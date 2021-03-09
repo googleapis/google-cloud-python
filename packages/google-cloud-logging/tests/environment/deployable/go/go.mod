@@ -8,4 +8,5 @@ require (
 )
 
 replace cloud.google.com/go => ./google-cloud-go/.
+
 replace cloud.google.com/go/logging => ./google-cloud-go/logging

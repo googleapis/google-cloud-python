@@ -18,10 +18,13 @@ import unittest
 import google.cloud.logging
 
 from ..common.common import Common
-from ..common.appengine import CommonAppEngine
+from ..common.python import CommonPython
 
 
-class TestAppEngineStandard(Common, CommonAppEngine, unittest.TestCase):
+class TestAppEngineStandard(Common, CommonPython, unittest.TestCase):
 
     environment = "appengine_standard"
     language = "python"
+
+    monitored_resource_name = "gae_app"
+    monitored_resource_labels = ["project_id", "module_id", "version_id", "zone"]

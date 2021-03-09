@@ -27,7 +27,7 @@ import (
 	"cloud.google.com/go/logging"
 )
 
-// PubSubMessage is the logtext of a Pub/Sub event.
+// PubSubMessage is the message format received over HTTP
 type pubSubMessage struct {
 	Message struct {
 		Data       []byte            `json:"data,omitempty"`
@@ -65,6 +65,27 @@ func pubsubHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// PubSubMessage is the message format received by CloudFunctions
+type PubSubMessage struct {
+	Data []byte `json:"data"`
+	Attributes map[string]string `json:"attributes"`
+}
+
+// PubsubFunction is a background Cloud Function triggered by Pub/Sub
+func PubsubFunction(ctx context.Context, m PubSubMessage) error {
+	log.Printf("Data is: %v", string(m.Data))
+	switch string(m.Data) {
+	case "simplelog":
+		simplelog(m.Attributes)
+		break
+	case "stdlog":
+		break
+	default:
+		break
+	}
+	return nil
+}
+
 func main() {
 	if os.Getenv("ENABLE_SUBSCRIBER") == "" {
 
@@ -83,7 +104,7 @@ func main() {
 	}
 }
 
-// [Optional] envctl go <env> trigger simpleLog logname=foo,logtext=bar
+// [Optional] envctl go <env> trigger simplelog logname=foo,logtext=bar
 func simplelog(args map[string]string) {
 	ctx := context.Background()
 	projectID, err := metadata.ProjectID()

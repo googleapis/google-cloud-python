@@ -44,8 +44,10 @@ class LogsNotFound(RuntimeError):
 
 class Common:
     _client = Client()
-    # environment name must be set by subclass
+    # environment name and monitored resource values must be set by subclass
     environment = None
+    monitored_resource_name = None
+    monitored_resource_labels = None
 
     def _add_time_condition_to_filter(self, filter_str, timestamp=None):
         time_format = "%Y-%m-%dT%H:%M:%S.%f%z"
@@ -68,10 +70,10 @@ class Common:
         self._script.run_command(Command.Trigger, [function, args_str])
 
     @RetryErrors(exception=LogsNotFound, delay=2)
-    def trigger_and_retrieve(self, log_text, append_uuid=True, max_tries=6):
+    def trigger_and_retrieve(self, log_text, function="simplelog", append_uuid=True, max_tries=6):
         if append_uuid:
             log_text = f"{log_text} - {uuid.uuid1()}"
-        self._trigger("simplelog", log_text=log_text)
+        self._trigger(function, log_text=log_text)
         filter_str = self._add_time_condition_to_filter(log_text)
         # give the command time to be received
         tries = 0
@@ -130,3 +132,19 @@ class Common:
             if message and log_text in message:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
+
+    def test_monitored_resource(self):
+        if self.language != "python":
+            # to do: add monitored resource info to go
+            return True
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(log_text)
+        found_resource = log_list[-1].resource
+
+        self.assertIsNotNone(self.monitored_resource_name)
+        self.assertIsNotNone(self.monitored_resource_labels)
+
+        self.assertEqual(found_resource.type, self.monitored_resource_name)
+        for label in self.monitored_resource_labels:
+            self.assertTrue(found_resource.labels[label],
+                f'resource.labels[{label}] is not set')

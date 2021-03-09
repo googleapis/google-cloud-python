@@ -19,22 +19,13 @@ import inspect
 import google.cloud.logging
 
 from ..common.common import Common
+from ..common.python import CommonPython
 
 
-class TestKubernetesEngine(Common, unittest.TestCase):
+class TestKubernetesEngine(Common, CommonPython, unittest.TestCase):
 
     environment = "kubernetes"
     language = "python"
 
-    def test_monitored_resource(self):
-        log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text)
-        found_resource = log_list[0].resource
-
-        self.assertEqual(found_resource.type, "k8s_container")
-        self.assertTrue(found_resource.labels["project_id"])
-        self.assertTrue(found_resource.labels["location"])
-        self.assertTrue(found_resource.labels["cluster_name"])
-        self.assertTrue(found_resource.labels["namespace_name"])
-        self.assertTrue(found_resource.labels["pod_name"])
-        self.assertTrue(found_resource.labels["container_name"])
+    monitored_resource_name = "k8s_container"
+    monitored_resource_labels = ["project_id", "location", "cluster_name"]

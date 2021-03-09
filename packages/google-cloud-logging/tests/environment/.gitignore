@@ -140,3 +140,4 @@ cython_debug/
 # Go files
 deployable/go/google-cloud-go
 deployable/go/lib.tar
+deployable/go/vendor

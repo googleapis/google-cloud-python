@@ -19,18 +19,13 @@ import inspect
 import google.cloud.logging
 
 from ..common.common import Common
+from ..common.python import CommonPython
 
 
-class TestCloudFunctions(Common, unittest.TestCase):
+class TestCloudFunctions(Common, CommonPython, unittest.TestCase):
 
     environment = "functions"
     language = "python"
 
-    def test_monitored_resource(self):
-        log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text)
-        found_resource = log_list[0].resource
-
-        self.assertEqual(found_resource.type, "cloud_function")
-        self.assertTrue(found_resource.labels["region"])
-        self.assertTrue(found_resource.labels["function_name"])
+    monitored_resource_name = "cloud_function"
+    monitored_resource_labels = ["region", "function_name"]
