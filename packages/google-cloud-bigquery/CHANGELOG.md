@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.11.0](https://www.github.com/googleapis/python-bigquery/compare/v2.10.0...v2.11.0) (2021-03-09)
+
+
+### Features
+
+* add context manager support to client ([#540](https://www.github.com/googleapis/python-bigquery/issues/540)) ([d5c7e11](https://www.github.com/googleapis/python-bigquery/commit/d5c7e11a1dc2a149d74294bfadbae62d70573e69))
+
 ## [2.10.0](https://www.github.com/googleapis/python-bigquery/compare/v2.9.0...v2.10.0) (2021-02-25)
 
 
