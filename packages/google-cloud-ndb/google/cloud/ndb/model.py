@@ -2611,10 +2611,11 @@ class BlobProperty(Property):
             entity, data, prefix=prefix, repeated=repeated
         )
         if self._compressed:
-            value = data[self._name]
+            key = prefix + self._name
+            value = data[key]
             if isinstance(value, _CompressedValue):
                 value = value.z_val
-                data[self._name] = value
+                data[key] = value
 
             if self._repeated:
                 compressed_value = []
@@ -2623,14 +2624,14 @@ class BlobProperty(Property):
                         rval = zlib.compress(rval)
                     compressed_value.append(rval)
                 value = compressed_value
-                data[self._name] = value
+                data[key] = value
             if not self._repeated:
                 if value and not value.startswith(_ZLIB_COMPRESSION_MARKER):
                     value = zlib.compress(value)
-                    data[self._name] = value
+                    data[key] = value
 
             if value:
-                data.setdefault("_meanings", {})[self._name] = (
+                data.setdefault("_meanings", {})[key] = (
                     _MEANING_COMPRESSED,
                     value,
                 )

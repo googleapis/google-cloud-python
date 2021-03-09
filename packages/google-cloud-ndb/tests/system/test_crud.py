@@ -1699,3 +1699,25 @@ def test_local_structured_property_with_inheritance(dispose_of):
 
     entity = entity.key.get()
     assert isinstance(entity.children[0], Base)
+
+
+def test_structured_property_with_nested_compressed_json_property_using_legacy_format(
+    client_context, dispose_of
+):
+    """Regression test for #602
+
+    https://github.com/googleapis/python-ndb/issues/602
+    """
+
+    class OtherKind(ndb.Model):
+        data = ndb.JsonProperty(compressed=True)
+
+    class SomeKind(ndb.Model):
+        sub_model = ndb.StructuredProperty(OtherKind)
+
+    with client_context.new(legacy_data=True).use():
+        model = SomeKind(sub_model=OtherKind(data={"test": 1}))
+        key = model.put()
+        dispose_of(key._key)
+
+        assert key.get().sub_model.data["test"] == 1
