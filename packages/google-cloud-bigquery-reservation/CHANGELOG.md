@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.0.1...v1.1.0) (2021-03-09)
+
+
+### Features
+
+* add `client_cert_source_for_mtls` argument to transports ([#78](https://www.github.com/googleapis/python-bigquery-reservation/issues/78)) ([5df0f09](https://www.github.com/googleapis/python-bigquery-reservation/commit/5df0f0965c541ca546d3851be1ab7782dc80a11b))
+
 ### [1.0.1](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.0.0...v1.0.1) (2021-01-14)
 
 
