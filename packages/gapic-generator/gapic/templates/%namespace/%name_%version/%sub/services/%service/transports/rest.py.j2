@@ -92,6 +92,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         {%- endif %}
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._prep_wrapped_messages(client_info)
 
     {%- if service.has_lro %}
     

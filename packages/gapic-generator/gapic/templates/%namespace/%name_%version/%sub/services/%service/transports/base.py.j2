@@ -80,6 +80,9 @@ class {{ service.name }}Transport(abc.ABC):
             host += ':443'
         self._host = host
 
+        # Save the scopes.
+        self._scopes = scopes or self.AUTH_SCOPES
+
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
@@ -88,18 +91,15 @@ class {{ service.name }}Transport(abc.ABC):
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
                                 credentials_file,
-                                scopes=scopes,
+                                scopes=self._scopes,
                                 quota_project_id=quota_project_id
                             )
 
         elif credentials is None:
-            credentials, _ = auth.default(scopes=scopes, quota_project_id=quota_project_id)
+            credentials, _ = auth.default(scopes=self._scopes, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
-
-        # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages(client_info)
 
 
     def _prep_wrapped_messages(self, client_info):
