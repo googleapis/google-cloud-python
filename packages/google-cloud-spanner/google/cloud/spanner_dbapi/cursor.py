@@ -138,17 +138,10 @@ class Cursor(object):
         self._raise_if_closed()
 
     def close(self):
-        """Prepare and execute a Spanner database operation.
-
-        :type sql: str
-        :param sql: A SQL query statement.
-
-        :type args: list
-        :param args: Additional parameters to supplement the SQL query.
-        """
+        """Closes this cursor."""
         self._is_closed = True
 
-    def _do_execute_update(self, transaction, sql, params, param_types=None):
+    def _do_execute_update(self, transaction, sql, params):
         sql = parse_utils.ensure_where_clause(sql)
         sql, params = parse_utils.sql_pyformat_args_to_spanner(sql, params)
 

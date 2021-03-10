@@ -290,6 +290,10 @@ class Connection:
         :type statement: :class:`dict`
         :param statement: SQL statement to execute.
 
+        :type retried: bool
+        :param retried: (Optional) Retry the SQL statement if statement
+                        execution failed. Defaults to false.
+
         :rtype: :class:`google.cloud.spanner_v1.streamed.StreamedResultSet`,
                 :class:`google.cloud.spanner_dbapi.checksum.ResultsChecksum`
         :returns: Streamed result set of the statement and a
