@@ -357,10 +357,13 @@ def connect(
                     instances, tables and data. If not provided, will
                     attempt to determine from the environment.
 
-    :type credentials: :class:`~google.auth.credentials.Credentials`
+    :type credentials: Union[:class:`~google.auth.credentials.Credentials`, str]
     :param credentials: (Optional) The authorization credentials to attach to
                         requests. These credentials identify this application
-                        to the service. If none are specified, the client will
+                        to the service. These credentials may be specified as
+                        a file path indicating where to retrieve the service
+                        account JSON for the credentials to connect to
+                        Cloud Spanner. If none are specified, the client will
                         attempt to ascertain the credentials from the
                         environment.
 
@@ -384,9 +387,14 @@ def connect(
         user_agent=user_agent or DEFAULT_USER_AGENT, python_version=PY_VERSION
     )
 
-    client = spanner.Client(
-        project=project, credentials=credentials, client_info=client_info
-    )
+    if isinstance(credentials, str):
+        client = spanner.Client.from_service_account_json(
+            credentials, project=project, client_info=client_info
+        )
+    else:
+        client = spanner.Client(
+            project=project, credentials=credentials, client_info=client_info
+        )
 
     instance = client.instance(instance_id)
     if not instance.exists():
