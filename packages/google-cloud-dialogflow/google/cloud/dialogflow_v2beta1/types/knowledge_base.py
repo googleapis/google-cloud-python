@@ -130,7 +130,7 @@ class ListKnowledgeBasesResponse(proto.Message):
     [KnowledgeBases.ListKnowledgeBases][google.cloud.dialogflow.v2beta1.KnowledgeBases.ListKnowledgeBases].
 
     Attributes:
-        knowledge_bases (Sequence[~.gcd_knowledge_base.KnowledgeBase]):
+        knowledge_bases (Sequence[google.cloud.dialogflow_v2beta1.types.KnowledgeBase]):
             The list of knowledge bases.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -170,7 +170,7 @@ class CreateKnowledgeBaseRequest(proto.Message):
         parent (str):
             Required. The project to create a knowledge base for.
             Format: ``projects/<Project ID>/locations/<Location ID>``.
-        knowledge_base (~.gcd_knowledge_base.KnowledgeBase):
+        knowledge_base (google.cloud.dialogflow_v2beta1.types.KnowledgeBase):
             Required. The knowledge base to create.
     """
 
@@ -203,9 +203,9 @@ class UpdateKnowledgeBaseRequest(proto.Message):
     [KnowledgeBases.UpdateKnowledgeBase][google.cloud.dialogflow.v2beta1.KnowledgeBases.UpdateKnowledgeBase].
 
     Attributes:
-        knowledge_base (~.gcd_knowledge_base.KnowledgeBase):
+        knowledge_base (google.cloud.dialogflow_v2beta1.types.KnowledgeBase):
             Required. The knowledge base to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Not specified means ``update all``. Currently,
             only ``display_name`` can be updated, an InvalidArgument
             will be returned for attempting to update other fields.

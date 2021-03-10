@@ -79,7 +79,36 @@ class IntentsAsyncClient:
     common_location_path = staticmethod(IntentsClient.common_location_path)
     parse_common_location_path = staticmethod(IntentsClient.parse_common_location_path)
 
-    from_service_account_file = IntentsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            IntentsAsyncClient: The constructed client.
+        """
+        return IntentsClient.from_service_account_info.__func__(IntentsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            IntentsAsyncClient: The constructed client.
+        """
+        return IntentsClient.from_service_account_file.__func__(IntentsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -157,12 +186,13 @@ class IntentsAsyncClient:
         agent.
 
         Args:
-            request (:class:`~.intent.ListIntentsRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.ListIntentsRequest`):
                 The request object. The request message for
                 [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
             parent (:class:`str`):
                 Required. The agent to list all intents from. Format:
                 ``projects/<Project ID>/agent``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -172,6 +202,7 @@ class IntentsAsyncClient:
                 used. For more information, see `Multilingual intent and
                 entity
                 data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -183,7 +214,7 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListIntentsAsyncPager:
+            google.cloud.dialogflow_v2beta1.services.intents.pagers.ListIntentsAsyncPager:
                 The response message for
                 [Intents.ListIntents][google.cloud.dialogflow.v2beta1.Intents.ListIntents].
 
@@ -250,7 +281,7 @@ class IntentsAsyncClient:
         r"""Retrieves the specified intent.
 
         Args:
-            request (:class:`~.intent.GetIntentRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.GetIntentRequest`):
                 The request object. The request message for
                 [Intents.GetIntent][google.cloud.dialogflow.v2beta1.Intents.GetIntent].
             name (:class:`str`):
@@ -258,6 +289,7 @@ class IntentsAsyncClient:
 
                 -  ``projects/<Project ID>/agent/intents/<Intent ID>``
                 -  ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -267,6 +299,7 @@ class IntentsAsyncClient:
                 used. For more information, see `Multilingual intent and
                 entity
                 data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -278,18 +311,18 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.intent.Intent:
-                An intent categorizes an end-user's intention for one
-                conversation turn. For each agent, you define many
-                intents, where your combined intents can handle a
-                complete conversation. When an end-user writes or says
-                something, referred to as an end-user expression or
-                end-user input, Dialogflow matches the end-user input to
-                the best intent in your agent. Matching an intent is
-                also known as intent classification.
+            google.cloud.dialogflow_v2beta1.types.Intent:
+                An intent categorizes an end-user's intention for one conversation turn. For
+                   each agent, you define many intents, where your
+                   combined intents can handle a complete conversation.
+                   When an end-user writes or says something, referred
+                   to as an end-user expression or end-user input,
+                   Dialogflow matches the end-user input to the best
+                   intent in your agent. Matching an intent is also
+                   known as intent classification.
 
-                For more information, see the `intent
-                guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+                   For more information, see the [intent
+                   guide](\ https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -346,7 +379,7 @@ class IntentsAsyncClient:
         r"""Creates an intent in the specified agent.
 
         Args:
-            request (:class:`~.gcd_intent.CreateIntentRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.CreateIntentRequest`):
                 The request object. The request message for
                 [Intents.CreateIntent][google.cloud.dialogflow.v2beta1.Intents.CreateIntent].
             parent (:class:`str`):
@@ -355,10 +388,11 @@ class IntentsAsyncClient:
 
                 -  ``projects/<Project ID>/agent``
                 -  ``projects/<Project ID>/locations/<Location ID>/agent``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            intent (:class:`~.gcd_intent.Intent`):
+            intent (:class:`google.cloud.dialogflow_v2beta1.types.Intent`):
                 Required. The intent to create.
                 This corresponds to the ``intent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -369,6 +403,7 @@ class IntentsAsyncClient:
                 used. For more information, see `Multilingual intent and
                 entity
                 data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -380,18 +415,18 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcd_intent.Intent:
-                An intent categorizes an end-user's intention for one
-                conversation turn. For each agent, you define many
-                intents, where your combined intents can handle a
-                complete conversation. When an end-user writes or says
-                something, referred to as an end-user expression or
-                end-user input, Dialogflow matches the end-user input to
-                the best intent in your agent. Matching an intent is
-                also known as intent classification.
+            google.cloud.dialogflow_v2beta1.types.Intent:
+                An intent categorizes an end-user's intention for one conversation turn. For
+                   each agent, you define many intents, where your
+                   combined intents can handle a complete conversation.
+                   When an end-user writes or says something, referred
+                   to as an end-user expression or end-user input,
+                   Dialogflow matches the end-user input to the best
+                   intent in your agent. Matching an intent is also
+                   known as intent classification.
 
-                For more information, see the `intent
-                guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+                   For more information, see the [intent
+                   guide](\ https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -450,17 +485,18 @@ class IntentsAsyncClient:
         r"""Updates the specified intent.
 
         Args:
-            request (:class:`~.gcd_intent.UpdateIntentRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.UpdateIntentRequest`):
                 The request object. The request message for
                 [Intents.UpdateIntent][google.cloud.dialogflow.v2beta1.Intents.UpdateIntent].
-            intent (:class:`~.gcd_intent.Intent`):
+            intent (:class:`google.cloud.dialogflow_v2beta1.types.Intent`):
                 Required. The intent to update.
                 This corresponds to the ``intent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Optional. The mask to control which
                 fields get updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -470,6 +506,7 @@ class IntentsAsyncClient:
                 used. For more information, see `Multilingual intent and
                 entity
                 data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -481,18 +518,18 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcd_intent.Intent:
-                An intent categorizes an end-user's intention for one
-                conversation turn. For each agent, you define many
-                intents, where your combined intents can handle a
-                complete conversation. When an end-user writes or says
-                something, referred to as an end-user expression or
-                end-user input, Dialogflow matches the end-user input to
-                the best intent in your agent. Matching an intent is
-                also known as intent classification.
+            google.cloud.dialogflow_v2beta1.types.Intent:
+                An intent categorizes an end-user's intention for one conversation turn. For
+                   each agent, you define many intents, where your
+                   combined intents can handle a complete conversation.
+                   When an end-user writes or says something, referred
+                   to as an end-user expression or end-user input,
+                   Dialogflow matches the end-user input to the best
+                   intent in your agent. Matching an intent is also
+                   known as intent classification.
 
-                For more information, see the `intent
-                guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+                   For more information, see the [intent
+                   guide](\ https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -552,7 +589,7 @@ class IntentsAsyncClient:
         indirect followup intents.
 
         Args:
-            request (:class:`~.intent.DeleteIntentRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.DeleteIntentRequest`):
                 The request object. The request message for
                 [Intents.DeleteIntent][google.cloud.dialogflow.v2beta1.Intents.DeleteIntent].
             name (:class:`str`):
@@ -564,6 +601,7 @@ class IntentsAsyncClient:
 
                 -  ``projects/<Project ID>/agent/intents/<Intent ID>``
                 -  ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -628,7 +666,7 @@ class IntentsAsyncClient:
         [BatchUpdateIntentsResponse][google.cloud.dialogflow.v2beta1.BatchUpdateIntentsResponse]>
 
         Args:
-            request (:class:`~.intent.BatchUpdateIntentsRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.BatchUpdateIntentsRequest`):
                 The request object. The request message for
                 [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
             parent (:class:`str`):
@@ -637,6 +675,7 @@ class IntentsAsyncClient:
 
                 -  ``projects/<Project ID>/agent``
                 -  ``projects/<Project ID>/locations/<Location ID>/agent``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -647,12 +686,14 @@ class IntentsAsyncClient:
                 serialized proto (of IntentBatch type)
                 or JSON object. Note: The URI must start
                 with "gs://".
+
                 This corresponds to the ``intent_batch_uri`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            intent_batch_inline (:class:`~.intent.IntentBatch`):
+            intent_batch_inline (:class:`google.cloud.dialogflow_v2beta1.types.IntentBatch`):
                 The collection of intents to update
                 or create.
+
                 This corresponds to the ``intent_batch_inline`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -664,12 +705,12 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.intent.BatchUpdateIntentsResponse``: The
-                response message for
+                :class:`google.cloud.dialogflow_v2beta1.types.BatchUpdateIntentsResponse`
+                The response message for
                 [Intents.BatchUpdateIntents][google.cloud.dialogflow.v2beta1.Intents.BatchUpdateIntents].
 
         """
@@ -739,7 +780,7 @@ class IntentsAsyncClient:
         [google.protobuf.Empty][google.protobuf.Empty]>
 
         Args:
-            request (:class:`~.intent.BatchDeleteIntentsRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.BatchDeleteIntentsRequest`):
                 The request object. The request message for
                 [Intents.BatchDeleteIntents][google.cloud.dialogflow.v2beta1.Intents.BatchDeleteIntents].
             parent (:class:`str`):
@@ -748,12 +789,14 @@ class IntentsAsyncClient:
 
                 -  ``projects/<Project ID>/agent``
                 -  ``projects/<Project ID>/locations/<Location ID>/agent``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            intents (:class:`Sequence[~.intent.Intent]`):
+            intents (:class:`Sequence[google.cloud.dialogflow_v2beta1.types.Intent]`):
                 Required. The collection of intents to delete. Only
                 intent ``name`` must be filled in.
+
                 This corresponds to the ``intents`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -765,24 +808,22 @@ class IntentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ message ValidationError {
     // Not specified. This value should never be used.
     SEVERITY_UNSPECIFIED = 0;
 
-    // The agent doesn't follow Dialogflow best practicies.
+    // The agent doesn't follow Dialogflow best practices.
     INFO = 1;
 
     // The agent may not behave as expected.

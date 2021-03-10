@@ -93,7 +93,36 @@ class SessionsAsyncClient:
     common_location_path = staticmethod(SessionsClient.common_location_path)
     parse_common_location_path = staticmethod(SessionsClient.parse_common_location_path)
 
-    from_service_account_file = SessionsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SessionsAsyncClient: The constructed client.
+        """
+        return SessionsClient.from_service_account_info.__func__(SessionsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SessionsAsyncClient: The constructed client.
+        """
+        return SessionsClient.from_service_account_file.__func__(SessionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -177,7 +206,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            request (:class:`~.gcd_session.DetectIntentRequest`):
+            request (:class:`google.cloud.dialogflow_v2beta1.types.DetectIntentRequest`):
                 The request object. The request to detect user's intent.
             session (:class:`str`):
                 Required. The name of the session this query is sent to.
@@ -190,23 +219,26 @@ class SessionsAsyncClient:
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
-                we assume default 'draft' environment. If ``User ID`` is
-                not specified, we are using "-". It's up to the API
-                caller to choose an appropriate ``Session ID`` and
-                ``User Id``. They can be a random number or some type of
-                user and session identifiers (preferably hashed). The
-                length of the ``Session ID`` and ``User ID`` must not
-                exceed 36 characters. For more information, see the `API
+                we assume default 'draft' environment
+                (``Environment ID`` might be referred to as environment
+                name at some places). If ``User ID`` is not specified,
+                we are using "-". It's up to the API caller to choose an
+                appropriate ``Session ID`` and ``User Id``. They can be
+                a random number or some type of user and session
+                identifiers (preferably hashed). The length of the
+                ``Session ID`` and ``User ID`` must not exceed 36
+                characters. For more information, see the `API
                 interactions
                 guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
 
                 Note: Always use agent versions for production traffic.
                 See `Versions and
                 environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+
                 This corresponds to the ``session`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            query_input (:class:`~.gcd_session.QueryInput`):
+            query_input (:class:`google.cloud.dialogflow_v2beta1.types.QueryInput`):
                 Required. The input specification. It
                 can be set to:
                 1.  an audio config
@@ -217,6 +249,7 @@ class SessionsAsyncClient:
                 of text, or
                 3.  an event that specifies which intent
                 to trigger.
+
                 This corresponds to the ``query_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -228,7 +261,7 @@ class SessionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcd_session.DetectIntentResponse:
+            google.cloud.dialogflow_v2beta1.types.DetectIntentResponse:
                 The message returned from the
                 DetectIntent method.
 
@@ -297,7 +330,7 @@ class SessionsAsyncClient:
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            requests (AsyncIterator[`~.session.StreamingDetectIntentRequest`]):
+            requests (AsyncIterator[`google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentRequest`]):
                 The request object AsyncIterator. The top-level message sent by the
                 client to the
                 [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]
@@ -341,28 +374,24 @@ class SessionsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.session.StreamingDetectIntentResponse]:
+            AsyncIterable[google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentResponse]:
                 The top-level message returned from the
-                ``StreamingDetectIntent`` method.
+                   StreamingDetectIntent method.
 
-                Multiple response messages can be returned in order:
+                   Multiple response messages can be returned in order:
 
-                1. If the input was set to streaming audio, the first
-                   one or more messages contain ``recognition_result``.
-                   Each ``recognition_result`` represents a more
-                   complete transcript of what the user said. The last
-                   ``recognition_result`` has ``is_final`` set to
-                   ``true``.
-
-                2. The next message contains ``response_id``,
-                   ``query_result``, ``alternative_query_results`` and
-                   optionally ``webhook_status`` if a WebHook was
-                   called.
-
-                3. If ``output_audio_config`` was specified in the
-                   request or agent-level speech synthesizer is
-                   configured, all subsequent messages contain
-                   ``output_audio`` and ``output_audio_config``.
+                   1. If the input was set to streaming audio, the first
+                      one or more messages contain recognition_result.
+                      Each recognition_result represents a more complete
+                      transcript of what the user said. The last
+                      recognition_result has is_final set to true.
+                   2. The next message contains response_id,
+                      query_result, alternative_query_results and
+                      optionally webhook_status if a WebHook was called.
+                   3. If output_audio_config was specified in the
+                      request or agent-level speech synthesizer is
+                      configured, all subsequent messages contain
+                      output_audio and output_audio_config.
 
         """
 

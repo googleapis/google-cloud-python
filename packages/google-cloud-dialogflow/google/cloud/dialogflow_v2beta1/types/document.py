@@ -32,6 +32,9 @@ __protobuf__ = proto.module(
         "ListDocumentsRequest",
         "ListDocumentsResponse",
         "CreateDocumentRequest",
+        "ImportDocumentsRequest",
+        "ImportDocumentTemplate",
+        "ImportDocumentsResponse",
         "DeleteDocumentRequest",
         "UpdateDocumentRequest",
         "KnowledgeOperationMetadata",
@@ -61,7 +64,7 @@ class Document(proto.Message):
             the creation request fails.
         mime_type (str):
             Required. The MIME type of this document.
-        knowledge_types (Sequence[~.gcd_document.Document.KnowledgeType]):
+        knowledge_types (Sequence[google.cloud.dialogflow_v2beta1.types.Document.KnowledgeType]):
             Required. The knowledge type of document
             content.
         content_uri (str):
@@ -102,11 +105,17 @@ class Document(proto.Message):
             system will not try to reload the document anymore. You need
             to manually reload the document successfully by calling
             ``ReloadDocument`` and clear the errors.
-        latest_reload_status (~.gcd_document.Document.ReloadStatus):
+        latest_reload_status (google.cloud.dialogflow_v2beta1.types.Document.ReloadStatus):
             Output only. The time and status of the
             latest reload. This reload may have been
             triggered automatically or manually and may not
             have succeeded.
+        metadata (Sequence[google.cloud.dialogflow_v2beta1.types.Document.MetadataEntry]):
+            Optional. Metadata for the document. The metadata supports
+            arbitrary key-value pairs. Suggested use cases include
+            storing a document's title, an external URL distinct from
+            the document's content_uri, etc. The max size of a ``key``
+            or a ``value`` of the metadata is 1024 bytes.
     """
 
     class KnowledgeType(proto.Enum):
@@ -114,17 +123,19 @@ class Document(proto.Message):
         KNOWLEDGE_TYPE_UNSPECIFIED = 0
         FAQ = 1
         EXTRACTIVE_QA = 2
+        ARTICLE_SUGGESTION = 3
+        SMART_REPLY = 4
 
     class ReloadStatus(proto.Message):
         r"""The status of a reload attempt.
 
         Attributes:
-            time (~.timestamp.Timestamp):
+            time (google.protobuf.timestamp_pb2.Timestamp):
                 Output only. The time of a reload attempt.
                 This reload may have been triggered
                 automatically or manually and may not have
                 succeeded.
-            status (~.gr_status.Status):
+            status (google.rpc.status_pb2.Status):
                 Output only. The status of a reload attempt
                 or the initial load.
         """
@@ -150,6 +161,8 @@ class Document(proto.Message):
     enable_auto_reload = proto.Field(proto.BOOL, number=11)
 
     latest_reload_status = proto.Field(proto.MESSAGE, number=12, message=ReloadStatus,)
+
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=7)
 
 
 class GetDocumentRequest(proto.Message):
@@ -220,7 +233,7 @@ class ListDocumentsResponse(proto.Message):
     [Documents.ListDocuments][google.cloud.dialogflow.v2beta1.Documents.ListDocuments].
 
     Attributes:
-        documents (Sequence[~.gcd_document.Document]):
+        documents (Sequence[google.cloud.dialogflow_v2beta1.types.Document]):
             The list of documents.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -246,7 +259,7 @@ class CreateDocumentRequest(proto.Message):
             Required. The knowledge base to create a document for.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>``.
-        document (~.gcd_document.Document):
+        document (google.cloud.dialogflow_v2beta1.types.Document):
             Required. The document to create.
         import_gcs_custom_metadata (bool):
             Whether to import custom metadata from Google
@@ -259,6 +272,83 @@ class CreateDocumentRequest(proto.Message):
     document = proto.Field(proto.MESSAGE, number=2, message="Document",)
 
     import_gcs_custom_metadata = proto.Field(proto.BOOL, number=3)
+
+
+class ImportDocumentsRequest(proto.Message):
+    r"""Request message for
+    [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
+
+    Attributes:
+        parent (str):
+            Required. The knowledge base to import documents into.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>``.
+        gcs_source (google.cloud.dialogflow_v2beta1.types.GcsSources):
+            The Google Cloud Storage location for the documents. The
+            path can include a wildcard.
+
+            These URIs may have the forms
+            ``gs://<bucket-name>/<object-name>``.
+            ``gs://<bucket-name>/<object-path>/*.<extension>``.
+        document_template (google.cloud.dialogflow_v2beta1.types.ImportDocumentTemplate):
+            Required. Document template used for
+            importing all the documents.
+        import_gcs_custom_metadata (bool):
+            Whether to import custom metadata from Google
+            Cloud Storage. Only valid when the document
+            source is Google Cloud Storage URI.
+    """
+
+    parent = proto.Field(proto.STRING, number=1)
+
+    gcs_source = proto.Field(
+        proto.MESSAGE, number=2, oneof="source", message=gcs.GcsSources,
+    )
+
+    document_template = proto.Field(
+        proto.MESSAGE, number=3, message="ImportDocumentTemplate",
+    )
+
+    import_gcs_custom_metadata = proto.Field(proto.BOOL, number=4)
+
+
+class ImportDocumentTemplate(proto.Message):
+    r"""The template used for importing documents.
+
+    Attributes:
+        mime_type (str):
+            Required. The MIME type of the document.
+        knowledge_types (Sequence[google.cloud.dialogflow_v2beta1.types.Document.KnowledgeType]):
+            Required. The knowledge type of document
+            content.
+        metadata (Sequence[google.cloud.dialogflow_v2beta1.types.ImportDocumentTemplate.MetadataEntry]):
+            Metadata for the document. The metadata supports arbitrary
+            key-value pairs. Suggested use cases include storing a
+            document's title, an external URL distinct from the
+            document's content_uri, etc. The max size of a ``key`` or a
+            ``value`` of the metadata is 1024 bytes.
+    """
+
+    mime_type = proto.Field(proto.STRING, number=1)
+
+    knowledge_types = proto.RepeatedField(
+        proto.ENUM, number=2, enum="Document.KnowledgeType",
+    )
+
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=3)
+
+
+class ImportDocumentsResponse(proto.Message):
+    r"""Response message for
+    [Documents.ImportDocuments][google.cloud.dialogflow.v2beta1.Documents.ImportDocuments].
+
+    Attributes:
+        warnings (Sequence[google.rpc.status_pb2.Status]):
+            Includes details about skipped documents or
+            any other warnings.
+    """
+
+    warnings = proto.RepeatedField(proto.MESSAGE, number=1, message=gr_status.Status,)
 
 
 class DeleteDocumentRequest(proto.Message):
@@ -279,9 +369,9 @@ class UpdateDocumentRequest(proto.Message):
     [Documents.UpdateDocument][google.cloud.dialogflow.v2beta1.Documents.UpdateDocument].
 
     Attributes:
-        document (~.gcd_document.Document):
+        document (google.cloud.dialogflow_v2beta1.types.Document):
             Required. The document to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Not specified means ``update all``. Currently,
             only ``display_name`` can be updated, an InvalidArgument
             will be returned for attempting to update other fields.
@@ -297,7 +387,7 @@ class KnowledgeOperationMetadata(proto.Message):
     operations.
 
     Attributes:
-        state (~.gcd_document.KnowledgeOperationMetadata.State):
+        state (google.cloud.dialogflow_v2beta1.types.KnowledgeOperationMetadata.State):
             Required. Output only. The current state of
             this operation.
     """
@@ -320,7 +410,7 @@ class ReloadDocumentRequest(proto.Message):
         name (str):
             Required. The name of the document to reload. Format:
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``
-        gcs_source (~.gcs.GcsSource):
+        gcs_source (google.cloud.dialogflow_v2beta1.types.GcsSource):
             The path for a Cloud Storage source file for
             reloading document content. If not provided, the
             Document's existing source will be reloaded.

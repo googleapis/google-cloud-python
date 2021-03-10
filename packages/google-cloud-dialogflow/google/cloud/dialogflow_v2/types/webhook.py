@@ -44,11 +44,11 @@ class WebhookRequest(proto.Message):
         response_id (str):
             The unique identifier of the response. Contains the same
             value as ``[Streaming]DetectIntentResponse.response_id``.
-        query_result (~.gcd_session.QueryResult):
+        query_result (google.cloud.dialogflow_v2.types.QueryResult):
             The result of the conversational query or event processing.
             Contains the same value as
             ``[Streaming]DetectIntentResponse.query_result``.
-        original_detect_intent_request (~.webhook.OriginalDetectIntentRequest):
+        original_detect_intent_request (google.cloud.dialogflow_v2.types.OriginalDetectIntentRequest):
             Optional. The contents of the original request that was
             passed to ``[Streaming]DetectIntent`` call.
     """
@@ -90,7 +90,7 @@ class WebhookResponse(proto.Message):
             provided, Dialogflow uses this field to populate
             [QueryResult.fulfillment_text][google.cloud.dialogflow.v2.QueryResult.fulfillment_text]
             sent to the integration or API caller.
-        fulfillment_messages (Sequence[~.intent.Intent.Message]):
+        fulfillment_messages (Sequence[google.cloud.dialogflow_v2.types.Intent.Message]):
             Optional. The rich response messages intended for the
             end-user. When provided, Dialogflow uses this field to
             populate
@@ -102,7 +102,7 @@ class WebhookResponse(proto.Message):
             Dialogflow uses this field to populate
             [QueryResult.webhook_source][google.cloud.dialogflow.v2.QueryResult.webhook_source]
             sent to the integration or API caller.
-        payload (~.struct.Struct):
+        payload (google.protobuf.struct_pb2.Struct):
             Optional. This field can be used to pass custom data from
             your webhook to the integration or API caller. Arbitrary
             JSON objects are supported. When provided, Dialogflow uses
@@ -114,18 +114,18 @@ class WebhookResponse(proto.Message):
             for rich response messages. See the format definition at
             `Google Assistant Dialogflow webhook
             format <https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json>`__
-        output_contexts (Sequence[~.context.Context]):
+        output_contexts (Sequence[google.cloud.dialogflow_v2.types.Context]):
             Optional. The collection of output contexts that will
             overwrite currently active contexts for the session and
             reset their lifespans. When provided, Dialogflow uses this
             field to populate
             [QueryResult.output_contexts][google.cloud.dialogflow.v2.QueryResult.output_contexts]
             sent to the integration or API caller.
-        followup_event_input (~.gcd_session.EventInput):
+        followup_event_input (google.cloud.dialogflow_v2.types.EventInput):
             Optional. Invokes the supplied events. When this field is
             set, Dialogflow ignores the ``fulfillment_text``,
             ``fulfillment_messages``, and ``payload`` fields.
-        session_entity_types (Sequence[~.session_entity_type.SessionEntityType]):
+        session_entity_types (Sequence[google.cloud.dialogflow_v2.types.SessionEntityType]):
             Optional. Additional session entity types to replace or
             extend developer entity types with. The entity synonyms
             apply to all languages and persist for the session. Setting
@@ -170,7 +170,7 @@ class OriginalDetectIntentRequest(proto.Message):
         version (str):
             Optional. The version of the protocol used
             for this request. This field is AoG-specific.
-        payload (~.struct.Struct):
+        payload (google.protobuf.struct_pb2.Struct):
             Optional. This field is set to the value of the
             ``QueryParameters.payload`` field passed in the request.
             Some integrations that query a Dialogflow agent may provide

@@ -120,6 +120,22 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SessionEntityTypesClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -131,7 +147,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SessionEntityTypesClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -239,10 +255,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SessionEntityTypesTransport]): The
+            transport (Union[str, SessionEntityTypesTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -278,21 +294,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -335,7 +347,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -356,10 +368,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         use session entities with Google Assistant integration.
 
         Args:
-            request (:class:`~.session_entity_type.ListSessionEntityTypesRequest`):
+            request (google.cloud.dialogflow_v2.types.ListSessionEntityTypesRequest):
                 The request object. The request message for
                 [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
-            parent (:class:`str`):
+            parent (str):
                 Required. The session to list all session entity types
                 from. Format:
                 ``projects/<Project ID>/agent/sessions/<Session ID>`` or
@@ -367,6 +379,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment. If ``User ID`` is not
                 specified, we assume default '-' user.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -378,7 +391,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSessionEntityTypesPager:
+            google.cloud.dialogflow_v2.services.session_entity_types.pagers.ListSessionEntityTypesPager:
                 The response message for
                 [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
 
@@ -448,10 +461,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         use session entities with Google Assistant integration.
 
         Args:
-            request (:class:`~.session_entity_type.GetSessionEntityTypeRequest`):
+            request (google.cloud.dialogflow_v2.types.GetSessionEntityTypeRequest):
                 The request object. The request message for
                 [SessionEntityTypes.GetSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.GetSessionEntityType].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the session entity type. Format:
                 ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
                 or
@@ -459,6 +472,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment. If ``User ID`` is not
                 specified, we assume default '-' user.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -470,17 +484,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.session_entity_type.SessionEntityType:
-                A session represents a conversation between a Dialogflow
-                agent and an end-user. You can create special entities,
-                called session entities, during a session. Session
-                entities can extend or replace custom entity types and
-                only exist during the session that they were created
-                for. All session data, including session entities, is
-                stored by Dialogflow for 20 minutes.
+            google.cloud.dialogflow_v2.types.SessionEntityType:
+                A session represents a conversation between a Dialogflow agent and an
+                   end-user. You can create special entities, called
+                   session entities, during a session. Session entities
+                   can extend or replace custom entity types and only
+                   exist during the session that they were created for.
+                   All session data, including session entities, is
+                   stored by Dialogflow for 20 minutes.
 
-                For more information, see the `session entity
-                guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
+                   For more information, see the [session entity
+                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -541,10 +555,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         use session entities with Google Assistant integration.
 
         Args:
-            request (:class:`~.gcd_session_entity_type.CreateSessionEntityTypeRequest`):
+            request (google.cloud.dialogflow_v2.types.CreateSessionEntityTypeRequest):
                 The request object. The request message for
                 [SessionEntityTypes.CreateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.CreateSessionEntityType].
-            parent (:class:`str`):
+            parent (str):
                 Required. The session to create a session entity type
                 for. Format:
                 ``projects/<Project ID>/agent/sessions/<Session ID>`` or
@@ -552,12 +566,14 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment. If ``User ID`` is not
                 specified, we assume default '-' user.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            session_entity_type (:class:`~.gcd_session_entity_type.SessionEntityType`):
+            session_entity_type (google.cloud.dialogflow_v2.types.SessionEntityType):
                 Required. The session entity type to
                 create.
+
                 This corresponds to the ``session_entity_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -569,17 +585,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcd_session_entity_type.SessionEntityType:
-                A session represents a conversation between a Dialogflow
-                agent and an end-user. You can create special entities,
-                called session entities, during a session. Session
-                entities can extend or replace custom entity types and
-                only exist during the session that they were created
-                for. All session data, including session entities, is
-                stored by Dialogflow for 20 minutes.
+            google.cloud.dialogflow_v2.types.SessionEntityType:
+                A session represents a conversation between a Dialogflow agent and an
+                   end-user. You can create special entities, called
+                   session entities, during a session. Session entities
+                   can extend or replace custom entity types and only
+                   exist during the session that they were created for.
+                   All session data, including session entities, is
+                   stored by Dialogflow for 20 minutes.
 
-                For more information, see the `session entity
-                guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
+                   For more information, see the [session entity
+                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -643,18 +659,20 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         use session entities with Google Assistant integration.
 
         Args:
-            request (:class:`~.gcd_session_entity_type.UpdateSessionEntityTypeRequest`):
+            request (google.cloud.dialogflow_v2.types.UpdateSessionEntityTypeRequest):
                 The request object. The request message for
                 [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.UpdateSessionEntityType].
-            session_entity_type (:class:`~.gcd_session_entity_type.SessionEntityType`):
+            session_entity_type (google.cloud.dialogflow_v2.types.SessionEntityType):
                 Required. The session entity type to
                 update.
+
                 This corresponds to the ``session_entity_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Optional. The mask to control which
                 fields get updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -666,17 +684,17 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcd_session_entity_type.SessionEntityType:
-                A session represents a conversation between a Dialogflow
-                agent and an end-user. You can create special entities,
-                called session entities, during a session. Session
-                entities can extend or replace custom entity types and
-                only exist during the session that they were created
-                for. All session data, including session entities, is
-                stored by Dialogflow for 20 minutes.
+            google.cloud.dialogflow_v2.types.SessionEntityType:
+                A session represents a conversation between a Dialogflow agent and an
+                   end-user. You can create special entities, called
+                   session entities, during a session. Session entities
+                   can extend or replace custom entity types and only
+                   exist during the session that they were created for.
+                   All session data, including session entities, is
+                   stored by Dialogflow for 20 minutes.
 
-                For more information, see the `session entity
-                guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
+                   For more information, see the [session entity
+                   guide](\ https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -741,10 +759,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         use session entities with Google Assistant integration.
 
         Args:
-            request (:class:`~.session_entity_type.DeleteSessionEntityTypeRequest`):
+            request (google.cloud.dialogflow_v2.types.DeleteSessionEntityTypeRequest):
                 The request object. The request message for
                 [SessionEntityTypes.DeleteSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.DeleteSessionEntityType].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the entity type to delete. Format:
                 ``projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type Display Name>``
                 or
@@ -752,6 +770,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
                 If ``Environment ID`` is not specified, we assume
                 default 'draft' environment. If ``User ID`` is not
                 specified, we assume default '-' user.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

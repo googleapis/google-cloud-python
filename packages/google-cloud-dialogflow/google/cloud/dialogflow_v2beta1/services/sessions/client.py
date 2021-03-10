@@ -125,6 +125,22 @@ class SessionsClient(metaclass=SessionsClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SessionsClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -136,7 +152,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SessionsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -304,10 +320,10 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SessionsTransport]): The
+            transport (Union[str, SessionsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -343,21 +359,17 @@ class SessionsClient(metaclass=SessionsClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -400,7 +412,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -425,9 +437,9 @@ class SessionsClient(metaclass=SessionsClientMeta):
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            request (:class:`~.gcd_session.DetectIntentRequest`):
+            request (google.cloud.dialogflow_v2beta1.types.DetectIntentRequest):
                 The request object. The request to detect user's intent.
-            session (:class:`str`):
+            session (str):
                 Required. The name of the session this query is sent to.
                 Supported formats:
 
@@ -438,23 +450,26 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
                 If ``Location ID`` is not specified we assume default
                 'us' location. If ``Environment ID`` is not specified,
-                we assume default 'draft' environment. If ``User ID`` is
-                not specified, we are using "-". It's up to the API
-                caller to choose an appropriate ``Session ID`` and
-                ``User Id``. They can be a random number or some type of
-                user and session identifiers (preferably hashed). The
-                length of the ``Session ID`` and ``User ID`` must not
-                exceed 36 characters. For more information, see the `API
+                we assume default 'draft' environment
+                (``Environment ID`` might be referred to as environment
+                name at some places). If ``User ID`` is not specified,
+                we are using "-". It's up to the API caller to choose an
+                appropriate ``Session ID`` and ``User Id``. They can be
+                a random number or some type of user and session
+                identifiers (preferably hashed). The length of the
+                ``Session ID`` and ``User ID`` must not exceed 36
+                characters. For more information, see the `API
                 interactions
                 guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
 
                 Note: Always use agent versions for production traffic.
                 See `Versions and
                 environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+
                 This corresponds to the ``session`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            query_input (:class:`~.gcd_session.QueryInput`):
+            query_input (google.cloud.dialogflow_v2beta1.types.QueryInput):
                 Required. The input specification. It
                 can be set to:
                 1.  an audio config
@@ -465,6 +480,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 of text, or
                 3.  an event that specifies which intent
                 to trigger.
+
                 This corresponds to the ``query_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -476,7 +492,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcd_session.DetectIntentResponse:
+            google.cloud.dialogflow_v2beta1.types.DetectIntentResponse:
                 The message returned from the
                 DetectIntent method.
 
@@ -540,7 +556,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
-            requests (Iterator[`~.session.StreamingDetectIntentRequest`]):
+            requests (Iterator[google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentRequest]):
                 The request object iterator. The top-level message sent by the
                 client to the
                 [Sessions.StreamingDetectIntent][google.cloud.dialogflow.v2beta1.Sessions.StreamingDetectIntent]
@@ -584,28 +600,24 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.session.StreamingDetectIntentResponse]:
+            Iterable[google.cloud.dialogflow_v2beta1.types.StreamingDetectIntentResponse]:
                 The top-level message returned from the
-                ``StreamingDetectIntent`` method.
+                   StreamingDetectIntent method.
 
-                Multiple response messages can be returned in order:
+                   Multiple response messages can be returned in order:
 
-                1. If the input was set to streaming audio, the first
-                   one or more messages contain ``recognition_result``.
-                   Each ``recognition_result`` represents a more
-                   complete transcript of what the user said. The last
-                   ``recognition_result`` has ``is_final`` set to
-                   ``true``.
-
-                2. The next message contains ``response_id``,
-                   ``query_result``, ``alternative_query_results`` and
-                   optionally ``webhook_status`` if a WebHook was
-                   called.
-
-                3. If ``output_audio_config`` was specified in the
-                   request or agent-level speech synthesizer is
-                   configured, all subsequent messages contain
-                   ``output_audio`` and ``output_audio_config``.
+                   1. If the input was set to streaming audio, the first
+                      one or more messages contain recognition_result.
+                      Each recognition_result represents a more complete
+                      transcript of what the user said. The last
+                      recognition_result has is_final set to true.
+                   2. The next message contains response_id,
+                      query_result, alternative_query_results and
+                      optionally webhook_status if a WebHook was called.
+                   3. If output_audio_config was specified in the
+                      request or agent-level speech synthesizer is
+                      configured, all subsequent messages contain
+                      output_audio and output_audio_config.
 
         """
 

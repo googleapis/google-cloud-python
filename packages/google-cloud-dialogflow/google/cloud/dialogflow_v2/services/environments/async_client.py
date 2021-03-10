@@ -74,7 +74,36 @@ class EnvironmentsAsyncClient:
         EnvironmentsClient.parse_common_location_path
     )
 
-    from_service_account_file = EnvironmentsClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            EnvironmentsAsyncClient: The constructed client.
+        """
+        return EnvironmentsClient.from_service_account_info.__func__(EnvironmentsAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            EnvironmentsAsyncClient: The constructed client.
+        """
+        return EnvironmentsClient.from_service_account_file.__func__(EnvironmentsAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -150,7 +179,7 @@ class EnvironmentsAsyncClient:
         specified agent.
 
         Args:
-            request (:class:`~.environment.ListEnvironmentsRequest`):
+            request (:class:`google.cloud.dialogflow_v2.types.ListEnvironmentsRequest`):
                 The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
 
@@ -161,7 +190,7 @@ class EnvironmentsAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListEnvironmentsAsyncPager:
+            google.cloud.dialogflow_v2.services.environments.pagers.ListEnvironmentsAsyncPager:
                 The response message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
 

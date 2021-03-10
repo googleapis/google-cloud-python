@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -116,6 +116,12 @@ message WebhookResponse {
   // When this field is set, Dialogflow ignores the `fulfillment_text`,
   // `fulfillment_messages`, and `payload` fields.
   EventInput followup_event_input = 6;
+
+  // Indicates that a live agent should be brought in to handle the
+  // interaction with the user. In most cases, when you set this flag to true,
+  // you would also want to set end_interaction to true as well. Default is
+  // false.
+  bool live_agent_handoff = 7;
 
   // Optional. Indicates that this intent ends an interaction. Some integrations
   // (e.g., Actions on Google or Dialogflow phone gateway) use this information

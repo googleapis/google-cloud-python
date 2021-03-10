@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -49,6 +49,9 @@ service Intents {
       get: "/v2beta1/{parent=projects/*/agent}/intents"
       additional_bindings {
         get: "/v2beta1/{parent=projects/*/locations/*/agent}/intents"
+      }
+      additional_bindings {
+        get: "/v2beta1/{parent=projects/*/agent/environments/*}/intents"
       }
     };
     option (google.api.method_signature) = "parent";
@@ -1113,6 +1116,12 @@ message Intent {
   // taken into account during inference in `ML ONLY` match mode. Also,
   // auto-markup in the UI is turned off.
   bool ml_disabled = 19 [(google.api.field_behavior) = OPTIONAL];
+
+  // Optional. Indicates that a live agent should be brought in to handle the
+  // interaction with the user. In most cases, when you set this flag to true,
+  // you would also want to set end_interaction to true as well. Default is
+  // false.
+  bool live_agent_handoff = 20 [(google.api.field_behavior) = OPTIONAL];
 
   // Optional. Indicates that this intent ends an interaction. Some integrations
   // (e.g., Actions on Google or Dialogflow phone gateway) use this information

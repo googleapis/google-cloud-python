@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflow_v2beta1.types import knowledge_base
 
@@ -24,7 +33,7 @@ class ListKnowledgeBasesPager:
     """A pager for iterating through ``list_knowledge_bases`` requests.
 
     This class thinly wraps an initial
-    :class:`~.knowledge_base.ListKnowledgeBasesResponse` object, and
+    :class:`google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``knowledge_bases`` field.
 
@@ -33,7 +42,7 @@ class ListKnowledgeBasesPager:
     through the ``knowledge_bases`` field on the
     corresponding responses.
 
-    All the usual :class:`~.knowledge_base.ListKnowledgeBasesResponse`
+    All the usual :class:`google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListKnowledgeBasesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.knowledge_base.ListKnowledgeBasesRequest`):
+            request (google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesRequest):
                 The initial request object.
-            response (:class:`~.knowledge_base.ListKnowledgeBasesResponse`):
+            response (google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListKnowledgeBasesAsyncPager:
     """A pager for iterating through ``list_knowledge_bases`` requests.
 
     This class thinly wraps an initial
-    :class:`~.knowledge_base.ListKnowledgeBasesResponse` object, and
+    :class:`google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``knowledge_bases`` field.
 
@@ -95,7 +104,7 @@ class ListKnowledgeBasesAsyncPager:
     through the ``knowledge_bases`` field on the
     corresponding responses.
 
-    All the usual :class:`~.knowledge_base.ListKnowledgeBasesResponse`
+    All the usual :class:`google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListKnowledgeBasesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.knowledge_base.ListKnowledgeBasesRequest`):
+            request (google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesRequest):
                 The initial request object.
-            response (:class:`~.knowledge_base.ListKnowledgeBasesResponse`):
+            response (google.cloud.dialogflow_v2beta1.types.ListKnowledgeBasesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

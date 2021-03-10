@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -248,6 +248,12 @@ message InputAudioConfig {
   // Note: When specified, InputAudioConfig.single_utterance takes precedence
   // over StreamingDetectIntentRequest.single_utterance.
   bool single_utterance = 8;
+
+  // Only used in [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent] and
+  // [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent].
+  // If `false` and recognition doesn't return any result, trigger
+  // `NO_SPEECH_RECOGNIZED` event to Dialogflow agent.
+  bool disable_no_speech_recognized_event = 14;
 }
 
 // Description of which voice to use for speech synthesis.
@@ -255,6 +261,9 @@ message VoiceSelectionParams {
   // Optional. The name of the voice. If not set, the service will choose a
   // voice based on the other parameters such as language_code and
   // [ssml_gender][google.cloud.dialogflow.v2beta1.VoiceSelectionParams.ssml_gender].
+  //
+  // For the list of available voices, please refer to [Supported voices and
+  // languages](https://cloud.google.com/text-to-speech/docs/voices).
   string name = 1;
 
   // Optional. The preferred gender of the voice. If not set, the service will
@@ -263,23 +272,6 @@ message VoiceSelectionParams {
   // voice of the appropriate gender is not available, the synthesizer should
   // substitute a voice with a different gender rather than failing the request.
   SsmlVoiceGender ssml_gender = 2;
-}
-
-// Gender of the voice as described in
-// [SSML voice element](https://www.w3.org/TR/speech-synthesis11/#edef_voice).
-enum SsmlVoiceGender {
-  // An unspecified gender, which means that the client doesn't care which
-  // gender the selected voice will have.
-  SSML_VOICE_GENDER_UNSPECIFIED = 0;
-
-  // A male voice.
-  SSML_VOICE_GENDER_MALE = 1;
-
-  // A female voice.
-  SSML_VOICE_GENDER_FEMALE = 2;
-
-  // A gender-neutral voice.
-  SSML_VOICE_GENDER_NEUTRAL = 3;
 }
 
 // Configuration of how speech should be synthesized.
@@ -314,6 +306,23 @@ message SynthesizeSpeechConfig {
   VoiceSelectionParams voice = 4;
 }
 
+// Gender of the voice as described in
+// [SSML voice element](https://www.w3.org/TR/speech-synthesis11/#edef_voice).
+enum SsmlVoiceGender {
+  // An unspecified gender, which means that the client doesn't care which
+  // gender the selected voice will have.
+  SSML_VOICE_GENDER_UNSPECIFIED = 0;
+
+  // A male voice.
+  SSML_VOICE_GENDER_MALE = 1;
+
+  // A female voice.
+  SSML_VOICE_GENDER_FEMALE = 2;
+
+  // A gender-neutral voice.
+  SSML_VOICE_GENDER_NEUTRAL = 3;
+}
+
 // Instructs the speech synthesizer how to generate the output audio content.
 // If this audio config is supplied in a request, it overrides all existing
 // text-to-speech settings applied to the agent.
@@ -330,6 +339,12 @@ message OutputAudioConfig {
 
   // Configuration of how speech should be synthesized.
   SynthesizeSpeechConfig synthesize_speech_config = 3;
+}
+
+// A wrapper of repeated TelephonyDtmf digits.
+message TelephonyDtmfEvents {
+  // A sequence of TelephonyDtmf digits.
+  repeated TelephonyDtmf dtmf_events = 1;
 }
 
 // Audio encoding of the output audio format in Text-To-Speech.
@@ -351,10 +366,13 @@ enum OutputAudioEncoding {
   OUTPUT_AUDIO_ENCODING_OGG_OPUS = 3;
 }
 
-// A wrapper of repeated TelephonyDtmf digits.
-message TelephonyDtmfEvents {
-  // A sequence of TelephonyDtmf digits.
-  repeated TelephonyDtmf dtmf_events = 1;
+// Configures speech transcription for  [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile].
+message SpeechToTextConfig {
+  // Optional. The speech model used in speech to text.
+  // `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
+  // `USE_ENHANCED`. It can be overridden in [AnalyzeContentRequest][google.cloud.dialogflow.v2beta1.AnalyzeContentRequest] and
+  // [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest] request.
+  SpeechModelVariant speech_model_variant = 1 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // [DTMF](https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling)

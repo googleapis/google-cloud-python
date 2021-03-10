@@ -59,12 +59,14 @@ class DetectIntentRequest(proto.Message):
             ``projects/<Project ID>/agent/sessions/<Session ID>``, or
             ``projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>``.
             If ``Environment ID`` is not specified, we assume default
-            'draft' environment. If ``User ID`` is not specified, we are
-            using "-". It's up to the API caller to choose an
-            appropriate ``Session ID`` and ``User Id``. They can be a
-            random number or some type of user and session identifiers
-            (preferably hashed). The length of the ``Session ID`` and
-            ``User ID`` must not exceed 36 characters.
+            'draft' environment (``Environment ID`` might be referred to
+            as environment name at some places). If ``User ID`` is not
+            specified, we are using "-". It's up to the API caller to
+            choose an appropriate ``Session ID`` and ``User Id``. They
+            can be a random number or some type of user and session
+            identifiers (preferably hashed). The length of the
+            ``Session ID`` and ``User ID`` must not exceed 36
+            characters.
 
             For more information, see the `API interactions
             guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
@@ -72,9 +74,9 @@ class DetectIntentRequest(proto.Message):
             Note: Always use agent versions for production traffic. See
             `Versions and
             environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
-        query_params (~.gcd_session.QueryParameters):
+        query_params (google.cloud.dialogflow_v2.types.QueryParameters):
             The parameters of this query.
-        query_input (~.gcd_session.QueryInput):
+        query_input (google.cloud.dialogflow_v2.types.QueryInput):
             Required. The input specification. It can be
             set to:
             1.  an audio config
@@ -84,12 +86,12 @@ class DetectIntentRequest(proto.Message):
             or
             3.  an event that specifies which intent to
             trigger.
-        output_audio_config (~.gcd_audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio. If this field is not
             set and agent-level speech synthesizer is not
             configured, no output audio is generated.
-        output_audio_config_mask (~.field_mask.FieldMask):
+        output_audio_config_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask for
             [output_audio_config][google.cloud.dialogflow.v2.DetectIntentRequest.output_audio_config]
             indicating which settings in this request-level config
@@ -131,11 +133,11 @@ class DetectIntentResponse(proto.Message):
             The unique identifier of the response. It can
             be used to locate a response in the training
             example set or for reporting issues.
-        query_result (~.gcd_session.QueryResult):
+        query_result (google.cloud.dialogflow_v2.types.QueryResult):
             The selected results of the conversational query or event
             processing. See ``alternative_query_results`` for additional
             potential results.
-        webhook_status (~.status.Status):
+        webhook_status (google.rpc.status_pb2.Status):
             Specifies the status of the webhook request.
         output_audio (bytes):
             The audio data bytes encoded as specified in the request.
@@ -149,7 +151,7 @@ class DetectIntentResponse(proto.Message):
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
             top-most-level audio output has content.
-        output_audio_config (~.gcd_audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
     """
@@ -176,32 +178,32 @@ class QueryParameters(proto.Message):
             zone database <https://www.iana.org/time-zones>`__, e.g.,
             America/New_York, Europe/Paris. If not provided, the time
             zone specified in agent settings is used.
-        geo_location (~.latlng.LatLng):
+        geo_location (google.type.latlng_pb2.LatLng):
             The geo location of this conversational
             query.
-        contexts (Sequence[~.context.Context]):
+        contexts (Sequence[google.cloud.dialogflow_v2.types.Context]):
             The collection of contexts to be activated
             before this query is executed.
         reset_contexts (bool):
             Specifies whether to delete all contexts in
             the current session before the new ones are
             activated.
-        session_entity_types (Sequence[~.session_entity_type.SessionEntityType]):
+        session_entity_types (Sequence[google.cloud.dialogflow_v2.types.SessionEntityType]):
             Additional session entity types to replace or
             extend developer entity types with. The entity
             synonyms apply to all languages and persist for
             the session of this query.
-        payload (~.struct.Struct):
+        payload (google.protobuf.struct_pb2.Struct):
             This field can be used to pass custom data to your webhook.
             Arbitrary JSON objects are supported. If supplied, the value
             is used to populate the
             ``WebhookRequest.original_detect_intent_request.payload``
             field sent to your webhook.
-        sentiment_analysis_request_config (~.gcd_session.SentimentAnalysisRequestConfig):
+        sentiment_analysis_request_config (google.cloud.dialogflow_v2.types.SentimentAnalysisRequestConfig):
             Configures the type of sentiment analysis to
             perform. If not provided, sentiment analysis is
             not performed.
-        webhook_headers (Sequence[~.gcd_session.QueryParameters.WebhookHeadersEntry]):
+        webhook_headers (Sequence[google.cloud.dialogflow_v2.types.QueryParameters.WebhookHeadersEntry]):
             This field can be used to pass HTTP headers
             for a webhook call. These headers will be sent
             to webhook along with the headers that have been
@@ -247,12 +249,12 @@ class QueryInput(proto.Message):
     3.  An event that specifies which intent to trigger.
 
     Attributes:
-        audio_config (~.gcd_audio_config.InputAudioConfig):
+        audio_config (google.cloud.dialogflow_v2.types.InputAudioConfig):
             Instructs the speech recognizer how to
             process the speech audio.
-        text (~.gcd_session.TextInput):
+        text (google.cloud.dialogflow_v2.types.TextInput):
             The natural language text to be processed.
-        event (~.gcd_session.EventInput):
+        event (google.cloud.dialogflow_v2.types.EventInput):
             The event to be processed.
     """
 
@@ -304,7 +306,7 @@ class QueryResult(proto.Message):
             StreamingRecognitionResult.
         action (str):
             The action name from the matched intent.
-        parameters (~.struct.Struct):
+        parameters (google.protobuf.struct_pb2.Struct):
             The collection of extracted parameters.
             Depending on your protocol or client library
             language, this is a map, associative array,
@@ -315,9 +317,10 @@ class QueryResult(proto.Message):
             -   MapKey value: parameter name
             -   MapValue type:
                 -   If parameter's entity type is a
-            composite entity: map     -   Else: string or
-            number, depending on parameter value type -
-            MapValue value:
+            composite entity: map     -   Else: depending on
+            parameter value type, could be one of string,
+            number, boolean, null, list or map
+            -   MapValue value:
                 -   If parameter's entity type is a
             composite entity:         map from composite
             entity property names to property values     -
@@ -335,23 +338,23 @@ class QueryResult(proto.Message):
             The text to be pronounced to the user or shown on the
             screen. Note: This is a legacy field,
             ``fulfillment_messages`` should be preferred.
-        fulfillment_messages (Sequence[~.gcd_intent.Intent.Message]):
+        fulfillment_messages (Sequence[google.cloud.dialogflow_v2.types.Intent.Message]):
             The collection of rich messages to present to
             the user.
         webhook_source (str):
             If the query was fulfilled by a webhook call, this field is
             set to the value of the ``source`` field returned in the
             webhook response.
-        webhook_payload (~.struct.Struct):
+        webhook_payload (google.protobuf.struct_pb2.Struct):
             If the query was fulfilled by a webhook call, this field is
             set to the value of the ``payload`` field returned in the
             webhook response.
-        output_contexts (Sequence[~.context.Context]):
+        output_contexts (Sequence[google.cloud.dialogflow_v2.types.Context]):
             The collection of output contexts. If applicable,
             ``output_contexts.parameters`` contains entries with name
             ``<parameter name>.original`` containing the original
             parameter values before the query.
-        intent (~.gcd_intent.Intent):
+        intent (google.cloud.dialogflow_v2.types.Intent):
             The intent that matched the conversational query. Some, not
             all fields are filled in this message, including but not
             limited to: ``name``, ``display_name``, ``end_interaction``
@@ -367,7 +370,7 @@ class QueryResult(proto.Message):
             ``multiple knowledge_answers`` messages, this value is set
             to the greatest ``knowledgeAnswers.match_confidence`` value
             in the list.
-        diagnostic_info (~.struct.Struct):
+        diagnostic_info (google.protobuf.struct_pb2.Struct):
             Free-form diagnostic information for the
             associated detect intent request. The fields of
             this data can change without notice, so you
@@ -377,7 +380,7 @@ class QueryResult(proto.Message):
 
             - webhook call latency
             - webhook errors
-        sentiment_analysis_result (~.gcd_session.SentimentAnalysisResult):
+        sentiment_analysis_result (google.cloud.dialogflow_v2.types.SentimentAnalysisResult):
             The sentiment analysis result, which depends on the
             ``sentiment_analysis_request_config`` specified in the
             request.
@@ -479,9 +482,9 @@ class StreamingDetectIntentRequest(proto.Message):
             Note: Always use agent versions for production traffic. See
             `Versions and
             environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
-        query_params (~.gcd_session.QueryParameters):
+        query_params (google.cloud.dialogflow_v2.types.QueryParameters):
             The parameters of this query.
-        query_input (~.gcd_session.QueryInput):
+        query_input (google.cloud.dialogflow_v2.types.QueryInput):
             Required. The input specification. It can be
             set to:
             1.  an audio config which instructs the speech
@@ -502,12 +505,12 @@ class StreamingDetectIntentRequest(proto.Message):
             is received, the client should close the stream and start a
             new request with a new stream as needed. This setting is
             ignored when ``query_input`` is a piece of text or an event.
-        output_audio_config (~.gcd_audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio. If this field is not
             set and agent-level speech synthesizer is not
             configured, no output audio is generated.
-        output_audio_config_mask (~.field_mask.FieldMask):
+        output_audio_config_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask for
             [output_audio_config][google.cloud.dialogflow.v2.StreamingDetectIntentRequest.output_audio_config]
             indicating which settings in this request-level config
@@ -563,12 +566,12 @@ class StreamingDetectIntentResponse(proto.Message):
             The unique identifier of the response. It can
             be used to locate a response in the training
             example set or for reporting issues.
-        recognition_result (~.gcd_session.StreamingRecognitionResult):
+        recognition_result (google.cloud.dialogflow_v2.types.StreamingRecognitionResult):
             The result of speech recognition.
-        query_result (~.gcd_session.QueryResult):
+        query_result (google.cloud.dialogflow_v2.types.QueryResult):
             The result of the conversational query or
             event processing.
-        webhook_status (~.status.Status):
+        webhook_status (google.rpc.status_pb2.Status):
             Specifies the status of the webhook request.
         output_audio (bytes):
             The audio data bytes encoded as specified in the request.
@@ -582,7 +585,7 @@ class StreamingDetectIntentResponse(proto.Message):
             In some scenarios, multiple output audio fields may be
             present in the response structure. In these cases, only the
             top-most-level audio output has content.
-        output_audio_config (~.gcd_audio_config.OutputAudioConfig):
+        output_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
     """
@@ -638,7 +641,7 @@ class StreamingRecognitionResult(proto.Message):
     -  for ``END_OF_SINGLE_UTTERANCE``: only ``message_type``.
 
     Attributes:
-        message_type (~.gcd_session.StreamingRecognitionResult.MessageType):
+        message_type (google.cloud.dialogflow_v2.types.StreamingRecognitionResult.MessageType):
             Type of the result message.
         transcript (str):
             Transcript text representing the words that the user spoke.
@@ -659,13 +662,13 @@ class StreamingRecognitionResult(proto.Message):
             This field is typically only provided if ``is_final`` is
             true and you should not rely on it being accurate or even
             set.
-        speech_word_info (Sequence[~.gcd_audio_config.SpeechWordInfo]):
+        speech_word_info (Sequence[google.cloud.dialogflow_v2.types.SpeechWordInfo]):
             Word-specific information for the words recognized by Speech
             in
             [transcript][google.cloud.dialogflow.v2.StreamingRecognitionResult.transcript].
             Populated if and only if ``message_type`` = ``TRANSCRIPT``
             and [InputAudioConfig.enable_word_info] is set.
-        speech_end_offset (~.duration.Duration):
+        speech_end_offset (google.protobuf.duration_pb2.Duration):
             Time offset of the end of this Speech recognition result
             relative to the beginning of the audio. Only populated for
             ``message_type`` = ``TRANSCRIPT``.
@@ -725,7 +728,7 @@ class EventInput(proto.Message):
     Attributes:
         name (str):
             Required. The unique identifier of the event.
-        parameters (~.struct.Struct):
+        parameters (google.protobuf.struct_pb2.Struct):
             The collection of parameters associated with
             the event.
             Depending on your protocol or client library
@@ -737,9 +740,10 @@ class EventInput(proto.Message):
             -   MapKey value: parameter name
             -   MapValue type:
                 -   If parameter's entity type is a
-            composite entity: map     -   Else: string or
-            number, depending on parameter value type -
-            MapValue value:
+            composite entity: map     -   Else: depending on
+            parameter value type, could be one of string,
+            number, boolean, null, list or map
+            -   MapValue value:
                 -   If parameter's entity type is a
             composite entity:         map from composite
             entity property names to property values     -
@@ -789,7 +793,7 @@ class SentimentAnalysisResult(proto.Message):
     [ConversationProfile.human_agent_assistant_config][google.cloud.dialogflow.v2.ConversationProfile.human_agent_assistant_config]
 
     Attributes:
-        query_text_sentiment (~.gcd_session.Sentiment):
+        query_text_sentiment (google.cloud.dialogflow_v2.types.Sentiment):
             The sentiment analysis result for ``query_text``.
     """
 

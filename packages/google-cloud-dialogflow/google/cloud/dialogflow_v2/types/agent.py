@@ -84,7 +84,7 @@ class Agent(proto.Message):
         enable_logging (bool):
             Optional. Determines whether this agent
             should log conversation queries.
-        match_mode (~.gcd_agent.Agent.MatchMode):
+        match_mode (google.cloud.dialogflow_v2.types.Agent.MatchMode):
             Optional. Determines how intents are detected
             from user queries.
         classification_threshold (float):
@@ -99,14 +99,14 @@ class Agent(proto.Message):
             values range from 0.0 (completely uncertain) to
             1.0 (completely certain). If set to 0.0, the
             default of 0.3 is used.
-        api_version (~.gcd_agent.Agent.ApiVersion):
+        api_version (google.cloud.dialogflow_v2.types.Agent.ApiVersion):
             Optional. API version displayed in Dialogflow
             console. If not specified, V2 API is assumed.
             Clients are free to query different service
             endpoints for different API versions. However,
             bots connectors and webhook calls will follow
             the specified API version.
-        tier (~.gcd_agent.Agent.Tier):
+        tier (google.cloud.dialogflow_v2.types.Agent.Tier):
             Optional. The agent tier. If not specified, TIER_STANDARD is
             assumed.
     """
@@ -176,9 +176,9 @@ class SetAgentRequest(proto.Message):
     [Agents.SetAgent][google.cloud.dialogflow.v2.Agents.SetAgent].
 
     Attributes:
-        agent (~.gcd_agent.Agent):
+        agent (google.cloud.dialogflow_v2.types.Agent):
             Required. The agent to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
     """
@@ -230,7 +230,7 @@ class SearchAgentsResponse(proto.Message):
     [Agents.SearchAgents][google.cloud.dialogflow.v2.Agents.SearchAgents].
 
     Attributes:
-        agents (Sequence[~.gcd_agent.Agent]):
+        agents (Sequence[google.cloud.dialogflow_v2.types.Agent]):
             The list of agents. There will be a maximum number of items
             returned based on the page_size field in the request.
         next_page_token (str):

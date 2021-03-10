@@ -31,7 +31,7 @@ for version in versions:
         include_protos=True,
     )
 
-    s.move(library, excludes=["docs/index.rst", "setup.py"])
+    s.move(library, excludes=["docs/index.rst", "setup.py", "README.rst"])
 
 # # ----------------------------------------------------------------------------
 # # Add templated files
@@ -39,6 +39,8 @@ for version in versions:
 templated_files = common.py_library(
     samples=False,  # set to True only if there are samples
     microgenerator=True,
+    cov_level=99,
+    
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 

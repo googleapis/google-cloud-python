@@ -67,12 +67,12 @@ class EntityType(proto.Message):
             ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
         display_name (str):
             Required. The name of the entity type.
-        kind (~.gcd_entity_type.EntityType.Kind):
+        kind (google.cloud.dialogflow_v2.types.EntityType.Kind):
             Required. Indicates the kind of entity type.
-        auto_expansion_mode (~.gcd_entity_type.EntityType.AutoExpansionMode):
+        auto_expansion_mode (google.cloud.dialogflow_v2.types.EntityType.AutoExpansionMode):
             Optional. Indicates whether the entity type
             can be automatically expanded.
-        entities (Sequence[~.gcd_entity_type.EntityType.Entity]):
+        entities (Sequence[google.cloud.dialogflow_v2.types.EntityType.Entity]):
             Optional. The collection of entity entries
             associated with the entity type.
         enable_fuzzy_extraction (bool):
@@ -178,7 +178,7 @@ class ListEntityTypesResponse(proto.Message):
     [EntityTypes.ListEntityTypes][google.cloud.dialogflow.v2.EntityTypes.ListEntityTypes].
 
     Attributes:
-        entity_types (Sequence[~.gcd_entity_type.EntityType]):
+        entity_types (Sequence[google.cloud.dialogflow_v2.types.EntityType]):
             The list of agent entity types. There will be a maximum
             number of items returned based on the page_size field in the
             request.
@@ -226,7 +226,7 @@ class CreateEntityTypeRequest(proto.Message):
         parent (str):
             Required. The agent to create a entity type for. Format:
             ``projects/<Project ID>/agent``.
-        entity_type (~.gcd_entity_type.EntityType):
+        entity_type (google.cloud.dialogflow_v2.types.EntityType):
             Required. The entity type to create.
         language_code (str):
             Optional. The language used to access language-specific
@@ -248,7 +248,7 @@ class UpdateEntityTypeRequest(proto.Message):
     [EntityTypes.UpdateEntityType][google.cloud.dialogflow.v2.EntityTypes.UpdateEntityType].
 
     Attributes:
-        entity_type (~.gcd_entity_type.EntityType):
+        entity_type (google.cloud.dialogflow_v2.types.EntityType):
             Required. The entity type to update.
         language_code (str):
             Optional. The language used to access language-specific
@@ -256,7 +256,7 @@ class UpdateEntityTypeRequest(proto.Message):
             used. For more information, see `Multilingual intent and
             entity
             data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
     """
@@ -295,7 +295,7 @@ class BatchUpdateEntityTypesRequest(proto.Message):
             file format can either be a serialized proto (of
             EntityBatch type) or a JSON object. Note: The
             URI must start with "gs://".
-        entity_type_batch_inline (~.gcd_entity_type.EntityTypeBatch):
+        entity_type_batch_inline (google.cloud.dialogflow_v2.types.EntityTypeBatch):
             The collection of entity types to update or
             create.
         language_code (str):
@@ -304,7 +304,7 @@ class BatchUpdateEntityTypesRequest(proto.Message):
             used. For more information, see `Multilingual intent and
             entity
             data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
     """
@@ -329,7 +329,7 @@ class BatchUpdateEntityTypesResponse(proto.Message):
     [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
 
     Attributes:
-        entity_types (Sequence[~.gcd_entity_type.EntityType]):
+        entity_types (Sequence[google.cloud.dialogflow_v2.types.EntityType]):
             The collection of updated or created entity
             types.
     """
@@ -364,7 +364,7 @@ class BatchCreateEntitiesRequest(proto.Message):
             Required. The name of the entity type to create entities in.
             Format:
             ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
-        entities (Sequence[~.gcd_entity_type.EntityType.Entity]):
+        entities (Sequence[google.cloud.dialogflow_v2.types.EntityType.Entity]):
             Required. The entities to create.
         language_code (str):
             Optional. The language used to access language-specific
@@ -392,7 +392,7 @@ class BatchUpdateEntitiesRequest(proto.Message):
             Required. The name of the entity type to update or create
             entities in. Format:
             ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``.
-        entities (Sequence[~.gcd_entity_type.EntityType.Entity]):
+        entities (Sequence[google.cloud.dialogflow_v2.types.EntityType.Entity]):
             Required. The entities to update or create.
         language_code (str):
             Optional. The language used to access language-specific
@@ -400,7 +400,7 @@ class BatchUpdateEntitiesRequest(proto.Message):
             used. For more information, see `Multilingual intent and
             entity
             data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
     """
@@ -449,7 +449,7 @@ class EntityTypeBatch(proto.Message):
     types.
 
     Attributes:
-        entity_types (Sequence[~.gcd_entity_type.EntityType]):
+        entity_types (Sequence[google.cloud.dialogflow_v2.types.EntityType]):
             A collection of entity types.
     """
 

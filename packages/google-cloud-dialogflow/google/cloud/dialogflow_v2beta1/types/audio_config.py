@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "SynthesizeSpeechConfig",
         "OutputAudioConfig",
         "TelephonyDtmfEvents",
+        "SpeechToTextConfig",
     },
 )
 
@@ -161,12 +162,12 @@ class SpeechWordInfo(proto.Message):
     Attributes:
         word (str):
             The word this info is for.
-        start_offset (~.duration.Duration):
+        start_offset (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the
             audio that corresponds to the start of the
             spoken word. This is an experimental feature and
             the accuracy of the time offset can vary.
-        end_offset (~.duration.Duration):
+        end_offset (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the
             audio that corresponds to the end of the spoken
             word. This is an experimental feature and the
@@ -198,7 +199,7 @@ class InputAudioConfig(proto.Message):
     content.
 
     Attributes:
-        audio_encoding (~.audio_config.AudioEncoding):
+        audio_encoding (google.cloud.dialogflow_v2beta1.types.AudioEncoding):
             Required. Audio encoding of the audio content
             to process.
         sample_rate_hertz (int):
@@ -234,7 +235,7 @@ class InputAudioConfig(proto.Message):
             `speech_contexts <>`__, Dialogflow will treat the
             `phrase_hints <>`__ as a single additional
             `SpeechContext <>`__.
-        speech_contexts (Sequence[~.audio_config.SpeechContext]):
+        speech_contexts (Sequence[google.cloud.dialogflow_v2beta1.types.SpeechContext]):
             Context information to assist speech recognition.
 
             See `the Cloud Speech
@@ -252,7 +253,7 @@ class InputAudioConfig(proto.Message):
             Speech API
             documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
             for more details.
-        model_variant (~.audio_config.SpeechModelVariant):
+        model_variant (google.cloud.dialogflow_v2beta1.types.SpeechModelVariant):
             Which variant of the [Speech
             model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model]
             to use.
@@ -267,6 +268,13 @@ class InputAudioConfig(proto.Message):
             only for streaming methods. Note: When specified,
             InputAudioConfig.single_utterance takes precedence over
             StreamingDetectIntentRequest.single_utterance.
+        disable_no_speech_recognized_event (bool):
+            Only used in
+            [Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent]
+            and
+            [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent].
+            If ``false`` and recognition doesn't return any result,
+            trigger ``NO_SPEECH_RECOGNIZED`` event to Dialogflow agent.
     """
 
     audio_encoding = proto.Field(proto.ENUM, number=1, enum="AudioEncoding",)
@@ -289,6 +297,8 @@ class InputAudioConfig(proto.Message):
 
     single_utterance = proto.Field(proto.BOOL, number=8)
 
+    disable_no_speech_recognized_event = proto.Field(proto.BOOL, number=14)
+
 
 class VoiceSelectionParams(proto.Message):
     r"""Description of which voice to use for speech synthesis.
@@ -299,7 +309,11 @@ class VoiceSelectionParams(proto.Message):
             will choose a voice based on the other parameters such as
             language_code and
             [ssml_gender][google.cloud.dialogflow.v2beta1.VoiceSelectionParams.ssml_gender].
-        ssml_gender (~.audio_config.SsmlVoiceGender):
+
+            For the list of available voices, please refer to `Supported
+            voices and
+            languages <https://cloud.google.com/text-to-speech/docs/voices>`__.
+        ssml_gender (google.cloud.dialogflow_v2beta1.types.SsmlVoiceGender):
             Optional. The preferred gender of the voice. If not set, the
             service will choose a voice based on the other parameters
             such as language_code and
@@ -346,7 +360,7 @@ class SynthesizeSpeechConfig(proto.Message):
             synthesized) text to speech. Effects are applied
             on top of each other in the order they are
             given.
-        voice (~.audio_config.VoiceSelectionParams):
+        voice (google.cloud.dialogflow_v2beta1.types.VoiceSelectionParams):
             Optional. The desired voice of the
             synthesized audio.
     """
@@ -369,7 +383,7 @@ class OutputAudioConfig(proto.Message):
     agent.
 
     Attributes:
-        audio_encoding (~.audio_config.OutputAudioEncoding):
+        audio_encoding (google.cloud.dialogflow_v2beta1.types.OutputAudioEncoding):
             Required. Audio encoding of the synthesized
             audio content.
         sample_rate_hertz (int):
@@ -381,7 +395,7 @@ class OutputAudioConfig(proto.Message):
             synthesizer will honor this request by
             converting to the desired sample rate (which
             might result in worse audio quality).
-        synthesize_speech_config (~.audio_config.SynthesizeSpeechConfig):
+        synthesize_speech_config (google.cloud.dialogflow_v2beta1.types.SynthesizeSpeechConfig):
             Configuration of how speech should be
             synthesized.
     """
@@ -399,11 +413,29 @@ class TelephonyDtmfEvents(proto.Message):
     r"""A wrapper of repeated TelephonyDtmf digits.
 
     Attributes:
-        dtmf_events (Sequence[~.audio_config.TelephonyDtmf]):
+        dtmf_events (Sequence[google.cloud.dialogflow_v2beta1.types.TelephonyDtmf]):
             A sequence of TelephonyDtmf digits.
     """
 
     dtmf_events = proto.RepeatedField(proto.ENUM, number=1, enum="TelephonyDtmf",)
+
+
+class SpeechToTextConfig(proto.Message):
+    r"""Configures speech transcription for
+    [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile].
+
+    Attributes:
+        speech_model_variant (google.cloud.dialogflow_v2beta1.types.SpeechModelVariant):
+            Optional. The speech model used in speech to text.
+            ``SPEECH_MODEL_VARIANT_UNSPECIFIED``, ``USE_BEST_AVAILABLE``
+            will be treated as ``USE_ENHANCED``. It can be overridden in
+            [AnalyzeContentRequest][google.cloud.dialogflow.v2beta1.AnalyzeContentRequest]
+            and
+            [StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest]
+            request.
+    """
+
+    speech_model_variant = proto.Field(proto.ENUM, number=1, enum="SpeechModelVariant",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

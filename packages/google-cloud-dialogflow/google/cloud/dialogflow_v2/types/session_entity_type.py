@@ -61,11 +61,11 @@ class SessionEntityType(proto.Message):
             ``<Entity Type Display Name>`` must be the display name of
             an existing entity type in the same agent that will be
             overridden or supplemented.
-        entity_override_mode (~.gcd_session_entity_type.SessionEntityType.EntityOverrideMode):
+        entity_override_mode (google.cloud.dialogflow_v2.types.SessionEntityType.EntityOverrideMode):
             Required. Indicates whether the additional
             data should override or supplement the custom
             entity type definition.
-        entities (Sequence[~.entity_type.EntityType.Entity]):
+        entities (Sequence[google.cloud.dialogflow_v2.types.EntityType.Entity]):
             Required. The collection of entities
             associated with this session entity type.
     """
@@ -119,7 +119,7 @@ class ListSessionEntityTypesResponse(proto.Message):
     [SessionEntityTypes.ListSessionEntityTypes][google.cloud.dialogflow.v2.SessionEntityTypes.ListSessionEntityTypes].
 
     Attributes:
-        session_entity_types (Sequence[~.gcd_session_entity_type.SessionEntityType]):
+        session_entity_types (Sequence[google.cloud.dialogflow_v2.types.SessionEntityType]):
             The list of session entity types. There will be a maximum
             number of items returned based on the page_size field in the
             request.
@@ -171,7 +171,7 @@ class CreateSessionEntityTypeRequest(proto.Message):
             If ``Environment ID`` is not specified, we assume default
             'draft' environment. If ``User ID`` is not specified, we
             assume default '-' user.
-        session_entity_type (~.gcd_session_entity_type.SessionEntityType):
+        session_entity_type (google.cloud.dialogflow_v2.types.SessionEntityType):
             Required. The session entity type to create.
     """
 
@@ -187,9 +187,9 @@ class UpdateSessionEntityTypeRequest(proto.Message):
     [SessionEntityTypes.UpdateSessionEntityType][google.cloud.dialogflow.v2.SessionEntityTypes.UpdateSessionEntityType].
 
     Attributes:
-        session_entity_type (~.gcd_session_entity_type.SessionEntityType):
+        session_entity_type (google.cloud.dialogflow_v2.types.SessionEntityType):
             Required. The session entity type to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
     """

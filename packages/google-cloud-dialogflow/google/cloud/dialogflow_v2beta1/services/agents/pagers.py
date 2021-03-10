@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dialogflow_v2beta1.types import agent
 
@@ -24,7 +33,7 @@ class SearchAgentsPager:
     """A pager for iterating through ``search_agents`` requests.
 
     This class thinly wraps an initial
-    :class:`~.agent.SearchAgentsResponse` object, and
+    :class:`google.cloud.dialogflow_v2beta1.types.SearchAgentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``agents`` field.
 
@@ -33,7 +42,7 @@ class SearchAgentsPager:
     through the ``agents`` field on the
     corresponding responses.
 
-    All the usual :class:`~.agent.SearchAgentsResponse`
+    All the usual :class:`google.cloud.dialogflow_v2beta1.types.SearchAgentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class SearchAgentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.agent.SearchAgentsRequest`):
+            request (google.cloud.dialogflow_v2beta1.types.SearchAgentsRequest):
                 The initial request object.
-            response (:class:`~.agent.SearchAgentsResponse`):
+            response (google.cloud.dialogflow_v2beta1.types.SearchAgentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class SearchAgentsAsyncPager:
     """A pager for iterating through ``search_agents`` requests.
 
     This class thinly wraps an initial
-    :class:`~.agent.SearchAgentsResponse` object, and
+    :class:`google.cloud.dialogflow_v2beta1.types.SearchAgentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``agents`` field.
 
@@ -95,7 +104,7 @@ class SearchAgentsAsyncPager:
     through the ``agents`` field on the
     corresponding responses.
 
-    All the usual :class:`~.agent.SearchAgentsResponse`
+    All the usual :class:`google.cloud.dialogflow_v2beta1.types.SearchAgentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class SearchAgentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.agent.SearchAgentsRequest`):
+            request (google.cloud.dialogflow_v2beta1.types.SearchAgentsRequest):
                 The initial request object.
-            response (:class:`~.agent.SearchAgentsResponse`):
+            response (google.cloud.dialogflow_v2beta1.types.SearchAgentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
