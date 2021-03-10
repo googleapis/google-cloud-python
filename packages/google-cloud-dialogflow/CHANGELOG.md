@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.0.0...v2.1.0) (2021-03-10)
+
+
+### Features
+
+* add sample code for using regional Dialogflow endpoint ([#254](https://www.github.com/googleapis/python-dialogflow/issues/254)) ([230bb4e](https://www.github.com/googleapis/python-dialogflow/commit/230bb4e5e5b0bee5426c0cb07ea162e92bc75639))
+* Add CCAI API ([#259](https://www.github.com/googleapis/python-dialogflow/issues/259)) ([f383bb9](https://www.github.com/googleapis/python-dialogflow/commit/f383bb98356e7e4c29838d8888cd0a3cf80fbd6a))
+* add additional_bindings to Dialogflow v2beta1 ListIntents API ([#259](https://www.github.com/googleapis/python-dialogflow/issues/259)) ([f383bb9](https://www.github.com/googleapis/python-dialogflow/commit/f383bb98356e7e4c29838d8888cd0a3cf80fbd6a))
+* add additional_bindings to Dialogflow v2 ListIntents API ([#259](https://www.github.com/googleapis/python-dialogflow/issues/259)) ([f383bb9](https://www.github.com/googleapis/python-dialogflow/commit/f383bb98356e7e4c29838d8888cd0a3cf80fbd6a))
+* Add from_service_account_info factory ([#259](https://www.github.com/googleapis/python-dialogflow/issues/259)) ([f383bb9](https://www.github.com/googleapis/python-dialogflow/commit/f383bb98356e7e4c29838d8888cd0a3cf80fbd6a))
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limits ([#245](https://www.github.com/googleapis/python-dialogflow/issues/245)) ([ceba454](https://www.github.com/googleapis/python-dialogflow/commit/ceba454ee98f51803415a1fe3235e3f3402d6523))
+
+### Documentation
+
+* clarified voice selection params names ([#259](https://www.github.com/googleapis/python-dialogflow/issues/259)) ([f383bb9](https://www.github.com/googleapis/python-dialogflow/commit/f383bb98356e7e4c29838d8888cd0a3cf80fbd6a))
+* update comments on parameters and validation result. ([#259](https://www.github.com/googleapis/python-dialogflow/issues/259)) ([f383bb9](https://www.github.com/googleapis/python-dialogflow/commit/f383bb98356e7e4c29838d8888cd0a3cf80fbd6a))
+
+
 ## [2.0.0](https://www.github.com/googleapis/python-dialogflow/compare/v1.1.0...v2.0.0) (2020-12-14)
 
 
