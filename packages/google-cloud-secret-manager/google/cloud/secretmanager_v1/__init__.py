@@ -23,6 +23,7 @@ from .types.resources import ReplicationStatus
 from .types.resources import Secret
 from .types.resources import SecretPayload
 from .types.resources import SecretVersion
+from .types.resources import Topic
 from .types.service import AccessSecretVersionRequest
 from .types.service import AccessSecretVersionResponse
 from .types.service import AddSecretVersionRequest
@@ -62,6 +63,7 @@ __all__ = (
     "Secret",
     "SecretPayload",
     "SecretVersion",
+    "Topic",
     "UpdateSecretRequest",
     "SecretManagerServiceClient",
 )

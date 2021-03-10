@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "CustomerManagedEncryption",
         "ReplicationStatus",
         "CustomerManagedEncryptionStatus",
+        "Topic",
         "SecretPayload",
     },
 )
@@ -74,6 +75,11 @@ class Secret(proto.Message):
             ``[\p{Ll}\p{Lo}\p{N}_-]{0,63}``
 
             No more than 64 labels can be assigned to a given resource.
+        topics (Sequence[google.cloud.secretmanager_v1.types.Topic]):
+            Optional. A list of up to 10 Pub/Sub topics
+            to which messages are published when control
+            plane operations are called on the secret or its
+            versions.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Timestamp in UTC when the
             [Secret][google.cloud.secretmanager.v1.Secret] is scheduled
@@ -91,6 +97,8 @@ class Secret(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=4)
+
+    topics = proto.RepeatedField(proto.MESSAGE, number=5, message="Topic",)
 
     expire_time = proto.Field(
         proto.MESSAGE, number=6, oneof="expiration", message=timestamp.Timestamp,
@@ -381,6 +389,22 @@ class CustomerManagedEncryptionStatus(proto.Message):
     """
 
     kms_key_version_name = proto.Field(proto.STRING, number=1)
+
+
+class Topic(proto.Message):
+    r"""A Pub/Sub topic which Secret Manager will publish to when
+    control plane events occur on this secret.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Pub/Sub topic that will
+            be published to, in the following format:
+            ``projects/*/topics/*``. For publication to succeed, the
+            Secret Manager P4SA must have ``pubsub.publisher``
+            permissions on the topic.
+    """
+
+    name = proto.Field(proto.STRING, number=1)
 
 
 class SecretPayload(proto.Message):
