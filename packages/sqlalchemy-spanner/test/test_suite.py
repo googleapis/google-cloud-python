@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 from sqlalchemy.testing import config
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing import provide_metadata
@@ -23,12 +25,14 @@ from sqlalchemy import literal_column
 from sqlalchemy import select
 from sqlalchemy import String
 
+from sqlalchemy.testing.suite.test_cte import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
 
 from sqlalchemy.testing.suite.test_dialect import (  # noqa: F401, F403
     EscapingTest as _EscapingTest,
 )
+from sqlalchemy.testing.suite.test_cte import CTETest as _CTETest  # noqa: F401, F403
 
 
 class EscapingTest(_EscapingTest):
@@ -68,3 +72,58 @@ class EscapingTest(_EscapingTest):
                 ),
                 "some %% other value",
             )
+
+
+class CTETest(_CTETest):
+    @pytest.mark.skip("INSERT from WITH subquery is not supported")
+    def test_insert_from_select_round_trip(self):
+        """
+        The test checks if an INSERT can be done from a cte, like:
+
+        WITH some_cte AS (...)
+        INSERT INTO some_other_table (... SELECT * FROM some_cte)
+
+        Such queries are not supported by Spanner.
+        """
+        pass
+
+    @pytest.mark.skip("DELETE from WITH subquery is not supported")
+    def test_delete_scalar_subq_round_trip(self):
+        """
+        The test checks if a DELETE can be done from a cte, like:
+
+        WITH some_cte AS (...)
+        DELETE FROM some_other_table (... SELECT * FROM some_cte)
+
+        Such queries are not supported by Spanner.
+        """
+        pass
+
+    @pytest.mark.skip("DELETE from WITH subquery is not supported")
+    def test_delete_from_round_trip(self):
+        """
+        The test checks if a DELETE can be done from a cte, like:
+
+        WITH some_cte AS (...)
+        DELETE FROM some_other_table (... SELECT * FROM some_cte)
+
+        Such queries are not supported by Spanner.
+        """
+        pass
+
+    @pytest.mark.skip("UPDATE from WITH subquery is not supported")
+    def test_update_from_round_trip(self):
+        """
+        The test checks if an UPDATE can be done from a cte, like:
+
+        WITH some_cte AS (...)
+        UPDATE some_other_table
+        SET (... SELECT * FROM some_cte)
+
+        Such queries are not supported by Spanner.
+        """
+        pass
+
+    @pytest.mark.skip("WITH RECURSIVE subqueries are not supported")
+    def test_select_recursive_round_trip(self):
+        pass
