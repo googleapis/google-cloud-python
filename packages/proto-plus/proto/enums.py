@@ -47,6 +47,21 @@ class ProtoEnumMeta(enum.EnumMeta):
         filename = _file_info._FileInfo.proto_file_name(
             attrs.get("__module__", name.lower())
         )
+
+        # Retrieve any enum options.
+        # We expect something that looks like an EnumOptions message,
+        # either an actual instance or a dict-like representation.
+        pb_options = "_pb_options"
+        opts = attrs.pop(pb_options, {})
+        # This is the only portable way to remove the _pb_options name
+        # from the enum attrs.
+        # In 3.7 onwards, we can define an _ignore_ attribute and do some
+        # mucking around with that.
+        if pb_options in attrs._member_names:
+            idx = attrs._member_names.index(pb_options)
+            attrs._member_names.pop(idx)
+
+        # Make the descriptor.
         enum_desc = descriptor_pb2.EnumDescriptorProto(
             name=name,
             # Note: the superclass ctor removes the variants, so get them now.
@@ -60,6 +75,7 @@ class ProtoEnumMeta(enum.EnumMeta):
                 ),
                 key=lambda v: v.number,
             ),
+            options=opts,
         )
 
         file_info = _file_info._FileInfo.maybe_add_descriptor(filename, package)
