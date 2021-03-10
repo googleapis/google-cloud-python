@@ -23,6 +23,7 @@ from sqlalchemy.testing.schema import Column
 from sqlalchemy.testing.schema import Table
 from sqlalchemy import literal_column
 from sqlalchemy import select
+from sqlalchemy import Boolean
 from sqlalchemy import String
 
 from sqlalchemy.testing.suite.test_cte import *  # noqa: F401, F403
@@ -33,6 +34,7 @@ from sqlalchemy.testing.suite.test_dialect import (  # noqa: F401, F403
     EscapingTest as _EscapingTest,
 )
 from sqlalchemy.testing.suite.test_cte import CTETest as _CTETest  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_types import BooleanTest as _BooleanTest
 
 
 class EscapingTest(_EscapingTest):
@@ -127,3 +129,17 @@ class CTETest(_CTETest):
     @pytest.mark.skip("WITH RECURSIVE subqueries are not supported")
     def test_select_recursive_round_trip(self):
         pass
+
+
+class BooleanTest(_BooleanTest):
+    def test_render_literal_bool(self):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner supports tables with an empty primary key, but
+        only a single row can be inserted into such a table -
+        following insertions will fail with `Row [] already exists".
+        Overriding the test to avoid the same failure.
+        """
+        self._literal_round_trip(Boolean(), [True], [True])
+        self._literal_round_trip(Boolean(), [False], [False])
