@@ -19,6 +19,7 @@ import copy
 import re
 
 from google.api_core import exceptions
+from google.api_core.future import polling as polling_future
 import requests
 
 from google.cloud.bigquery.dataset import Dataset
@@ -42,7 +43,6 @@ from google.cloud.bigquery.table import TimePartitioning
 from google.cloud.bigquery._tqdm_helpers import wait_for_query
 
 from google.cloud.bigquery.job.base import _AsyncJob
-from google.cloud.bigquery.job.base import _DONE_STATE
 from google.cloud.bigquery.job.base import _JobConfig
 from google.cloud.bigquery.job.base import _JobReference
 
@@ -974,61 +974,6 @@ class QueryJob(_AsyncJob):
             result = int(result)
         return result
 
-    def done(self, retry=DEFAULT_RETRY, timeout=None, reload=True):
-        """Refresh the job and checks if it is complete.
-
-        Args:
-            retry (Optional[google.api_core.retry.Retry]):
-                How to retry the call that retrieves query results. If the job state is
-                ``DONE``, retrying is aborted early, as the job will not change anymore.
-            timeout (Optional[float]):
-                The number of seconds to wait for the underlying HTTP transport
-                before using ``retry``.
-            reload (Optional[bool]):
-                If ``True``, make an API call to refresh the job state of
-                unfinished jobs before checking. Default ``True``.
-
-        Returns:
-            bool: ``True`` if the job is complete or if fetching its status resulted in
-                an error, ``False`` otherwise.
-        """
-        # Do not refresh if the state is already done, as the job will not
-        # change once complete.
-        is_done = self.state == _DONE_STATE
-        if not reload or is_done:
-            return is_done
-
-        # If an explicit timeout is not given, fall back to the transport timeout
-        # stored in _blocking_poll() in the process of polling for job completion.
-        transport_timeout = timeout if timeout is not None else self._transport_timeout
-
-        try:
-            self._reload_query_results(retry=retry, timeout=transport_timeout)
-        except exceptions.GoogleAPIError as exc:
-            # Reloading also updates error details on self, thus no need for an
-            # explicit self.set_exception() call if reloading succeeds.
-            try:
-                self.reload(retry=retry, timeout=transport_timeout)
-            except exceptions.GoogleAPIError:
-                # Use the query results reload exception, as it generally contains
-                # much more useful error information.
-                self.set_exception(exc)
-                return True
-            else:
-                return self.state == _DONE_STATE
-
-        # Only reload the job once we know the query is complete.
-        # This will ensure that fields such as the destination table are
-        # correctly populated.
-        if self._query_results.complete:
-            try:
-                self.reload(retry=retry, timeout=transport_timeout)
-            except exceptions.GoogleAPIError as exc:
-                self.set_exception(exc)
-                return True
-
-        return self.state == _DONE_STATE
-
     def _blocking_poll(self, timeout=None, **kwargs):
         self._done_timeout = timeout
         self._transport_timeout = timeout
@@ -1129,6 +1074,40 @@ class QueryJob(_AsyncJob):
             location=self.location,
             timeout=transport_timeout,
         )
+
+    def _done_or_raise(self, retry=DEFAULT_RETRY, timeout=None):
+        """Check if the query has finished running and raise if it's not.
+
+        If the query has finished, also reload the job itself.
+        """
+        # If an explicit timeout is not given, fall back to the transport timeout
+        # stored in _blocking_poll() in the process of polling for job completion.
+        transport_timeout = timeout if timeout is not None else self._transport_timeout
+
+        try:
+            self._reload_query_results(retry=retry, timeout=transport_timeout)
+        except exceptions.GoogleAPIError as exc:
+            # Reloading also updates error details on self, thus no need for an
+            # explicit self.set_exception() call if reloading succeeds.
+            try:
+                self.reload(retry=retry, timeout=transport_timeout)
+            except exceptions.GoogleAPIError:
+                # Use the query results reload exception, as it generally contains
+                # much more useful error information.
+                self.set_exception(exc)
+            finally:
+                return
+
+        # Only reload the job once we know the query is complete.
+        # This will ensure that fields such as the destination table are
+        # correctly populated.
+        if not self._query_results.complete:
+            raise polling_future._OperationNotComplete()
+        else:
+            try:
+                self.reload(retry=retry, timeout=transport_timeout)
+            except exceptions.GoogleAPIError as exc:
+                self.set_exception(exc)
 
     def result(
         self,
