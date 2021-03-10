@@ -35,6 +35,7 @@ for version in versions:
     s.move(
         library,
         excludes=[
+            "bigquery-storage-*-py.tar.gz",
             "docs/conf.py",
             "docs/index.rst",
             f"google/cloud/bigquery_storage_{version}/__init__.py",
