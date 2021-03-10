@@ -99,6 +99,9 @@ class Dispatcher(object):
             ValueError: If ``action`` isn't one of the expected actions
                 "ack", "drop", "lease", "modify_ack_deadline" or "nack".
         """
+        if not self._manager.is_active:
+            return
+
         batched_commands = collections.defaultdict(list)
 
         for item in items:

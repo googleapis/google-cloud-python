@@ -126,7 +126,7 @@ class Leaser(object):
         ack IDs, then waits for most of that time (but with jitter), and
         repeats.
         """
-        while not self._stop_event.is_set():
+        while self._manager.is_active and not self._stop_event.is_set():
             # Determine the appropriate duration for the lease. This is
             # based off of how long previous messages have taken to ack, with
             # a sensible default and within the ranges allowed by Pub/Sub.

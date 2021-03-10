@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import functools
 import logging
 import threading
 import time
@@ -373,6 +372,7 @@ def test__maybe_release_messages_negative_on_hold_bytes_warning(caplog):
 
 def test_send_unary():
     manager = make_manager()
+    manager._UNARY_REQUESTS = True
 
     manager.send(
         gapic_types.StreamingPullRequest(
@@ -405,6 +405,7 @@ def test_send_unary():
 
 def test_send_unary_empty():
     manager = make_manager()
+    manager._UNARY_REQUESTS = True
 
     manager.send(gapic_types.StreamingPullRequest())
 
@@ -416,6 +417,7 @@ def test_send_unary_api_call_error(caplog):
     caplog.set_level(logging.DEBUG)
 
     manager = make_manager()
+    manager._UNARY_REQUESTS = True
 
     error = exceptions.GoogleAPICallError("The front fell off")
     manager._client.acknowledge.side_effect = error
@@ -429,6 +431,7 @@ def test_send_unary_retry_error(caplog):
     caplog.set_level(logging.DEBUG)
 
     manager, _, _, _, _, _ = make_running_manager()
+    manager._UNARY_REQUESTS = True
 
     error = exceptions.RetryError(
         "Too long a transient error", cause=Exception("Out of time!")
@@ -442,15 +445,24 @@ def test_send_unary_retry_error(caplog):
     assert "signaled streaming pull manager shutdown" in caplog.text
 
 
+def test_send_streaming():
+    manager = make_manager()
+    manager._UNARY_REQUESTS = False
+    manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
+
+    manager.send(mock.sentinel.request)
+
+    manager._rpc.send.assert_called_once_with(mock.sentinel.request)
+
+
 def test_heartbeat():
     manager = make_manager()
     manager._rpc = mock.create_autospec(bidi.BidiRpc, instance=True)
     manager._rpc.is_active = True
 
-    result = manager.heartbeat()
+    manager.heartbeat()
 
     manager._rpc.send.assert_called_once_with(gapic_types.StreamingPullRequest())
-    assert result
 
 
 def test_heartbeat_inactive():
@@ -460,8 +472,7 @@ def test_heartbeat_inactive():
 
     manager.heartbeat()
 
-    result = manager._rpc.send.assert_not_called()
-    assert not result
+    manager._rpc.send.assert_not_called()
 
 
 @mock.patch("google.api_core.bidi.ResumableBidiRpc", autospec=True)
@@ -621,14 +632,14 @@ class FakeDispatcher(object):
         while not self._stop:
             try:
                 self._manager.leaser.add([mock.Mock()])
-            except Exception as exc:  # pragma: NO COVER
+            except Exception as exc:
                 self._error_callback(exc)
             time.sleep(0.1)
 
         # also try to interact with the leaser after the stop flag has been set
         try:
             self._manager.leaser.remove([mock.Mock()])
-        except Exception as exc:  # pragma: NO COVER
+        except Exception as exc:
             self._error_callback(exc)
 
 
@@ -653,27 +664,6 @@ def test_close_callbacks():
     manager.close(reason="meep")
 
     callback.assert_called_once_with(manager, "meep")
-
-
-def test_close_nacks_internally_queued_messages():
-    nacked_messages = []
-
-    def fake_nack(self):
-        nacked_messages.append(self.data)
-
-    MockMsg = functools.partial(mock.create_autospec, message.Message, instance=True)
-    messages = [MockMsg(data=b"msg1"), MockMsg(data=b"msg2"), MockMsg(data=b"msg3")]
-    for msg in messages:
-        msg.nack = stdlib_types.MethodType(fake_nack, msg)
-
-    manager, _, _, _, _, _ = make_running_manager()
-    dropped_by_scheduler = messages[:2]
-    manager._scheduler.shutdown.return_value = dropped_by_scheduler
-    manager._messages_on_hold._messages_on_hold.append(messages[2])
-
-    manager.close()
-
-    assert sorted(nacked_messages) == [b"msg1", b"msg2", b"msg3"]
 
 
 def test__get_initial_request():
@@ -989,15 +979,3 @@ def test_activate_ordering_keys():
     manager._messages_on_hold.activate_ordering_keys.assert_called_once_with(
         ["key1", "key2"], mock.ANY
     )
-
-
-def test_activate_ordering_keys_stopped_scheduler():
-    manager = make_manager()
-    manager._messages_on_hold = mock.create_autospec(
-        messages_on_hold.MessagesOnHold, instance=True
-    )
-    manager._scheduler = None
-
-    manager.activate_ordering_keys(["key1", "key2"])
-
-    manager._messages_on_hold.activate_ordering_keys.assert_not_called()

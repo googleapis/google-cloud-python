@@ -43,23 +43,12 @@ class StreamingPullFuture(futures.Future):
         else:
             self.set_exception(result)
 
-    def cancel(self, await_msg_callbacks=False):
+    def cancel(self):
         """Stops pulling messages and shutdowns the background thread consuming
         messages.
-
-        Args:
-            await_msg_callbacks (bool):
-                If ``True``, the method will block until the background stream and its
-                helper threads have has been terminated, as well as all currently
-                executing message callbacks are done processing.
-
-                If ``False`` (default), the method returns immediately after the
-                background stream and its helper threads have has been terminated, but
-                some of the message callback threads might still be running at that
-                point.
         """
         self._cancelled = True
-        return self._manager.close(await_msg_callbacks=await_msg_callbacks)
+        return self._manager.close()
 
     def cancelled(self):
         """

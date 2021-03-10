@@ -16,7 +16,6 @@ from __future__ import division
 
 import collections
 import functools
-import itertools
 import logging
 import threading
 import uuid
@@ -113,6 +112,10 @@ class StreamingPullManager(object):
             to use to process messages. If not provided, a thread pool-based
             scheduler will be used.
     """
+
+    _UNARY_REQUESTS = True
+    """If set to True, this class will make requests over a separate unary
+    RPC instead of over the streaming RPC."""
 
     def __init__(
         self,
@@ -289,9 +292,6 @@ class StreamingPullManager(object):
                 activate. May be empty.
         """
         with self._pause_resume_lock:
-            if self._scheduler is None:
-                return  # We are shutting down, don't try to dispatch any more messages.
-
             self._messages_on_hold.activate_ordering_keys(
                 ordering_keys, self._schedule_message_on_hold
             )
@@ -421,36 +421,37 @@ class StreamingPullManager(object):
         If a RetryError occurs, the manager shutdown is triggered, and the
         error is re-raised.
         """
-        try:
-            self._send_unary_request(request)
-        except exceptions.GoogleAPICallError:
-            _LOGGER.debug(
-                "Exception while sending unary RPC. This is typically "
-                "non-fatal as stream requests are best-effort.",
-                exc_info=True,
-            )
-        except exceptions.RetryError as exc:
-            _LOGGER.debug(
-                "RetryError while sending unary RPC. Waiting on a transient "
-                "error resolution for too long, will now trigger shutdown.",
-                exc_info=False,
-            )
-            # The underlying channel has been suffering from a retryable error
-            # for too long, time to give up and shut the streaming pull down.
-            self._on_rpc_done(exc)
-            raise
+        if self._UNARY_REQUESTS:
+            try:
+                self._send_unary_request(request)
+            except exceptions.GoogleAPICallError:
+                _LOGGER.debug(
+                    "Exception while sending unary RPC. This is typically "
+                    "non-fatal as stream requests are best-effort.",
+                    exc_info=True,
+                )
+            except exceptions.RetryError as exc:
+                _LOGGER.debug(
+                    "RetryError while sending unary RPC. Waiting on a transient "
+                    "error resolution for too long, will now trigger shutdown.",
+                    exc_info=False,
+                )
+                # The underlying channel has been suffering from a retryable error
+                # for too long, time to give up and shut the streaming pull down.
+                self._on_rpc_done(exc)
+                raise
+
+        else:
+            self._rpc.send(request)
 
     def heartbeat(self):
         """Sends an empty request over the streaming pull RPC.
 
-        Returns:
-            bool: If a heartbeat request has actually been sent.
+        This always sends over the stream, regardless of if
+        ``self._UNARY_REQUESTS`` is set or not.
         """
         if self._rpc is not None and self._rpc.is_active:
             self._rpc.send(gapic_types.StreamingPullRequest())
-            return True
-
-        return False
 
     def open(self, callback, on_callback_error):
         """Begin consuming messages.
@@ -512,7 +513,7 @@ class StreamingPullManager(object):
         # Start the stream heartbeater thread.
         self._heartbeater.start()
 
-    def close(self, reason=None, await_msg_callbacks=False):
+    def close(self, reason=None):
         """Stop consuming messages and shutdown all helper threads.
 
         This method is idempotent. Additional calls will have no effect.
@@ -521,15 +522,6 @@ class StreamingPullManager(object):
             reason (Any): The reason to close this. If None, this is considered
                 an "intentional" shutdown. This is passed to the callbacks
                 specified via :meth:`add_close_callback`.
-
-            await_msg_callbacks (bool):
-                If ``True``, the method will wait until all scheduler threads terminate
-                and only then proceed with the shutdown with the remaining shutdown
-                tasks,
-
-                If ``False`` (default), the method will shut down the scheduler in a
-                non-blocking fashion, i.e. it will not wait for the currently executing
-                scheduler threads to terminate.
         """
         with self._closing:
             if self._closed:
@@ -543,9 +535,7 @@ class StreamingPullManager(object):
 
             # Shutdown all helper threads
             _LOGGER.debug("Stopping scheduler.")
-            dropped_messages = self._scheduler.shutdown(
-                await_msg_callbacks=await_msg_callbacks
-            )
+            self._scheduler.shutdown()
             self._scheduler = None
 
             # Leaser and dispatcher reference each other through the shared
@@ -559,23 +549,11 @@ class StreamingPullManager(object):
             # because the consumer gets shut down first.
             _LOGGER.debug("Stopping leaser.")
             self._leaser.stop()
-
-            total = len(dropped_messages) + len(
-                self._messages_on_hold._messages_on_hold
-            )
-            _LOGGER.debug(f"NACK-ing all not-yet-dispatched messages (total: {total}).")
-            messages_to_nack = itertools.chain(
-                dropped_messages, self._messages_on_hold._messages_on_hold
-            )
-            for msg in messages_to_nack:
-                msg.nack()
-
             _LOGGER.debug("Stopping dispatcher.")
             self._dispatcher.stop()
             self._dispatcher = None
             # dispatcher terminated, OK to dispose the leaser reference now
             self._leaser = None
-
             _LOGGER.debug("Stopping heartbeater.")
             self._heartbeater.stop()
             self._heartbeater = None
