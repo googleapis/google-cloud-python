@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.3...v1.15.0) (2021-03-10)
+
+
+### Features
+
+* allow_alias for enums ([#207](https://www.github.com/googleapis/proto-plus-python/issues/207)) ([6d4d713](https://www.github.com/googleapis/proto-plus-python/commit/6d4d71399f494b9f3bd47b6f3ef0b6d3c0c547b5))
+
 ### [1.14.3](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.2...v1.14.3) (2021-03-04)
 
 
