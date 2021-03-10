@@ -39,6 +39,20 @@ _type_map = {
     "TIMESTAMP": types.TIMESTAMP,
 }
 
+_type_map_inv = {
+    types.Boolean: "BOOL",
+    types.BINARY: "BYTES(MAX)",
+    types.DATE: "DATE",
+    types.DATETIME: "DATETIME",
+    types.Float: "FLOAT64",
+    types.BIGINT: "INT64",
+    types.DECIMAL: "NUMERIC",
+    types.String: "STRING",
+    types.TIME: "TIME",
+    types.TIMESTAMP: "TIMESTAMP",
+    types.Integer: "INT64",
+}
+
 _compound_keywords = {
     selectable.CompoundSelect.UNION: "UNION DISTINCT",
     selectable.CompoundSelect.UNION_ALL: "UNION ALL",
@@ -53,6 +67,20 @@ class SpannerSQLCompiler(SQLCompiler):
     """Spanner SQL statements compiler."""
 
     compound_keywords = _compound_keywords
+
+    def visit_empty_set_expr(self, type_):
+        """Return an empty set expression of the given type.
+
+        Args:
+            type_ (sqlalchemy.sql.sqltypes.SchemaType):
+                A SQLAlchemy data type.
+
+        Returns:
+            str: A query to select an empty set of the given type.
+        """
+        return "SELECT CAST(1 AS {}) FROM (SELECT 1) WHERE 1 != 1".format(
+            _type_map_inv[type(type_[0])]
+        )
 
 
 class SpannerDDLCompiler(DDLCompiler):
