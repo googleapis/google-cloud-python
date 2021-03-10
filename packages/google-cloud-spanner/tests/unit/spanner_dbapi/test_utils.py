@@ -85,3 +85,19 @@ class TestUtils(unittest.TestCase):
             with self.subTest(sql=sql):
                 got = backtick_unicode(sql)
                 self.assertEqual(got, want)
+
+    @unittest.skipIf(skip_condition, skip_message)
+    def test_StreamedManyResultSets(self):
+        from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
+
+        cases = [
+            ("iter_from_list", iter([1, 2, 3, 4, 6, 7]), [1, 2, 3, 4, 6, 7]),
+            ("iter_from_tuple", iter(("a", 12, 0xFF)), ["a", 12, 0xFF]),
+        ]
+
+        for name, data_in, expected in cases:
+            with self.subTest(name=name):
+                stream_result = StreamedManyResultSets()
+                stream_result._iterators.append(data_in)
+                actual = list(stream_result)
+                self.assertEqual(actual, expected)

@@ -140,6 +140,31 @@ class TestCursor(unittest.TestCase):
         self.assertIsInstance(cursor._result_set, mock.MagicMock)
         self.assertIsInstance(cursor._itr, PeekIterator)
 
+    def test_execute_insert_statement_autocommit_off(self):
+        from google.cloud.spanner_dbapi import parse_utils
+        from google.cloud.spanner_dbapi.checksum import ResultsChecksum
+        from google.cloud.spanner_dbapi.utils import PeekIterator
+
+        connection = self._make_connection(self.INSTANCE, mock.MagicMock())
+        cursor = self._make_one(connection)
+        cursor.connection._autocommit = False
+        cursor.connection.transaction_checkout = mock.MagicMock(autospec=True)
+
+        cursor._checksum = ResultsChecksum()
+        with mock.patch(
+            "google.cloud.spanner_dbapi.parse_utils.classify_stmt",
+            return_value=parse_utils.STMT_INSERT,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_dbapi.connection.Connection.run_statement",
+                return_value=(mock.MagicMock(), ResultsChecksum()),
+            ):
+                cursor.execute(
+                    sql="INSERT INTO django_migrations (app, name, applied) VALUES (%s, %s, %s)"
+                )
+                self.assertIsInstance(cursor._result_set, mock.MagicMock)
+                self.assertIsInstance(cursor._itr, PeekIterator)
+
     def test_execute_statement(self):
         from google.cloud.spanner_dbapi import parse_utils
 
