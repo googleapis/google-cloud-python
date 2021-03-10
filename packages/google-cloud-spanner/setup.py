@@ -33,7 +33,7 @@ dependencies = [
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "libcst >= 0.2.5",
-    "proto-plus==1.13.0",
+    "proto-plus==1.14.2",
     "sqlparse >= 0.3.0",
 ]
 extras = {
