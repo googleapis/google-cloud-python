@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigtable.git",
-        "sha": "cbd712e6d3aded0c025525f97da1d667fbe2f061"
+        "sha": "79f1734c897e5e1b2fd02d043185c44b7ee34dc9"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "458338f8ca444e43b9df96b984b68f3978852b74",
-        "internalRef": "361301101"
+        "sha": "3aeb3a70f66457a9e6b07caff841719bb9873b57",
+        "internalRef": "361676678"
       }
     },
     {
