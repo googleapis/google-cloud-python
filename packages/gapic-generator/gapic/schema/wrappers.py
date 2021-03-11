@@ -39,6 +39,7 @@ from google.api import field_behavior_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions      # type: ignore
 from google.protobuf import descriptor_pb2  # type: ignore
+from google.protobuf.json_format import MessageToDict  # type: ignore
 
 from gapic import utils
 from gapic.schema import metadata
@@ -413,7 +414,7 @@ class MessageType:
         # Get the first field in the path.
         first_field = field_path[0]
         cursor = self.fields[first_field +
-            ('_' if first_field in utils.RESERVED_NAMES else '')]
+                             ('_' if first_field in utils.RESERVED_NAMES else '')]
 
         # Base case: If this is the last field in the path, return it outright.
         if len(field_path) == 1:
@@ -534,6 +535,18 @@ class EnumType:
         return dataclasses.replace(
             self,
             meta=self.meta.with_context(collisions=collisions),
+        )
+
+    @property
+    def options_dict(self) -> Dict:
+        """Return the EnumOptions (if present) as a dict.
+
+        This is a hack to support a pythonic structure representation for
+        the generator templates.
+        """
+        return MessageToDict(
+            self.enum_pb.options,
+            preserving_proto_field_name=True
         )
 
 
@@ -869,7 +882,7 @@ class Method:
 
         # The request must have page_token and next_page_token as they keep track of pages
         for source, source_type, name in ((self.input, str, 'page_token'),
-                           (self.output, str, 'next_page_token')):
+                                          (self.output, str, 'next_page_token')):
             field = source.fields.get(name, None)
             if not field or field.type != source_type:
                 return None

@@ -37,6 +37,18 @@ def test_enum_value_properties():
 
 
 def test_enum_ident():
-    message = make_enum('Baz', package='foo.v1', module='bar')
-    assert str(message.ident) == 'bar.Baz'
-    assert message.ident.sphinx == 'foo.v1.bar.Baz'
+    enum = make_enum('Baz', package='foo.v1', module='bar')
+    assert str(enum.ident) == 'bar.Baz'
+    assert enum.ident.sphinx == 'foo.v1.bar.Baz'
+
+
+def test_enum_options_dict():
+    cephalopod = make_enum("Cephalopod", package="animalia.v1",
+                     module="mollusca", options={"allow_alias": True})
+    assert isinstance(cephalopod.enum_pb.options, descriptor_pb2.EnumOptions)
+    assert cephalopod.options_dict == {"allow_alias": True}
+
+    bivalve = make_enum("Bivalve", package="animalia.v1",
+                     module="mollusca")
+    assert isinstance(bivalve.enum_pb.options, descriptor_pb2.EnumOptions)
+    assert bivalve.options_dict == {}

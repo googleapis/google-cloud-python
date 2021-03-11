@@ -290,6 +290,7 @@ def make_enum(
     module: str = 'baz',
     values: typing.Tuple[str, int] = (),
     meta: metadata.Metadata = None,
+    options: desc.EnumOptions = None,
 ) -> wrappers.EnumType:
     enum_value_pbs = [
         desc.EnumValueDescriptorProto(name=i[0], number=i[1])
@@ -298,6 +299,7 @@ def make_enum(
     enum_pb = desc.EnumDescriptorProto(
         name=name,
         value=enum_value_pbs,
+        options=options,
     )
     return wrappers.EnumType(
         enum_pb=enum_pb,
