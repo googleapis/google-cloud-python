@@ -3,22 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-analytics-data",
-        "sha": "3b9a193edfba38c9e8f72580f400514fa283a79c"
+        "remote": "https://github.com/googleapis/python-analytics-data.git",
+        "sha": "58f834e80510abdcbb49801e2901e1ee44653396"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "8f117308d5bb55816953a0d6ad1a7d27a69a7d3f",
+        "internalRef": "361084441"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0199c79b8324fba66476300824aa931788c47e2d"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0199c79b8324fba66476300824aa931788c47e2d"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     }
   ],
@@ -41,5 +49,113 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/data_v1alpha/alpha_analytics_data.rst",
+    "docs/data_v1alpha/services.rst",
+    "docs/data_v1alpha/types.rst",
+    "docs/data_v1beta/beta_analytics_data.rst",
+    "docs/data_v1beta/services.rst",
+    "docs/data_v1beta/types.rst",
+    "docs/multiprocessing.rst",
+    "google/analytics/data/__init__.py",
+    "google/analytics/data/py.typed",
+    "google/analytics/data_v1alpha/__init__.py",
+    "google/analytics/data_v1alpha/py.typed",
+    "google/analytics/data_v1alpha/services/__init__.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/__init__.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/async_client.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/client.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/transports/__init__.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/transports/base.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/transports/grpc.py",
+    "google/analytics/data_v1alpha/services/alpha_analytics_data/transports/grpc_asyncio.py",
+    "google/analytics/data_v1alpha/types/__init__.py",
+    "google/analytics/data_v1alpha/types/analytics_data_api.py",
+    "google/analytics/data_v1alpha/types/data.py",
+    "google/analytics/data_v1beta/__init__.py",
+    "google/analytics/data_v1beta/py.typed",
+    "google/analytics/data_v1beta/services/__init__.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/__init__.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/async_client.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/client.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/pagers.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/transports/__init__.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/transports/base.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/transports/grpc.py",
+    "google/analytics/data_v1beta/services/beta_analytics_data/transports/grpc_asyncio.py",
+    "google/analytics/data_v1beta/types/__init__.py",
+    "google/analytics/data_v1beta/types/analytics_data_api.py",
+    "google/analytics/data_v1beta/types/data.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/data_v1alpha/__init__.py",
+    "tests/unit/gapic/data_v1alpha/test_alpha_analytics_data.py",
+    "tests/unit/gapic/data_v1beta/__init__.py",
+    "tests/unit/gapic/data_v1beta/test_beta_analytics_data.py"
   ]
 }
