@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.2.0...v2.3.0) (2021-03-11)
+
+
+### Features
+
+* add topic field to Secret ([#80](https://www.github.com/googleapis/python-secret-manager/issues/80)) ([f83c035](https://www.github.com/googleapis/python-secret-manager/commit/f83c03517a7d32f5f53ea5511c41b855ab955eae))
+
 ## [2.2.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.1.0...v2.2.0) (2021-01-20)
 
 
