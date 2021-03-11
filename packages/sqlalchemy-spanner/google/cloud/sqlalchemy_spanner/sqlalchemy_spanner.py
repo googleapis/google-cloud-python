@@ -158,6 +158,7 @@ class SpannerDialect(DefaultDialect):
     positional = False
     paramstyle = "format"
     encoding = "utf-8"
+    max_identifier_length = 128
 
     execute_sequence_format = list
 
