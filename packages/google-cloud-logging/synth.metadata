@@ -132,6 +132,7 @@
     "google/cloud/logging_v2/types/logging.py",
     "google/cloud/logging_v2/types/logging_config.py",
     "google/cloud/logging_v2/types/logging_metrics.py",
+    "logging-v2-py.tar.gz",
     "mypy.ini",
     "noxfile.py",
     "renovate.json",
