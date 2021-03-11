@@ -18,6 +18,10 @@ from sqlalchemy.testing.requirements import SuiteRequirements
 
 class Requirements(SuiteRequirements):
     @property
+    def foreign_key_constraint_name_reflection(self):
+        return exclusions.open()
+
+    @property
     def schema_reflection(self):
         return exclusions.open()
 
