@@ -257,6 +257,7 @@ def test_receive_with_delivery_attempts(
     assert "With delivery attempts: " in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_update_dead_letter_policy(subscription_dlq, dead_letter_topic, capsys):
     _ = subscriber.update_subscription_with_dead_letter_policy(
         PROJECT_ID,
