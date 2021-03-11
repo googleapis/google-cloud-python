@@ -18,12 +18,19 @@ def py_gapic_library(
         name,
         srcs,
         grpc_service_config = None,
-        plugin_args = [],
-        opt_args = [],
+        plugin_args = None,
+        opt_args = None,
+        metadata = False,
         **kwargs):
     #    srcjar_target_name = "%s_srcjar" % name
     srcjar_target_name = name
     srcjar_output_suffix = ".srcjar"
+
+    plugin_args = plugin_args or []
+    opt_args = opt_args or []
+
+    if metadata:
+        plugin_args.append("metadata")
 
     file_args = {}
     if grpc_service_config:
