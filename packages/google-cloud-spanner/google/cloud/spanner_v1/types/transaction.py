@@ -34,7 +34,7 @@ class TransactionOptions(proto.Message):
     For more info, see: https://cloud.google.com/spanner/docs/reference/rest/v1/Transaction
 
     Attributes:
-        read_write (~.transaction.TransactionOptions.ReadWrite):
+        read_write (google.cloud.spanner_v1.types.TransactionOptions.ReadWrite):
             Transaction may write.
 
             Authorization to begin a read-write transaction requires

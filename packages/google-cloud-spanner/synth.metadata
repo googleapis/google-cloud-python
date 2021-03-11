@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-spanner.git",
-        "sha": "be27507c51998e5a4aec54cab57515c4912f5ed5"
+        "sha": "a082e5d7d2195ab9429a8e0bef4a664b59fdf771"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "20712b8fe95001b312f62c6c5f33e3e3ec92cfaf",
-        "internalRef": "354996675"
+        "sha": "f829b1334cce86aa3738f3c0698d814b56664445",
+        "internalRef": "358725120"
       }
     },
     {

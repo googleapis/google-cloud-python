@@ -33,6 +33,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.spanner_admin_database_v1.services.database_admin import pagers
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import common
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -62,6 +63,12 @@ class DatabaseAdminAsyncClient:
 
     backup_path = staticmethod(DatabaseAdminClient.backup_path)
     parse_backup_path = staticmethod(DatabaseAdminClient.parse_backup_path)
+    crypto_key_path = staticmethod(DatabaseAdminClient.crypto_key_path)
+    parse_crypto_key_path = staticmethod(DatabaseAdminClient.parse_crypto_key_path)
+    crypto_key_version_path = staticmethod(DatabaseAdminClient.crypto_key_version_path)
+    parse_crypto_key_version_path = staticmethod(
+        DatabaseAdminClient.parse_crypto_key_version_path
+    )
     database_path = staticmethod(DatabaseAdminClient.database_path)
     parse_database_path = staticmethod(DatabaseAdminClient.parse_database_path)
     instance_path = staticmethod(DatabaseAdminClient.instance_path)
@@ -194,7 +201,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabasesAsyncPager:
                 The response for
-                [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
+                   [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -687,7 +694,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse:
                 The response for
-                [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
+                   [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 
         """
         # Create or coerce a protobuf request object.
@@ -1524,7 +1531,7 @@ class DatabaseAdminAsyncClient:
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupsAsyncPager:
                 The response for
-                [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
+                   [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

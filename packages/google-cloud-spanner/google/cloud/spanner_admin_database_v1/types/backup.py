@@ -38,6 +38,7 @@ __protobuf__ = proto.module(
         "ListBackupOperationsRequest",
         "ListBackupOperationsResponse",
         "BackupInfo",
+        "CreateBackupEncryptionConfig",
     },
 )
 
@@ -103,6 +104,9 @@ class Backup(proto.Message):
             from being deleted. When a restored database from the backup
             enters the ``READY`` state, the reference to the backup is
             removed.
+        encryption_info (google.cloud.spanner_admin_database_v1.types.EncryptionInfo):
+            Output only. The encryption information for
+            the backup.
     """
 
     class State(proto.Enum):
@@ -127,6 +131,10 @@ class Backup(proto.Message):
 
     referencing_databases = proto.RepeatedField(proto.STRING, number=7)
 
+    encryption_info = proto.Field(
+        proto.MESSAGE, number=8, message=common.EncryptionInfo,
+    )
+
 
 class CreateBackupRequest(proto.Message):
     r"""The request for
@@ -147,6 +155,13 @@ class CreateBackupRequest(proto.Message):
             ``projects/<project>/instances/<instance>/backups/<backup_id>``.
         backup (google.cloud.spanner_admin_database_v1.types.Backup):
             Required. The backup to create.
+        encryption_config (google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig):
+            Optional. The encryption configuration used to encrypt the
+            backup. If this field is not specified, the backup will use
+            the same encryption configuration as the database by
+            default, namely
+            [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type]
+            = ``USE_DATABASE_ENCRYPTION``.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -154,6 +169,10 @@ class CreateBackupRequest(proto.Message):
     backup_id = proto.Field(proto.STRING, number=2)
 
     backup = proto.Field(proto.MESSAGE, number=3, message="Backup",)
+
+    encryption_config = proto.Field(
+        proto.MESSAGE, number=4, message="CreateBackupEncryptionConfig",
+    )
 
 
 class CreateBackupMetadata(proto.Message):
@@ -181,10 +200,10 @@ class CreateBackupMetadata(proto.Message):
             or other methods to check whether the cancellation succeeded
             or whether the operation completed despite cancellation. On
             successful cancellation, the operation is not deleted;
-            instead, it becomes an operation with an [Operation.error][]
-            value with a
-            [google.rpc.Status.code][google.rpc.Status.code] of 1,
-            corresponding to ``Code.CANCELLED``.
+            instead, it becomes an operation with an
+            [Operation.error][google.longrunning.Operation.error] value
+            with a [google.rpc.Status.code][google.rpc.Status.code] of
+            1, corresponding to ``Code.CANCELLED``.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -277,6 +296,8 @@ class ListBackupsRequest(proto.Message):
             -  ``create_time`` (and values are of the format
                YYYY-MM-DDTHH:MM:SSZ)
             -  ``expire_time`` (and values are of the format
+               YYYY-MM-DDTHH:MM:SSZ)
+            -  ``version_time`` (and values are of the format
                YYYY-MM-DDTHH:MM:SSZ)
             -  ``size_bytes``
 
@@ -491,6 +512,32 @@ class BackupInfo(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 
     source_database = proto.Field(proto.STRING, number=3)
+
+
+class CreateBackupEncryptionConfig(proto.Message):
+    r"""Encryption configuration for the backup to create.
+
+    Attributes:
+        encryption_type (google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig.EncryptionType):
+            Required. The encryption type of the backup.
+        kms_key_name (str):
+            Optional. The Cloud KMS key that will be used to protect the
+            backup. This field should be set only when
+            [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type]
+            is ``CUSTOMER_MANAGED_ENCRYPTION``. Values are of the form
+            ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+    """
+
+    class EncryptionType(proto.Enum):
+        r"""Encryption types for the backup."""
+        ENCRYPTION_TYPE_UNSPECIFIED = 0
+        USE_DATABASE_ENCRYPTION = 1
+        GOOGLE_DEFAULT_ENCRYPTION = 2
+        CUSTOMER_MANAGED_ENCRYPTION = 3
+
+    encryption_type = proto.Field(proto.ENUM, number=1, enum=EncryptionType,)
+
+    kms_key_name = proto.Field(proto.STRING, number=2)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -19,10 +19,12 @@ import proto  # type: ignore
 
 
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.rpc import status_pb2 as status  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.spanner.admin.database.v1", manifest={"OperationProgress",},
+    package="google.spanner.admin.database.v1",
+    manifest={"OperationProgress", "EncryptionConfig", "EncryptionInfo",},
 )
 
 
@@ -46,6 +48,49 @@ class OperationProgress(proto.Message):
     start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 
     end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+
+
+class EncryptionConfig(proto.Message):
+    r"""Encryption configuration for a Cloud Spanner database.
+
+    Attributes:
+        kms_key_name (str):
+            The Cloud KMS key to be used for encrypting and decrypting
+            the database. Values are of the form
+            ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+    """
+
+    kms_key_name = proto.Field(proto.STRING, number=2)
+
+
+class EncryptionInfo(proto.Message):
+    r"""Encryption information for a Cloud Spanner database or
+    backup.
+
+    Attributes:
+        encryption_type (google.cloud.spanner_admin_database_v1.types.EncryptionInfo.Type):
+            Output only. The type of encryption.
+        encryption_status (google.rpc.status_pb2.Status):
+            Output only. If present, the status of a
+            recent encrypt/decrypt call on underlying data
+            for this database or backup. Regardless of
+            status, data is always encrypted at rest.
+        kms_key_version (str):
+            Output only. A Cloud KMS key version that is
+            being used to protect the database or backup.
+    """
+
+    class Type(proto.Enum):
+        r"""Possible encryption types."""
+        TYPE_UNSPECIFIED = 0
+        GOOGLE_DEFAULT_ENCRYPTION = 1
+        CUSTOMER_MANAGED_ENCRYPTION = 2
+
+    encryption_type = proto.Field(proto.ENUM, number=3, enum=Type,)
+
+    encryption_status = proto.Field(proto.MESSAGE, number=4, message=status.Status,)
+
+    kms_key_version = proto.Field(proto.STRING, number=2)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

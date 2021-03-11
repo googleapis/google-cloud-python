@@ -45,6 +45,7 @@ from google.cloud.spanner_admin_database_v1.services.database_admin import pager
 from google.cloud.spanner_admin_database_v1.services.database_admin import transports
 from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
+from google.cloud.spanner_admin_database_v1.types import common
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import options_pb2 as options  # type: ignore
@@ -52,8 +53,10 @@ from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2 as operations  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import any_pb2 as gp_any  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.rpc import status_pb2 as status  # type: ignore
 from google.type import expr_pb2 as expr  # type: ignore
 
 
@@ -4950,10 +4953,74 @@ def test_parse_backup_path():
     assert expected == actual
 
 
-def test_database_path():
+def test_crypto_key_path():
     project = "cuttlefish"
-    instance = "mussel"
-    database = "winkle"
+    location = "mussel"
+    key_ring = "winkle"
+    crypto_key = "nautilus"
+
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
+        project=project, location=location, key_ring=key_ring, crypto_key=crypto_key,
+    )
+    actual = DatabaseAdminClient.crypto_key_path(
+        project, location, key_ring, crypto_key
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "key_ring": "squid",
+        "crypto_key": "clam",
+    }
+    path = DatabaseAdminClient.crypto_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatabaseAdminClient.parse_crypto_key_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_version_path():
+    project = "whelk"
+    location = "octopus"
+    key_ring = "oyster"
+    crypto_key = "nudibranch"
+    crypto_key_version = "cuttlefish"
+
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = DatabaseAdminClient.crypto_key_version_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_version_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "key_ring": "nautilus",
+        "crypto_key": "scallop",
+        "crypto_key_version": "abalone",
+    }
+    path = DatabaseAdminClient.crypto_key_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DatabaseAdminClient.parse_crypto_key_version_path(path)
+    assert expected == actual
+
+
+def test_database_path():
+    project = "squid"
+    instance = "clam"
+    database = "whelk"
 
     expected = "projects/{project}/instances/{instance}/databases/{database}".format(
         project=project, instance=instance, database=database,
@@ -4964,9 +5031,9 @@ def test_database_path():
 
 def test_parse_database_path():
     expected = {
-        "project": "nautilus",
-        "instance": "scallop",
-        "database": "abalone",
+        "project": "octopus",
+        "instance": "oyster",
+        "database": "nudibranch",
     }
     path = DatabaseAdminClient.database_path(**expected)
 
@@ -4976,8 +5043,8 @@ def test_parse_database_path():
 
 
 def test_instance_path():
-    project = "squid"
-    instance = "clam"
+    project = "cuttlefish"
+    instance = "mussel"
 
     expected = "projects/{project}/instances/{instance}".format(
         project=project, instance=instance,
@@ -4988,8 +5055,8 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "whelk",
-        "instance": "octopus",
+        "project": "winkle",
+        "instance": "nautilus",
     }
     path = DatabaseAdminClient.instance_path(**expected)
 
@@ -4999,7 +5066,7 @@ def test_parse_instance_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -5010,7 +5077,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = DatabaseAdminClient.common_billing_account_path(**expected)
 
@@ -5020,7 +5087,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = DatabaseAdminClient.common_folder_path(folder)
@@ -5029,7 +5096,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = DatabaseAdminClient.common_folder_path(**expected)
 
@@ -5039,7 +5106,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = DatabaseAdminClient.common_organization_path(organization)
@@ -5048,7 +5115,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = DatabaseAdminClient.common_organization_path(**expected)
 
@@ -5058,7 +5125,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
 
     expected = "projects/{project}".format(project=project,)
     actual = DatabaseAdminClient.common_project_path(project)
@@ -5067,7 +5134,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = DatabaseAdminClient.common_project_path(**expected)
 
@@ -5077,8 +5144,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -5089,8 +5156,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = DatabaseAdminClient.common_location_path(**expected)
 

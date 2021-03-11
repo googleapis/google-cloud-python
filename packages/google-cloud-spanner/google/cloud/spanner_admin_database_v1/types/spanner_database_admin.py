@@ -43,6 +43,7 @@ __protobuf__ = proto.module(
         "ListDatabaseOperationsRequest",
         "ListDatabaseOperationsResponse",
         "RestoreDatabaseRequest",
+        "RestoreDatabaseEncryptionConfig",
         "RestoreDatabaseMetadata",
         "OptimizeRestoredDatabaseMetadata",
     },
@@ -92,6 +93,25 @@ class Database(proto.Message):
             Output only. Applicable only for restored
             databases. Contains information about the
             restore source.
+        encryption_config (google.cloud.spanner_admin_database_v1.types.EncryptionConfig):
+            Output only. For databases that are using
+            customer managed encryption, this field contains
+            the encryption configuration for the database.
+            For databases that are using Google default or
+            other types of encryption, this field is empty.
+        encryption_info (Sequence[google.cloud.spanner_admin_database_v1.types.EncryptionInfo]):
+            Output only. For databases that are using
+            customer managed encryption, this field contains
+            the encryption information for the database,
+            such as encryption state and the Cloud KMS key
+            versions that are in use.
+            For databases that are using Google default or
+            other types of encryption, this field is empty.
+
+            This field is propagated lazily from the
+            backend. There might be a delay from when a key
+            version is being used and when it appears in
+            this field.
         version_retention_period (str):
             Output only. The period in which Cloud Spanner retains all
             versions of data for the database. This is the same as the
@@ -100,7 +120,13 @@ class Database(proto.Message):
             Defaults to 1 hour, if not set.
         earliest_version_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Earliest timestamp at which
-            older versions of the data can be read.
+            older versions of the data can be read. This
+            value is continuously updated by Cloud Spanner
+            and becomes stale the moment it is queried. If
+            you are using this value to recover data, make
+            sure to account for the time from the moment
+            when the value is queried to the moment when you
+            initiate the recovery.
     """
 
     class State(proto.Enum):
@@ -117,6 +143,14 @@ class Database(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
 
     restore_info = proto.Field(proto.MESSAGE, number=4, message="RestoreInfo",)
+
+    encryption_config = proto.Field(
+        proto.MESSAGE, number=5, message=common.EncryptionConfig,
+    )
+
+    encryption_info = proto.RepeatedField(
+        proto.MESSAGE, number=8, message=common.EncryptionInfo,
+    )
 
     version_retention_period = proto.Field(proto.STRING, number=6)
 
@@ -197,6 +231,11 @@ class CreateDatabaseRequest(proto.Message):
             statements execute atomically with the creation
             of the database: if there is an error in any
             statement, the database is not created.
+        encryption_config (google.cloud.spanner_admin_database_v1.types.EncryptionConfig):
+            Optional. The encryption configuration for
+            the database. If this field is not specified,
+            Cloud Spanner will encrypt/decrypt all data at
+            rest using Google default encryption.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -204,6 +243,10 @@ class CreateDatabaseRequest(proto.Message):
     create_statement = proto.Field(proto.STRING, number=2)
 
     extra_statements = proto.RepeatedField(proto.STRING, number=3)
+
+    encryption_config = proto.Field(
+        proto.MESSAGE, number=4, message=common.EncryptionConfig,
+    )
 
 
 class CreateDatabaseMetadata(proto.Message):
@@ -490,6 +533,14 @@ class RestoreDatabaseRequest(proto.Message):
             Name of the backup from which to restore. Values are of the
             form
             ``projects/<project>/instances/<instance>/backups/<backup>``.
+        encryption_config (google.cloud.spanner_admin_database_v1.types.RestoreDatabaseEncryptionConfig):
+            Optional. An encryption configuration describing the
+            encryption type and key resources in Cloud KMS used to
+            encrypt/decrypt the database to restore to. If this field is
+            not specified, the restored database will use the same
+            encryption configuration as the backup by default, namely
+            [encryption_type][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig.encryption_type]
+            = ``USE_CONFIG_DEFAULT_OR_DATABASE_ENCRYPTION``.
     """
 
     parent = proto.Field(proto.STRING, number=1)
@@ -497,6 +548,38 @@ class RestoreDatabaseRequest(proto.Message):
     database_id = proto.Field(proto.STRING, number=2)
 
     backup = proto.Field(proto.STRING, number=3, oneof="source")
+
+    encryption_config = proto.Field(
+        proto.MESSAGE, number=4, message="RestoreDatabaseEncryptionConfig",
+    )
+
+
+class RestoreDatabaseEncryptionConfig(proto.Message):
+    r"""Encryption configuration for the restored database.
+
+    Attributes:
+        encryption_type (google.cloud.spanner_admin_database_v1.types.RestoreDatabaseEncryptionConfig.EncryptionType):
+            Required. The encryption type of the restored
+            database.
+        kms_key_name (str):
+            Optional. The Cloud KMS key that will be used to
+            encrypt/decrypt the restored database. This field should be
+            set only when
+            [encryption_type][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig.encryption_type]
+            is ``CUSTOMER_MANAGED_ENCRYPTION``. Values are of the form
+            ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
+    """
+
+    class EncryptionType(proto.Enum):
+        r"""Encryption types for the database to be restored."""
+        ENCRYPTION_TYPE_UNSPECIFIED = 0
+        USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION = 1
+        GOOGLE_DEFAULT_ENCRYPTION = 2
+        CUSTOMER_MANAGED_ENCRYPTION = 3
+
+    encryption_type = proto.Field(proto.ENUM, number=1, enum=EncryptionType,)
+
+    kms_key_name = proto.Field(proto.STRING, number=2)
 
 
 class RestoreDatabaseMetadata(proto.Message):

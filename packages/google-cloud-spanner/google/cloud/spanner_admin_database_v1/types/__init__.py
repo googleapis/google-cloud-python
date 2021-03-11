@@ -15,7 +15,11 @@
 # limitations under the License.
 #
 
-from .common import OperationProgress
+from .common import (
+    OperationProgress,
+    EncryptionConfig,
+    EncryptionInfo,
+)
 from .backup import (
     Backup,
     CreateBackupRequest,
@@ -28,6 +32,7 @@ from .backup import (
     ListBackupOperationsRequest,
     ListBackupOperationsResponse,
     BackupInfo,
+    CreateBackupEncryptionConfig,
 )
 from .spanner_database_admin import (
     RestoreInfo,
@@ -45,6 +50,7 @@ from .spanner_database_admin import (
     ListDatabaseOperationsRequest,
     ListDatabaseOperationsResponse,
     RestoreDatabaseRequest,
+    RestoreDatabaseEncryptionConfig,
     RestoreDatabaseMetadata,
     OptimizeRestoredDatabaseMetadata,
     RestoreSourceType,
@@ -52,6 +58,8 @@ from .spanner_database_admin import (
 
 __all__ = (
     "OperationProgress",
+    "EncryptionConfig",
+    "EncryptionInfo",
     "Backup",
     "CreateBackupRequest",
     "CreateBackupMetadata",
@@ -63,6 +71,7 @@ __all__ = (
     "ListBackupOperationsRequest",
     "ListBackupOperationsResponse",
     "BackupInfo",
+    "CreateBackupEncryptionConfig",
     "RestoreInfo",
     "Database",
     "ListDatabasesRequest",
@@ -78,6 +87,7 @@ __all__ = (
     "ListDatabaseOperationsRequest",
     "ListDatabaseOperationsResponse",
     "RestoreDatabaseRequest",
+    "RestoreDatabaseEncryptionConfig",
     "RestoreDatabaseMetadata",
     "OptimizeRestoredDatabaseMetadata",
     "RestoreSourceType",
