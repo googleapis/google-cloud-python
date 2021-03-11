@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.43.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.2...v0.43.0) (2021-03-11)
+
+
+### Features
+
+* add bazel support for gapic metadata ([#811](https://www.github.com/googleapis/gapic-generator-python/issues/811)) ([7ced24a](https://www.github.com/googleapis/gapic-generator-python/commit/7ced24a0b20cb6505587b946c03b1b038eef4b4a))
+* update templates to permit enum aliases ([#809](https://www.github.com/googleapis/gapic-generator-python/issues/809)) ([2e7ea11](https://www.github.com/googleapis/gapic-generator-python/commit/2e7ea11f80210459106f9780e5f013e2a0381d29))
+
 ### [0.42.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.1...v0.42.2) (2021-03-05)
 
 
