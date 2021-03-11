@@ -17,6 +17,7 @@ import mock
 from tests._helpers import OpenTelemetryBase, StatusCanonicalCode
 from google.cloud.spanner_v1 import Type
 from google.cloud.spanner_v1 import TypeCode
+from google.api_core import gapic_v1
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -410,7 +411,13 @@ class TestTransaction(OpenTelemetryBase):
         with self.assertRaises(ValueError):
             transaction.execute_update(DML_QUERY_WITH_PARAM, PARAMS)
 
-    def _execute_update_helper(self, count=0, query_options=None):
+    def _execute_update_helper(
+        self,
+        count=0,
+        query_options=None,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
+    ):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1 import (
             ResultSet,
@@ -439,6 +446,8 @@ class TestTransaction(OpenTelemetryBase):
             PARAM_TYPES,
             query_mode=MODE,
             query_options=query_options,
+            retry=retry,
+            timeout=timeout,
         )
 
         self.assertEqual(row_count, 1)
@@ -466,6 +475,8 @@ class TestTransaction(OpenTelemetryBase):
         )
         api.execute_sql.assert_called_once_with(
             request=expected_request,
+            retry=retry,
+            timeout=timeout,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
@@ -476,6 +487,15 @@ class TestTransaction(OpenTelemetryBase):
 
     def test_execute_update_w_count(self):
         self._execute_update_helper(count=1)
+
+    def test_execute_update_w_timeout_param(self):
+        self._execute_update_helper(timeout=2.0)
+
+    def test_execute_update_w_retry_param(self):
+        self._execute_update_helper(retry=gapic_v1.method.DEFAULT)
+
+    def test_execute_update_w_timeout_and_retry_params(self):
+        self._execute_update_helper(retry=gapic_v1.method.DEFAULT, timeout=2.0)
 
     def test_execute_update_error(self):
         database = _Database()

@@ -29,6 +29,7 @@ from google.cloud.spanner_v1 import TransactionOptions
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from google.cloud.spanner_v1.batch import _BatchBase
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.api_core import gapic_v1
 
 
 class Transaction(_SnapshotBase, _BatchBase):
@@ -185,7 +186,15 @@ class Transaction(_SnapshotBase, _BatchBase):
         return {}
 
     def execute_update(
-        self, dml, params=None, param_types=None, query_mode=None, query_options=None
+        self,
+        dml,
+        params=None,
+        param_types=None,
+        query_mode=None,
+        query_options=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     ):
         """Perform an ``ExecuteSql`` API request with DML.
 
@@ -211,6 +220,12 @@ class Transaction(_SnapshotBase, _BatchBase):
             :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
 
         :rtype: int
         :returns: Count of rows affected by the DML statement.
@@ -245,7 +260,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         with trace_call(
             "CloudSpanner.ReadWriteTransaction", self._session, trace_attributes
         ):
-            response = api.execute_sql(request=request, metadata=metadata)
+            response = api.execute_sql(
+                request=request, metadata=metadata, retry=retry, timeout=timeout
+            )
         return response.stats.row_count_exact
 
     def batch_update(self, statements):
