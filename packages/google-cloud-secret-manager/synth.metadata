@@ -157,6 +157,7 @@
     "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
     "scripts/readme-gen/templates/install_deps.tmpl.rst",
     "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "secretmanager-v1beta1-py.tar.gz",
     "setup.cfg",
     "testing/.gitignore",
     "tests/unit/gapic/secretmanager_v1/__init__.py",
