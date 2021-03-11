@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.36.2](https://www.github.com/googleapis/python-storage/compare/v1.36.1...v1.36.2) (2021-03-09)
+
+
+### Bug Fixes
+
+* update batch connection to request api endpoint info from client ([#392](https://www.github.com/googleapis/python-storage/issues/392)) ([91fc6d9](https://www.github.com/googleapis/python-storage/commit/91fc6d9870a36308b15a827ed6a691e5b4669b62))
+
 ### [1.36.1](https://www.github.com/googleapis/python-storage/compare/v1.36.0...v1.36.1) (2021-02-19)
 
 
