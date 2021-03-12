@@ -12,14 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-    import pandas
-except ImportError:
-    HAVE_PANDAS = False
-else:
-    HAVE_PANDAS = True  # pragma: NO COVER
 
+import pandas
 import unittest
+
+from google.api import metric_pb2
+from google.api import monitored_resource_pb2
+from google.api_core import datetime_helpers
+from google.cloud import monitoring_v3
+from google.cloud.monitoring_v3 import _dataframe
 
 
 PROJECT = "my-project"
@@ -58,20 +59,22 @@ def parse_timestamps():
 
 
 def generate_query_results():
-    from google.cloud.monitoring_v3 import types
-
     def P(timestamp, value):
-        interval = types.TimeInterval()
-        interval.start_time.FromJsonString(timestamp)
-        interval.end_time.FromJsonString(timestamp)
-        return types.Point(interval=interval, value={"double_value": value})
+        interval = monitoring_v3.TimeInterval()
+        interval.start_time = datetime_helpers.from_rfc3339(timestamp).replace(
+            tzinfo=None
+        )
+        interval.end_time = datetime_helpers.from_rfc3339(timestamp).replace(
+            tzinfo=None
+        )
+        return monitoring_v3.Point(interval=interval, value={"double_value": value})
 
     for metric_labels, resource_labels, value in zip(
         METRIC_LABELS, RESOURCE_LABELS, VALUES
     ):
-        yield types.TimeSeries(
-            metric=types.Metric(type=METRIC_TYPE, labels=metric_labels),
-            resource=types.MonitoredResource(
+        yield monitoring_v3.TimeSeries(
+            metric=metric_pb2.Metric(type=METRIC_TYPE, labels=metric_labels),
+            resource=monitored_resource_pb2.MonitoredResource(
                 type=RESOURCE_TYPE, labels=resource_labels
             ),
             metric_kind=METRIC_KIND,
@@ -80,12 +83,9 @@ def generate_query_results():
         )
 
 
-@unittest.skipUnless(HAVE_PANDAS, "No pandas")
 class Test__build_dataframe(unittest.TestCase):
     def _call_fut(self, *args, **kwargs):
-        from google.cloud.monitoring_v3._dataframe import _build_dataframe
-
-        return _build_dataframe(*args, **kwargs)
+        return _dataframe._build_dataframe(*args, **kwargs)
 
     def test_both_label_and_labels_illegal(self):
         with self.assertRaises(ValueError):

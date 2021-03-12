@@ -93,16 +93,19 @@ s.replace(
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     microgenerator=True,
+    unit_test_extras=["pandas"],
+    system_test_extras=["pandas"],
     cov_level=99
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+
+# Don't treat docs (sphinx) warnings as errors.
+s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
 
-# Don't treat warnings as errors.
-s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

@@ -21,14 +21,15 @@ try:
 except ImportError:  # pragma: NO COVER
     pandas = None
 
-from google.cloud.monitoring_v3.types import TimeSeries
+from google.cloud import monitoring_v3
+
 
 TOP_RESOURCE_LABELS = ("project_id", "aws_account", "location", "region", "zone")
 
 
 def _extract_header(time_series):
     """Return a copy of time_series with the points removed."""
-    return TimeSeries(
+    return monitoring_v3.TimeSeries(
         metric=time_series.metric,
         resource=time_series.resource,
         metric_kind=time_series.metric_kind,
@@ -46,15 +47,19 @@ def _extract_labels(time_series):
 
 def _extract_value(typed_value):
     """Extract the value from a TypedValue."""
-    value_type = typed_value.WhichOneof("value")
-    return typed_value.__getattribute__(value_type)
+    # There is no equivalent of WhichOneOf in proto-plus
+    # This may break if the field names have been altered in the
+    # proto-plus representation
+    # https://github.com/googleapis/proto-plus-python/issues/137
+    value_type = monitoring_v3.TypedValue.pb(typed_value).WhichOneof("value")
+    return getattr(typed_value, value_type)
 
 
 def _build_dataframe(time_series_iterable, label=None, labels=None):  # pragma: NO COVER
     """Build a :mod:`pandas` dataframe out of time series.
 
     :type time_series_iterable:
-        iterable over :class:`~google.cloud.monitoring_v3.types.TimeSeries`
+        iterable over :class:`~google.cloud.monitoring_v3.TimeSeries`
     :param time_series_iterable:
         An iterable (e.g., a query object) yielding time series.
 
@@ -95,7 +100,8 @@ def _build_dataframe(time_series_iterable, label=None, labels=None):  # pragma: 
         pandas_series = pandas.Series(
             data=[_extract_value(point.value) for point in time_series.points],
             index=[
-                point.interval.end_time.ToNanoseconds() for point in time_series.points
+                point.interval.end_time.timestamp_pb().ToNanoseconds()
+                for point in time_series.points
             ],
         )
         columns.append(pandas_series)
