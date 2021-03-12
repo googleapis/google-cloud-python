@@ -16,29 +16,29 @@
 #
 
 from .connection import (
+    AwsCrossAccountRole,
+    AwsProperties,
+    CloudSqlCredential,
+    CloudSqlProperties,
+    Connection,
     CreateConnectionRequest,
+    DeleteConnectionRequest,
     GetConnectionRequest,
     ListConnectionsRequest,
     ListConnectionsResponse,
     UpdateConnectionRequest,
-    DeleteConnectionRequest,
-    Connection,
-    CloudSqlProperties,
-    CloudSqlCredential,
-    AwsProperties,
-    AwsCrossAccountRole,
 )
 
 __all__ = (
+    "AwsCrossAccountRole",
+    "AwsProperties",
+    "CloudSqlCredential",
+    "CloudSqlProperties",
+    "Connection",
     "CreateConnectionRequest",
+    "DeleteConnectionRequest",
     "GetConnectionRequest",
     "ListConnectionsRequest",
     "ListConnectionsResponse",
     "UpdateConnectionRequest",
-    "DeleteConnectionRequest",
-    "Connection",
-    "CloudSqlProperties",
-    "CloudSqlCredential",
-    "AwsProperties",
-    "AwsCrossAccountRole",
 )
