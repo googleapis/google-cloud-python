@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.15.0...v1.16.0) (2021-03-12)
+
+
+### Features
+
+* add preserving_proto_field_name passthrough in MessageMeta.to_dict ([#211](https://www.github.com/googleapis/proto-plus-python/issues/211)) ([7675a0c](https://www.github.com/googleapis/proto-plus-python/commit/7675a0c8d1004f2727d64100527f2b208d305017))
+
 ## [1.15.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.14.3...v1.15.0) (2021-03-10)
 
 
