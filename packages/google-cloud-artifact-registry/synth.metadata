@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-artifact-registry"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "ac8f20f12e7a4c0b0ae1c6fa415f684a25ea82b7"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "ac8f20f12e7a4c0b0ae1c6fa415f684a25ea82b7"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "artifactregistry",
+        "apiVersion": "v1beta2",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}

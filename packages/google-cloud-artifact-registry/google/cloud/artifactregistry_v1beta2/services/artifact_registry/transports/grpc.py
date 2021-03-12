@@ -1,0 +1,832 @@
+# -*- coding: utf-8 -*-
+
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple
+
+from google.api_core import grpc_helpers  # type: ignore
+from google.api_core import operations_v1  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google import auth  # type: ignore
+from google.auth import credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+
+import grpc  # type: ignore
+
+from google.cloud.artifactregistry_v1beta2.types import file
+from google.cloud.artifactregistry_v1beta2.types import package
+from google.cloud.artifactregistry_v1beta2.types import repository
+from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
+from google.cloud.artifactregistry_v1beta2.types import tag
+from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
+from google.cloud.artifactregistry_v1beta2.types import version
+from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
+from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.longrunning import operations_pb2 as operations  # type: ignore
+from google.protobuf import empty_pb2 as empty  # type: ignore
+
+from .base import ArtifactRegistryTransport, DEFAULT_CLIENT_INFO
+
+
+class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
+    """gRPC backend transport for ArtifactRegistry.
+
+    The Artifact Registry API service.
+
+    Artifact Registry is an artifact management system for storing
+    artifacts from different package management systems.
+
+    The resources managed by this API are:
+
+    -  Repositories, which group packages and their data.
+    -  Packages, which group versions and their tags.
+    -  Versions, which are specific forms of a package.
+    -  Tags, which represent alternative names for versions.
+    -  Files, which contain content and are optionally associated with a
+       Package or Version.
+
+    This class defines the same methods as the primary client, so the
+    primary client can load the underlying transport implementation
+    and call it.
+
+    It sends protocol buffers over the wire using gRPC (which is built on
+    top of HTTP/2); the ``grpcio`` package must be installed.
+    """
+
+    _stubs: Dict[str, Callable]
+
+    def __init__(
+        self,
+        *,
+        host: str = "artifactregistry.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+    ) -> None:
+        """Instantiate the transport.
+
+        Args:
+            host (Optional[str]): The hostname to connect to.
+            credentials (Optional[google.auth.credentials.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify the application to the service; if none
+                are specified, the client will attempt to ascertain the
+                credentials from the environment.
+                This argument is ignored if ``channel`` is provided.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+                which to make calls.
+            api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
+                If provided, it overrides the ``host`` argument and tries to create
+                a mutual TLS channel with client SSL credentials from
+                ``client_cert_source`` or applicatin default SSL credentials.
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                Deprecated. A callback to provide client SSL certificate bytes and
+                private key bytes, both in PEM format. It is ignored if
+                ``api_mtls_endpoint`` is None.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                A callback to provide client certificate bytes and private key bytes,
+                both in PEM format. It is used to configure mutual TLS channel. It is
+                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
+
+        Raises:
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+              creation failed for any reason.
+          google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
+        """
+        self._ssl_channel_credentials = ssl_channel_credentials
+
+        if api_mtls_endpoint:
+            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
+        if client_cert_source:
+            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
+
+        if channel:
+            # Sanity check: Ensure that channel and credentials are not both
+            # provided.
+            credentials = False
+
+            # If a channel was explicitly provided, set it.
+            self._grpc_channel = channel
+            self._ssl_channel_credentials = None
+        elif api_mtls_endpoint:
+            host = (
+                api_mtls_endpoint
+                if ":" in api_mtls_endpoint
+                else api_mtls_endpoint + ":443"
+            )
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            # Create SSL credentials with client_cert_source or application
+            # default SSL credentials.
+            if client_cert_source:
+                cert, key = client_cert_source()
+                ssl_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+            else:
+                ssl_credentials = SslCredentials().ssl_credentials
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=ssl_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+            self._ssl_channel_credentials = ssl_credentials
+        else:
+            host = host if ":" in host else host + ":443"
+
+            if credentials is None:
+                credentials, _ = auth.default(
+                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
+                )
+
+            if client_cert_source_for_mtls and not ssl_channel_credentials:
+                cert, key = client_cert_source_for_mtls()
+                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                    certificate_chain=cert, private_key=key
+                )
+
+            # create a new channel. The provided one is ignored.
+            self._grpc_channel = type(self).create_channel(
+                host,
+                credentials=credentials,
+                credentials_file=credentials_file,
+                ssl_credentials=self._ssl_channel_credentials,
+                scopes=scopes or self.AUTH_SCOPES,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        self._stubs = {}  # type: Dict[str, Callable]
+        self._operations_client = None
+
+        # Run the base constructor.
+        super().__init__(
+            host=host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes or self.AUTH_SCOPES,
+            quota_project_id=quota_project_id,
+            client_info=client_info,
+        )
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "artifactregistry.googleapis.com",
+        credentials: credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            address (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
+
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
+        """
+        scopes = scopes or cls.AUTH_SCOPES
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service.
+        """
+        return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Sanity check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
+    def list_repositories(
+        self,
+    ) -> Callable[
+        [repository.ListRepositoriesRequest], repository.ListRepositoriesResponse
+    ]:
+        r"""Return a callable for the list repositories method over gRPC.
+
+        Lists repositories.
+
+        Returns:
+            Callable[[~.ListRepositoriesRequest],
+                    ~.ListRepositoriesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_repositories" not in self._stubs:
+            self._stubs["list_repositories"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ListRepositories",
+                request_serializer=repository.ListRepositoriesRequest.serialize,
+                response_deserializer=repository.ListRepositoriesResponse.deserialize,
+            )
+        return self._stubs["list_repositories"]
+
+    @property
+    def get_repository(
+        self,
+    ) -> Callable[[repository.GetRepositoryRequest], repository.Repository]:
+        r"""Return a callable for the get repository method over gRPC.
+
+        Gets a repository.
+
+        Returns:
+            Callable[[~.GetRepositoryRequest],
+                    ~.Repository]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_repository" not in self._stubs:
+            self._stubs["get_repository"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetRepository",
+                request_serializer=repository.GetRepositoryRequest.serialize,
+                response_deserializer=repository.Repository.deserialize,
+            )
+        return self._stubs["get_repository"]
+
+    @property
+    def create_repository(
+        self,
+    ) -> Callable[[gda_repository.CreateRepositoryRequest], operations.Operation]:
+        r"""Return a callable for the create repository method over gRPC.
+
+        Creates a repository. The returned Operation will
+        finish once the repository has been created. Its
+        response will be the created Repository.
+
+        Returns:
+            Callable[[~.CreateRepositoryRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_repository" not in self._stubs:
+            self._stubs["create_repository"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/CreateRepository",
+                request_serializer=gda_repository.CreateRepositoryRequest.serialize,
+                response_deserializer=operations.Operation.FromString,
+            )
+        return self._stubs["create_repository"]
+
+    @property
+    def update_repository(
+        self,
+    ) -> Callable[[gda_repository.UpdateRepositoryRequest], gda_repository.Repository]:
+        r"""Return a callable for the update repository method over gRPC.
+
+        Updates a repository.
+
+        Returns:
+            Callable[[~.UpdateRepositoryRequest],
+                    ~.Repository]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_repository" not in self._stubs:
+            self._stubs["update_repository"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/UpdateRepository",
+                request_serializer=gda_repository.UpdateRepositoryRequest.serialize,
+                response_deserializer=gda_repository.Repository.deserialize,
+            )
+        return self._stubs["update_repository"]
+
+    @property
+    def delete_repository(
+        self,
+    ) -> Callable[[repository.DeleteRepositoryRequest], operations.Operation]:
+        r"""Return a callable for the delete repository method over gRPC.
+
+        Deletes a repository and all of its contents. The
+        returned Operation will finish once the repository has
+        been deleted. It will not have any Operation metadata
+        and will return a google.protobuf.Empty response.
+
+        Returns:
+            Callable[[~.DeleteRepositoryRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_repository" not in self._stubs:
+            self._stubs["delete_repository"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeleteRepository",
+                request_serializer=repository.DeleteRepositoryRequest.serialize,
+                response_deserializer=operations.Operation.FromString,
+            )
+        return self._stubs["delete_repository"]
+
+    @property
+    def list_packages(
+        self,
+    ) -> Callable[[package.ListPackagesRequest], package.ListPackagesResponse]:
+        r"""Return a callable for the list packages method over gRPC.
+
+        Lists packages.
+
+        Returns:
+            Callable[[~.ListPackagesRequest],
+                    ~.ListPackagesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_packages" not in self._stubs:
+            self._stubs["list_packages"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ListPackages",
+                request_serializer=package.ListPackagesRequest.serialize,
+                response_deserializer=package.ListPackagesResponse.deserialize,
+            )
+        return self._stubs["list_packages"]
+
+    @property
+    def get_package(self) -> Callable[[package.GetPackageRequest], package.Package]:
+        r"""Return a callable for the get package method over gRPC.
+
+        Gets a package.
+
+        Returns:
+            Callable[[~.GetPackageRequest],
+                    ~.Package]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_package" not in self._stubs:
+            self._stubs["get_package"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetPackage",
+                request_serializer=package.GetPackageRequest.serialize,
+                response_deserializer=package.Package.deserialize,
+            )
+        return self._stubs["get_package"]
+
+    @property
+    def delete_package(
+        self,
+    ) -> Callable[[package.DeletePackageRequest], operations.Operation]:
+        r"""Return a callable for the delete package method over gRPC.
+
+        Deletes a package and all of its versions and tags.
+        The returned operation will complete once the package
+        has been deleted.
+
+        Returns:
+            Callable[[~.DeletePackageRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_package" not in self._stubs:
+            self._stubs["delete_package"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeletePackage",
+                request_serializer=package.DeletePackageRequest.serialize,
+                response_deserializer=operations.Operation.FromString,
+            )
+        return self._stubs["delete_package"]
+
+    @property
+    def list_versions(
+        self,
+    ) -> Callable[[version.ListVersionsRequest], version.ListVersionsResponse]:
+        r"""Return a callable for the list versions method over gRPC.
+
+        Lists versions.
+
+        Returns:
+            Callable[[~.ListVersionsRequest],
+                    ~.ListVersionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_versions" not in self._stubs:
+            self._stubs["list_versions"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ListVersions",
+                request_serializer=version.ListVersionsRequest.serialize,
+                response_deserializer=version.ListVersionsResponse.deserialize,
+            )
+        return self._stubs["list_versions"]
+
+    @property
+    def get_version(self) -> Callable[[version.GetVersionRequest], version.Version]:
+        r"""Return a callable for the get version method over gRPC.
+
+        Gets a version
+
+        Returns:
+            Callable[[~.GetVersionRequest],
+                    ~.Version]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_version" not in self._stubs:
+            self._stubs["get_version"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetVersion",
+                request_serializer=version.GetVersionRequest.serialize,
+                response_deserializer=version.Version.deserialize,
+            )
+        return self._stubs["get_version"]
+
+    @property
+    def delete_version(
+        self,
+    ) -> Callable[[version.DeleteVersionRequest], operations.Operation]:
+        r"""Return a callable for the delete version method over gRPC.
+
+        Deletes a version and all of its content. The
+        returned operation will complete once the version has
+        been deleted.
+
+        Returns:
+            Callable[[~.DeleteVersionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_version" not in self._stubs:
+            self._stubs["delete_version"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeleteVersion",
+                request_serializer=version.DeleteVersionRequest.serialize,
+                response_deserializer=operations.Operation.FromString,
+            )
+        return self._stubs["delete_version"]
+
+    @property
+    def list_files(self) -> Callable[[file.ListFilesRequest], file.ListFilesResponse]:
+        r"""Return a callable for the list files method over gRPC.
+
+        Lists files.
+
+        Returns:
+            Callable[[~.ListFilesRequest],
+                    ~.ListFilesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_files" not in self._stubs:
+            self._stubs["list_files"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ListFiles",
+                request_serializer=file.ListFilesRequest.serialize,
+                response_deserializer=file.ListFilesResponse.deserialize,
+            )
+        return self._stubs["list_files"]
+
+    @property
+    def get_file(self) -> Callable[[file.GetFileRequest], file.File]:
+        r"""Return a callable for the get file method over gRPC.
+
+        Gets a file.
+
+        Returns:
+            Callable[[~.GetFileRequest],
+                    ~.File]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_file" not in self._stubs:
+            self._stubs["get_file"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetFile",
+                request_serializer=file.GetFileRequest.serialize,
+                response_deserializer=file.File.deserialize,
+            )
+        return self._stubs["get_file"]
+
+    @property
+    def list_tags(self) -> Callable[[tag.ListTagsRequest], tag.ListTagsResponse]:
+        r"""Return a callable for the list tags method over gRPC.
+
+        Lists tags.
+
+        Returns:
+            Callable[[~.ListTagsRequest],
+                    ~.ListTagsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_tags" not in self._stubs:
+            self._stubs["list_tags"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/ListTags",
+                request_serializer=tag.ListTagsRequest.serialize,
+                response_deserializer=tag.ListTagsResponse.deserialize,
+            )
+        return self._stubs["list_tags"]
+
+    @property
+    def get_tag(self) -> Callable[[tag.GetTagRequest], tag.Tag]:
+        r"""Return a callable for the get tag method over gRPC.
+
+        Gets a tag.
+
+        Returns:
+            Callable[[~.GetTagRequest],
+                    ~.Tag]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_tag" not in self._stubs:
+            self._stubs["get_tag"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetTag",
+                request_serializer=tag.GetTagRequest.serialize,
+                response_deserializer=tag.Tag.deserialize,
+            )
+        return self._stubs["get_tag"]
+
+    @property
+    def create_tag(self) -> Callable[[gda_tag.CreateTagRequest], gda_tag.Tag]:
+        r"""Return a callable for the create tag method over gRPC.
+
+        Creates a tag.
+
+        Returns:
+            Callable[[~.CreateTagRequest],
+                    ~.Tag]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_tag" not in self._stubs:
+            self._stubs["create_tag"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/CreateTag",
+                request_serializer=gda_tag.CreateTagRequest.serialize,
+                response_deserializer=gda_tag.Tag.deserialize,
+            )
+        return self._stubs["create_tag"]
+
+    @property
+    def update_tag(self) -> Callable[[gda_tag.UpdateTagRequest], gda_tag.Tag]:
+        r"""Return a callable for the update tag method over gRPC.
+
+        Updates a tag.
+
+        Returns:
+            Callable[[~.UpdateTagRequest],
+                    ~.Tag]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_tag" not in self._stubs:
+            self._stubs["update_tag"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/UpdateTag",
+                request_serializer=gda_tag.UpdateTagRequest.serialize,
+                response_deserializer=gda_tag.Tag.deserialize,
+            )
+        return self._stubs["update_tag"]
+
+    @property
+    def delete_tag(self) -> Callable[[tag.DeleteTagRequest], empty.Empty]:
+        r"""Return a callable for the delete tag method over gRPC.
+
+        Deletes a tag.
+
+        Returns:
+            Callable[[~.DeleteTagRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_tag" not in self._stubs:
+            self._stubs["delete_tag"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeleteTag",
+                request_serializer=tag.DeleteTagRequest.serialize,
+                response_deserializer=empty.Empty.FromString,
+            )
+        return self._stubs["delete_tag"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+
+        Updates the IAM policy for a given resource.
+
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/SetIamPolicy",
+                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+
+        Gets the IAM policy for a given resource.
+
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetIamPolicy",
+                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+
+        Tests if the caller has a list of permissions on a
+        resource.
+
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
+                "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/TestIamPermissions",
+                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
+
+
+__all__ = ("ArtifactRegistryGrpcTransport",)

@@ -1,0 +1,12 @@
+{
+  "name": "artifactregistry",
+  "name_pretty": "Artifact Registry",
+  "product_documentation": "https://cloud.google.com/artifact-registry",
+  "client_documentation": "https://googleapis.dev/python/artifactregistry/latest",
+  "issue_tracker": "",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/python-artifact-registry",
+  "distribution_name": "google-cloud-artifact-registry",
+  "api_id": "artifactregistry.googleapis.com"
+}
