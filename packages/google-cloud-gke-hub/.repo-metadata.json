@@ -1,0 +1,12 @@
+{
+    "name": "gkehub",
+    "name_pretty": "GKE Hub API",
+    "product_documentation": "https://cloud.google.com/anthos/gke/docs/",
+    "client_documentation": "https://googleapis.dev/python/gkehub/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-gke-hub",
+    "distribution_name": "google-cloud-gke-hub",
+    "api_id": "gkehub.googleapis.com"
+  }
