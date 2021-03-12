@@ -136,3 +136,15 @@ def test_json_unknown_field():
     # Don't permit unknown fields by default
     with pytest.raises(ParseError):
         o = Octopus.from_json(json_str)
+
+
+def test_json_snake_case():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.INT32, number=1)
+
+    json_str = '{\n  "mass_kg": 20\n}'
+    s = Squid.from_json(json_str)
+
+    assert s.mass_kg == 20
+
+    assert Squid.to_json(s, preserving_proto_field_name=True) == json_str

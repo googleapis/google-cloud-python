@@ -332,7 +332,8 @@ class MessageMeta(type):
         instance,
         *,
         use_integers_for_enums=True,
-        including_default_value_fields=True
+        including_default_value_fields=True,
+        preserving_proto_field_name=False,
     ) -> str:
         """Given a message instance, serialize it to json
 
@@ -342,6 +343,9 @@ class MessageMeta(type):
             use_integers_for_enums (Optional(bool)): An option that determines whether enum
                 values should be represented by strings (False) or integers (True).
                 Default is True.
+            preserving_proto_field_name (Optional(bool)): An option that
+                determines whether field name representations preserve
+                proto case (snake_case) or use lowerCamelCase. Default is False.
 
         Returns:
             str: The json string representation of the protocol buffer.
@@ -350,6 +354,7 @@ class MessageMeta(type):
             cls.pb(instance),
             use_integers_for_enums=use_integers_for_enums,
             including_default_value_fields=including_default_value_fields,
+            preserving_proto_field_name=preserving_proto_field_name,
         )
 
     def from_json(cls, payload, *, ignore_unknown_fields=False) -> "Message":
@@ -620,7 +625,7 @@ class _MessageInfo:
         package: str,
         full_name: str,
         marshal: Marshal,
-        options: descriptor_pb2.MessageOptions
+        options: descriptor_pb2.MessageOptions,
     ) -> None:
         self.package = package
         self.full_name = full_name
