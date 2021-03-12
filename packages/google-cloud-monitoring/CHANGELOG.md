@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-monitoring/compare/v2.0.1...v2.1.0) (2021-03-12)
+
+
+### Features
+
+* Adding labels to the metric descriptor in the snippets.py ([#88](https://www.github.com/googleapis/python-monitoring/issues/88)) ([811f9aa](https://www.github.com/googleapis/python-monitoring/commit/811f9aa409ec922402cb83a6753812518b7a0d4b))
+
+
+### Bug Fixes
+
+* fix `as_dataframe` ([#91](https://www.github.com/googleapis/python-monitoring/issues/91)) ([f135202](https://www.github.com/googleapis/python-monitoring/commit/f135202f1dd7866c4be2d709b522beb2710f5cda))
+
+
+### Documentation
+
+* remove code snippet and 'Stackdriver' ([#71](https://www.github.com/googleapis/python-monitoring/issues/71)) ([4cdb1ff](https://www.github.com/googleapis/python-monitoring/commit/4cdb1ff439154409c94e347dd5f3b6e2bc40e998))
+
 ### [2.0.1](https://www.github.com/googleapis/python-monitoring/compare/v2.0.0...v2.0.1) (2021-02-18)
 
 
