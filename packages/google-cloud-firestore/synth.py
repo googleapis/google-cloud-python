@@ -67,6 +67,23 @@ for version in admin_versions:
 
 
 # ----------------------------------------------------------------------------
+# Generate firestore bundle GAPIC layer
+# ----------------------------------------------------------------------------
+for version in ["v1"]:
+    library = gapic.py_library(
+        service="firestore-bundle",
+        version=version,
+        proto_path='google/firestore/bundle',
+        bazel_target=f"//google/firestore/bundle:firestore-bundle-py",
+    )
+    s.move(
+        library / f"google/cloud/bundle",
+        f"google/cloud/firestore_bundle",
+    )
+    s.move(library / f"tests", f"tests")
+
+
+# ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
@@ -202,6 +219,18 @@ except ImportError:
 
 
 """,
+)
+
+s.replace(
+    "google/cloud/firestore_bundle/types/bundle.py",
+    "from google.firestore.v1 import document_pb2 as gfv_document  # type: ignore\n",
+    "from google.cloud.firestore_v1.types import document as gfv_document\n",
+)
+
+s.replace(
+    "google/cloud/firestore_bundle/types/bundle.py",
+    "from google.firestore.v1 import query_pb2 as query  # type: ignore\n",
+    "from google.cloud.firestore_v1.types import query\n",
 )
 
 s.replace(
