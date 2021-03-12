@@ -238,6 +238,7 @@ def test_create_subscription_with_dead_letter_policy(
     assert f"After {DEFAULT_MAX_DELIVERY_ATTEMPTS} delivery attempts." in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_receive_with_delivery_attempts(
     publisher_client, topic, dead_letter_topic, subscription_dlq, capsys
 ):
