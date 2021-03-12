@@ -369,7 +369,9 @@ class MessageMeta(type):
         Parse(payload, instance._pb, ignore_unknown_fields=ignore_unknown_fields)
         return instance
 
-    def to_dict(cls, instance, *, use_integers_for_enums=True) -> "Message":
+    def to_dict(
+        cls, instance, *, use_integers_for_enums=True, preserving_proto_field_name=True
+    ) -> "Message":
         """Given a message instance, return its representation as a python dict.
 
         Args:
@@ -378,6 +380,9 @@ class MessageMeta(type):
             use_integers_for_enums (Optional(bool)): An option that determines whether enum
                 values should be represented by strings (False) or integers (True).
                 Default is True.
+            preserving_proto_field_name (Optional(bool)): An option that
+                determines whether field name representations preserve
+                proto case (snake_case) or use lowerCamelCase. Default is True.
 
         Returns:
             dict: A representation of the protocol buffer using pythonic data structures.
@@ -387,7 +392,7 @@ class MessageMeta(type):
         return MessageToDict(
             cls.pb(instance),
             including_default_value_fields=True,
-            preserving_proto_field_name=True,
+            preserving_proto_field_name=preserving_proto_field_name,
             use_integers_for_enums=use_integers_for_enums,
         )
 
