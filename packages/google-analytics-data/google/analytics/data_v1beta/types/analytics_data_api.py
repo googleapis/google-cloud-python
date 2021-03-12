@@ -96,31 +96,30 @@ class RunReportRequest(proto.Message):
             Metrics must be requested to be used in this
             filter. Dimensions cannot be used in this
             filter.
-        page_size (int):
-            Page size is for paging and specifies maximum number of rows
-            to return. The API returns a maximum of 200,000 rows per
-            request, no matter how many you ask for. Page size must be
-            positive.
+        offset (int):
+            The row count of the start row. The first row is counted as
+            row 0.
 
-            The API can also return fewer rows than the requested
-            ``pageSize``, if there aren't as many dimension values as
-            the ``pageSize``. For instance, there are fewer than 300
-            possible values for the dimension ``country``, so when
-            reporting on only ``country``, you can't get more than 300
-            rows, even if you set ``pageSize`` to a higher value.
+            When paging, the first request does not specify offset; or
+            equivalently, sets offset to 0; the first request returns
+            the first ``limit`` of rows. The second request sets offset
+            to the ``limit`` of the first request; the second request
+            returns the second ``limit`` of rows.
 
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-        page_token (str):
-            A continuation token to get the next page of the results.
-            Adding this to the request will return the next page of rows
-            after the ``pageToken``. The ``pageToken`` should be the
-            value returned in the ``nextPageToken`` parameter in the
-            response.
+        limit (int):
+            The number of rows to return. If unspecified, 10,000 rows
+            are returned. The API returns a maximum of 100,000 rows per
+            request, no matter how many you ask for. ``limit`` must be
+            positive.
 
-            When paginating, all other parameters specified in
-            ``RunReportRequest`` must match the call that provided the
-            page token.
+            The API can also return fewer rows than the requested
+            ``limit``, if there aren't as many dimension values as the
+            ``limit``. For instance, there are fewer than 300 possible
+            values for the dimension ``country``, so when reporting on
+            only ``country``, you can't get more than 300 rows, even if
+            you set ``limit`` to a higher value.
 
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
@@ -164,9 +163,9 @@ class RunReportRequest(proto.Message):
 
     metric_filter = proto.Field(proto.MESSAGE, number=6, message=data.FilterExpression,)
 
-    page_size = proto.Field(proto.INT32, number=7)
+    offset = proto.Field(proto.INT64, number=7)
 
-    page_token = proto.Field(proto.STRING, number=8)
+    limit = proto.Field(proto.INT64, number=8)
 
     metric_aggregations = proto.RepeatedField(
         proto.ENUM, number=9, enum=data.MetricAggregation,
@@ -205,22 +204,14 @@ class RunReportResponse(proto.Message):
             If requested, the maximum values of metrics.
         minimums (Sequence[google.analytics.data_v1beta.types.Row]):
             If requested, the minimum values of metrics.
-        next_page_token (str):
-            A token that can be sent as ``pageToken`` in a subsequent
-            ``RunReportRequest`` call to retrieve the next page of
-            report rows. If this field is omitted, there are no
-            subsequent pages of report rows.
-
-            To learn more about this pagination parameter, see
-            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
-        total_size (int):
-            The total number of rows in the query result. ``totalSize``
+        row_count (int):
+            The total number of rows in the query result. ``rowCount``
             is independent of the number of rows returned in the
-            response, the ``pageSize`` request parameter, and the
-            ``pageToken`` request parameter. For example if a query
-            returns 175 rows and includes ``pageSize`` of 50 in the API
-            request, the response will contain ``totalSize`` of 175 but
-            only 50 rows.
+            response, the ``limit`` request parameter, and the
+            ``offset`` request parameter. For example if a query returns
+            175 rows and includes ``limit`` of 50 in the API request,
+            the response will contain ``rowCount`` of 175 but only 50
+            rows.
 
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
@@ -230,10 +221,6 @@ class RunReportResponse(proto.Message):
             This Analytics Property's quota state
             including this request.
     """
-
-    @property
-    def raw_page(self):
-        return self
 
     dimension_headers = proto.RepeatedField(
         proto.MESSAGE, number=1, message=data.DimensionHeader,
@@ -251,13 +238,11 @@ class RunReportResponse(proto.Message):
 
     minimums = proto.RepeatedField(proto.MESSAGE, number=6, message=data.Row,)
 
-    next_page_token = proto.Field(proto.STRING, number=7)
+    row_count = proto.Field(proto.INT32, number=7)
 
-    total_size = proto.Field(proto.INT32, number=8)
+    metadata = proto.Field(proto.MESSAGE, number=8, message=data.ResponseMetaData,)
 
-    metadata = proto.Field(proto.MESSAGE, number=9, message=data.ResponseMetaData,)
-
-    property_quota = proto.Field(proto.MESSAGE, number=10, message=data.PropertyQuota,)
+    property_quota = proto.Field(proto.MESSAGE, number=9, message=data.PropertyQuota,)
 
 
 class RunPivotReportRequest(proto.Message):
@@ -568,21 +553,18 @@ class RunRealtimeReportRequest(proto.Message):
             Metrics must be requested to be used in this
             filter. Dimensions cannot be used in this
             filter.
-        page_size (int):
-            Page size specifies maximum number of rows to return. If
-            unspecified, up to 10,000 rows are returned. The API returns
-            a maximum of 100,000 rows per request, no matter how many
-            you ask for. Page size must be positive.
+        limit (int):
+            The number of rows to return. If unspecified, 10,000 rows
+            are returned. The API returns a maximum of 100,000 rows per
+            request, no matter how many you ask for. ``limit`` must be
+            positive.
 
             The API can also return fewer rows than the requested
-            ``pageSize``, if there aren't as many dimension values as
-            the ``pageSize``. For instance, there are fewer than 300
-            possible values for the dimension ``country``, so when
-            reporting on only ``country``, you can't get more than 300
-            rows, even if you set ``pageSize`` to a higher value.
-
-            To learn more about this pagination parameter, see
-            `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics#pagination>`__.
+            ``limit``, if there aren't as many dimension values as the
+            ``limit``. For instance, there are fewer than 300 possible
+            values for the dimension ``country``, so when reporting on
+            only ``country``, you can't get more than 300 rows, even if
+            you set ``limit`` to a higher value.
         metric_aggregations (Sequence[google.analytics.data_v1beta.types.MetricAggregation]):
             Aggregation of metrics. Aggregated metric values will be
             shown in rows where the dimension_values are set to
@@ -608,7 +590,7 @@ class RunRealtimeReportRequest(proto.Message):
 
     metric_filter = proto.Field(proto.MESSAGE, number=5, message=data.FilterExpression,)
 
-    page_size = proto.Field(proto.INT32, number=6)
+    limit = proto.Field(proto.INT64, number=6)
 
     metric_aggregations = proto.RepeatedField(
         proto.ENUM, number=7, enum=data.MetricAggregation,
@@ -642,13 +624,13 @@ class RunRealtimeReportResponse(proto.Message):
             If requested, the maximum values of metrics.
         minimums (Sequence[google.analytics.data_v1beta.types.Row]):
             If requested, the minimum values of metrics.
-        total_size (int):
-            The total number of rows in the query result. ``totalSize``
+        row_count (int):
+            The total number of rows in the query result. ``rowCount``
             is independent of the number of rows returned in the
-            response and the ``pageSize`` request parameter. For example
-            if a query returns 175 rows and includes ``pageSize`` of 50
-            in the API request, the response will contain ``totalSize``
-            of 175 but only 50 rows.
+            response and the ``limit`` request parameter. For example if
+            a query returns 175 rows and includes ``limit`` of 50 in the
+            API request, the response will contain ``rowCount`` of 175
+            but only 50 rows.
         property_quota (google.analytics.data_v1beta.types.PropertyQuota):
             This Analytics Property's Realtime quota
             state including this request.
@@ -670,7 +652,7 @@ class RunRealtimeReportResponse(proto.Message):
 
     minimums = proto.RepeatedField(proto.MESSAGE, number=6, message=data.Row,)
 
-    total_size = proto.Field(proto.INT32, number=7)
+    row_count = proto.Field(proto.INT32, number=7)
 
     property_quota = proto.Field(proto.MESSAGE, number=8, message=data.PropertyQuota,)
 

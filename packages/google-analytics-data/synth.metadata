@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-analytics-data.git",
-        "sha": "58f834e80510abdcbb49801e2901e1ee44653396"
+        "sha": "fdebf9b96e915a06fecaeb83c1ca59de077249a8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "8f117308d5bb55816953a0d6ad1a7d27a69a7d3f",
-        "internalRef": "361084441"
+        "sha": "28a591963253d52ce3a25a918cafbdd9928de8cf",
+        "internalRef": "361662015"
       }
     },
     {
@@ -133,7 +133,6 @@
     "google/analytics/data_v1beta/services/beta_analytics_data/__init__.py",
     "google/analytics/data_v1beta/services/beta_analytics_data/async_client.py",
     "google/analytics/data_v1beta/services/beta_analytics_data/client.py",
-    "google/analytics/data_v1beta/services/beta_analytics_data/pagers.py",
     "google/analytics/data_v1beta/services/beta_analytics_data/transports/__init__.py",
     "google/analytics/data_v1beta/services/beta_analytics_data/transports/base.py",
     "google/analytics/data_v1beta/services/beta_analytics_data/transports/grpc.py",

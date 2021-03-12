@@ -31,7 +31,6 @@ from google.analytics.data_v1beta.services.beta_analytics_data import (
 from google.analytics.data_v1beta.services.beta_analytics_data import (
     BetaAnalyticsDataClient,
 )
-from google.analytics.data_v1beta.services.beta_analytics_data import pagers
 from google.analytics.data_v1beta.services.beta_analytics_data import transports
 from google.analytics.data_v1beta.types import analytics_data_api
 from google.analytics.data_v1beta.types import data
@@ -472,9 +471,7 @@ def test_run_report(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_data_api.RunReportResponse(
-            next_page_token="next_page_token_value", total_size=1086,
-        )
+        call.return_value = analytics_data_api.RunReportResponse(row_count=992,)
 
         response = client.run_report(request)
 
@@ -486,11 +483,9 @@ def test_run_report(
 
     # Establish that the response is the type that we expect.
 
-    assert isinstance(response, pagers.RunReportPager)
+    assert isinstance(response, analytics_data_api.RunReportResponse)
 
-    assert response.next_page_token == "next_page_token_value"
-
-    assert response.total_size == 1086
+    assert response.row_count == 992
 
 
 def test_run_report_from_dict():
@@ -529,9 +524,7 @@ async def test_run_report_async(
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_data_api.RunReportResponse(
-                next_page_token="next_page_token_value", total_size=1086,
-            )
+            analytics_data_api.RunReportResponse(row_count=992,)
         )
 
         response = await client.run_report(request)
@@ -543,11 +536,9 @@ async def test_run_report_async(
         assert args[0] == analytics_data_api.RunReportRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.RunReportAsyncPager)
+    assert isinstance(response, analytics_data_api.RunReportResponse)
 
-    assert response.next_page_token == "next_page_token_value"
-
-    assert response.total_size == 1086
+    assert response.row_count == 992
 
 
 @pytest.mark.asyncio
@@ -606,152 +597,6 @@ async def test_run_report_field_headers_async():
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
     assert ("x-goog-request-params", "property=property/value",) in kw["metadata"]
-
-
-def test_run_report_pager():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_report), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[], next_page_token="def",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(),], next_page_token="ghi",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(), data.DimensionHeader(),],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("property", ""),)),
-        )
-        pager = client.run_report(request={})
-
-        assert pager._metadata == metadata
-
-        results = [i for i in pager]
-        assert len(results) == 6
-        assert all(isinstance(i, data.DimensionHeader) for i in results)
-
-
-def test_run_report_pages():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_report), "__call__") as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[], next_page_token="def",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(),], next_page_token="ghi",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(), data.DimensionHeader(),],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.run_report(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_run_report_async_pager():
-    client = BetaAnalyticsDataAsyncClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.run_report), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[], next_page_token="def",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(),], next_page_token="ghi",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(), data.DimensionHeader(),],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.run_report(request={},)
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, data.DimensionHeader) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_run_report_async_pages():
-    client = BetaAnalyticsDataAsyncClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.run_report), "__call__", new_callable=mock.AsyncMock
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                    data.DimensionHeader(),
-                ],
-                next_page_token="abc",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[], next_page_token="def",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(),], next_page_token="ghi",
-            ),
-            analytics_data_api.RunReportResponse(
-                dimension_headers=[data.DimensionHeader(), data.DimensionHeader(),],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (await client.run_report(request={})).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
 
 
 def test_run_pivot_report(
@@ -1420,9 +1265,7 @@ def test_run_realtime_report(
         type(client.transport.run_realtime_report), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = analytics_data_api.RunRealtimeReportResponse(
-            total_size=1086,
-        )
+        call.return_value = analytics_data_api.RunRealtimeReportResponse(row_count=992,)
 
         response = client.run_realtime_report(request)
 
@@ -1436,7 +1279,7 @@ def test_run_realtime_report(
 
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
 
-    assert response.total_size == 1086
+    assert response.row_count == 992
 
 
 def test_run_realtime_report_from_dict():
@@ -1480,7 +1323,7 @@ async def test_run_realtime_report_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            analytics_data_api.RunRealtimeReportResponse(total_size=1086,)
+            analytics_data_api.RunRealtimeReportResponse(row_count=992,)
         )
 
         response = await client.run_realtime_report(request)
@@ -1494,7 +1337,7 @@ async def test_run_realtime_report_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
 
-    assert response.total_size == 1086
+    assert response.row_count == 992
 
 
 @pytest.mark.asyncio

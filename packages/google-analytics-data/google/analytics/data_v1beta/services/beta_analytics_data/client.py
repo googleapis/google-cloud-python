@@ -32,7 +32,6 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.analytics.data_v1beta.services.beta_analytics_data import pagers
 from google.analytics.data_v1beta.types import analytics_data_api
 from google.analytics.data_v1beta.types import data
 
@@ -348,7 +347,7 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.RunReportPager:
+    ) -> analytics_data_api.RunReportResponse:
         r"""Returns a customized report of your Google Analytics
         event data. Reports contain statistics derived from data
         collected by the Google Analytics tracking code. The
@@ -370,12 +369,9 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.analytics.data_v1beta.services.beta_analytics_data.pagers.RunReportPager:
+            google.analytics.data_v1beta.types.RunReportResponse:
                 The response report table
                 corresponding to a request.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -399,12 +395,6 @@ class BetaAnalyticsDataClient(metaclass=BetaAnalyticsDataClientMeta):
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.RunReportPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
 
         # Done; return the response.
         return response
