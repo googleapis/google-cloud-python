@@ -86,7 +86,13 @@ SAMPLE_COLUMNS = [
     {'name': 'datetime', 'type': types.DATETIME(), 'nullable': True, 'default': None},
     {'name': 'time', 'type': types.TIME(), 'nullable': True, 'default': None},
     {'name': 'bytes', 'type': types.BINARY(), 'nullable': True, 'default': None},
-    {'name': 'record', 'type': types.JSON(), 'nullable': True, 'default': None},
+    {
+        'name': 'record',
+        'type': types.JSON(),
+        'nullable': True,
+        'default': None,
+        'comment': 'In Standard SQL this data type is a STRUCT<name STRING, age INT64>.',
+    },
     {'name': 'record.name', 'type': types.String(), 'nullable': True, 'default': None},
     {'name': 'record.age', 'type': types.Integer(), 'nullable': True, 'default': None},
     {'name': 'nested_record', 'type': types.JSON(), 'nullable': True, 'default': None},
@@ -225,8 +231,9 @@ def test_dataset_location(engine_with_location):
 
 def test_reflect_select(table, table_using_test_dataset):
     for table in [table, table_using_test_dataset]:
-        assert len(table.c) == 18
+        assert table.comment == "A sample table containing most data types."
 
+        assert len(table.c) == 18
         assert isinstance(table.c.integer, Column)
         assert isinstance(table.c.integer.type, types.Integer)
         assert isinstance(table.c.timestamp.type, types.TIMESTAMP)
@@ -526,9 +533,10 @@ def test_get_columns(inspector, inspector_using_test_dataset):
     for columns in columns_queries:
         for i, col in enumerate(columns):
             sample_col = SAMPLE_COLUMNS[i]
+            assert col['comment'] == sample_col.get('comment')
+            assert col['default'] == sample_col['default']
             assert col['name'] == sample_col['name']
             assert col['nullable'] == sample_col['nullable']
-            assert col['default'] == sample_col['default']
             assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
 
     columns_without_schema = inspector_using_test_dataset.get_columns('sample')
@@ -537,9 +545,10 @@ def test_get_columns(inspector, inspector_using_test_dataset):
     for columns in columns_queries:
         for i, col in enumerate(columns):
             sample_col = SAMPLE_COLUMNS[i]
+            assert col['comment'] == sample_col.get('comment')
+            assert col['default'] == sample_col['default']
             assert col['name'] == sample_col['name']
             assert col['nullable'] == sample_col['nullable']
-            assert col['default'] == sample_col['default']
             assert col['type'].__class__.__name__ == sample_col['type'].__class__.__name__
 
 

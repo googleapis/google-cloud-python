@@ -52,6 +52,7 @@
   "mode": "NULLABLE",
   "name": "record",
   "type": "RECORD",
+  "description": "In Standard SQL this data type is a STRUCT<name STRING, age INT64>.",
   "fields": [
     {
       "mode": "NULLABLE",

@@ -495,15 +495,23 @@ class BigQueryDialect(DefaultDialect):
                 coltype = _type_map[col.field_type]
             except KeyError:
                 util.warn("Did not recognize type '%s' of column '%s'" % (col.field_type, col.name))
+                coltype = types.NullType
 
             result.append({
                 'name': col.name,
                 'type': types.ARRAY(coltype) if col.mode == 'REPEATED' else coltype,
                 'nullable': col.mode == 'NULLABLE' or col.mode == 'REPEATED',
+                'comment': col.description,
                 'default': None,
             })
 
         return result
+
+    def get_table_comment(self, connection, table_name, schema=None, **kw):
+        table = self._get_table(connection, table_name, schema)
+        return {
+            'text': table.description,
+        }
 
     def get_foreign_keys(self, connection, table_name, schema=None, **kw):
         # BigQuery has no support for foreign keys.
