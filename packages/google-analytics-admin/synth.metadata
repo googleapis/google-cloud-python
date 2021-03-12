@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-analytics-admin.git",
-        "sha": "0410387b9315c5511fbcb32ca162775b2d074a4a"
+        "sha": "5e09cc8326f3628328bb8bdea576c422d982ed46"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
+        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "778d8beae28d6d87eb01fdc839a4b4d966ed2ebe"
+        "sha": "d17674372e27fb8f23013935e794aa37502071aa"
       }
     }
   ],
