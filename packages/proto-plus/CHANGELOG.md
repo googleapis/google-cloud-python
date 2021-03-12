@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.16.0...v1.17.0) (2021-03-12)
+
+
+### Features
+
+* add preserving_proto_field_name to to_json ([#213](https://www.github.com/googleapis/proto-plus-python/issues/213)) ([b2c245b](https://www.github.com/googleapis/proto-plus-python/commit/b2c245bf044b964897f4e7423ff4944ae915e469))
+
 ## [1.16.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.15.0...v1.16.0) (2021-03-12)
 
 
