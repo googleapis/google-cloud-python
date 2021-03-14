@@ -3,7 +3,7 @@ Python Client for GKE Hub API
 
 |beta| |pypi| |versions|
 
-`GKE Hub`_: Provides a unified way to work with Kubernetes clusters as part of
+`GKE Hub`_ provides a unified way to work with Kubernetes clusters as part of
 Anthos, extending GKE to work in multiple environments. You have consistent,
 unified, and secure infrastructure, cluster, and container management, whether
 you're using Anthos on Google Cloud (with traditional GKE), hybrid cloud, or

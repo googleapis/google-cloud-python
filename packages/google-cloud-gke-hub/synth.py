@@ -37,7 +37,7 @@ for version in versions:
         bazel_target=f"//google/cloud/gkehub/{version}:gkehub-{version}-py",
     )
 
-    s.move(library)
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
 # ----------------------------------------------------------------------------
 # Add templated files
