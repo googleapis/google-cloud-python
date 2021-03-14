@@ -1,0 +1,12 @@
+{
+    "name": "managedidentities",
+    "name_pretty": "Managed Service for Microsoft Active Directory",
+    "product_documentation": "https://cloud.google.com/managed-microsoft-ad/",
+    "client_documentation": "https://googleapis.dev/python/managedidentities/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-managed-identities",
+    "distribution_name": "google-cloud-managed-identities",
+    "api_id": "managedidentities.googleapis.com"
+  }
