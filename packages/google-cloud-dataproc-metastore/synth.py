@@ -24,6 +24,7 @@ gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 versions = [
+    "v1alpha",
     "v1beta",
 
 ] # add new versions at the end of the list
