@@ -1,0 +1,12 @@
+{
+    "name": "metastore",
+    "name_pretty": "Dataproc Metastore",
+    "product_documentation": "https://cloud.google.com/dataproc-metastore/",
+    "client_documentation": "https://googleapis.dev/python/metastore/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-dataproc-metastore",
+    "distribution_name": "google-cloud-dataproc-metastore",
+    "api_id": "metastore.googleapis.com"
+  }
