@@ -31,6 +31,7 @@ import uuid
 import inspect
 
 from test_utils.retry import RetryErrors
+from grpc import RpcError
 
 from .script_utils import ScriptRunner
 from .script_utils import Command
@@ -69,7 +70,7 @@ class Common:
         args_str = ",".join([f'{k}="{v}"' for k, v in kwargs.items()])
         self._script.run_command(Command.Trigger, [function, args_str])
 
-    @RetryErrors(exception=LogsNotFound, delay=2)
+    @RetryErrors(exception=(LogsNotFound, RpcError), delay=2)
     def trigger_and_retrieve(self, log_text, function="simplelog", append_uuid=True, max_tries=6):
         if append_uuid:
             log_text = f"{log_text} - {uuid.uuid1()}"
@@ -82,7 +83,7 @@ class Common:
             try:
                 log_list = self._get_logs(filter_str)
                 return log_list
-            except LogsNotFound:
+            except (LogsNotFound, RpcError) as e:
                 sleep(10)
                 tries += 1
         # log not found
@@ -132,6 +133,12 @@ class Common:
             if message and log_text in message:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
+
+    def test_no_duplicates(self):
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(log_text)
+
+        self.assertEqual(len(log_list), 1)
 
     def test_monitored_resource(self):
         if self.language != "python":

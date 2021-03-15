@@ -52,6 +52,7 @@ _USE_GRPC = _HAVE_GRPC and not _DISABLE_GRPC
 
 _GAE_RESOURCE_TYPE = "gae_app"
 _GKE_RESOURCE_TYPE = "k8s_container"
+_GCF_RESOURCE_TYPE = "cloud_function"
 
 
 class Client(ClientWithProject):

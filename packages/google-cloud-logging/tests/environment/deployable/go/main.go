@@ -104,7 +104,7 @@ func main() {
 	}
 }
 
-// [Optional] envctl go <env> trigger simplelog logname=foo,logtext=bar
+// [Optional] envctl go <env> trigger simplelog log_name=foo,log_text=bar
 func simplelog(args map[string]string) {
 	ctx := context.Background()
 	projectID, err := metadata.ProjectID()
@@ -118,12 +118,12 @@ func simplelog(args map[string]string) {
 	defer client.Close()
 
 	logname := "my-log"
-	if val, ok := args["logname"]; ok {
+	if val, ok := args["log_name"]; ok {
 		logname = val
 	}
 
 	logtext := "hello world"
-	if val, ok := args["logtext"]; ok {
+	if val, ok := args["log_text"]; ok {
 		logtext = val
 	}
 
