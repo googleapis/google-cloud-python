@@ -48,7 +48,7 @@ def format_stackdriver_json(record, message):
         "severity": record.levelname,
     }
 
-    return json.dumps(payload)
+    return json.dumps(payload, ensure_ascii=False)
 
 
 def get_request_data_from_flask():
