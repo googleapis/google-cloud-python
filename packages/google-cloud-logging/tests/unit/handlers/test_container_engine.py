@@ -40,7 +40,7 @@ class TestContainerEngineHandler(unittest.TestCase):
 
         handler = self._make_one()
         logname = "loggername"
-        message = "hello world"
+        message = "hello world，嗨 世界"
         record = logging.LogRecord(
             logname, logging.INFO, None, None, message, None, None
         )
@@ -53,4 +53,4 @@ class TestContainerEngineHandler(unittest.TestCase):
         }
         payload = handler.format(record)
 
-        self.assertEqual(payload, json.dumps(expected_payload))
+        self.assertEqual(payload, json.dumps(expected_payload, ensure_ascii=False))
