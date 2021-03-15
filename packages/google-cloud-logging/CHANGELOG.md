@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-logging/compare/v2.2.0...v2.3.0) (2021-03-15)
+
+
+### Features
+
+* Add json setting to allow unicodes to show in log instead of ascii ch… ([#193](https://www.github.com/googleapis/python-logging/issues/193)) ([e8c8e30](https://www.github.com/googleapis/python-logging/commit/e8c8e30fc4f618273dec1415c752eed203c75b67))
+* detect monitored resources on all GCP environments ([#200](https://www.github.com/googleapis/python-logging/issues/200)) ([4eda681](https://www.github.com/googleapis/python-logging/commit/4eda6813d19df8a119f1dcd47ff79389310d4a6f))
+
+
+### Bug Fixes
+
+* logger uses default resource ([#207](https://www.github.com/googleapis/python-logging/issues/207)) ([0f90a79](https://www.github.com/googleapis/python-logging/commit/0f90a79d165314d261413cc369408e15f711129f))
+* no duplicate logs on GCF or GAE ([#209](https://www.github.com/googleapis/python-logging/issues/209)) ([37e6c8e](https://www.github.com/googleapis/python-logging/commit/37e6c8e90775ddc2fc454f5cb13cab04231c2222))
+
+
+### Documentation
+
+* add python std_logging to sample browser ([#173](https://www.github.com/googleapis/python-logging/issues/173)) ([7cc7275](https://www.github.com/googleapis/python-logging/commit/7cc727598c33e7e264ddbeef0a2604a3c215b260))
+
 ## [2.2.0](https://www.github.com/googleapis/python-logging/compare/v2.1.1...v2.2.0) (2021-01-27)
 
 
