@@ -87,6 +87,7 @@ def unit(session):
     session.install(".")
     session.run(
         "pytest",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google.auth",
         "--cov=google.oauth2",
         "--cov=tests",
@@ -100,7 +101,12 @@ def unit_prev_versions(session):
     session.install(".")
     session.install(*TEST_DEPENDENCIES)
     session.run(
-        "pytest", "--cov=google.auth", "--cov=google.oauth2", "--cov=tests", "tests"
+        "pytest",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google.auth",
+        "--cov=google.oauth2",
+        "--cov=tests",
+        "tests",
     )
 
 
@@ -170,6 +176,7 @@ def pypy(session):
     session.install(".")
     session.run(
         "pytest",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google.auth",
         "--cov=google.oauth2",
         "--cov=tests",

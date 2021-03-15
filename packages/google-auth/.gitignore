@@ -22,6 +22,7 @@ db.sqlite3
 # Coverage files
 .coverage
 coverage.xml
+*sponge_log.xml
 nosetests.xml
 htmlcov/
 
