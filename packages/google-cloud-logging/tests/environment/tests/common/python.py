@@ -37,11 +37,6 @@ class CommonPython:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
 
-    def test_no_duplicates_pylogging(self):
-        log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text, function="pylogging")
-
-        self.assertEqual(len(log_list), 1)
 
     def test_monitored_resource_pylogging(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
@@ -55,3 +50,13 @@ class CommonPython:
         for label in self.monitored_resource_labels:
             self.assertTrue(found_resource.labels[label],
                 f'resource.labels[{label}] is not set')
+
+    def test_severity_pylogging(self):
+        severities = ['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG']
+        for severity in severities:
+            log_text = f"{inspect.currentframe().f_code.co_name}"
+            log_list = self.trigger_and_retrieve(log_text, function="pylogging", severity=severity)
+            found_severity = log_list[-1].severity
+
+            self.assertEqual(found_severity.lower(), severity.lower())
+

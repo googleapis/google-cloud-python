@@ -43,8 +43,7 @@ _test_functions = {
 
 # used in Cloud Functions
 def pubsub_gcf(event, context):
-    client = google.cloud.logging.Client()
-    client.setup_logging()
+    initialize_client()
 
     if "data" not in event:
         logging.error("invalid pubsub message")
@@ -88,11 +87,13 @@ def pubsub_callback(message):
     else:
         logging.error(f"function {msg_str} not found")
 
-
-if __name__ == "__main__":
+def initialize_client():
     # set up logging
     client = google.cloud.logging.Client()
-    client.setup_logging()
+    client.setup_logging(log_level=logging.DEBUG)
+
+if __name__ == "__main__":
+    initialize_client()
 
     if os.getenv("ENABLE_SUBSCRIBER", None):
         # set up pubsub listener

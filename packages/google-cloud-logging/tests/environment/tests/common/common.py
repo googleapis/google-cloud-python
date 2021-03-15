@@ -71,10 +71,10 @@ class Common:
         self._script.run_command(Command.Trigger, [function, args_str])
 
     @RetryErrors(exception=(LogsNotFound, RpcError), delay=2)
-    def trigger_and_retrieve(self, log_text, function="simplelog", append_uuid=True, max_tries=6):
+    def trigger_and_retrieve(self, log_text, function="simplelog", append_uuid=True, max_tries=6, **kwargs):
         if append_uuid:
-            log_text = f"{log_text} - {uuid.uuid1()}"
-        self._trigger(function, log_text=log_text)
+            log_text = f"{log_text} {uuid.uuid1()}"
+        self._trigger(function, log_text=log_text, **kwargs)
         filter_str = self._add_time_condition_to_filter(log_text)
         # give the command time to be received
         tries = 0
@@ -134,11 +134,6 @@ class Common:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
 
-    def test_no_duplicates(self):
-        log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text)
-
-        self.assertEqual(len(log_list), 1)
 
     def test_monitored_resource(self):
         if self.language != "python":
@@ -155,3 +150,17 @@ class Common:
         for label in self.monitored_resource_labels:
             self.assertTrue(found_resource.labels[label],
                 f'resource.labels[{label}] is not set')
+
+    def test_severity(self):
+        if self.language != "python":
+            # to do: enable test for other languages
+            return True
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        severities = ['EMERGENCY', 'ALERT', 'CRITICAL', 'ERROR', 'WARNING',  'NOTICE', 'INFO', 'DEBUG']
+        for severity in severities:
+            log_list = self.trigger_and_retrieve(log_text, severity=severity)
+            found_severity = log_list[-1].severity
+            self.assertEqual(found_severity.lower(), severity.lower())
+        # DEFAULT severity should result in empty field
+        log_list = self.trigger_and_retrieve(log_text, severity="DEFAULT")
+        self.assertIsNone(log_list[-1].severity)

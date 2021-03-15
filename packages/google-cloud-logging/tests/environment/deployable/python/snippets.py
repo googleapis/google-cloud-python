@@ -31,21 +31,24 @@ except ImportError:
     from google.cloud.logging_v2._helpers import retrieve_metadata_server
 
 
-def simplelog(log_name=None, log_text="simple_log", **kwargs):
+def simplelog(log_name=None, log_text="simple_log", severity="DEFAULT", **kwargs):
+    # allowed severity: default, debug, info, notice, warning, error, critical, alert, emergency
+    severity = severity.upper()
     client = google.cloud.logging.Client()
     logger = client.logger(log_name)
-    logger.log_text(log_text)
+    logger.log_text(log_text, severity=severity)
 
 
-def pylogging(log_text="pylogging", severity="warning", **kwargs):
+def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     # allowed severity: debug, info, warning, error, critical
-    if severity == "debug":
+    severity = severity.upper()
+    if severity == "DEBUG":
         logging.debug(log_text)
-    elif severity == "info":
+    elif severity == "INFO":
         logging.info(log_text)
-    elif severity == "warning":
+    elif severity == "WARNING":
         logging.warning(log_text)
-    elif severity == "error":
+    elif severity == "ERROR":
         logging.error(log_text)
     else:
         logging.critical(log_text)
