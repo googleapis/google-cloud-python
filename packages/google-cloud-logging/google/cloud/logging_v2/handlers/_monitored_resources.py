@@ -163,7 +163,7 @@ def _create_global_resource(project):
     return Resource(type="global", labels={"project_id": project})
 
 
-def detect_resource(project):
+def detect_resource(project=""):
     """Return the default monitored resource based on the local environment.
     Args:
         project (str): The project ID to pass on to the resource
