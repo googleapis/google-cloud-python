@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery-datatransfer.git",
-        "sha": "3c0cb6c1cb602c325d8d0befdb739c16a9bf23e0"
+        "sha": "34f506e81cbbbc3485a4e8a9cff87df82b3d6756"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
+        "sha": "2c54c473779ea731128cea61a3a6c975a08a5378"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
+        "sha": "2c54c473779ea731128cea61a3a6c975a08a5378"
       }
     }
   ],
