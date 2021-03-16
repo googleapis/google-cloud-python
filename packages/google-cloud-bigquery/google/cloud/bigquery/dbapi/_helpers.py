@@ -19,14 +19,13 @@ import decimal
 import functools
 import numbers
 
-try:
-    import pyarrow
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
-
 from google.cloud import bigquery
 from google.cloud.bigquery import table
 from google.cloud.bigquery.dbapi import exceptions
+
+
+_NUMERIC_SERVER_MIN = decimal.Decimal("-9.9999999999999999999999999999999999999E+28")
+_NUMERIC_SERVER_MAX = decimal.Decimal("9.9999999999999999999999999999999999999E+28")
 
 
 def scalar_to_query_parameter(value, name=None):
@@ -189,12 +188,20 @@ def bigquery_scalar_type(value):
     elif isinstance(value, numbers.Real):
         return "FLOAT64"
     elif isinstance(value, decimal.Decimal):
-        # We check for NUMERIC before BIGNUMERIC in order to support pyarrow < 3.0.
-        scalar_object = pyarrow.scalar(value)
-        if isinstance(scalar_object, pyarrow.Decimal128Scalar):
+        vtuple = value.as_tuple()
+        # NUMERIC values have precision of 38 (number of digits) and scale of 9 (number
+        # of fractional digits), and their max absolute value must be strictly smaller
+        # than 1.0E+29.
+        # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types
+        if (
+            len(vtuple.digits) <= 38  # max precision: 38
+            and vtuple.exponent >= -9  # max scale: 9
+            and _NUMERIC_SERVER_MIN <= value <= _NUMERIC_SERVER_MAX
+        ):
             return "NUMERIC"
         else:
             return "BIGNUMERIC"
+
     elif isinstance(value, str):
         return "STRING"
     elif isinstance(value, bytes):
