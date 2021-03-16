@@ -11,7 +11,7 @@ Message and Field
     .. automethod:: to_json
     .. automethod:: from_json
     .. automethod:: to_dict
-
+    .. automethod:: copy_from
 
 .. automodule:: proto.fields
   :members:

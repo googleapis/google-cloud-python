@@ -317,3 +317,27 @@ def test_unknown_field_from_dict():
 
     s = Squid({"mass_kg": 20, "length_cm": 100}, ignore_unknown_fields=True)
     assert not hasattr(s, "length_cm")
+
+
+def test_copy_from():
+    class Mollusc(proto.Message):
+        class Squid(proto.Message):
+            mass_kg = proto.Field(proto.INT32, number=1)
+
+        squid = proto.Field(Squid, number=1)
+
+    m = Mollusc()
+    s = Mollusc.Squid(mass_kg=20)
+    Mollusc.Squid.copy_from(m.squid, s)
+    assert m.squid is not s
+    assert m.squid == s
+
+    s.mass_kg = 30
+    Mollusc.Squid.copy_from(m.squid, Mollusc.Squid.pb(s))
+    assert m.squid == s
+
+    Mollusc.Squid.copy_from(m.squid, {"mass_kg": 10})
+    assert m.squid.mass_kg == 10
+
+    with pytest.raises(TypeError):
+        Mollusc.Squid.copy_from(m.squid, (("mass_kg", 20)))

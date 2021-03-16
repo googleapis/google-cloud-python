@@ -80,6 +80,74 @@ Instantiate messages using either keyword arguments or a :class:`dict`
     >>> song.title
     'Canon in D'
 
+
+Assigning to Fields
+-------------------
+
+One of the goals of proto-plus is to make protobufs feel as much like regular python
+objects as possible. It is possible to update a message's field by assigning to it,
+just as if it were a regular python object.
+
+.. code-block:: python
+
+   song = Song()
+   song.composer = Composer(given_name="Johann", family_name="Bach")
+
+   # Can also assign from a dictionary as a convenience.
+   song.composer = {"given_name": "Claude", "family_name": "Debussy"}
+
+   # Repeated fields can also be assigned
+   class Album(proto.Message):
+       songs = proto.RepeatedField(Song, number=1)
+
+   a = Album()
+   songs = [Song(title="Canon in D"), Song(title="Little Fugue")]
+   a.songs = songs
+
+.. note::
+
+   Assigning to a proto-plus message field works by making copies, not by updating references.
+   This is necessary because of memory layout requirements of protocol buffers.
+   These memory constraints are maintained by the protocol buffers runtime.
+   This behavior can be surprising under certain circumstances, e.g. trying to save
+   an alias to a nested field.
+
+   :class:`proto.Message` defines a helper message, :meth:`~.Message.copy_from` to
+   help make the distinction clear when reading code.
+   The semantics of :meth:`~.Message.copy_from` are identical to the field assignment behavior described above.
+
+   .. code-block:: python
+
+      composer = Composer(given_name="Johann", family_name="Bach")
+      song = Song(title="Tocatta and Fugue in D Minor", composer=composer)
+      composer.given_name = "Wilhelm"
+
+      # 'composer' is NOT a reference to song.composer
+      assert song.composer.given_name == "Johann"
+
+      # We CAN update the song's composer by assignment.
+      song.composer = composer
+      composer.given_name = "Carl"
+
+      # 'composer' is STILL not a referene to song.composer.
+      assert song.composer.given_name == "Wilhelm"
+
+      # It does work in reverse, though,
+      # if we want a reference we can access then update.
+      composer = song.composer
+      composer.given_name = "Gottfried"
+
+      assert song.composer.given_name == "Gottfried"
+
+      # We can use 'copy_from' if we're concerned that the code
+      # implies that assignment involves references.
+      composer = Composer(given_name="Elisabeth", family_name="Bach")
+      # We could also do Message.copy_from(song.composer, composer) instead.
+      Composer.copy_from(song.composer, composer)
+
+      assert song.composer.given_name == "Elisabeth"
+
+
 Enums
 -----
 

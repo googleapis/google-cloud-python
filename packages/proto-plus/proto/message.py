@@ -401,6 +401,36 @@ class MessageMeta(type):
             use_integers_for_enums=use_integers_for_enums,
         )
 
+    def copy_from(cls, instance, other):
+        """Equivalent for protobuf.Message.CopyFrom
+
+        Args:
+            instance: An instance of this message type
+            other: (Union[dict, ~.Message):
+                A dictionary or message to reinitialize the values for this message.
+        """
+        if isinstance(other, cls):
+            # Just want the underlying proto.
+            other = Message.pb(other)
+        elif isinstance(other, cls.pb()):
+            # Don't need to do anything.
+            pass
+        elif isinstance(other, collections.abc.Mapping):
+            # Coerce into a proto
+            other = cls._meta.pb(**other)
+        else:
+            raise TypeError(
+                "invalid argument type to copy to {}: {}".format(
+                    cls.__name__, other.__class__.__name__
+                )
+            )
+
+        # Note: we can't just run self.__init__ because this may be a message field
+        # for a higher order proto; the memory layout for protos is NOT LIKE the
+        # python memory model. We cannot rely on just setting things by reference.
+        # Non-trivial complexity is (partially) hidden by the protobuf runtime.
+        cls.pb(instance).CopyFrom(other)
+
 
 class Message(metaclass=MessageMeta):
     """The abstract base class for a message.
@@ -436,7 +466,7 @@ class Message(metaclass=MessageMeta):
             #
             # The `wrap` method on the metaclass is the public API for taking
             # ownership of the passed in protobuf objet.
-            mapping = copy.copy(mapping)
+            mapping = copy.deepcopy(mapping)
             if kwargs:
                 mapping.MergeFrom(self._meta.pb(**kwargs))
 
