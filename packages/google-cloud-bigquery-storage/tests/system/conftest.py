@@ -88,7 +88,7 @@ def dataset(project_id, bq_client):
     bq_client.delete_dataset(dataset, delete_contents=True)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def table(project_id, dataset, bq_client):
     from google.cloud import bigquery
 
