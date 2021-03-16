@@ -72,33 +72,6 @@ class TestQueryParameters(unittest.TestCase):
             self.assertEqual(named_parameter.type_, expected_type, msg=msg)
             self.assertEqual(named_parameter.value, value, msg=msg)
 
-    def test_decimal_to_query_parameter(self):  # TODO: merge with previous test
-
-        expected_types = [
-            (decimal.Decimal("9.9999999999999999999999999999999999999E+28"), "NUMERIC"),
-            (decimal.Decimal("1.0E+29"), "BIGNUMERIC"),  # more than max value
-            (decimal.Decimal("1.123456789"), "NUMERIC"),
-            (decimal.Decimal("1.1234567891"), "BIGNUMERIC"),  # scale > 9
-            (decimal.Decimal("12345678901234567890123456789.012345678"), "NUMERIC"),
-            (
-                decimal.Decimal("12345678901234567890123456789012345678"),
-                "BIGNUMERIC",  # larger than max size, even if precision <=38
-            ),
-        ]
-
-        for value, expected_type in expected_types:
-            msg = f"value: {value} expected_type: {expected_type}"
-
-            parameter = _helpers.scalar_to_query_parameter(value)
-            self.assertIsNone(parameter.name, msg=msg)
-            self.assertEqual(parameter.type_, expected_type, msg=msg)
-            self.assertEqual(parameter.value, value, msg=msg)
-
-            named_parameter = _helpers.scalar_to_query_parameter(value, name="myvar")
-            self.assertEqual(named_parameter.name, "myvar", msg=msg)
-            self.assertEqual(named_parameter.type_, expected_type, msg=msg)
-            self.assertEqual(named_parameter.value, value, msg=msg)
-
     def test_scalar_to_query_parameter_w_unexpected_type(self):
         with self.assertRaises(exceptions.ProgrammingError):
             _helpers.scalar_to_query_parameter(value={"a": "dictionary"})
