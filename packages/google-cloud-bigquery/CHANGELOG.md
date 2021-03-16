@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.12.0](https://www.github.com/googleapis/python-bigquery/compare/v2.11.0...v2.12.0) (2021-03-16)
+
+
+### Features
+
+* make QueryJob.done() method more performant ([#544](https://www.github.com/googleapis/python-bigquery/issues/544)) ([a3ab9ef](https://www.github.com/googleapis/python-bigquery/commit/a3ab9efdd0758829845cfcb6ca0ac1f03ab44f64))
+
+
+### Bug Fixes
+
+* remove DB-API dependency on pyarrow with decimal query parameters ([#551](https://www.github.com/googleapis/python-bigquery/issues/551)) ([1b946ba](https://www.github.com/googleapis/python-bigquery/commit/1b946ba23ee7df86114c6acb338ec34e6c92af6d))
+
 ## [2.11.0](https://www.github.com/googleapis/python-bigquery/compare/v2.10.0...v2.11.0) (2021-03-09)
 
 
