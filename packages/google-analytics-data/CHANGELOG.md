@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.4.0...v0.4.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* fix from_service_account_info for async clients ([#44](https://www.github.com/googleapis/python-analytics-data/issues/44)) ([fdebf9b](https://www.github.com/googleapis/python-analytics-data/commit/fdebf9b96e915a06fecaeb83c1ca59de077249a8))
+* **v1beta:** (BREAKING) rename the 'page_size', 'page_token', 'total_size' fields to 'limit', 'offset' and 'row_count' respectively ([8fd57a3](https://www.github.com/googleapis/python-analytics-data/commit/8fd57a340b7e052dc9c4d6c33882add75405eb8b))
+
 ## [0.4.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.3.0...v0.4.0) (2021-02-25)
 
 
