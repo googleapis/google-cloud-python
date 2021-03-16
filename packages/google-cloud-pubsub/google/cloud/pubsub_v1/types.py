@@ -107,9 +107,6 @@ PublisherOptions.__new__.__defaults__ = (
 PublisherOptions.__doc__ = "The options for the publisher client."
 PublisherOptions.enable_message_ordering.__doc__ = (
     "Whether to order messages in a batch by a supplied ordering key."
-    "EXPERIMENTAL: Message ordering is an alpha feature that requires "
-    "special permissions to use. Please contact the Cloud Pub/Sub team for "
-    "more information."
 )
 PublisherOptions.flow_control.__doc__ = (
     "Flow control settings for message publishing by the client. By default "
