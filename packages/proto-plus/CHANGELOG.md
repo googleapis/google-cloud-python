@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.17.0...v1.18.0) (2021-03-16)
+
+
+### Features
+
+* add copy_from method for field assignment ([#215](https://www.github.com/googleapis/proto-plus-python/issues/215)) ([11c3e58](https://www.github.com/googleapis/proto-plus-python/commit/11c3e58a9ba59f0d7d808a26597dab735ca982ba))
+
 ## [1.17.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.16.0...v1.17.0) (2021-03-12)
 
 
