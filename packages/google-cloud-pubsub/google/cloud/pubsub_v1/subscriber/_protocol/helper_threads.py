@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import logging
+import queue
 import time
 import uuid
-
-from six.moves import queue
 
 
 __all__ = ("QueueCallbackWorker", "STOP")

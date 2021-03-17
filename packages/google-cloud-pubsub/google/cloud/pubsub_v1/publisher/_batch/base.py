@@ -17,11 +17,8 @@ from __future__ import absolute_import
 import abc
 import enum
 
-import six
 
-
-@six.add_metaclass(abc.ABCMeta)
-class Batch(object):
+class Batch(metaclass=abc.ABCMeta):
     """The base batching class for Pub/Sub publishing.
 
     Although the :class:`~.pubsub_v1.publisher.batch.thread.Batch` class, based

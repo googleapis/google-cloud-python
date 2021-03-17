@@ -16,11 +16,8 @@ from __future__ import absolute_import
 
 import abc
 
-import six
 
-
-@six.add_metaclass(abc.ABCMeta)
-class Sequencer(object):
+class Sequencer(metaclass=abc.ABCMeta):
     """The base class for sequencers for Pub/Sub publishing. A sequencer
        sequences messages to be published.
     """

@@ -13,16 +13,16 @@
 # limitations under the License.
 
 import datetime
+import queue
 import time
 
 import mock
 import pytz
-from six.moves import queue
-from google.protobuf import timestamp_pb2
 
 from google.api_core import datetime_helpers
 from google.cloud.pubsub_v1.subscriber import message
 from google.cloud.pubsub_v1.subscriber._protocol import requests
+from google.protobuf import timestamp_pb2
 from google.pubsub_v1 import types as gapic_types
 
 

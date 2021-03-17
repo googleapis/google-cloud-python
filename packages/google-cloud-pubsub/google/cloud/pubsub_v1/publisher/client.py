@@ -21,8 +21,6 @@ import pkg_resources
 import threading
 import time
 
-import six
-
 from google.api_core import gapic_v1
 from google.auth.credentials import AnonymousCredentials
 from google.oauth2 import service_account
@@ -295,7 +293,7 @@ class Client(object):
         """
         # Sanity check: Is the data being sent as a bytestring?
         # If it is literally anything else, complain loudly about it.
-        if not isinstance(data, six.binary_type):
+        if not isinstance(data, bytes):
             raise TypeError(
                 "Data being published to Pub/Sub must be sent as a bytestring."
             )
@@ -308,9 +306,9 @@ class Client(object):
 
         # Coerce all attributes to text strings.
         for k, v in copy.copy(attrs).items():
-            if isinstance(v, six.text_type):
+            if isinstance(v, str):
                 continue
-            if isinstance(v, six.binary_type):
+            if isinstance(v, bytes):
                 attrs[k] = v.decode("utf-8")
                 continue
             raise TypeError(

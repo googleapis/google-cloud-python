@@ -24,7 +24,6 @@ import time
 
 import mock
 import pytest
-import six
 
 import google.auth
 from google.api_core import exceptions as core_exceptions
@@ -86,12 +85,12 @@ def test_publish_messages(publisher, topic_path, cleanup):
         publisher.publish(
             topic_path, b"The hail in Wales falls mainly on the snails.", num=str(i)
         )
-        for i in six.moves.range(500)
+        for i in range(500)
     ]
 
     for future in futures:
         result = future.result()
-        assert isinstance(result, six.string_types)
+        assert isinstance(result, str)
 
 
 def test_publish_large_messages(publisher, topic_path, cleanup):
@@ -120,7 +119,7 @@ def test_publish_large_messages(publisher, topic_path, cleanup):
     # be no "InvalidArgument: request_size is too large" error.
     for future in futures:
         result = future.result(timeout=10)
-        assert isinstance(result, six.string_types)  # the message ID
+        assert isinstance(result, str)  # the message ID
 
 
 def test_subscribe_to_messages(
@@ -142,7 +141,7 @@ def test_subscribe_to_messages(
     # Publish some messages.
     futures = [
         publisher.publish(topic_path, b"Wooooo! The claaaaaw!", num=str(index))
-        for index in six.moves.range(50)
+        for index in range(50)
     ]
 
     # Make sure the publish completes.
@@ -154,7 +153,7 @@ def test_subscribe_to_messages(
     # that we got everything at least once.
     callback = AckCallback()
     future = subscriber.subscribe(subscription_path, callback)
-    for second in six.moves.range(10):
+    for second in range(10):
         time.sleep(1)
 
         # The callback should have fired at least fifty times, but it
@@ -187,7 +186,7 @@ def test_subscribe_to_messages_async_callbacks(
     # Publish some messages.
     futures = [
         publisher.publish(topic_path, b"Wooooo! The claaaaaw!", num=str(index))
-        for index in six.moves.range(2)
+        for index in range(2)
     ]
 
     # Make sure the publish completes.
@@ -200,7 +199,7 @@ def test_subscribe_to_messages_async_callbacks(
 
     # Actually open the subscription and hold it open for a few seconds.
     future = subscriber.subscribe(subscription_path, callback)
-    for second in six.moves.range(5):
+    for second in range(5):
         time.sleep(4)
 
         # The callback should have fired at least two times, but it may

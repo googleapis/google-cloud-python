@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import concurrent.futures
+import queue
 import threading
 
 import mock
-from six.moves import queue
 
 from google.cloud.pubsub_v1.subscriber import scheduler
 

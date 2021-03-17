@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import mock
-from six.moves import queue
+import queue
 
 from google.cloud.pubsub_v1.subscriber._protocol import helper_threads
 

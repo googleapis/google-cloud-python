@@ -20,14 +20,10 @@ each message.
 
 import abc
 import concurrent.futures
-import sys
-
-import six
-from six.moves import queue
+import queue
 
 
-@six.add_metaclass(abc.ABCMeta)
-class Scheduler(object):
+class Scheduler(metaclass=abc.ABCMeta):
     """Abstract base class for schedulers.
 
     Schedulers are used to schedule callbacks asynchronously.
@@ -65,12 +61,9 @@ class Scheduler(object):
 
 
 def _make_default_thread_pool_executor():
-    # Python 2.7 and 3.6+ have the thread_name_prefix argument, which is useful
-    # for debugging.
-    executor_kwargs = {}
-    if sys.version_info[:2] == (2, 7) or sys.version_info >= (3, 6):
-        executor_kwargs["thread_name_prefix"] = "ThreadPoolExecutor-ThreadScheduler"
-    return concurrent.futures.ThreadPoolExecutor(max_workers=10, **executor_kwargs)
+    return concurrent.futures.ThreadPoolExecutor(
+        max_workers=10, thread_name_prefix="ThreadPoolExecutor-ThreadScheduler"
+    )
 
 
 class ThreadScheduler(Scheduler):

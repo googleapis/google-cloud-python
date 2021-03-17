@@ -18,8 +18,6 @@ import logging
 import threading
 import time
 
-import six
-
 import google.api_core.exceptions
 from google.api_core import gapic_v1
 from google.cloud.pubsub_v1.publisher import exceptions
@@ -287,8 +285,7 @@ class Batch(base.Batch):
             # IDs. We are trusting that there is a 1:1 mapping, and raise
             # an exception if not.
             self._status = base.BatchStatus.SUCCESS
-            zip_iter = six.moves.zip(response.message_ids, self._futures)
-            for message_id, future in zip_iter:
+            for message_id, future in zip(response.message_ids, self._futures):
                 future.set_result(message_id)
         else:
             # Sanity check: If the number of message IDs is not equal to

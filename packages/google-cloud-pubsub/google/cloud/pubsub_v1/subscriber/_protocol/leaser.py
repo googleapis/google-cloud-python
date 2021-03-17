@@ -21,8 +21,6 @@ import random
 import threading
 import time
 
-import six
-
 from google.cloud.pubsub_v1.subscriber._protocol import requests
 
 
@@ -144,7 +142,7 @@ class Leaser(object):
             cutoff = time.time() - self._manager.flow_control.max_lease_duration
             to_drop = [
                 requests.DropRequest(ack_id, item.size, item.ordering_key)
-                for ack_id, item in six.iteritems(leased_messages)
+                for ack_id, item in leased_messages.items()
                 if item.sent_time < cutoff
             ]
 

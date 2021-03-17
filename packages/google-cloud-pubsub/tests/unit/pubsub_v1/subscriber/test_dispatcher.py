@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import queue
 import threading
 
 from google.cloud.pubsub_v1.subscriber._protocol import dispatcher
@@ -22,7 +23,6 @@ from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.pubsub_v1 import types as gapic_types
 
 import mock
-from six.moves import queue
 import pytest
 
 
