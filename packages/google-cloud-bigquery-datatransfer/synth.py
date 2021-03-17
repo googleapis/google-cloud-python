@@ -37,7 +37,7 @@ for version in versions:
         ),
         include_protos=True,
     )
-    s.move(library, excludes=["setup.py", "docs/index.rst"])
+    s.move(library, excludes=["*.tar.gz", "setup.py", "docs/index.rst"])
 
 
 # ----------------------------------------------------------------------------
@@ -56,12 +56,12 @@ python.py_samples(skip_readmes=True)
 s.replace(
     "google/cloud/bigquery_datatransfer_v1/__init__.py",
     r"from \.services\.data_transfer_service import DataTransferServiceClient",
-    "\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
+    "\\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
 )
 s.replace(
     "google/cloud/bigquery_datatransfer_v1/__init__.py",
     r"'DataTransferServiceClient',",
-    '\g<0>\n    "DataTransferServiceAsyncClient"',
+    '\\g<0>\n    "DataTransferServiceAsyncClient"',
 )
 
 
