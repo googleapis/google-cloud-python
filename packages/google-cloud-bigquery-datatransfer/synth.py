@@ -37,7 +37,7 @@ for version in versions:
         ),
         include_protos=True,
     )
-    s.move(library, excludes=["*.tar.gz", "setup.py", "docs/index.rst"])
+    s.move(library, excludes=["*.tar.gz", "docs/index.rst", "README.rst", "setup.py"])
 
 
 # ----------------------------------------------------------------------------
