@@ -20,10 +20,11 @@ import datetime as dt
 import decimal
 import re
 
+from google.cloud import bigquery
 import pytest
 import pytz
 
-from google.cloud import bigquery
+from .. import helpers
 
 
 _TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
@@ -184,12 +185,15 @@ def test_column_selection_read(
 def test_snapshot(client_and_types, project_id, table, bq_client, data_format):
     client, types = client_and_types
 
+    def load_json(data):
+        return bq_client.load_table_from_json(data, table).result()
+
     # load original data into the table
     original_data = [
         {"first_name": "OGFoo", "last_name": "Smith", "age": 44},
         {"first_name": "OGBar", "last_name": "Jones", "age": 33},
     ]
-    og_job = bq_client.load_table_from_json(original_data, table).result()
+    og_job = helpers.retry_403(load_json)(original_data)
     og_time = og_job.ended
 
     # load additional data into the table
@@ -197,7 +201,7 @@ def test_snapshot(client_and_types, project_id, table, bq_client, data_format):
         {"first_name": "NewFoo", "last_name": "Smiff", "age": 43},
         {"first_name": "NewBar", "last_name": "Jomes", "age": 34},
     ]
-    new_job = bq_client.load_table_from_json(new_data, table).result()
+    new_job = helpers.retry_403(load_json)(new_data)
     new_time = new_job.ended
 
     # Because we want our snapshot to be between when we loaded the original

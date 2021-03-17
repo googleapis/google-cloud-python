@@ -20,8 +20,10 @@ import uuid
 
 import pytest
 
-_TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
+from . import helpers
 
+
+_TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
 _ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets")
 
 
@@ -98,8 +100,10 @@ def table(project_id, dataset, bq_client):
         bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
     ]
 
-    table_id = "{}.{}.{}".format(project_id, dataset.dataset_id, "users")
-    bq_table = bigquery.Table(table_id, schema=schema)
+    unique_suffix = str(uuid.uuid4()).replace("-", "_")
+    table_id = "users_" + unique_suffix
+    table_id_full = f"{project_id}.{dataset.dataset_id}.{table_id}"
+    bq_table = bigquery.Table(table_id_full, schema=schema)
     created_table = bq_client.create_table(bq_table)
 
     yield created_table
@@ -154,7 +158,7 @@ def all_types_table_ref(project_id, dataset, bq_client):
     )
     yield table_ref
 
-    bq_client.delete_table(created_table)
+    helpers.retry_403(bq_client.delete_table)(created_table, not_found_ok=True)
 
 
 @pytest.fixture
@@ -182,7 +186,7 @@ def ingest_partition_table_ref(project_id, dataset, bq_client):
     )
     yield table_ref
 
-    bq_client.delete_table(created_table)
+    helpers.retry_403(bq_client.delete_table)(created_table, not_found_ok=True)
 
 
 @pytest.fixture
@@ -209,29 +213,39 @@ def col_partition_table_ref(project_id, dataset, bq_client):
     )
     yield table_ref
 
-    bq_client.delete_table(created_table)
+    helpers.retry_403(bq_client.delete_table)(created_table, not_found_ok=True)
 
 
 @pytest.fixture
-def table_with_data_ref(dataset, table, bq_client):
+def table_with_data_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
+
+    unique_suffix = str(uuid.uuid4()).replace("-", "_")
+    table_id = "users_" + unique_suffix
+    table_id_full = f"{project_id}.{dataset.dataset_id}.{table_id}"
+    schema = [
+        bigquery.SchemaField("first_name", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("last_name", "STRING", mode="NULLABLE"),
+        bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
+    ]
 
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.CSV
     job_config.skip_leading_rows = 1
-    job_config.schema = table.schema
+    job_config.schema = schema
 
     filename = os.path.join(_ASSETS_DIR, "people_data.csv")
 
-    with open(filename, "rb") as source_file:
-        job = bq_client.load_table_from_file(source_file, table, job_config=job_config)
+    def create_table():
+        with open(filename, "rb") as source_file:
+            job = bq_client.load_table_from_file(
+                source_file, table_id_full, job_config=job_config
+            )
+        job.result()  # wait for the load to complete
 
-    job.result()  # wait for the load to complete
+    helpers.retry_403(create_table)()
 
-    table_ref = _TABLE_FORMAT.format(table.project, table.dataset_id, table.table_id)
+    table_ref = _TABLE_FORMAT.format(project_id, dataset.dataset_id, table_id)
     yield table_ref
 
-    # truncate table data
-    query = "DELETE FROM {}.{} WHERE 1 = 1".format(dataset.dataset_id, table.table_id)
-    query_job = bq_client.query(query, location="US")
-    query_job.result()
+    helpers.retry_403(bq_client.delete_table)(table_id_full, not_found_ok=True)
