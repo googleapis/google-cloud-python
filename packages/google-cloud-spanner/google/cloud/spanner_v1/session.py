@@ -243,18 +243,18 @@ class Session(object):
                        the names used in ``sql``.
 
         :type param_types:
-            dict, {str -> :class:`~google.spanner.v1.type_pb2.TypeCode`}
+            dict, {str -> :class:`~google.spanner.v1.types.TypeCode`}
         :param param_types: (Optional) explicit types for one or more param
                             values;  overrides default type detection on the
                             back-end.
 
         :type query_mode:
-            :class:`~google.spanner.v1.spanner_pb2.ExecuteSqlRequest.QueryMode`
+            :class:`~google.spanner.v1.types.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan. See:
             `QueryMode <https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode>`_.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
 
@@ -321,7 +321,7 @@ class Session(object):
         :returns: The return value of ``func``.
 
         :raises Exception:
-            reraises any non-ABORT execptions raised by ``func``.
+            reraises any non-ABORT exceptions raised by ``func``.
         """
         deadline = time.time() + kw.pop("timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS)
         attempts = 0

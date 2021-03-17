@@ -204,18 +204,18 @@ class _SnapshotBase(_SessionWrapper):
             required if parameters are passed.
 
         :type query_mode:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryMode`
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryMode`
         :param query_mode: Mode governing return of results / query plan.
             See:
             `QueryMode <https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.ExecuteSqlRequest.QueryMode>`_.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
                 or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.QueryOptions`
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
         :type partition: bytes
         :param partition: (Optional) one of the partition tokens returned
@@ -297,7 +297,7 @@ class _SnapshotBase(_SessionWrapper):
         partition_size_bytes=None,
         max_partitions=None,
     ):
-        """Perform a ``ParitionRead`` API request for rows in a table.
+        """Perform a ``PartitionRead`` API request for rows in a table.
 
         :type table: str
         :param table: name of the table from which to fetch data
@@ -328,7 +328,7 @@ class _SnapshotBase(_SessionWrapper):
 
         :raises ValueError:
             for single-use snapshots, or if a transaction ID is
-            already associtated with the snapshot.
+            already associated with the snapshot.
         """
         if not self._multi_use:
             raise ValueError("Cannot use single-use snapshot.")
@@ -369,7 +369,7 @@ class _SnapshotBase(_SessionWrapper):
         partition_size_bytes=None,
         max_partitions=None,
     ):
-        """Perform a ``ParitionQuery`` API request.
+        """Perform a ``PartitionQuery`` API request.
 
         :type sql: str
         :param sql: SQL query statement
@@ -399,7 +399,7 @@ class _SnapshotBase(_SessionWrapper):
 
         :raises ValueError:
             for single-use snapshots, or if a transaction ID is
-            already associtated with the snapshot.
+            already associated with the snapshot.
         """
         if not self._multi_use:
             raise ValueError("Cannot use single-use snapshot.")

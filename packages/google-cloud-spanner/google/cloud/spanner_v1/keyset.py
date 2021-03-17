@@ -68,7 +68,7 @@ class KeyRange(object):
     def _to_pb(self):
         """Construct a KeyRange protobuf.
 
-        :rtype: :class:`~google.cloud.spanner_v1.KeyRange`
+        :rtype: :class:`~google.cloud.spanner_v1.types.KeyRange`
         :returns: protobuf corresponding to this instance.
         """
         kwargs = {}
@@ -88,7 +88,7 @@ class KeyRange(object):
         return KeyRangePB(**kwargs)
 
     def _to_dict(self):
-        """Return keyrange's state as a dict.
+        """Return the state of the keyrange as a dict.
 
         :rtype: dict
         :returns: state of this instance.
@@ -139,7 +139,7 @@ class KeySet(object):
     def _to_pb(self):
         """Construct a KeySet protobuf.
 
-        :rtype: :class:`~google.cloud.spanner_v1.KeySet`
+        :rtype: :class:`~google.cloud.spanner_v1.types.KeySet`
         :returns: protobuf corresponding to this instance.
         """
         if self.all_:
@@ -155,7 +155,7 @@ class KeySet(object):
         return KeySetPB(**kwargs)
 
     def _to_dict(self):
-        """Return keyset's state as a dict.
+        """Return the state of the keyset as a dict.
 
         The result can be used to serialize the instance and reconstitute
         it later using :meth:`_from_dict`.

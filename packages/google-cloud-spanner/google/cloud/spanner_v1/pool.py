@@ -42,7 +42,7 @@ class AbstractSessionPool(object):
 
     @property
     def labels(self):
-        """User-assigned labels for sesions created by the pool.
+        """User-assigned labels for sessions created by the pool.
 
         :rtype: dict (str -> str)
         :returns: labels assigned by the user
@@ -53,7 +53,7 @@ class AbstractSessionPool(object):
         """Associate the pool with a database.
 
         :type database: :class:`~google.cloud.spanner_v1.database.Database`
-        :param database: database used by the pool:  used to create sessions
+        :param database: database used by the pool to create sessions
                          when needed.
 
         Concrete implementations of this method may pre-fill the pool
@@ -162,7 +162,7 @@ class FixedSizePool(AbstractSessionPool):
         """Associate the pool with a database.
 
         :type database: :class:`~google.cloud.spanner_v1.database.Database`
-        :param database: database used by the pool:  used to create sessions
+        :param database: database used by the pool to used to create sessions
                          when needed.
         """
         self._database = database
@@ -256,7 +256,7 @@ class BurstyPool(AbstractSessionPool):
         """Associate the pool with a database.
 
         :type database: :class:`~google.cloud.spanner_v1.database.Database`
-        :param database: database used by the pool:  used to create sessions
+        :param database: database used by the pool to create sessions
                          when needed.
         """
         self._database = database
@@ -354,7 +354,7 @@ class PingingPool(AbstractSessionPool):
         """Associate the pool with a database.
 
         :type database: :class:`~google.cloud.spanner_v1.database.Database`
-        :param database: database used by the pool:  used to create sessions
+        :param database: database used by the pool to create sessions
                          when needed.
         """
         self._database = database
@@ -486,7 +486,7 @@ class TransactionPingingPool(PingingPool):
         """Associate the pool with a database.
 
         :type database: :class:`~google.cloud.spanner_v1.database.Database`
-        :param database: database used by the pool:  used to create sessions
+        :param database: database used by the pool to create sessions
                          when needed.
         """
         super(TransactionPingingPool, self).bind(database)

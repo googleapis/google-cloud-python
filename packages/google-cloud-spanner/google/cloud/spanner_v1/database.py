@@ -103,7 +103,7 @@ class Database(object):
                  passed, the database will construct an instance of
                  :class:`~google.cloud.spanner_v1.pool.BurstyPool`.
 
-    :type logger: `logging.Logger`
+    :type logger: :class:`logging.Logger`
     :param logger: (Optional) a custom logger that is used if `log_commit_stats`
                    is `True` to log commit statistics. If not passed, a logger
                    will be created when needed that will log the commit statistics
@@ -138,7 +138,7 @@ class Database(object):
         """Creates an instance of this class from a protobuf.
 
         :type database_pb:
-            :class:`~google.cloud.spanner_admin_instance_v1.Instance`
+            :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
         :param database_pb: A instance protobuf object.
 
         :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`
@@ -199,7 +199,7 @@ class Database(object):
     def state(self):
         """State of this database.
 
-        :rtype: :class:`~google.cloud.spanner_admin_database_v1.Database.State`
+        :rtype: :class:`~google.cloud.spanner_admin_database_v1.types.Database.State`
         :returns: an enum describing the state of the database
         """
         return self._state
@@ -218,7 +218,7 @@ class Database(object):
     def restore_info(self):
         """Restore info for this database.
 
-        :rtype: :class:`~google.cloud.spanner_v1.database.RestoreInfo`
+        :rtype: :class:`~google.cloud.spanner_v1.types.RestoreInfo`
         :returns: an object representing the restore info for this database
         """
         return self._restore_info
@@ -310,7 +310,7 @@ class Database(object):
     def create(self):
         """Create this database within its instance
 
-        Inclues any configured schema assigned to :attr:`ddl_statements`.
+        Includes any configured schema assigned to :attr:`ddl_statements`.
 
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.admin.database.v1#google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase
@@ -429,12 +429,12 @@ class Database(object):
             required if parameters are passed.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.QueryOptions`
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
         :rtype: int
         :returns: Count of rows affected by the DML statement.
@@ -568,7 +568,7 @@ class Database(object):
         :returns: The return value of ``func``.
 
         :raises Exception:
-            reraises any non-ABORT execptions raised by ``func``.
+            reraises any non-ABORT exceptions raised by ``func``.
         """
         # Sanity check: Is there a transaction already running?
         # If there is, then raise a red flag. Otherwise, mark that this one
@@ -895,7 +895,7 @@ class BatchSnapshot(object):
 
         :rtype: iterable of dict
         :returns:
-            mappings of information used peform actual partitioned reads via
+            mappings of information used perform actual partitioned reads via
             :meth:`process_read_batch`.
         """
         partitions = self._get_snapshot().partition_read(
@@ -945,7 +945,7 @@ class BatchSnapshot(object):
 
         Uses the ``PartitionQuery`` API request to start a partitioned
         query operation.  Returns a list of batch information needed to
-        peform the actual queries.
+        perform the actual queries.
 
         :type sql: str
         :param sql: SQL query statement
@@ -976,16 +976,16 @@ class BatchSnapshot(object):
             differ.
 
         :type query_options:
-            :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
             or :class:`dict`
         :param query_options:
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
-                message :class:`~google.cloud.spanner_v1.QueryOptions`
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
         :rtype: iterable of dict
         :returns:
-            mappings of information used peform actual partitioned reads via
+            mappings of information used perform actual partitioned reads via
             :meth:`process_read_batch`.
         """
         partitions = self._get_snapshot().partition_query(
@@ -1065,7 +1065,7 @@ def _check_ddl_statements(value):
     https://cloud.google.com/spanner/docs/data-definition-language
 
     :type value: list of string
-    :param value: DDL statements, excluding the 'CREATE DATABSE' statement
+    :param value: DDL statements, excluding the 'CREATE DATABASE' statement
 
     :rtype: tuple
     :returns: tuple of validated DDL statement strings.

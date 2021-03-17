@@ -108,12 +108,12 @@ class Client(ClientWithProject):
         on the client. API Endpoint should be set through client_options.
 
     :type query_options:
-        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
         or :class:`dict`
     :param query_options:
         (Optional) Query optimizer configuration to use for the given query.
         If a dict is provided, it must be of the same form as the protobuf
-        message :class:`~google.cloud.spanner_v1.QueryOptions`
+        message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -348,7 +348,7 @@ class Client(ClientWithProject):
 
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns:
-            Iterator of :class:`~google.cloud.spanner_v1.instance.Instance`
+            Iterator of :class:`~google.cloud.spanner_admin_instance_v1.types.Instance`
             resources within the client's project.
         """
         metadata = _metadata_with_prefix(self.project_name)

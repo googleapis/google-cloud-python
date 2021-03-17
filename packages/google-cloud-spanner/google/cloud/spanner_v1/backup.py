@@ -141,7 +141,7 @@ class Backup(object):
     def state(self):
         """State of this backup.
 
-        :rtype: :class:`~google.cloud.spanner_admin_database_v1.Backup.State`
+        :rtype: :class:`~google.cloud.spanner_admin_database_v1.types.Backup.State`
         :returns: an enum describing the state of the backup
         """
         return self._state
@@ -160,7 +160,7 @@ class Backup(object):
     def from_pb(cls, backup_pb, instance):
         """Create an instance of this class from a protobuf message.
 
-        :type backup_pb: :class:`~google.spanner.admin.database.v1.Backup`
+        :type backup_pb: :class:`~google.cloud.spanner_admin_database_v1.types.Backup`
         :param backup_pb: A backup protobuf object.
 
         :type instance: :class:`~google.cloud.spanner_v1.instance.Instance`

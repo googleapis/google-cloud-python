@@ -33,7 +33,7 @@ class StreamedResultSet(object):
     :type response_iterator:
     :param response_iterator:
         Iterator yielding
-        :class:`~google.cloud.spanner_v1.PartialResultSet`
+        :class:`~google.cloud.spanner_v1.types.PartialResultSet`
         instances.
 
     :type source: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
@@ -53,7 +53,7 @@ class StreamedResultSet(object):
     def fields(self):
         """Field descriptors for result set columns.
 
-        :rtype: list of :class:`~google.cloud.spanner_v1.StructType.Field`
+        :rtype: list of :class:`~google.cloud.spanner_v1.types.StructType.Field`
         :returns: list of fields describing column names / types.
         """
         return self._metadata.row_type.fields
@@ -62,7 +62,7 @@ class StreamedResultSet(object):
     def metadata(self):
         """Result set metadata
 
-        :rtype: :class:`~google.cloud.spanner_v1.ResultSetMetadata`
+        :rtype: :class:`~google.cloud.spanner_v1.types.ResultSetMetadata`
         :returns: structure describing the results
         """
         return self._metadata
@@ -72,7 +72,7 @@ class StreamedResultSet(object):
         """Result set statistics
 
         :rtype:
-           :class:`~google.cloud.spanner_v1.ResultSetStats`
+           :class:`~google.cloud.spanner_v1.types.ResultSetStats`
         :returns: structure describing status about the response
         """
         return self._stats
@@ -201,7 +201,7 @@ class Unmergeable(ValueError):
     :type rhs: :class:`~google.protobuf.struct_pb2.Value`
     :param rhs: remaining value to be merged
 
-    :type type_: :class:`~google.cloud.spanner_v1.Type`
+    :type type_: :class:`~google.cloud.spanner_v1.types.Type`
     :param type_: field type of values being merged
     """
 

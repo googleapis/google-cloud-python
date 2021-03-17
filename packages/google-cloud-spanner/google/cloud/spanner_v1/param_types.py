@@ -33,10 +33,10 @@ NUMERIC = Type(code=TypeCode.NUMERIC)
 def Array(element_type):  # pylint: disable=invalid-name
     """Construct an array parameter type description protobuf.
 
-    :type element_type: :class:`~google.cloud.spanner_v1.Type`
+    :type element_type: :class:`~google.cloud.spanner_v1.types.Type`
     :param element_type: the type of elements of the array
 
-    :rtype: :class:`google.cloud.spanner_v1.Type`
+    :rtype: :class:`google.cloud.spanner_v1.types.Type`
     :returns: the appropriate array-type protobuf
     """
     return Type(code=TypeCode.ARRAY, array_element_type=element_type)
@@ -48,10 +48,10 @@ def StructField(name, field_type):  # pylint: disable=invalid-name
     :type name: str
     :param name: the name of the field
 
-    :type field_type: :class:`google.cloud.spanner_v1.Type`
+    :type field_type: :class:`google.cloud.spanner_v1.types.Type`
     :param field_type: the type of the field
 
-    :rtype: :class:`google.cloud.spanner_v1.StructType.Field`
+    :rtype: :class:`google.cloud.spanner_v1.types.StructType.Field`
     :returns: the appropriate struct-field-type protobuf
     """
     return StructType.Field(name=name, type_=field_type)
@@ -60,7 +60,7 @@ def StructField(name, field_type):  # pylint: disable=invalid-name
 def Struct(fields):  # pylint: disable=invalid-name
     """Construct a struct parameter type description protobuf.
 
-    :type fields: list of :class:`google.cloud.spanner_v1.StructType.Field`
+    :type fields: list of :class:`google.cloud.spanner_v1.types.StructType.Field`
     :param fields: the fields of the struct
 
     :rtype: :class:`type_pb2.Type`

@@ -53,19 +53,19 @@ def _merge_query_options(base, merge):
     """Merge higher precedence QueryOptions with current QueryOptions.
 
     :type base:
-        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
         or :class:`dict` or None
     :param base: The current QueryOptions that is intended for use.
 
     :type merge:
-        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
         or :class:`dict` or None
     :param merge:
         The QueryOptions that have a higher priority than base. These options
         should overwrite the fields in base.
 
     :rtype:
-        :class:`~google.cloud.spanner_v1.ExecuteSqlRequest.QueryOptions`
+        :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
         or None
     :returns:
         QueryOptions object formed by merging the two given QueryOptions.
@@ -167,7 +167,7 @@ def _parse_value_pb(value_pb, field_type):
     :type value_pb: :class:`~google.protobuf.struct_pb2.Value`
     :param value_pb: protobuf to convert
 
-    :type field_type: :class:`~google.cloud.spanner_v1.Type`
+    :type field_type: :class:`~google.cloud.spanner_v1.types.Type`
     :param field_type: type code for the value
 
     :rtype: varies on field_type
@@ -220,7 +220,7 @@ def _parse_list_value_pbs(rows, row_type):
     :type rows: list of :class:`~google.protobuf.struct_pb2.ListValue`
     :param rows: row data returned from a read/query
 
-    :type row_type: :class:`~google.cloud.spanner_v1.StructType`
+    :type row_type: :class:`~google.cloud.spanner_v1.types.StructType`
     :param row_type: row schema specification
 
     :rtype: list of list of cell data
