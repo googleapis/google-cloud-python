@@ -46,14 +46,6 @@ for version in versions:
         ],
     )
 
-# Fix docstring issue for classes with no summary line
-s.replace(
-    "google/cloud/**/proto/*_pb2.py",
-    ''''__doc__': """Attributes:''',
-    '''"__doc__": """
-    Attributes:''',
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
@@ -69,18 +61,5 @@ s.move(templated_files, excludes=[".coveragerc"]) # microgenerator has a good .c
 
 python.py_samples()
 
-# Temporarily disable warnings due to
-# https://github.com/googleapis/gapic-generator-python/issues/525
-s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
-
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
-
-python.py_samples()
-
-# Temporarily disable warnings due to
-# https://github.com/googleapis/gapic-generator-python/issues/525
-s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
