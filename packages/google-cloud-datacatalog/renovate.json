@@ -1,5 +1,6 @@
 {
   "extends": [
     "config:base",  ":preserveSemverRanges"
-  ]
+  ],
+  "ignorePaths": [".pre-commit-config.yaml"]
 }
