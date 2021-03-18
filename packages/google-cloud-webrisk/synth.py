@@ -34,15 +34,6 @@ for version in versions:
     s.copy(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
 
 
-# Fix docstring issue for classes with no summary line
-s.replace(
-    "google/cloud/**/proto/webrisk_pb2.py",
-    ''''__doc__': """Attributes:''',
-    ''''__doc__': """
-    Attributes:''',
-)
-
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
