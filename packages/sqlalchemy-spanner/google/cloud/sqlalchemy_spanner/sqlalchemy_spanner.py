@@ -310,7 +310,9 @@ SELECT
 FROM information_schema.indexes as i
 JOIN information_schema.index_columns AS ic
     ON ic.index_name = i.index_name AND ic.table_name = i.table_name
-WHERE i.table_name="{table_name}"
+WHERE
+    i.table_name="{table_name}"
+    AND i.index_type != 'PRIMARY_KEY'
 GROUP BY i.index_name, i.is_unique
 """.format(
             table_name=table_name
@@ -371,6 +373,33 @@ WHERE tc.TABLE_NAME="{table_name}" AND tc.CONSTRAINT_TYPE = "PRIMARY KEY"
                 cols.append(row[0])
 
         return {"constrained_columns": cols}
+
+    def get_schema_names(self, connection, **kw):
+        """Get all the schemas in the database.
+
+        Args:
+            connection (Union[
+                sqlalchemy.engine.base.Connection,
+                sqlalchemy.engine.Engine
+            ]):
+                SQLAlchemy connection or engine object.
+
+        Returns:
+            list: Schema names.
+        """
+        if isinstance(connection, Engine):
+            connection = connection.connect()
+
+        schemas = []
+        with connection.connection.database.snapshot() as snap:
+            rows = snap.execute_sql(
+                "SELECT schema_name FROM information_schema.schemata"
+            )
+
+            for row in rows:
+                schemas.append(row[0])
+
+        return schemas
 
     def get_foreign_keys(self, connection, table_name, schema=None, **kw):
         """Get the table foreign key constraints.
