@@ -34,13 +34,6 @@ for version in versions:
     s.move(library, excludes=["README.rst", "docs/index.rst", "setup.py"])
 
 
-# TODO(busunkim): Remove once https://github.com/googleapis/gapic-generator-python/pull/555 is merged
-s.replace(
-    "google/**/base.py",
-    """from google\.api_core import gapic_v1\s+# type: ignore""",
-    """from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore""",
-)
 
 # fix bad indentation
 s.replace(
@@ -50,10 +43,6 @@ s.replace(
     """\g<1>settings resource.
 \g<1>If empty all mutable fields will be updated.""",
 )
-
-# fix bulleted lists
-s.replace("google/**/*client.py", "\-  state_change", "-  state_change\n")
-s.replace("google/**/*client.py", "\-  parent", "- parent\n")
 
 # ----------------------------------------------------------------------------
 # Add templated files
