@@ -37,18 +37,6 @@ for version in ["v1beta1", "v1"]:
 
     s.copy(library, excludes=excludes)
 
-s.replace(
-    "google/cloud/**/*client.py",
-    "from collections import OrderedDict",
-    r"""import builtins
-from collections import OrderedDict"""
-)
-s.replace(
-    "google/cloud/**/*client.py",
-    "any\(",
-    "builtins.any(",
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
@@ -57,7 +45,5 @@ templated_files = common.py_library(
     microgenerator=True,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
-
-s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
