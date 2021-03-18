@@ -42,15 +42,6 @@ for version in ["v2beta2", "v2beta3", "v2"]:
 s.replace("google/cloud/*/types/target.py", "X-Google-\*", "X-Google-\\*")
 s.replace("google/cloud/*/types/target.py", "X-AppEngine-\*", "X-AppEngine-\\*")
 
-# Bug with test_iam_permissions adding permissions twice
-# https://github.com/googleapis/gapic-generator-python/issues/778
-s.replace(
-    "google/cloud/**/client.py",
-    """\s+if permissions:
-\s+request\.permissions\.extend\(permissions\)""",
-    "",
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
