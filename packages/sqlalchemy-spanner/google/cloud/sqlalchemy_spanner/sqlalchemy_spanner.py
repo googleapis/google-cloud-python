@@ -14,7 +14,7 @@
 
 import re
 
-from sqlalchemy import types
+from sqlalchemy import types, ForeignKeyConstraint
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect
 from sqlalchemy.sql.compiler import (
@@ -85,6 +85,36 @@ class SpannerSQLCompiler(SQLCompiler):
 
 class SpannerDDLCompiler(DDLCompiler):
     """Spanner DDL statements compiler."""
+
+    def visit_drop_table(self, drop_table):
+        """
+        Cloud Spanner doesn't drop tables which have indexes
+        or foreign key constraints. This method builds several DDL
+        statements separated by semicolons to drop the indexes and
+        foreign keys constraints of the table before the DROP TABLE
+        statement.
+
+        Args:
+            (sqlalchemy.schema.DropTable): DROP TABLE statement object.
+
+        Returns:
+            str:
+                DDL statements separated by semicolons, which will
+                sequentially drop indexes, foreign keys constraints
+                and then the table itself.
+        """
+        constrs = ""
+        for cons in drop_table.element.constraints:
+            if isinstance(cons, ForeignKeyConstraint) and cons.name:
+                constrs += "ALTER TABLE {table} DROP CONSTRAINT {constr};".format(
+                    table=drop_table.element.name, constr=cons.name
+                )
+
+        indexes = ""
+        for index in drop_table.element.indexes:
+            indexes += "DROP INDEX {};".format(index.name)
+
+        return indexes + constrs + str(drop_table)
 
     def visit_primary_key_constraint(self, constraint):
         """Build primary key definition.
