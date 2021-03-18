@@ -53,6 +53,7 @@ s.move(templated_files, excludes=[".coveragerc"])
 python.py_samples(skip_readmes=True)
 
 # Fix missing async client in datatransfer_v1
+# https://github.com/googleapis/gapic-generator-python/issues/815
 s.replace(
     "google/cloud/bigquery_datatransfer_v1/__init__.py",
     r"from \.services\.data_transfer_service import DataTransferServiceClient",
@@ -63,9 +64,5 @@ s.replace(
     r"'DataTransferServiceClient',",
     '\\g<0>\n    "DataTransferServiceAsyncClient"',
 )
-
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", "'sphinx'", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
