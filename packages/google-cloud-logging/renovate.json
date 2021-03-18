@@ -2,7 +2,5 @@
   "extends": [
     "config:base",  ":preserveSemverRanges"
   ],
-  "git-submodules": {
-    "enabled": true
-  }
+  "ignorePaths": [".pre-commit-config.yaml"]
 }
