@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-logging.git",
-        "sha": "42bda27dd3eee2123cbe5b21dd75a587af7a910b"
+        "sha": "7a4b0543f9bc9f17ef7de071fb4ec6f2da642e45"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
+        "sha": "2c54c473779ea731128cea61a3a6c975a08a5378"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
+        "sha": "2c54c473779ea731128cea61a3a6c975a08a5378"
       }
     }
   ],
