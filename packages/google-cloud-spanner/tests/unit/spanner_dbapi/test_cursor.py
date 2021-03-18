@@ -862,3 +862,33 @@ class TestCursor(unittest.TestCase):
                     cursor.fetchmany(len(row))
 
                 run_mock.assert_called_with(statement, retried=True)
+
+    def test_ddls_with_semicolon(self):
+        """
+        Check that one script with several DDL statements separated
+        with semicolons is splitted into several DDLs.
+        """
+        from google.cloud.spanner_dbapi.connection import connect
+
+        EXP_DDLS = [
+            "CREATE TABLE table_name (row_id INT64) PRIMARY KEY ()",
+            "DROP INDEX index_name",
+            "DROP TABLE table_name",
+        ]
+
+        with mock.patch(
+            "google.cloud.spanner_v1.instance.Instance.exists", return_value=True,
+        ):
+            with mock.patch(
+                "google.cloud.spanner_v1.database.Database.exists", return_value=True,
+            ):
+                connection = connect("test-instance", "test-database")
+
+        cursor = connection.cursor()
+        cursor.execute(
+            "CREATE TABLE table_name (row_id INT64) PRIMARY KEY ();"
+            "DROP INDEX index_name;\n"
+            "DROP TABLE table_name;"
+        )
+
+        self.assertEqual(connection._ddl_statements, EXP_DDLS)
