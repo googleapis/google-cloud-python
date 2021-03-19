@@ -31,6 +31,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.speech_v1p1beta1.services.adaptation import pagers
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
 from google.cloud.speech_v1p1beta1.types import resource
+from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 
 from .transports.base import AdaptationTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AdaptationGrpcAsyncIOTransport
@@ -427,6 +428,8 @@ class AdaptationAsyncClient:
         self,
         request: cloud_speech_adaptation.UpdatePhraseSetRequest = None,
         *,
+        phrase_set: resource.PhraseSet = None,
+        update_mask: field_mask.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -437,6 +440,21 @@ class AdaptationAsyncClient:
             request (:class:`google.cloud.speech_v1p1beta1.types.UpdatePhraseSetRequest`):
                 The request object. Message sent by the client for the
                 `UpdatePhraseSet` method.
+            phrase_set (:class:`google.cloud.speech_v1p1beta1.types.PhraseSet`):
+                Required. The phrase set to update.
+
+                The phrase set's ``name`` field is used to identify the
+                set to be updated. Format:
+                {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+
+                This corresponds to the ``phrase_set`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -452,8 +470,24 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([phrase_set, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         request = cloud_speech_adaptation.UpdatePhraseSetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+
+        if phrase_set is not None:
+            request.phrase_set = phrase_set
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -809,6 +843,8 @@ class AdaptationAsyncClient:
         self,
         request: cloud_speech_adaptation.UpdateCustomClassRequest = None,
         *,
+        custom_class: resource.CustomClass = None,
+        update_mask: field_mask.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -819,6 +855,21 @@ class AdaptationAsyncClient:
             request (:class:`google.cloud.speech_v1p1beta1.types.UpdateCustomClassRequest`):
                 The request object. Message sent by the client for the
                 `UpdateCustomClass` method.
+            custom_class (:class:`google.cloud.speech_v1p1beta1.types.CustomClass`):
+                Required. The custom class to update.
+
+                The custom class's ``name`` field is used to identify
+                the custom class to be updated. Format:
+                {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+
+                This corresponds to the ``custom_class`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                The list of fields to be updated.
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -838,8 +889,24 @@ class AdaptationAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([custom_class, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         request = cloud_speech_adaptation.UpdateCustomClassRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+
+        if custom_class is not None:
+            request.custom_class = custom_class
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

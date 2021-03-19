@@ -49,7 +49,7 @@ class speechCallTransformer(cst.CSTTransformer):
     'get_phrase_set': ('name', ),
     'list_custom_classes': ('parent', 'page_size', 'page_token', ),
     'list_phrase_set': ('parent', 'page_size', 'page_token', ),
-    'long_running_recognize': ('config', 'audio', ),
+    'long_running_recognize': ('config', 'audio', 'output_config', ),
     'recognize': ('config', 'audio', ),
     'streaming_recognize': ('streaming_config', 'audio_content', ),
     'update_custom_class': ('custom_class', 'update_mask', ),
