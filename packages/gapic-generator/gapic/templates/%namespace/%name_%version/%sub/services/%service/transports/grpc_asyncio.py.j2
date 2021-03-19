@@ -121,7 +121,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
                 ``client_cert_source`` or applicatin default SSL credentials.
-            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]): 
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
                 Deprecated. A callback to provide client SSL certificate bytes and
                 private key bytes, both in PEM format. It is ignored if
                 ``api_mtls_endpoint`` is None.
@@ -133,10 +133,10 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -151,7 +151,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         {%- if service.has_lro %}
         self._operations_client = None
         {%- endif %}
-    
+
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
         if client_cert_source:
@@ -177,7 +177,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                     )
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
-            
+
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
@@ -351,7 +351,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
                 response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
-    {% endif %} 
+    {% endif %}
 
 __all__ = (
     '{{ service.name }}GrpcAsyncIOTransport',
