@@ -19,6 +19,7 @@ import collections
 from google.cloud.bigquery_v2 import types
 
 
+_DEFAULT_VALUE = object()
 _STRUCT_TYPES = ("RECORD", "STRUCT")
 
 # SQL types reference:
@@ -73,14 +74,18 @@ class SchemaField(object):
         name,
         field_type,
         mode="NULLABLE",
-        description=None,
+        description=_DEFAULT_VALUE,
         fields=(),
         policy_tags=None,
     ):
-        self._name = name
-        self._field_type = field_type
-        self._mode = mode
-        self._description = description
+        self._properties = {
+            "name": name,
+            "type": field_type,
+        }
+        if mode is not None:
+            self._properties["mode"] = mode.upper()
+        if description is not _DEFAULT_VALUE:
+            self._properties["description"] = description
         self._fields = tuple(fields)
         self._policy_tags = policy_tags
 
@@ -98,7 +103,7 @@ class SchemaField(object):
         """
         # Handle optional properties with default values
         mode = api_repr.get("mode", "NULLABLE")
-        description = api_repr.get("description")
+        description = api_repr.get("description", _DEFAULT_VALUE)
         fields = api_repr.get("fields", ())
 
         return cls(
@@ -113,7 +118,7 @@ class SchemaField(object):
     @property
     def name(self):
         """str: The name of the field."""
-        return self._name
+        return self._properties["name"]
 
     @property
     def field_type(self):
@@ -122,7 +127,7 @@ class SchemaField(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.type
         """
-        return self._field_type
+        return self._properties["type"]
 
     @property
     def mode(self):
@@ -131,17 +136,17 @@ class SchemaField(object):
         See:
         https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#TableFieldSchema.FIELDS.mode
         """
-        return self._mode
+        return self._properties.get("mode")
 
     @property
     def is_nullable(self):
         """bool: whether 'mode' is 'nullable'."""
-        return self._mode == "NULLABLE"
+        return self.mode == "NULLABLE"
 
     @property
     def description(self):
         """Optional[str]: description for the field."""
-        return self._description
+        return self._properties.get("description")
 
     @property
     def fields(self):
@@ -164,13 +169,7 @@ class SchemaField(object):
         Returns:
             Dict: A dictionary representing the SchemaField in a serialized form.
         """
-        # Put together the basic representation. See http://bit.ly/2hOAT5u.
-        answer = {
-            "mode": self.mode.upper(),
-            "name": self.name,
-            "type": self.field_type.upper(),
-            "description": self.description,
-        }
+        answer = self._properties.copy()
 
         # If this is a RECORD type, then sub-fields are also included,
         # add this to the serialized representation.
@@ -193,10 +192,10 @@ class SchemaField(object):
             Tuple: The contents of this :class:`~google.cloud.bigquery.schema.SchemaField`.
         """
         return (
-            self._name,
-            self._field_type.upper(),
-            self._mode.upper(),
-            self._description,
+            self.name,
+            self.field_type.upper(),
+            self.mode.upper(),
+            self.description,
             self._fields,
             self._policy_tags,
         )

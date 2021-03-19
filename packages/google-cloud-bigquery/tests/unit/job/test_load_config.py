@@ -434,13 +434,11 @@ class TestLoadJobConfig(_Base):
             "name": "full_name",
             "type": "STRING",
             "mode": "REQUIRED",
-            "description": None,
         }
         age_repr = {
             "name": "age",
             "type": "INTEGER",
             "mode": "REQUIRED",
-            "description": None,
         }
         self.assertEqual(
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
@@ -449,24 +447,18 @@ class TestLoadJobConfig(_Base):
     def test_schema_setter_valid_mappings_list(self):
         config = self._get_target_class()()
 
-        schema = [
-            {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
-            {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
-        ]
-        config.schema = schema
-
         full_name_repr = {
             "name": "full_name",
             "type": "STRING",
             "mode": "REQUIRED",
-            "description": None,
         }
         age_repr = {
             "name": "age",
             "type": "INTEGER",
             "mode": "REQUIRED",
-            "description": None,
         }
+        schema = [full_name_repr, age_repr]
+        config.schema = schema
         self.assertEqual(
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
         )

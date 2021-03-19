@@ -77,14 +77,7 @@ class TestExternalConfig(unittest.TestCase):
         ec.schema = [schema.SchemaField("full_name", "STRING", mode="REQUIRED")]
 
         exp_schema = {
-            "fields": [
-                {
-                    "name": "full_name",
-                    "type": "STRING",
-                    "mode": "REQUIRED",
-                    "description": None,
-                }
-            ]
+            "fields": [{"name": "full_name", "type": "STRING", "mode": "REQUIRED"}]
         }
         got_resource = ec.to_api_repr()
         exp_resource = {
