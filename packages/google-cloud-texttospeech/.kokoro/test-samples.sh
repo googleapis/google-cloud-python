@@ -28,6 +28,12 @@ if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then
     git checkout $LATEST_RELEASE
 fi
 
+# Exit early if samples directory doesn't exist
+if [ ! -d "./samples" ]; then
+  echo "No tests run. `./samples` not found"
+  exit 0
+fi
+
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
@@ -81,11 +87,11 @@ for file in samples/**/requirements.txt; do
     python3.6 -m nox -s "$RUN_TESTS_SESSION"
     EXIT=$?
 
-    # If this is a periodic build, send the test log to the Build Cop Bot.
-    # See https://github.com/googleapis/repo-automation-bots/tree/master/packages/buildcop.
+    # If this is a periodic build, send the test log to the FlakyBot.
+    # See https://github.com/googleapis/repo-automation-bots/tree/master/packages/flakybot.
     if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then
-      chmod +x $KOKORO_GFILE_DIR/linux_amd64/buildcop
-      $KOKORO_GFILE_DIR/linux_amd64/buildcop
+      chmod +x $KOKORO_GFILE_DIR/linux_amd64/flakybot
+      $KOKORO_GFILE_DIR/linux_amd64/flakybot
     fi
 
     if [[ $EXIT -ne 0 ]]; then

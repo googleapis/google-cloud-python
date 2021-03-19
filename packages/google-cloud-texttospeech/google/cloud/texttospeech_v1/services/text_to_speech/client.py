@@ -16,17 +16,19 @@
 #
 
 from collections import OrderedDict
+from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -106,6 +108,22 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TextToSpeechClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -117,7 +135,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            TextToSpeechClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -125,12 +143,80 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
 
     from_service_account_json = from_service_account_file
 
+    @property
+    def transport(self) -> TextToSpeechTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            TextToSpeechTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, TextToSpeechTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, TextToSpeechTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the text to speech client.
@@ -141,26 +227,29 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TextToSpeechTransport]): The
+            transport (Union[str, TextToSpeechTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -168,29 +257,43 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        )
+
+        client_cert_source_func = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
+            else:
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
                 )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -214,10 +317,9 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
-                host=client_options.api_endpoint,
+                host=api_endpoint,
                 scopes=client_options.scopes,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -234,10 +336,10 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         r"""Returns a list of Voice supported for synthesis.
 
         Args:
-            request (:class:`~.cloud_tts.ListVoicesRequest`):
+            request (google.cloud.texttospeech_v1.types.ListVoicesRequest):
                 The request object. The top-level message sent by the
                 client for the `ListVoices` method.
-            language_code (:class:`str`):
+            language_code (str):
                 Optional. Recommended.
                 `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
                 language tag. If specified, the ListVoices call will
@@ -248,6 +350,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 (Norwegian Bokmal) voices; specifying "zh" will also get
                 supported "cmn-\*" voices; specifying "zh-hk" will also
                 get supported "yue-\*" voices.
+
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -259,8 +362,8 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloud_tts.ListVoicesResponse:
-                The message returned to the client by the ``ListVoices``
+            google.cloud.texttospeech_v1.types.ListVoicesResponse:
+                The message returned to the client by the ListVoices
                 method.
 
         """
@@ -312,24 +415,27 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         after all text input has been processed.
 
         Args:
-            request (:class:`~.cloud_tts.SynthesizeSpeechRequest`):
+            request (google.cloud.texttospeech_v1.types.SynthesizeSpeechRequest):
                 The request object. The top-level message sent by the
                 client for the `SynthesizeSpeech` method.
-            input (:class:`~.cloud_tts.SynthesisInput`):
+            input (google.cloud.texttospeech_v1.types.SynthesisInput):
                 Required. The Synthesizer requires
                 either plain text or SSML as input.
+
                 This corresponds to the ``input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            voice (:class:`~.cloud_tts.VoiceSelectionParams`):
+            voice (google.cloud.texttospeech_v1.types.VoiceSelectionParams):
                 Required. The desired voice of the
                 synthesized audio.
+
                 This corresponds to the ``voice`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            audio_config (:class:`~.cloud_tts.AudioConfig`):
+            audio_config (google.cloud.texttospeech_v1.types.AudioConfig):
                 Required. The configuration of the
                 synthesized audio.
+
                 This corresponds to the ``audio_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -341,9 +447,9 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloud_tts.SynthesizeSpeechResponse:
+            google.cloud.texttospeech_v1.types.SynthesizeSpeechResponse:
                 The message returned to the client by the
-                ``SynthesizeSpeech`` method.
+                SynthesizeSpeech method.
 
         """
         # Create or coerce a protobuf request object.

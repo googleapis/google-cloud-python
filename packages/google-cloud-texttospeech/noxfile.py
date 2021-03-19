@@ -27,8 +27,22 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.7"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
+
+# 'docfx' is excluded since it only needs to run in 'docs-presubmit'
+nox.options.sessions = [
+    "unit",
+    "system",
+    "cover",
+    "lint",
+    "lint_setup_py",
+    "blacken",
+    "docs",
+]
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -72,16 +86,19 @@ def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
 
-    session.install("mock", "pytest", "pytest-cov")
+    session.install(
+        "mock", "pytest", "pytest-cov",
+    )
+
     session.install("-e", ".")
 
     # Run py.test against the unit tests.
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.texttospeech",
-        "--cov=google.cloud",
-        "--cov=tests.unit",
+        f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov=google/cloud",
+        "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
@@ -109,6 +126,9 @@ def system(session):
     # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
+    # Install pyopenssl for mTLS testing.
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
+        session.install("pyopenssl")
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
@@ -128,9 +148,21 @@ def system(session):
 
     # Run py.test against the system tests.
     if system_test_exists:
-        session.run("py.test", "--quiet", system_test_path, *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_path,
+            *session.posargs,
+        )
     if system_test_folder_exists:
-        session.run("py.test", "--quiet", system_test_folder_path, *session.posargs)
+        session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_folder_path,
+            *session.posargs,
+        )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

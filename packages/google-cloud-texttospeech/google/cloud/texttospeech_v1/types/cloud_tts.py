@@ -80,7 +80,7 @@ class ListVoicesResponse(proto.Message):
     r"""The message returned to the client by the ``ListVoices`` method.
 
     Attributes:
-        voices (Sequence[~.cloud_tts.Voice]):
+        voices (Sequence[google.cloud.texttospeech_v1.types.Voice]):
             The list of voices.
     """
 
@@ -98,7 +98,7 @@ class Voice(proto.Message):
         name (str):
             The name of this voice.  Each distinct voice
             has a unique name.
-        ssml_gender (~.cloud_tts.SsmlVoiceGender):
+        ssml_gender (google.cloud.texttospeech_v1.types.SsmlVoiceGender):
             The gender of this voice.
         natural_sample_rate_hertz (int):
             The natural sample rate (in hertz) for this
@@ -119,13 +119,13 @@ class SynthesizeSpeechRequest(proto.Message):
     ``SynthesizeSpeech`` method.
 
     Attributes:
-        input (~.cloud_tts.SynthesisInput):
+        input (google.cloud.texttospeech_v1.types.SynthesisInput):
             Required. The Synthesizer requires either
             plain text or SSML as input.
-        voice (~.cloud_tts.VoiceSelectionParams):
+        voice (google.cloud.texttospeech_v1.types.VoiceSelectionParams):
             Required. The desired voice of the
             synthesized audio.
-        audio_config (~.cloud_tts.AudioConfig):
+        audio_config (google.cloud.texttospeech_v1.types.AudioConfig):
             Required. The configuration of the
             synthesized audio.
     """
@@ -182,7 +182,7 @@ class VoiceSelectionParams(proto.Message):
             The name of the voice. If not set, the service will choose a
             voice based on the other parameters such as language_code
             and gender.
-        ssml_gender (~.cloud_tts.SsmlVoiceGender):
+        ssml_gender (google.cloud.texttospeech_v1.types.SsmlVoiceGender):
             The preferred gender of the voice. If not set, the service
             will choose a voice based on the other parameters such as
             language_code and name. Note that this is only a preference,
@@ -202,7 +202,7 @@ class AudioConfig(proto.Message):
     r"""Description of audio data to be synthesized.
 
     Attributes:
-        audio_encoding (~.cloud_tts.AudioEncoding):
+        audio_encoding (google.cloud.texttospeech_v1.types.AudioEncoding):
             Required. The format of the audio byte
             stream.
         speaking_rate (float):

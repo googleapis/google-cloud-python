@@ -28,7 +28,6 @@ _transport_registry = OrderedDict()  # type: Dict[str, Type[TextToSpeechTranspor
 _transport_registry["grpc"] = TextToSpeechGrpcTransport
 _transport_registry["grpc_asyncio"] = TextToSpeechGrpcAsyncIOTransport
 
-
 __all__ = (
     "TextToSpeechTransport",
     "TextToSpeechGrpcTransport",

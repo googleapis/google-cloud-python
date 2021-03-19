@@ -19,7 +19,7 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -107,10 +107,30 @@ class TextToSpeechTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_voices: gapic_v1.method.wrap_method(
-                self.list_voices, default_timeout=None, client_info=client_info,
+                self.list_voices,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.synthesize_speech: gapic_v1.method.wrap_method(
-                self.synthesize_speech, default_timeout=None, client_info=client_info,
+                self.synthesize_speech,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                ),
+                default_timeout=600.0,
+                client_info=client_info,
             ),
         }
 

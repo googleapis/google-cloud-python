@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-texttospeech.git",
-        "sha": "97b044d0ed59483d34a86fbd99faf85a32507c4c"
+        "remote": "git@github.com:googleapis/python-texttospeech",
+        "sha": "5f6f26172a520d4791927650a624c3de6af1e7d0"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "4d52dfb72078000b13de923c1dadec19f3a64ad1",
-        "internalRef": "324098852"
+        "sha": "8d17d8fafbb87ac64bb3179b99ac34ed41375a51",
+        "internalRef": "363762006"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4f8f5dc24af79694887385015294e4dbb214c352"
+        "sha": "8b13da943497f75c5303700bff5aabdd85d939e0"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4f8f5dc24af79694887385015294e4dbb214c352"
+        "sha": "8b13da943497f75c5303700bff5aabdd85d939e0"
       }
     }
   ],
@@ -37,7 +37,7 @@
         "apiName": "texttospeech",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     },
     {
@@ -46,7 +46,7 @@
         "apiName": "texttospeech",
         "apiVersion": "v1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     }
   ]
