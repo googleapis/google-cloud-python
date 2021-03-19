@@ -1398,6 +1398,89 @@ async def test_update_phrase_set_field_headers_async():
     ]
 
 
+def test_update_phrase_set_flattened():
+    client = AdaptationClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource.PhraseSet()
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_phrase_set(
+            phrase_set=resource.PhraseSet(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].phrase_set == resource.PhraseSet(name="name_value")
+
+        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+
+
+def test_update_phrase_set_flattened_error():
+    client = AdaptationClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_phrase_set(
+            cloud_speech_adaptation.UpdatePhraseSetRequest(),
+            phrase_set=resource.PhraseSet(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_set_flattened_async():
+    client = AdaptationAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource.PhraseSet()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resource.PhraseSet())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_phrase_set(
+            phrase_set=resource.PhraseSet(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].phrase_set == resource.PhraseSet(name="name_value")
+
+        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_set_flattened_error_async():
+    client = AdaptationAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_phrase_set(
+            cloud_speech_adaptation.UpdatePhraseSetRequest(),
+            phrase_set=resource.PhraseSet(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+
 def test_delete_phrase_set(
     transport: str = "grpc", request_type=cloud_speech_adaptation.DeletePhraseSetRequest
 ):
@@ -2623,6 +2706,91 @@ async def test_update_custom_class_field_headers_async():
         "x-goog-request-params",
         "custom_class.name=custom_class.name/value",
     ) in kw["metadata"]
+
+
+def test_update_custom_class_flattened():
+    client = AdaptationClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_class), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource.CustomClass()
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_custom_class(
+            custom_class=resource.CustomClass(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].custom_class == resource.CustomClass(name="name_value")
+
+        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+
+
+def test_update_custom_class_flattened_error():
+    client = AdaptationClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_custom_class(
+            cloud_speech_adaptation.UpdateCustomClassRequest(),
+            custom_class=resource.CustomClass(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_custom_class_flattened_async():
+    client = AdaptationAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_class), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resource.CustomClass()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.CustomClass()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_custom_class(
+            custom_class=resource.CustomClass(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0].custom_class == resource.CustomClass(name="name_value")
+
+        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+
+
+@pytest.mark.asyncio
+async def test_update_custom_class_flattened_error_async():
+    client = AdaptationAsyncClient(credentials=credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_custom_class(
+            cloud_speech_adaptation.UpdateCustomClassRequest(),
+            custom_class=resource.CustomClass(name="name_value"),
+            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+        )
 
 
 def test_delete_custom_class(
