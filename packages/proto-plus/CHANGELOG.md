@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.18.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.18.0...v1.18.1) (2021-03-19)
+
+
+### Bug Fixes
+
+* Add arm64 support for PY3.6 ([#219](https://www.github.com/googleapis/proto-plus-python/issues/219)) ([c9667c2](https://www.github.com/googleapis/proto-plus-python/commit/c9667c22d0b8f6026dbf69d502eb8eb972279891))
+
 ## [1.18.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.17.0...v1.18.0) (2021-03-16)
 
 
