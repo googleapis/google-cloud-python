@@ -67,16 +67,23 @@ class Test__create_gapic_client(unittest.TestCase):
         client_class = mock.Mock()
         emulator_host = emulator_channel = object()
         credentials = _make_credentials()
+        client_options = mock.Mock()
+        transport = mock.Mock()
+
         client = _Client(
             credentials, emulator_host=emulator_host, emulator_channel=emulator_channel
         )
         client_info = client._client_info = mock.Mock()
-
-        result = self._invoke_client_factory(client_class)(client)
+        result = self._invoke_client_factory(
+            client_class, client_options=client_options, transport=transport
+        )(client)
 
         self.assertIs(result, client_class.return_value)
         client_class.assert_called_once_with(
-            channel=client._emulator_channel, client_info=client_info
+            credentials=None,
+            client_info=client_info,
+            client_options=client_options,
+            transport=transport,
         )
 
 
@@ -121,7 +128,6 @@ class TestClient(unittest.TestCase):
         self.assertIs(client._client_info, _CLIENT_INFO)
         self.assertIsNone(client._channel)
         self.assertIsNone(client._emulator_host)
-        self.assertIsNone(client._emulator_channel)
         self.assertEqual(client.SCOPE, (DATA_SCOPE,))
 
     def test_constructor_explicit(self):
@@ -167,22 +173,23 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         emulator_host = "localhost:8081"
-        with mock.patch("os.getenv") as getenv:
-            getenv.return_value = emulator_host
-            with mock.patch("grpc.insecure_channel") as factory:
-                getenv.return_value = emulator_host
+        with mock.patch("os.environ", {BIGTABLE_EMULATOR: emulator_host}):
+            with mock.patch("grpc.secure_channel") as factory:
                 client = self._make_one(project=self.PROJECT, credentials=credentials)
+                # don't test local_composite_credentials
+                client._local_composite_credentials = lambda: credentials
+                # channels are formed when needed, so access a client
+                # create a gapic channel
+                client.table_data_client
 
         self.assertEqual(client._emulator_host, emulator_host)
-        self.assertIs(client._emulator_channel, factory.return_value)
-        factory.assert_called_once_with(
-            target=emulator_host,
-            options={
-                "grpc.keepalive_time_ms": 30000,
-                "grpc.keepalive_timeout_ms": 10000,
-            }.items(),
-        )
-        getenv.assert_called_once_with(BIGTABLE_EMULATOR)
+        options = {
+            "grpc.max_send_message_length": -1,
+            "grpc.max_receive_message_length": -1,
+            "grpc.keepalive_time_ms": 30000,
+            "grpc.keepalive_timeout_ms": 10000,
+        }.items()
+        factory.assert_called_once_with(emulator_host, credentials, options=options)
 
     def test__get_scopes_default(self):
         from google.cloud.bigtable.client import DATA_SCOPE

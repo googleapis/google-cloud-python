@@ -32,6 +32,7 @@ import warnings
 import grpc
 
 from google.api_core.gapic_v1 import client_info
+import google.auth
 
 from google.cloud import bigtable_v2
 from google.cloud import bigtable_admin_v2
@@ -69,17 +70,12 @@ READ_ONLY_SCOPE = "https://www.googleapis.com/auth/bigtable.data.readonly"
 
 def _create_gapic_client(client_class, client_options=None, transport=None):
     def inner(self):
-        if self._emulator_host is None:
-            return client_class(
-                credentials=None,
-                client_info=self._client_info,
-                client_options=client_options,
-                transport=transport,
-            )
-        else:
-            return client_class(
-                channel=self._emulator_channel, client_info=self._client_info
-            )
+        return client_class(
+            credentials=None,
+            client_info=self._client_info,
+            client_options=client_options,
+            transport=transport,
+        )
 
     return inner
 
@@ -166,16 +162,6 @@ class Client(ClientWithProject):
         self._admin = bool(admin)
         self._client_info = client_info
         self._emulator_host = os.getenv(BIGTABLE_EMULATOR)
-        self._emulator_channel = None
-
-        if self._emulator_host is not None:
-            self._emulator_channel = grpc.insecure_channel(
-                target=self._emulator_host,
-                options={
-                    "grpc.keepalive_time_ms": 30000,
-                    "grpc.keepalive_timeout_ms": 10000,
-                }.items(),
-            )
 
         if channel is not None:
             warnings.warn(
@@ -208,22 +194,76 @@ class Client(ClientWithProject):
 
         return scopes
 
+    def _emulator_channel(self, transport, options):
+        """
+        Creates a channel using self._credentials in a similar way to grpc.secure_channel but
+        using grpc.local_channel_credentials() rather than grpc.ssh_channel_credentials()
+        to allow easy connection to a local emulator.
+        :return: grpc.Channel or grpc.aio.Channel
+        """
+        # TODO: Implement a special credentials type for emulator and use
+        # "transport.create_channel" to create gRPC channels once google-auth
+        # extends it's allowed credentials types.
+        # Note: this code also exists in the firestore client.
+        if "GrpcAsyncIOTransport" in str(transport.__name__):
+            return grpc.aio.secure_channel(
+                self._emulator_host,
+                self._local_composite_credentials(),
+                options=options,
+            )
+        else:
+            return grpc.secure_channel(
+                self._emulator_host,
+                self._local_composite_credentials(),
+                options=options,
+            )
+
+    def _local_composite_credentials(self):
+        """
+        Creates the credentials for the local emulator channel
+        :return: grpc.ChannelCredentials
+        """
+        credentials = google.auth.credentials.with_scopes_if_required(
+            self._credentials, None
+        )
+        request = google.auth.transport.requests.Request()
+
+        # Create the metadata plugin for inserting the authorization header.
+        metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
+            credentials, request
+        )
+
+        # Create a set of grpc.CallCredentials using the metadata plugin.
+        google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
+
+        # Using the local_credentials to allow connection to emulator
+        local_credentials = grpc.local_channel_credentials()
+
+        # Combine the local credentials and the authorization credentials.
+        return grpc.composite_channel_credentials(
+            local_credentials, google_auth_credentials
+        )
+
     def _create_gapic_client_channel(self, client_class, grpc_transport):
+        options = {
+            "grpc.max_send_message_length": -1,
+            "grpc.max_receive_message_length": -1,
+            "grpc.keepalive_time_ms": 30000,
+            "grpc.keepalive_timeout_ms": 10000,
+        }.items()
         if self._client_options and self._client_options.api_endpoint:
             api_endpoint = self._client_options.api_endpoint
         else:
             api_endpoint = client_class.DEFAULT_ENDPOINT
 
-        channel = grpc_transport.create_channel(
-            host=api_endpoint,
-            credentials=self._credentials,
-            options={
-                "grpc.max_send_message_length": -1,
-                "grpc.max_receive_message_length": -1,
-                "grpc.keepalive_time_ms": 30000,
-                "grpc.keepalive_timeout_ms": 10000,
-            }.items(),
-        )
+        channel = None
+        if self._emulator_host is not None:
+            api_endpoint = self._emulator_host
+            channel = self._emulator_channel(grpc_transport, options)
+        else:
+            channel = grpc_transport.create_channel(
+                host=api_endpoint, credentials=self._credentials, options=options,
+            )
         transport = grpc_transport(channel=channel, host=api_endpoint)
         return transport
 

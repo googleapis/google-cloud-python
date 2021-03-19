@@ -24,7 +24,8 @@ from google.api_core.exceptions import TooManyRequests
 from google.cloud.environment_vars import BIGTABLE_EMULATOR
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryResult
-from test_utils.system import EmulatorCreds
+
+# from test_utils.system import EmulatorCreds
 from test_utils.system import unique_resource_id
 
 from google.cloud._helpers import _datetime_from_microseconds
@@ -114,11 +115,9 @@ def setUpModule():
 
     Config.IN_EMULATOR = os.getenv(BIGTABLE_EMULATOR) is not None
 
-    if Config.IN_EMULATOR:
-        credentials = EmulatorCreds()
-        Config.CLIENT = Client(admin=True, credentials=credentials)
-    else:
-        Config.CLIENT = Client(admin=True)
+    # Previously we created clients using a mock EmulatorCreds when targeting
+    # an emulator.
+    Config.CLIENT = Client(admin=True)
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
     Config.CLUSTER = Config.INSTANCE.cluster(
@@ -840,6 +839,9 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(temp_table.list_column_families(), {})
 
     def test_backup(self):
+        if Config.IN_EMULATOR:
+            self.skipTest("backups are not supported in the emulator")
+
         from google.cloud._helpers import _datetime_to_pb_timestamp
 
         temp_table_id = "test-backup-table"
