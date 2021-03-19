@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.43.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.0...v0.43.1) (2021-03-19)
+
+
+### Bug Fixes
+
+* use correct retry deadline in publisher methods ([#814](https://www.github.com/googleapis/gapic-generator-python/issues/814)) ([92a2cfc](https://www.github.com/googleapis/gapic-generator-python/commit/92a2cfc47b24c4b1a041d5bbb944d69a67a962a2))
+
 ## [0.43.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.42.2...v0.43.0) (2021-03-11)
 
 
