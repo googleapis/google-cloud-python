@@ -88,7 +88,7 @@ def avro_topic(publisher_client, avro_schema):
                 "name": avro_topic_path,
                 "schema_settings": {
                     "schema": avro_schema,
-                    "encoding": Encoding.BINAARY,
+                    "encoding": Encoding.BINARY,
                 },
             }
         )
