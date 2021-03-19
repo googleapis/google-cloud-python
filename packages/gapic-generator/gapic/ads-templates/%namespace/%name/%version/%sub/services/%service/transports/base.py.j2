@@ -93,6 +93,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
                         exceptions.{{ ex.__name__ }},
                         {%- endfor %}
                     ),
+                    deadline={{ method.timeout }},
                 ),
                 {%- endif %}
                 default_timeout={{ method.timeout }},
