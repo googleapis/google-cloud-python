@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-datacatalog.git",
-        "sha": "ec9d92555c4adaa97a3dfccb85f060cc86ed2747"
+        "sha": "cde0673fbfb2289bc017268d3799eb428162f3d8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "6ef9eaea379fc1cc0355e06a5a20b594543ee693",
-        "internalRef": "355059873"
+        "sha": "8d17d8fafbb87ac64bb3179b99ac34ed41375a51",
+        "internalRef": "363762006"
       }
     },
     {

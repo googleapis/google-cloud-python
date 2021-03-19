@@ -94,15 +94,17 @@ def test__get_default_mtls_endpoint():
     assert DataCatalogClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_data_catalog_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [DataCatalogClient, DataCatalogAsyncClient,])
+def test_data_catalog_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = DataCatalogClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "datacatalog.googleapis.com:443"
 
@@ -116,9 +118,11 @@ def test_data_catalog_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "datacatalog.googleapis.com:443"
 
@@ -477,6 +481,22 @@ def test_search_catalog_from_dict():
     test_search_catalog(request_type=dict)
 
 
+def test_search_catalog_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_catalog), "__call__") as call:
+        client.search_catalog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.SearchCatalogRequest()
+
+
 @pytest.mark.asyncio
 async def test_search_catalog_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.SearchCatalogRequest
@@ -793,6 +813,24 @@ def test_create_entry_group_from_dict():
     test_create_entry_group(request_type=dict)
 
 
+def test_create_entry_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entry_group), "__call__"
+    ) as call:
+        client.create_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.CreateEntryGroupRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_entry_group_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.CreateEntryGroupRequest
@@ -1032,6 +1070,22 @@ def test_get_entry_group_from_dict():
     test_get_entry_group(request_type=dict)
 
 
+def test_get_entry_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry_group), "__call__") as call:
+        client.get_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.GetEntryGroupRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_entry_group_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.GetEntryGroupRequest
@@ -1251,6 +1305,24 @@ def test_update_entry_group(
 
 def test_update_entry_group_from_dict():
     test_update_entry_group(request_type=dict)
+
+
+def test_update_entry_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_entry_group), "__call__"
+    ) as call:
+        client.update_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.UpdateEntryGroupRequest()
 
 
 @pytest.mark.asyncio
@@ -1479,6 +1551,24 @@ def test_delete_entry_group_from_dict():
     test_delete_entry_group(request_type=dict)
 
 
+def test_delete_entry_group_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entry_group), "__call__"
+    ) as call:
+        client.delete_entry_group()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.DeleteEntryGroupRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_entry_group_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.DeleteEntryGroupRequest
@@ -1674,6 +1764,24 @@ def test_list_entry_groups(
 
 def test_list_entry_groups_from_dict():
     test_list_entry_groups(request_type=dict)
+
+
+def test_list_entry_groups_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entry_groups), "__call__"
+    ) as call:
+        client.list_entry_groups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.ListEntryGroupsRequest()
 
 
 @pytest.mark.asyncio
@@ -2049,6 +2157,22 @@ def test_create_entry_from_dict():
     test_create_entry(request_type=dict)
 
 
+def test_create_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_entry), "__call__") as call:
+        client.create_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.CreateEntryRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_entry_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.CreateEntryRequest
@@ -2285,6 +2409,22 @@ def test_update_entry_from_dict():
     test_update_entry(request_type=dict)
 
 
+def test_update_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_entry), "__call__") as call:
+        client.update_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.UpdateEntryRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_entry_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.UpdateEntryRequest
@@ -2494,6 +2634,22 @@ def test_delete_entry_from_dict():
     test_delete_entry(request_type=dict)
 
 
+def test_delete_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_entry), "__call__") as call:
+        client.delete_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.DeleteEntryRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_entry_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.DeleteEntryRequest
@@ -2689,6 +2845,22 @@ def test_get_entry(transport: str = "grpc", request_type=datacatalog.GetEntryReq
 
 def test_get_entry_from_dict():
     test_get_entry(request_type=dict)
+
+
+def test_get_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_entry), "__call__") as call:
+        client.get_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.GetEntryRequest()
 
 
 @pytest.mark.asyncio
@@ -2905,6 +3077,22 @@ def test_lookup_entry_from_dict():
     test_lookup_entry(request_type=dict)
 
 
+def test_lookup_entry_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_entry), "__call__") as call:
+        client.lookup_entry()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.LookupEntryRequest()
+
+
 @pytest.mark.asyncio
 async def test_lookup_entry_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.LookupEntryRequest
@@ -2989,6 +3177,22 @@ def test_list_entries(
 
 def test_list_entries_from_dict():
     test_list_entries(request_type=dict)
+
+
+def test_list_entries_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_entries), "__call__") as call:
+        client.list_entries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.ListEntriesRequest()
 
 
 @pytest.mark.asyncio
@@ -3326,6 +3530,24 @@ def test_create_tag_template_from_dict():
     test_create_tag_template(request_type=dict)
 
 
+def test_create_tag_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_template), "__call__"
+    ) as call:
+        client.create_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.CreateTagTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_tag_template_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.CreateTagTemplateRequest
@@ -3551,6 +3773,22 @@ def test_get_tag_template_from_dict():
     test_get_tag_template(request_type=dict)
 
 
+def test_get_tag_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tag_template), "__call__") as call:
+        client.get_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.GetTagTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_tag_template_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.GetTagTemplateRequest
@@ -3744,6 +3982,24 @@ def test_update_tag_template(
 
 def test_update_tag_template_from_dict():
     test_update_tag_template(request_type=dict)
+
+
+def test_update_tag_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tag_template), "__call__"
+    ) as call:
+        client.update_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.UpdateTagTemplateRequest()
 
 
 @pytest.mark.asyncio
@@ -3964,6 +4220,24 @@ def test_delete_tag_template_from_dict():
     test_delete_tag_template(request_type=dict)
 
 
+def test_delete_tag_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_template), "__call__"
+    ) as call:
+        client.delete_tag_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.DeleteTagTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_tag_template_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.DeleteTagTemplateRequest
@@ -4174,6 +4448,24 @@ def test_create_tag_template_field(
 
 def test_create_tag_template_field_from_dict():
     test_create_tag_template_field(request_type=dict)
+
+
+def test_create_tag_template_field_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_tag_template_field), "__call__"
+    ) as call:
+        client.create_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.CreateTagTemplateFieldRequest()
 
 
 @pytest.mark.asyncio
@@ -4424,6 +4716,24 @@ def test_update_tag_template_field_from_dict():
     test_update_tag_template_field(request_type=dict)
 
 
+def test_update_tag_template_field_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_tag_template_field), "__call__"
+    ) as call:
+        client.update_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.UpdateTagTemplateFieldRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_tag_template_field_async(
     transport: str = "grpc_asyncio",
@@ -4672,6 +4982,24 @@ def test_rename_tag_template_field_from_dict():
     test_rename_tag_template_field(request_type=dict)
 
 
+def test_rename_tag_template_field_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rename_tag_template_field), "__call__"
+    ) as call:
+        client.rename_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.RenameTagTemplateFieldRequest()
+
+
 @pytest.mark.asyncio
 async def test_rename_tag_template_field_async(
     transport: str = "grpc_asyncio",
@@ -4898,6 +5226,24 @@ def test_delete_tag_template_field_from_dict():
     test_delete_tag_template_field(request_type=dict)
 
 
+def test_delete_tag_template_field_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_tag_template_field), "__call__"
+    ) as call:
+        client.delete_tag_template_field()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.DeleteTagTemplateFieldRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_tag_template_field_async(
     transport: str = "grpc_asyncio",
@@ -5105,6 +5451,22 @@ def test_create_tag(transport: str = "grpc", request_type=datacatalog.CreateTagR
 
 def test_create_tag_from_dict():
     test_create_tag(request_type=dict)
+
+
+def test_create_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
+        client.create_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.CreateTagRequest()
 
 
 @pytest.mark.asyncio
@@ -5321,6 +5683,22 @@ def test_update_tag_from_dict():
     test_update_tag(request_type=dict)
 
 
+def test_update_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
+        client.update_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.UpdateTagRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_tag_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.UpdateTagRequest
@@ -5525,6 +5903,22 @@ def test_delete_tag_from_dict():
     test_delete_tag(request_type=dict)
 
 
+def test_delete_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
+        client.delete_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.DeleteTagRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_tag_async(
     transport: str = "grpc_asyncio", request_type=datacatalog.DeleteTagRequest
@@ -5706,6 +6100,22 @@ def test_list_tags(transport: str = "grpc", request_type=datacatalog.ListTagsReq
 
 def test_list_tags_from_dict():
     test_list_tags(request_type=dict)
+
+
+def test_list_tags_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
+        client.list_tags()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == datacatalog.ListTagsRequest()
 
 
 @pytest.mark.asyncio
@@ -6003,6 +6413,22 @@ def test_set_iam_policy_from_dict():
     test_set_iam_policy(request_type=dict)
 
 
+def test_set_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.SetIamPolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy.SetIamPolicyRequest
@@ -6208,6 +6634,22 @@ def test_get_iam_policy(
 
 def test_get_iam_policy_from_dict():
     test_get_iam_policy(request_type=dict)
+
+
+def test_get_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.GetIamPolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -6417,6 +6859,24 @@ def test_test_iam_permissions(
 
 def test_test_iam_permissions_from_dict():
     test_test_iam_permissions(request_type=dict)
+
+
+def test_test_iam_permissions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataCatalogClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.TestIamPermissionsRequest()
 
 
 @pytest.mark.asyncio

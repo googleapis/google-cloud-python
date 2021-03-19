@@ -94,15 +94,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_policy_tag_manager_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [PolicyTagManagerClient, PolicyTagManagerAsyncClient,]
+)
+def test_policy_tag_manager_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = PolicyTagManagerClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "datacatalog.googleapis.com:443"
 
@@ -118,9 +122,11 @@ def test_policy_tag_manager_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "datacatalog.googleapis.com:443"
 
@@ -506,6 +512,22 @@ def test_create_taxonomy_from_dict():
     test_create_taxonomy(request_type=dict)
 
 
+def test_create_taxonomy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_taxonomy), "__call__") as call:
+        client.create_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.CreateTaxonomyRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_taxonomy_async(
     transport: str = "grpc_asyncio", request_type=policytagmanager.CreateTaxonomyRequest
@@ -729,6 +751,22 @@ def test_delete_taxonomy_from_dict():
     test_delete_taxonomy(request_type=dict)
 
 
+def test_delete_taxonomy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_taxonomy), "__call__") as call:
+        client.delete_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.DeleteTaxonomyRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_taxonomy_async(
     transport: str = "grpc_asyncio", request_type=policytagmanager.DeleteTaxonomyRequest
@@ -931,6 +969,22 @@ def test_update_taxonomy(
 
 def test_update_taxonomy_from_dict():
     test_update_taxonomy(request_type=dict)
+
+
+def test_update_taxonomy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_taxonomy), "__call__") as call:
+        client.update_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.UpdateTaxonomyRequest()
 
 
 @pytest.mark.asyncio
@@ -1153,6 +1207,22 @@ def test_list_taxonomies(
 
 def test_list_taxonomies_from_dict():
     test_list_taxonomies(request_type=dict)
+
+
+def test_list_taxonomies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_taxonomies), "__call__") as call:
+        client.list_taxonomies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.ListTaxonomiesRequest()
 
 
 @pytest.mark.asyncio
@@ -1515,6 +1585,22 @@ def test_get_taxonomy_from_dict():
     test_get_taxonomy(request_type=dict)
 
 
+def test_get_taxonomy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_taxonomy), "__call__") as call:
+        client.get_taxonomy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.GetTaxonomyRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_taxonomy_async(
     transport: str = "grpc_asyncio", request_type=policytagmanager.GetTaxonomyRequest
@@ -1741,6 +1827,24 @@ def test_create_policy_tag(
 
 def test_create_policy_tag_from_dict():
     test_create_policy_tag(request_type=dict)
+
+
+def test_create_policy_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_policy_tag), "__call__"
+    ) as call:
+        client.create_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.CreatePolicyTagRequest()
 
 
 @pytest.mark.asyncio
@@ -1978,6 +2082,24 @@ def test_delete_policy_tag_from_dict():
     test_delete_policy_tag(request_type=dict)
 
 
+def test_delete_policy_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_policy_tag), "__call__"
+    ) as call:
+        client.delete_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.DeletePolicyTagRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_policy_tag_async(
     transport: str = "grpc_asyncio",
@@ -2192,6 +2314,24 @@ def test_update_policy_tag(
 
 def test_update_policy_tag_from_dict():
     test_update_policy_tag(request_type=dict)
+
+
+def test_update_policy_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_policy_tag), "__call__"
+    ) as call:
+        client.update_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.UpdatePolicyTagRequest()
 
 
 @pytest.mark.asyncio
@@ -2426,6 +2566,22 @@ def test_list_policy_tags(
 
 def test_list_policy_tags_from_dict():
     test_list_policy_tags(request_type=dict)
+
+
+def test_list_policy_tags_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_policy_tags), "__call__") as call:
+        client.list_policy_tags()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.ListPolicyTagsRequest()
 
 
 @pytest.mark.asyncio
@@ -2799,6 +2955,22 @@ def test_get_policy_tag_from_dict():
     test_get_policy_tag(request_type=dict)
 
 
+def test_get_policy_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy_tag), "__call__") as call:
+        client.get_policy_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == policytagmanager.GetPolicyTagRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_policy_tag_async(
     transport: str = "grpc_asyncio", request_type=policytagmanager.GetPolicyTagRequest
@@ -3012,6 +3184,22 @@ def test_get_iam_policy_from_dict():
     test_get_iam_policy(request_type=dict)
 
 
+def test_get_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.GetIamPolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy.GetIamPolicyRequest
@@ -3154,6 +3342,22 @@ def test_set_iam_policy(
 
 def test_set_iam_policy_from_dict():
     test_set_iam_policy(request_type=dict)
+
+
+def test_set_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.SetIamPolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -3300,6 +3504,24 @@ def test_test_iam_permissions(
 
 def test_test_iam_permissions_from_dict():
     test_test_iam_permissions(request_type=dict)
+
+
+def test_test_iam_permissions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PolicyTagManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.TestIamPermissionsRequest()
 
 
 @pytest.mark.asyncio
