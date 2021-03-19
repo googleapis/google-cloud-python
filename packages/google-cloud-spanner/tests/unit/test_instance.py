@@ -498,9 +498,14 @@ class TestInstance(unittest.TestCase):
         DATABASE_ID = "database-id"
         pool = _Pool()
         logger = mock.create_autospec(Logger, instance=True)
+        encryption_config = {"kms_key_name": "kms_key_name"}
 
         database = instance.database(
-            DATABASE_ID, ddl_statements=DDL_STATEMENTS, pool=pool, logger=logger
+            DATABASE_ID,
+            ddl_statements=DDL_STATEMENTS,
+            pool=pool,
+            logger=logger,
+            encryption_config=encryption_config,
         )
 
         self.assertIsInstance(database, Database)
@@ -510,6 +515,7 @@ class TestInstance(unittest.TestCase):
         self.assertIs(database._pool, pool)
         self.assertIs(database._logger, logger)
         self.assertIs(pool._bound, database)
+        self.assertIs(database._encryption_config, encryption_config)
 
     def test_list_databases(self):
         from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
@@ -603,15 +609,23 @@ class TestInstance(unittest.TestCase):
         import datetime
         from google.cloud._helpers import UTC
         from google.cloud.spanner_v1.backup import Backup
+        from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
 
         client = _Client(self.PROJECT)
         instance = self._make_one(self.INSTANCE_ID, client, self.CONFIG_NAME)
         BACKUP_ID = "backup-id"
         DATABASE_NAME = "database-name"
         timestamp = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        encryption_config = CreateBackupEncryptionConfig(
+            encryption_type=CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+            kms_key_name="kms_key_name",
+        )
 
         backup = instance.backup(
-            BACKUP_ID, database=DATABASE_NAME, expire_time=timestamp
+            BACKUP_ID,
+            database=DATABASE_NAME,
+            expire_time=timestamp,
+            encryption_config=encryption_config,
         )
 
         self.assertIsInstance(backup, Backup)
@@ -619,6 +633,7 @@ class TestInstance(unittest.TestCase):
         self.assertIs(backup._instance, instance)
         self.assertEqual(backup._database, DATABASE_NAME)
         self.assertIs(backup._expire_time, timestamp)
+        self.assertEqual(backup._encryption_config, encryption_config)
 
     def test_list_backups_defaults(self):
         from google.cloud.spanner_admin_database_v1 import Backup as BackupPB

@@ -19,6 +19,8 @@ import re
 from google.cloud.exceptions import NotFound
 
 from google.cloud.spanner_admin_database_v1 import Backup as BackupPB
+from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 
 _BACKUP_NAME_RE = re.compile(
@@ -57,10 +59,24 @@ class Backup(object):
                         the externally consistent copy of the database. If
                         not present, it is the same as the `create_time` of
                         the backup.
+
+    :type encryption_config:
+        :class:`~google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig`
+        or :class:`dict`
+    :param encryption_config:
+        (Optional) Encryption configuration for the backup.
+        If a dict is provided, it must be of the same form as the protobuf
+        message :class:`~google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig`
     """
 
     def __init__(
-        self, backup_id, instance, database="", expire_time=None, version_time=None
+        self,
+        backup_id,
+        instance,
+        database="",
+        expire_time=None,
+        version_time=None,
+        encryption_config=None,
     ):
         self.backup_id = backup_id
         self._instance = instance
@@ -71,6 +87,11 @@ class Backup(object):
         self._size_bytes = None
         self._state = None
         self._referencing_databases = None
+        self._encryption_info = None
+        if type(encryption_config) == dict:
+            self._encryption_config = CreateBackupEncryptionConfig(**encryption_config)
+        else:
+            self._encryption_config = encryption_config
 
     @property
     def name(self):
@@ -156,6 +177,22 @@ class Backup(object):
         """
         return self._referencing_databases
 
+    @property
+    def encryption_info(self):
+        """Encryption info for this backup.
+        :rtype: :class:`~google.clod.spanner_admin_database_v1.types.EncryptionInfo`
+        :returns: a class representing the encryption info
+        """
+        return self._encryption_info
+
+    @property
+    def encryption_config(self):
+        """Encryption config for this database.
+        :rtype: :class:`~google.cloud.spanner_admin_instance_v1.types.CreateBackupEncryptionConfig`
+        :returns: an object representing the encryption config for this database
+        """
+        return self._encryption_config
+
     @classmethod
     def from_pb(cls, backup_pb, instance):
         """Create an instance of this class from a protobuf message.
@@ -207,6 +244,13 @@ class Backup(object):
             raise ValueError("expire_time not set")
         if not self._database:
             raise ValueError("database not set")
+        if (
+            self.encryption_config
+            and self.encryption_config.kms_key_name
+            and self.encryption_config.encryption_type
+            != CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
+        ):
+            raise ValueError("kms_key_name only used with CUSTOMER_MANAGED_ENCRYPTION")
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
         backup = BackupPB(
@@ -215,12 +259,14 @@ class Backup(object):
             version_time=self.version_time,
         )
 
-        future = api.create_backup(
+        request = CreateBackupRequest(
             parent=self._instance.name,
             backup_id=self.backup_id,
             backup=backup,
-            metadata=metadata,
+            encryption_config=self._encryption_config,
         )
+
+        future = api.create_backup(request=request, metadata=metadata,)
         return future
 
     def exists(self):
@@ -255,6 +301,7 @@ class Backup(object):
         self._size_bytes = pb.size_bytes
         self._state = BackupPB.State(pb.state)
         self._referencing_databases = pb.referencing_databases
+        self._encryption_info = pb.encryption_info
 
     def update_expire_time(self, new_expire_time):
         """Update the expire time of this backup.

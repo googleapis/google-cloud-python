@@ -62,11 +62,21 @@ class TestBackup(_BaseTest):
         self.assertIsNone(backup._expire_time)
 
     def test_ctor_non_defaults(self):
+        from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+
         instance = _Instance(self.INSTANCE_NAME)
         timestamp = self._make_timestamp()
 
+        encryption_config = CreateBackupEncryptionConfig(
+            encryption_type=CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+            kms_key_name="key_name",
+        )
         backup = self._make_one(
-            self.BACKUP_ID, instance, database=self.DATABASE_NAME, expire_time=timestamp
+            self.BACKUP_ID,
+            instance,
+            database=self.DATABASE_NAME,
+            expire_time=timestamp,
+            encryption_config=encryption_config,
         )
 
         self.assertEqual(backup.backup_id, self.BACKUP_ID)
@@ -74,6 +84,30 @@ class TestBackup(_BaseTest):
         self.assertEqual(backup._database, self.DATABASE_NAME)
         self.assertIsNotNone(backup._expire_time)
         self.assertIs(backup._expire_time, timestamp)
+        self.assertEqual(backup.encryption_config, encryption_config)
+
+    def test_ctor_w_encryption_config_dict(self):
+        from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+
+        instance = _Instance(self.INSTANCE_NAME)
+        timestamp = self._make_timestamp()
+
+        encryption_config = {"encryption_type": 3, "kms_key_name": "key_name"}
+        backup = self._make_one(
+            self.BACKUP_ID,
+            instance,
+            database=self.DATABASE_NAME,
+            expire_time=timestamp,
+            encryption_config=encryption_config,
+        )
+        expected_encryption_config = CreateBackupEncryptionConfig(**encryption_config)
+
+        self.assertEqual(backup.backup_id, self.BACKUP_ID)
+        self.assertIs(backup._instance, instance)
+        self.assertEqual(backup._database, self.DATABASE_NAME)
+        self.assertIsNotNone(backup._expire_time)
+        self.assertIs(backup._expire_time, timestamp)
+        self.assertEqual(backup.encryption_config, expected_encryption_config)
 
     def test_from_pb_project_mismatch(self):
         from google.cloud.spanner_admin_database_v1 import Backup
@@ -170,10 +204,32 @@ class TestBackup(_BaseTest):
         expected = backup._referencing_databases = [self.DATABASE_NAME]
         self.assertEqual(backup.referencing_databases, expected)
 
+    def test_encrpytion_info_property(self):
+        from google.cloud.spanner_admin_database_v1 import EncryptionInfo
+
+        instance = _Instance(self.INSTANCE_NAME)
+        backup = self._make_one(self.BACKUP_ID, instance)
+        expected = backup._encryption_info = EncryptionInfo(
+            kms_key_version="kms_key_version"
+        )
+        self.assertEqual(backup.encryption_info, expected)
+
+    def test_encryption_config_property(self):
+        from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+
+        instance = _Instance(self.INSTANCE_NAME)
+        backup = self._make_one(self.BACKUP_ID, instance)
+        expected = backup._encryption_config = CreateBackupEncryptionConfig(
+            encryption_type=CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+            kms_key_name="kms_key_name",
+        )
+        self.assertEqual(backup.encryption_config, expected)
+
     def test_create_grpc_error(self):
         from google.api_core.exceptions import GoogleAPICallError
         from google.api_core.exceptions import Unknown
         from google.cloud.spanner_admin_database_v1 import Backup
+        from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -190,16 +246,18 @@ class TestBackup(_BaseTest):
         with self.assertRaises(GoogleAPICallError):
             backup.create()
 
+        request = CreateBackupRequest(
+            parent=self.INSTANCE_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+        )
+
         api.create_backup.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            backup_id=self.BACKUP_ID,
-            backup=backup_pb,
-            metadata=[("google-cloud-resource-prefix", backup.name)],
+            request=request, metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_create_already_exists(self):
         from google.cloud.exceptions import Conflict
         from google.cloud.spanner_admin_database_v1 import Backup
+        from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -216,16 +274,18 @@ class TestBackup(_BaseTest):
         with self.assertRaises(Conflict):
             backup.create()
 
+        request = CreateBackupRequest(
+            parent=self.INSTANCE_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+        )
+
         api.create_backup.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            backup_id=self.BACKUP_ID,
-            backup=backup_pb,
-            metadata=[("google-cloud-resource-prefix", backup.name)],
+            request=request, metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_create_instance_not_found(self):
         from google.cloud.exceptions import NotFound
         from google.cloud.spanner_admin_database_v1 import Backup
+        from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -242,11 +302,12 @@ class TestBackup(_BaseTest):
         with self.assertRaises(NotFound):
             backup.create()
 
+        request = CreateBackupRequest(
+            parent=self.INSTANCE_NAME, backup_id=self.BACKUP_ID, backup=backup_pb,
+        )
+
         api.create_backup.assert_called_once_with(
-            parent=self.INSTANCE_NAME,
-            backup_id=self.BACKUP_ID,
-            backup=backup_pb,
-            metadata=[("google-cloud-resource-prefix", backup.name)],
+            request=request, metadata=[("google-cloud-resource-prefix", backup.name)],
         )
 
     def test_create_expire_time_not_set(self):
@@ -266,6 +327,8 @@ class TestBackup(_BaseTest):
 
     def test_create_success(self):
         from google.cloud.spanner_admin_database_v1 import Backup
+        from google.cloud.spanner_admin_database_v1 import CreateBackupRequest
+        from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
         from datetime import datetime
         from datetime import timedelta
         from pytz import UTC
@@ -279,12 +342,14 @@ class TestBackup(_BaseTest):
         version_timestamp = datetime.utcnow() - timedelta(minutes=5)
         version_timestamp = version_timestamp.replace(tzinfo=UTC)
         expire_timestamp = self._make_timestamp()
+        encryption_config = {"encryption_type": 3, "kms_key_name": "key_name"}
         backup = self._make_one(
             self.BACKUP_ID,
             instance,
             database=self.DATABASE_NAME,
             expire_time=expire_timestamp,
             version_time=version_timestamp,
+            encryption_config=encryption_config,
         )
 
         backup_pb = Backup(
@@ -296,12 +361,38 @@ class TestBackup(_BaseTest):
         future = backup.create()
         self.assertIs(future, op_future)
 
-        api.create_backup.assert_called_once_with(
+        expected_encryption_config = CreateBackupEncryptionConfig(**encryption_config)
+        request = CreateBackupRequest(
             parent=self.INSTANCE_NAME,
             backup_id=self.BACKUP_ID,
             backup=backup_pb,
-            metadata=[("google-cloud-resource-prefix", backup.name)],
+            encryption_config=expected_encryption_config,
         )
+
+        api.create_backup.assert_called_once_with(
+            request=request, metadata=[("google-cloud-resource-prefix", backup.name)],
+        )
+
+    def test_create_w_invalid_encryption_config(self):
+        from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        expire_timestamp = self._make_timestamp()
+        encryption_config = {
+            "encryption_type": CreateBackupEncryptionConfig.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION,
+            "kms_key_name": "key_name",
+        }
+        backup = self._make_one(
+            self.BACKUP_ID,
+            instance,
+            database=self.DATABASE_NAME,
+            expire_time=expire_timestamp,
+            encryption_config=encryption_config,
+        )
+
+        with self.assertRaises(ValueError):
+            backup.create()
 
     def test_exists_grpc_error(self):
         from google.api_core.exceptions import Unknown
@@ -442,8 +533,10 @@ class TestBackup(_BaseTest):
 
     def test_reload_success(self):
         from google.cloud.spanner_admin_database_v1 import Backup
+        from google.cloud.spanner_admin_database_v1 import EncryptionInfo
 
         timestamp = self._make_timestamp()
+        encryption_info = EncryptionInfo(kms_key_version="kms_key_version")
 
         client = _Client()
         backup_pb = Backup(
@@ -455,6 +548,7 @@ class TestBackup(_BaseTest):
             size_bytes=10,
             state=1,
             referencing_databases=[],
+            encryption_info=encryption_info,
         )
         api = client.database_admin_api = self._make_database_admin_api()
         api.get_backup.return_value = backup_pb
@@ -470,6 +564,7 @@ class TestBackup(_BaseTest):
         self.assertEqual(backup.size_bytes, 10)
         self.assertEqual(backup.state, Backup.State.CREATING)
         self.assertEqual(backup.referencing_databases, [])
+        self.assertEqual(backup.encryption_info, encryption_info)
 
         api.get_backup.assert_called_once_with(
             name=self.BACKUP_NAME,

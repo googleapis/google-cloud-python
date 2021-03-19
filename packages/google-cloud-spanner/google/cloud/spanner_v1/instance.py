@@ -357,7 +357,14 @@ class Instance(object):
 
         api.delete_instance(name=self.name, metadata=metadata)
 
-    def database(self, database_id, ddl_statements=(), pool=None, logger=None):
+    def database(
+        self,
+        database_id,
+        ddl_statements=(),
+        pool=None,
+        logger=None,
+        encryption_config=None,
+    ):
         """Factory to create a database within this instance.
 
         :type database_id: str
@@ -377,11 +384,26 @@ class Instance(object):
                        will be created when needed that will log the commit statistics
                        to stdout.
 
+        :type encryption_config:
+            :class:`~google.cloud.spanner_admin_database_v1.types.EncryptionConfig`
+            or :class:`~google.cloud.spanner_admin_database_v1.types.RestoreDatabaseEncryptionConfig`
+            or :class:`dict`
+        :param encryption_config:
+            (Optional) Encryption configuration for the database.
+            If a dict is provided, it must be of the same form as either of the protobuf
+            messages :class:`~google.cloud.spanner_admin_database_v1.types.EncryptionConfig`
+            or :class:`~google.cloud.spanner_admin_database_v1.types.RestoreDatabaseEncryptionConfig`
+
         :rtype: :class:`~google.cloud.spanner_v1.database.Database`
         :returns: a database owned by this instance.
         """
         return Database(
-            database_id, self, ddl_statements=ddl_statements, pool=pool, logger=logger
+            database_id,
+            self,
+            ddl_statements=ddl_statements,
+            pool=pool,
+            logger=logger,
+            encryption_config=encryption_config,
         )
 
     def list_databases(self, page_size=None):
@@ -408,7 +430,14 @@ class Instance(object):
         )
         return page_iter
 
-    def backup(self, backup_id, database="", expire_time=None, version_time=None):
+    def backup(
+        self,
+        backup_id,
+        database="",
+        expire_time=None,
+        version_time=None,
+        encryption_config=None,
+    ):
         """Factory to create a backup within this instance.
 
         :type backup_id: str
@@ -430,6 +459,14 @@ class Instance(object):
             consistent copy of the database. If not present, it is the same as
             the `create_time` of the backup.
 
+        :type encryption_config:
+            :class:`~google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig`
+            or :class:`dict`
+        :param encryption_config:
+            (Optional) Encryption configuration for the backup.
+            If a dict is provided, it must be of the same form as the protobuf
+            message :class:`~google.cloud.spanner_admin_database_v1.types.CreateBackupEncryptionConfig`
+
         :rtype: :class:`~google.cloud.spanner_v1.backup.Backup`
         :returns: a backup owned by this instance.
         """
@@ -440,6 +477,7 @@ class Instance(object):
                 database=database.name,
                 expire_time=expire_time,
                 version_time=version_time,
+                encryption_config=encryption_config,
             )
         except AttributeError:
             return Backup(
@@ -448,6 +486,7 @@ class Instance(object):
                 database=database,
                 expire_time=expire_time,
                 version_time=version_time,
+                encryption_config=encryption_config,
             )
 
     def list_backups(self, filter_="", page_size=None):

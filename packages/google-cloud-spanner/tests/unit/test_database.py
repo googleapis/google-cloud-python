@@ -159,6 +159,18 @@ class TestDatabase(_BaseTest):
         self.assertFalse(database.log_commit_stats)
         self.assertEqual(database._logger, logger)
 
+    def test_ctor_w_encryption_config(self):
+        from google.cloud.spanner_admin_database_v1 import EncryptionConfig
+
+        instance = _Instance(self.INSTANCE_NAME)
+        encryption_config = EncryptionConfig(kms_key_name="kms_key")
+        database = self._make_one(
+            self.DATABASE_ID, instance, encryption_config=encryption_config
+        )
+        self.assertEqual(database.database_id, self.DATABASE_ID)
+        self.assertIs(database._instance, instance)
+        self.assertEqual(database._encryption_config, encryption_config)
+
     def test_from_pb_bad_database_name(self):
         from google.cloud.spanner_admin_database_v1 import Database
 
@@ -294,6 +306,17 @@ class TestDatabase(_BaseTest):
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
         logger = database._logger = mock.create_autospec(logging.Logger, instance=True)
         self.assertEqual(database.logger, logger)
+
+    def test_encryption_config(self):
+        from google.cloud.spanner_admin_database_v1 import EncryptionConfig
+
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        encryption_config = database._encryption_config = mock.create_autospec(
+            EncryptionConfig, instance=True
+        )
+        self.assertEqual(database.encryption_config, encryption_config)
 
     def test_spanner_api_property_w_scopeless_creds(self):
 
@@ -432,6 +455,7 @@ class TestDatabase(_BaseTest):
             parent=self.INSTANCE_NAME,
             create_statement="CREATE DATABASE {}".format(self.DATABASE_ID),
             extra_statements=[],
+            encryption_config=None,
         )
 
         api.create_database.assert_called_once_with(
@@ -458,6 +482,7 @@ class TestDatabase(_BaseTest):
             parent=self.INSTANCE_NAME,
             create_statement="CREATE DATABASE `{}`".format(DATABASE_ID_HYPHEN),
             extra_statements=[],
+            encryption_config=None,
         )
 
         api.create_database.assert_called_once_with(
@@ -483,6 +508,7 @@ class TestDatabase(_BaseTest):
             parent=self.INSTANCE_NAME,
             create_statement="CREATE DATABASE {}".format(self.DATABASE_ID),
             extra_statements=[],
+            encryption_config=None,
         )
 
         api.create_database.assert_called_once_with(
@@ -493,6 +519,7 @@ class TestDatabase(_BaseTest):
     def test_create_success(self):
         from tests._fixtures import DDL_STATEMENTS
         from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
+        from google.cloud.spanner_admin_database_v1 import EncryptionConfig
 
         op_future = object()
         client = _Client()
@@ -500,8 +527,13 @@ class TestDatabase(_BaseTest):
         api.create_database.return_value = op_future
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
+        encryption_config = EncryptionConfig(kms_key_name="kms_key_name")
         database = self._make_one(
-            self.DATABASE_ID, instance, ddl_statements=DDL_STATEMENTS, pool=pool
+            self.DATABASE_ID,
+            instance,
+            ddl_statements=DDL_STATEMENTS,
+            pool=pool,
+            encryption_config=encryption_config,
         )
 
         future = database.create()
@@ -512,6 +544,44 @@ class TestDatabase(_BaseTest):
             parent=self.INSTANCE_NAME,
             create_statement="CREATE DATABASE {}".format(self.DATABASE_ID),
             extra_statements=DDL_STATEMENTS,
+            encryption_config=encryption_config,
+        )
+
+        api.create_database.assert_called_once_with(
+            request=expected_request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_create_success_w_encryption_config_dict(self):
+        from tests._fixtures import DDL_STATEMENTS
+        from google.cloud.spanner_admin_database_v1 import CreateDatabaseRequest
+        from google.cloud.spanner_admin_database_v1 import EncryptionConfig
+
+        op_future = object()
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        api.create_database.return_value = op_future
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        encryption_config = {"kms_key_name": "kms_key_name"}
+        database = self._make_one(
+            self.DATABASE_ID,
+            instance,
+            ddl_statements=DDL_STATEMENTS,
+            pool=pool,
+            encryption_config=encryption_config,
+        )
+
+        future = database.create()
+
+        self.assertIs(future, op_future)
+
+        expected_encryption_config = EncryptionConfig(**encryption_config)
+        expected_request = CreateDatabaseRequest(
+            parent=self.INSTANCE_NAME,
+            create_statement="CREATE DATABASE {}".format(self.DATABASE_ID),
+            extra_statements=DDL_STATEMENTS,
+            encryption_config=expected_encryption_config,
         )
 
         api.create_database.assert_called_once_with(
@@ -611,6 +681,7 @@ class TestDatabase(_BaseTest):
 
     def test_reload_success(self):
         from google.cloud.spanner_admin_database_v1 import Database
+        from google.cloud.spanner_admin_database_v1 import EncryptionConfig
         from google.cloud.spanner_admin_database_v1 import GetDatabaseDdlResponse
         from google.cloud.spanner_admin_database_v1 import RestoreInfo
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -621,6 +692,7 @@ class TestDatabase(_BaseTest):
 
         client = _Client()
         ddl_pb = GetDatabaseDdlResponse(statements=DDL_STATEMENTS)
+        encryption_config = EncryptionConfig(kms_key_name="kms_key")
         api = client.database_admin_api = self._make_database_admin_api()
         api.get_database_ddl.return_value = ddl_pb
         db_pb = Database(
@@ -629,6 +701,7 @@ class TestDatabase(_BaseTest):
             restore_info=restore_info,
             version_retention_period="1d",
             earliest_version_time=_datetime_to_pb_timestamp(timestamp),
+            encryption_config=encryption_config,
         )
         api.get_database.return_value = db_pb
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -642,6 +715,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database._version_retention_period, "1d")
         self.assertEqual(database._earliest_version_time, timestamp)
         self.assertEqual(database._ddl_statements, tuple(DDL_STATEMENTS))
+        self.assertEqual(database._encryption_config, encryption_config)
 
         api.get_database_ddl.assert_called_once_with(
             database=self.DATABASE_NAME,
@@ -1128,6 +1202,7 @@ class TestDatabase(_BaseTest):
 
     def test_restore_grpc_error(self):
         from google.api_core.exceptions import Unknown
+        from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -1140,15 +1215,20 @@ class TestDatabase(_BaseTest):
         with self.assertRaises(Unknown):
             database.restore(backup)
 
-        api.restore_database.assert_called_once_with(
+        expected_request = RestoreDatabaseRequest(
             parent=self.INSTANCE_NAME,
             database_id=self.DATABASE_ID,
             backup=self.BACKUP_NAME,
+        )
+
+        api.restore_database.assert_called_once_with(
+            request=expected_request,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_restore_not_found(self):
         from google.api_core.exceptions import NotFound
+        from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
 
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
@@ -1161,33 +1241,114 @@ class TestDatabase(_BaseTest):
         with self.assertRaises(NotFound):
             database.restore(backup)
 
-        api.restore_database.assert_called_once_with(
+        expected_request = RestoreDatabaseRequest(
             parent=self.INSTANCE_NAME,
             database_id=self.DATABASE_ID,
             backup=self.BACKUP_NAME,
+        )
+
+        api.restore_database.assert_called_once_with(
+            request=expected_request,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_restore_success(self):
+        from google.cloud.spanner_admin_database_v1 import (
+            RestoreDatabaseEncryptionConfig,
+        )
+        from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
+
         op_future = object()
         client = _Client()
         api = client.database_admin_api = self._make_database_admin_api()
         api.restore_database.return_value = op_future
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
-        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        encryption_config = RestoreDatabaseEncryptionConfig(
+            encryption_type=RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+            kms_key_name="kms_key_name",
+        )
+        database = self._make_one(
+            self.DATABASE_ID, instance, pool=pool, encryption_config=encryption_config
+        )
         backup = _Backup(self.BACKUP_NAME)
 
         future = database.restore(backup)
 
         self.assertIs(future, op_future)
 
-        api.restore_database.assert_called_once_with(
+        expected_request = RestoreDatabaseRequest(
             parent=self.INSTANCE_NAME,
             database_id=self.DATABASE_ID,
             backup=self.BACKUP_NAME,
+            encryption_config=encryption_config,
+        )
+
+        api.restore_database.assert_called_once_with(
+            request=expected_request,
             metadata=[("google-cloud-resource-prefix", database.name)],
         )
+
+    def test_restore_success_w_encryption_config_dict(self):
+        from google.cloud.spanner_admin_database_v1 import (
+            RestoreDatabaseEncryptionConfig,
+        )
+        from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
+
+        op_future = object()
+        client = _Client()
+        api = client.database_admin_api = self._make_database_admin_api()
+        api.restore_database.return_value = op_future
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        encryption_config = {
+            "encryption_type": RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+            "kms_key_name": "kms_key_name",
+        }
+        database = self._make_one(
+            self.DATABASE_ID, instance, pool=pool, encryption_config=encryption_config
+        )
+        backup = _Backup(self.BACKUP_NAME)
+
+        future = database.restore(backup)
+
+        self.assertIs(future, op_future)
+
+        expected_encryption_config = RestoreDatabaseEncryptionConfig(
+            encryption_type=RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+            kms_key_name="kms_key_name",
+        )
+        expected_request = RestoreDatabaseRequest(
+            parent=self.INSTANCE_NAME,
+            database_id=self.DATABASE_ID,
+            backup=self.BACKUP_NAME,
+            encryption_config=expected_encryption_config,
+        )
+
+        api.restore_database.assert_called_once_with(
+            request=expected_request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
+        )
+
+    def test_restore_w_invalid_encryption_config_dict(self):
+        from google.cloud.spanner_admin_database_v1 import (
+            RestoreDatabaseEncryptionConfig,
+        )
+
+        client = _Client()
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        pool = _Pool()
+        encryption_config = {
+            "encryption_type": RestoreDatabaseEncryptionConfig.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION,
+            "kms_key_name": "kms_key_name",
+        }
+        database = self._make_one(
+            self.DATABASE_ID, instance, pool=pool, encryption_config=encryption_config
+        )
+        backup = _Backup(self.BACKUP_NAME)
+
+        with self.assertRaises(ValueError):
+            database.restore(backup)
 
     def test_is_ready(self):
         from google.cloud.spanner_admin_database_v1 import Database
