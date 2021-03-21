@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-api-gateway"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "apigateway",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}

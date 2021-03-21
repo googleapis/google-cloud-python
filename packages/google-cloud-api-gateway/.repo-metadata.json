@@ -1,0 +1,12 @@
+{
+    "name": "apigateway",
+    "name_pretty": "API Gateway",
+    "product_documentation": "https://cloud.google.com/api-gateway",
+    "client_documentation": "https://googleapis.dev/python/apigateway/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-api-gateway",
+    "distribution_name": "google-cloud-api-gateway",
+    "api_id": "apigateway.googleapis.com"
+}
