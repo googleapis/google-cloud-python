@@ -48,7 +48,7 @@ extras = {
         "grpcio >= 1.32.0, < 2.0dev",
         "pyarrow >= 1.0.0, < 4.0dev",
     ],
-    "pandas": ["pandas>=0.23.0", "pyarrow >= 1.0.0, < 4.0dev",],
+    "pandas": ["pandas>=0.23.0", "pyarrow >= 1.0.0, < 4.0dev"],
     "bignumeric_type": ["pyarrow >= 3.0.0, < 4.0dev"],
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
@@ -61,6 +61,11 @@ extras = {
 all_extras = []
 
 for extra in extras:
+    # Exclude this extra from all to avoid overly strict dependencies on core
+    # libraries such as pyarrow.
+    # https://github.com/googleapis/python-bigquery/issues/563
+    if extra in {"bignumeric_type"}:
+        continue
     all_extras.extend(extras[extra])
 
 extras["all"] = all_extras
