@@ -1,0 +1,41 @@
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+environment:
+  matrix:
+    - PYTHON: "C:/Python27"
+
+clone_folder: c:\projects\sphinx-docfx-yaml
+
+install:
+  # Nuget
+  - nuget install uref -Source https://www.myget.org/F/docfx/api/v3/index.json -ExcludeVersion -OutputDirectory c:\projects
+  - nuget install docfx.console -Source https://www.myget.org/F/docfx/api/v3/index.json -ExcludeVersion -OutputDirectory c:\projects
+  # Python
+  - ps: (new-object net.webclient).DownloadFile('https://bootstrap.pypa.io/get-pip.py', 'C:/get-pip.py')
+  - "%PYTHON%/python.exe C:/get-pip.py"
+  - "%PYTHON%/Scripts/pip.exe --version"
+  - "%PYTHON%/Scripts/pip.exe -q -q -q install tox sphinx msrest msrestazure sphinx_rtd_theme ."
+
+build_script:
+  - cd c:\projects\sphinx-docfx-yaml\docs
+  - "git clone https://github.com/ericholscher/azure-sdk-for-python/"
+  - cd azure-sdk-for-python
+  - python setup.py -q install 
+  - cd doc
+  - "%PYTHON%/Scripts/sphinx-build.exe -b html -d _build/doctrees . _build/html"
+  - c:\projects\docfx.console\tools\docfx.exe build -t c:\projects\uref\content
+
+artifacts:
+  - path: 'docs/azure-sdk-for-python/doc/'
