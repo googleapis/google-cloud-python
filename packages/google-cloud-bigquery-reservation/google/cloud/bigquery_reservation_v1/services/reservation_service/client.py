@@ -1465,9 +1465,8 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
             if parent is not None:
                 request.parent = parent
-
-            if capacity_commitment_ids:
-                request.capacity_commitment_ids.extend(capacity_commitment_ids)
+            if capacity_commitment_ids is not None:
+                request.capacity_commitment_ids = capacity_commitment_ids
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

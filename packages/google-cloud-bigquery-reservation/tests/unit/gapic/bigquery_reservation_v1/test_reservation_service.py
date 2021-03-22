@@ -94,15 +94,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_reservation_service_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [ReservationServiceClient, ReservationServiceAsyncClient,]
+)
+def test_reservation_service_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = ReservationServiceClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigqueryreservation.googleapis.com:443"
 
@@ -118,9 +122,11 @@ def test_reservation_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "bigqueryreservation.googleapis.com:443"
 
@@ -499,6 +505,24 @@ def test_create_reservation_from_dict():
     test_create_reservation(request_type=dict)
 
 
+def test_create_reservation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_reservation), "__call__"
+    ) as call:
+        client.create_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcbr_reservation.CreateReservationRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_reservation_async(
     transport: str = "grpc_asyncio",
@@ -737,6 +761,24 @@ def test_list_reservations(
 
 def test_list_reservations_from_dict():
     test_list_reservations(request_type=dict)
+
+
+def test_list_reservations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        client.list_reservations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.ListReservationsRequest()
 
 
 @pytest.mark.asyncio
@@ -1112,6 +1154,22 @@ def test_get_reservation_from_dict():
     test_get_reservation(request_type=dict)
 
 
+def test_get_reservation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_reservation), "__call__") as call:
+        client.get_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.GetReservationRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_reservation_async(
     transport: str = "grpc_asyncio", request_type=reservation.GetReservationRequest
@@ -1312,6 +1370,24 @@ def test_delete_reservation(
 
 def test_delete_reservation_from_dict():
     test_delete_reservation(request_type=dict)
+
+
+def test_delete_reservation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_reservation), "__call__"
+    ) as call:
+        client.delete_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.DeleteReservationRequest()
 
 
 @pytest.mark.asyncio
@@ -1519,6 +1595,24 @@ def test_update_reservation(
 
 def test_update_reservation_from_dict():
     test_update_reservation(request_type=dict)
+
+
+def test_update_reservation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_reservation), "__call__"
+    ) as call:
+        client.update_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gcbr_reservation.UpdateReservationRequest()
 
 
 @pytest.mark.asyncio
@@ -1769,6 +1863,24 @@ def test_create_capacity_commitment_from_dict():
     test_create_capacity_commitment(request_type=dict)
 
 
+def test_create_capacity_commitment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_capacity_commitment), "__call__"
+    ) as call:
+        client.create_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.CreateCapacityCommitmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_capacity_commitment_async(
     transport: str = "grpc_asyncio",
@@ -2011,6 +2123,24 @@ def test_list_capacity_commitments(
 
 def test_list_capacity_commitments_from_dict():
     test_list_capacity_commitments(request_type=dict)
+
+
+def test_list_capacity_commitments_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_capacity_commitments), "__call__"
+    ) as call:
+        client.list_capacity_commitments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.ListCapacityCommitmentsRequest()
 
 
 @pytest.mark.asyncio
@@ -2413,6 +2543,24 @@ def test_get_capacity_commitment_from_dict():
     test_get_capacity_commitment(request_type=dict)
 
 
+def test_get_capacity_commitment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_capacity_commitment), "__call__"
+    ) as call:
+        client.get_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.GetCapacityCommitmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_capacity_commitment_async(
     transport: str = "grpc_asyncio",
@@ -2634,6 +2782,24 @@ def test_delete_capacity_commitment_from_dict():
     test_delete_capacity_commitment(request_type=dict)
 
 
+def test_delete_capacity_commitment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_capacity_commitment), "__call__"
+    ) as call:
+        client.delete_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.DeleteCapacityCommitmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_capacity_commitment_async(
     transport: str = "grpc_asyncio",
@@ -2848,6 +3014,24 @@ def test_update_capacity_commitment(
 
 def test_update_capacity_commitment_from_dict():
     test_update_capacity_commitment(request_type=dict)
+
+
+def test_update_capacity_commitment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_capacity_commitment), "__call__"
+    ) as call:
+        client.update_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.UpdateCapacityCommitmentRequest()
 
 
 @pytest.mark.asyncio
@@ -3096,6 +3280,24 @@ def test_split_capacity_commitment_from_dict():
     test_split_capacity_commitment(request_type=dict)
 
 
+def test_split_capacity_commitment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.split_capacity_commitment), "__call__"
+    ) as call:
+        client.split_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.SplitCapacityCommitmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_split_capacity_commitment_async(
     transport: str = "grpc_asyncio",
@@ -3328,6 +3530,24 @@ def test_merge_capacity_commitments(
 
 def test_merge_capacity_commitments_from_dict():
     test_merge_capacity_commitments(request_type=dict)
+
+
+def test_merge_capacity_commitments_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.merge_capacity_commitments), "__call__"
+    ) as call:
+        client.merge_capacity_commitments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.MergeCapacityCommitmentsRequest()
 
 
 @pytest.mark.asyncio
@@ -3579,6 +3799,24 @@ def test_create_assignment_from_dict():
     test_create_assignment(request_type=dict)
 
 
+def test_create_assignment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assignment), "__call__"
+    ) as call:
+        client.create_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.CreateAssignmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_assignment_async(
     transport: str = "grpc_asyncio", request_type=reservation.CreateAssignmentRequest
@@ -3809,6 +4047,22 @@ def test_list_assignments(
 
 def test_list_assignments_from_dict():
     test_list_assignments(request_type=dict)
+
+
+def test_list_assignments_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assignments), "__call__") as call:
+        client.list_assignments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.ListAssignmentsRequest()
 
 
 @pytest.mark.asyncio
@@ -4151,6 +4405,24 @@ def test_delete_assignment_from_dict():
     test_delete_assignment(request_type=dict)
 
 
+def test_delete_assignment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_assignment), "__call__"
+    ) as call:
+        client.delete_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.DeleteAssignmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_assignment_async(
     transport: str = "grpc_asyncio", request_type=reservation.DeleteAssignmentRequest
@@ -4352,6 +4624,24 @@ def test_search_assignments(
 
 def test_search_assignments_from_dict():
     test_search_assignments(request_type=dict)
+
+
+def test_search_assignments_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_assignments), "__call__"
+    ) as call:
+        client.search_assignments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.SearchAssignmentsRequest()
 
 
 @pytest.mark.asyncio
@@ -4744,6 +5034,22 @@ def test_move_assignment_from_dict():
     test_move_assignment(request_type=dict)
 
 
+def test_move_assignment_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_assignment), "__call__") as call:
+        client.move_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.MoveAssignmentRequest()
+
+
 @pytest.mark.asyncio
 async def test_move_assignment_async(
     transport: str = "grpc_asyncio", request_type=reservation.MoveAssignmentRequest
@@ -4968,6 +5274,24 @@ def test_get_bi_reservation_from_dict():
     test_get_bi_reservation(request_type=dict)
 
 
+def test_get_bi_reservation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_bi_reservation), "__call__"
+    ) as call:
+        client.get_bi_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.GetBiReservationRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_bi_reservation_async(
     transport: str = "grpc_asyncio", request_type=reservation.GetBiReservationRequest
@@ -5179,6 +5503,24 @@ def test_update_bi_reservation(
 
 def test_update_bi_reservation_from_dict():
     test_update_bi_reservation(request_type=dict)
+
+
+def test_update_bi_reservation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_bi_reservation), "__call__"
+    ) as call:
+        client.update_bi_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == reservation.UpdateBiReservationRequest()
 
 
 @pytest.mark.asyncio
