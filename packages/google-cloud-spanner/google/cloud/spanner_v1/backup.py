@@ -185,14 +185,6 @@ class Backup(object):
         """
         return self._encryption_info
 
-    @property
-    def encryption_config(self):
-        """Encryption config for this database.
-        :rtype: :class:`~google.cloud.spanner_admin_instance_v1.types.CreateBackupEncryptionConfig`
-        :returns: an object representing the encryption config for this database
-        """
-        return self._encryption_config
-
     @classmethod
     def from_pb(cls, backup_pb, instance):
         """Create an instance of this class from a protobuf message.
@@ -245,9 +237,9 @@ class Backup(object):
         if not self._database:
             raise ValueError("database not set")
         if (
-            self.encryption_config
-            and self.encryption_config.kms_key_name
-            and self.encryption_config.encryption_type
+            self._encryption_config
+            and self._encryption_config.kms_key_name
+            and self._encryption_config.encryption_type
             != CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
         ):
             raise ValueError("kms_key_name only used with CUSTOMER_MANAGED_ENCRYPTION")

@@ -84,7 +84,7 @@ class TestBackup(_BaseTest):
         self.assertEqual(backup._database, self.DATABASE_NAME)
         self.assertIsNotNone(backup._expire_time)
         self.assertIs(backup._expire_time, timestamp)
-        self.assertEqual(backup.encryption_config, encryption_config)
+        self.assertEqual(backup._encryption_config, encryption_config)
 
     def test_ctor_w_encryption_config_dict(self):
         from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
@@ -107,7 +107,7 @@ class TestBackup(_BaseTest):
         self.assertEqual(backup._database, self.DATABASE_NAME)
         self.assertIsNotNone(backup._expire_time)
         self.assertIs(backup._expire_time, timestamp)
-        self.assertEqual(backup.encryption_config, expected_encryption_config)
+        self.assertEqual(backup._encryption_config, expected_encryption_config)
 
     def test_from_pb_project_mismatch(self):
         from google.cloud.spanner_admin_database_v1 import Backup
@@ -223,7 +223,7 @@ class TestBackup(_BaseTest):
             encryption_type=CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
             kms_key_name="kms_key_name",
         )
-        self.assertEqual(backup.encryption_config, expected)
+        self.assertEqual(backup._encryption_config, expected)
 
     def test_create_grpc_error(self):
         from google.api_core.exceptions import GoogleAPICallError

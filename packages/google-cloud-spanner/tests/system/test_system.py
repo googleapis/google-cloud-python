@@ -741,6 +741,7 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         from google.cloud.spanner_admin_database_v1 import (
             CreateBackupEncryptionConfig,
             EncryptionConfig,
+            EncryptionInfo,
             RestoreDatabaseEncryptionConfig,
         )
         from datetime import datetime
@@ -780,7 +781,10 @@ class TestBackupAPI(unittest.TestCase, _TestData):
         self.assertEqual(self.database_version_time, backup.version_time)
         self.assertIsNotNone(backup.size_bytes)
         self.assertIsNotNone(backup.state)
-        self.assertEqual(encryption_config, backup.encryption_config)
+        self.assertEqual(
+            EncryptionInfo.Type.GOOGLE_DEFAULT_ENCRYPTION,
+            backup.encryption_info.encryption_type,
+        )
 
         # Update with valid argument.
         valid_expire_time = datetime.utcnow() + timedelta(days=7)
