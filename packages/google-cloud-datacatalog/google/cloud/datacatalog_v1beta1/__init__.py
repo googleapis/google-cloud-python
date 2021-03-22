@@ -103,7 +103,6 @@ __all__ = (
     "CreateTagTemplateFieldRequest",
     "CreateTagTemplateRequest",
     "CreateTaxonomyRequest",
-    "DataCatalogClient",
     "DeleteEntryGroupRequest",
     "DeleteEntryRequest",
     "DeletePolicyTagRequest",
@@ -140,6 +139,7 @@ __all__ = (
     "ListTaxonomiesResponse",
     "LookupEntryRequest",
     "PolicyTag",
+    "PolicyTagManagerClient",
     "PolicyTagManagerSerializationClient",
     "RenameTagTemplateFieldRequest",
     "Schema",
@@ -165,5 +165,5 @@ __all__ = (
     "UpdateTagTemplateRequest",
     "UpdateTaxonomyRequest",
     "ViewSpec",
-    "PolicyTagManagerClient",
+    "DataCatalogClient",
 )
