@@ -760,6 +760,23 @@ class ExternalConfig(object):
         prop = self._properties.get("schema", {})
         return [SchemaField.from_api_repr(field) for field in prop.get("fields", [])]
 
+    @property
+    def connection_id(self):
+        """Optional[str]: [Experimental] ID of a BigQuery Connection API
+        resource.
+
+        .. WARNING::
+
+           This feature is experimental. Pre-GA features may have limited
+           support, and changes to pre-GA features may not be compatible with
+           other pre-GA versions.
+        """
+        return self._properties.get("connectionId")
+
+    @connection_id.setter
+    def connection_id(self, value):
+        self._properties["connectionId"] = value
+
     @schema.setter
     def schema(self, value):
         prop = value

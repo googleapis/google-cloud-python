@@ -74,6 +74,7 @@ class TestExternalConfig(unittest.TestCase):
         ec.autodetect = True
         ec.ignore_unknown_values = False
         ec.compression = "compression"
+        ec.connection_id = "path/to/connection"
         ec.schema = [schema.SchemaField("full_name", "STRING", mode="REQUIRED")]
 
         exp_schema = {
@@ -87,9 +88,16 @@ class TestExternalConfig(unittest.TestCase):
             "autodetect": True,
             "ignoreUnknownValues": False,
             "compression": "compression",
+            "connectionId": "path/to/connection",
             "schema": exp_schema,
         }
         self.assertEqual(got_resource, exp_resource)
+
+    def test_connection_id(self):
+        ec = external_config.ExternalConfig("")
+        self.assertIsNone(ec.connection_id)
+        ec.connection_id = "path/to/connection"
+        self.assertEqual(ec.connection_id, "path/to/connection")
 
     def test_schema_None(self):
         ec = external_config.ExternalConfig("")
