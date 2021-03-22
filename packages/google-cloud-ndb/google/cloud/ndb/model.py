@@ -699,9 +699,9 @@ def _entity_from_protobuf(protobuf):
 def _properties_of(entity):
     """Get the model properties for an entity.
 
-    Will traverse the entity's MRO (class hierarchy) up from the entity's class
-    through all of its ancestors, collecting an ``Property`` instances defined
-    for those classes.
+    After collecting any properties local to the given entity, will traverse the
+    entity's MRO (class hierarchy) up from the entity's class through all of its
+    ancestors, collecting an ``Property`` instances defined for those classes.
 
     Args:
         entity (model.Model): The entity to get properties for.
@@ -711,11 +711,11 @@ def _properties_of(entity):
     """
     seen = set()
 
-    for cls in type(entity).mro():
-        if not hasattr(cls, "_properties"):
+    for level in (entity,) + tuple(type(entity).mro()):
+        if not hasattr(level, "_properties"):
             continue
 
-        for prop in cls._properties.values():
+        for prop in level._properties.values():
             if (
                 not isinstance(prop, Property)
                 or isinstance(prop, ModelKey)
@@ -4891,12 +4891,21 @@ class Model(_NotEqualMixin):
             prop = self._fake_property(p, next, indexed)
         return prop
 
+    def _clone_properties(self):
+        """Relocate ``_properties`` from class to instance.
+
+        Internal helper, in case properties need to be modified for an instance but not
+        the class.
+        """
+        cls = type(self)
+        if self._properties is cls._properties:
+            self._properties = dict(cls._properties)
+
     def _fake_property(self, p, next, indexed=True):
         """Internal helper to create a fake Property. Ported from legacy datastore"""
         # A custom 'meaning' for compressed properties.
         _MEANING_URI_COMPRESSED = "ZLIB"
-        if hasattr(self, "_clone_properties"):
-            self._clone_properties()
+        self._clone_properties()
         if p.name() != next.encode("utf-8") and not p.name().endswith(
             b"." + next.encode("utf-8")
         ):
@@ -5100,7 +5109,14 @@ class Model(_NotEqualMixin):
         if set(self._projection) != set(other._projection):
             return False
 
+        if len(self._properties) != len(other._properties):
+            return False  # Can only happen for Expandos.
+
         prop_names = set(self._properties.keys())
+        other_prop_names = set(other._properties.keys())
+        if prop_names != other_prop_names:
+            return False  # Again, only possible for Expandos
+
         # Restrict properties to the projection if set.
         if self._projection:
             prop_names = set(self._projection)
@@ -6218,6 +6234,7 @@ class Expando(Model):
             getattr(self.__class__, name, None), (Property, property)
         ):
             return super(Expando, self).__setattr__(name, value)
+        self._clone_properties()
         if isinstance(value, Model):
             prop = StructuredProperty(Model, name)
         elif isinstance(value, dict):

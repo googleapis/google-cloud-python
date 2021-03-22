@@ -5648,6 +5648,8 @@ class TestExpando:
 
         expansive = Expansive(foo="x", bar="y", baz="z")
         assert expansive._properties == {"foo": "x", "bar": "y", "baz": "z"}
+        # Make sure we didn't change properties for the class
+        assert Expansive._properties == {"foo": "foo"}
 
     @staticmethod
     def test___getattr__():
