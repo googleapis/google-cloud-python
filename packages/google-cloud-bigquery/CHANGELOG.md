@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.13.0](https://www.github.com/googleapis/python-bigquery/compare/v2.12.0...v2.13.0) (2021-03-22)
+
+
+### Features
+
+* add `ExternalConfig.connection_id` property to connect to external sources ([#560](https://www.github.com/googleapis/python-bigquery/issues/560)) ([d93986e](https://www.github.com/googleapis/python-bigquery/commit/d93986e0259952257f2571f60719b52099c29c0c))
+
+
+### Bug Fixes
+
+* avoid overly strict dependency on pyarrow 3.x ([#564](https://www.github.com/googleapis/python-bigquery/issues/564)) ([97ee6ec](https://www.github.com/googleapis/python-bigquery/commit/97ee6ec6cd4bc9f833cd506dc6d244d103654cfd))
+* avoid policy tags 403 error in `load_table_from_dataframe` ([#557](https://www.github.com/googleapis/python-bigquery/issues/557)) ([84e646e](https://www.github.com/googleapis/python-bigquery/commit/84e646e6b7087a1626e56ad51eeb130f4ddfa2fb))
+
 ## [2.12.0](https://www.github.com/googleapis/python-bigquery/compare/v2.11.0...v2.12.0) (2021-03-16)
 
 
