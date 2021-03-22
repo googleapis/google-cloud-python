@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.1.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.0.1...v3.1.0) (2021-03-22)
+
+
+### Features
+
+* add `client_cert_source_for_mtls` parameter to grpc transport ([#114](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/114)) ([9c7ed28](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/9c7ed285203cd44917911e78c2c313d3ad50afda))
+
 ### [3.0.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.0.0...v3.0.1) (2021-03-03)
 
 
