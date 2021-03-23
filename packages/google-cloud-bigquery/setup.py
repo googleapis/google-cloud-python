@@ -35,6 +35,7 @@ dependencies = [
     "google-resumable-media >= 0.6.0, < 2.0dev",
     "packaging >= 14.3",
     "protobuf >= 3.12.0",
+    "requests >= 2.18.0, < 3.0.0dev",
 ]
 extras = {
     "bqstorage": [

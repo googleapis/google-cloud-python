@@ -14,6 +14,7 @@
 
 from google.api_core import exceptions
 from google.api_core import retry
+import requests.exceptions
 
 
 _RETRYABLE_REASONS = frozenset(
@@ -21,9 +22,11 @@ _RETRYABLE_REASONS = frozenset(
 )
 
 _UNSTRUCTURED_RETRYABLE_TYPES = (
+    ConnectionError,
     exceptions.TooManyRequests,
     exceptions.InternalServerError,
     exceptions.BadGateway,
+    requests.exceptions.ConnectionError,
 )
 
 
@@ -33,10 +36,7 @@ def _should_retry(exc):
     We retry if and only if the 'reason' is 'backendError'
     or 'rateLimitExceeded'.
     """
-    if not hasattr(exc, "errors"):
-        return False
-
-    if len(exc.errors) == 0:
+    if not hasattr(exc, "errors") or len(exc.errors) == 0:
         # Check for unstructured error returns, e.g. from GFE
         return isinstance(exc, _UNSTRUCTURED_RETRYABLE_TYPES)
 

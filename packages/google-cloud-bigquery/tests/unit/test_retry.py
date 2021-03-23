@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import requests.exceptions
 
 
 class Test_should_retry(unittest.TestCase):
@@ -40,6 +41,14 @@ class Test_should_retry(unittest.TestCase):
 
     def test_w_rateLimitExceeded(self):
         exc = mock.Mock(errors=[{"reason": "rateLimitExceeded"}], spec=["errors"])
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_unstructured_connectionerror(self):
+        exc = ConnectionError()
+        self.assertTrue(self._call_fut(exc))
+
+    def test_w_unstructured_requests_connectionerror(self):
+        exc = requests.exceptions.ConnectionError()
         self.assertTrue(self._call_fut(exc))
 
     def test_w_unstructured_too_many_requests(self):
