@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-network-connectivity.git",
-        "sha": "47311e98c3a67fd67a711e9ea9b5cecfd7b06bc2"
+        "sha": "edb1e0f97addce1cd9e575c32d2b96e6d05f6857"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "e53f05caf2fcc77c92be82bc2654e5d6000c5148",
-        "internalRef": "358007902"
+        "sha": "07932bb995e7dc91b43620ea8402c6668c7d102c",
+        "internalRef": "359562873"
       }
     },
     {
