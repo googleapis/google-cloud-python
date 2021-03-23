@@ -36,14 +36,14 @@ class Service(proto.Message):
         name (str):
             Immutable. The resource name for the service in the format
             ``projects/*/locations/*/namespaces/*/services/*``
-        metadata (Sequence[~.service.Service.MetadataEntry]):
+        metadata (Sequence[google.cloud.servicedirectory_v1beta1.types.Service.MetadataEntry]):
             Optional. Metadata for the service. This data
             can be consumed by service clients.  The entire
             metadata dictionary may contain up to 2000
             characters, spread across all key-value pairs.
             Metadata that goes beyond any these limits will
             be rejected.
-        endpoints (Sequence[~.endpoint.Endpoint]):
+        endpoints (Sequence[google.cloud.servicedirectory_v1beta1.types.Endpoint]):
             Output only. Endpoints associated with this
             service. Returned on LookupService.Resolve.
             Control plane clients should use

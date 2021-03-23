@@ -138,6 +138,22 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            RegistrationServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -149,7 +165,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            RegistrationServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -295,10 +311,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.RegistrationServiceTransport]): The
+            transport (Union[str, RegistrationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -334,21 +350,17 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -391,7 +403,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -410,23 +422,25 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Creates a namespace, and returns the new Namespace.
 
         Args:
-            request (:class:`~.registration_service.CreateNamespaceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.CreateNamespaceRequest):
                 The request object. The request message for
                 [RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 project and location the namespace will
                 be created in.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            namespace (:class:`~.gcs_namespace.Namespace`):
+            namespace (google.cloud.servicedirectory_v1beta1.types.Namespace):
                 Required. A namespace with initial
                 fields set.
+
                 This corresponds to the ``namespace`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            namespace_id (:class:`str`):
+            namespace_id (str):
                 Required. The Resource ID must be 1-63 characters long,
                 and comply with RFC1035. Specifically, the name must be
                 1-63 characters long and match the regular expression
@@ -435,6 +449,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 following characters must be a dash, lowercase letter,
                 or digit, except the last character, which cannot be a
                 dash.
+
                 This corresponds to the ``namespace_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -446,12 +461,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_namespace.Namespace:
-                A container for
-                [services][google.cloud.servicedirectory.v1beta1.Service].
-                Namespaces allow administrators to group services
-                together and define permissions for a collection of
-                services.
+            google.cloud.servicedirectory_v1beta1.types.Namespace:
+                A container for [services][google.cloud.servicedirectory.v1beta1.Service].
+                   Namespaces allow administrators to group services
+                   together and define permissions for a collection of
+                   services.
 
         """
         # Create or coerce a protobuf request object.
@@ -509,13 +523,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Lists all namespaces.
 
         Args:
-            request (:class:`~.registration_service.ListNamespacesRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListNamespacesRequest):
                 The request object. The request message for
                 [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 project and location whose namespaces
                 we'd like to list.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -527,7 +542,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListNamespacesPager:
+            google.cloud.servicedirectory_v1beta1.services.registration_service.pagers.ListNamespacesPager:
                 The response message for
                 [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
 
@@ -592,12 +607,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Gets a namespace.
 
         Args:
-            request (:class:`~.registration_service.GetNamespaceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.GetNamespaceRequest):
                 The request object. The request message for
                 [RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the namespace
                 to retrieve.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -609,12 +625,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.namespace.Namespace:
-                A container for
-                [services][google.cloud.servicedirectory.v1beta1.Service].
-                Namespaces allow administrators to group services
-                together and define permissions for a collection of
-                services.
+            google.cloud.servicedirectory_v1beta1.types.Namespace:
+                A container for [services][google.cloud.servicedirectory.v1beta1.Service].
+                   Namespaces allow administrators to group services
+                   together and define permissions for a collection of
+                   services.
 
         """
         # Create or coerce a protobuf request object.
@@ -669,17 +684,18 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Updates a namespace.
 
         Args:
-            request (:class:`~.registration_service.UpdateNamespaceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.UpdateNamespaceRequest):
                 The request object. The request message for
                 [RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace].
-            namespace (:class:`~.gcs_namespace.Namespace`):
+            namespace (google.cloud.servicedirectory_v1beta1.types.Namespace):
                 Required. The updated namespace.
                 This corresponds to the ``namespace`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -691,12 +707,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_namespace.Namespace:
-                A container for
-                [services][google.cloud.servicedirectory.v1beta1.Service].
-                Namespaces allow administrators to group services
-                together and define permissions for a collection of
-                services.
+            google.cloud.servicedirectory_v1beta1.types.Namespace:
+                A container for [services][google.cloud.servicedirectory.v1beta1.Service].
+                   Namespaces allow administrators to group services
+                   together and define permissions for a collection of
+                   services.
 
         """
         # Create or coerce a protobuf request object.
@@ -755,12 +770,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         and endpoints in the namespace.
 
         Args:
-            request (:class:`~.registration_service.DeleteNamespaceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.DeleteNamespaceRequest):
                 The request object. The request message for
                 [RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the namespace
                 to delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -823,22 +839,24 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Creates a service, and returns the new Service.
 
         Args:
-            request (:class:`~.registration_service.CreateServiceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.CreateServiceRequest):
                 The request object. The request message for
                 [RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 namespace this service will belong to.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            service (:class:`~.gcs_service.Service`):
+            service (google.cloud.servicedirectory_v1beta1.types.Service):
                 Required. A service  with initial
                 fields set.
+
                 This corresponds to the ``service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            service_id (:class:`str`):
+            service_id (str):
                 Required. The Resource ID must be 1-63 characters long,
                 and comply with RFC1035. Specifically, the name must be
                 1-63 characters long and match the regular expression
@@ -847,6 +865,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 following characters must be a dash, lowercase letter,
                 or digit, except the last character, which cannot be a
                 dash.
+
                 This corresponds to the ``service_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -858,11 +877,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_service.Service:
-                An individual service. A service contains a name and
-                optional metadata. A service must exist before
-                [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint]
-                can be added to it.
+            google.cloud.servicedirectory_v1beta1.types.Service:
+                An individual service. A service contains a name and optional metadata.
+                   A service must exist before
+                   [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint]
+                   can be added to it.
 
         """
         # Create or coerce a protobuf request object.
@@ -920,13 +939,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Lists all services belonging to a namespace.
 
         Args:
-            request (:class:`~.registration_service.ListServicesRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListServicesRequest):
                 The request object. The request message for
                 [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 namespace whose services we'd like to
                 list.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -938,7 +958,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListServicesPager:
+            google.cloud.servicedirectory_v1beta1.services.registration_service.pagers.ListServicesPager:
                 The response message for
                 [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
 
@@ -1003,15 +1023,16 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Gets a service.
 
         Args:
-            request (:class:`~.registration_service.GetServiceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.GetServiceRequest):
                 The request object. The request message for
                 [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
                 This should not be used for looking up a service.
                 Insead, use the `resolve` method as it will contain all
                 endpoints and associated metadata.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the service to
                 get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1023,11 +1044,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.Service:
-                An individual service. A service contains a name and
-                optional metadata. A service must exist before
-                [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint]
-                can be added to it.
+            google.cloud.servicedirectory_v1beta1.types.Service:
+                An individual service. A service contains a name and optional metadata.
+                   A service must exist before
+                   [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint]
+                   can be added to it.
 
         """
         # Create or coerce a protobuf request object.
@@ -1082,17 +1103,18 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Updates a service.
 
         Args:
-            request (:class:`~.registration_service.UpdateServiceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.UpdateServiceRequest):
                 The request object. The request message for
                 [RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService].
-            service (:class:`~.gcs_service.Service`):
+            service (google.cloud.servicedirectory_v1beta1.types.Service):
                 Required. The updated service.
                 This corresponds to the ``service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1104,11 +1126,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_service.Service:
-                An individual service. A service contains a name and
-                optional metadata. A service must exist before
-                [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint]
-                can be added to it.
+            google.cloud.servicedirectory_v1beta1.types.Service:
+                An individual service. A service contains a name and optional metadata.
+                   A service must exist before
+                   [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint]
+                   can be added to it.
 
         """
         # Create or coerce a protobuf request object.
@@ -1167,12 +1189,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         associated with the service.
 
         Args:
-            request (:class:`~.registration_service.DeleteServiceRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.DeleteServiceRequest):
                 The request object. The request message for
                 [RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the service to
                 delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1235,22 +1258,24 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Creates a endpoint, and returns the new Endpoint.
 
         Args:
-            request (:class:`~.registration_service.CreateEndpointRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.CreateEndpointRequest):
                 The request object. The request message for
                 [RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 service that this endpoint provides.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            endpoint (:class:`~.gcs_endpoint.Endpoint`):
+            endpoint (google.cloud.servicedirectory_v1beta1.types.Endpoint):
                 Required. A endpoint with initial
                 fields set.
+
                 This corresponds to the ``endpoint`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            endpoint_id (:class:`str`):
+            endpoint_id (str):
                 Required. The Resource ID must be 1-63 characters long,
                 and comply with RFC1035. Specifically, the name must be
                 1-63 characters long and match the regular expression
@@ -1259,6 +1284,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 following characters must be a dash, lowercase letter,
                 or digit, except the last character, which cannot be a
                 dash.
+
                 This corresponds to the ``endpoint_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1270,10 +1296,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_endpoint.Endpoint:
+            google.cloud.servicedirectory_v1beta1.types.Endpoint:
                 An individual endpoint that provides a
-                [service][google.cloud.servicedirectory.v1beta1.Service].
-                The service must already exist to create an endpoint.
+                   [service][google.cloud.servicedirectory.v1beta1.Service].
+                   The service must already exist to create an endpoint.
 
         """
         # Create or coerce a protobuf request object.
@@ -1331,13 +1357,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Lists all endpoints.
 
         Args:
-            request (:class:`~.registration_service.ListEndpointsRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListEndpointsRequest):
                 The request object. The request message for
                 [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 service whose endpoints we'd like to
                 list.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1349,7 +1376,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListEndpointsPager:
+            google.cloud.servicedirectory_v1beta1.services.registration_service.pagers.ListEndpointsPager:
                 The response message for
                 [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
 
@@ -1414,14 +1441,15 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Gets a endpoint.
 
         Args:
-            request (:class:`~.registration_service.GetEndpointRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.GetEndpointRequest):
                 The request object. The request message for
                 [RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint].
                 This should not be used to lookup endpoints at runtime.
                 Instead, use the `resolve` method.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the endpoint to
                 get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1433,10 +1461,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.endpoint.Endpoint:
+            google.cloud.servicedirectory_v1beta1.types.Endpoint:
                 An individual endpoint that provides a
-                [service][google.cloud.servicedirectory.v1beta1.Service].
-                The service must already exist to create an endpoint.
+                   [service][google.cloud.servicedirectory.v1beta1.Service].
+                   The service must already exist to create an endpoint.
 
         """
         # Create or coerce a protobuf request object.
@@ -1491,17 +1519,18 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Updates a endpoint.
 
         Args:
-            request (:class:`~.registration_service.UpdateEndpointRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.UpdateEndpointRequest):
                 The request object. The request message for
                 [RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint].
-            endpoint (:class:`~.gcs_endpoint.Endpoint`):
+            endpoint (google.cloud.servicedirectory_v1beta1.types.Endpoint):
                 Required. The updated endpoint.
                 This corresponds to the ``endpoint`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1513,10 +1542,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_endpoint.Endpoint:
+            google.cloud.servicedirectory_v1beta1.types.Endpoint:
                 An individual endpoint that provides a
-                [service][google.cloud.servicedirectory.v1beta1.Service].
-                The service must already exist to create an endpoint.
+                   [service][google.cloud.servicedirectory.v1beta1.Service].
+                   The service must already exist to create an endpoint.
 
         """
         # Create or coerce a protobuf request object.
@@ -1574,12 +1603,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         r"""Deletes a endpoint.
 
         Args:
-            request (:class:`~.registration_service.DeleteEndpointRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.DeleteEndpointRequest):
                 The request object. The request message for
                 [RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint].
-            name (:class:`str`):
+            name (str):
                 Required. The name of the endpoint to
                 delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1640,7 +1670,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         service only).
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
 
@@ -1651,80 +1681,73 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.GetIamPolicyRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = iam_policy.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1754,7 +1777,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         service only).
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
 
@@ -1765,80 +1788,73 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.SetIamPolicyRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = iam_policy.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1868,7 +1884,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         service only).
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
 
@@ -1879,15 +1895,18 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.TestIamPermissionsRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = iam_policy.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

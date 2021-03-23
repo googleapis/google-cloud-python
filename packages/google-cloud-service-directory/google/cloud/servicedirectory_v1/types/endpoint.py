@@ -40,7 +40,7 @@ class Endpoint(proto.Message):
         port (int):
             Optional. Service Directory will reject values outside of
             [0, 65535].
-        annotations (Sequence[~.endpoint.Endpoint.AnnotationsEntry]):
+        annotations (Sequence[google.cloud.servicedirectory_v1.types.Endpoint.AnnotationsEntry]):
             Optional. Annotations for the endpoint. This data can be
             consumed by service clients. Restrictions:
 

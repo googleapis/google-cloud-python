@@ -65,7 +65,7 @@ class CreateNamespaceRequest(proto.Message):
             character must be a lowercase letter, and all following
             characters must be a dash, lowercase letter, or digit,
             except the last character, which cannot be a dash.
-        namespace (~.gcs_namespace.Namespace):
+        namespace (google.cloud.servicedirectory_v1beta1.types.Namespace):
             Required. A namespace with initial fields
             set.
     """
@@ -142,7 +142,7 @@ class ListNamespacesResponse(proto.Message):
     [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
 
     Attributes:
-        namespaces (Sequence[~.gcs_namespace.Namespace]):
+        namespaces (Sequence[google.cloud.servicedirectory_v1beta1.types.Namespace]):
             The list of namespaces.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -179,9 +179,9 @@ class UpdateNamespaceRequest(proto.Message):
     [RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace].
 
     Attributes:
-        namespace (~.gcs_namespace.Namespace):
+        namespace (google.cloud.servicedirectory_v1beta1.types.Namespace):
             Required. The updated namespace.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields to be updated in
             this request.
     """
@@ -220,7 +220,7 @@ class CreateServiceRequest(proto.Message):
             character must be a lowercase letter, and all following
             characters must be a dash, lowercase letter, or digit,
             except the last character, which cannot be a dash.
-        service (~.gcs_service.Service):
+        service (google.cloud.servicedirectory_v1beta1.types.Service):
             Required. A service  with initial fields set.
     """
 
@@ -290,7 +290,7 @@ class ListServicesResponse(proto.Message):
     [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
 
     Attributes:
-        services (Sequence[~.gcs_service.Service]):
+        services (Sequence[google.cloud.servicedirectory_v1beta1.types.Service]):
             The list of services.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -329,9 +329,9 @@ class UpdateServiceRequest(proto.Message):
     [RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService].
 
     Attributes:
-        service (~.gcs_service.Service):
+        service (google.cloud.servicedirectory_v1beta1.types.Service):
             Required. The updated service.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields to be updated in
             this request.
     """
@@ -369,7 +369,7 @@ class CreateEndpointRequest(proto.Message):
             character must be a lowercase letter, and all following
             characters must be a dash, lowercase letter, or digit,
             except the last character, which cannot be a dash.
-        endpoint (~.gcs_endpoint.Endpoint):
+        endpoint (google.cloud.servicedirectory_v1beta1.types.Endpoint):
             Required. A endpoint with initial fields set.
     """
 
@@ -444,7 +444,7 @@ class ListEndpointsResponse(proto.Message):
     [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
 
     Attributes:
-        endpoints (Sequence[~.gcs_endpoint.Endpoint]):
+        endpoints (Sequence[google.cloud.servicedirectory_v1beta1.types.Endpoint]):
             The list of endpoints.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -482,9 +482,9 @@ class UpdateEndpointRequest(proto.Message):
     [RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint].
 
     Attributes:
-        endpoint (~.gcs_endpoint.Endpoint):
+        endpoint (google.cloud.servicedirectory_v1beta1.types.Endpoint):
             Required. The updated endpoint.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields to be updated in
             this request.
     """

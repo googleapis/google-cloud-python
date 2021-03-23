@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.servicedirectory_v1beta1.types import endpoint
 from google.cloud.servicedirectory_v1beta1.types import namespace
@@ -27,7 +36,7 @@ class ListNamespacesPager:
     """A pager for iterating through ``list_namespaces`` requests.
 
     This class thinly wraps an initial
-    :class:`~.registration_service.ListNamespacesResponse` object, and
+    :class:`google.cloud.servicedirectory_v1beta1.types.ListNamespacesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``namespaces`` field.
 
@@ -36,7 +45,7 @@ class ListNamespacesPager:
     through the ``namespaces`` field on the
     corresponding responses.
 
-    All the usual :class:`~.registration_service.ListNamespacesResponse`
+    All the usual :class:`google.cloud.servicedirectory_v1beta1.types.ListNamespacesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -54,9 +63,9 @@ class ListNamespacesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.registration_service.ListNamespacesRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListNamespacesRequest):
                 The initial request object.
-            response (:class:`~.registration_service.ListNamespacesResponse`):
+            response (google.cloud.servicedirectory_v1beta1.types.ListNamespacesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -89,7 +98,7 @@ class ListNamespacesAsyncPager:
     """A pager for iterating through ``list_namespaces`` requests.
 
     This class thinly wraps an initial
-    :class:`~.registration_service.ListNamespacesResponse` object, and
+    :class:`google.cloud.servicedirectory_v1beta1.types.ListNamespacesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``namespaces`` field.
 
@@ -98,7 +107,7 @@ class ListNamespacesAsyncPager:
     through the ``namespaces`` field on the
     corresponding responses.
 
-    All the usual :class:`~.registration_service.ListNamespacesResponse`
+    All the usual :class:`google.cloud.servicedirectory_v1beta1.types.ListNamespacesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -116,9 +125,9 @@ class ListNamespacesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.registration_service.ListNamespacesRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListNamespacesRequest):
                 The initial request object.
-            response (:class:`~.registration_service.ListNamespacesResponse`):
+            response (google.cloud.servicedirectory_v1beta1.types.ListNamespacesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -155,7 +164,7 @@ class ListServicesPager:
     """A pager for iterating through ``list_services`` requests.
 
     This class thinly wraps an initial
-    :class:`~.registration_service.ListServicesResponse` object, and
+    :class:`google.cloud.servicedirectory_v1beta1.types.ListServicesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``services`` field.
 
@@ -164,7 +173,7 @@ class ListServicesPager:
     through the ``services`` field on the
     corresponding responses.
 
-    All the usual :class:`~.registration_service.ListServicesResponse`
+    All the usual :class:`google.cloud.servicedirectory_v1beta1.types.ListServicesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -182,9 +191,9 @@ class ListServicesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.registration_service.ListServicesRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListServicesRequest):
                 The initial request object.
-            response (:class:`~.registration_service.ListServicesResponse`):
+            response (google.cloud.servicedirectory_v1beta1.types.ListServicesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -217,7 +226,7 @@ class ListServicesAsyncPager:
     """A pager for iterating through ``list_services`` requests.
 
     This class thinly wraps an initial
-    :class:`~.registration_service.ListServicesResponse` object, and
+    :class:`google.cloud.servicedirectory_v1beta1.types.ListServicesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``services`` field.
 
@@ -226,7 +235,7 @@ class ListServicesAsyncPager:
     through the ``services`` field on the
     corresponding responses.
 
-    All the usual :class:`~.registration_service.ListServicesResponse`
+    All the usual :class:`google.cloud.servicedirectory_v1beta1.types.ListServicesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -244,9 +253,9 @@ class ListServicesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.registration_service.ListServicesRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListServicesRequest):
                 The initial request object.
-            response (:class:`~.registration_service.ListServicesResponse`):
+            response (google.cloud.servicedirectory_v1beta1.types.ListServicesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -283,7 +292,7 @@ class ListEndpointsPager:
     """A pager for iterating through ``list_endpoints`` requests.
 
     This class thinly wraps an initial
-    :class:`~.registration_service.ListEndpointsResponse` object, and
+    :class:`google.cloud.servicedirectory_v1beta1.types.ListEndpointsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``endpoints`` field.
 
@@ -292,7 +301,7 @@ class ListEndpointsPager:
     through the ``endpoints`` field on the
     corresponding responses.
 
-    All the usual :class:`~.registration_service.ListEndpointsResponse`
+    All the usual :class:`google.cloud.servicedirectory_v1beta1.types.ListEndpointsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -310,9 +319,9 @@ class ListEndpointsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.registration_service.ListEndpointsRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListEndpointsRequest):
                 The initial request object.
-            response (:class:`~.registration_service.ListEndpointsResponse`):
+            response (google.cloud.servicedirectory_v1beta1.types.ListEndpointsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -345,7 +354,7 @@ class ListEndpointsAsyncPager:
     """A pager for iterating through ``list_endpoints`` requests.
 
     This class thinly wraps an initial
-    :class:`~.registration_service.ListEndpointsResponse` object, and
+    :class:`google.cloud.servicedirectory_v1beta1.types.ListEndpointsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``endpoints`` field.
 
@@ -354,7 +363,7 @@ class ListEndpointsAsyncPager:
     through the ``endpoints`` field on the
     corresponding responses.
 
-    All the usual :class:`~.registration_service.ListEndpointsResponse`
+    All the usual :class:`google.cloud.servicedirectory_v1beta1.types.ListEndpointsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -372,9 +381,9 @@ class ListEndpointsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.registration_service.ListEndpointsRequest`):
+            request (google.cloud.servicedirectory_v1beta1.types.ListEndpointsRequest):
                 The initial request object.
-            response (:class:`~.registration_service.ListEndpointsResponse`):
+            response (google.cloud.servicedirectory_v1beta1.types.ListEndpointsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

@@ -40,7 +40,7 @@ class Endpoint(proto.Message):
         port (int):
             Optional. Service Directory will reject values outside of
             [0, 65535].
-        metadata (Sequence[~.endpoint.Endpoint.MetadataEntry]):
+        metadata (Sequence[google.cloud.servicedirectory_v1beta1.types.Endpoint.MetadataEntry]):
             Optional. Metadata for the endpoint. This
             data can be consumed by service clients.  The
             entire metadata dictionary may contain up to 512

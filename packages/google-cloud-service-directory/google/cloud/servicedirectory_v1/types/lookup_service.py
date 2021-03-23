@@ -74,7 +74,7 @@ class ResolveServiceResponse(proto.Message):
     [LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService].
 
     Attributes:
-        service (~.gcs_service.Service):
+        service (google.cloud.servicedirectory_v1.types.Service):
 
     """
 

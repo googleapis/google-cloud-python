@@ -78,7 +78,36 @@ class LookupServiceAsyncClient:
         LookupServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = LookupServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            LookupServiceAsyncClient: The constructed client.
+        """
+        return LookupServiceClient.from_service_account_info.__func__(LookupServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            LookupServiceAsyncClient: The constructed client.
+        """
+        return LookupServiceClient.from_service_account_file.__func__(LookupServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -156,7 +185,7 @@ class LookupServiceAsyncClient:
         active developer method.
 
         Args:
-            request (:class:`~.lookup_service.ResolveServiceRequest`):
+            request (:class:`google.cloud.servicedirectory_v1beta1.types.ResolveServiceRequest`):
                 The request object. The request message for
                 [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
                 Looks up a service by its name, returns the service and
@@ -169,7 +198,7 @@ class LookupServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.lookup_service.ResolveServiceResponse:
+            google.cloud.servicedirectory_v1beta1.types.ResolveServiceResponse:
                 The response message for
                 [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
 
