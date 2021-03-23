@@ -249,6 +249,7 @@ class SpeechAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5000.0,
             ),
             default_timeout=5000.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -460,6 +461,7 @@ class SpeechAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5000.0,
             ),
             default_timeout=5000.0,
             client_info=DEFAULT_CLIENT_INFO,
