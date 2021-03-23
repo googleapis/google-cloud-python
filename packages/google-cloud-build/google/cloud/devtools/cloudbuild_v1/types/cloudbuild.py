@@ -100,7 +100,7 @@ class RunBuildTriggerRequest(proto.Message):
             Required. ID of the project.
         trigger_id (str):
             Required. ID of the trigger.
-        source (~.cloudbuild.RepoSource):
+        source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
             Required. Source to build against this
             trigger.
     """
@@ -172,7 +172,7 @@ class RepoSource(proto.Message):
         invert_regex (bool):
             Only trigger a build if the revision regex
             does NOT match the revision regex.
-        substitutions (Sequence[~.cloudbuild.RepoSource.SubstitutionsEntry]):
+        substitutions (Sequence[google.cloud.devtools.cloudbuild_v1.types.RepoSource.SubstitutionsEntry]):
             Substitutions to use in a triggered build.
             Should only be used with RunBuildTrigger
     """
@@ -198,10 +198,10 @@ class Source(proto.Message):
     r"""Location of the source in a supported storage service.
 
     Attributes:
-        storage_source (~.cloudbuild.StorageSource):
+        storage_source (google.cloud.devtools.cloudbuild_v1.types.StorageSource):
             If provided, get the source from this
             location in Google Cloud Storage.
-        repo_source (~.cloudbuild.RepoSource):
+        repo_source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
             If provided, get the source from this
             location in a Cloud Source Repository.
     """
@@ -224,7 +224,7 @@ class BuiltImage(proto.Message):
             Registry, as presented to ``docker push``.
         digest (str):
             Docker Registry 2.0 digest.
-        push_timing (~.cloudbuild.TimeSpan):
+        push_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pushing the specified image.
     """
@@ -304,7 +304,7 @@ class BuildStep(proto.Message):
             A list of environment variables which are encrypted using a
             Cloud Key Management Service crypto key. These values must
             be specified in the build's ``Secret``.
-        volumes (Sequence[~.cloudbuild.Volume]):
+        volumes (Sequence[google.cloud.devtools.cloudbuild_v1.types.Volume]):
             List of volumes to mount into the build step.
             Each volume is created as an empty volume prior
             to execution of the build step. Upon completion
@@ -314,18 +314,18 @@ class BuildStep(proto.Message):
             Using a named volume in only one step is not
             valid as it is indicative of a build request
             with an incorrect configuration.
-        timing (~.cloudbuild.TimeSpan):
+        timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             executing this build step.
-        pull_timing (~.cloudbuild.TimeSpan):
+        pull_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Output only. Stores timing information for
             pulling this build step's builder image only.
-        timeout (~.duration.Duration):
+        timeout (google.protobuf.duration_pb2.Duration):
             Time limit for executing this build step. If
             not defined, the step has no time limit and will
             be allowed to continue to run until either it
             completes or the build itself times out.
-        status (~.cloudbuild.Build.Status):
+        status (google.cloud.devtools.cloudbuild_v1.types.Build.Status):
             Output only. Status of the build step. At
             this time, build step status is only updated on
             build completion; step status is not updated in
@@ -387,7 +387,7 @@ class Results(proto.Message):
     r"""Artifacts created by the build pipeline.
 
     Attributes:
-        images (Sequence[~.cloudbuild.BuiltImage]):
+        images (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuiltImage]):
             Container images that were built as a part of
             the build.
         build_step_images (Sequence[str]):
@@ -408,7 +408,7 @@ class Results(proto.Message):
             can produce this output by writing to
             ``$BUILDER_OUTPUT/output``. Only the first 4KB of data is
             stored.
-        artifact_timing (~.cloudbuild.TimeSpan):
+        artifact_timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
             Time to push all non-container artifacts.
     """
 
@@ -434,7 +434,7 @@ class ArtifactResult(proto.Message):
             The path of an artifact in a Google Cloud Storage bucket,
             with the generation number. For example,
             ``gs://mybucket/path/to/output.jar#generation``.
-        file_hash (Sequence[~.cloudbuild.FileHashes]):
+        file_hash (Sequence[google.cloud.devtools.cloudbuild_v1.types.FileHashes]):
             The file hash of the artifact.
     """
 
@@ -472,31 +472,31 @@ class Build(proto.Message):
             Output only. Unique identifier of the build.
         project_id (str):
             Output only. ID of the project.
-        status (~.cloudbuild.Build.Status):
+        status (google.cloud.devtools.cloudbuild_v1.types.Build.Status):
             Output only. Status of the build.
         status_detail (str):
             Output only. Customer-readable message about
             the current status.
-        source (~.cloudbuild.Source):
+        source (google.cloud.devtools.cloudbuild_v1.types.Source):
             The location of the source files to build.
-        steps (Sequence[~.cloudbuild.BuildStep]):
+        steps (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuildStep]):
             Required. The operations to be performed on
             the workspace.
-        results (~.cloudbuild.Results):
+        results (google.cloud.devtools.cloudbuild_v1.types.Results):
             Output only. Results of the build.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to
             create the build was received.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which execution of the
             build was started.
-        finish_time (~.timestamp.Timestamp):
+        finish_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which execution of the build was
             finished.
 
             The difference between finish_time and start_time is the
             duration of the build's execution.
-        timeout (~.duration.Duration):
+        timeout (google.protobuf.duration_pb2.Duration):
             Amount of time that this build should be allowed to run, to
             second granularity. If this amount of time elapses, work on
             the build will cease and the build status will be
@@ -517,13 +517,13 @@ class Build(proto.Message):
 
             If any of the images fail to be pushed, the build status is
             marked ``FAILURE``.
-        queue_ttl (~.duration.Duration):
+        queue_ttl (google.protobuf.duration_pb2.Duration):
             TTL in queue for this build. If provided and the build is
             enqueued longer than this value, the build will expire and
             the build status will be ``EXPIRED``.
 
             The TTL starts ticking from create_time.
-        artifacts (~.cloudbuild.Artifacts):
+        artifacts (google.cloud.devtools.cloudbuild_v1.types.Artifacts):
             Artifacts produced by the build that should
             be uploaded upon successful completion of all
             build steps.
@@ -533,26 +533,26 @@ class Build(proto.Message):
             Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
             Logs file names will be of the format
             ``${logs_bucket}/log-${build_id}.txt``.
-        source_provenance (~.cloudbuild.SourceProvenance):
+        source_provenance (google.cloud.devtools.cloudbuild_v1.types.SourceProvenance):
             Output only. A permanent fixed identifier for
             source.
         build_trigger_id (str):
             Output only. The ID of the ``BuildTrigger`` that triggered
             this build, if it was triggered automatically.
-        options (~.cloudbuild.BuildOptions):
+        options (google.cloud.devtools.cloudbuild_v1.types.BuildOptions):
             Special options for this build.
         log_url (str):
             Output only. URL to logs for this build in
             Google Cloud Console.
-        substitutions (Sequence[~.cloudbuild.Build.SubstitutionsEntry]):
+        substitutions (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build.SubstitutionsEntry]):
             Substitutions data for ``Build`` resource.
         tags (Sequence[str]):
             Tags for annotation of a ``Build``. These are not docker
             tags.
-        secrets (Sequence[~.cloudbuild.Secret]):
+        secrets (Sequence[google.cloud.devtools.cloudbuild_v1.types.Secret]):
             Secrets to decrypt using Cloud Key Management
             Service.
-        timing (Sequence[~.cloudbuild.Build.TimingEntry]):
+        timing (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build.TimingEntry]):
             Output only. Stores timing information for phases of the
             build. Valid keys are:
 
@@ -652,7 +652,7 @@ class Artifacts(proto.Message):
 
             If any of the images fail to be pushed, the
             build is marked FAILURE.
-        objects (~.cloudbuild.Artifacts.ArtifactObjects):
+        objects (google.cloud.devtools.cloudbuild_v1.types.Artifacts.ArtifactObjects):
             A list of objects to be uploaded to Cloud
             Storage upon successful completion of all build
             steps.
@@ -684,7 +684,7 @@ class Artifacts(proto.Message):
             paths (Sequence[str]):
                 Path globs used to match files in the build's
                 workspace.
-            timing (~.cloudbuild.TimeSpan):
+            timing (google.cloud.devtools.cloudbuild_v1.types.TimeSpan):
                 Output only. Stores timing information for
                 pushing all artifact objects.
         """
@@ -704,9 +704,9 @@ class TimeSpan(proto.Message):
     r"""Start and end times for a build execution phase.
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start of time span.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End of time span.
     """
 
@@ -719,7 +719,7 @@ class BuildOperationMetadata(proto.Message):
     r"""Metadata for build operations.
 
     Attributes:
-        build (~.cloudbuild.Build):
+        build (google.cloud.devtools.cloudbuild_v1.types.Build):
             The build that the operation is tracking.
     """
 
@@ -731,13 +731,13 @@ class SourceProvenance(proto.Message):
     or verify that some source was used for this build.
 
     Attributes:
-        resolved_storage_source (~.cloudbuild.StorageSource):
+        resolved_storage_source (google.cloud.devtools.cloudbuild_v1.types.StorageSource):
             A copy of the build's ``source.storage_source``, if exists,
             with any generations resolved.
-        resolved_repo_source (~.cloudbuild.RepoSource):
+        resolved_repo_source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
             A copy of the build's ``source.repo_source``, if exists,
             with any revisions resolved.
-        file_hashes (Sequence[~.cloudbuild.SourceProvenance.FileHashesEntry]):
+        file_hashes (Sequence[google.cloud.devtools.cloudbuild_v1.types.SourceProvenance.FileHashesEntry]):
             Output only. Hash(es) of the build source, which can be used
             to verify that the original source integrity was maintained
             in the build. Note that ``FileHashes`` will only be
@@ -769,7 +769,7 @@ class FileHashes(proto.Message):
     to the build.
 
     Attributes:
-        file_hash (Sequence[~.cloudbuild.Hash]):
+        file_hash (Sequence[google.cloud.devtools.cloudbuild_v1.types.Hash]):
             Collection of file hashes.
     """
 
@@ -780,7 +780,7 @@ class Hash(proto.Message):
     r"""Container message for hash values.
 
     Attributes:
-        type_ (~.cloudbuild.Hash.HashType):
+        type_ (google.cloud.devtools.cloudbuild_v1.types.Hash.HashType):
             The type of hash that was performed.
         value (bytes):
             The hash value.
@@ -806,7 +806,7 @@ class Secret(proto.Message):
         kms_key_name (str):
             Cloud KMS key name to use to decrypt these
             envs.
-        secret_env (Sequence[~.cloudbuild.Secret.SecretEnvEntry]):
+        secret_env (Sequence[google.cloud.devtools.cloudbuild_v1.types.Secret.SecretEnvEntry]):
             Map of environment variable name to its
             encrypted value.
             Secret environment variables must be unique
@@ -830,7 +830,7 @@ class CreateBuildRequest(proto.Message):
             Format: ``projects/{project}/locations/{location}``
         project_id (str):
             Required. ID of the project.
-        build (~.cloudbuild.Build):
+        build (google.cloud.devtools.cloudbuild_v1.types.Build):
             Required. Build resource to create.
     """
 
@@ -894,7 +894,7 @@ class ListBuildsResponse(proto.Message):
     r"""Response including listed builds.
 
     Attributes:
-        builds (Sequence[~.cloudbuild.Build]):
+        builds (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build]):
             Builds will be sorted by ``create_time``, descending.
         next_page_token (str):
             Token to receive the next page of results.
@@ -949,7 +949,7 @@ class BuildTrigger(proto.Message):
             character.
         tags (Sequence[str]):
             Tags for annotation of a ``BuildTrigger``
-        trigger_template (~.cloudbuild.RepoSource):
+        trigger_template (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
             Template describing the types of source changes to trigger a
             build.
 
@@ -958,23 +958,23 @@ class BuildTrigger(proto.Message):
             that regular expression will trigger a build.
 
             Mutually exclusive with ``github``.
-        github (~.cloudbuild.GitHubEventsConfig):
+        github (google.cloud.devtools.cloudbuild_v1.types.GitHubEventsConfig):
             GitHubEventsConfig describes the configuration of a trigger
             that creates a build whenever a GitHub event is received.
 
             Mutually exclusive with ``trigger_template``.
-        build (~.cloudbuild.Build):
+        build (google.cloud.devtools.cloudbuild_v1.types.Build):
             Contents of the build template.
         filename (str):
             Path, from the source root, to a file whose
             contents is used for the template.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the trigger was
             created.
         disabled (bool):
             If true, the trigger will never automatically
             execute a build.
-        substitutions (Sequence[~.cloudbuild.BuildTrigger.SubstitutionsEntry]):
+        substitutions (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuildTrigger.SubstitutionsEntry]):
             Substitutions for Build resource. The keys must match the
             following regular expression: ``^_[A-Z0-9_]+$``.
         ignored_files (Sequence[str]):
@@ -1049,9 +1049,9 @@ class GitHubEventsConfig(proto.Message):
             for
             https://github.com/googlecloudplatform/cloud-
             builders is "cloud-builders".
-        pull_request (~.cloudbuild.PullRequestFilter):
+        pull_request (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter):
             filter to match changes in pull requests.
-        push (~.cloudbuild.PushFilter):
+        push (google.cloud.devtools.cloudbuild_v1.types.PushFilter):
             filter to match changes in refs like
             branches, tags.
     """
@@ -1079,7 +1079,7 @@ class PullRequestFilter(proto.Message):
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
-        comment_control (~.cloudbuild.PullRequestFilter.CommentControl):
+        comment_control (google.cloud.devtools.cloudbuild_v1.types.PullRequestFilter.CommentControl):
             Configure builds to run whether a repository owner or
             collaborator need to comment ``/gcbrun``.
         invert_regex (bool):
@@ -1133,7 +1133,7 @@ class CreateBuildTriggerRequest(proto.Message):
         project_id (str):
             Required. ID of the project for which to
             configure automatic builds.
-        trigger (~.cloudbuild.BuildTrigger):
+        trigger (google.cloud.devtools.cloudbuild_v1.types.BuildTrigger):
             Required. ``BuildTrigger`` to create.
     """
 
@@ -1184,7 +1184,7 @@ class ListBuildTriggersResponse(proto.Message):
     r"""Response containing existing ``BuildTriggers``.
 
     Attributes:
-        triggers (Sequence[~.cloudbuild.BuildTrigger]):
+        triggers (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuildTrigger]):
             ``BuildTriggers`` for the project, sorted by ``create_time``
             descending.
         next_page_token (str):
@@ -1225,7 +1225,7 @@ class UpdateBuildTriggerRequest(proto.Message):
             trigger.
         trigger_id (str):
             Required. ID of the ``BuildTrigger`` to update.
-        trigger (~.cloudbuild.BuildTrigger):
+        trigger (google.cloud.devtools.cloudbuild_v1.types.BuildTrigger):
             Required. ``BuildTrigger`` to update.
     """
 
@@ -1240,11 +1240,11 @@ class BuildOptions(proto.Message):
     r"""Optional arguments to enable specific features of builds.
 
     Attributes:
-        source_provenance_hash (Sequence[~.cloudbuild.Hash.HashType]):
+        source_provenance_hash (Sequence[google.cloud.devtools.cloudbuild_v1.types.Hash.HashType]):
             Requested hash for SourceProvenance.
-        requested_verify_option (~.cloudbuild.BuildOptions.VerifyOption):
+        requested_verify_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.VerifyOption):
             Requested verifiability options.
-        machine_type (~.cloudbuild.BuildOptions.MachineType):
+        machine_type (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.MachineType):
             Compute Engine machine type on which to run
             the build.
         disk_size_gb (int):
@@ -1256,7 +1256,7 @@ class BuildOptions(proto.Message):
             requested. At present, the maximum disk size is 1000GB;
             builds that request more than the maximum are rejected with
             an error.
-        substitution_option (~.cloudbuild.BuildOptions.SubstitutionOption):
+        substitution_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.SubstitutionOption):
             Option to specify behavior when there is an error in the
             substitution checks.
 
@@ -1269,7 +1269,7 @@ class BuildOptions(proto.Message):
             NOTE: this is always enabled for triggered
             builds and cannot be overridden in the build
             configuration file.
-        log_streaming_option (~.cloudbuild.BuildOptions.LogStreamingOption):
+        log_streaming_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.LogStreamingOption):
             Option to define build log streaming behavior
             to Google Cloud Storage.
         worker_pool (str):
@@ -1277,7 +1277,7 @@ class BuildOptions(proto.Message):
             projects/{project}/locations/{location}/workerPools/{workerPool}
 
             This field is experimental.
-        logging (~.cloudbuild.BuildOptions.LoggingMode):
+        logging (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.LoggingMode):
             Option to specify the logging mode, which
             determines if and where build logs are stored.
         env (Sequence[str]):
@@ -1295,7 +1295,7 @@ class BuildOptions(proto.Message):
             values must be specified in the build's ``Secret``. These
             variables will be available to all build steps in this
             build.
-        volumes (Sequence[~.cloudbuild.Volume]):
+        volumes (Sequence[google.cloud.devtools.cloudbuild_v1.types.Volume]):
             Global list of volumes to mount for ALL build
             steps
             Each volume is created as an empty volume prior
@@ -1398,26 +1398,26 @@ class WorkerPool(proto.Message):
         worker_count (int):
             Total number of workers to be created across
             all requested regions.
-        worker_config (~.cloudbuild.WorkerConfig):
+        worker_config (google.cloud.devtools.cloudbuild_v1.types.WorkerConfig):
             Configuration to be used for a creating workers in the
             ``WorkerPool``.
-        regions (Sequence[~.cloudbuild.WorkerPool.Region]):
+        regions (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool.Region]):
             List of regions to create the ``WorkerPool``. Regions can't
             be empty. If Cloud Build adds a new GCP region in the
             future, the existing ``WorkerPool`` will not be enabled in
             the new region automatically; you must add the new region to
             the ``regions`` field to enable the ``WorkerPool`` in that
             region.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to create the
             ``WorkerPool`` was received.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to update the
             ``WorkerPool`` was received.
-        delete_time (~.timestamp.Timestamp):
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to delete the
             ``WorkerPool`` was received.
-        status (~.cloudbuild.WorkerPool.Status):
+        status (google.cloud.devtools.cloudbuild_v1.types.WorkerPool.Status):
             Output only. WorkerPool Status.
     """
 
@@ -1481,7 +1481,7 @@ class WorkerConfig(proto.Message):
             size specified in the ``build_options`` will be created on
             demand at build time. For more information see
             https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.builds#buildoptions
-        network (~.cloudbuild.Network):
+        network (google.cloud.devtools.cloudbuild_v1.types.Network):
             The network definition used to create the worker. If this
             section is left empty, the workers will be created in
             WorkerPool.project_id on the default network.
@@ -1533,7 +1533,7 @@ class CreateWorkerPoolRequest(proto.Message):
     Attributes:
         parent (str):
             ID of the parent project.
-        worker_pool (~.cloudbuild.WorkerPool):
+        worker_pool (google.cloud.devtools.cloudbuild_v1.types.WorkerPool):
             ``WorkerPool`` resource to create.
     """
 
@@ -1576,7 +1576,7 @@ class UpdateWorkerPoolRequest(proto.Message):
             The field will contain name of the resource
             requested, for example:
             "projects/project-1/workerPools/workerpool-name".
-        worker_pool (~.cloudbuild.WorkerPool):
+        worker_pool (google.cloud.devtools.cloudbuild_v1.types.WorkerPool):
             ``WorkerPool`` resource to update.
     """
 
@@ -1600,7 +1600,7 @@ class ListWorkerPoolsResponse(proto.Message):
     r"""Response containing existing ``WorkerPools``.
 
     Attributes:
-        worker_pools (Sequence[~.cloudbuild.WorkerPool]):
+        worker_pools (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool]):
             ``WorkerPools`` for the project.
     """
 

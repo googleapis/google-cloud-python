@@ -121,6 +121,22 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudBuildClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -132,7 +148,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            CloudBuildClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -264,10 +280,10 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudBuildTransport]): The
+            transport (Union[str, CloudBuildTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -303,21 +319,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -360,7 +372,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -382,14 +394,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         build status (such as ``SUCCESS`` or ``FAILURE``).
 
         Args:
-            request (:class:`~.cloudbuild.CreateBuildRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.CreateBuildRequest):
                 The request object. Request to create a new build.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project.
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            build (:class:`~.cloudbuild.Build`):
+            build (google.cloud.devtools.cloudbuild_v1.types.Build):
                 Required. Build resource to create.
                 This corresponds to the ``build`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -402,33 +414,33 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.cloudbuild.Build``: A build resource in the
-                Cloud Build API.
+                :class:`google.cloud.devtools.cloudbuild_v1.types.Build` A
+                build resource in the Cloud Build API.
 
-                At a high level, a ``Build`` describes where to find
-                source code, how to build it (for example, the builder
-                image to run on the source), and where to store the
-                built artifacts.
+                   At a high level, a Build describes where to find
+                   source code, how to build it (for example, the
+                   builder image to run on the source), and where to
+                   store the built artifacts.
 
-                Fields can include the following variables, which will
-                be expanded when the build is created:
+                   Fields can include the following variables, which
+                   will be expanded when the build is created:
 
-                -  $PROJECT_ID: the project ID of the build.
-                -  $BUILD_ID: the autogenerated ID of the build.
-                -  $REPO_NAME: the source repository name specified by
-                   RepoSource.
-                -  $BRANCH_NAME: the branch name specified by
-                   RepoSource.
-                -  $TAG_NAME: the tag name specified by RepoSource.
-                -  $REVISION_ID or $COMMIT_SHA: the commit SHA specified
-                   by RepoSource or resolved from the specified branch
-                   or tag.
-                -  $SHORT_SHA: first 7 characters of $REVISION_ID or
-                   $COMMIT_SHA.
+                   -  $PROJECT_ID: the project ID of the build.
+                   -  $BUILD_ID: the autogenerated ID of the build.
+                   -  $REPO_NAME: the source repository name specified
+                      by RepoSource.
+                   -  $BRANCH_NAME: the branch name specified by
+                      RepoSource.
+                   -  $TAG_NAME: the tag name specified by RepoSource.
+                   -  $REVISION_ID or $COMMIT_SHA: the commit SHA
+                      specified by RepoSource or resolved from the
+                      specified branch or tag.
+                   -  $SHORT_SHA: first 7 characters of $REVISION_ID or
+                      $COMMIT_SHA.
 
         """
         # Create or coerce a protobuf request object.
@@ -491,14 +503,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         information.
 
         Args:
-            request (:class:`~.cloudbuild.GetBuildRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.GetBuildRequest):
                 The request object. Request to get a build.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project.
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            id (:class:`str`):
+            id (str):
                 Required. ID of the build.
                 This corresponds to the ``id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -511,29 +523,29 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.Build:
+            google.cloud.devtools.cloudbuild_v1.types.Build:
                 A build resource in the Cloud Build API.
 
-                At a high level, a ``Build`` describes where to find
-                source code, how to build it (for example, the builder
-                image to run on the source), and where to store the
-                built artifacts.
+                   At a high level, a Build describes where to find
+                   source code, how to build it (for example, the
+                   builder image to run on the source), and where to
+                   store the built artifacts.
 
-                Fields can include the following variables, which will
-                be expanded when the build is created:
+                   Fields can include the following variables, which
+                   will be expanded when the build is created:
 
-                -  $PROJECT_ID: the project ID of the build.
-                -  $BUILD_ID: the autogenerated ID of the build.
-                -  $REPO_NAME: the source repository name specified by
-                   RepoSource.
-                -  $BRANCH_NAME: the branch name specified by
-                   RepoSource.
-                -  $TAG_NAME: the tag name specified by RepoSource.
-                -  $REVISION_ID or $COMMIT_SHA: the commit SHA specified
-                   by RepoSource or resolved from the specified branch
-                   or tag.
-                -  $SHORT_SHA: first 7 characters of $REVISION_ID or
-                   $COMMIT_SHA.
+                   -  $PROJECT_ID: the project ID of the build.
+                   -  $BUILD_ID: the autogenerated ID of the build.
+                   -  $REPO_NAME: the source repository name specified
+                      by RepoSource.
+                   -  $BRANCH_NAME: the branch name specified by
+                      RepoSource.
+                   -  $TAG_NAME: the tag name specified by RepoSource.
+                   -  $REVISION_ID or $COMMIT_SHA: the commit SHA
+                      specified by RepoSource or resolved from the
+                      specified branch or tag.
+                   -  $SHORT_SHA: first 7 characters of $REVISION_ID or
+                      $COMMIT_SHA.
 
         """
         # Create or coerce a protobuf request object.
@@ -586,16 +598,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         may have finished successfully or unsuccessfully.
 
         Args:
-            request (:class:`~.cloudbuild.ListBuildsRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.ListBuildsRequest):
                 The request object. Request to list builds.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project.
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 The raw filter text to constrain the
                 results.
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -607,7 +620,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBuildsPager:
+            google.cloud.devtools.cloudbuild_v1.services.cloud_build.pagers.ListBuildsPager:
                 Response including listed builds.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -668,14 +681,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Cancels a build in progress.
 
         Args:
-            request (:class:`~.cloudbuild.CancelBuildRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.CancelBuildRequest):
                 The request object. Request to cancel an ongoing build.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project.
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            id (:class:`str`):
+            id (str):
                 Required. ID of the build.
                 This corresponds to the ``id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -688,29 +701,29 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.Build:
+            google.cloud.devtools.cloudbuild_v1.types.Build:
                 A build resource in the Cloud Build API.
 
-                At a high level, a ``Build`` describes where to find
-                source code, how to build it (for example, the builder
-                image to run on the source), and where to store the
-                built artifacts.
+                   At a high level, a Build describes where to find
+                   source code, how to build it (for example, the
+                   builder image to run on the source), and where to
+                   store the built artifacts.
 
-                Fields can include the following variables, which will
-                be expanded when the build is created:
+                   Fields can include the following variables, which
+                   will be expanded when the build is created:
 
-                -  $PROJECT_ID: the project ID of the build.
-                -  $BUILD_ID: the autogenerated ID of the build.
-                -  $REPO_NAME: the source repository name specified by
-                   RepoSource.
-                -  $BRANCH_NAME: the branch name specified by
-                   RepoSource.
-                -  $TAG_NAME: the tag name specified by RepoSource.
-                -  $REVISION_ID or $COMMIT_SHA: the commit SHA specified
-                   by RepoSource or resolved from the specified branch
-                   or tag.
-                -  $SHORT_SHA: first 7 characters of $REVISION_ID or
-                   $COMMIT_SHA.
+                   -  $PROJECT_ID: the project ID of the build.
+                   -  $BUILD_ID: the autogenerated ID of the build.
+                   -  $REPO_NAME: the source repository name specified
+                      by RepoSource.
+                   -  $BRANCH_NAME: the branch name specified by
+                      RepoSource.
+                   -  $TAG_NAME: the tag name specified by RepoSource.
+                   -  $REVISION_ID or $COMMIT_SHA: the commit SHA
+                      specified by RepoSource or resolved from the
+                      specified branch or tag.
+                   -  $SHORT_SHA: first 7 characters of $REVISION_ID or
+                      $COMMIT_SHA.
 
         """
         # Create or coerce a protobuf request object.
@@ -790,16 +803,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
            settings.
 
         Args:
-            request (:class:`~.cloudbuild.RetryBuildRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.RetryBuildRequest):
                 The request object. Specifies a build to retry.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project.
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            id (:class:`str`):
+            id (str):
                 Required. Build ID of the original
                 build.
+
                 This corresponds to the ``id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -811,33 +825,33 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.cloudbuild.Build``: A build resource in the
-                Cloud Build API.
+                :class:`google.cloud.devtools.cloudbuild_v1.types.Build` A
+                build resource in the Cloud Build API.
 
-                At a high level, a ``Build`` describes where to find
-                source code, how to build it (for example, the builder
-                image to run on the source), and where to store the
-                built artifacts.
+                   At a high level, a Build describes where to find
+                   source code, how to build it (for example, the
+                   builder image to run on the source), and where to
+                   store the built artifacts.
 
-                Fields can include the following variables, which will
-                be expanded when the build is created:
+                   Fields can include the following variables, which
+                   will be expanded when the build is created:
 
-                -  $PROJECT_ID: the project ID of the build.
-                -  $BUILD_ID: the autogenerated ID of the build.
-                -  $REPO_NAME: the source repository name specified by
-                   RepoSource.
-                -  $BRANCH_NAME: the branch name specified by
-                   RepoSource.
-                -  $TAG_NAME: the tag name specified by RepoSource.
-                -  $REVISION_ID or $COMMIT_SHA: the commit SHA specified
-                   by RepoSource or resolved from the specified branch
-                   or tag.
-                -  $SHORT_SHA: first 7 characters of $REVISION_ID or
-                   $COMMIT_SHA.
+                   -  $PROJECT_ID: the project ID of the build.
+                   -  $BUILD_ID: the autogenerated ID of the build.
+                   -  $REPO_NAME: the source repository name specified
+                      by RepoSource.
+                   -  $BRANCH_NAME: the branch name specified by
+                      RepoSource.
+                   -  $TAG_NAME: the tag name specified by RepoSource.
+                   -  $REVISION_ID or $COMMIT_SHA: the commit SHA
+                      specified by RepoSource or resolved from the
+                      specified branch or tag.
+                   -  $SHORT_SHA: first 7 characters of $REVISION_ID or
+                      $COMMIT_SHA.
 
         """
         # Create or coerce a protobuf request object.
@@ -898,16 +912,17 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.CreateBuildTriggerRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.CreateBuildTriggerRequest):
                 The request object. Request to create a new
                 `BuildTrigger`.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project for which
                 to configure automatic builds.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            trigger (:class:`~.cloudbuild.BuildTrigger`):
+            trigger (google.cloud.devtools.cloudbuild_v1.types.BuildTrigger):
                 Required. ``BuildTrigger`` to create.
                 This corresponds to the ``trigger`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -920,7 +935,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.BuildTrigger:
+            google.cloud.devtools.cloudbuild_v1.types.BuildTrigger:
                 Configuration for an automated build
                 in response to source repository
                 changes.
@@ -976,18 +991,20 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.GetBuildTriggerRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.GetBuildTriggerRequest):
                 The request object. Returns the `BuildTrigger` with the
                 specified ID.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project that owns
                 the trigger.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            trigger_id (:class:`str`):
+            trigger_id (str):
                 Required. Identifier (``id`` or ``name``) of the
                 ``BuildTrigger`` to get.
+
                 This corresponds to the ``trigger_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -999,7 +1016,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.BuildTrigger:
+            google.cloud.devtools.cloudbuild_v1.types.BuildTrigger:
                 Configuration for an automated build
                 in response to source repository
                 changes.
@@ -1054,12 +1071,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.ListBuildTriggersRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.ListBuildTriggersRequest):
                 The request object. Request to list existing
                 `BuildTriggers`.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project for which
                 to list BuildTriggers.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1071,8 +1089,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBuildTriggersPager:
-                Response containing existing ``BuildTriggers``.
+            google.cloud.devtools.cloudbuild_v1.services.cloud_build.pagers.ListBuildTriggersPager:
+                Response containing existing BuildTriggers.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1132,15 +1150,16 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.DeleteBuildTriggerRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.DeleteBuildTriggerRequest):
                 The request object. Request to delete a `BuildTrigger`.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project that owns
                 the trigger.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            trigger_id (:class:`str`):
+            trigger_id (str):
                 Required. ID of the ``BuildTrigger`` to delete.
                 This corresponds to the ``trigger_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1202,21 +1221,22 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.UpdateBuildTriggerRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.UpdateBuildTriggerRequest):
                 The request object. Request to update an existing
                 `BuildTrigger`.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project that owns
                 the trigger.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            trigger_id (:class:`str`):
+            trigger_id (str):
                 Required. ID of the ``BuildTrigger`` to update.
                 This corresponds to the ``trigger_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            trigger (:class:`~.cloudbuild.BuildTrigger`):
+            trigger (google.cloud.devtools.cloudbuild_v1.types.BuildTrigger):
                 Required. ``BuildTrigger`` to update.
                 This corresponds to the ``trigger`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1229,7 +1249,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.BuildTrigger:
+            google.cloud.devtools.cloudbuild_v1.types.BuildTrigger:
                 Configuration for an automated build
                 in response to source repository
                 changes.
@@ -1286,22 +1306,23 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Runs a ``BuildTrigger`` at a particular source revision.
 
         Args:
-            request (:class:`~.cloudbuild.RunBuildTriggerRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.RunBuildTriggerRequest):
                 The request object. Specifies a build trigger to run and
                 the source to use.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. ID of the project.
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            trigger_id (:class:`str`):
+            trigger_id (str):
                 Required. ID of the trigger.
                 This corresponds to the ``trigger_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            source (:class:`~.cloudbuild.RepoSource`):
+            source (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
                 Required. Source to build against
                 this trigger.
+
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1313,33 +1334,33 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.cloudbuild.Build``: A build resource in the
-                Cloud Build API.
+                :class:`google.cloud.devtools.cloudbuild_v1.types.Build` A
+                build resource in the Cloud Build API.
 
-                At a high level, a ``Build`` describes where to find
-                source code, how to build it (for example, the builder
-                image to run on the source), and where to store the
-                built artifacts.
+                   At a high level, a Build describes where to find
+                   source code, how to build it (for example, the
+                   builder image to run on the source), and where to
+                   store the built artifacts.
 
-                Fields can include the following variables, which will
-                be expanded when the build is created:
+                   Fields can include the following variables, which
+                   will be expanded when the build is created:
 
-                -  $PROJECT_ID: the project ID of the build.
-                -  $BUILD_ID: the autogenerated ID of the build.
-                -  $REPO_NAME: the source repository name specified by
-                   RepoSource.
-                -  $BRANCH_NAME: the branch name specified by
-                   RepoSource.
-                -  $TAG_NAME: the tag name specified by RepoSource.
-                -  $REVISION_ID or $COMMIT_SHA: the commit SHA specified
-                   by RepoSource or resolved from the specified branch
-                   or tag.
-                -  $SHORT_SHA: first 7 characters of $REVISION_ID or
-                   $COMMIT_SHA.
+                   -  $PROJECT_ID: the project ID of the build.
+                   -  $BUILD_ID: the autogenerated ID of the build.
+                   -  $REPO_NAME: the source repository name specified
+                      by RepoSource.
+                   -  $BRANCH_NAME: the branch name specified by
+                      RepoSource.
+                   -  $TAG_NAME: the tag name specified by RepoSource.
+                   -  $REVISION_ID or $COMMIT_SHA: the commit SHA
+                      specified by RepoSource or resolved from the
+                      specified branch or tag.
+                   -  $SHORT_SHA: first 7 characters of $REVISION_ID or
+                      $COMMIT_SHA.
 
         """
         # Create or coerce a protobuf request object.
@@ -1401,7 +1422,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.CreateWorkerPoolRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.CreateWorkerPoolRequest):
                 The request object. Request to create a new
                 `WorkerPool`.
 
@@ -1412,7 +1433,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.WorkerPool:
+            google.cloud.devtools.cloudbuild_v1.types.WorkerPool:
                 Configuration for a WorkerPool to run
                 the builds.
                 Workers are machines that Cloud Build
@@ -1459,7 +1480,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.GetWorkerPoolRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.GetWorkerPoolRequest):
                 The request object. Request to get a `WorkerPool` with
                 the specified name.
 
@@ -1470,7 +1491,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.WorkerPool:
+            google.cloud.devtools.cloudbuild_v1.types.WorkerPool:
                 Configuration for a WorkerPool to run
                 the builds.
                 Workers are machines that Cloud Build
@@ -1517,7 +1538,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.DeleteWorkerPoolRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.DeleteWorkerPoolRequest):
                 The request object. Request to delete a `WorkerPool`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1557,7 +1578,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.UpdateWorkerPoolRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.UpdateWorkerPoolRequest):
                 The request object. Request to update a `WorkerPool`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1567,7 +1588,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.WorkerPool:
+            google.cloud.devtools.cloudbuild_v1.types.WorkerPool:
                 Configuration for a WorkerPool to run
                 the builds.
                 Workers are machines that Cloud Build
@@ -1614,7 +1635,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         This API is experimental.
 
         Args:
-            request (:class:`~.cloudbuild.ListWorkerPoolsRequest`):
+            request (google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsRequest):
                 The request object. Request to list `WorkerPools`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1624,8 +1645,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cloudbuild.ListWorkerPoolsResponse:
-                Response containing existing ``WorkerPools``.
+            google.cloud.devtools.cloudbuild_v1.types.ListWorkerPoolsResponse:
+                Response containing existing WorkerPools.
         """
         # Create or coerce a protobuf request object.
 
