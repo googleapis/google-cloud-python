@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billing.git",
-        "sha": "8dbad869521924fc3f7d7dc2d4f5d7e9100874b3"
+        "sha": "65755f9cb54c745a6f9bdd4e23a339e2168eb383"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
       }
     }
   ],
@@ -48,6 +48,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
