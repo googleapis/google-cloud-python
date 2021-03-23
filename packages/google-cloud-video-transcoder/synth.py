@@ -37,6 +37,7 @@ for version in versions:
         library,
         excludes=[
             "setup.py",
+            "README.rst",
             "docs/index.rst",
             "noxfile.py",
             f"scripts/fixup_transcoder_{version}_keywords.py",

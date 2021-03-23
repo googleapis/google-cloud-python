@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.video.transcoder_v1beta1.types import resources
 from google.cloud.video.transcoder_v1beta1.types import services
@@ -25,7 +34,7 @@ class ListJobsPager:
     """A pager for iterating through ``list_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.services.ListJobsResponse` object, and
+    :class:`google.cloud.video.transcoder_v1beta1.types.ListJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``jobs`` field.
 
@@ -34,7 +43,7 @@ class ListJobsPager:
     through the ``jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.services.ListJobsResponse`
+    All the usual :class:`google.cloud.video.transcoder_v1beta1.types.ListJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListJobsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.services.ListJobsRequest`):
+            request (google.cloud.video.transcoder_v1beta1.types.ListJobsRequest):
                 The initial request object.
-            response (:class:`~.services.ListJobsResponse`):
+            response (google.cloud.video.transcoder_v1beta1.types.ListJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListJobsAsyncPager:
     """A pager for iterating through ``list_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.services.ListJobsResponse` object, and
+    :class:`google.cloud.video.transcoder_v1beta1.types.ListJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``jobs`` field.
 
@@ -96,7 +105,7 @@ class ListJobsAsyncPager:
     through the ``jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.services.ListJobsResponse`
+    All the usual :class:`google.cloud.video.transcoder_v1beta1.types.ListJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListJobsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.services.ListJobsRequest`):
+            request (google.cloud.video.transcoder_v1beta1.types.ListJobsRequest):
                 The initial request object.
-            response (:class:`~.services.ListJobsResponse`):
+            response (google.cloud.video.transcoder_v1beta1.types.ListJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +162,7 @@ class ListJobTemplatesPager:
     """A pager for iterating through ``list_job_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.services.ListJobTemplatesResponse` object, and
+    :class:`google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``job_templates`` field.
 
@@ -162,7 +171,7 @@ class ListJobTemplatesPager:
     through the ``job_templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.services.ListJobTemplatesResponse`
+    All the usual :class:`google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +189,9 @@ class ListJobTemplatesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.services.ListJobTemplatesRequest`):
+            request (google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesRequest):
                 The initial request object.
-            response (:class:`~.services.ListJobTemplatesResponse`):
+            response (google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +224,7 @@ class ListJobTemplatesAsyncPager:
     """A pager for iterating through ``list_job_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.services.ListJobTemplatesResponse` object, and
+    :class:`google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``job_templates`` field.
 
@@ -224,7 +233,7 @@ class ListJobTemplatesAsyncPager:
     through the ``job_templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.services.ListJobTemplatesResponse`
+    All the usual :class:`google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +251,9 @@ class ListJobTemplatesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.services.ListJobTemplatesRequest`):
+            request (google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesRequest):
                 The initial request object.
-            response (:class:`~.services.ListJobTemplatesResponse`):
+            response (google.cloud.video.transcoder_v1beta1.types.ListJobTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

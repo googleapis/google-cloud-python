@@ -45,7 +45,7 @@ class CreateJobRequest(proto.Message):
         parent (str):
             Required. The parent location to create and process this
             job. Format: ``projects/{project}/locations/{location}``
-        job (~.resources.Job):
+        job (google.cloud.video.transcoder_v1beta1.types.Job):
             Required. Parameters for creating transcoding
             job.
     """
@@ -105,7 +105,7 @@ class ListJobsResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobs``.
 
     Attributes:
-        jobs (Sequence[~.resources.Job]):
+        jobs (Sequence[google.cloud.video.transcoder_v1beta1.types.Job]):
             List of jobs in the specified region.
         next_page_token (str):
             The pagination token.
@@ -127,7 +127,7 @@ class CreateJobTemplateRequest(proto.Message):
         parent (str):
             Required. The parent location to create this job template.
             Format: ``projects/{project}/locations/{location}``
-        job_template (~.resources.JobTemplate):
+        job_template (google.cloud.video.transcoder_v1beta1.types.JobTemplate):
             Required. Parameters for creating job
             template.
         job_template_id (str):
@@ -197,7 +197,7 @@ class ListJobTemplatesResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobTemplates``.
 
     Attributes:
-        job_templates (Sequence[~.resources.JobTemplate]):
+        job_templates (Sequence[google.cloud.video.transcoder_v1beta1.types.JobTemplate]):
             List of job templates in the specified
             region.
         next_page_token (str):
