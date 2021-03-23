@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+### [2.13.1](https://www.github.com/googleapis/python-bigquery/compare/v2.13.0...v2.13.1) (2021-03-23)
+
+
+### Bug Fixes
+
+* add ConnectionError to default retry ([#571](https://www.github.com/googleapis/python-bigquery/issues/571)) ([a3edb8b](https://www.github.com/googleapis/python-bigquery/commit/a3edb8b921e029e2c03d33302d408ad5d4e9d4ad))
+
 ## [2.13.0](https://www.github.com/googleapis/python-bigquery/compare/v2.12.0...v2.13.0) (2021-03-22)
 
 
