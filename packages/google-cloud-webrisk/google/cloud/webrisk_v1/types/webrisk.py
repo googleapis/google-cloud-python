@@ -64,7 +64,7 @@ class ComputeThreatListDiffRequest(proto.Message):
     r"""Describes an API diff request.
 
     Attributes:
-        threat_type (~.webrisk.ThreatType):
+        threat_type (google.cloud.webrisk_v1.types.ThreatType):
             Required. The threat list to update. Only a
             single ThreatType should be specified.
         version_token (bytes):
@@ -75,7 +75,7 @@ class ComputeThreatListDiffRequest(proto.Message):
             the first time calling ComputeThreatListDiff),
             this may be left empty and a full database
             snapshot will be returned.
-        constraints (~.webrisk.ComputeThreatListDiffRequest.Constraints):
+        constraints (google.cloud.webrisk_v1.types.ComputeThreatListDiffRequest.Constraints):
             Required. The constraints associated with
             this request.
     """
@@ -94,7 +94,7 @@ class ComputeThreatListDiffRequest(proto.Message):
                 willing to have in the local database. This should be a
                 power of 2 between 2\ **10 and 2**\ 20. If zero, no database
                 size limit is set.
-            supported_compressions (Sequence[~.webrisk.CompressionType]):
+            supported_compressions (Sequence[google.cloud.webrisk_v1.types.CompressionType]):
                 The compression types supported by the
                 client.
         """
@@ -118,14 +118,14 @@ class ComputeThreatListDiffResponse(proto.Message):
     r"""
 
     Attributes:
-        response_type (~.webrisk.ComputeThreatListDiffResponse.ResponseType):
+        response_type (google.cloud.webrisk_v1.types.ComputeThreatListDiffResponse.ResponseType):
             The type of response. This may indicate that
             an action must be taken by the client when the
             response is received.
-        additions (~.webrisk.ThreatEntryAdditions):
+        additions (google.cloud.webrisk_v1.types.ThreatEntryAdditions):
             A set of entries to add to a local threat
             type's list.
-        removals (~.webrisk.ThreatEntryRemovals):
+        removals (google.cloud.webrisk_v1.types.ThreatEntryRemovals):
             A set of entries to remove from a local
             threat type's list. This field may be empty.
         new_version_token (bytes):
@@ -133,14 +133,14 @@ class ComputeThreatListDiffResponse(proto.Message):
             by the client and passed into the next call of
             ComputeThreatListDiff as 'version_token'. A separate version
             token should be stored and used for each threatList.
-        checksum (~.webrisk.ComputeThreatListDiffResponse.Checksum):
+        checksum (google.cloud.webrisk_v1.types.ComputeThreatListDiffResponse.Checksum):
             The expected SHA256 hash of the client state;
             that is, of the sorted list of all hashes
             present in the database after applying the
             provided diff. If the client state doesn't match
             the expected state, the client must discard this
             diff and retry later.
-        recommended_next_diff (~.timestamp.Timestamp):
+        recommended_next_diff (google.protobuf.timestamp_pb2.Timestamp):
             The soonest the client should wait before
             issuing any diff request. Querying sooner is
             unlikely to produce a meaningful diff. Waiting
@@ -188,7 +188,7 @@ class SearchUrisRequest(proto.Message):
     Attributes:
         uri (str):
             Required. The URI to be checked for matches.
-        threat_types (Sequence[~.webrisk.ThreatType]):
+        threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
             Required. The ThreatLists to search in.
             Multiple ThreatLists may be specified.
     """
@@ -202,7 +202,7 @@ class SearchUrisResponse(proto.Message):
     r"""
 
     Attributes:
-        threat (~.webrisk.SearchUrisResponse.ThreatUri):
+        threat (google.cloud.webrisk_v1.types.SearchUrisResponse.ThreatUri):
             The threat list matches. This may be empty if
             the URI is on no list.
     """
@@ -211,9 +211,9 @@ class SearchUrisResponse(proto.Message):
         r"""Contains threat information on a matching uri.
 
         Attributes:
-            threat_types (Sequence[~.webrisk.ThreatType]):
+            threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
                 The ThreatList this threat belongs to.
-            expire_time (~.timestamp.Timestamp):
+            expire_time (google.protobuf.timestamp_pb2.Timestamp):
                 The cache lifetime for the returned match.
                 Clients must not cache this response past this
                 timestamp to avoid false positives.
@@ -235,7 +235,7 @@ class SearchHashesRequest(proto.Message):
             A hash prefix, consisting of the most
             significant 4-32 bytes of a SHA256 hash. For
             JSON requests, this field is base64-encoded.
-        threat_types (Sequence[~.webrisk.ThreatType]):
+        threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
             Required. The ThreatLists to search in.
             Multiple ThreatLists may be specified.
     """
@@ -249,10 +249,10 @@ class SearchHashesResponse(proto.Message):
     r"""
 
     Attributes:
-        threats (Sequence[~.webrisk.SearchHashesResponse.ThreatHash]):
+        threats (Sequence[google.cloud.webrisk_v1.types.SearchHashesResponse.ThreatHash]):
             The full hashes that matched the requested
             prefixes. The hash will be populated in the key.
-        negative_expire_time (~.timestamp.Timestamp):
+        negative_expire_time (google.protobuf.timestamp_pb2.Timestamp):
             For requested entities that did not match the
             threat list, how long to cache the response
             until.
@@ -262,14 +262,14 @@ class SearchHashesResponse(proto.Message):
         r"""Contains threat information on a matching hash.
 
         Attributes:
-            threat_types (Sequence[~.webrisk.ThreatType]):
+            threat_types (Sequence[google.cloud.webrisk_v1.types.ThreatType]):
                 The ThreatList this threat belongs to.
                 This must contain at least one entry.
             hash_ (bytes):
                 A 32 byte SHA256 hash. This field is in
                 binary format. For JSON requests, hashes are
                 base64-encoded.
-            expire_time (~.timestamp.Timestamp):
+            expire_time (google.protobuf.timestamp_pb2.Timestamp):
                 The cache lifetime for the returned match.
                 Clients must not cache this response past this
                 timestamp to avoid false positives.
@@ -294,11 +294,11 @@ class ThreatEntryAdditions(proto.Message):
     response.
 
     Attributes:
-        raw_hashes (Sequence[~.webrisk.RawHashes]):
+        raw_hashes (Sequence[google.cloud.webrisk_v1.types.RawHashes]):
             The raw SHA256-formatted entries.
             Repeated to allow returning sets of hashes with
             different prefix sizes.
-        rice_hashes (~.webrisk.RiceDeltaEncoding):
+        rice_hashes (google.cloud.webrisk_v1.types.RiceDeltaEncoding):
             The encoded 4-byte prefixes of SHA256-formatted entries,
             using a Golomb-Rice encoding. The hashes are converted to
             uint32, sorted in ascending order, then delta encoded and
@@ -314,9 +314,9 @@ class ThreatEntryRemovals(proto.Message):
     r"""Contains the set of entries to remove from a local database.
 
     Attributes:
-        raw_indices (~.webrisk.RawIndices):
+        raw_indices (google.cloud.webrisk_v1.types.RawIndices):
             The raw removal indices for a local list.
-        rice_indices (~.webrisk.RiceDeltaEncoding):
+        rice_indices (google.cloud.webrisk_v1.types.RiceDeltaEncoding):
             The encoded local, lexicographically-sorted list indices,
             using a Golomb-Rice encoding. Used for sending compressed
             removal indices. The removal indices (uint32) are sorted in
@@ -422,7 +422,7 @@ class CreateSubmissionRequest(proto.Message):
             Required. The name of the project that is making the
             submission. This string is in the format
             "projects/{project_number}".
-        submission (~.webrisk.Submission):
+        submission (google.cloud.webrisk_v1.types.Submission):
             Required. The submission that contains the
             content of the phishing report.
     """

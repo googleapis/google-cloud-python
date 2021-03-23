@@ -115,6 +115,22 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            WebRiskServiceV1Beta1Client: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -126,7 +142,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            WebRiskServiceV1Beta1Client: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -218,10 +234,10 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.WebRiskServiceV1Beta1Transport]): The
+            transport (Union[str, WebRiskServiceV1Beta1Transport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -257,21 +273,17 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -314,7 +326,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -333,24 +345,26 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         r"""Gets the most recent threat list diffs.
 
         Args:
-            request (:class:`~.webrisk.ComputeThreatListDiffRequest`):
+            request (google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest):
                 The request object. Describes an API diff request.
-            threat_type (:class:`~.webrisk.ThreatType`):
+            threat_type (google.cloud.webrisk_v1beta1.types.ThreatType):
                 The ThreatList to update.
                 This corresponds to the ``threat_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            version_token (:class:`bytes`):
+            version_token (bytes):
                 The current version token of the
                 client for the requested list (the
                 client version that was received from
                 the last successful diff).
+
                 This corresponds to the ``version_token`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            constraints (:class:`~.webrisk.ComputeThreatListDiffRequest.Constraints`):
+            constraints (google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest.Constraints):
                 Required. The constraints associated
                 with this request.
+
                 This corresponds to the ``constraints`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -362,7 +376,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.webrisk.ComputeThreatListDiffResponse:
+            google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -416,18 +430,20 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         given threatList.
 
         Args:
-            request (:class:`~.webrisk.SearchUrisRequest`):
+            request (google.cloud.webrisk_v1beta1.types.SearchUrisRequest):
                 The request object. Request to check URI entries against
                 threatLists.
-            uri (:class:`str`):
+            uri (str):
                 Required. The URI to be checked for
                 matches.
+
                 This corresponds to the ``uri`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            threat_types (:class:`Sequence[~.webrisk.ThreatType]`):
+            threat_types (Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]):
                 Required. The ThreatLists to search
                 in.
+
                 This corresponds to the ``threat_types`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -439,7 +455,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.webrisk.SearchUrisResponse:
+            google.cloud.webrisk_v1beta1.types.SearchUrisResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -464,9 +480,8 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
 
             if uri is not None:
                 request.uri = uri
-
-            if threat_types:
-                request.threat_types.extend(threat_types)
+            if threat_types is not None:
+                request.threat_types = threat_types
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -496,20 +511,22 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         match of a threat.
 
         Args:
-            request (:class:`~.webrisk.SearchHashesRequest`):
+            request (google.cloud.webrisk_v1beta1.types.SearchHashesRequest):
                 The request object. Request to return full hashes
                 matched by the provided hash prefixes.
-            hash_prefix (:class:`bytes`):
+            hash_prefix (bytes):
                 A hash prefix, consisting of the most
                 significant 4-32 bytes of a SHA256 hash.
                 For JSON requests, this field is
                 base64-encoded.
+
                 This corresponds to the ``hash_prefix`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            threat_types (:class:`Sequence[~.webrisk.ThreatType]`):
+            threat_types (Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]):
                 Required. The ThreatLists to search
                 in.
+
                 This corresponds to the ``threat_types`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -521,7 +538,7 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.webrisk.SearchHashesResponse:
+            google.cloud.webrisk_v1beta1.types.SearchHashesResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -546,9 +563,8 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
 
             if hash_prefix is not None:
                 request.hash_prefix = hash_prefix
-
-            if threat_types:
-                request.threat_types.extend(threat_types)
+            if threat_types is not None:
+                request.threat_types = threat_types
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
