@@ -86,6 +86,7 @@ class SpeechTranslationServiceAsyncClient:
         SpeechTranslationServiceClient.parse_common_location_path
     )
 
+    from_service_account_info = SpeechTranslationServiceClient.from_service_account_info
     from_service_account_file = SpeechTranslationServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
@@ -166,7 +167,7 @@ class SpeechTranslationServiceAsyncClient:
         available via the gRPC API (not REST).
 
         Args:
-            requests (AsyncIterator[`~.media_translation.StreamingTranslateSpeechRequest`]):
+            requests (AsyncIterator[`google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechRequest`]):
                 The request object AsyncIterator. The top-level message sent by the
                 client for the `StreamingTranslateSpeech` method.
                 Multiple `StreamingTranslateSpeechRequest` messages are
@@ -182,7 +183,7 @@ class SpeechTranslationServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.media_translation.StreamingTranslateSpeechResponse]:
+            AsyncIterable[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse]:
                 A streaming speech translation
                 response corresponding to a portion of
                 the audio currently processed.

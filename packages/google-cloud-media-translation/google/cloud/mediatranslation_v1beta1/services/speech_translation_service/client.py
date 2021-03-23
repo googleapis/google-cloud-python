@@ -123,6 +123,22 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            SpeechTranslationServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -134,7 +150,7 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            SpeechTranslationServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -226,10 +242,10 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SpeechTranslationServiceTransport]): The
+            transport (Union[str, SpeechTranslationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -340,7 +356,7 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
         available via the gRPC API (not REST).
 
         Args:
-            requests (Iterator[`~.media_translation.StreamingTranslateSpeechRequest`]):
+            requests (Iterator[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechRequest]):
                 The request object iterator. The top-level message sent by the
                 client for the `StreamingTranslateSpeech` method.
                 Multiple `StreamingTranslateSpeechRequest` messages are
@@ -356,7 +372,7 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
                 sent along with the request as metadata.
 
         Returns:
-            Iterable[~.media_translation.StreamingTranslateSpeechResponse]:
+            Iterable[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse]:
                 A streaming speech translation
                 response corresponding to a portion of
                 the audio currently processed.

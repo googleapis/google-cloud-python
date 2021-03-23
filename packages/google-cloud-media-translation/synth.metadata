@@ -3,22 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-media-translation",
-        "sha": "55eb3dc6052f53a4d192cc4b6fd41bc415c9d304"
+        "remote": "https://github.com/googleapis/python-media-translation.git",
+        "sha": "cb77463b297c2fcf194b714281ed82450b1594d3"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "b241bbc1ad920771707fe03e4cedd4e8c492e143",
+        "internalRef": "350670798"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6b026e1443948dcfc0b9e3289c85e940eb70f694"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6b026e1443948dcfc0b9e3289c85e940eb70f694"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     }
   ],
@@ -32,5 +40,93 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/mediatranslation_v1beta1/services.rst",
+    "docs/mediatranslation_v1beta1/speech_translation_service.rst",
+    "docs/mediatranslation_v1beta1/types.rst",
+    "docs/multiprocessing.rst",
+    "google/cloud/mediatranslation/__init__.py",
+    "google/cloud/mediatranslation/py.typed",
+    "google/cloud/mediatranslation_v1beta1/__init__.py",
+    "google/cloud/mediatranslation_v1beta1/py.typed",
+    "google/cloud/mediatranslation_v1beta1/services/__init__.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/__init__.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/async_client.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/client.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/transports/__init__.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/transports/base.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/transports/grpc.py",
+    "google/cloud/mediatranslation_v1beta1/services/speech_translation_service/transports/grpc_asyncio.py",
+    "google/cloud/mediatranslation_v1beta1/types/__init__.py",
+    "google/cloud/mediatranslation_v1beta1/types/media_translation.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_mediatranslation_v1beta1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/mediatranslation_v1beta1/__init__.py",
+    "tests/unit/gapic/mediatranslation_v1beta1/test_speech_translation_service.py"
   ]
 }

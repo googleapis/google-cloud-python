@@ -87,7 +87,7 @@ class StreamingTranslateSpeechConfig(proto.Message):
     r"""Config used for streaming translation.
 
     Attributes:
-        audio_config (~.media_translation.TranslateSpeechConfig):
+        audio_config (google.cloud.mediatranslation_v1beta1.types.TranslateSpeechConfig):
             Required. The common config for all the
             following audio contents.
         single_utterance (bool):
@@ -129,7 +129,7 @@ class StreamingTranslateSpeechRequest(proto.Message):
     message.
 
     Attributes:
-        streaming_config (~.media_translation.StreamingTranslateSpeechConfig):
+        streaming_config (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechConfig):
             Provides information to the recognizer that specifies how to
             process the request. The first
             ``StreamingTranslateSpeechRequest`` message must contain a
@@ -162,7 +162,7 @@ class StreamingTranslateSpeechResult(proto.Message):
     portion of the audio that is currently being processed.
 
     Attributes:
-        text_translation_result (~.media_translation.StreamingTranslateSpeechResult.TextTranslationResult):
+        text_translation_result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult.TextTranslationResult):
             Text translation result.
         recognition_result (str):
             Output only. The debug only recognition
@@ -213,14 +213,14 @@ class StreamingTranslateSpeechResponse(proto.Message):
     portion of the audio currently processed.
 
     Attributes:
-        error (~.status.Status):
+        error (google.rpc.status_pb2.Status):
             Output only. If set, returns a
             [google.rpc.Status][google.rpc.Status] message that
             specifies the error for the operation.
-        result (~.media_translation.StreamingTranslateSpeechResult):
+        result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult):
             Output only. The translation result that is currently being
             processed (is_final could be true or false).
-        speech_event_type (~.media_translation.StreamingTranslateSpeechResponse.SpeechEventType):
+        speech_event_type (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse.SpeechEventType):
             Output only. Indicates the type of speech
             event.
     """
