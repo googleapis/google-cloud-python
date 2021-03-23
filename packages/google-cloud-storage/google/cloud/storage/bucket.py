@@ -611,6 +611,10 @@ class Bucket(_PropertyMixin):
 
         If unset, API requests are billed to the bucket owner.
 
+        A user project is required for all operations on Requester Pays buckets.
+
+        See https://cloud.google.com/storage/docs/requester-pays#requirements for details.
+
         :rtype: str
         """
         return self._user_project
@@ -809,6 +813,9 @@ class Bucket(_PropertyMixin):
     ):
         """DEPRECATED. Creates current bucket.
 
+        .. note::
+          Direct use of this method is deprecated. Use ``Client.create_bucket()`` instead.
+
         If the bucket already exists, will raise
         :class:`google.cloud.exceptions.Conflict`.
 
@@ -825,7 +832,6 @@ class Bucket(_PropertyMixin):
         :param project: (Optional) The project under which the bucket is to
                         be created. If not passed, uses the project set on
                         the client.
-        :raises ValueError: if :attr:`user_project` is set.
         :raises ValueError: if ``project`` is None and client's
                             :attr:`project` is also None.
 
@@ -871,13 +877,12 @@ class Bucket(_PropertyMixin):
             PendingDeprecationWarning,
             stacklevel=1,
         )
-        if self.user_project is not None:
-            raise ValueError("Cannot create bucket with 'user_project' set.")
 
         client = self._require_client(client)
         client.create_bucket(
             bucket_or_name=self,
             project=project,
+            user_project=self.user_project,
             location=location,
             predefined_acl=predefined_acl,
             predefined_default_object_acl=predefined_default_object_acl,
@@ -1328,7 +1333,7 @@ class Bucket(_PropertyMixin):
             >>> from google.cloud import storage
             >>> client = storage.Client()
 
-            >>> bucket = storage.Bucket("my-bucket-name", user_project='my-project')
+            >>> bucket = storage.Bucket(client, "my-bucket-name", user_project="my-project")
             >>> all_blobs = list(client.list_blobs(bucket))
         """
         client = self._require_client(client)

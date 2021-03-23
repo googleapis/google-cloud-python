@@ -2330,7 +2330,8 @@ class Test_Bucket(unittest.TestCase):
             stacklevel=1,
         )
 
-    def test_create_w_user_project(self):
+    @mock.patch("warnings.warn")
+    def test_create_w_user_project(self, mock_warn):
         PROJECT = "PROJECT"
         BUCKET_NAME = "bucket-name"
         DATA = {"name": BUCKET_NAME}
@@ -2340,8 +2341,24 @@ class Test_Bucket(unittest.TestCase):
 
         bucket = self._make_one(client=client, name=BUCKET_NAME)
         bucket._user_project = "USER_PROJECT"
-        with self.assertRaises(ValueError):
-            bucket.create()
+        bucket.create()
+
+        connection.api_request.assert_called_once_with(
+            method="POST",
+            path="/b",
+            query_params={"project": PROJECT, "userProject": "USER_PROJECT"},
+            data=DATA,
+            _target_object=bucket,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+        mock_warn.assert_called_with(
+            "Bucket.create() is deprecated and will be removed in future."
+            "Use Client.create_bucket() instead.",
+            PendingDeprecationWarning,
+            stacklevel=1,
+        )
 
     def test_versioning_enabled_setter(self):
         NAME = "name"

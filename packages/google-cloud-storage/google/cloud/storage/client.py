@@ -839,7 +839,7 @@ class Client(ClientWithProject):
             >>> from google.cloud import storage
             >>> client = storage.Client()
 
-            >>> bucket = storage.Bucket("my-bucket-name", user_project='my-project')
+            >>> bucket = storage.Bucket(client, "my-bucket-name", user_project="my-project")
             >>> all_blobs = list(client.list_blobs(bucket))
         """
         bucket = self._bucket_arg_to_bucket(bucket_or_name)
