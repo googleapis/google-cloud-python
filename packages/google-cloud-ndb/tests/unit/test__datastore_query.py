@@ -590,10 +590,28 @@ class Test_QueryIteratorImpl:
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
     def test__next_batch(_datastore_run_query):
+        entity1 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+            )
+        )
+        entity2 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=43)],
+            )
+        )
+        entity3 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=44)],
+            )
+        )
         entity_results = [
-            mock.Mock(entity="entity1", cursor=b"a"),
-            mock.Mock(entity="entity2", cursor=b"b"),
-            mock.Mock(entity="entity3", cursor=b"c"),
+            mock.Mock(entity=entity1, cursor=b"a"),
+            mock.Mock(entity=entity2, cursor=b"b"),
+            mock.Mock(entity=entity3, cursor=b"c"),
         ]
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
@@ -611,24 +629,91 @@ class Test_QueryIteratorImpl:
         assert iterator._next_batch().result() is None
         assert iterator._index == 0
         assert len(iterator._batch) == 3
-        assert iterator._batch[0].result_pb.entity == "entity1"
+        assert iterator._batch[0].result_pb.entity == entity1
         assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
         assert iterator._batch[0].order_by is None
+        assert not iterator._has_next_batch
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
+    def test__next_batch_cached_delete(_datastore_run_query, in_context):
+        entity1 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+            )
+        )
+        entity2 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=43)],
+            )
+        )
+        entity3 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=44)],
+            )
+        )
+        entity_results = [
+            mock.Mock(entity=entity1, cursor=b"a"),
+            mock.Mock(entity=entity2, cursor=b"b"),
+            mock.Mock(entity=entity3, cursor=b"c"),
+        ]
+        in_context.cache[key_module.Key("ThisKind", 43)] = None
+        _datastore_run_query.return_value = utils.future_result(
+            mock.Mock(
+                batch=mock.Mock(
+                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_results=entity_results,
+                    end_cursor=b"abc",
+                    more_results=query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+                )
+            )
+        )
+
+        query = query_module.QueryOptions()
+        iterator = _datastore_query._QueryIteratorImpl(query)
+        assert iterator._next_batch().result() is None
+        assert iterator._index == 0
+        assert len(iterator._batch) == 2
+        assert iterator._batch[0].result_pb.entity == entity1
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].order_by is None
+        assert iterator._batch[1].result_pb.entity == entity3
         assert not iterator._has_next_batch
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb._datastore_query._datastore_run_query")
     def test__next_batch_has_more(_datastore_run_query):
+        entity1 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+            )
+        )
+        entity2 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=43)],
+            )
+        )
+        entity3 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=44)],
+            )
+        )
         entity_results = [
-            mock.Mock(entity="entity1", cursor=b"a"),
-            mock.Mock(entity="entity2", cursor=b"b"),
-            mock.Mock(entity="entity3", cursor=b"c"),
+            mock.Mock(entity=entity1, cursor=b"a"),
+            mock.Mock(entity=entity2, cursor=b"b"),
+            mock.Mock(entity=entity3, cursor=b"c"),
         ]
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
                 batch=mock.Mock(
-                    entity_result_type=query_pb2.EntityResult.FULL,
+                    entity_result_type=query_pb2.EntityResult.PROJECTION,
                     entity_results=entity_results,
                     end_cursor=b"abc",
                     more_results=query_pb2.QueryResultBatch.NOT_FINISHED,
@@ -641,8 +726,8 @@ class Test_QueryIteratorImpl:
         assert iterator._next_batch().result() is None
         assert iterator._index == 0
         assert len(iterator._batch) == 3
-        assert iterator._batch[0].result_pb.entity == "entity1"
-        assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
+        assert iterator._batch[0].result_pb.entity == entity1
+        assert iterator._batch[0].result_type == query_pb2.EntityResult.PROJECTION
         assert iterator._batch[0].order_by is None
         assert iterator._has_next_batch
         assert iterator._query.start_cursor.cursor == b"abc"
@@ -655,10 +740,28 @@ class Test_QueryIteratorImpl:
 
         https://github.com/googleapis/python-ndb/issues/236
         """
+        entity1 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
+            )
+        )
+        entity2 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=43)],
+            )
+        )
+        entity3 = mock.Mock(
+            key=entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[entity_pb2.Key.PathElement(kind="ThisKind", id=44)],
+            )
+        )
         entity_results = [
-            mock.Mock(entity="entity1", cursor=b"a"),
-            mock.Mock(entity="entity2", cursor=b"b"),
-            mock.Mock(entity="entity3", cursor=b"c"),
+            mock.Mock(entity=entity1, cursor=b"a"),
+            mock.Mock(entity=entity2, cursor=b"b"),
+            mock.Mock(entity=entity3, cursor=b"c"),
         ]
         _datastore_run_query.return_value = utils.future_result(
             mock.Mock(
@@ -677,7 +780,7 @@ class Test_QueryIteratorImpl:
         assert iterator._next_batch().result() is None
         assert iterator._index == 0
         assert len(iterator._batch) == 3
-        assert iterator._batch[0].result_pb.entity == "entity1"
+        assert iterator._batch[0].result_pb.entity == entity1
         assert iterator._batch[0].result_type == query_pb2.EntityResult.FULL
         assert iterator._batch[0].order_by is None
         assert iterator._has_next_batch
@@ -1466,15 +1569,16 @@ class Test_Result:
             partition_id=entity_pb2.PartitionId(project_id="testing"),
             path=[entity_pb2.Key.PathElement(kind="ThisKind", id=42)],
         )
-        entity = mock.Mock(key=key_pb)
+        entity_pb = mock.Mock(key=key_pb)
+        entity = mock.Mock(key=key_module.Key("ThisKind", 42))
         model._entity_from_protobuf.return_value = entity
         result = _datastore_query._Result(
             _datastore_query.RESULT_TYPE_FULL,
-            mock.Mock(entity=entity, cursor=b"123", spec=("entity", "cursor")),
+            mock.Mock(entity=entity_pb, cursor=b"123", spec=("entity", "cursor")),
         )
 
         assert result.entity() is entity
-        model._entity_from_protobuf.assert_called_once_with(entity)
+        model._entity_from_protobuf.assert_called_once_with(entity_pb)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")

@@ -379,6 +379,18 @@ class _QueryIteratorImpl(QueryIterator):
             for result_pb in response.batch.entity_results
         ]
 
+        if result_type == RESULT_TYPE_FULL:
+            # If we cached a delete, remove it from the result set. This may come cause
+            # some queries to return less than their limit even if there are more
+            # results. As far as I can tell, that was also a possibility with the legacy
+            # version.
+            context = context_module.get_context()
+            self._batch = [
+                result
+                for result in self._batch
+                if result.check_cache(context) is not None
+            ]
+
         self._has_next_batch = more_results = batch.more_results == NOT_FINISHED
 
         self._more_results_after_limit = batch.more_results == MORE_RESULTS_AFTER_LIMIT
@@ -745,6 +757,8 @@ class _Result(object):
             order.
     """
 
+    _key = None
+
     def __init__(self, result_type, result_pb, order_by=None):
         self.result_type = result_type
         self.result_pb = result_pb
@@ -802,8 +816,38 @@ class _Result(object):
 
         return 0
 
+    def key(self):
+        """Construct the key for this result.
+
+        Returns:
+            key.Key: The key.
+        """
+        if self._key is None:
+            key_pb = self.result_pb.entity.key
+            ds_key = helpers.key_from_protobuf(key_pb)
+            self._key = key_module.Key._from_ds_key(ds_key)
+
+        return self._key
+
+    def check_cache(self, context):
+        """Check local context cache for entity.
+
+        Returns:
+            Any: The NDB entity for this result, if it is cached, otherwise
+                `_KEY_NOT_IN_CACHE`. May also return `None` if entity was deleted which
+                will cause `None` to be recorded in the cache.
+        """
+        key = self.key()
+        if context._use_cache(key):
+            try:
+                return context.cache.get_and_validate(key)
+            except KeyError:
+                pass
+
+        return _KEY_NOT_IN_CACHE
+
     def entity(self):
-        """Get an entity for an entity result. Use the cache if available.
+        """Get an entity for an entity result. Use or update the cache if available.
 
         Args:
             projection (Optional[Sequence[str]]): Sequence of property names to
@@ -816,19 +860,12 @@ class _Result(object):
         if self.result_type == RESULT_TYPE_FULL:
             # First check the cache.
             context = context_module.get_context()
-            key_pb = self.result_pb.entity.key
-            ds_key = helpers.key_from_protobuf(key_pb)
-            key = key_module.Key._from_ds_key(ds_key)
-            entity = _KEY_NOT_IN_CACHE
-            use_cache = context._use_cache(key)
-            if use_cache:
-                try:
-                    entity = context.cache.get_and_validate(key)
-                except KeyError:
-                    pass
-            if entity is None or entity is _KEY_NOT_IN_CACHE:
-                # entity not in cache, create one.
+            entity = self.check_cache(context)
+            if entity is _KEY_NOT_IN_CACHE:
+                # entity not in cache, create one, and then add it to cache
                 entity = model._entity_from_protobuf(self.result_pb.entity)
+                if context._use_cache(entity.key):
+                    context.cache[entity.key] = entity
             return entity
 
         elif self.result_type == RESULT_TYPE_PROJECTION:
@@ -838,10 +875,7 @@ class _Result(object):
             return entity
 
         elif self.result_type == RESULT_TYPE_KEY_ONLY:
-            key_pb = self.result_pb.entity.key
-            ds_key = helpers.key_from_protobuf(key_pb)
-            key = key_module.Key._from_ds_key(ds_key)
-            return key
+            return self.key()
 
         raise NotImplementedError("Got unexpected entity result type for query.")
 

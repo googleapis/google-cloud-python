@@ -1859,7 +1859,7 @@ def test_high_offset(dispose_of):
     assert result.foo == index
 
 
-def test_uncomitted_deletes(dispose_of, client_context):
+def test_uncommitted_deletes(dispose_of, client_context):
     """Regression test for Issue #586
 
     https://github.com/googleapis/python-ndb/issues/586
@@ -1878,7 +1878,24 @@ def test_uncomitted_deletes(dispose_of, client_context):
     @ndb.transactional()
     def do_the_thing(key):
         key.delete()  # Will be cached but not committed when query runs
-        return SomeKind.query(SomeKind.foo == 42, ancestor=parent_key).get()
+        return SomeKind.query(SomeKind.foo == 42, ancestor=parent_key).fetch()
 
     with client_context.new(cache_policy=None).use():  # Use default cache policy
-        assert do_the_thing(key).foo == 42
+        assert len(do_the_thing(key)) == 0
+
+
+def test_query_updates_cache(dispose_of, client_context):
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    entity = SomeKind(foo=42)
+    key = entity.put()
+    dispose_of(key._key)
+    eventually(SomeKind.query().fetch, length_equals(1))
+
+    with client_context.new(cache_policy=None).use():  # Use default cache policy
+        retrieved = SomeKind.query().get()
+        assert retrieved.foo == 42
+
+        # If there is a cache hit, we'll get back the same object, not just a copy
+        assert key.get() is retrieved
