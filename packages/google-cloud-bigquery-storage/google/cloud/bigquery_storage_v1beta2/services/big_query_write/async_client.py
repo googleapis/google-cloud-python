@@ -267,6 +267,7 @@ class BigQueryWriteAsyncClient:
                     exceptions.ResourceExhausted,
                     exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -339,6 +340,7 @@ class BigQueryWriteAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.ResourceExhausted, exceptions.ServiceUnavailable,
                 ),
+                deadline=86400.0,
             ),
             default_timeout=86400.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -419,6 +421,7 @@ class BigQueryWriteAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -499,6 +502,7 @@ class BigQueryWriteAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -583,6 +587,7 @@ class BigQueryWriteAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -666,6 +671,7 @@ class BigQueryWriteAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
