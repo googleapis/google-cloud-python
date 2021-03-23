@@ -82,15 +82,17 @@ def test__get_default_mtls_endpoint():
     assert OrgPolicyClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_org_policy_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [OrgPolicyClient, OrgPolicyAsyncClient,])
+def test_org_policy_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = OrgPolicyClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "orgpolicy.googleapis.com:443"
 
@@ -104,9 +106,11 @@ def test_org_policy_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "orgpolicy.googleapis.com:443"
 
@@ -463,6 +467,22 @@ def test_list_constraints_from_dict():
     test_list_constraints(request_type=dict)
 
 
+def test_list_constraints_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_constraints), "__call__") as call:
+        client.list_constraints()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.ListConstraintsRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_constraints_async(
     transport: str = "grpc_asyncio", request_type=orgpolicy.ListConstraintsRequest
@@ -794,6 +814,22 @@ def test_list_policies_from_dict():
     test_list_policies(request_type=dict)
 
 
+def test_list_policies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_policies), "__call__") as call:
+        client.list_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.ListPoliciesRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_policies_async(
     transport: str = "grpc_asyncio", request_type=orgpolicy.ListPoliciesRequest
@@ -1105,6 +1141,22 @@ def test_get_policy_from_dict():
     test_get_policy(request_type=dict)
 
 
+def test_get_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_policy), "__call__") as call:
+        client.get_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.GetPolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_policy_async(
     transport: str = "grpc_asyncio", request_type=orgpolicy.GetPolicyRequest
@@ -1292,6 +1344,24 @@ def test_get_effective_policy(
 
 def test_get_effective_policy_from_dict():
     test_get_effective_policy(request_type=dict)
+
+
+def test_get_effective_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_effective_policy), "__call__"
+    ) as call:
+        client.get_effective_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.GetEffectivePolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -1489,6 +1559,22 @@ def test_create_policy(
 
 def test_create_policy_from_dict():
     test_create_policy(request_type=dict)
+
+
+def test_create_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_policy), "__call__") as call:
+        client.create_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.CreatePolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -1690,6 +1776,22 @@ def test_update_policy_from_dict():
     test_update_policy(request_type=dict)
 
 
+def test_update_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_policy), "__call__") as call:
+        client.update_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.UpdatePolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_policy_async(
     transport: str = "grpc_asyncio", request_type=orgpolicy.UpdatePolicyRequest
@@ -1874,6 +1976,22 @@ def test_delete_policy(
 
 def test_delete_policy_from_dict():
     test_delete_policy(request_type=dict)
+
+
+def test_delete_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = OrgPolicyClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_policy), "__call__") as call:
+        client.delete_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == orgpolicy.DeletePolicyRequest()
 
 
 @pytest.mark.asyncio
