@@ -97,6 +97,7 @@
     "docs/functions_v1/services.rst",
     "docs/functions_v1/types.rst",
     "docs/multiprocessing.rst",
+    "functions-v1-py.tar.gz",
     "google/cloud/functions/__init__.py",
     "google/cloud/functions/py.typed",
     "google/cloud/functions_v1/__init__.py",
