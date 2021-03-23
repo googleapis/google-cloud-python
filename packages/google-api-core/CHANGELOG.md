@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.26.2](https://www.github.com/googleapis/python-api-core/compare/v1.26.1...v1.26.2) (2021-03-23)
+
+
+### Bug Fixes
+
+* save empty IAM policy bindings ([#155](https://www.github.com/googleapis/python-api-core/issues/155)) ([536c2ca](https://www.github.com/googleapis/python-api-core/commit/536c2cad814b8fa8cd346a3d7bd5f6b9889c4a6f))
+
 ### [1.26.1](https://www.github.com/googleapis/python-api-core/compare/v1.26.0...v1.26.1) (2021-02-12)
 
 
