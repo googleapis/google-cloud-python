@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-area120-tables.git",
-        "sha": "231da88d1fce7836b307874f418739b4e717ac47"
+        "sha": "0f2dc5f4501f446e666c83f9e90ae17798b3a0f3"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     }
   ],
@@ -91,6 +91,7 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
+    "area120-tables-v1alpha1-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
