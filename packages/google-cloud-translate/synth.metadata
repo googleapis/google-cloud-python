@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-translate.git",
-        "sha": "b964066146fababea506945017e415e5aa100a99"
+        "sha": "6b723d40da81a95a60edfd3da1340651f8d1e161"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "373861061648b5fe5e0ac4f8a38b32d639ee93e4"
+        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
       }
     }
   ],
@@ -157,7 +157,6 @@
     "tests/unit/gapic/translate_v3/__init__.py",
     "tests/unit/gapic/translate_v3/test_translation_service.py",
     "tests/unit/gapic/translate_v3beta1/__init__.py",
-    "tests/unit/gapic/translate_v3beta1/test_translation_service.py",
-    "translation-v3-py.tar.gz"
+    "tests/unit/gapic/translate_v3beta1/test_translation_service.py"
   ]
 }
