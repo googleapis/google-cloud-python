@@ -69,8 +69,8 @@ ONE_ROW_CONTENTS = [
     datetime.datetime(2013, 10, 10, 11, 27, 16),
     datetime.time(11, 27, 16),
     b"\xef",
-    {"name": "John Doe", "age": 100,},
-    {"record": {"name": "John Doe 2", "age": 200,}},
+    {"name": "John Doe", "age": 100},
+    {"record": {"name": "John Doe 2", "age": 200}},
     [1, 2, 3],
 ]
 
@@ -217,7 +217,7 @@ def query():
             .label("outer")
         )
         query = (
-            select([col1, col2, col3,])
+            select([col1, col2, col3])
             .where(col1 < "2017-01-01 00:00:00")
             .group_by(col1)
             .order_by(col2)
@@ -386,7 +386,7 @@ def test_nested_labels(engine, table):
             sqlalchemy.func.sum(col.label("inner")).label("outer")
         ).over(),
         sqlalchemy.func.sum(
-            sqlalchemy.case([[sqlalchemy.literal(True), col.label("inner"),]]).label(
+            sqlalchemy.case([[sqlalchemy.literal(True), col.label("inner")]]).label(
                 "outer"
             )
         ),

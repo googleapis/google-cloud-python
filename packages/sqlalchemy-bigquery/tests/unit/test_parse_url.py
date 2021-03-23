@@ -198,7 +198,7 @@ def test_disallowed(disallowed_arg):
 
 @pytest.mark.parametrize(
     "not_implemented_arg",
-    ["query_parameters", "table_definitions", "time_partitioning", "udf_resources",],
+    ["query_parameters", "table_definitions", "time_partitioning", "udf_resources"],
 )
 def test_not_implemented(not_implemented_arg):
     url = make_url(
