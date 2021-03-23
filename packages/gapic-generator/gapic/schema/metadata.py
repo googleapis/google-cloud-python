@@ -115,9 +115,12 @@ class Address:
             return '_'.join(
                 (
                     ''.join(
-                        i[0]
-                        for i in self.package
-                        if i != self.api_naming.version
+                        [
+                            partial_name[0]
+                            for i in self.package
+                            for partial_name in i.split("_")
+                            if i != self.api_naming.version
+                        ]
                     ),
                     self.module,
                 )

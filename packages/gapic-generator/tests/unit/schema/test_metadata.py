@@ -184,6 +184,14 @@ def test_address_name_builtin_keyword():
     )
     assert addr_kword.module_alias == "gp_class"
 
+    addr_kword = metadata.Address(
+        name="Class",
+        module="class",
+        package=("google", "appengine_admin"),
+        api_naming=naming.NewNaming(proto_package="foo.bar.baz.v1"),
+    )
+    assert addr_kword.module_alias == "gaa_class"
+
 
 def test_doc_nothing():
     meta = metadata.Metadata()
