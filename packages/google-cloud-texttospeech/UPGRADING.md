@@ -17,10 +17,10 @@ The 2.0.0 release requires Python 3.6+.
 
 Methods expect request objects. We provide a script that will convert most common use cases.
 
-* Install the library
+* Install the library and `libcst`.
 
 ```py
-python3 -m pip install google-cloud-texttospeech
+python3 -m pip install google-cloud-texttospeech libcst
 ```
 
 * The script `fixup_keywords.py` is shipped with the library. It expects

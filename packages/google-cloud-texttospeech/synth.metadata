@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-texttospeech.git",
-        "sha": "139e6e8511cdce4c0be7983520f7efc47092f3b1"
+        "sha": "dc07688434edf0774a8b19d2c6250eddc942b60a"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
       }
     }
   ],
@@ -163,7 +163,6 @@
     "tests/unit/gapic/texttospeech_v1/__init__.py",
     "tests/unit/gapic/texttospeech_v1/test_text_to_speech.py",
     "tests/unit/gapic/texttospeech_v1beta1/__init__.py",
-    "tests/unit/gapic/texttospeech_v1beta1/test_text_to_speech.py",
-    "texttospeech-v1beta1-py.tar.gz"
+    "tests/unit/gapic/texttospeech_v1beta1/test_text_to_speech.py"
   ]
 }
