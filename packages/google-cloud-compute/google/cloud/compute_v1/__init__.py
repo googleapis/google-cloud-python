@@ -1225,6 +1225,7 @@ __all__ = (
     "AutoscalerAggregatedList",
     "AutoscalerList",
     "AutoscalerStatusDetails",
+    "AutoscalersClient",
     "AutoscalersScopedList",
     "AutoscalingPolicy",
     "AutoscalingPolicyCpuUtilization",
@@ -1932,7 +1933,6 @@ __all__ = (
     "RegionInstanceGroupManagerUpdateInstanceConfigReq",
     "RegionInstanceGroupManagersAbandonInstancesRequest",
     "RegionInstanceGroupManagersApplyUpdatesRequest",
-    "RegionInstanceGroupManagersClient",
     "RegionInstanceGroupManagersCreateInstancesRequest",
     "RegionInstanceGroupManagersDeleteInstancesRequest",
     "RegionInstanceGroupManagersListErrorsResponse",
@@ -2271,5 +2271,5 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "AutoscalersClient",
+    "RegionInstanceGroupManagersClient",
 )
