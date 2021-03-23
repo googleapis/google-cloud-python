@@ -136,7 +136,10 @@ class Policy(collections_abc.MutableMapping):
         for b in self._bindings:
             if b["role"] == key:
                 return b["members"]
-        return set()
+        # binding does not yet exist, create one
+        new_binding = {"role": key, "members": set()}
+        self._bindings.append(new_binding)
+        return new_binding["members"]
 
     def __setitem__(self, key, value):
         self.__check_version__()

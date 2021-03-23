@@ -32,11 +32,11 @@ class TestPolicy:
         policy = self._make_one()
         assert policy.etag is None
         assert policy.version is None
+        assert len(policy) == 0
+        assert dict(policy) == {}
         assert policy.owners == empty
         assert policy.editors == empty
         assert policy.viewers == empty
-        assert len(policy) == 0
-        assert dict(policy) == {}
 
     def test_ctor_explicit(self):
         VERSION = 1
@@ -45,15 +45,23 @@ class TestPolicy:
         policy = self._make_one(ETAG, VERSION)
         assert policy.etag == ETAG
         assert policy.version == VERSION
+        assert len(policy) == 0
+        assert dict(policy) == {}
         assert policy.owners == empty
         assert policy.editors == empty
         assert policy.viewers == empty
-        assert len(policy) == 0
-        assert dict(policy) == {}
 
     def test___getitem___miss(self):
         policy = self._make_one()
         assert policy["nonesuch"] == set()
+
+    def test__getitem___and_set(self):
+        from google.api_core.iam import OWNER_ROLE
+        policy = self._make_one()
+
+        # get the policy using the getter and then modify it
+        policy[OWNER_ROLE].add("user:phred@example.com")
+        assert dict(policy) == {OWNER_ROLE: {"user:phred@example.com"}}
 
     def test___getitem___version3(self):
         policy = self._make_one("DEADBEEF", 3)
@@ -293,10 +301,10 @@ class TestPolicy:
         policy = klass.from_api_repr(RESOURCE)
         assert policy.etag == "ACAB"
         assert policy.version is None
+        assert dict(policy) == {}
         assert policy.owners == empty
         assert policy.editors == empty
         assert policy.viewers == empty
-        assert dict(policy) == {}
 
     def test_from_api_repr_complete(self):
         from google.api_core.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
