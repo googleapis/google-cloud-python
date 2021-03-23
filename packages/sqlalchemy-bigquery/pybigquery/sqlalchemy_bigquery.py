@@ -33,7 +33,12 @@ from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, util
-from sqlalchemy.sql.compiler import SQLCompiler, GenericTypeCompiler, DDLCompiler, IdentifierPreparer
+from sqlalchemy.sql.compiler import (
+    SQLCompiler,
+    GenericTypeCompiler,
+    DDLCompiler,
+    IdentifierPreparer,
+)
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.sql.schema import Column
@@ -42,7 +47,7 @@ import re
 
 from .parse_url import parse_url
 
-FIELD_ILLEGAL_CHARACTERS = re.compile(r'[^\w]+')
+FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
 
 
 class UniversalSet(object):
@@ -60,12 +65,12 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
     Set containing everything
     https://github.com/dropbox/PyHive/blob/master/pyhive/sqlalchemy_presto.py
     """
+
     reserved_words = UniversalSet()
 
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
-            dialect,
-            initial_quote="`",
+            dialect, initial_quote="`",
         )
 
     def quote_column(self, value):
@@ -74,8 +79,8 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         Fields are quoted separately from the record name.
         """
 
-        parts = value.split('.')
-        return '.'.join(self.quote_identifier(x) for x in parts)
+        parts = value.split(".")
+        return ".".join(self.quote_identifier(x) for x in parts)
 
     def quote(self, ident, force=None, column=False):
         """
@@ -89,7 +94,11 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
                 return self._strings[ident]
             else:
                 if self._requires_quotes(ident):
-                    self._strings[ident] = self.quote_column(ident) if column else self.quote_identifier(ident)
+                    self._strings[ident] = (
+                        self.quote_column(ident)
+                        if column
+                        else self.quote_identifier(ident)
+                    )
                 else:
                     self._strings[ident] = ident
                 return self._strings[ident]
@@ -102,41 +111,41 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         name = name or label.name
 
         # Fields must start with a letter or underscore
-        if not name[0].isalpha() and name[0] != '_':
+        if not name[0].isalpha() and name[0] != "_":
             name = "_" + name
 
         # Fields must contain only letters, numbers, and underscores
-        name = FIELD_ILLEGAL_CHARACTERS.sub('_', name)
+        name = FIELD_ILLEGAL_CHARACTERS.sub("_", name)
 
         result = self.quote(name)
         return result
 
 
 _type_map = {
-    'STRING': types.String,
-    'BOOLEAN': types.Boolean,
-    'INTEGER': types.Integer,
-    'FLOAT': types.Float,
-    'TIMESTAMP': types.TIMESTAMP,
-    'DATETIME': types.DATETIME,
-    'DATE': types.DATE,
-    'BYTES': types.BINARY,
-    'TIME': types.TIME,
-    'RECORD': types.JSON,
-    'NUMERIC': types.DECIMAL,
+    "STRING": types.String,
+    "BOOLEAN": types.Boolean,
+    "INTEGER": types.Integer,
+    "FLOAT": types.Float,
+    "TIMESTAMP": types.TIMESTAMP,
+    "DATETIME": types.DATETIME,
+    "DATE": types.DATE,
+    "BYTES": types.BINARY,
+    "TIME": types.TIME,
+    "RECORD": types.JSON,
+    "NUMERIC": types.DECIMAL,
 }
 
-STRING = _type_map['STRING']
-BOOLEAN = _type_map['BOOLEAN']
-INTEGER = _type_map['INTEGER']
-FLOAT = _type_map['FLOAT']
-TIMESTAMP = _type_map['TIMESTAMP']
-DATETIME = _type_map['DATETIME']
-DATE = _type_map['DATE']
-BYTES = _type_map['BYTES']
-TIME = _type_map['TIME']
-RECORD = _type_map['RECORD']
-NUMERIC = _type_map['NUMERIC']
+STRING = _type_map["STRING"]
+BOOLEAN = _type_map["BOOLEAN"]
+INTEGER = _type_map["INTEGER"]
+FLOAT = _type_map["FLOAT"]
+TIMESTAMP = _type_map["TIMESTAMP"]
+DATETIME = _type_map["DATETIME"]
+DATE = _type_map["DATE"]
+BYTES = _type_map["BYTES"]
+TIME = _type_map["TIME"]
+RECORD = _type_map["RECORD"]
+NUMERIC = _type_map["NUMERIC"]
 
 
 class BigQueryExecutionContext(DefaultExecutionContext):
@@ -149,11 +158,12 @@ class BigQueryExecutionContext(DefaultExecutionContext):
 
 
 class BigQueryCompiler(SQLCompiler):
-    def __init__(self, dialect, statement, column_keys=None,
-                 inline=False, **kwargs):
+    def __init__(self, dialect, statement, column_keys=None, inline=False, **kwargs):
         if isinstance(statement, Column):
-            kwargs['compile_kwargs'] = util.immutabledict({'include_table': False})
-        super(BigQueryCompiler, self).__init__(dialect, statement, column_keys, inline, **kwargs)
+            kwargs["compile_kwargs"] = util.immutabledict({"include_table": False})
+        super(BigQueryCompiler, self).__init__(
+            dialect, statement, column_keys, inline, **kwargs
+        )
 
     def visit_select(self, *args, **kwargs):
         """
@@ -164,8 +174,9 @@ class BigQueryCompiler(SQLCompiler):
         args[0].use_labels = True
         return super(BigQueryCompiler, self).visit_select(*args, **kwargs)
 
-    def visit_column(self, column, add_to_result_map=None,
-                     include_table=True, **kwargs):
+    def visit_column(
+        self, column, add_to_result_map=None, include_table=True, **kwargs
+    ):
 
         name = orig_name = column.name
         if name is None:
@@ -176,12 +187,7 @@ class BigQueryCompiler(SQLCompiler):
             name = self._truncated_identifier("colident", name)
 
         if add_to_result_map is not None:
-            add_to_result_map(
-                name,
-                orig_name,
-                (column, name, column.key),
-                column.type
-            )
+            add_to_result_map(name, orig_name, (column, name, column.key), column.type)
 
         if is_literal:
             name = self.escape_literal_column(name)
@@ -194,16 +200,13 @@ class BigQueryCompiler(SQLCompiler):
             effective_schema = self.preparer.schema_for_object(table)
 
             if effective_schema:
-                schema_prefix = self.preparer.quote_schema(
-                    effective_schema) + '.'
+                schema_prefix = self.preparer.quote_schema(effective_schema) + "."
             else:
-                schema_prefix = ''
+                schema_prefix = ""
             tablename = table.name
             if isinstance(tablename, elements._truncated_label):
                 tablename = self._truncated_identifier("alias", tablename)
-            return schema_prefix + \
-                self.preparer.quote(tablename) + \
-                "." + name
+            return schema_prefix + self.preparer.quote(tablename) + "." + name
 
     def visit_label(self, *args, within_group_by=False, **kwargs):
         # Use labels in GROUP BY clause.
@@ -211,7 +214,7 @@ class BigQueryCompiler(SQLCompiler):
         # Flag set in the group_by_clause method. Works around missing
         # equivalent to supports_simple_order_by_label for group by.
         if within_group_by:
-            kwargs['render_label_as_label'] = args[0]
+            kwargs["render_label_as_label"] = args[0]
         return super(BigQueryCompiler, self).visit_label(*args, **kwargs)
 
     def group_by_clause(self, select, **kw):
@@ -221,30 +224,29 @@ class BigQueryCompiler(SQLCompiler):
 
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
-
     def visit_integer(self, type_, **kw):
-        return 'INT64'
+        return "INT64"
 
     def visit_float(self, type_, **kw):
-        return 'FLOAT64'
+        return "FLOAT64"
 
     def visit_text(self, type_, **kw):
-        return 'STRING'
+        return "STRING"
 
     def visit_string(self, type_, **kw):
-        return 'STRING'
+        return "STRING"
 
     def visit_ARRAY(self, type_, **kw):
         return "ARRAY<{}>".format(self.process(type_.item_type, **kw))
 
     def visit_BINARY(self, type_, **kw):
-        return 'BYTES'
+        return "BYTES"
 
     def visit_NUMERIC(self, type_, **kw):
-        return 'NUMERIC'
+        return "NUMERIC"
 
     def visit_DECIMAL(self, type_, **kw):
-        return 'NUMERIC'
+        return "NUMERIC"
 
 
 class BigQueryDDLCompiler(DDLCompiler):
@@ -258,26 +260,34 @@ class BigQueryDDLCompiler(DDLCompiler):
         return None
 
     def get_column_specification(self, column, **kwargs):
-        colspec = super(BigQueryDDLCompiler, self).get_column_specification(column, **kwargs)
+        colspec = super(BigQueryDDLCompiler, self).get_column_specification(
+            column, **kwargs
+        )
         if column.doc is not None:
-            colspec = '{} OPTIONS(description={})'.format(colspec, self.preparer.quote(column.doc))
+            colspec = "{} OPTIONS(description={})".format(
+                colspec, self.preparer.quote(column.doc)
+            )
         return colspec
 
     def post_create_table(self, table):
-        bq_opts = table.dialect_options['bigquery']
+        bq_opts = table.dialect_options["bigquery"]
         opts = []
-        if 'description' in bq_opts:
-            opts.append('description={}'.format(self.preparer.quote(bq_opts['description'])))
-        if 'friendly_name' in bq_opts:
-            opts.append('friendly_name={}'.format(self.preparer.quote(bq_opts['friendly_name'])))
+        if "description" in bq_opts:
+            opts.append(
+                "description={}".format(self.preparer.quote(bq_opts["description"]))
+            )
+        if "friendly_name" in bq_opts:
+            opts.append(
+                "friendly_name={}".format(self.preparer.quote(bq_opts["friendly_name"]))
+            )
         if opts:
-            return '\nOPTIONS({})'.format(', '.join(opts))
-        return ''
+            return "\nOPTIONS({})".format(", ".join(opts))
+        return ""
 
 
 class BigQueryDialect(DefaultDialect):
-    name = 'bigquery'
-    driver = 'bigquery'
+    name = "bigquery"
+    driver = "bigquery"
     preparer = BigQueryIdentifierPreparer
     statement_compiler = BigQueryCompiler
     type_compiler = BigQueryTypeCompiler
@@ -298,12 +308,14 @@ class BigQueryDialect(DefaultDialect):
     postfetch_lastrowid = False
 
     def __init__(
-            self,
-            arraysize=5000,
-            credentials_path=None,
-            location=None,
-            credentials_info=None,
-            *args, **kwargs):
+        self,
+        arraysize=5000,
+        credentials_path=None,
+        location=None,
+        credentials_info=None,
+        *args,
+        **kwargs
+    ):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
         self.credentials_path = credentials_path
@@ -328,30 +340,41 @@ class BigQueryDialect(DefaultDialect):
             if not project_id:
                 _, project_id = auth.default()
 
-            job_config.default_dataset = '{}.{}'.format(project_id, dataset_id)
+            job_config.default_dataset = "{}.{}".format(project_id, dataset_id)
 
-    def _create_client_from_credentials(self, credentials, default_query_job_config, project_id):
+    def _create_client_from_credentials(
+        self, credentials, default_query_job_config, project_id
+    ):
         if project_id is None:
             project_id = credentials.project_id
 
         scopes = (
-                'https://www.googleapis.com/auth/bigquery',
-                'https://www.googleapis.com/auth/cloud-platform',
-                'https://www.googleapis.com/auth/drive'
-            )
+            "https://www.googleapis.com/auth/bigquery",
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/drive",
+        )
         credentials = credentials.with_scopes(scopes)
 
-        self._add_default_dataset_to_job_config(default_query_job_config, project_id, self.dataset_id)
+        self._add_default_dataset_to_job_config(
+            default_query_job_config, project_id, self.dataset_id
+        )
 
         return bigquery.Client(
-                project=project_id,
-                credentials=credentials,
-                location=self.location,
-                default_query_job_config=default_query_job_config,
-            )
+            project=project_id,
+            credentials=credentials,
+            location=self.location,
+            default_query_job_config=default_query_job_config,
+        )
 
     def create_connect_args(self, url):
-        project_id, location, dataset_id, arraysize, credentials_path, default_query_job_config = parse_url(url)
+        (
+            project_id,
+            location,
+            dataset_id,
+            arraysize,
+            credentials_path,
+            default_query_job_config,
+        ) = parse_url(url)
 
         self.arraysize = self.arraysize or arraysize
         self.location = location or self.location
@@ -359,20 +382,30 @@ class BigQueryDialect(DefaultDialect):
         self.dataset_id = dataset_id
 
         if self.credentials_path:
-            credentials = service_account.Credentials.from_service_account_file(self.credentials_path)
-            client = self._create_client_from_credentials(credentials, default_query_job_config, project_id)
+            credentials = service_account.Credentials.from_service_account_file(
+                self.credentials_path
+            )
+            client = self._create_client_from_credentials(
+                credentials, default_query_job_config, project_id
+            )
 
         elif self.credentials_info:
-            credentials = service_account.Credentials.from_service_account_info(self.credentials_info)
-            client = self._create_client_from_credentials(credentials, default_query_job_config, project_id)
+            credentials = service_account.Credentials.from_service_account_info(
+                self.credentials_info
+            )
+            client = self._create_client_from_credentials(
+                credentials, default_query_job_config, project_id
+            )
 
         else:
-            self._add_default_dataset_to_job_config(default_query_job_config, project_id, dataset_id)
+            self._add_default_dataset_to_job_config(
+                default_query_job_config, project_id, dataset_id
+            )
 
             client = bigquery.Client(
                 project=project_id,
                 location=self.location,
-                default_query_job_config=default_query_job_config
+                default_query_job_config=default_query_job_config,
             )
 
         return ([client], {})
@@ -387,9 +420,11 @@ class BigQueryDialect(DefaultDialect):
 
     def _get_table_or_view_names(self, connection, table_type, schema=None):
         current_schema = schema or self.dataset_id
-        get_table_name = self._build_formatted_table_id \
-            if self.dataset_id is None else \
-            operator.attrgetter("table_id")
+        get_table_name = (
+            self._build_formatted_table_id
+            if self.dataset_id is None
+            else operator.attrgetter("table_id")
+        )
 
         client = connection.connection._client
         datasets = client.list_datasets()
@@ -412,7 +447,7 @@ class BigQueryDialect(DefaultDialect):
         table_name = None
         project = None
 
-        table_name_split = full_table_name.split('.')
+        table_name_split = full_table_name.split(".")
         if len(table_name_split) == 1:
             table_name = full_table_name
         elif len(table_name_split) == 2:
@@ -420,17 +455,22 @@ class BigQueryDialect(DefaultDialect):
         elif len(table_name_split) == 3:
             project, dataset, table_name = table_name_split
         else:
-            raise ValueError("Did not understand table_name: {}".format(full_table_name))
+            raise ValueError(
+                "Did not understand table_name: {}".format(full_table_name)
+            )
 
         return (project, dataset, table_name)
 
-    def _table_reference(self, provided_schema_name, provided_table_name,
-                         client_project):
-        project_id_from_table, dataset_id_from_table, table_id = self._split_table_name(provided_table_name)
+    def _table_reference(
+        self, provided_schema_name, provided_table_name, client_project
+    ):
+        project_id_from_table, dataset_id_from_table, table_id = self._split_table_name(
+            provided_table_name
+        )
         project_id_from_schema = None
         dataset_id_from_schema = None
         if provided_schema_name is not None:
-            provided_schema_name_split = provided_schema_name.split('.')
+            provided_schema_name_split = provided_schema_name.split(".")
             if len(provided_schema_name_split) == 0:
                 pass
             elif len(provided_schema_name_split) == 1:
@@ -442,17 +482,25 @@ class BigQueryDialect(DefaultDialect):
                 project_id_from_schema = provided_schema_name_split[0]
                 dataset_id_from_schema = provided_schema_name_split[1]
             else:
-                raise ValueError("Did not understand schema: {}".format(provided_schema_name))
-        if (dataset_id_from_schema and dataset_id_from_table and
-           dataset_id_from_schema != dataset_id_from_table):
+                raise ValueError(
+                    "Did not understand schema: {}".format(provided_schema_name)
+                )
+        if (
+            dataset_id_from_schema
+            and dataset_id_from_table
+            and dataset_id_from_schema != dataset_id_from_table
+        ):
             raise ValueError(
                 "dataset_id specified in schema and table_name disagree: "
                 "got {} in schema, and {} in table_name".format(
                     dataset_id_from_schema, dataset_id_from_table
                 )
             )
-        if (project_id_from_schema and project_id_from_table and
-           project_id_from_schema != project_id_from_table):
+        if (
+            project_id_from_schema
+            and project_id_from_table
+            and project_id_from_schema != project_id_from_table
+        ):
             raise ValueError(
                 "project_id specified in schema and table_name disagree: "
                 "got {} in schema, and {} in table_name".format(
@@ -462,9 +510,9 @@ class BigQueryDialect(DefaultDialect):
         project_id = project_id_from_schema or project_id_from_table or client_project
         dataset_id = dataset_id_from_schema or dataset_id_from_table or self.dataset_id
 
-        table_ref = TableReference.from_string("{}.{}.{}".format(
-            project_id, dataset_id, table_id
-        ))
+        table_ref = TableReference.from_string(
+            "{}.{}.{}".format(project_id, dataset_id, table_id)
+        )
         return table_ref
 
     def _get_table(self, connection, table_name, schema=None):
@@ -494,12 +542,16 @@ class BigQueryDialect(DefaultDialect):
         """
         results = []
         for col in columns:
-            results += [SchemaField(name='.'.join(col.name for col in cur_columns + [col]),
-                                    field_type=col.field_type,
-                                    mode=col.mode,
-                                    description=col.description,
-                                    fields=col.fields)]
-            if col.field_type == 'RECORD':
+            results += [
+                SchemaField(
+                    name=".".join(col.name for col in cur_columns + [col]),
+                    field_type=col.field_type,
+                    mode=col.mode,
+                    description=col.description,
+                    fields=col.fields,
+                )
+            ]
+            if col.field_type == "RECORD":
                 cur_columns.append(col)
                 results += self._get_columns_helper(col.fields, cur_columns)
                 cur_columns.pop()
@@ -513,23 +565,28 @@ class BigQueryDialect(DefaultDialect):
             try:
                 coltype = _type_map[col.field_type]
             except KeyError:
-                util.warn("Did not recognize type '%s' of column '%s'" % (col.field_type, col.name))
+                util.warn(
+                    "Did not recognize type '%s' of column '%s'"
+                    % (col.field_type, col.name)
+                )
                 coltype = types.NullType
 
-            result.append({
-                'name': col.name,
-                'type': types.ARRAY(coltype) if col.mode == 'REPEATED' else coltype,
-                'nullable': col.mode == 'NULLABLE' or col.mode == 'REPEATED',
-                'comment': col.description,
-                'default': None,
-            })
+            result.append(
+                {
+                    "name": col.name,
+                    "type": types.ARRAY(coltype) if col.mode == "REPEATED" else coltype,
+                    "nullable": col.mode == "NULLABLE" or col.mode == "REPEATED",
+                    "comment": col.description,
+                    "default": None,
+                }
+            )
 
         return result
 
     def get_table_comment(self, connection, table_name, schema=None, **kw):
         table = self._get_table(connection, table_name, schema)
         return {
-            'text': table.description,
+            "text": table.description,
         }
 
     def get_foreign_keys(self, connection, table_name, schema=None, **kw):
@@ -538,19 +595,27 @@ class BigQueryDialect(DefaultDialect):
 
     def get_pk_constraint(self, connection, table_name, schema=None, **kw):
         # BigQuery has no support for primary keys.
-        return {'constrained_columns': []}
+        return {"constrained_columns": []}
 
     def get_indexes(self, connection, table_name, schema=None, **kw):
         table = self._get_table(connection, table_name, schema)
         indexes = []
         if table.time_partitioning:
-            indexes.append({'name': 'partition',
-                            'column_names': [table.time_partitioning.field],
-                            'unique': False})
+            indexes.append(
+                {
+                    "name": "partition",
+                    "column_names": [table.time_partitioning.field],
+                    "unique": False,
+                }
+            )
         if table.clustering_fields:
-            indexes.append({'name': 'clustering',
-                            'column_names': table.clustering_fields,
-                            'unique': False})
+            indexes.append(
+                {
+                    "name": "clustering",
+                    "column_names": table.clustering_fields,
+                    "unique": False,
+                }
+            )
         return indexes
 
     def get_schema_names(self, connection, **kw):

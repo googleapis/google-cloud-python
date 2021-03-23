@@ -1,0 +1,9 @@
+{
+  "name": "pybigquery",
+  "name_pretty": "SQLAlchemy dialect for BigQuery",
+  "client_documentation": "https://github.com/googleapis/pybigquery",
+  "release_level": "beta",
+  "language": "python",
+  "repo": "googleapis/python-bigquery-sqlalchemy",
+  "distribution_name": "pybigquery"
+}

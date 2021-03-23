@@ -31,7 +31,8 @@ class ApiClient(object):
         self.location = location
         if self.credentials_path:
             self.client = Client.from_service_account_json(
-                self.credentials_path, location=self.location)
+                self.credentials_path, location=self.location
+            )
         else:
             self.client = Client(location=self.location)
 

@@ -21,6 +21,18 @@
 import io
 from setuptools import setup
 
+# Package metadata.
+
+name = "pybigquery"
+version = "0.5.0"
+description = "SQLAlchemy dialect for BigQuery"
+
+# Should be one of:
+# 'Development Status :: 3 - Alpha'
+# 'Development Status :: 4 - Beta'
+# 'Development Status :: 5 - Production/Stable'
+release_status = "Development Status :: 4 - Beta"
+
 
 def readme():
     with io.open("README.rst", "r", encoding="utf8") as f:
@@ -28,32 +40,39 @@ def readme():
 
 
 setup(
-    name="pybigquery",
-    version='0.5.0',
-    description="SQLAlchemy dialect for BigQuery",
+    name=name,
+    version=version,
+    description=description,
     long_description=readme(),
     long_description_content_type="text/x-rst",
-    author="Maxim Zudilov",
-    author_email="maxim.zudilov@gmail.com",
-    packages=['pybigquery'],
-    url="https://github.com/mxmzdlv/pybigquery",
-    download_url='https://github.com/mxmzdlv/pybigquery/archive/v0.4.14.tar.gz',
-    keywords=['bigquery', 'sqlalchemy'],
+    author="The PyBigQuery Authors",
+    author_email="googleapis-packages@google.com",
+    packages=["pybigquery"],
+    url="https://github.com/googleapis/python-bigquery-sqlalchemy",
+    keywords=["bigquery", "sqlalchemy"],
     classifiers=[
+        release_status,
         "Intended Audience :: Developers",
-        "Topic :: Database :: Front-Ends"
+        "License :: OSI Approved :: MIT License" "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Operating System :: OS Independent",
+        "Topic :: Database :: Front-Ends",
     ],
+    platforms="Posix; MacOS X; Windows",
     install_requires=[
-        'sqlalchemy>=1.1.9',
-        'google-cloud-bigquery>=1.6.0',
-        'future',
+        "sqlalchemy>=1.1.9,<1.4.0dev",
+        "google-cloud-bigquery>=1.6.0",
+        "future",
     ],
-    tests_require=[
-        'pytz'
-    ],
+    python_requires=">=3.6, <3.10",
+    tests_require=["pytz"],
     entry_points={
-        'sqlalchemy.dialects': [
-            'bigquery = pybigquery.sqlalchemy_bigquery:BigQueryDialect'
+        "sqlalchemy.dialects": [
+            "bigquery = pybigquery.sqlalchemy_bigquery:BigQueryDialect"
         ]
-    }
+    },
 )

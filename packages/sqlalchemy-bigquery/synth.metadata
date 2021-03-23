@@ -1,0 +1,11 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:tswast/python-bigquery-sqlalchemy.git",
+        "sha": "f367bfac64faf67f2703508d1889af8698963e84"
+      }
+    }
+  ]
+}
