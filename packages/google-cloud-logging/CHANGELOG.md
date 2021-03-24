@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-logging/compare/v2.3.0...v2.3.1) (2021-03-24)
+
+
+### Bug Fixes
+
+* detect project from environment instead of from logger ([#238](https://www.github.com/googleapis/python-logging/issues/238)) ([813b97c](https://www.github.com/googleapis/python-logging/commit/813b97cb936fa5acc2a4de567e2c84d746527e98))
+* revert default resource behavior to avoid breaking changes ([#237](https://www.github.com/googleapis/python-logging/issues/237)) ([24a0a5e](https://www.github.com/googleapis/python-logging/commit/24a0a5e674430e97a3a2e3b54477d8f95fa08ec6))
+
 ## [2.3.0](https://www.github.com/googleapis/python-logging/compare/v2.2.0...v2.3.0) (2021-03-15)
 
 
