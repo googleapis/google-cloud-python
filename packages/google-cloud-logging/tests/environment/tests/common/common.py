@@ -71,7 +71,9 @@ class Common:
         self._script.run_command(Command.Trigger, [function, args_str])
 
     @RetryErrors(exception=(LogsNotFound, RpcError), delay=2)
-    def trigger_and_retrieve(self, log_text, function="simplelog", append_uuid=True, max_tries=6, **kwargs):
+    def trigger_and_retrieve(
+        self, log_text, function="simplelog", append_uuid=True, max_tries=6, **kwargs
+    ):
         if append_uuid:
             log_text = f"{log_text} {uuid.uuid1()}"
         self._trigger(function, log_text=log_text, **kwargs)
@@ -134,29 +136,38 @@ class Common:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
 
+    # add back after v3.0.0
+    # def test_monitored_resource(self):
+    #     if self.language != "python":
+    #         # to do: add monitored resource info to go
+    #         return True
+    #     log_text = f"{inspect.currentframe().f_code.co_name}"
+    #     log_list = self.trigger_and_retrieve(log_text)
+    #     found_resource = log_list[-1].resource
 
-    def test_monitored_resource(self):
-        if self.language != "python":
-            # to do: add monitored resource info to go
-            return True
-        log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text)
-        found_resource = log_list[-1].resource
+    #     self.assertIsNotNone(self.monitored_resource_name)
+    #     self.assertIsNotNone(self.monitored_resource_labels)
 
-        self.assertIsNotNone(self.monitored_resource_name)
-        self.assertIsNotNone(self.monitored_resource_labels)
-
-        self.assertEqual(found_resource.type, self.monitored_resource_name)
-        for label in self.monitored_resource_labels:
-            self.assertTrue(found_resource.labels[label],
-                f'resource.labels[{label}] is not set')
+    #     self.assertEqual(found_resource.type, self.monitored_resource_name)
+    #     for label in self.monitored_resource_labels:
+    #         self.assertTrue(found_resource.labels[label],
+    #             f'resource.labels[{label}] is not set')
 
     def test_severity(self):
         if self.language != "python":
             # to do: enable test for other languages
             return True
         log_text = f"{inspect.currentframe().f_code.co_name}"
-        severities = ['EMERGENCY', 'ALERT', 'CRITICAL', 'ERROR', 'WARNING',  'NOTICE', 'INFO', 'DEBUG']
+        severities = [
+            "EMERGENCY",
+            "ALERT",
+            "CRITICAL",
+            "ERROR",
+            "WARNING",
+            "NOTICE",
+            "INFO",
+            "DEBUG",
+        ]
         for severity in severities:
             log_list = self.trigger_and_retrieve(log_text, severity=severity)
             found_severity = log_list[-1].severity

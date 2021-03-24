@@ -38,9 +38,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
     def test_ctor_defaults(self):
         import sys
-        from google.cloud.logging_v2.handlers._monitored_resources import (
-            _create_global_resource,
-        )
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
         from google.cloud.logging_v2.handlers.handlers import DEFAULT_LOGGER_NAME
 
         patch = mock.patch(
@@ -55,8 +53,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
             self.assertIsInstance(handler.transport, _Transport)
             self.assertIs(handler.transport.client, client)
             self.assertEqual(handler.transport.name, DEFAULT_LOGGER_NAME)
-            global_resource = _create_global_resource(self.PROJECT)
-            self.assertEqual(handler.resource, global_resource)
+            self.assertEqual(handler.resource, _GLOBAL_RESOURCE)
             self.assertIsNone(handler.labels)
             self.assertIs(handler.stream, sys.stderr)
 

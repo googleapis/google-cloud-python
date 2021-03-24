@@ -15,25 +15,17 @@
 import logging
 import unittest
 import inspect
-import uuid
 
 import google.cloud.logging
-from google.cloud.logging_v2.resource import Resource
 
 from ..common.common import Common
 from ..common.python import CommonPython
 
 
-class TestCloudRun(Common, CommonPython, unittest.TestCase):
+class TestCloudFunctions(Common, unittest.TestCase):
 
-    environment = "cloudrun"
-    language = "python"
+    environment = "functions"
+    language = "nodejs"
 
-    monitored_resource_name = "cloud_run_revision"
-    monitored_resource_labels = [
-        "project_id",
-        "service_name",
-        "revision_name",
-        "location",
-        "configuration_name",
-    ]
+    monitored_resource_name = "cloud_function"
+    monitored_resource_labels = ["region", "function_name"]

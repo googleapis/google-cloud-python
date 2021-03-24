@@ -87,10 +87,12 @@ def pubsub_callback(message):
     else:
         logging.error(f"function {msg_str} not found")
 
+
 def initialize_client():
     # set up logging
     client = google.cloud.logging.Client()
     client.setup_logging(log_level=logging.DEBUG)
+
 
 if __name__ == "__main__":
     initialize_client()
