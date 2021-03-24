@@ -62,6 +62,13 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # Correct namespace in noxfile
 s.replace("noxfile.py", "google.cloud.translation", "google.cloud.translate")
 
+# Exclude the v2 from coverage targets
+s.replace(".coveragerc",
+"    google/cloud/translate/__init__.py",
+"""    google/cloud/translate/__init__.py
+    google/cloud/translate_v2/__init__.py
+    google/cloud/__init__.py"""
+)
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------

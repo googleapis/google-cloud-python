@@ -1,6 +1,6 @@
 Services for Google Cloud Translate v3beta1 API
 ===============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.translate_v3beta1.services.translation_service
-    :members:
-    :inherited-members:
+    translation_service

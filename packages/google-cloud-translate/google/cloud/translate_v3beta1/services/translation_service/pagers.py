@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.translate_v3beta1.types import translation_service
 
@@ -24,7 +33,7 @@ class ListGlossariesPager:
     """A pager for iterating through ``list_glossaries`` requests.
 
     This class thinly wraps an initial
-    :class:`~.translation_service.ListGlossariesResponse` object, and
+    :class:`google.cloud.translate_v3beta1.types.ListGlossariesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``glossaries`` field.
 
@@ -33,7 +42,7 @@ class ListGlossariesPager:
     through the ``glossaries`` field on the
     corresponding responses.
 
-    All the usual :class:`~.translation_service.ListGlossariesResponse`
+    All the usual :class:`google.cloud.translate_v3beta1.types.ListGlossariesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListGlossariesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.translation_service.ListGlossariesRequest`):
+            request (google.cloud.translate_v3beta1.types.ListGlossariesRequest):
                 The initial request object.
-            response (:class:`~.translation_service.ListGlossariesResponse`):
+            response (google.cloud.translate_v3beta1.types.ListGlossariesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListGlossariesAsyncPager:
     """A pager for iterating through ``list_glossaries`` requests.
 
     This class thinly wraps an initial
-    :class:`~.translation_service.ListGlossariesResponse` object, and
+    :class:`google.cloud.translate_v3beta1.types.ListGlossariesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``glossaries`` field.
 
@@ -95,7 +104,7 @@ class ListGlossariesAsyncPager:
     through the ``glossaries`` field on the
     corresponding responses.
 
-    All the usual :class:`~.translation_service.ListGlossariesResponse`
+    All the usual :class:`google.cloud.translate_v3beta1.types.ListGlossariesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListGlossariesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.translation_service.ListGlossariesRequest`):
+            request (google.cloud.translate_v3beta1.types.ListGlossariesRequest):
                 The initial request object.
-            response (:class:`~.translation_service.ListGlossariesResponse`):
+            response (google.cloud.translate_v3beta1.types.ListGlossariesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

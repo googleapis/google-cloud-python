@@ -16,6 +16,11 @@
 #
 
 from .services.translation_service import TranslationServiceClient
+from .types.translation_service import BatchDocumentInputConfig
+from .types.translation_service import BatchDocumentOutputConfig
+from .types.translation_service import BatchTranslateDocumentMetadata
+from .types.translation_service import BatchTranslateDocumentRequest
+from .types.translation_service import BatchTranslateDocumentResponse
 from .types.translation_service import BatchTranslateMetadata
 from .types.translation_service import BatchTranslateResponse
 from .types.translation_service import BatchTranslateTextRequest
@@ -27,6 +32,9 @@ from .types.translation_service import DeleteGlossaryResponse
 from .types.translation_service import DetectLanguageRequest
 from .types.translation_service import DetectLanguageResponse
 from .types.translation_service import DetectedLanguage
+from .types.translation_service import DocumentInputConfig
+from .types.translation_service import DocumentOutputConfig
+from .types.translation_service import DocumentTranslation
 from .types.translation_service import GcsDestination
 from .types.translation_service import GcsSource
 from .types.translation_service import GetGlossaryRequest
@@ -39,6 +47,8 @@ from .types.translation_service import ListGlossariesResponse
 from .types.translation_service import OutputConfig
 from .types.translation_service import SupportedLanguage
 from .types.translation_service import SupportedLanguages
+from .types.translation_service import TranslateDocumentRequest
+from .types.translation_service import TranslateDocumentResponse
 from .types.translation_service import TranslateTextGlossaryConfig
 from .types.translation_service import TranslateTextRequest
 from .types.translation_service import TranslateTextResponse
@@ -46,6 +56,11 @@ from .types.translation_service import Translation
 
 
 __all__ = (
+    "BatchDocumentInputConfig",
+    "BatchDocumentOutputConfig",
+    "BatchTranslateDocumentMetadata",
+    "BatchTranslateDocumentRequest",
+    "BatchTranslateDocumentResponse",
     "BatchTranslateMetadata",
     "BatchTranslateResponse",
     "BatchTranslateTextRequest",
@@ -57,6 +72,9 @@ __all__ = (
     "DetectLanguageRequest",
     "DetectLanguageResponse",
     "DetectedLanguage",
+    "DocumentInputConfig",
+    "DocumentOutputConfig",
+    "DocumentTranslation",
     "GcsDestination",
     "GcsSource",
     "GetGlossaryRequest",
@@ -69,6 +87,8 @@ __all__ = (
     "OutputConfig",
     "SupportedLanguage",
     "SupportedLanguages",
+    "TranslateDocumentRequest",
+    "TranslateDocumentResponse",
     "TranslateTextGlossaryConfig",
     "TranslateTextRequest",
     "TranslateTextResponse",

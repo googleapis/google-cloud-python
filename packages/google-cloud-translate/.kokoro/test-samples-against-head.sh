@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-#
+#!/bin/bash
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# A customized test runner for samples.
+#
+# For periodic builds, you can specify this file for testing against head.
 
-from __future__ import absolute_import
+# `-e` enables the script to automatically fail when a command fails
+# `-o pipefail` sets the exit code to the rightmost comment to exit with a non-zero
+set -eo pipefail
+# Enables `**` to include files nested inside sub-folders
+shopt -s globstar
 
-from google.cloud.translate_v3 import TranslationServiceClient
-from google.cloud.translate_v3 import types
+cd github/python-translate
 
-
-__all__ = (
-    "types",
-    "TranslationServiceClient",
-)
+exec .kokoro/test-samples-impl.sh

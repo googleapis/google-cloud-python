@@ -116,6 +116,22 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TranslationServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -127,7 +143,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            TranslationServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -235,10 +251,10 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TranslationServiceTransport]): The
+            transport (Union[str, TranslationServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -274,21 +290,17 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -331,7 +343,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -347,7 +359,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Translates input text and returns translated text.
 
         Args:
-            request (:class:`~.translation_service.TranslateTextRequest`):
+            request (google.cloud.translate_v3beta1.types.TranslateTextRequest):
                 The request object. The request message for synchronous
                 translation.
 
@@ -358,7 +370,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.translation_service.TranslateTextResponse:
+            google.cloud.translate_v3beta1.types.TranslateTextResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -400,46 +412,49 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Detects the language of text within a request.
 
         Args:
-            request (:class:`~.translation_service.DetectLanguageRequest`):
+            request (google.cloud.translate_v3beta1.types.DetectLanguageRequest):
                 The request object. The request message for language
                 detection.
-            parent (:class:`str`):
+            parent (str):
                 Required. Project or location to make a call. Must refer
                 to a caller's project.
 
                 Format:
-                ``projects/{project-id}/locations/{location-id}`` or
-                ``projects/{project-id}``.
+                ``projects/{project-number-or-id}/locations/{location-id}``
+                or ``projects/{project-number-or-id}``.
 
                 For global calls, use
-                ``projects/{project-id}/locations/global`` or
-                ``projects/{project-id}``.
+                ``projects/{project-number-or-id}/locations/global`` or
+                ``projects/{project-number-or-id}``.
 
-                Only models within the same region (has same
-                location-id) can be used. Otherwise an INVALID_ARGUMENT
+                Only models within the same region, which have the same
+                location-id, can be used. Otherwise an INVALID_ARGUMENT
                 (400) error is returned.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            model (:class:`str`):
+            model (str):
                 Optional. The language detection model to be used.
 
                 Format:
-                ``projects/{project-id}/locations/{location-id}/models/language-detection/{model-id}``
+                ``projects/{project-number-or-id}/locations/{location-id}/models/language-detection/{model-id}``
 
                 Only one language detection model is currently
                 supported:
-                ``projects/{project-id}/locations/{location-id}/models/language-detection/default``.
+                ``projects/{project-number-or-id}/locations/{location-id}/models/language-detection/default``.
 
                 If not specified, the default model is used.
+
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            mime_type (:class:`str`):
+            mime_type (str):
                 Optional. The format of the source
                 text, for example, "text/html",
                 "text/plain". If left blank, the MIME
                 type defaults to "text/html".
+
                 This corresponds to the ``mime_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -451,7 +466,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.translation_service.DetectLanguageResponse:
+            google.cloud.translate_v3beta1.types.DetectLanguageResponse:
                 The response message for language
                 detection.
 
@@ -514,52 +529,55 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         translation.
 
         Args:
-            request (:class:`~.translation_service.GetSupportedLanguagesRequest`):
+            request (google.cloud.translate_v3beta1.types.GetSupportedLanguagesRequest):
                 The request object. The request message for discovering
                 supported languages.
-            parent (:class:`str`):
+            parent (str):
                 Required. Project or location to make a call. Must refer
                 to a caller's project.
 
-                Format: ``projects/{project-id}`` or
-                ``projects/{project-id}/locations/{location-id}``.
+                Format: ``projects/{project-number-or-id}`` or
+                ``projects/{project-number-or-id}/locations/{location-id}``.
 
                 For global calls, use
-                ``projects/{project-id}/locations/global`` or
-                ``projects/{project-id}``.
+                ``projects/{project-number-or-id}/locations/global`` or
+                ``projects/{project-number-or-id}``.
 
                 Non-global location is required for AutoML models.
 
                 Only models within the same region (have same
                 location-id) can be used, otherwise an INVALID_ARGUMENT
                 (400) error is returned.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            display_language_code (:class:`str`):
+            display_language_code (str):
                 Optional. The language to use to
                 return localized, human readable names
                 of supported languages. If missing, then
                 display names are not returned in a
                 response.
+
                 This corresponds to the ``display_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            model (:class:`str`):
+            model (str):
                 Optional. Get supported languages of this model.
 
                 The format depends on model type:
 
                 -  AutoML Translation models:
-                   ``projects/{project-id}/locations/{location-id}/models/{model-id}``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/{model-id}``
 
                 -  General (built-in) models:
-                   ``projects/{project-id}/locations/{location-id}/models/general/nmt``,
-                   ``projects/{project-id}/locations/{location-id}/models/general/base``
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/nmt``,
+                   ``projects/{project-number-or-id}/locations/{location-id}/models/general/base``
 
                 Returns languages supported by the specified model. If
                 missing, we get supported languages of Google general
                 base (PBMT) model.
+
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -571,7 +589,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.translation_service.SupportedLanguages:
+            google.cloud.translate_v3beta1.types.SupportedLanguages:
                 The response message for discovering
                 supported languages.
 
@@ -619,6 +637,57 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         # Done; return the response.
         return response
 
+    def translate_document(
+        self,
+        request: translation_service.TranslateDocumentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> translation_service.TranslateDocumentResponse:
+        r"""Translates documents in synchronous mode.
+
+        Args:
+            request (google.cloud.translate_v3beta1.types.TranslateDocumentRequest):
+                The request object. A document translation request.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.translate_v3beta1.types.TranslateDocumentResponse:
+                A translated document response
+                message.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a translation_service.TranslateDocumentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, translation_service.TranslateDocumentRequest):
+            request = translation_service.TranslateDocumentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.translate_document]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     def batch_translate_text(
         self,
         request: translation_service.BatchTranslateTextRequest = None,
@@ -638,7 +707,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         of the call.
 
         Args:
-            request (:class:`~.translation_service.BatchTranslateTextRequest`):
+            request (google.cloud.translate_v3beta1.types.BatchTranslateTextRequest):
                 The request object. The batch translation request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -648,15 +717,13 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.translation_service.BatchTranslateResponse``:
-                Stored in the
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                field returned by BatchTranslateText if at least one
-                sentence is translated successfully.
+                The result type for the operation will be :class:`google.cloud.translate_v3beta1.types.BatchTranslateResponse` Stored in the
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   field returned by BatchTranslateText if at least one
+                   sentence is translated successfully.
 
         """
         # Create or coerce a protobuf request object.
@@ -692,6 +759,77 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         # Done; return the response.
         return response
 
+    def batch_translate_document(
+        self,
+        request: translation_service.BatchTranslateDocumentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Translates a large volume of documents in
+        asynchronous batch mode. This function provides real-
+        time output as the inputs are being processed. If caller
+        cancels a request, the partial results (for an input
+        file, it's all or nothing) may still be available on the
+        specified output location.
+        This call returns immediately and you can use
+        google.longrunning.Operation.name to poll the status of
+        the call.
+
+        Args:
+            request (google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest):
+                The request object. The BatchTranslateDocument request.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.translate_v3beta1.types.BatchTranslateDocumentResponse` Stored in the
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   field returned by BatchTranslateDocument if at least
+                   one document is translated successfully.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a translation_service.BatchTranslateDocumentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, translation_service.BatchTranslateDocumentRequest):
+            request = translation_service.BatchTranslateDocumentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.batch_translate_document]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            translation_service.BatchTranslateDocumentResponse,
+            metadata_type=translation_service.BatchTranslateDocumentMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def create_glossary(
         self,
         request: translation_service.CreateGlossaryRequest = None,
@@ -706,14 +844,14 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         Returns NOT_FOUND, if the project doesn't exist.
 
         Args:
-            request (:class:`~.translation_service.CreateGlossaryRequest`):
+            request (google.cloud.translate_v3beta1.types.CreateGlossaryRequest):
                 The request object. Request message for CreateGlossary.
-            parent (:class:`str`):
+            parent (str):
                 Required. The project name.
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            glossary (:class:`~.translation_service.Glossary`):
+            glossary (google.cloud.translate_v3beta1.types.Glossary):
                 Required. The glossary to create.
                 This corresponds to the ``glossary`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -726,12 +864,12 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.translation_service.Glossary``: Represents a
-                glossary built from user provided data.
+                :class:`google.cloud.translate_v3beta1.types.Glossary`
+                Represents a glossary built from user provided data.
 
         """
         # Create or coerce a protobuf request object.
@@ -797,21 +935,47 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         doesn't exist.
 
         Args:
-            request (:class:`~.translation_service.ListGlossariesRequest`):
+            request (google.cloud.translate_v3beta1.types.ListGlossariesRequest):
                 The request object. Request message for ListGlossaries.
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the project
                 from which to list all of the
                 glossaries.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 Optional. Filter specifying
-                constraints of a list operation.
-                Filtering is not supported yet, and the
-                parameter currently has no effect. If
-                missing, no filtering is performed.
+                constraints of a list operation. Specify
+                the constraint by the format of
+                "key=value", where key must be "src" or
+                "tgt", and the value must be a valid
+                language code. For multiple
+                restrictions, concatenate them by "AND"
+                (uppercase only), such as: "src=en-US
+                AND tgt=zh-CN". Notice that the exact
+                match is used here, which means using
+                'en-US' and 'en' can lead to different
+                results, which depends on the language
+                code you used when you create the
+                glossary. For the unidirectional
+                glossaries, the "src" and "tgt" add
+                restrictions on the source and target
+                language code separately. For the
+                equivalent term set glossaries, the
+                "src" and/or "tgt" add restrictions on
+                the term set.
+                For example: "src=en-US AND tgt=zh-CN"
+                will only pick the unidirectional
+                glossaries which exactly match the
+                source language code as "en-US" and the
+                target language code "zh-CN", but all
+                equivalent term set glossaries which
+                contain "en-US" and "zh-CN" in their
+                language set will be picked. If missing,
+                no filtering is performed.
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -823,7 +987,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListGlossariesPager:
+            google.cloud.translate_v3beta1.services.translation_service.pagers.ListGlossariesPager:
                 Response message for ListGlossaries.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -890,11 +1054,12 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         exist.
 
         Args:
-            request (:class:`~.translation_service.GetGlossaryRequest`):
+            request (google.cloud.translate_v3beta1.types.GetGlossaryRequest):
                 The request object. Request message for GetGlossary.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the glossary to
                 retrieve.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -906,7 +1071,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.translation_service.Glossary:
+            google.cloud.translate_v3beta1.types.Glossary:
                 Represents a glossary built from user
                 provided data.
 
@@ -964,11 +1129,12 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         doesn't exist.
 
         Args:
-            request (:class:`~.translation_service.DeleteGlossaryRequest`):
+            request (google.cloud.translate_v3beta1.types.DeleteGlossaryRequest):
                 The request object. Request message for DeleteGlossary.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the glossary to
                 delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -980,14 +1146,12 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.translation_service.DeleteGlossaryResponse``:
-                Stored in the
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                field returned by DeleteGlossary.
+                The result type for the operation will be :class:`google.cloud.translate_v3beta1.types.DeleteGlossaryResponse` Stored in the
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   field returned by DeleteGlossary.
 
         """
         # Create or coerce a protobuf request object.
