@@ -237,10 +237,10 @@ def parse_insert(insert_sql, params):
             Params: ['a', 'b', 'c', 'd']
         it produces:
             {
-                'homogenous': True,
-                'table': 'T',
-                'columns': ['f1', 'f2'],
-                'values': [('a', 'b',), ('c', 'd',)],
+                'sql_params_list': [
+                    ('INSERT INTO T (f1, f2) VALUES (%s, %s)', ('a', 'b')),
+                    ('INSERT INTO T (f1, f2) VALUES (%s, %s)', ('c', 'd'))
+                ],
             }
 
     Case d)
@@ -249,7 +249,7 @@ def parse_insert(insert_sql, params):
         it produces:
             {
                 'sql_params_list': [
-                    ('INSERT INTO T (f1, f2) VALUES (%s, LOWER(%s))', ('a', 'b',))
+                    ('INSERT INTO T (f1, f2) VALUES (%s, LOWER(%s))', ('a', 'b',)),
                     ('INSERT INTO T (f1, f2) VALUES (UPPER(%s), %s)', ('c', 'd',))
                 ],
             }
@@ -306,15 +306,19 @@ def parse_insert(insert_sql, params):
         # Case c)
 
         columns = [mi.strip(" `") for mi in match.group("columns").split(",")]
+        sql_params_list = []
+        insert_sql_preamble = "INSERT INTO %s (%s) VALUES %s" % (
+            match.group("table_name"),
+            match.group("columns"),
+            values.argv[0],
+        )
         values_pyformat = [str(arg) for arg in values.argv]
         rows_list = rows_for_insert_or_update(columns, params, values_pyformat)
+        insert_sql_preamble = sanitize_literals_for_upload(insert_sql_preamble)
+        for row in rows_list:
+            sql_params_list.append((insert_sql_preamble, row))
 
-        return {
-            "homogenous": True,
-            "table": match.group("table_name"),
-            "columns": columns,
-            "values": rows_list,
-        }
+        return {"sql_params_list": sql_params_list}
 
     # Case d)
     # insert_sql is of the form:
