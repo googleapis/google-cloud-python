@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.43.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.1...v0.43.2) (2021-03-24)
+
+
+### Bug Fixes
+
+* add certain raw imports to RESERVED_NAMES ([#824](https://www.github.com/googleapis/gapic-generator-python/issues/824)) ([04bd8aa](https://www.github.com/googleapis/gapic-generator-python/commit/04bd8aaf0fc2c2c0615105cab39dc33266b66775))
+* Update module alias to resolve naming conflict ([#820](https://www.github.com/googleapis/gapic-generator-python/issues/820)) ([f5e9f36](https://www.github.com/googleapis/gapic-generator-python/commit/f5e9f367ec6a72b4272f559a93f6fbb3d7e54b8b)), closes [#819](https://www.github.com/googleapis/gapic-generator-python/issues/819)
+
 ### [0.43.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.0...v0.43.1) (2021-03-19)
 
 
