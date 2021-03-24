@@ -9,6 +9,7 @@ Using the API
   cluster
   instance
   table
+  backup
   column-family
   row
   row-data

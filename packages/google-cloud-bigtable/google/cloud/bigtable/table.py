@@ -832,6 +832,8 @@ class Table(object):
         :type expire_time: :class:`datetime.datetime`
         :param expire_time: (Optional) The expiration time of this new Backup.
             Required, if the `create` method needs to be called.
+        :rtype: :class:`.Backup`
+        :returns: A backup linked to this table.
         """
         return Backup(
             backup_id,
