@@ -17,6 +17,7 @@ import mock
 from tests._helpers import OpenTelemetryBase, StatusCanonicalCode
 from google.cloud.spanner_v1 import Type
 from google.cloud.spanner_v1 import TypeCode
+from google.api_core.retry import Retry
 from google.api_core import gapic_v1
 
 TABLE_NAME = "citizens"
@@ -492,10 +493,10 @@ class TestTransaction(OpenTelemetryBase):
         self._execute_update_helper(timeout=2.0)
 
     def test_execute_update_w_retry_param(self):
-        self._execute_update_helper(retry=gapic_v1.method.DEFAULT)
+        self._execute_update_helper(retry=Retry(deadline=60))
 
     def test_execute_update_w_timeout_and_retry_params(self):
-        self._execute_update_helper(retry=gapic_v1.method.DEFAULT, timeout=2.0)
+        self._execute_update_helper(retry=Retry(deadline=60), timeout=2.0)
 
     def test_execute_update_error(self):
         database = _Database()

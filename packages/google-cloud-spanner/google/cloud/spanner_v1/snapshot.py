@@ -27,7 +27,7 @@ from google.cloud.spanner_v1 import PartitionReadRequest
 
 from google.api_core.exceptions import InternalServerError
 from google.api_core.exceptions import ServiceUnavailable
-import google.api_core.gapic_v1.method
+from google.api_core import gapic_v1
 from google.cloud.spanner_v1._helpers import _make_value_pb
 from google.cloud.spanner_v1._helpers import _merge_query_options
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
@@ -109,7 +109,18 @@ class _SnapshotBase(_SessionWrapper):
         """
         raise NotImplementedError
 
-    def read(self, table, columns, keyset, index="", limit=0, partition=None):
+    def read(
+        self,
+        table,
+        columns,
+        keyset,
+        index="",
+        limit=0,
+        partition=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
+    ):
         """Perform a ``StreamingRead`` API request for rows in a table.
 
         :type table: str
@@ -133,6 +144,12 @@ class _SnapshotBase(_SessionWrapper):
         :param partition: (Optional) one of the partition tokens returned
                           from :meth:`partition_read`.  Incompatible with
                           ``limit``.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
@@ -163,7 +180,11 @@ class _SnapshotBase(_SessionWrapper):
             partition_token=partition,
         )
         restart = functools.partial(
-            api.streaming_read, request=request, metadata=metadata,
+            api.streaming_read,
+            request=request,
+            metadata=metadata,
+            retry=retry,
+            timeout=timeout,
         )
 
         trace_attributes = {"table_id": table, "columns": columns}
@@ -186,8 +207,8 @@ class _SnapshotBase(_SessionWrapper):
         query_mode=None,
         query_options=None,
         partition=None,
-        retry=google.api_core.gapic_v1.method.DEFAULT,
-        timeout=google.api_core.gapic_v1.method.DEFAULT,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     ):
         """Perform an ``ExecuteStreamingSql`` API request.
 
@@ -223,6 +244,12 @@ class _SnapshotBase(_SessionWrapper):
 
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
 
         :raises ValueError:
             for reuse of single-use snapshots, or if a transaction ID is
@@ -296,6 +323,9 @@ class _SnapshotBase(_SessionWrapper):
         index="",
         partition_size_bytes=None,
         max_partitions=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     ):
         """Perform a ``PartitionRead`` API request for rows in a table.
 
@@ -322,6 +352,12 @@ class _SnapshotBase(_SessionWrapper):
             (Optional) desired maximum number of partitions generated. The
             service uses this as a hint, the actual number of partitions may
             differ.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
 
         :rtype: iterable of bytes
         :returns: a sequence of partition tokens
@@ -357,7 +393,9 @@ class _SnapshotBase(_SessionWrapper):
         with trace_call(
             "CloudSpanner.PartitionReadOnlyTransaction", self._session, trace_attributes
         ):
-            response = api.partition_read(request=request, metadata=metadata,)
+            response = api.partition_read(
+                request=request, metadata=metadata, retry=retry, timeout=timeout,
+            )
 
         return [partition.partition_token for partition in response.partitions]
 
@@ -368,6 +406,9 @@ class _SnapshotBase(_SessionWrapper):
         param_types=None,
         partition_size_bytes=None,
         max_partitions=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     ):
         """Perform a ``PartitionQuery`` API request.
 
@@ -393,6 +434,12 @@ class _SnapshotBase(_SessionWrapper):
             (Optional) desired maximum number of partitions generated. The
             service uses this as a hint, the actual number of partitions may
             differ.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
 
         :rtype: iterable of bytes
         :returns: a sequence of partition tokens
@@ -438,7 +485,9 @@ class _SnapshotBase(_SessionWrapper):
             self._session,
             trace_attributes,
         ):
-            response = api.partition_query(request=request, metadata=metadata,)
+            response = api.partition_query(
+                request=request, metadata=metadata, retry=retry, timeout=timeout,
+            )
 
         return [partition.partition_token for partition in response.partitions]
 

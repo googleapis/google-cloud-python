@@ -26,6 +26,7 @@ from google.api_core.retry import Retry
 from google.api_core.retry import if_exception_type
 from google.cloud.exceptions import NotFound
 from google.api_core.exceptions import Aborted
+from google.api_core import gapic_v1
 import six
 
 # pylint: disable=ungrouped-imports
@@ -915,6 +916,9 @@ class BatchSnapshot(object):
         index="",
         partition_size_bytes=None,
         max_partitions=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     ):
         """Start a partitioned batch read operation.
 
@@ -946,6 +950,12 @@ class BatchSnapshot(object):
             service uses this as a hint, the actual number of partitions may
             differ.
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
         :rtype: iterable of dict
         :returns:
             mappings of information used perform actual partitioned reads via
@@ -958,6 +968,8 @@ class BatchSnapshot(object):
             index=index,
             partition_size_bytes=partition_size_bytes,
             max_partitions=max_partitions,
+            retry=retry,
+            timeout=timeout,
         )
 
         read_info = {
@@ -969,7 +981,9 @@ class BatchSnapshot(object):
         for partition in partitions:
             yield {"partition": partition, "read": read_info.copy()}
 
-    def process_read_batch(self, batch):
+    def process_read_batch(
+        self, batch, *, retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT,
+    ):
         """Process a single, partitioned read.
 
         :type batch: mapping
@@ -977,13 +991,22 @@ class BatchSnapshot(object):
             one of the mappings returned from an earlier call to
             :meth:`generate_read_batches`.
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
         kwargs = copy.deepcopy(batch["read"])
         keyset_dict = kwargs.pop("keyset")
         kwargs["keyset"] = KeySet._from_dict(keyset_dict)
-        return self._get_snapshot().read(partition=batch["partition"], **kwargs)
+        return self._get_snapshot().read(
+            partition=batch["partition"], **kwargs, retry=retry, timeout=timeout
+        )
 
     def generate_query_batches(
         self,
@@ -993,6 +1016,9 @@ class BatchSnapshot(object):
         partition_size_bytes=None,
         max_partitions=None,
         query_options=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     ):
         """Start a partitioned query operation.
 
@@ -1036,6 +1062,12 @@ class BatchSnapshot(object):
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.QueryOptions`
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
         :rtype: iterable of dict
         :returns:
             mappings of information used perform actual partitioned reads via
@@ -1047,6 +1079,8 @@ class BatchSnapshot(object):
             param_types=param_types,
             partition_size_bytes=partition_size_bytes,
             max_partitions=max_partitions,
+            retry=retry,
+            timeout=timeout,
         )
 
         query_info = {"sql": sql}
@@ -1064,7 +1098,9 @@ class BatchSnapshot(object):
         for partition in partitions:
             yield {"partition": partition, "query": query_info}
 
-    def process_query_batch(self, batch):
+    def process_query_batch(
+        self, batch, *, retry=gapic_v1.method.DEFAULT, timeout=gapic_v1.method.DEFAULT,
+    ):
         """Process a single, partitioned query.
 
         :type batch: mapping
@@ -1072,11 +1108,17 @@ class BatchSnapshot(object):
             one of the mappings returned from an earlier call to
             :meth:`generate_query_batches`.
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
         return self._get_snapshot().execute_sql(
-            partition=batch["partition"], **batch["query"]
+            partition=batch["partition"], **batch["query"], retry=retry, timeout=timeout
         )
 
     def process(self, batch):

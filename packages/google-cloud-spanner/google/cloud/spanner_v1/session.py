@@ -258,6 +258,12 @@ class Session(object):
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
 
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
+
         :rtype: :class:`~google.cloud.spanner_v1.streamed.StreamedResultSet`
         :returns: a result set instance which can be used to consume rows.
         """
