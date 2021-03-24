@@ -112,6 +112,22 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            ClusterManagerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -123,7 +139,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            ClusterManagerClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -226,10 +242,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ClusterManagerTransport]): The
+            transport (Union[str, ClusterManagerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -265,21 +281,17 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -322,7 +334,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -341,24 +353,26 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         specified zone or all zones.
 
         Args:
-            request (:class:`~.cluster_service.ListClustersRequest`):
+            request (google.cloud.container_v1beta1.types.ListClustersRequest):
                 The request object. ListClustersRequest lists clusters.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the
                 parent field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides, or "-" for all zones. This
                 field has been deprecated and replaced by the parent
                 field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -370,7 +384,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.ListClustersResponse:
+            google.cloud.container_v1beta1.types.ListClustersResponse:
                 ListClustersResponse is the result of
                 ListClustersRequest.
 
@@ -430,32 +444,35 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Gets the details for a specific cluster.
 
         Args:
-            request (:class:`~.cluster_service.GetClusterRequest`):
+            request (google.cloud.container_v1beta1.types.GetClusterRequest):
                 The request object. GetClusterRequest gets the settings
                 of a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to retrieve. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -467,7 +484,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Cluster:
+            google.cloud.container_v1beta1.types.Cluster:
                 A Google Kubernetes Engine cluster.
         """
         # Create or coerce a protobuf request object.
@@ -539,30 +556,33 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         indicating which CIDR range the cluster is using.
 
         Args:
-            request (:class:`~.cluster_service.CreateClusterRequest`):
+            request (google.cloud.container_v1beta1.types.CreateClusterRequest):
                 The request object. CreateClusterRequest creates a
                 cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the
                 parent field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the parent field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster (:class:`~.cluster_service.Cluster`):
+            cluster (google.cloud.container_v1beta1.types.Cluster):
                 Required. A `cluster
                 resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters>`__
+
                 This corresponds to the ``cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -574,7 +594,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -639,38 +659,42 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Updates the settings for a specific cluster.
 
         Args:
-            request (:class:`~.cluster_service.UpdateClusterRequest`):
+            request (google.cloud.container_v1beta1.types.UpdateClusterRequest):
                 The request object. UpdateClusterRequest updates the
                 settings of a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update (:class:`~.cluster_service.ClusterUpdate`):
+            update (google.cloud.container_v1beta1.types.ClusterUpdate):
                 Required. A description of the
                 update.
+
                 This corresponds to the ``update`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -682,7 +706,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -746,7 +770,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         node pool.
 
         Args:
-            request (:class:`~.cluster_service.UpdateNodePoolRequest`):
+            request (google.cloud.container_v1beta1.types.UpdateNodePoolRequest):
                 The request object. SetNodePoolVersionRequest updates
                 the version of a node pool.
 
@@ -757,7 +781,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -801,7 +825,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         pool.
 
         Args:
-            request (:class:`~.cluster_service.SetNodePoolAutoscalingRequest`):
+            request (google.cloud.container_v1beta1.types.SetNodePoolAutoscalingRequest):
                 The request object. SetNodePoolAutoscalingRequest sets
                 the autoscaler settings of a node pool.
 
@@ -812,7 +836,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -861,36 +885,39 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the logging service for a specific cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetLoggingServiceRequest`):
+            request (google.cloud.container_v1beta1.types.SetLoggingServiceRequest):
                 The request object. SetLoggingServiceRequest sets the
                 logging service of a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            logging_service (:class:`str`):
+            logging_service (str):
                 Required. The logging service the cluster should use to
                 write logs. Currently available options:
 
@@ -905,6 +932,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 string,\ ``logging.googleapis.com/kubernetes`` will be
                 used for GKE 1.14+ or ``logging.googleapis.com`` for
                 earlier versions.
+
                 This corresponds to the ``logging_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -916,7 +944,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -983,36 +1011,39 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the monitoring service for a specific cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetMonitoringServiceRequest`):
+            request (google.cloud.container_v1beta1.types.SetMonitoringServiceRequest):
                 The request object. SetMonitoringServiceRequest sets the
                 monitoring service of a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            monitoring_service (:class:`str`):
+            monitoring_service (str):
                 Required. The monitoring service the cluster should use
                 to write metrics. Currently available options:
 
@@ -1029,6 +1060,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 string,\ ``monitoring.googleapis.com/kubernetes`` will
                 be used for GKE 1.14+ or ``monitoring.googleapis.com``
                 for earlier versions.
+
                 This corresponds to the ``monitoring_service`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1040,7 +1072,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1107,39 +1139,43 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the addons for a specific cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetAddonsConfigRequest`):
+            request (google.cloud.container_v1beta1.types.SetAddonsConfigRequest):
                 The request object. SetAddonsRequest sets the addons
                 associated with the cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            addons_config (:class:`~.cluster_service.AddonsConfig`):
+            addons_config (google.cloud.container_v1beta1.types.AddonsConfig):
                 Required. The desired configurations
                 for the various addons available to run
                 in the cluster.
+
                 This corresponds to the ``addons_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1151,7 +1187,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1220,36 +1256,39 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         instead.
 
         Args:
-            request (:class:`~.cluster_service.SetLocationsRequest`):
+            request (google.cloud.container_v1beta1.types.SetLocationsRequest):
                 The request object. SetLocationsRequest sets the
                 locations of the cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            locations (:class:`Sequence[str]`):
+            locations (Sequence[str]):
                 Required. The desired list of Google Compute Engine
                 `zones <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster's nodes should be located. Changing
@@ -1259,6 +1298,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
                 This list must always include the cluster's primary
                 zone.
+
                 This corresponds to the ``locations`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1270,7 +1310,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1303,9 +1343,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 request.zone = zone
             if cluster_id is not None:
                 request.cluster_id = cluster_id
-
-            if locations:
-                request.locations.extend(locations)
+            if locations is not None:
+                request.locations = locations
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1338,36 +1377,39 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Updates the master for a specific cluster.
 
         Args:
-            request (:class:`~.cluster_service.UpdateMasterRequest`):
+            request (google.cloud.container_v1beta1.types.UpdateMasterRequest):
                 The request object. UpdateMasterRequest updates the
                 master of the cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to upgrade. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            master_version (:class:`str`):
+            master_version (str):
                 Required. The Kubernetes version to
                 change the master to.
                 Users may specify either explicit
@@ -1382,6 +1424,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 "1.X.Y-gke.N": picks an explicit
                 Kubernetes version - "-": picks the
                 default Kubernetes version
+
                 This corresponds to the ``master_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1393,7 +1436,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1459,7 +1502,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         password.
 
         Args:
-            request (:class:`~.cluster_service.SetMasterAuthRequest`):
+            request (google.cloud.container_v1beta1.types.SetMasterAuthRequest):
                 The request object. SetMasterAuthRequest updates the
                 admin password of a cluster.
 
@@ -1470,7 +1513,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1525,32 +1568,35 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         initially created.
 
         Args:
-            request (:class:`~.cluster_service.DeleteClusterRequest`):
+            request (google.cloud.container_v1beta1.types.DeleteClusterRequest):
                 The request object. DeleteClusterRequest deletes a
                 cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to delete. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1562,7 +1608,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1626,25 +1672,27 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         zone or all zones.
 
         Args:
-            request (:class:`~.cluster_service.ListOperationsRequest`):
+            request (google.cloud.container_v1beta1.types.ListOperationsRequest):
                 The request object. ListOperationsRequest lists
                 operations.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the
                 parent field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 to return operations for, or ``-`` for all zones. This
                 field has been deprecated and replaced by the parent
                 field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1656,7 +1704,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.ListOperationsResponse:
+            google.cloud.container_v1beta1.types.ListOperationsResponse:
                 ListOperationsResponse is the result
                 of ListOperationsRequest.
 
@@ -1716,31 +1764,34 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Gets the specified operation.
 
         Args:
-            request (:class:`~.cluster_service.GetOperationRequest`):
+            request (google.cloud.container_v1beta1.types.GetOperationRequest):
                 The request object. GetOperationRequest gets a single
                 operation.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            operation_id (:class:`str`):
+            operation_id (str):
                 Required. Deprecated. The server-assigned ``name`` of
                 the operation. This field has been deprecated and
                 replaced by the name field.
+
                 This corresponds to the ``operation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1752,7 +1803,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -1816,31 +1867,34 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Cancels the specified operation.
 
         Args:
-            request (:class:`~.cluster_service.CancelOperationRequest`):
+            request (google.cloud.container_v1beta1.types.CancelOperationRequest):
                 The request object. CancelOperationRequest cancels a
                 single operation.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the operation resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            operation_id (:class:`str`):
+            operation_id (str):
                 Required. Deprecated. The server-assigned ``name`` of
                 the operation. This field has been deprecated and
                 replaced by the name field.
+
                 This corresponds to the ``operation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1907,24 +1961,26 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Kubernetes Engine service.
 
         Args:
-            request (:class:`~.cluster_service.GetServerConfigRequest`):
+            request (google.cloud.container_v1beta1.types.GetServerConfigRequest):
                 The request object. Gets the current Kubernetes Engine
                 service configuration.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 to return operations for. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1936,7 +1992,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.ServerConfig:
+            google.cloud.container_v1beta1.types.ServerConfig:
                 Kubernetes Engine service
                 configuration.
 
@@ -1996,31 +2052,34 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Lists the node pools for a cluster.
 
         Args:
-            request (:class:`~.cluster_service.ListNodePoolsRequest`):
+            request (google.cloud.container_v1beta1.types.ListNodePoolsRequest):
                 The request object. ListNodePoolsRequest lists the node
                 pool(s) for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the
                 parent field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the parent field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the parent field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2032,7 +2091,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.ListNodePoolsResponse:
+            google.cloud.container_v1beta1.types.ListNodePoolsResponse:
                 ListNodePoolsResponse is the result
                 of ListNodePoolsRequest.
 
@@ -2094,7 +2153,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         available for all clusters.
 
         Args:
-            request (:class:`~.cluster_service.GetJSONWebKeysRequest`):
+            request (google.cloud.container_v1beta1.types.GetJSONWebKeysRequest):
                 The request object. GetJSONWebKeysRequest gets the
                 public component of the keys used by the cluster to sign
                 token requests. This will be the jwks_uri for the
@@ -2108,7 +2167,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.GetJSONWebKeysResponse:
+            google.cloud.container_v1beta1.types.GetJSONWebKeysResponse:
                 GetJSONWebKeysResponse is a valid
                 JSON Web Key Set as specififed in rfc
                 7517
@@ -2154,39 +2213,43 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Retrieves the requested node pool.
 
         Args:
-            request (:class:`~.cluster_service.GetNodePoolRequest`):
+            request (google.cloud.container_v1beta1.types.GetNodePoolRequest):
                 The request object. GetNodePoolRequest retrieves a node
                 pool for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            node_pool_id (:class:`str`):
+            node_pool_id (str):
                 Required. Deprecated. The name of the
                 node pool. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``node_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2198,7 +2261,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.NodePool:
+            google.cloud.container_v1beta1.types.NodePool:
                 NodePool contains the name and
                 configuration for a cluster's node pool.
                 Node pools are a set of nodes (i.e.
@@ -2271,35 +2334,38 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Creates a node pool for a cluster.
 
         Args:
-            request (:class:`~.cluster_service.CreateNodePoolRequest`):
+            request (google.cloud.container_v1beta1.types.CreateNodePoolRequest):
                 The request object. CreateNodePoolRequest creates a node
                 pool for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the
                 parent field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the parent field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the parent field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            node_pool (:class:`~.cluster_service.NodePool`):
+            node_pool (google.cloud.container_v1beta1.types.NodePool):
                 Required. The node pool to create.
                 This corresponds to the ``node_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2312,7 +2378,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -2379,39 +2445,43 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Deletes a node pool from a cluster.
 
         Args:
-            request (:class:`~.cluster_service.DeleteNodePoolRequest`):
+            request (google.cloud.container_v1beta1.types.DeleteNodePoolRequest):
                 The request object. DeleteNodePoolRequest deletes a node
                 pool for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            node_pool_id (:class:`str`):
+            node_pool_id (str):
                 Required. Deprecated. The name of the
                 node pool to delete. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``node_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2423,7 +2493,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -2492,42 +2562,46 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         successfully completed.
 
         Args:
-            request (:class:`~.cluster_service.RollbackNodePoolUpgradeRequest`):
+            request (google.cloud.container_v1beta1.types.RollbackNodePoolUpgradeRequest):
                 The request object. RollbackNodePoolUpgradeRequest
                 rollbacks the previously Aborted or Failed NodePool
                 upgrade. This will be an no-op if the last upgrade
                 successfully completed.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to rollback. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            node_pool_id (:class:`str`):
+            node_pool_id (str):
                 Required. Deprecated. The name of the
                 node pool to rollback. This field has
                 been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``node_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2539,7 +2613,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -2609,46 +2683,51 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the NodeManagement options for a node pool.
 
         Args:
-            request (:class:`~.cluster_service.SetNodePoolManagementRequest`):
+            request (google.cloud.container_v1beta1.types.SetNodePoolManagementRequest):
                 The request object. SetNodePoolManagementRequest sets
                 the node management properties of a node pool.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to update. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            node_pool_id (:class:`str`):
+            node_pool_id (str):
                 Required. Deprecated. The name of the
                 node pool to update. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``node_pool_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            management (:class:`~.cluster_service.NodeManagement`):
+            management (google.cloud.container_v1beta1.types.NodeManagement):
                 Required. NodeManagement
                 configuration for the node pool.
+
                 This corresponds to the ``management`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2660,7 +2739,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -2734,43 +2813,47 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets labels on a cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetLabelsRequest`):
+            request (google.cloud.container_v1beta1.types.SetLabelsRequest):
                 The request object. SetLabelsRequest sets the Google
                 Cloud Platform labels on a Google Container Engine
                 cluster, which will in turn set them for Google Compute
                 Engine resources used by that cluster
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            resource_labels (:class:`Sequence[~.cluster_service.SetLabelsRequest.ResourceLabelsEntry]`):
+            resource_labels (Sequence[google.cloud.container_v1beta1.types.SetLabelsRequest.ResourceLabelsEntry]):
                 Required. The labels to set for that
                 cluster.
+
                 This corresponds to the ``resource_labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            label_fingerprint (:class:`str`):
+            label_fingerprint (str):
                 Required. The fingerprint of the previous set of labels
                 for this resource, used to detect conflicts. The
                 fingerprint is initially generated by Kubernetes Engine
@@ -2779,6 +2862,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 fingerprint hash when updating or changing labels. Make
                 a ``get()`` request to the resource to get the latest
                 fingerprint.
+
                 This corresponds to the ``label_fingerprint`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2790,7 +2874,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -2825,11 +2909,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 request.zone = zone
             if cluster_id is not None:
                 request.cluster_id = cluster_id
+            if resource_labels is not None:
+                request.resource_labels = resource_labels
             if label_fingerprint is not None:
                 request.label_fingerprint = label_fingerprint
-
-            if resource_labels:
-                request.resource_labels.update(resource_labels)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2863,38 +2946,42 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         on a cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetLegacyAbacRequest`):
+            request (google.cloud.container_v1beta1.types.SetLegacyAbacRequest):
                 The request object. SetLegacyAbacRequest enables or
                 disables the ABAC authorization mechanism for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://support.google.com/cloud/answer/6158840>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster to update. This field has been
                 deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            enabled (:class:`bool`):
+            enabled (bool):
                 Required. Whether ABAC authorization
                 will be enabled in the cluster.
+
                 This corresponds to the ``enabled`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2906,7 +2993,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -2972,32 +3059,35 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Starts master IP rotation.
 
         Args:
-            request (:class:`~.cluster_service.StartIPRotationRequest`):
+            request (google.cloud.container_v1beta1.types.StartIPRotationRequest):
                 The request object. StartIPRotationRequest creates a new
                 IP for the cluster and then performs a node upgrade on
                 each node pool to point to the new IP.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -3009,7 +3099,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -3073,31 +3163,34 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Completes master IP rotation.
 
         Args:
-            request (:class:`~.cluster_service.CompleteIPRotationRequest`):
+            request (google.cloud.container_v1beta1.types.CompleteIPRotationRequest):
                 The request object. CompleteIPRotationRequest moves the
                 cluster master back into single-IP mode.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -3109,7 +3202,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -3170,7 +3263,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the size for a specific node pool.
 
         Args:
-            request (:class:`~.cluster_service.SetNodePoolSizeRequest`):
+            request (google.cloud.container_v1beta1.types.SetNodePoolSizeRequest):
                 The request object. SetNodePoolSizeRequest sets the size
                 a node pool.
 
@@ -3181,7 +3274,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -3228,37 +3321,41 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Enables or disables Network Policy for a cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetNetworkPolicyRequest`):
+            request (google.cloud.container_v1beta1.types.SetNetworkPolicyRequest):
                 The request object. SetNetworkPolicyRequest
                 enables/disables network policy for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. Deprecated. The Google Developers Console
                 `project ID or project
                 number <https://developers.google.com/console/help/new/#projectnumber>`__.
                 This field has been deprecated and replaced by the name
                 field.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. Deprecated. The name of the Google Compute
                 Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides. This field has been
                 deprecated and replaced by the name field.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. Deprecated. The name of the
                 cluster. This field has been deprecated
                 and replaced by the name field.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            network_policy (:class:`~.cluster_service.NetworkPolicy`):
+            network_policy (google.cloud.container_v1beta1.types.NetworkPolicy):
                 Required. Configuration options for
                 the NetworkPolicy feature.
+
                 This corresponds to the ``network_policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -3270,7 +3367,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -3337,33 +3434,37 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Sets the maintenance policy for a cluster.
 
         Args:
-            request (:class:`~.cluster_service.SetMaintenancePolicyRequest`):
+            request (google.cloud.container_v1beta1.types.SetMaintenancePolicyRequest):
                 The request object. SetMaintenancePolicyRequest sets the
                 maintenance policy for a cluster.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The Google Developers Console `project ID or
                 project
                 number <https://support.google.com/cloud/answer/6158840>`__.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            zone (:class:`str`):
+            zone (str):
                 Required. The name of the Google Compute Engine
                 `zone <https://cloud.google.com/compute/docs/zones#available>`__
                 in which the cluster resides.
+
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            cluster_id (:class:`str`):
+            cluster_id (str):
                 Required. The name of the cluster to
                 update.
+
                 This corresponds to the ``cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            maintenance_policy (:class:`~.cluster_service.MaintenancePolicy`):
+            maintenance_policy (google.cloud.container_v1beta1.types.MaintenancePolicy):
                 Required. The maintenance policy to
                 be set for the cluster. An empty field
                 clears the existing maintenance policy.
+
                 This corresponds to the ``maintenance_policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -3375,7 +3476,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.Operation:
+            google.cloud.container_v1beta1.types.Operation:
                 This operation resource represents
                 operations that may have happened or are
                 happening on the cluster. All fields are
@@ -3440,13 +3541,14 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         clusters in a project.
 
         Args:
-            request (:class:`~.cluster_service.ListUsableSubnetworksRequest`):
+            request (google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest):
                 The request object. ListUsableSubnetworksRequest
                 requests the list of usable subnetworks. available to a
                 user for creating clusters.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent project where subnetworks are
                 usable. Specified in the format ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -3458,7 +3560,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListUsableSubnetworksPager:
+            google.cloud.container_v1beta1.services.cluster_manager.pagers.ListUsableSubnetworksPager:
                 ListUsableSubnetworksResponse is the
                 response of
                 ListUsableSubnetworksRequest.
@@ -3526,12 +3628,13 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         Engine.
 
         Args:
-            request (:class:`~.cluster_service.ListLocationsRequest`):
+            request (google.cloud.container_v1beta1.types.ListLocationsRequest):
                 The request object. ListLocationsRequest is used to
                 request the locations that offer GKE.
-            parent (:class:`str`):
+            parent (str):
                 Required. Contains the name of the resource requested.
                 Specified in the format ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -3543,7 +3646,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.cluster_service.ListLocationsResponse:
+            google.cloud.container_v1beta1.types.ListLocationsResponse:
                 ListLocationsResponse returns the
                 list of all GKE locations and their
                 recommendation state.

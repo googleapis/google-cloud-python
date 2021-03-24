@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.container_v1beta1.types import cluster_service
 
@@ -24,7 +33,7 @@ class ListUsableSubnetworksPager:
     """A pager for iterating through ``list_usable_subnetworks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cluster_service.ListUsableSubnetworksResponse` object, and
+    :class:`google.cloud.container_v1beta1.types.ListUsableSubnetworksResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``subnetworks`` field.
 
@@ -33,7 +42,7 @@ class ListUsableSubnetworksPager:
     through the ``subnetworks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cluster_service.ListUsableSubnetworksResponse`
+    All the usual :class:`google.cloud.container_v1beta1.types.ListUsableSubnetworksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListUsableSubnetworksPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cluster_service.ListUsableSubnetworksRequest`):
+            request (google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest):
                 The initial request object.
-            response (:class:`~.cluster_service.ListUsableSubnetworksResponse`):
+            response (google.cloud.container_v1beta1.types.ListUsableSubnetworksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListUsableSubnetworksAsyncPager:
     """A pager for iterating through ``list_usable_subnetworks`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cluster_service.ListUsableSubnetworksResponse` object, and
+    :class:`google.cloud.container_v1beta1.types.ListUsableSubnetworksResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``subnetworks`` field.
 
@@ -95,7 +104,7 @@ class ListUsableSubnetworksAsyncPager:
     through the ``subnetworks`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cluster_service.ListUsableSubnetworksResponse`
+    All the usual :class:`google.cloud.container_v1beta1.types.ListUsableSubnetworksResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListUsableSubnetworksAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cluster_service.ListUsableSubnetworksRequest`):
+            request (google.cloud.container_v1beta1.types.ListUsableSubnetworksRequest):
                 The initial request object.
-            response (:class:`~.cluster_service.ListUsableSubnetworksResponse`):
+            response (google.cloud.container_v1beta1.types.ListUsableSubnetworksResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

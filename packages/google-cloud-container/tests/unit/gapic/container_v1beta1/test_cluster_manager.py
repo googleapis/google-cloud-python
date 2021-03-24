@@ -91,7 +91,24 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ClusterManagerClient, ClusterManagerAsyncClient]
+    "client_class", [ClusterManagerClient, ClusterManagerAsyncClient,]
+)
+def test_cluster_manager_client_from_service_account_info(client_class):
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "container.googleapis.com:443"
+
+
+@pytest.mark.parametrize(
+    "client_class", [ClusterManagerClient, ClusterManagerAsyncClient,]
 )
 def test_cluster_manager_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
@@ -101,16 +118,21 @@ def test_cluster_manager_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "container.googleapis.com:443"
 
 
 def test_cluster_manager_client_get_transport_class():
     transport = ClusterManagerClient.get_transport_class()
-    assert transport == transports.ClusterManagerGrpcTransport
+    available_transports = [
+        transports.ClusterManagerGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = ClusterManagerClient.get_transport_class("grpc")
     assert transport == transports.ClusterManagerGrpcTransport
@@ -161,7 +183,7 @@ def test_cluster_manager_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -177,7 +199,7 @@ def test_cluster_manager_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -193,7 +215,7 @@ def test_cluster_manager_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -221,7 +243,7 @@ def test_cluster_manager_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -272,29 +294,25 @@ def test_cluster_manager_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -303,40 +321,31 @@ def test_cluster_manager_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -344,24 +353,20 @@ def test_cluster_manager_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -388,7 +393,7 @@ def test_cluster_manager_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -418,7 +423,7 @@ def test_cluster_manager_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -437,7 +442,7 @@ def test_cluster_manager_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -478,6 +483,22 @@ def test_list_clusters(
 
 def test_list_clusters_from_dict():
     test_list_clusters(request_type=dict)
+
+
+def test_list_clusters_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
+        client.list_clusters()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.ListClustersRequest()
 
 
 @pytest.mark.asyncio
@@ -770,6 +791,22 @@ def test_get_cluster(
 
 def test_get_cluster_from_dict():
     test_get_cluster(request_type=dict)
+
+
+def test_get_cluster_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
+        client.get_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetClusterRequest()
 
 
 @pytest.mark.asyncio
@@ -1106,6 +1143,22 @@ def test_create_cluster_from_dict():
     test_create_cluster(request_type=dict)
 
 
+def test_create_cluster_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
+        client.create_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.CreateClusterRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_cluster_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.CreateClusterRequest
@@ -1381,6 +1434,22 @@ def test_update_cluster(
 
 def test_update_cluster_from_dict():
     test_update_cluster(request_type=dict)
+
+
+def test_update_cluster_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
+        client.update_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.UpdateClusterRequest()
 
 
 @pytest.mark.asyncio
@@ -1680,6 +1749,22 @@ def test_update_node_pool_from_dict():
     test_update_node_pool(request_type=dict)
 
 
+def test_update_node_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_node_pool), "__call__") as call:
+        client.update_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.UpdateNodePoolRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_node_pool_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.UpdateNodePoolRequest
@@ -1868,6 +1953,24 @@ def test_set_node_pool_autoscaling(
 
 def test_set_node_pool_autoscaling_from_dict():
     test_set_node_pool_autoscaling(request_type=dict)
+
+
+def test_set_node_pool_autoscaling_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_autoscaling), "__call__"
+    ) as call:
+        client.set_node_pool_autoscaling()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetNodePoolAutoscalingRequest()
 
 
 @pytest.mark.asyncio
@@ -2065,6 +2168,24 @@ def test_set_logging_service(
 
 def test_set_logging_service_from_dict():
     test_set_logging_service(request_type=dict)
+
+
+def test_set_logging_service_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_logging_service), "__call__"
+    ) as call:
+        client.set_logging_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetLoggingServiceRequest()
 
 
 @pytest.mark.asyncio
@@ -2365,6 +2486,24 @@ def test_set_monitoring_service_from_dict():
     test_set_monitoring_service(request_type=dict)
 
 
+def test_set_monitoring_service_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_monitoring_service), "__call__"
+    ) as call:
+        client.set_monitoring_service()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetMonitoringServiceRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_monitoring_service_async(
     transport: str = "grpc_asyncio",
@@ -2661,6 +2800,24 @@ def test_set_addons_config(
 
 def test_set_addons_config_from_dict():
     test_set_addons_config(request_type=dict)
+
+
+def test_set_addons_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_addons_config), "__call__"
+    ) as call:
+        client.set_addons_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetAddonsConfigRequest()
 
 
 @pytest.mark.asyncio
@@ -2970,6 +3127,22 @@ def test_set_locations_from_dict():
     test_set_locations(request_type=dict)
 
 
+def test_set_locations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_locations), "__call__") as call:
+        client.set_locations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetLocationsRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_locations_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetLocationsRequest
@@ -3253,6 +3426,22 @@ def test_update_master(
 
 def test_update_master_from_dict():
     test_update_master(request_type=dict)
+
+
+def test_update_master_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_master), "__call__") as call:
+        client.update_master()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.UpdateMasterRequest()
 
 
 @pytest.mark.asyncio
@@ -3540,6 +3729,22 @@ def test_set_master_auth_from_dict():
     test_set_master_auth(request_type=dict)
 
 
+def test_set_master_auth_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_master_auth), "__call__") as call:
+        client.set_master_auth()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetMasterAuthRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_master_auth_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetMasterAuthRequest
@@ -3726,6 +3931,22 @@ def test_delete_cluster(
 
 def test_delete_cluster_from_dict():
     test_delete_cluster(request_type=dict)
+
+
+def test_delete_cluster_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
+        client.delete_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.DeleteClusterRequest()
 
 
 @pytest.mark.asyncio
@@ -3975,6 +4196,22 @@ def test_list_operations_from_dict():
     test_list_operations(request_type=dict)
 
 
+def test_list_operations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
+        client.list_operations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.ListOperationsRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_operations_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.ListOperationsRequest
@@ -4210,6 +4447,22 @@ def test_get_operation(
 
 def test_get_operation_from_dict():
     test_get_operation(request_type=dict)
+
+
+def test_get_operation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
+        client.get_operation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetOperationRequest()
 
 
 @pytest.mark.asyncio
@@ -4454,6 +4707,22 @@ def test_cancel_operation_from_dict():
     test_cancel_operation(request_type=dict)
 
 
+def test_cancel_operation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
+        client.cancel_operation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.CancelOperationRequest()
+
+
 @pytest.mark.asyncio
 async def test_cancel_operation_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.CancelOperationRequest
@@ -4673,6 +4942,24 @@ def test_get_server_config(
 
 def test_get_server_config_from_dict():
     test_get_server_config(request_type=dict)
+
+
+def test_get_server_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_server_config), "__call__"
+    ) as call:
+        client.get_server_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetServerConfigRequest()
 
 
 @pytest.mark.asyncio
@@ -4900,6 +5187,22 @@ def test_list_node_pools_from_dict():
     test_list_node_pools(request_type=dict)
 
 
+def test_list_node_pools_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_node_pools), "__call__") as call:
+        client.list_node_pools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.ListNodePoolsRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_node_pools_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.ListNodePoolsRequest
@@ -5111,6 +5414,24 @@ def test_get_json_web_keys_from_dict():
     test_get_json_web_keys(request_type=dict)
 
 
+def test_get_json_web_keys_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_json_web_keys), "__call__"
+    ) as call:
+        client.get_json_web_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetJSONWebKeysRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_json_web_keys_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.GetJSONWebKeysRequest
@@ -5263,6 +5584,22 @@ def test_get_node_pool(
 
 def test_get_node_pool_from_dict():
     test_get_node_pool(request_type=dict)
+
+
+def test_get_node_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node_pool), "__call__") as call:
+        client.get_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.GetNodePoolRequest()
 
 
 @pytest.mark.asyncio
@@ -5542,6 +5879,22 @@ def test_create_node_pool(
 
 def test_create_node_pool_from_dict():
     test_create_node_pool(request_type=dict)
+
+
+def test_create_node_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_node_pool), "__call__") as call:
+        client.create_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.CreateNodePoolRequest()
 
 
 @pytest.mark.asyncio
@@ -5829,6 +6182,22 @@ def test_delete_node_pool_from_dict():
     test_delete_node_pool(request_type=dict)
 
 
+def test_delete_node_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_node_pool), "__call__") as call:
+        client.delete_node_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.DeleteNodePoolRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_node_pool_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.DeleteNodePoolRequest
@@ -6114,6 +6483,24 @@ def test_rollback_node_pool_upgrade(
 
 def test_rollback_node_pool_upgrade_from_dict():
     test_rollback_node_pool_upgrade(request_type=dict)
+
+
+def test_rollback_node_pool_upgrade_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_node_pool_upgrade), "__call__"
+    ) as call:
+        client.rollback_node_pool_upgrade()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.RollbackNodePoolUpgradeRequest()
 
 
 @pytest.mark.asyncio
@@ -6412,6 +6799,24 @@ def test_set_node_pool_management(
 
 def test_set_node_pool_management_from_dict():
     test_set_node_pool_management(request_type=dict)
+
+
+def test_set_node_pool_management_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_management), "__call__"
+    ) as call:
+        client.set_node_pool_management()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetNodePoolManagementRequest()
 
 
 @pytest.mark.asyncio
@@ -6718,6 +7123,22 @@ def test_set_labels_from_dict():
     test_set_labels(request_type=dict)
 
 
+def test_set_labels_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_labels), "__call__") as call:
+        client.set_labels()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetLabelsRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_labels_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetLabelsRequest
@@ -7011,6 +7432,22 @@ def test_set_legacy_abac_from_dict():
     test_set_legacy_abac(request_type=dict)
 
 
+def test_set_legacy_abac_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_legacy_abac), "__call__") as call:
+        client.set_legacy_abac()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetLegacyAbacRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_legacy_abac_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetLegacyAbacRequest
@@ -7296,6 +7733,24 @@ def test_start_ip_rotation(
 
 def test_start_ip_rotation_from_dict():
     test_start_ip_rotation(request_type=dict)
+
+
+def test_start_ip_rotation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_ip_rotation), "__call__"
+    ) as call:
+        client.start_ip_rotation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.StartIPRotationRequest()
 
 
 @pytest.mark.asyncio
@@ -7585,6 +8040,24 @@ def test_complete_ip_rotation(
 
 def test_complete_ip_rotation_from_dict():
     test_complete_ip_rotation(request_type=dict)
+
+
+def test_complete_ip_rotation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_ip_rotation), "__call__"
+    ) as call:
+        client.complete_ip_rotation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.CompleteIPRotationRequest()
 
 
 @pytest.mark.asyncio
@@ -7877,6 +8350,24 @@ def test_set_node_pool_size_from_dict():
     test_set_node_pool_size(request_type=dict)
 
 
+def test_set_node_pool_size_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_node_pool_size), "__call__"
+    ) as call:
+        client.set_node_pool_size()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetNodePoolSizeRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_node_pool_size_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.SetNodePoolSizeRequest
@@ -8071,6 +8562,24 @@ def test_set_network_policy(
 
 def test_set_network_policy_from_dict():
     test_set_network_policy(request_type=dict)
+
+
+def test_set_network_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_network_policy), "__call__"
+    ) as call:
+        client.set_network_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetNetworkPolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -8383,6 +8892,24 @@ def test_set_maintenance_policy_from_dict():
     test_set_maintenance_policy(request_type=dict)
 
 
+def test_set_maintenance_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_maintenance_policy), "__call__"
+    ) as call:
+        client.set_maintenance_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.SetMaintenancePolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_maintenance_policy_async(
     transport: str = "grpc_asyncio",
@@ -8685,6 +9212,24 @@ def test_list_usable_subnetworks(
 
 def test_list_usable_subnetworks_from_dict():
     test_list_usable_subnetworks(request_type=dict)
+
+
+def test_list_usable_subnetworks_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_usable_subnetworks), "__call__"
+    ) as call:
+        client.list_usable_subnetworks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.ListUsableSubnetworksRequest()
 
 
 @pytest.mark.asyncio
@@ -9065,6 +9610,22 @@ def test_list_locations_from_dict():
     test_list_locations(request_type=dict)
 
 
+def test_list_locations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ClusterManagerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        client.list_locations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cluster_service.ListLocationsRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_locations_async(
     transport: str = "grpc_asyncio", request_type=cluster_service.ListLocationsRequest
@@ -9414,6 +9975,51 @@ def test_cluster_manager_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ClusterManagerGrpcTransport,
+        transports.ClusterManagerGrpcAsyncIOTransport,
+    ],
+)
+def test_cluster_manager_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_cluster_manager_host_no_port():
     client = ClusterManagerClient(
         credentials=credentials.AnonymousCredentials(),
@@ -9435,7 +10041,7 @@ def test_cluster_manager_host_with_port():
 
 
 def test_cluster_manager_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.ClusterManagerGrpcTransport(
@@ -9447,7 +10053,7 @@ def test_cluster_manager_grpc_transport_channel():
 
 
 def test_cluster_manager_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.ClusterManagerGrpcAsyncIOTransport(
@@ -9458,6 +10064,8 @@ def test_cluster_manager_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -9472,7 +10080,7 @@ def test_cluster_manager_transport_channel_mtls_with_client_cert_source(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -9510,6 +10118,8 @@ def test_cluster_manager_transport_channel_mtls_with_client_cert_source(
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -9525,7 +10135,7 @@ def test_cluster_manager_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel

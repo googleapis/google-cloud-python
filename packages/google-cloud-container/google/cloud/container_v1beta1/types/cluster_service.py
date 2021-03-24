@@ -167,7 +167,7 @@ class LinuxNodeConfig(proto.Message):
     r"""Parameters that can be configured on Linux nodes.
 
     Attributes:
-        sysctls (Sequence[~.cluster_service.LinuxNodeConfig.SysctlsEntry]):
+        sysctls (Sequence[google.cloud.container_v1beta1.types.LinuxNodeConfig.SysctlsEntry]):
             The Linux kernel parameters to be applied to the nodes and
             all pods running on the nodes.
 
@@ -199,7 +199,7 @@ class NodeKubeletConfig(proto.Message):
             increased CPU affinity and exclusivity on the
             node.  The default value is 'none' if
             unspecified.
-        cpu_cfs_quota (~.wrappers.BoolValue):
+        cpu_cfs_quota (google.protobuf.wrappers_pb2.BoolValue):
             Enable CPU CFS quota enforcement for
             containers that specify CPU limits.
             This option is enabled by default which makes
@@ -267,7 +267,7 @@ class NodeConfig(proto.Message):
             address of the Service Account; otherwise, if no
             Service Account is specified, the "default"
             service account is used.
-        metadata (Sequence[~.cluster_service.NodeConfig.MetadataEntry]):
+        metadata (Sequence[google.cloud.container_v1beta1.types.NodeConfig.MetadataEntry]):
             The metadata key/value pairs assigned to instances in the
             cluster.
 
@@ -312,7 +312,7 @@ class NodeConfig(proto.Message):
             The image type to use for this node. Note
             that for a given image type, the latest version
             of it will be used.
-        labels (Sequence[~.cluster_service.NodeConfig.LabelsEntry]):
+        labels (Sequence[google.cloud.container_v1beta1.types.NodeConfig.LabelsEntry]):
             The map of Kubernetes labels (key/value
             pairs) to be applied to each node. These will
             added in addition to any default label(s) that
@@ -346,19 +346,19 @@ class NodeConfig(proto.Message):
             https://cloud.google.com/compute/docs/instances/preemptible
             for more inforamtion about preemptible VM
             instances.
-        accelerators (Sequence[~.cluster_service.AcceleratorConfig]):
+        accelerators (Sequence[google.cloud.container_v1beta1.types.AcceleratorConfig]):
             A list of hardware accelerators to be
             attached to each node. See
             https://cloud.google.com/compute/docs/gpus for
             more information about support for GPUs.
-        sandbox_config (~.cluster_service.SandboxConfig):
+        sandbox_config (google.cloud.container_v1beta1.types.SandboxConfig):
             Sandbox configuration for this node.
         node_group (str):
             Setting this field will assign instances of this pool to run
             on the specified node group. This is useful for running
             workloads on `sole tenant
             nodes <https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes>`__.
-        reservation_affinity (~.cluster_service.ReservationAffinity):
+        reservation_affinity (google.cloud.container_v1beta1.types.ReservationAffinity):
             The optional reservation affinity. Setting this field will
             apply the specified `Zonal Compute
             Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
@@ -377,10 +377,10 @@ class NodeConfig(proto.Message):
             ``minCpuPlatform: "Intel Sandy Bridge"``. For more
             information, read `how to specify min CPU
             platform <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>`__
-        workload_metadata_config (~.cluster_service.WorkloadMetadataConfig):
+        workload_metadata_config (google.cloud.container_v1beta1.types.WorkloadMetadataConfig):
             The workload metadata configuration for this
             node.
-        taints (Sequence[~.cluster_service.NodeTaint]):
+        taints (Sequence[google.cloud.container_v1beta1.types.NodeTaint]):
             List of kubernetes taints to be applied to
             each node.
             For more information, including usage and the
@@ -395,14 +395,14 @@ class NodeConfig(proto.Message):
             For more information about protecting resources with Cloud
             KMS Keys please see:
             https://cloud.google.com/compute/docs/disks/customer-managed-encryption
-        shielded_instance_config (~.cluster_service.ShieldedInstanceConfig):
+        shielded_instance_config (google.cloud.container_v1beta1.types.ShieldedInstanceConfig):
             Shielded Instance options.
-        linux_node_config (~.cluster_service.LinuxNodeConfig):
+        linux_node_config (google.cloud.container_v1beta1.types.LinuxNodeConfig):
             Parameters that can be configured on Linux
             nodes.
-        kubelet_config (~.cluster_service.NodeKubeletConfig):
+        kubelet_config (google.cloud.container_v1beta1.types.NodeKubeletConfig):
             Node kubelet configs.
-        ephemeral_storage_config (~.cluster_service.EphemeralStorageConfig):
+        ephemeral_storage_config (google.cloud.container_v1beta1.types.EphemeralStorageConfig):
             Parameters for the ephemeral storage
             filesystem. If unspecified, ephemeral storage is
             backed by the boot disk.
@@ -503,7 +503,7 @@ class SandboxConfig(proto.Message):
         sandbox_type (str):
             Type of the sandbox to use for the node (e.g.
             'gvisor')
-        type_ (~.cluster_service.SandboxConfig.Type):
+        type_ (google.cloud.container_v1beta1.types.SandboxConfig.Type):
             Type of the sandbox to use for the node.
     """
 
@@ -538,7 +538,7 @@ class ReservationAffinity(proto.Message):
     take capacity from.
 
     Attributes:
-        consume_reservation_type (~.cluster_service.ReservationAffinity.Type):
+        consume_reservation_type (google.cloud.container_v1beta1.types.ReservationAffinity.Type):
             Corresponds to the type of reservation
             consumption.
         key (str):
@@ -581,7 +581,7 @@ class NodeTaint(proto.Message):
             Key for taint.
         value (str):
             Value for taint.
-        effect (~.cluster_service.NodeTaint.Effect):
+        effect (google.cloud.container_v1beta1.types.NodeTaint.Effect):
             Effect for taint.
     """
 
@@ -631,7 +631,7 @@ class MasterAuth(proto.Message):
             authentication methods, see:
             https://cloud.google.com/kubernetes-
             engine/docs/how-to/api-server-authentication
-        client_certificate_config (~.cluster_service.ClientCertificateConfig):
+        client_certificate_config (google.cloud.container_v1beta1.types.ClientCertificateConfig):
             Configuration for client certificate
             authentication on the cluster. For clusters
             before v1.12, if no configuration is specified,
@@ -677,18 +677,18 @@ class AddonsConfig(proto.Message):
     up in the cluster, enabling additional functionality.
 
     Attributes:
-        http_load_balancing (~.cluster_service.HttpLoadBalancing):
+        http_load_balancing (google.cloud.container_v1beta1.types.HttpLoadBalancing):
             Configuration for the HTTP (L7) load
             balancing controller addon, which makes it easy
             to set up HTTP load balancers for services in a
             cluster.
-        horizontal_pod_autoscaling (~.cluster_service.HorizontalPodAutoscaling):
+        horizontal_pod_autoscaling (google.cloud.container_v1beta1.types.HorizontalPodAutoscaling):
             Configuration for the horizontal pod
             autoscaling feature, which increases or
             decreases the number of replica pods a
             replication controller has based on the resource
             usage of the existing pods.
-        kubernetes_dashboard (~.cluster_service.KubernetesDashboard):
+        kubernetes_dashboard (google.cloud.container_v1beta1.types.KubernetesDashboard):
             Configuration for the Kubernetes Dashboard.
             This addon is deprecated, and will be disabled
             in 1.15. It is recommended to use the Cloud
@@ -697,29 +697,29 @@ class AddonsConfig(proto.Message):
             information, see:
             https://cloud.google.com/kubernetes-
             engine/docs/concepts/dashboards
-        network_policy_config (~.cluster_service.NetworkPolicyConfig):
+        network_policy_config (google.cloud.container_v1beta1.types.NetworkPolicyConfig):
             Configuration for NetworkPolicy. This only
             tracks whether the addon is enabled or not on
             the Master, it does not track whether network
             policy is enabled for the nodes.
-        istio_config (~.cluster_service.IstioConfig):
+        istio_config (google.cloud.container_v1beta1.types.IstioConfig):
             Configuration for Istio, an open platform to
             connect, manage, and secure microservices.
-        cloud_run_config (~.cluster_service.CloudRunConfig):
+        cloud_run_config (google.cloud.container_v1beta1.types.CloudRunConfig):
             Configuration for the Cloud Run addon. The ``IstioConfig``
             addon must be enabled in order to enable Cloud Run addon.
             This option can only be enabled at cluster creation time.
-        dns_cache_config (~.cluster_service.DnsCacheConfig):
+        dns_cache_config (google.cloud.container_v1beta1.types.DnsCacheConfig):
             Configuration for NodeLocalDNS, a dns cache
             running on cluster nodes
-        config_connector_config (~.cluster_service.ConfigConnectorConfig):
+        config_connector_config (google.cloud.container_v1beta1.types.ConfigConnectorConfig):
             Configuration for the ConfigConnector add-on,
             a Kubernetes extension to manage hosted GCP
             services through the Kubernetes API
-        gce_persistent_disk_csi_driver_config (~.cluster_service.GcePersistentDiskCsiDriverConfig):
+        gce_persistent_disk_csi_driver_config (google.cloud.container_v1beta1.types.GcePersistentDiskCsiDriverConfig):
             Configuration for the Compute Engine
             Persistent Disk CSI driver.
-        kalm_config (~.cluster_service.KalmConfig):
+        kalm_config (google.cloud.container_v1beta1.types.KalmConfig):
             Configuration for the KALM addon, which
             manages the lifecycle of k8s applications.
     """
@@ -904,7 +904,7 @@ class PrivateClusterConfig(proto.Message):
         peering_name (str):
             Output only. The peering name in the customer
             VPC used by this cluster.
-        master_global_access_config (~.cluster_service.PrivateClusterMasterGlobalAccessConfig):
+        master_global_access_config (google.cloud.container_v1beta1.types.PrivateClusterMasterGlobalAccessConfig):
             Controls master global access settings.
     """
 
@@ -931,7 +931,7 @@ class IstioConfig(proto.Message):
     Attributes:
         disabled (bool):
             Whether Istio is enabled for this cluster.
-        auth (~.cluster_service.IstioConfig.IstioAuthMode):
+        auth (google.cloud.container_v1beta1.types.IstioConfig.IstioAuthMode):
             The specified Istio auth mode, either none,
             or mutual TLS.
     """
@@ -955,7 +955,7 @@ class CloudRunConfig(proto.Message):
         disabled (bool):
             Whether Cloud Run addon is enabled for this
             cluster.
-        load_balancer_type (~.cluster_service.CloudRunConfig.LoadBalancerType):
+        load_balancer_type (google.cloud.container_v1beta1.types.CloudRunConfig.LoadBalancerType):
             Which load balancer type is installed for
             Cloud Run.
     """
@@ -982,7 +982,7 @@ class MasterAuthorizedNetworksConfig(proto.Message):
         enabled (bool):
             Whether or not master authorized networks is
             enabled.
-        cidr_blocks (Sequence[~.cluster_service.MasterAuthorizedNetworksConfig.CidrBlock]):
+        cidr_blocks (Sequence[google.cloud.container_v1beta1.types.MasterAuthorizedNetworksConfig.CidrBlock]):
             cidr_blocks define up to 10 external networks that could
             access Kubernetes master through HTTPS.
     """
@@ -1030,7 +1030,7 @@ class NetworkPolicy(proto.Message):
     networking/networkpolicies/
 
     Attributes:
-        provider (~.cluster_service.NetworkPolicy.Provider):
+        provider (google.cloud.container_v1beta1.types.NetworkPolicy.Provider):
             The selected network policy provider.
         enabled (bool):
             Whether network policy is enabled on the
@@ -1264,7 +1264,7 @@ class ClusterTelemetry(proto.Message):
     r"""Telemetry integration for the cluster.
 
     Attributes:
-        type_ (~.cluster_service.ClusterTelemetry.Type):
+        type_ (google.cloud.container_v1beta1.types.ClusterTelemetry.Type):
             Type of the integration.
     """
 
@@ -1305,7 +1305,7 @@ class Cluster(proto.Message):
 
             This field is deprecated, use node_pool.initial_node_count
             instead.
-        node_config (~.cluster_service.NodeConfig):
+        node_config (google.cloud.container_v1beta1.types.NodeConfig):
             Parameters used in creating the cluster's nodes. For
             requests, this field should only be used in lieu of a
             "node_pool" object, since this configuration (along with the
@@ -1318,7 +1318,7 @@ class Cluster(proto.Message):
 
             If unspecified, the defaults are used. This field is
             deprecated, use node_pool.config instead.
-        master_auth (~.cluster_service.MasterAuth):
+        master_auth (google.cloud.container_v1beta1.types.MasterAuth):
             The authentication information for accessing the master
             endpoint. If unspecified, the defaults are used: For
             clusters before v1.12, if master_auth is unspecified,
@@ -1366,7 +1366,7 @@ class Cluster(proto.Message):
             notation (e.g. ``10.96.0.0/14``). Leave blank to have one
             automatically chosen or specify a ``/14`` block in
             ``10.0.0.0/8``.
-        addons_config (~.cluster_service.AddonsConfig):
+        addons_config (google.cloud.container_v1beta1.types.AddonsConfig):
             Configurations for the various addons
             available to run in the cluster.
         subnetwork (str):
@@ -1374,7 +1374,7 @@ class Cluster(proto.Message):
             `subnetwork <https://cloud.google.com/compute/docs/subnetworks>`__
             to which the cluster is connected. On output this shows the
             subnetwork ID instead of the name.
-        node_pools (Sequence[~.cluster_service.NodePool]):
+        node_pools (Sequence[google.cloud.container_v1beta1.types.NodePool]):
             The node pools associated with this cluster. This field
             should not be set if "node_config" or "initial_node_count"
             are specified.
@@ -1400,35 +1400,35 @@ class Cluster(proto.Message):
             master/node upgrades are disabled. Alpha enabled
             clusters are automatically deleted thirty days
             after creation.
-        resource_labels (Sequence[~.cluster_service.Cluster.ResourceLabelsEntry]):
+        resource_labels (Sequence[google.cloud.container_v1beta1.types.Cluster.ResourceLabelsEntry]):
             The resource labels for the cluster to use to
             annotate any related Google Compute Engine
             resources.
         label_fingerprint (str):
             The fingerprint of the set of labels for this
             cluster.
-        legacy_abac (~.cluster_service.LegacyAbac):
+        legacy_abac (google.cloud.container_v1beta1.types.LegacyAbac):
             Configuration for the legacy ABAC
             authorization mode.
-        network_policy (~.cluster_service.NetworkPolicy):
+        network_policy (google.cloud.container_v1beta1.types.NetworkPolicy):
             Configuration options for the NetworkPolicy
             feature.
-        ip_allocation_policy (~.cluster_service.IPAllocationPolicy):
+        ip_allocation_policy (google.cloud.container_v1beta1.types.IPAllocationPolicy):
             Configuration for cluster IP allocation.
-        master_authorized_networks_config (~.cluster_service.MasterAuthorizedNetworksConfig):
+        master_authorized_networks_config (google.cloud.container_v1beta1.types.MasterAuthorizedNetworksConfig):
             The configuration options for master
             authorized networks feature.
-        maintenance_policy (~.cluster_service.MaintenancePolicy):
+        maintenance_policy (google.cloud.container_v1beta1.types.MaintenancePolicy):
             Configure the maintenance policy for this
             cluster.
-        binary_authorization (~.cluster_service.BinaryAuthorization):
+        binary_authorization (google.cloud.container_v1beta1.types.BinaryAuthorization):
             Configuration for Binary Authorization.
-        pod_security_policy_config (~.cluster_service.PodSecurityPolicyConfig):
+        pod_security_policy_config (google.cloud.container_v1beta1.types.PodSecurityPolicyConfig):
             Configuration for the PodSecurityPolicy
             feature.
-        autoscaling (~.cluster_service.ClusterAutoscaling):
+        autoscaling (google.cloud.container_v1beta1.types.ClusterAutoscaling):
             Cluster-level autoscaling configuration.
-        network_config (~.cluster_service.NetworkConfig):
+        network_config (google.cloud.container_v1beta1.types.NetworkConfig):
             Configuration for cluster networking.
         private_cluster (bool):
             If this is a private cluster setup. Private clusters are
@@ -1442,37 +1442,37 @@ class Cluster(proto.Message):
             addresses to the master or set of masters, as well as the
             ILB VIP. This field is deprecated, use
             private_cluster_config.master_ipv4_cidr_block instead.
-        default_max_pods_constraint (~.cluster_service.MaxPodsConstraint):
+        default_max_pods_constraint (google.cloud.container_v1beta1.types.MaxPodsConstraint):
             The default constraint on the maximum number
             of pods that can be run simultaneously on a node
             in the node pool of this cluster. Only honored
             if cluster created with IP Alias support.
-        resource_usage_export_config (~.cluster_service.ResourceUsageExportConfig):
+        resource_usage_export_config (google.cloud.container_v1beta1.types.ResourceUsageExportConfig):
             Configuration for exporting resource usages.
             Resource usage export is disabled when this
             config unspecified.
-        authenticator_groups_config (~.cluster_service.AuthenticatorGroupsConfig):
+        authenticator_groups_config (google.cloud.container_v1beta1.types.AuthenticatorGroupsConfig):
             Configuration controlling RBAC group
             membership information.
-        private_cluster_config (~.cluster_service.PrivateClusterConfig):
+        private_cluster_config (google.cloud.container_v1beta1.types.PrivateClusterConfig):
             Configuration for private cluster.
-        vertical_pod_autoscaling (~.cluster_service.VerticalPodAutoscaling):
+        vertical_pod_autoscaling (google.cloud.container_v1beta1.types.VerticalPodAutoscaling):
             Cluster-level Vertical Pod Autoscaling
             configuration.
-        shielded_nodes (~.cluster_service.ShieldedNodes):
+        shielded_nodes (google.cloud.container_v1beta1.types.ShieldedNodes):
             Shielded Nodes configuration.
-        release_channel (~.cluster_service.ReleaseChannel):
+        release_channel (google.cloud.container_v1beta1.types.ReleaseChannel):
             Release channel configuration.
-        workload_identity_config (~.cluster_service.WorkloadIdentityConfig):
+        workload_identity_config (google.cloud.container_v1beta1.types.WorkloadIdentityConfig):
             Configuration for the use of Kubernetes
             Service Accounts in GCP IAM policies.
-        cluster_telemetry (~.cluster_service.ClusterTelemetry):
+        cluster_telemetry (google.cloud.container_v1beta1.types.ClusterTelemetry):
             Telemetry integration for the cluster.
-        tpu_config (~.cluster_service.TpuConfig):
+        tpu_config (google.cloud.container_v1beta1.types.TpuConfig):
             Configuration for Cloud TPU support;
-        notification_config (~.cluster_service.NotificationConfig):
+        notification_config (google.cloud.container_v1beta1.types.NotificationConfig):
             Notification configuration of the cluster.
-        confidential_nodes (~.cluster_service.ConfidentialNodes):
+        confidential_nodes (google.cloud.container_v1beta1.types.ConfidentialNodes):
             Configuration of Confidential Nodes
         self_link (str):
             [Output only] Server-defined URL for the resource.
@@ -1520,7 +1520,7 @@ class Cluster(proto.Message):
             [Output only] The time the cluster was created, in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
-        status (~.cluster_service.Cluster.Status):
+        status (google.cloud.container_v1beta1.types.Cluster.Status):
             [Output only] The current status of this cluster.
         status_message (str):
             [Output only] Deprecated. Use conditions instead. Additional
@@ -1562,12 +1562,12 @@ class Cluster(proto.Message):
             cluster, in
             `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``1.2.3.4/29``).
-        database_encryption (~.cluster_service.DatabaseEncryption):
+        database_encryption (google.cloud.container_v1beta1.types.DatabaseEncryption):
             Configuration of etcd encryption.
-        conditions (Sequence[~.cluster_service.StatusCondition]):
+        conditions (Sequence[google.cloud.container_v1beta1.types.StatusCondition]):
             Which conditions caused the current cluster
             state.
-        master (~.cluster_service.Master):
+        master (google.cloud.container_v1beta1.types.Master):
             Configuration for master components.
     """
 
@@ -1767,7 +1767,7 @@ class ClusterUpdate(proto.Message):
             string,\ ``monitoring.googleapis.com/kubernetes`` will be
             used for GKE 1.14+ or ``monitoring.googleapis.com`` for
             earlier versions.
-        desired_addons_config (~.cluster_service.AddonsConfig):
+        desired_addons_config (google.cloud.container_v1beta1.types.AddonsConfig):
             Configurations for the various addons
             available to run in the cluster.
         desired_node_pool_id (str):
@@ -1779,7 +1779,7 @@ class ClusterUpdate(proto.Message):
         desired_image_type (str):
             The desired image type for the node pool. NOTE: Set the
             "desired_node_pool" field as well.
-        desired_node_pool_autoscaling (~.cluster_service.NodePoolAutoscaling):
+        desired_node_pool_autoscaling (google.cloud.container_v1beta1.types.NodePoolAutoscaling):
             Autoscaler configuration for the node pool specified in
             desired_node_pool_id. If there is only one pool in the
             cluster and desired_node_pool_id is not provided then the
@@ -1794,15 +1794,15 @@ class ClusterUpdate(proto.Message):
             Warning: changing cluster locations will update the
             locations of all node pools and will result in nodes being
             added and/or removed.
-        desired_master_authorized_networks_config (~.cluster_service.MasterAuthorizedNetworksConfig):
+        desired_master_authorized_networks_config (google.cloud.container_v1beta1.types.MasterAuthorizedNetworksConfig):
             The desired configuration options for master
             authorized networks feature.
-        desired_pod_security_policy_config (~.cluster_service.PodSecurityPolicyConfig):
+        desired_pod_security_policy_config (google.cloud.container_v1beta1.types.PodSecurityPolicyConfig):
             The desired configuration options for the
             PodSecurityPolicy feature.
-        desired_cluster_autoscaling (~.cluster_service.ClusterAutoscaling):
+        desired_cluster_autoscaling (google.cloud.container_v1beta1.types.ClusterAutoscaling):
             Cluster-level autoscaling configuration.
-        desired_binary_authorization (~.cluster_service.BinaryAuthorization):
+        desired_binary_authorization (google.cloud.container_v1beta1.types.BinaryAuthorization):
             The desired configuration options for the
             Binary Authorization feature.
         desired_logging_service (str):
@@ -1819,30 +1819,30 @@ class ClusterUpdate(proto.Message):
             string,\ ``logging.googleapis.com/kubernetes`` will be used
             for GKE 1.14+ or ``logging.googleapis.com`` for earlier
             versions.
-        desired_resource_usage_export_config (~.cluster_service.ResourceUsageExportConfig):
+        desired_resource_usage_export_config (google.cloud.container_v1beta1.types.ResourceUsageExportConfig):
             The desired configuration for exporting
             resource usage.
-        desired_vertical_pod_autoscaling (~.cluster_service.VerticalPodAutoscaling):
+        desired_vertical_pod_autoscaling (google.cloud.container_v1beta1.types.VerticalPodAutoscaling):
             Cluster-level Vertical Pod Autoscaling
             configuration.
-        desired_private_cluster_config (~.cluster_service.PrivateClusterConfig):
+        desired_private_cluster_config (google.cloud.container_v1beta1.types.PrivateClusterConfig):
             The desired private cluster configuration.
-        desired_intra_node_visibility_config (~.cluster_service.IntraNodeVisibilityConfig):
+        desired_intra_node_visibility_config (google.cloud.container_v1beta1.types.IntraNodeVisibilityConfig):
             The desired config of Intra-node visibility.
-        desired_default_snat_status (~.cluster_service.DefaultSnatStatus):
+        desired_default_snat_status (google.cloud.container_v1beta1.types.DefaultSnatStatus):
             The desired status of whether to disable
             default sNAT for this cluster.
-        desired_cluster_telemetry (~.cluster_service.ClusterTelemetry):
+        desired_cluster_telemetry (google.cloud.container_v1beta1.types.ClusterTelemetry):
             The desired telemetry integration for the
             cluster.
-        desired_release_channel (~.cluster_service.ReleaseChannel):
+        desired_release_channel (google.cloud.container_v1beta1.types.ReleaseChannel):
             The desired release channel configuration.
-        desired_tpu_config (~.cluster_service.TpuConfig):
+        desired_tpu_config (google.cloud.container_v1beta1.types.TpuConfig):
             The desired Cloud TPU configuration.
-        desired_datapath_provider (~.cluster_service.DatapathProvider):
+        desired_datapath_provider (google.cloud.container_v1beta1.types.DatapathProvider):
             The desired datapath provider for the
             cluster.
-        desired_notification_config (~.cluster_service.NotificationConfig):
+        desired_notification_config (google.cloud.container_v1beta1.types.NotificationConfig):
             The desired notification configuration.
         desired_master_version (str):
             The Kubernetes version to change the master
@@ -1858,13 +1858,13 @@ class ClusterUpdate(proto.Message):
             version - "1.X.Y-gke.N": picks an explicit
             Kubernetes version - "-": picks the default
             Kubernetes version
-        desired_database_encryption (~.cluster_service.DatabaseEncryption):
+        desired_database_encryption (google.cloud.container_v1beta1.types.DatabaseEncryption):
             Configuration of etcd encryption.
-        desired_workload_identity_config (~.cluster_service.WorkloadIdentityConfig):
+        desired_workload_identity_config (google.cloud.container_v1beta1.types.WorkloadIdentityConfig):
             Configuration for Workload Identity.
-        desired_shielded_nodes (~.cluster_service.ShieldedNodes):
+        desired_shielded_nodes (google.cloud.container_v1beta1.types.ShieldedNodes):
             Configuration for Shielded Nodes.
-        desired_master (~.cluster_service.Master):
+        desired_master (google.cloud.container_v1beta1.types.Master):
             Configuration for master components.
     """
 
@@ -1972,9 +1972,9 @@ class Operation(proto.Message):
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
             in which the operation is taking place. This field is
             deprecated, use location instead.
-        operation_type (~.cluster_service.Operation.Type):
+        operation_type (google.cloud.container_v1beta1.types.Operation.Type):
             The operation type.
-        status (~.cluster_service.Operation.Status):
+        status (google.cloud.container_v1beta1.types.Operation.Status):
             The current status of the operation.
         detail (str):
             Detailed operation progress, if available.
@@ -2001,16 +2001,16 @@ class Operation(proto.Message):
             [Output only] The time the operation completed, in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
-        progress (~.cluster_service.OperationProgress):
+        progress (google.cloud.container_v1beta1.types.OperationProgress):
             Output only. [Output only] Progress information for an
             operation.
-        cluster_conditions (Sequence[~.cluster_service.StatusCondition]):
+        cluster_conditions (Sequence[google.cloud.container_v1beta1.types.StatusCondition]):
             Which conditions caused the current cluster
             state. Deprecated. Use field error instead.
-        nodepool_conditions (Sequence[~.cluster_service.StatusCondition]):
+        nodepool_conditions (Sequence[google.cloud.container_v1beta1.types.StatusCondition]):
             Which conditions caused the current node pool
             state. Deprecated. Use field error instead.
-        error (~.gr_status.Status):
+        error (google.rpc.status_pb2.Status):
             The error result of the operation in case of
             failure.
     """
@@ -2086,15 +2086,15 @@ class OperationProgress(proto.Message):
             A non-parameterized string describing an
             operation stage. Unset for single-stage
             operations.
-        status (~.cluster_service.Operation.Status):
+        status (google.cloud.container_v1beta1.types.Operation.Status):
             Status of an operation stage.
             Unset for single-stage operations.
-        metrics (Sequence[~.cluster_service.OperationProgress.Metric]):
+        metrics (Sequence[google.cloud.container_v1beta1.types.OperationProgress.Metric]):
             Progress metric bundle, for example: metrics: [{name: "nodes
             done", int_value: 15}, {name: "nodes total", int_value: 32}]
             or metrics: [{name: "progress", double_value: 0.56}, {name:
             "progress scale", double_value: 1.0}]
-        stages (Sequence[~.cluster_service.OperationProgress]):
+        stages (Sequence[google.cloud.container_v1beta1.types.OperationProgress]):
             Substages of an operation or a stage.
     """
 
@@ -2146,7 +2146,7 @@ class CreateClusterRequest(proto.Message):
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
             in which the cluster resides. This field has been deprecated
             and replaced by the parent field.
-        cluster (~.cluster_service.Cluster):
+        cluster (google.cloud.container_v1beta1.types.Cluster):
             Required. A `cluster
             resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters>`__
         parent (str):
@@ -2216,7 +2216,7 @@ class UpdateClusterRequest(proto.Message):
             Required. Deprecated. The name of the cluster
             to upgrade. This field has been deprecated and
             replaced by the name field.
-        update (~.cluster_service.ClusterUpdate):
+        update (google.cloud.container_v1beta1.types.ClusterUpdate):
             Required. A description of the update.
         name (str):
             The name (project, location, cluster) of the cluster to
@@ -2282,20 +2282,20 @@ class UpdateNodePoolRequest(proto.Message):
             the locations for a node pool will result in nodes being
             either created or removed from the node pool, depending on
             whether locations are being added or removed.
-        workload_metadata_config (~.cluster_service.WorkloadMetadataConfig):
+        workload_metadata_config (google.cloud.container_v1beta1.types.WorkloadMetadataConfig):
             The desired workload metadata config for the
             node pool.
         name (str):
             The name (project, location, cluster, node pool) of the node
             pool to update. Specified in the format
             ``projects/*/locations/*/clusters/*/nodePools/*``.
-        upgrade_settings (~.cluster_service.NodePool.UpgradeSettings):
+        upgrade_settings (google.cloud.container_v1beta1.types.NodePool.UpgradeSettings):
             Upgrade settings control disruption and speed
             of the upgrade.
-        linux_node_config (~.cluster_service.LinuxNodeConfig):
+        linux_node_config (google.cloud.container_v1beta1.types.LinuxNodeConfig):
             Parameters that can be configured on Linux
             nodes.
-        kubelet_config (~.cluster_service.NodeKubeletConfig):
+        kubelet_config (google.cloud.container_v1beta1.types.NodeKubeletConfig):
             Node kubelet configs.
     """
 
@@ -2354,7 +2354,7 @@ class SetNodePoolAutoscalingRequest(proto.Message):
             Required. Deprecated. The name of the node
             pool to upgrade. This field has been deprecated
             and replaced by the name field.
-        autoscaling (~.cluster_service.NodePoolAutoscaling):
+        autoscaling (google.cloud.container_v1beta1.types.NodePoolAutoscaling):
             Required. Autoscaling configuration for the
             node pool.
         name (str):
@@ -2498,7 +2498,7 @@ class SetAddonsConfigRequest(proto.Message):
             Required. Deprecated. The name of the cluster
             to upgrade. This field has been deprecated and
             replaced by the name field.
-        addons_config (~.cluster_service.AddonsConfig):
+        addons_config (google.cloud.container_v1beta1.types.AddonsConfig):
             Required. The desired configurations for the
             various addons available to run in the cluster.
         name (str):
@@ -2631,10 +2631,10 @@ class SetMasterAuthRequest(proto.Message):
             Required. Deprecated. The name of the cluster
             to upgrade. This field has been deprecated and
             replaced by the name field.
-        action (~.cluster_service.SetMasterAuthRequest.Action):
+        action (google.cloud.container_v1beta1.types.SetMasterAuthRequest.Action):
             Required. The exact form of action to be
             taken on the master auth.
-        update (~.cluster_service.MasterAuth):
+        update (google.cloud.container_v1beta1.types.MasterAuth):
             Required. A description of the update.
         name (str):
             The name (project, location, cluster) of the cluster to set
@@ -2728,7 +2728,7 @@ class ListClustersResponse(proto.Message):
     r"""ListClustersResponse is the result of ListClustersRequest.
 
     Attributes:
-        clusters (Sequence[~.cluster_service.Cluster]):
+        clusters (Sequence[google.cloud.container_v1beta1.types.Cluster]):
             A list of clusters in the project in the
             specified zone, or across all ones.
         missing_zones (Sequence[str]):
@@ -2843,7 +2843,7 @@ class ListOperationsResponse(proto.Message):
     ListOperationsRequest.
 
     Attributes:
-        operations (Sequence[~.cluster_service.Operation]):
+        operations (Sequence[google.cloud.container_v1beta1.types.Operation]):
             A list of operations in the project in the
             specified zone.
         missing_zones (Sequence[str]):
@@ -2901,7 +2901,7 @@ class ServerConfig(proto.Message):
         valid_master_versions (Sequence[str]):
             List of valid master versions, in descending
             order.
-        channels (Sequence[~.cluster_service.ServerConfig.ReleaseChannelConfig]):
+        channels (Sequence[google.cloud.container_v1beta1.types.ServerConfig.ReleaseChannelConfig]):
             List of release channel configurations.
     """
 
@@ -2910,13 +2910,13 @@ class ServerConfig(proto.Message):
         channel.
 
         Attributes:
-            channel (~.cluster_service.ReleaseChannel.Channel):
+            channel (google.cloud.container_v1beta1.types.ReleaseChannel.Channel):
                 The release channel this configuration
                 applies to.
             default_version (str):
                 The default version for newly created
                 clusters on the channel.
-            available_versions (Sequence[~.cluster_service.ServerConfig.ReleaseChannelConfig.AvailableVersion]):
+            available_versions (Sequence[google.cloud.container_v1beta1.types.ServerConfig.ReleaseChannelConfig.AvailableVersion]):
                 Deprecated. This field has been deprecated and replaced with
                 the valid_versions field.
             valid_versions (Sequence[str]):
@@ -2983,7 +2983,7 @@ class CreateNodePoolRequest(proto.Message):
             Required. Deprecated. The name of the
             cluster. This field has been deprecated and
             replaced by the parent field.
-        node_pool (~.cluster_service.NodePool):
+        node_pool (google.cloud.container_v1beta1.types.NodePool):
             Required. The node pool to create.
         parent (str):
             The parent (project, location, cluster id) where the node
@@ -3128,7 +3128,7 @@ class NodePool(proto.Message):
     Attributes:
         name (str):
             The name of the node pool.
-        config (~.cluster_service.NodeConfig):
+        config (google.cloud.container_v1beta1.types.NodeConfig):
             The node configuration of the pool.
         initial_node_count (int):
             The initial node count for the pool. You must ensure that
@@ -3155,30 +3155,30 @@ class NodePool(proto.Message):
             [Output only] The resource URLs of the `managed instance
             groups <https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>`__
             associated with this node pool.
-        status (~.cluster_service.NodePool.Status):
+        status (google.cloud.container_v1beta1.types.NodePool.Status):
             [Output only] The status of the nodes in this pool instance.
         status_message (str):
             [Output only] Deprecated. Use conditions instead. Additional
             information about the current status of this node pool
             instance, if available.
-        autoscaling (~.cluster_service.NodePoolAutoscaling):
+        autoscaling (google.cloud.container_v1beta1.types.NodePoolAutoscaling):
             Autoscaler configuration for this NodePool.
             Autoscaler is enabled only if a valid
             configuration is present.
-        management (~.cluster_service.NodeManagement):
+        management (google.cloud.container_v1beta1.types.NodeManagement):
             NodeManagement configuration for this
             NodePool.
-        max_pods_constraint (~.cluster_service.MaxPodsConstraint):
+        max_pods_constraint (google.cloud.container_v1beta1.types.MaxPodsConstraint):
             The constraint on the maximum number of pods
             that can be run simultaneously on a node in the
             node pool.
-        conditions (Sequence[~.cluster_service.StatusCondition]):
+        conditions (Sequence[google.cloud.container_v1beta1.types.StatusCondition]):
             Which conditions caused the current node pool
             state.
         pod_ipv4_cidr_size (int):
             [Output only] The pod CIDR block size per node in this node
             pool.
-        upgrade_settings (~.cluster_service.NodePool.UpgradeSettings):
+        upgrade_settings (google.cloud.container_v1beta1.types.NodePool.UpgradeSettings):
             Upgrade settings control disruption and speed
             of the upgrade.
     """
@@ -3281,7 +3281,7 @@ class NodeManagement(proto.Message):
         auto_repair (bool):
             Whether the nodes will be automatically
             repaired.
-        upgrade_options (~.cluster_service.AutoUpgradeOptions):
+        upgrade_options (google.cloud.container_v1beta1.types.AutoUpgradeOptions):
             Specifies the Auto Upgrade knobs for the node
             pool.
     """
@@ -3320,7 +3320,7 @@ class MaintenancePolicy(proto.Message):
     for the cluster.
 
     Attributes:
-        window (~.cluster_service.MaintenanceWindow):
+        window (google.cloud.container_v1beta1.types.MaintenanceWindow):
             Specifies the maintenance window in which
             maintenance may be performed.
         resource_version (str):
@@ -3343,16 +3343,16 @@ class MaintenanceWindow(proto.Message):
     for the cluster.
 
     Attributes:
-        daily_maintenance_window (~.cluster_service.DailyMaintenanceWindow):
+        daily_maintenance_window (google.cloud.container_v1beta1.types.DailyMaintenanceWindow):
             DailyMaintenanceWindow specifies a daily
             maintenance operation window.
-        recurring_window (~.cluster_service.RecurringTimeWindow):
+        recurring_window (google.cloud.container_v1beta1.types.RecurringTimeWindow):
             RecurringWindow specifies some number of
             recurring time periods for maintenance to occur.
             The time windows may be overlapping. If no
             maintenance windows are set, maintenance can
             occur at any time.
-        maintenance_exclusions (Sequence[~.cluster_service.MaintenanceWindow.MaintenanceExclusionsEntry]):
+        maintenance_exclusions (Sequence[google.cloud.container_v1beta1.types.MaintenanceWindow.MaintenanceExclusionsEntry]):
             Exceptions to maintenance window. Non-
             mergency maintenance should not occur in these
             windows.
@@ -3375,9 +3375,9 @@ class TimeWindow(proto.Message):
     r"""Represents an arbitrary window of time.
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time that the window first starts.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time that the window ends. The end time
             should take place after the start time.
     """
@@ -3391,7 +3391,7 @@ class RecurringTimeWindow(proto.Message):
     r"""Represents an arbitrary window of time that recurs.
 
     Attributes:
-        window (~.cluster_service.TimeWindow):
+        window (google.cloud.container_v1beta1.types.TimeWindow):
             The window of the first recurrence.
         recurrence (str):
             An RRULE
@@ -3481,7 +3481,7 @@ class SetNodePoolManagementRequest(proto.Message):
             Required. Deprecated. The name of the node
             pool to update. This field has been deprecated
             and replaced by the name field.
-        management (~.cluster_service.NodeManagement):
+        management (google.cloud.container_v1beta1.types.NodeManagement):
             Required. NodeManagement configuration for
             the node pool.
         name (str):
@@ -3595,7 +3595,7 @@ class ListNodePoolsResponse(proto.Message):
     r"""ListNodePoolsResponse is the result of ListNodePoolsRequest.
 
     Attributes:
-        node_pools (Sequence[~.cluster_service.NodePool]):
+        node_pools (Sequence[google.cloud.container_v1beta1.types.NodePool]):
             A list of node pools for a cluster.
     """
 
@@ -3612,12 +3612,12 @@ class ClusterAutoscaling(proto.Message):
         enable_node_autoprovisioning (bool):
             Enables automatic node pool creation and
             deletion.
-        resource_limits (Sequence[~.cluster_service.ResourceLimit]):
+        resource_limits (Sequence[google.cloud.container_v1beta1.types.ResourceLimit]):
             Contains global constraints regarding minimum
             and maximum amount of resources in the cluster.
-        autoscaling_profile (~.cluster_service.ClusterAutoscaling.AutoscalingProfile):
+        autoscaling_profile (google.cloud.container_v1beta1.types.ClusterAutoscaling.AutoscalingProfile):
             Defines autoscaling behaviour.
-        autoprovisioning_node_pool_defaults (~.cluster_service.AutoprovisioningNodePoolDefaults):
+        autoprovisioning_node_pool_defaults (google.cloud.container_v1beta1.types.AutoprovisioningNodePoolDefaults):
             AutoprovisioningNodePoolDefaults contains
             defaults for a node pool created by NAP.
         autoprovisioning_locations (Sequence[str]):
@@ -3675,10 +3675,10 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             address of the Service Account; otherwise, if no
             Service Account is specified, the "default"
             service account is used.
-        upgrade_settings (~.cluster_service.NodePool.UpgradeSettings):
+        upgrade_settings (google.cloud.container_v1beta1.types.NodePool.UpgradeSettings):
             Upgrade settings control disruption and speed
             of the upgrade.
-        management (~.cluster_service.NodeManagement):
+        management (google.cloud.container_v1beta1.types.NodeManagement):
             NodeManagement configuration for this
             NodePool.
         min_cpu_platform (str):
@@ -3702,7 +3702,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
 
             If unspecified, the default disk type is 'pd-
             standard'
-        shielded_instance_config (~.cluster_service.ShieldedInstanceConfig):
+        shielded_instance_config (google.cloud.container_v1beta1.types.ShieldedInstanceConfig):
             Shielded Instance options.
         boot_disk_kms_key (str):
             The Customer Managed Encryption Key used to encrypt the boot
@@ -3809,7 +3809,7 @@ class SetLabelsRequest(proto.Message):
             Required. Deprecated. The name of the
             cluster. This field has been deprecated and
             replaced by the name field.
-        resource_labels (Sequence[~.cluster_service.SetLabelsRequest.ResourceLabelsEntry]):
+        resource_labels (Sequence[google.cloud.container_v1beta1.types.SetLabelsRequest.ResourceLabelsEntry]):
             Required. The labels to set for that cluster.
         label_fingerprint (str):
             Required. The fingerprint of the previous set of labels for
@@ -3977,11 +3977,11 @@ class WorkloadMetadataConfig(proto.Message):
     expose to workloads on the node pool.
 
     Attributes:
-        node_metadata (~.cluster_service.WorkloadMetadataConfig.NodeMetadata):
+        node_metadata (google.cloud.container_v1beta1.types.WorkloadMetadataConfig.NodeMetadata):
             NodeMetadata is the configuration for how to
             expose metadata to the workloads running on the
             node.
-        mode (~.cluster_service.WorkloadMetadataConfig.Mode):
+        mode (google.cloud.container_v1beta1.types.WorkloadMetadataConfig.Mode):
             Mode is the configuration for how to expose
             metadata to workloads running on the node pool.
     """
@@ -4028,7 +4028,7 @@ class SetNetworkPolicyRequest(proto.Message):
             Required. Deprecated. The name of the
             cluster. This field has been deprecated and
             replaced by the name field.
-        network_policy (~.cluster_service.NetworkPolicy):
+        network_policy (google.cloud.container_v1beta1.types.NetworkPolicy):
             Required. Configuration options for the
             NetworkPolicy feature.
         name (str):
@@ -4063,7 +4063,7 @@ class SetMaintenancePolicyRequest(proto.Message):
             in which the cluster resides.
         cluster_id (str):
             Required. The name of the cluster to update.
-        maintenance_policy (~.cluster_service.MaintenancePolicy):
+        maintenance_policy (google.cloud.container_v1beta1.types.MaintenancePolicy):
             Required. The maintenance policy to be set
             for the cluster. An empty field clears the
             existing maintenance policy.
@@ -4104,7 +4104,7 @@ class ListLocationsResponse(proto.Message):
     and their recommendation state.
 
     Attributes:
-        locations (Sequence[~.cluster_service.Location]):
+        locations (Sequence[google.cloud.container_v1beta1.types.Location]):
             A full list of GKE locations.
         next_page_token (str):
             Only return ListLocationsResponse that occur after the
@@ -4128,7 +4128,7 @@ class Location(proto.Message):
     recommended for GKE cluster scheduling.
 
     Attributes:
-        type_ (~.cluster_service.Location.LocationType):
+        type_ (google.cloud.container_v1beta1.types.Location.LocationType):
             Contains the type of location this Location
             is for. Regional or Zonal.
         name (str):
@@ -4157,13 +4157,13 @@ class StatusCondition(proto.Message):
     certain status (e.g., ERROR or DEGRADED).
 
     Attributes:
-        code (~.cluster_service.StatusCondition.Code):
+        code (google.cloud.container_v1beta1.types.StatusCondition.Code):
             Machine-friendly representation of the condition Deprecated.
             Use canonical_code instead.
         message (str):
             Human-friendly representation of the
             condition
-        canonical_code (~.gr_code.Code):
+        canonical_code (google.rpc.code_pb2.Code):
             Canonical code of the condition.
     """
 
@@ -4202,13 +4202,13 @@ class NetworkConfig(proto.Message):
             Whether Intra-node visibility is enabled for
             this cluster. This makes same node pod to pod
             traffic visible for VPC network.
-        default_snat_status (~.cluster_service.DefaultSnatStatus):
+        default_snat_status (google.cloud.container_v1beta1.types.DefaultSnatStatus):
             Whether the cluster disables default in-node sNAT rules.
             In-node sNAT rules will be disabled when default_snat_status
             is disabled. When disabled is set to false, default IP
             masquerade rules will be applied to the nodes to prevent
             sNAT on cluster internal traffic.
-        datapath_provider (~.cluster_service.DatapathProvider):
+        datapath_provider (google.cloud.container_v1beta1.types.DatapathProvider):
             The desired datapath provider for this
             cluster. By default, uses the IPTables-based
             kube-proxy implementation.
@@ -4268,7 +4268,7 @@ class ListUsableSubnetworksResponse(proto.Message):
     ListUsableSubnetworksRequest.
 
     Attributes:
-        subnetworks (Sequence[~.cluster_service.UsableSubnetwork]):
+        subnetworks (Sequence[google.cloud.container_v1beta1.types.UsableSubnetwork]):
             A list of usable subnetworks in the specified
             network project.
         next_page_token (str):
@@ -4301,7 +4301,7 @@ class UsableSubnetworkSecondaryRange(proto.Message):
         ip_cidr_range (str):
             The range of IP addresses belonging to this
             subnetwork secondary range.
-        status (~.cluster_service.UsableSubnetworkSecondaryRange.Status):
+        status (google.cloud.container_v1beta1.types.UsableSubnetworkSecondaryRange.Status):
             This field is to determine the status of the
             secondary range programmably.
     """
@@ -4337,7 +4337,7 @@ class UsableSubnetwork(proto.Message):
         ip_cidr_range (str):
             The range of internal addresses that are
             owned by this subnetwork.
-        secondary_ip_ranges (Sequence[~.cluster_service.UsableSubnetworkSecondaryRange]):
+        secondary_ip_ranges (Sequence[google.cloud.container_v1beta1.types.UsableSubnetworkSecondaryRange]):
             Secondary IP ranges.
         status_message (str):
             A human readable status message representing the reasons for
@@ -4437,7 +4437,7 @@ class DatabaseEncryption(proto.Message):
     r"""Configuration of etcd encryption.
 
     Attributes:
-        state (~.cluster_service.DatabaseEncryption.State):
+        state (google.cloud.container_v1beta1.types.DatabaseEncryption.State):
             Denotes the state of etcd encryption.
         key_name (str):
             Name of CloudKMS key to use for the
@@ -4461,7 +4461,7 @@ class ResourceUsageExportConfig(proto.Message):
     r"""Configuration for exporting cluster resource usages.
 
     Attributes:
-        bigquery_destination (~.cluster_service.ResourceUsageExportConfig.BigQueryDestination):
+        bigquery_destination (google.cloud.container_v1beta1.types.ResourceUsageExportConfig.BigQueryDestination):
             Configuration to use BigQuery as usage export
             destination.
         enable_network_egress_metering (bool):
@@ -4469,7 +4469,7 @@ class ResourceUsageExportConfig(proto.Message):
             this cluster. If enabled, a daemonset will be
             created in the cluster to meter network egress
             traffic.
-        consumption_metering_config (~.cluster_service.ResourceUsageExportConfig.ConsumptionMeteringConfig):
+        consumption_metering_config (google.cloud.container_v1beta1.types.ResourceUsageExportConfig.ConsumptionMeteringConfig):
             Configuration to enable resource consumption
             metering.
     """
@@ -4637,7 +4637,7 @@ class GetJSONWebKeysResponse(proto.Message):
     specififed in rfc 7517
 
     Attributes:
-        keys (Sequence[~.cluster_service.Jwk]):
+        keys (Sequence[google.cloud.container_v1beta1.types.Jwk]):
             The public component of the keys used by the
             cluster to sign token requests.
     """
@@ -4653,7 +4653,7 @@ class ReleaseChannel(proto.Message):
     auto-upgrade defaults to true and cannot be disabled.
 
     Attributes:
-        channel (~.cluster_service.ReleaseChannel.Channel):
+        channel (google.cloud.container_v1beta1.types.ReleaseChannel.Channel):
             channel specifies which release channel the
             cluster is subscribed to.
     """
@@ -4698,7 +4698,7 @@ class NotificationConfig(proto.Message):
     r"""NotificationConfig is the configuration of notifications.
 
     Attributes:
-        pubsub (~.cluster_service.NotificationConfig.PubSub):
+        pubsub (google.cloud.container_v1beta1.types.NotificationConfig.PubSub):
             Notification config for Pub/Sub.
     """
 
@@ -4739,13 +4739,13 @@ class UpgradeEvent(proto.Message):
     cluster server when a resource is upgrading.
 
     Attributes:
-        resource_type (~.cluster_service.UpgradeResourceType):
+        resource_type (google.cloud.container_v1beta1.types.UpgradeResourceType):
             Required. The resource type that is
             upgrading.
         operation (str):
             Required. The operation associated with this
             upgrade.
-        operation_start_time (~.timestamp.Timestamp):
+        operation_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The time when the operation was
             started.
         current_version (str):

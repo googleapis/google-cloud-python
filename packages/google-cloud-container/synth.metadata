@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-container.git",
-        "sha": "a992fcfff9728d35e849b9b50d35ae8861120dd7"
+        "sha": "206e49548ee102b59716d58c55373c6aa5b1e990"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "149a3a84c29c9b8189576c7442ccb6dcf6a8f95b",
+        "internalRef": "364411656"
       }
     },
     {
@@ -102,8 +102,10 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/container_v1/cluster_manager.rst",
     "docs/container_v1/services.rst",
     "docs/container_v1/types.rst",
+    "docs/container_v1beta1/cluster_manager.rst",
     "docs/container_v1beta1/services.rst",
     "docs/container_v1beta1/types.rst",
     "docs/multiprocessing.rst",
