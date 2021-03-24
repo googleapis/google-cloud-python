@@ -318,6 +318,17 @@ class TestDatabase(_BaseTest):
         )
         self.assertEqual(database.encryption_config, encryption_config)
 
+    def test_encryption_info(self):
+        from google.cloud.spanner_admin_database_v1 import EncryptionInfo
+
+        instance = _Instance(self.INSTANCE_NAME)
+        pool = _Pool()
+        database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        encryption_info = database._encryption_info = [
+            mock.create_autospec(EncryptionInfo, instance=True)
+        ]
+        self.assertEqual(database.encryption_info, encryption_info)
+
     def test_spanner_api_property_w_scopeless_creds(self):
 
         client = _Client()
@@ -682,6 +693,7 @@ class TestDatabase(_BaseTest):
     def test_reload_success(self):
         from google.cloud.spanner_admin_database_v1 import Database
         from google.cloud.spanner_admin_database_v1 import EncryptionConfig
+        from google.cloud.spanner_admin_database_v1 import EncryptionInfo
         from google.cloud.spanner_admin_database_v1 import GetDatabaseDdlResponse
         from google.cloud.spanner_admin_database_v1 import RestoreInfo
         from google.cloud._helpers import _datetime_to_pb_timestamp
@@ -693,6 +705,12 @@ class TestDatabase(_BaseTest):
         client = _Client()
         ddl_pb = GetDatabaseDdlResponse(statements=DDL_STATEMENTS)
         encryption_config = EncryptionConfig(kms_key_name="kms_key")
+        encryption_info = [
+            EncryptionInfo(
+                encryption_type=EncryptionInfo.Type.CUSTOMER_MANAGED_ENCRYPTION,
+                kms_key_version="kms_key_version",
+            )
+        ]
         api = client.database_admin_api = self._make_database_admin_api()
         api.get_database_ddl.return_value = ddl_pb
         db_pb = Database(
@@ -702,6 +720,7 @@ class TestDatabase(_BaseTest):
             version_retention_period="1d",
             earliest_version_time=_datetime_to_pb_timestamp(timestamp),
             encryption_config=encryption_config,
+            encryption_info=encryption_info,
         )
         api.get_database.return_value = db_pb
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -716,6 +735,7 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database._earliest_version_time, timestamp)
         self.assertEqual(database._ddl_statements, tuple(DDL_STATEMENTS))
         self.assertEqual(database._encryption_config, encryption_config)
+        self.assertEqual(database._encryption_info, encryption_info)
 
         api.get_database_ddl.assert_called_once_with(
             database=self.DATABASE_NAME,

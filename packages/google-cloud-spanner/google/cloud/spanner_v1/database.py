@@ -142,6 +142,7 @@ class Database(object):
         self._restore_info = None
         self._version_retention_period = None
         self._earliest_version_time = None
+        self._encryption_info = None
         self.log_commit_stats = False
         self._logger = logger
         self._encryption_config = encryption_config
@@ -268,6 +269,14 @@ class Database(object):
         :returns: an object representing the encryption config for this database
         """
         return self._encryption_config
+
+    @property
+    def encryption_info(self):
+        """Encryption info for this database.
+        :rtype: a list of :class:`~google.cloud.spanner_admin_instance_v1.types.EncryptionInfo`
+        :returns: a list of objects representing encryption info for this database
+        """
+        return self._encryption_info
 
     @property
     def ddl_statements(self):
@@ -403,6 +412,7 @@ class Database(object):
         self._version_retention_period = response.version_retention_period
         self._earliest_version_time = response.earliest_version_time
         self._encryption_config = response.encryption_config
+        self._encryption_info = response.encryption_info
 
     def update_ddl(self, ddl_statements, operation_id=""):
         """Update DDL for this database.
