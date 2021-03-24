@@ -172,12 +172,14 @@ def test_subscribe_options(manager_open):
         callback=mock.sentinel.callback,
         flow_control=flow_control,
         scheduler=scheduler,
+        await_callbacks_on_shutdown=mock.sentinel.await_callbacks,
     )
     assert isinstance(future, futures.StreamingPullFuture)
 
     assert future._manager._subscription == "sub_name_a"
     assert future._manager.flow_control == flow_control
     assert future._manager._scheduler == scheduler
+    assert future._manager._await_callbacks_on_shutdown is mock.sentinel.await_callbacks
     manager_open.assert_called_once_with(
         mock.ANY,
         callback=mock.sentinel.callback,

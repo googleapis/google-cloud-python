@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import re
 import sys
 import uuid
 
@@ -393,6 +394,52 @@ def test_receive_with_flow_control(publisher_client, topic, subscription_async, 
     assert "Listening" in out
     assert subscription_async in out
     assert "message" in out
+
+
+def test_receive_with_blocking_shutdown(
+    publisher_client, topic, subscription_async, capsys
+):
+    _publish_messages(publisher_client, topic, message_num=3)
+
+    subscriber.receive_messages_with_blocking_shutdown(
+        PROJECT_ID, SUBSCRIPTION_ASYNC, timeout=5.0
+    )
+
+    out, _ = capsys.readouterr()
+    out_lines = out.splitlines()
+
+    msg_received_lines = [
+        i for i, line in enumerate(out_lines)
+        if re.search(r".*received.*message.*", line, flags=re.IGNORECASE)
+    ]
+    msg_done_lines = [
+        i for i, line in enumerate(out_lines)
+        if re.search(r".*done processing.*message.*", line, flags=re.IGNORECASE)
+    ]
+    stream_canceled_lines = [
+        i for i, line in enumerate(out_lines)
+        if re.search(r".*streaming pull future canceled.*", line, flags=re.IGNORECASE)
+    ]
+    shutdown_done_waiting_lines = [
+        i for i, line in enumerate(out_lines)
+        if re.search(r".*done waiting.*stream shutdown.*", line, flags=re.IGNORECASE)
+    ]
+
+    assert "Listening" in out
+    assert subscription_async in out
+
+    assert len(stream_canceled_lines) == 1
+    assert len(shutdown_done_waiting_lines) == 1
+    assert len(msg_received_lines) == 3
+    assert len(msg_done_lines) == 3
+
+    # The stream should have been canceled *after* receiving messages, but before
+    # message processing was done.
+    assert msg_received_lines[-1] < stream_canceled_lines[0] < msg_done_lines[0]
+
+    # Yet, waiting on the stream shutdown should have completed *after* the processing
+    # of received messages has ended.
+    assert msg_done_lines[-1] < shutdown_done_waiting_lines[0]
 
 
 def test_listen_for_errors(publisher_client, topic, subscription_async, capsys):

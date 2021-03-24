@@ -88,15 +88,21 @@ def create_manager(flow_control=types.FlowControl()):
     return manager
 
 
-def test_maintain_leases_inactive(caplog):
+def test_maintain_leases_inactive_manager(caplog):
     caplog.set_level(logging.INFO)
     manager = create_manager()
     manager.is_active = False
 
     leaser_ = leaser.Leaser(manager)
+    make_sleep_mark_event_as_done(leaser_)
+    leaser_.add(
+        [requests.LeaseRequest(ack_id="my_ack_ID", byte_size=42, ordering_key="")]
+    )
 
     leaser_.maintain_leases()
 
+    # Leases should still be maintained even if the manager is inactive.
+    manager.dispatcher.modify_ack_deadline.assert_called()
     assert "exiting" in caplog.text
 
 
@@ -112,20 +118,20 @@ def test_maintain_leases_stopped(caplog):
     assert "exiting" in caplog.text
 
 
-def make_sleep_mark_manager_as_inactive(leaser):
-    # Make sleep mark the manager as inactive so that maintain_leases
+def make_sleep_mark_event_as_done(leaser):
+    # Make sleep actually trigger the done event so that heartbeat()
     # exits at the end of the first run.
-    def trigger_inactive(timeout):
+    def trigger_done(timeout):
         assert 0 < timeout < 10
-        leaser._manager.is_active = False
+        leaser._stop_event.set()
 
-    leaser._stop_event.wait = trigger_inactive
+    leaser._stop_event.wait = trigger_done
 
 
 def test_maintain_leases_ack_ids():
     manager = create_manager()
     leaser_ = leaser.Leaser(manager)
-    make_sleep_mark_manager_as_inactive(leaser_)
+    make_sleep_mark_event_as_done(leaser_)
     leaser_.add(
         [requests.LeaseRequest(ack_id="my ack id", byte_size=50, ordering_key="")]
     )
@@ -140,7 +146,7 @@ def test_maintain_leases_ack_ids():
 def test_maintain_leases_no_ack_ids():
     manager = create_manager()
     leaser_ = leaser.Leaser(manager)
-    make_sleep_mark_manager_as_inactive(leaser_)
+    make_sleep_mark_event_as_done(leaser_)
 
     leaser_.maintain_leases()
 
@@ -151,7 +157,7 @@ def test_maintain_leases_no_ack_ids():
 def test_maintain_leases_outdated_items(time):
     manager = create_manager()
     leaser_ = leaser.Leaser(manager)
-    make_sleep_mark_manager_as_inactive(leaser_)
+    make_sleep_mark_event_as_done(leaser_)
 
     # Add and start expiry timer at the beginning of the timeline.
     time.return_value = 0
