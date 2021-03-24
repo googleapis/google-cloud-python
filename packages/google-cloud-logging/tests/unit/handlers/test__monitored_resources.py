@@ -61,6 +61,8 @@ class Test_Create_Resources(unittest.TestCase):
             or endpoint == _monitored_resources._GCE_INSTANCE_ID
         ):
             return self.NAME
+        elif endpoint == _monitored_resources._PROJECT_NAME:
+            return self.PROJECT
         else:
             return None
 
@@ -75,7 +77,7 @@ class Test_Create_Resources(unittest.TestCase):
 
         os.environ[_monitored_resources._CLOUD_RUN_SERVICE_ID] = self.NAME
         with patch:
-            legacy_func_resource = _create_functions_resource(self.PROJECT)
+            legacy_func_resource = _create_functions_resource()
 
             self.assertIsInstance(legacy_func_resource, Resource)
             self.assertEqual(legacy_func_resource.type, "cloud_function")
@@ -90,7 +92,7 @@ class Test_Create_Resources(unittest.TestCase):
         )
         os.environ[_monitored_resources._FUNCTION_NAME] = self.NAME
         with patch:
-            func_resource = _create_functions_resource(self.PROJECT)
+            func_resource = _create_functions_resource()
 
             self.assertIsInstance(func_resource, Resource)
             self.assertEqual(func_resource.type, "cloud_function")
@@ -105,7 +107,7 @@ class Test_Create_Resources(unittest.TestCase):
             wraps=self._mock_metadata,
         )
         with patch:
-            resource = _create_kubernetes_resource(self.PROJECT)
+            resource = _create_kubernetes_resource()
 
             self.assertIsInstance(resource, Resource)
             self.assertEqual(resource.type, "k8s_container")
@@ -120,7 +122,7 @@ class Test_Create_Resources(unittest.TestCase):
         )
 
         with patch:
-            resource = _create_compute_resource(self.PROJECT)
+            resource = _create_compute_resource()
             self.assertIsInstance(resource, Resource)
             self.assertEqual(resource.type, "gce_instance")
             self.assertEqual(resource.labels["project_id"], self.PROJECT)
@@ -136,7 +138,7 @@ class Test_Create_Resources(unittest.TestCase):
         os.environ[_monitored_resources._CLOUD_RUN_REVISION_ID] = self.VERSION
         os.environ[_monitored_resources._CLOUD_RUN_CONFIGURATION_ID] = self.CONFIG
         with patch:
-            resource = _create_cloud_run_resource(self.PROJECT)
+            resource = _create_cloud_run_resource()
             self.assertIsInstance(resource, Resource)
             self.assertEqual(resource.type, "cloud_run_revision")
             self.assertEqual(resource.labels["project_id"], self.PROJECT)
@@ -153,7 +155,7 @@ class Test_Create_Resources(unittest.TestCase):
         os.environ[_monitored_resources._GAE_SERVICE_ENV] = self.NAME
         os.environ[_monitored_resources._GAE_VERSION_ENV] = self.VERSION
         with patch:
-            resource = _create_app_engine_resource(self.PROJECT)
+            resource = _create_app_engine_resource()
             self.assertIsInstance(resource, Resource)
             self.assertEqual(resource.type, "gae_app")
             self.assertEqual(resource.labels["project_id"], self.PROJECT)

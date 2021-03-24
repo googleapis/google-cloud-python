@@ -40,17 +40,19 @@ class TestAppEngineHandler(unittest.TestCase):
         with mock.patch(
             "os.environ",
             new={
-                app_engine._GAE_PROJECT_ENV_STANDARD: "test_project",
                 app_engine._GAE_SERVICE_ENV: "test_service",
                 app_engine._GAE_VERSION_ENV: "test_version",
             },
+        ), mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            return_value=self.PROJECT,
         ):
             handler = self._make_one(client, transport=_Transport)
 
         self.assertIs(handler.client, client)
         self.assertEqual(handler.name, app_engine._DEFAULT_GAE_LOGGER_NAME)
         self.assertEqual(handler.resource.type, "gae_app")
-        self.assertEqual(handler.resource.labels["project_id"], "test_project")
+        self.assertEqual(handler.resource.labels["project_id"], self.PROJECT)
         self.assertEqual(handler.resource.labels["module_id"], "test_service")
         self.assertEqual(handler.resource.labels["version_id"], "test_version")
         self.assertIs(handler.stream, sys.stderr)
@@ -73,6 +75,9 @@ class TestAppEngineHandler(unittest.TestCase):
                 app_engine._GAE_SERVICE_ENV: "test_service_2",
                 app_engine._GAE_VERSION_ENV: "test_version_2",
             },
+        ), mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            return_value=self.PROJECT,
         ):
             handler = self._make_one(
                 client, name=name, transport=_Transport, stream=stream
@@ -81,7 +86,7 @@ class TestAppEngineHandler(unittest.TestCase):
         self.assertIs(handler.client, client)
         self.assertEqual(handler.name, name)
         self.assertEqual(handler.resource.type, "gae_app")
-        self.assertEqual(handler.resource.labels["project_id"], "test_project_2")
+        self.assertEqual(handler.resource.labels["project_id"], self.PROJECT)
         self.assertEqual(handler.resource.labels["module_id"], "test_service_2")
         self.assertEqual(handler.resource.labels["version_id"], "test_version_2")
         self.assertIs(handler.stream, stream)

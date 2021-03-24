@@ -77,7 +77,7 @@ class AppEngineHandler(logging.StreamHandler):
         Returns:
             google.cloud.logging_v2.resource.Resource: Monitored resource for GAE.
         """
-        return _create_app_engine_resource(self.project_id)
+        return _create_app_engine_resource()
 
     def get_gae_labels(self):
         """Return the labels for GAE app.
