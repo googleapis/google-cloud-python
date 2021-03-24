@@ -1,3 +1,5 @@
+# coding=utf-8
+
 # Copyright 2014 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -1102,6 +1104,58 @@ class TestStorageWriteFiles(TestStorageFiles):
         self.assertEqual(download_blob.download_as_string(), file_contents)
         self.assertEqual(download_blob.crc32c, blob.crc32c)
         self.assertEqual(download_blob.md5_hash, blob.md5_hash)
+
+    def test_blobwriter_and_blobreader(self):
+        blob = self.bucket.blob("LargeFile")
+
+        # Test BlobWriter works.
+        file_data = self.FILES["big"]
+        with open(file_data["path"], "rb") as file_obj:
+            with blob.open("wb", chunk_size=256 * 1024) as writer:
+                writer.write(file_obj.read(100))
+                writer.write(file_obj.read(256 * 1024))
+                writer.write(file_obj.read())
+            self.case_blobs_to_delete.append(blob)
+
+        blob.reload()
+        md5_hash = blob.md5_hash
+        if not isinstance(md5_hash, six.binary_type):
+            md5_hash = md5_hash.encode("utf-8")
+        self.assertEqual(md5_hash, file_data["hash"])
+
+        # Test BlobReader read and seek behave identically to filesystem file.
+        with open(file_data["path"], "rb") as file_obj:
+            with blob.open("rb", chunk_size=256 * 1024) as reader:
+                self.assertEqual(file_obj.read(100), reader.read(100))
+                self.assertEqual(file_obj.read(256 * 1024), reader.read(256 * 1024))
+                reader.seek(20)
+                file_obj.seek(20)
+                self.assertEqual(
+                    file_obj.read(256 * 1024 * 2), reader.read(256 * 1024 * 2)
+                )
+                self.assertEqual(file_obj.read(), reader.read())
+
+    def test_blobwriter_and_blobreader_text_mode(self):
+        blob = self.bucket.blob("MultibyteTextFile")
+
+        # Construct a multibyte text_data sample file.
+        base_multibyte_text_string = u"abcde あいうえお line: "
+        text_data = "\n".join([base_multibyte_text_string + str(x) for x in range(100)])
+
+        # Test text BlobWriter works.
+        with blob.open("wt") as writer:
+            writer.write(text_data[:100])
+            writer.write(text_data[100:])
+        self.case_blobs_to_delete.append(blob)
+
+        # Test text BlobReader read and seek to 0. Seeking to an non-0 byte on a
+        # multibyte text stream is not safe in Python but the API expects
+        # seek() to work regadless.
+        with blob.open("rt") as reader:
+            # This should produce 100 characters, not 100 bytes.
+            self.assertEqual(text_data[:100], reader.read(100))
+            self.assertEqual(0, reader.seek(0))
+            self.assertEqual(text_data, reader.read())
 
 
 class TestUnicode(TestStorageFiles):

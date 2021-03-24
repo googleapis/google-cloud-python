@@ -4673,6 +4673,40 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.name, "b")
         self.assertEqual(blob.bucket.name, "buckets.example.com")
 
+    def test_open(self):
+        from io import TextIOWrapper
+        from google.cloud.storage.fileio import BlobReader
+        from google.cloud.storage.fileio import BlobWriter
+
+        blob_name = "blob-name"
+        client = self._make_client()
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        f = blob.open("r")
+        self.assertEqual(type(f), TextIOWrapper)
+        self.assertEqual(type(f.buffer), BlobReader)
+        f = blob.open("rt")
+        self.assertEqual(type(f), TextIOWrapper)
+        self.assertEqual(type(f.buffer), BlobReader)
+        f = blob.open("rb")
+        self.assertEqual(type(f), BlobReader)
+        f = blob.open("w")
+        self.assertEqual(type(f), TextIOWrapper)
+        self.assertEqual(type(f.buffer), BlobWriter)
+        f = blob.open("wt")
+        self.assertEqual(type(f), TextIOWrapper)
+        self.assertEqual(type(f.buffer), BlobWriter)
+        f = blob.open("wb")
+        self.assertEqual(type(f), BlobWriter)
+
+        with self.assertRaises(NotImplementedError):
+            blob.open("a")
+        with self.assertRaises(ValueError):
+            blob.open("rb", encoding="utf-8")
+        with self.assertRaises(ValueError):
+            blob.open("wb", encoding="utf-8")
+
 
 class Test__quote(unittest.TestCase):
     @staticmethod
