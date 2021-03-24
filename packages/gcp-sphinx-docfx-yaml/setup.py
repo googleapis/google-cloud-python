@@ -13,28 +13,37 @@
 # limitations under the License.
 
 import codecs
-from setuptools import setup, find_packages
-extra_setup = dict(
-install_requires=[
+import setuptools
+
+name = 'gcp-sphinx-docfx-yaml'
+description = 'Sphinx Python Domain to DocFX YAML Generator'
+version = '0.1.0'
+dependencies = [
     'PyYAML',
     'wheel>=0.24.0',
     'sphinx',
-    'unidecode',
-],
+    'unidecode'
+]
+
+packages = setuptools.find_packages('.', exclude=['tests'])
+
+extra_setup = dict(
 setup_requires=['pytest-runner'],
 tests_require=['pytest', 'mock'],
 )
 
-setup(
-    name='sphinx-docfx-yaml',
-    version='1.2.76',
-    author='Eric Holscher',
-    author_email='eric@ericholscher.com',
-    url='https://github.com/ericholscher/sphinx-docfx-yaml',
-    description='Sphinx Python Domain to DocFX YAML Generator',
+setuptools.setup(
+    name=name,
+    version=version,
+    description=description,
+    author='Google LLC',
+    author_email='dandhlee@google.com',
+    license='Apache 2.0',
+    url='https://github.com/googleapis/sphinx-docfx-yaml',
     package_dir={'': '.'},
-    packages=find_packages('.', exclude=['tests']),
-    # trying to add files...
+    packages=packages,
+    install_requires=dependencies,
     include_package_data=True,
+    zip_safe=False,
     **extra_setup
 )
