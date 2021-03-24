@@ -336,11 +336,11 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
-        chunk = self._make_list_value([None, u"D", u"E"])
+        chunk = self._make_list_value([u"D", u"E"])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([u"A", u"B", u"C", None, u"D", u"E"])
+        expected = self._make_list_value([u"A", u"B", u"CD", u"E"])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 
@@ -352,11 +352,25 @@ class TestStreamedResultSet(unittest.TestCase):
         FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
         streamed._metadata = self._make_result_set_metadata(FIELDS)
         streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C"])
-        chunk = self._make_list_value([u"D", u"E"])
+        chunk = self._make_list_value([None, u"D", u"E"])
 
         merged = streamed._merge_chunk(chunk)
 
-        expected = self._make_list_value([u"A", u"B", u"CD", u"E"])
+        expected = self._make_list_value([u"A", u"B", u"C", None, u"D", u"E"])
+        self.assertEqual(merged, expected)
+        self.assertIsNone(streamed._pending_chunk)
+
+    def test__merge_chunk_array_of_string_with_null_pending(self):
+        from google.cloud.spanner_v1 import TypeCode
+
+        iterator = _MockCancellableIterator()
+        streamed = self._make_one(iterator)
+        FIELDS = [self._make_array_field("name", element_type_code=TypeCode.STRING)]
+        streamed._metadata = self._make_result_set_metadata(FIELDS)
+        streamed._pending_chunk = self._make_list_value([u"A", u"B", u"C", None])
+        chunk = self._make_list_value([u"D", u"E"])
+        merged = streamed._merge_chunk(chunk)
+        expected = self._make_list_value([u"A", u"B", u"C", None, u"D", u"E"])
         self.assertEqual(merged, expected)
         self.assertIsNone(streamed._pending_chunk)
 

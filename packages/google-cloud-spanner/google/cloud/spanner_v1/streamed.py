@@ -258,13 +258,17 @@ def _merge_array(lhs, rhs, type_):
         lhs.append(first)
     else:
         last = lhs.pop()
-        try:
-            merged = _merge_by_type(last, first, element_type)
-        except Unmergeable:
+        if last.HasField("null_value"):
             lhs.append(last)
             lhs.append(first)
         else:
-            lhs.append(merged)
+            try:
+                merged = _merge_by_type(last, first, element_type)
+            except Unmergeable:
+                lhs.append(last)
+                lhs.append(first)
+            else:
+                lhs.append(merged)
     return Value(list_value=ListValue(values=(lhs + rhs)))
 
 
@@ -284,13 +288,17 @@ def _merge_struct(lhs, rhs, type_):
         lhs.append(first)
     else:
         last = lhs.pop()
-        try:
-            merged = _merge_by_type(last, first, candidate_type)
-        except Unmergeable:
+        if last.HasField("null_value"):
             lhs.append(last)
             lhs.append(first)
         else:
-            lhs.append(merged)
+            try:
+                merged = _merge_by_type(last, first, candidate_type)
+            except Unmergeable:
+                lhs.append(last)
+                lhs.append(first)
+            else:
+                lhs.append(merged)
     return Value(list_value=ListValue(values=lhs + rhs))
 
 
