@@ -21,7 +21,15 @@ import keyword
 # They are explicitly allowed message, module, and field names.
 RESERVED_NAMES = frozenset(
     itertools.chain(
+        # We CANNOT make exceptions for keywords.
         keyword.kwlist,
+        # We make SOME exceptions for certain names that collide with builtins.
         set(dir(builtins)) - {"filter", "map", "id", "input", "property"},
+        # This is a hand-maintained list of modules that are directly imported
+        # in templates, i.e. they are not added as dependencies to any type,
+        # the raw text is just there in the template.
+        # More can be added as collisions are discovered.
+        # See issue #819 for additional info.
+        {"auth", "credentials", "exceptions", "future", "options", "policy", "math"}
     )
 )
