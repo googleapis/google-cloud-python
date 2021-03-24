@@ -50,8 +50,10 @@ docs.metadata
 
 # Virtual environment
 env/
+
+# Test logs
 coverage.xml
-sponge_log.xml
+*sponge_log.xml
 
 # System test environment variables.
 system_tests/local_test_setup

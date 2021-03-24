@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-error-reporting.git",
-        "sha": "e078a158b68d10b119ec226c02a17944b59ddccb"
+        "sha": "eaf4a5aebe9f3cee0af211defec7ff10d5bae4a4"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4679e7e415221f03ff2a71e3ffad75b9ec41d87e"
+        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
       }
     }
   ],
