@@ -1246,6 +1246,13 @@ class TestQuery:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_ancestor_and_default_namespace():
+        key = key_module.Key("a", "b", namespace=None)
+        query = query_module.Query(ancestor=key, namespace="")
+        assert query.namespace == ""
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_ancestor_parameterized_thing():
         query = query_module.Query(ancestor=query_module.ParameterizedThing())
         assert isinstance(query.ancestor, query_module.ParameterizedThing)

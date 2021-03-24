@@ -1392,7 +1392,13 @@ class Query(object):
                 else:
                     project = ancestor.app()
                 if namespace is not None:
-                    if namespace != ancestor.namespace():
+                    # if namespace is the empty string, that means default
+                    # namespace, but after a put, if the ancestor is using
+                    # the default namespace, its namespace will be None,
+                    # so skip the test to avoid a false mismatch error.
+                    if namespace == "" and ancestor.namespace() is None:
+                        pass
+                    elif namespace != ancestor.namespace():
                         raise TypeError("ancestor/namespace mismatch")
                 else:
                     namespace = ancestor.namespace()

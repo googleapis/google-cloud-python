@@ -223,6 +223,22 @@ class TestKey:
         assert key._reference is None
 
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_parent_and_namespace(self):
+        parent = key_module.Key(urlsafe=self.URLSAFE)
+        key = key_module.Key("Zip", 10, parent=parent, namespace=None)
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", "Thing", "Zip", 10, project="fire"
+        )
+        assert key._reference is None
+
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_parent_and_mismatched_namespace(self):
+        parent = key_module.Key(urlsafe=self.URLSAFE)
+        with pytest.raises(ValueError):
+            key_module.Key("Zip", 10, parent=parent, namespace="foo")
+
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_parent_bad_type(self):
         parent = mock.sentinel.parent
         with pytest.raises(exceptions.BadValueError):

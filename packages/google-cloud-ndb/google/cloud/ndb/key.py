@@ -279,16 +279,8 @@ class Key(object):
     _hash_value = None
 
     def __new__(cls, *path_args, **kwargs):
-        # Avoid circular import in Python 2.7
-        from google.cloud.ndb import context as context_module
-
         _constructor_handle_positional(path_args, kwargs)
         instance = super(Key, cls).__new__(cls)
-
-        # Make sure to pass in the namespace if it's not explicitly set.
-        if kwargs.get("namespace", UNDEFINED) is UNDEFINED:
-            context = context_module.get_context()
-            kwargs["namespace"] = context.get_namespace()
 
         if "reference" in kwargs or "serialized" in kwargs or "urlsafe" in kwargs:
             ds_key, reference = _parse_from_ref(cls, **kwargs)
@@ -1319,7 +1311,7 @@ def _parse_from_ref(
 
 
 def _parse_from_args(
-    pairs=None, flat=None, project=None, app=None, namespace=None, parent=None
+    pairs=None, flat=None, project=None, app=None, namespace=UNDEFINED, parent=None
 ):
     """Construct a key the path (and possibly a parent key).
 
@@ -1344,6 +1336,9 @@ def _parse_from_args(
     Raises:
         .BadValueError: If ``parent`` is passed but is not a ``Key``.
     """
+    # Avoid circular import in Python 2.7
+    from google.cloud.ndb import context as context_module
+
     flat = _get_path(flat, pairs)
     _clean_flat_path(flat)
 
@@ -1355,12 +1350,20 @@ def _parse_from_args(
     parent_ds_key = None
     if parent is None:
         project = _project_from_app(app)
+        if namespace is UNDEFINED:
+            context = context_module.get_context()
+            namespace = context.get_namespace()
+
     else:
         project = _project_from_app(app, allow_empty=True)
         if not isinstance(parent, Key):
             raise exceptions.BadValueError(
                 "Expected Key instance, got {!r}".format(parent)
             )
+
+        if namespace is UNDEFINED:
+            namespace = None
+
         # Offload verification of parent to ``google.cloud.datastore.Key()``.
         parent_ds_key = parent._key
 

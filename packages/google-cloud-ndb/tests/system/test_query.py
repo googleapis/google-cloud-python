@@ -161,6 +161,56 @@ def test_ancestor_query(ds_entity):
     assert [entity.foo for entity in results] == [-1, 0, 1, 2, 3, 4]
 
 
+def test_ancestor_query_with_namespace(client_context, dispose_of, other_namespace):
+    class Dummy(ndb.Model):
+        foo = ndb.StringProperty(default="")
+
+    entity1 = Dummy(foo="bar", namespace="xyz")
+    parent_key = entity1.put()
+    dispose_of(entity1.key._key)
+
+    entity2 = Dummy(foo="child", parent=parent_key, namespace=None)
+    entity2.put()
+    dispose_of(entity2.key._key)
+
+    entity3 = Dummy(foo="childless", namespace="xyz")
+    entity3.put()
+    dispose_of(entity3.key._key)
+
+    with client_context.new(namespace=other_namespace).use():
+        query = Dummy.query(ancestor=parent_key, namespace="xyz")
+        results = eventually(query.fetch, length_equals(2))
+
+    assert results[0].foo == "bar"
+    assert results[1].foo == "child"
+
+
+def test_ancestor_query_with_default_namespace(
+    client_context, dispose_of, other_namespace
+):
+    class Dummy(ndb.Model):
+        foo = ndb.StringProperty(default="")
+
+    entity1 = Dummy(foo="bar", namespace="")
+    parent_key = entity1.put()
+    dispose_of(entity1.key._key)
+
+    entity2 = Dummy(foo="child", parent=parent_key)
+    entity2.put()
+    dispose_of(entity2.key._key)
+
+    entity3 = Dummy(foo="childless", namespace="")
+    entity3.put()
+    dispose_of(entity3.key._key)
+
+    with client_context.new(namespace=other_namespace).use():
+        query = Dummy.query(ancestor=parent_key, namespace="")
+        results = eventually(query.fetch, length_equals(2))
+
+    assert results[0].foo == "bar"
+    assert results[1].foo == "child"
+
+
 @pytest.mark.usefixtures("client_context")
 def test_projection(ds_entity):
     entity_id = test_utils.system.unique_resource_id()
