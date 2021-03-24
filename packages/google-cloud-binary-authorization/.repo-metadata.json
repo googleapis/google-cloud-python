@@ -8,5 +8,6 @@
     "language": "python",
     "repo": "googleapis/python-binary-authorization",
     "distribution_name": "google-cloud-binary-authorization",
-    "api_id": "binaryauthorization.googleapis.com"
+    "api_id": "binaryauthorization.googleapis.com",
+    "codeowner_team": "@googleapis/cicd"
     }
