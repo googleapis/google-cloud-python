@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-spanner.git",
-        "sha": "a082e5d7d2195ab9429a8e0bef4a664b59fdf771"
+        "sha": "5ca63407847ad615dc51beaaaa7f16640daf0e23"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a783321fd55f010709294455584a553f4b24b944"
+        "sha": "f5c5904fb0c6aa3b3730eadf4e5a4485afc65726"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "a783321fd55f010709294455584a553f4b24b944"
+        "sha": "f5c5904fb0c6aa3b3730eadf4e5a4485afc65726"
       }
     }
   ],
@@ -66,6 +66,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
@@ -90,19 +91,25 @@
     ".kokoro/samples/lint/presubmit.cfg",
     ".kokoro/samples/python3.6/common.cfg",
     ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
     ".kokoro/samples/python3.6/periodic.cfg",
     ".kokoro/samples/python3.6/presubmit.cfg",
     ".kokoro/samples/python3.7/common.cfg",
     ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
     ".kokoro/samples/python3.7/periodic.cfg",
     ".kokoro/samples/python3.7/presubmit.cfg",
     ".kokoro/samples/python3.8/common.cfg",
     ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
     ".kokoro/samples/python3.8/periodic.cfg",
     ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
     ".trampolinerc",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.rst",
