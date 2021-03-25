@@ -378,6 +378,54 @@ SELECT * FROM contacts WHERE contact_id = 1
         self.assertEqual(res[0], 1)
         conn.close()
 
+    def test_DDL_autocommit(self):
+        """Check that DDLs in autocommit mode are immediately executed."""
+        conn = Connection(Config.INSTANCE, self._db)
+        conn.autocommit = True
+
+        cur = conn.cursor()
+        cur.execute(
+            """
+            CREATE TABLE Singers (
+                SingerId     INT64 NOT NULL,
+                Name    STRING(1024),
+            ) PRIMARY KEY (SingerId)
+        """
+        )
+        conn.close()
+
+        # if previous DDL wasn't committed, the next DROP TABLE
+        # statement will fail with a ProgrammingError
+        conn = Connection(Config.INSTANCE, self._db)
+        cur = conn.cursor()
+
+        cur.execute("DROP TABLE Singers")
+        conn.commit()
+
+    def test_DDL_commit(self):
+        """Check that DDLs in commit mode are executed on calling `commit()`."""
+        conn = Connection(Config.INSTANCE, self._db)
+        cur = conn.cursor()
+
+        cur.execute(
+            """
+        CREATE TABLE Singers (
+            SingerId     INT64 NOT NULL,
+            Name    STRING(1024),
+        ) PRIMARY KEY (SingerId)
+        """
+        )
+        conn.commit()
+        conn.close()
+
+        # if previous DDL wasn't committed, the next DROP TABLE
+        # statement will fail with a ProgrammingError
+        conn = Connection(Config.INSTANCE, self._db)
+        cur = conn.cursor()
+
+        cur.execute("DROP TABLE Singers")
+        conn.commit()
+
 
 def clear_table(transaction):
     """Clear the test table."""

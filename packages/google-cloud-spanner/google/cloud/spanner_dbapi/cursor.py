@@ -178,6 +178,8 @@ class Cursor(object):
                     ddl = ddl.strip()
                     if ddl:
                         self.connection._ddl_statements.append(ddl)
+                if self.connection.autocommit:
+                    self.connection.run_prior_DDL_statements()
                 return
 
             # For every other operation, we've got to ensure that

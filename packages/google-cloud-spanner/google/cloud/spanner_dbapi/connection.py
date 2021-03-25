@@ -243,7 +243,10 @@ class Connection:
         """
         if self._autocommit:
             warnings.warn(AUTOCOMMIT_MODE_WARNING, UserWarning, stacklevel=2)
-        elif self.inside_transaction:
+            return
+
+        self.run_prior_DDL_statements()
+        if self.inside_transaction:
             try:
                 self._transaction.commit()
                 self._release_session()
