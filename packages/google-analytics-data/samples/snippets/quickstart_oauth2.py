@@ -27,7 +27,7 @@ Usage:
   pip3 install --upgrade google-analytics-data
   python3 quickstart_oauth2.py
 """
-# [START google_analytics_data_quickstart]
+# [START analyticsdata_quickstart_oauth2]
 from google.analytics.data import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import DateRange
 from google.analytics.data_v1beta.types import Dimension
@@ -59,7 +59,7 @@ def sample_run_report(credentials=None, property_id="YOUR-GA4-PROPERTY-ID"):
 
 def get_credentials():
     """Creates an OAuth2 credentials instance."""
-    # [START google_analytics_data_initialize]
+    # [START analyticsdata_initialize]
     appflow = flow.InstalledAppFlow.from_client_secrets_file(
         "client_secrets.json",
         scopes=["https://www.googleapis.com/auth/analytics.readonly"],
@@ -75,7 +75,7 @@ def get_credentials():
     else:
         appflow.run_console()
     return appflow.credentials
-    # [END google_analytics_data_initialize]
+    # [END analyticsdata_initialize]
 
 
 def main():
@@ -83,7 +83,7 @@ def main():
     sample_run_report(credentials)
 
 
-# [END google_analytics_data_quickstart]
+# [END analyticsdata_quickstart_oauth2]
 
 if __name__ == "__main__":
     main()

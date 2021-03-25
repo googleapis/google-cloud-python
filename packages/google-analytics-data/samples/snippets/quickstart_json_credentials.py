@@ -27,7 +27,7 @@ Usage:
   pip3 install --upgrade google-analytics-data
   python3 quickstart_json_credentials.py
 """
-# [START google_analytics_data_quickstart]
+# [START analyticsdata_json_credentials_quickstart]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import DateRange
 from google.analytics.data_v1beta.types import Dimension
@@ -41,7 +41,7 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID", credentials_json_path=
     #  Google Analytics 4 property ID before running the sample.
     # property_id = "YOUR-GA4-PROPERTY-ID"
 
-    # [START google_analytics_data_initialize]
+    # [START analyticsdata_json_credentials_initialize]
     # TODO(developer): Uncomment this variable and replace with a valid path to
     #  the credentials.json file for your service account downloaded from the
     #  Cloud Console.
@@ -50,9 +50,9 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID", credentials_json_path=
     # Explicitly use service account credentials by specifying
     # the private key file.
     client = BetaAnalyticsDataClient().from_service_account_json(credentials_json_path)
-    # [END google_analytics_data_initialize]
+    # [END analyticsdata_json_credentials_initialize]
 
-    # [START google_analytics_data_run_report]
+    # [START analyticsdata_json_credentials_run_report]
     request = RunReportRequest(
         property="properties/" + str(property_id),
         dimensions=[Dimension(name="city")],
@@ -60,12 +60,14 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID", credentials_json_path=
         date_ranges=[DateRange(start_date="2020-03-31", end_date="today")],
     )
     response = client.run_report(request)
-    # [END google_analytics_data_run_report]
+    # [END analyticsdata_json_credentials_run_report]
 
     print("Report result:")
     for row in response.rows:
         print(row.dimension_values[0].value, row.metric_values[0].value)
-# [END google_analytics_data_quickstart]
+
+
+# [END analyticsdata_json_credentials_quickstart]
 
 
 if __name__ == "__main__":

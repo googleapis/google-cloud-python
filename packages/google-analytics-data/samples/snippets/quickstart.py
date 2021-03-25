@@ -26,7 +26,7 @@ Usage:
   pip3 install --upgrade google-analytics-data
   python3 quickstart.py
 """
-# [START google_analytics_data_quickstart]
+# [START analyticsdata_quickstart]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import DateRange
 from google.analytics.data_v1beta.types import Dimension
@@ -40,13 +40,13 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID"):
     #  Google Analytics 4 property ID before running the sample.
     # property_id = "YOUR-GA4-PROPERTY-ID"
 
-    # [START google_analytics_data_initialize]
+    # [START analyticsdata_run_report_initialize]
     # Using a default constructor instructs the client to use the credentials
     # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
     client = BetaAnalyticsDataClient()
-    # [END google_analytics_data_initialize]
+    # [END analyticsdata_run_report_initialize]
 
-    # [START google_analytics_data_run_report]
+    # [START analyticsdata_run_report]
     request = RunReportRequest(
         property="properties/" + str(property_id),
         dimensions=[Dimension(name="city")],
@@ -54,16 +54,16 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID"):
         date_ranges=[DateRange(start_date="2020-03-31", end_date="today")],
     )
     response = client.run_report(request)
-    # [END google_analytics_data_run_report]
+    # [END analyticsdata_run_report]
 
-    # [START google_analytics_data_run_report_response]
+    # [START analyticsdata_run_report_response]
     print("Report result:")
     for row in response.rows:
         print(row.dimension_values[0].value, row.metric_values[0].value)
-    # [END google_analytics_data_run_report_response]
+    # [END analyticsdata_run_report_response]
 
 
-# [END google_analytics_data_quickstart]
+# [END analyticsdata_quickstart]
 
 
 if __name__ == "__main__":
