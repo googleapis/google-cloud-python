@@ -125,18 +125,22 @@ class Policy(collections_abc.MutableMapping):
 
     def __iter__(self):
         self.__check_version__()
-        return (binding["role"] for binding in self._bindings)
+        # Exclude bindings with no members
+        return (binding["role"] for binding in self._bindings if binding["members"])
 
     def __len__(self):
         self.__check_version__()
-        return len(self._bindings)
+        # Exclude bindings with no members
+        return len(list(self.__iter__()))
 
     def __getitem__(self, key):
         self.__check_version__()
         for b in self._bindings:
             if b["role"] == key:
                 return b["members"]
-        # binding does not yet exist, create one
+        # If the binding does not yet exist, create one
+        # NOTE: This will create bindings with no members
+        # which are ignored by __iter__ and __len__
         new_binding = {"role": key, "members": set()}
         self._bindings.append(new_binding)
         return new_binding["members"]
