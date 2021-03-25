@@ -117,6 +117,22 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            MetricServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -128,7 +144,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            MetricServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -172,6 +188,21 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         m = re.match(
             r"^projects/(?P<project>.+?)/monitoredResourceDescriptors/(?P<monitored_resource_descriptor>.+?)$",
             path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def time_series_path(project: str, time_series: str,) -> str:
+        """Return a fully-qualified time_series string."""
+        return "projects/{project}/timeSeries/{time_series}".format(
+            project=project, time_series=time_series,
+        )
+
+    @staticmethod
+    def parse_time_series_path(path: str) -> Dict[str, str]:
+        """Parse a time_series path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/timeSeries/(?P<time_series>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -250,10 +281,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.MetricServiceTransport]): The
+            transport (Union[str, MetricServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -289,21 +320,17 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -346,7 +373,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -364,16 +391,17 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         filter. This method does not require a Workspace.
 
         Args:
-            request (:class:`~.metric_service.ListMonitoredResourceDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest):
                 The request object. The
                 `ListMonitoredResourceDescriptors` request.
-            name (:class:`str`):
+            name (str):
                 Required. The project on which to execute the request.
                 The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -385,8 +413,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListMonitoredResourceDescriptorsPager:
-                The ``ListMonitoredResourceDescriptors`` response.
+            google.cloud.monitoring_v3.services.metric_service.pagers.ListMonitoredResourceDescriptorsPager:
+                The ListMonitoredResourceDescriptors response.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -454,10 +482,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         method does not require a Workspace.
 
         Args:
-            request (:class:`~.metric_service.GetMonitoredResourceDescriptorRequest`):
+            request (google.cloud.monitoring_v3.types.GetMonitoredResourceDescriptorRequest):
                 The request object. The `GetMonitoredResourceDescriptor`
                 request.
-            name (:class:`str`):
+            name (str):
                 Required. The monitored resource descriptor to get. The
                 format is:
 
@@ -467,6 +495,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
                 The ``[RESOURCE_TYPE]`` is a predefined type, such as
                 ``cloudsql_database``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -478,19 +507,18 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.monitored_resource.MonitoredResourceDescriptor:
-                An object that describes the schema of a
-                [MonitoredResource][google.api.MonitoredResource] object
-                using a type name and a set of labels. For example, the
-                monitored resource descriptor for Google Compute Engine
-                VM instances has a type of ``"gce_instance"`` and
-                specifies the use of the labels ``"instance_id"`` and
-                ``"zone"`` to identify particular VM instances.
+            google.api.monitored_resource_pb2.MonitoredResourceDescriptor:
+                An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
+                   type name and a set of labels. For example, the
+                   monitored resource descriptor for Google Compute
+                   Engine VM instances has a type of "gce_instance" and
+                   specifies the use of the labels "instance_id" and
+                   "zone" to identify particular VM instances.
 
-                Different APIs can support different monitored resource
-                types. APIs generally provide a ``list`` method that
-                returns the monitored resource descriptors used by the
-                API.
+                   Different APIs can support different monitored
+                   resource types. APIs generally provide a list method
+                   that returns the monitored resource descriptors used
+                   by the API.
 
         """
         # Create or coerce a protobuf request object.
@@ -549,15 +577,16 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         method does not require a Workspace.
 
         Args:
-            request (:class:`~.metric_service.ListMetricDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest):
                 The request object. The `ListMetricDescriptors` request.
-            name (:class:`str`):
+            name (str):
                 Required. The project on which to execute the request.
                 The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -569,8 +598,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListMetricDescriptorsPager:
-                The ``ListMetricDescriptors`` response.
+            google.cloud.monitoring_v3.services.metric_service.pagers.ListMetricDescriptorsPager:
+                The ListMetricDescriptors response.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -634,9 +663,9 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         require a Workspace.
 
         Args:
-            request (:class:`~.metric_service.GetMetricDescriptorRequest`):
+            request (google.cloud.monitoring_v3.types.GetMetricDescriptorRequest):
                 The request object. The `GetMetricDescriptor` request.
-            name (:class:`str`):
+            name (str):
                 Required. The metric descriptor on which to execute the
                 request. The format is:
 
@@ -646,6 +675,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
                 An example value of ``[METRIC_ID]`` is
                 ``"compute.googleapis.com/instance/disk/read_bytes_count"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -657,7 +687,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.ga_metric.MetricDescriptor:
+            google.api.metric_pb2.MetricDescriptor:
                 Defines a metric type and its schema.
                 Once a metric descriptor is created,
                 deleting or altering it stops data
@@ -719,23 +749,25 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
         Args:
-            request (:class:`~.metric_service.CreateMetricDescriptorRequest`):
+            request (google.cloud.monitoring_v3.types.CreateMetricDescriptorRequest):
                 The request object. The `CreateMetricDescriptor`
                 request.
-            name (:class:`str`):
+            name (str):
                 Required. The project on which to execute the request.
                 The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            metric_descriptor (:class:`~.ga_metric.MetricDescriptor`):
+            metric_descriptor (google.api.metric_pb2.MetricDescriptor):
                 Required. The new `custom
                 metric <https://cloud.google.com/monitoring/custom-metrics>`__
                 descriptor.
+
                 This corresponds to the ``metric_descriptor`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -747,7 +779,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.ga_metric.MetricDescriptor:
+            google.api.metric_pb2.MetricDescriptor:
                 Defines a metric type and its schema.
                 Once a metric descriptor is created,
                 deleting or altering it stops data
@@ -810,10 +842,10 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         can be deleted.
 
         Args:
-            request (:class:`~.metric_service.DeleteMetricDescriptorRequest`):
+            request (google.cloud.monitoring_v3.types.DeleteMetricDescriptorRequest):
                 The request object. The `DeleteMetricDescriptor`
                 request.
-            name (:class:`str`):
+            name (str):
                 Required. The metric descriptor on which to execute the
                 request. The format is:
 
@@ -823,6 +855,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
                 An example of ``[METRIC_ID]`` is:
                 ``"custom.googleapis.com/my_test_metric"``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -887,19 +920,22 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         does not require a Workspace.
 
         Args:
-            request (:class:`~.metric_service.ListTimeSeriesRequest`):
+            request (google.cloud.monitoring_v3.types.ListTimeSeriesRequest):
                 The request object. The `ListTimeSeries` request.
-            name (:class:`str`):
-                Required. The project on which to execute the request.
-                The format is:
+            name (str):
+                Required. The project, organization or folder on which
+                to execute the request. The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+                    organizations/[ORGANIZATION_ID]
+                    folders/[FOLDER_ID]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 Required. A `monitoring
                 filter <https://cloud.google.com/monitoring/api/v3/filters>`__
                 that specifies which time series should be returned. The
@@ -910,22 +946,25 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 ::
 
                     metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
-                        metric.labels.instance_name = "my-instance-name".
+                        metric.labels.instance_name = "my-instance-name"
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            interval (:class:`~.common.TimeInterval`):
+            interval (google.cloud.monitoring_v3.types.TimeInterval):
                 Required. The time interval for which
                 results should be returned. Only time
                 series that contain data points in the
                 specified interval are included in the
                 response.
+
                 This corresponds to the ``interval`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            view (:class:`~.metric_service.ListTimeSeriesRequest.TimeSeriesView`):
+            view (google.cloud.monitoring_v3.types.ListTimeSeriesRequest.TimeSeriesView):
                 Required. Specifies which information
                 is returned about the time series.
+
                 This corresponds to the ``view`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -937,8 +976,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTimeSeriesPager:
-                The ``ListTimeSeries`` response.
+            google.cloud.monitoring_v3.services.metric_service.pagers.ListTimeSeriesPager:
+                The ListTimeSeries response.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1012,19 +1051,20 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         response.
 
         Args:
-            request (:class:`~.metric_service.CreateTimeSeriesRequest`):
+            request (google.cloud.monitoring_v3.types.CreateTimeSeriesRequest):
                 The request object. The `CreateTimeSeries` request.
-            name (:class:`str`):
+            name (str):
                 Required. The project on which to execute the request.
                 The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            time_series (:class:`Sequence[~.gm_metric.TimeSeries]`):
+            time_series (Sequence[google.cloud.monitoring_v3.types.TimeSeries]):
                 Required. The new data to be added to a list of time
                 series. Adds at most one data point to each of several
                 time series. The new data point must be more recent than
@@ -1035,6 +1075,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
                 The maximum number of ``TimeSeries`` objects per
                 ``Create`` request is 200.
+
                 This corresponds to the ``time_series`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1067,9 +1108,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
             if name is not None:
                 request.name = name
-
-            if time_series:
-                request.time_series.extend(time_series)
+            if time_series is not None:
+                request.time_series = time_series
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

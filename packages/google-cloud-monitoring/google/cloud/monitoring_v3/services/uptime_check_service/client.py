@@ -124,6 +124,22 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            UptimeCheckServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -135,7 +151,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            UptimeCheckServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -243,10 +259,10 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.UptimeCheckServiceTransport]): The
+            transport (Union[str, UptimeCheckServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -282,21 +298,17 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -339,7 +351,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -358,16 +370,17 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         configurations).
 
         Args:
-            request (:class:`~.uptime_service.ListUptimeCheckConfigsRequest`):
+            request (google.cloud.monitoring_v3.types.ListUptimeCheckConfigsRequest):
                 The request object. The protocol for the
                 `ListUptimeCheckConfigs` request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The project whose Uptime check configurations
                 are listed. The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -379,9 +392,8 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListUptimeCheckConfigsPager:
-                The protocol for the ``ListUptimeCheckConfigs``
-                response.
+            google.cloud.monitoring_v3.services.uptime_check_service.pagers.ListUptimeCheckConfigsPager:
+                The protocol for the ListUptimeCheckConfigs response.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -446,16 +458,17 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         r"""Gets a single Uptime check configuration.
 
         Args:
-            request (:class:`~.uptime_service.GetUptimeCheckConfigRequest`):
+            request (google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest):
                 The request object. The protocol for the
                 `GetUptimeCheckConfig` request.
-            name (:class:`str`):
+            name (str):
                 Required. The Uptime check configuration to retrieve.
                 The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -467,7 +480,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.uptime.UptimeCheckConfig:
+            google.cloud.monitoring_v3.types.UptimeCheckConfig:
                 This message configures which
                 resources and services to monitor for
                 availability.
@@ -525,22 +538,24 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         r"""Creates a new Uptime check configuration.
 
         Args:
-            request (:class:`~.uptime_service.CreateUptimeCheckConfigRequest`):
+            request (google.cloud.monitoring_v3.types.CreateUptimeCheckConfigRequest):
                 The request object. The protocol for the
                 `CreateUptimeCheckConfig` request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The project in which to create the Uptime
                 check. The format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            uptime_check_config (:class:`~.uptime.UptimeCheckConfig`):
+            uptime_check_config (google.cloud.monitoring_v3.types.UptimeCheckConfig):
                 Required. The new Uptime check
                 configuration.
+
                 This corresponds to the ``uptime_check_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -552,7 +567,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.uptime.UptimeCheckConfig:
+            google.cloud.monitoring_v3.types.UptimeCheckConfig:
                 This message configures which
                 resources and services to monitor for
                 availability.
@@ -617,10 +632,10 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         configuration.
 
         Args:
-            request (:class:`~.uptime_service.UpdateUptimeCheckConfigRequest`):
+            request (google.cloud.monitoring_v3.types.UpdateUptimeCheckConfigRequest):
                 The request object. The protocol for the
                 `UpdateUptimeCheckConfig` request.
-            uptime_check_config (:class:`~.uptime.UptimeCheckConfig`):
+            uptime_check_config (google.cloud.monitoring_v3.types.UptimeCheckConfig):
                 Required. If an ``updateMask`` has been specified, this
                 field gives the values for the set of fields mentioned
                 in the ``updateMask``. If an ``updateMask`` has not been
@@ -634,6 +649,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 The following fields can be updated: ``display_name``,
                 ``http_check``, ``tcp_check``, ``timeout``,
                 ``content_matchers``, and ``selected_regions``.
+
                 This corresponds to the ``uptime_check_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -645,7 +661,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.uptime.UptimeCheckConfig:
+            google.cloud.monitoring_v3.types.UptimeCheckConfig:
                 This message configures which
                 resources and services to monitor for
                 availability.
@@ -709,16 +725,17 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         that would be rendered invalid by the deletion.
 
         Args:
-            request (:class:`~.uptime_service.DeleteUptimeCheckConfigRequest`):
+            request (google.cloud.monitoring_v3.types.DeleteUptimeCheckConfigRequest):
                 The request object. The protocol for the
                 `DeleteUptimeCheckConfig` request.
-            name (:class:`str`):
+            name (str):
                 Required. The Uptime check configuration to delete. The
                 format is:
 
                 ::
 
                     projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -781,7 +798,7 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
         from
 
         Args:
-            request (:class:`~.uptime_service.ListUptimeCheckIpsRequest`):
+            request (google.cloud.monitoring_v3.types.ListUptimeCheckIpsRequest):
                 The request object. The protocol for the
                 `ListUptimeCheckIps` request.
 
@@ -792,8 +809,8 @@ class UptimeCheckServiceClient(metaclass=UptimeCheckServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListUptimeCheckIpsPager:
-                The protocol for the ``ListUptimeCheckIps`` response.
+            google.cloud.monitoring_v3.services.uptime_check_service.pagers.ListUptimeCheckIpsPager:
+                The protocol for the ListUptimeCheckIps response.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

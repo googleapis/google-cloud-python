@@ -53,6 +53,7 @@ class ServiceTier(proto.Enum):
     documentation <https://cloud.google.com/monitoring/workspaces/tiers>`__
     for more details.
     """
+    _pb_options = {"deprecated": True}
     SERVICE_TIER_UNSPECIFIED = 0
     SERVICE_TIER_BASIC = 1
     SERVICE_TIER_PREMIUM = 2
@@ -74,7 +75,7 @@ class TypedValue(proto.Message):
             significant digits of precision.
         string_value (str):
             A variable-length string value.
-        distribution_value (~.distribution.Distribution):
+        distribution_value (google.api.distribution_pb2.Distribution):
             A distribution value.
     """
 
@@ -95,31 +96,44 @@ class TimeInterval(proto.Message):
     r"""A closed time interval. It extends from the start time to the end
     time, and includes both: ``[startTime, endTime]``. Valid time
     intervals depend on the
-    ```MetricKind`` <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
-    of the metric value. In no case can the end time be earlier than the
-    start time.
+    ```MetricKind`` </monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind>`__
+    of the metric value. The end time must not be earlier than the start
+    time. When writing data points, the start time must not be more than
+    25 hours in the past and the end time must not be more than five
+    minutes in the future.
 
-    -  For a ``GAUGE`` metric, the ``startTime`` value is technically
+    -  For ``GAUGE`` metrics, the ``startTime`` value is technically
        optional; if no value is specified, the start time defaults to
        the value of the end time, and the interval represents a single
        point in time. If both start and end times are specified, they
        must be identical. Such an interval is valid only for ``GAUGE``
-       metrics, which are point-in-time measurements.
+       metrics, which are point-in-time measurements. The end time of a
+       new interval must be at least a millisecond after the end time of
+       the previous interval.
 
-    -  For ``DELTA`` and ``CUMULATIVE`` metrics, the start time must be
-       earlier than the end time.
+    -  For ``DELTA`` metrics, the start time and end time must specify a
+       non-zero interval, with subsequent points specifying contiguous
+       and non-overlapping intervals. For ``DELTA`` metrics, the start
+       time of the next interval must be at least a millisecond after
+       the end time of the previous interval.
 
-    -  In all cases, the start time of the next interval must be at
-       least a millisecond after the end time of the previous interval.
-       Because the interval is closed, if the start time of a new
-       interval is the same as the end time of the previous interval,
-       data written at the new start time could overwrite data written
-       at the previous end time.
+    -  For ``CUMULATIVE`` metrics, the start time and end time must
+       specify a a non-zero interval, with subsequent points specifying
+       the same start time and increasing end times, until an event
+       resets the cumulative value to zero and sets a new start time for
+       the following points. The new start time must be at least a
+       millisecond after the end time of the previous interval.
+
+    -  The start time of a new interval must be at least a millisecond
+       after the end time of the previous interval because intervals are
+       closed. If the start time of a new interval is the same as the
+       end time of the previous interval, then data written at the new
+       start time could overwrite data written at the previous end time.
 
     Attributes:
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The end of the time interval.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The beginning of the time interval.
             The default value for the start time is the end
             time. The start time must not be later than the
@@ -162,7 +176,7 @@ class Aggregation(proto.Message):
     aggregation <https://cloud.google.com/monitoring/api/v3/aggregation>`__.
 
     Attributes:
-        alignment_period (~.duration.Duration):
+        alignment_period (google.protobuf.duration_pb2.Duration):
             The ``alignment_period`` specifies a time interval, in
             seconds, that is used to divide the data in all the [time
             series][google.monitoring.v3.TimeSeries] into consistent
@@ -174,7 +188,11 @@ class Aggregation(proto.Message):
             is required or an error is returned. If no per-series
             aligner is specified, or the aligner ``ALIGN_NONE`` is
             specified, then this field is ignored.
-        per_series_aligner (~.common.Aggregation.Aligner):
+
+            The maximum value of the ``alignment_period`` is 104 weeks
+            (2 years) for charts, and 90,000 seconds (25 hours) for
+            alerting policies.
+        per_series_aligner (google.cloud.monitoring_v3.types.Aggregation.Aligner):
             An ``Aligner`` describes how to bring the data points in a
             single time series into temporal alignment. Except for
             ``ALIGN_NONE``, all alignments cause all the data points in
@@ -194,7 +212,7 @@ class Aggregation(proto.Message):
             specified, then ``per_series_aligner`` must be specified and
             not equal to ``ALIGN_NONE`` and ``alignment_period`` must be
             specified; otherwise, an error is returned.
-        cross_series_reducer (~.common.Aggregation.Reducer):
+        cross_series_reducer (google.cloud.monitoring_v3.types.Aggregation.Reducer):
             The reduction operation to be used to combine time series
             into a single time series, where the value of each data
             point in the resulting series is a function of all the

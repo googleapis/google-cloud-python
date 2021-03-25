@@ -37,6 +37,10 @@ from google.cloud.monitoring_v3.services.notification_channel_service.async_clie
 from google.cloud.monitoring_v3.services.notification_channel_service.client import (
     NotificationChannelServiceClient,
 )
+from google.cloud.monitoring_v3.services.query_service.async_client import (
+    QueryServiceAsyncClient,
+)
+from google.cloud.monitoring_v3.services.query_service.client import QueryServiceClient
 from google.cloud.monitoring_v3.services.service_monitoring_service.async_client import (
     ServiceMonitoringServiceAsyncClient,
 )
@@ -283,6 +287,8 @@ __all__ = (
     "Point",
     "QueryError",
     "QueryErrorList",
+    "QueryServiceAsyncClient",
+    "QueryServiceClient",
     "QueryTimeSeriesRequest",
     "QueryTimeSeriesResponse",
     "Range",

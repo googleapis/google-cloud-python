@@ -109,7 +109,7 @@ class ListGroupsResponse(proto.Message):
     r"""The ``ListGroups`` response.
 
     Attributes:
-        group (Sequence[~.gm_group.Group]):
+        group (Sequence[google.cloud.monitoring_v3.types.Group]):
             The groups that match the specified filters.
         next_page_token (str):
             If there are more results than have been returned, then this
@@ -153,7 +153,7 @@ class CreateGroupRequest(proto.Message):
             ::
 
                 projects/[PROJECT_ID_OR_NUMBER]
-        group (~.gm_group.Group):
+        group (google.cloud.monitoring_v3.types.Group):
             Required. A group definition. It is an error to define the
             ``name`` field because the system assigns the name.
         validate_only (bool):
@@ -172,7 +172,7 @@ class UpdateGroupRequest(proto.Message):
     r"""The ``UpdateGroup`` request.
 
     Attributes:
-        group (~.gm_group.Group):
+        group (google.cloud.monitoring_v3.types.Group):
             Required. The new definition of the group. All fields of the
             existing group, excepting ``name``, are replaced with the
             corresponding fields of this group.
@@ -240,7 +240,7 @@ class ListGroupMembersRequest(proto.Message):
             ::
 
                 `resource.type = "gce_instance"`
-        interval (~.common.TimeInterval):
+        interval (google.cloud.monitoring_v3.types.TimeInterval):
             An optional time interval for which results
             should be returned. Only members that were part
             of the group during the specified interval are
@@ -264,7 +264,7 @@ class ListGroupMembersResponse(proto.Message):
     r"""The ``ListGroupMembers`` response.
 
     Attributes:
-        members (Sequence[~.monitored_resource.MonitoredResource]):
+        members (Sequence[google.api.monitored_resource_pb2.MonitoredResource]):
             A set of monitored resources in the group.
         next_page_token (str):
             If there are more results than have been returned, then this

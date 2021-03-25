@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.monitoring_v3.types import alert
 from google.cloud.monitoring_v3.types import alert_service
@@ -25,7 +34,7 @@ class ListAlertPoliciesPager:
     """A pager for iterating through ``list_alert_policies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.alert_service.ListAlertPoliciesResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListAlertPoliciesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``alert_policies`` field.
 
@@ -34,7 +43,7 @@ class ListAlertPoliciesPager:
     through the ``alert_policies`` field on the
     corresponding responses.
 
-    All the usual :class:`~.alert_service.ListAlertPoliciesResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListAlertPoliciesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListAlertPoliciesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.alert_service.ListAlertPoliciesRequest`):
+            request (google.cloud.monitoring_v3.types.ListAlertPoliciesRequest):
                 The initial request object.
-            response (:class:`~.alert_service.ListAlertPoliciesResponse`):
+            response (google.cloud.monitoring_v3.types.ListAlertPoliciesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListAlertPoliciesAsyncPager:
     """A pager for iterating through ``list_alert_policies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.alert_service.ListAlertPoliciesResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListAlertPoliciesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``alert_policies`` field.
 
@@ -96,7 +105,7 @@ class ListAlertPoliciesAsyncPager:
     through the ``alert_policies`` field on the
     corresponding responses.
 
-    All the usual :class:`~.alert_service.ListAlertPoliciesResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListAlertPoliciesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListAlertPoliciesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.alert_service.ListAlertPoliciesRequest`):
+            request (google.cloud.monitoring_v3.types.ListAlertPoliciesRequest):
                 The initial request object.
-            response (:class:`~.alert_service.ListAlertPoliciesResponse`):
+            response (google.cloud.monitoring_v3.types.ListAlertPoliciesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

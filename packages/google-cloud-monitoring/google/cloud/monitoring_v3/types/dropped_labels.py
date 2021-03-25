@@ -24,17 +24,18 @@ __protobuf__ = proto.module(
 
 
 class DroppedLabels(proto.Message):
-    r"""A set of (label, value) pairs which were dropped during
-    aggregation, attached to google.api.Distribution.Exemplars in
-    google.api.Distribution values during aggregation.
+    r"""A set of (label, value) pairs that were removed from a
+    Distribution time series during aggregation and then added as an
+    attachment to a Distribution.Exemplar.
 
-    These values are used in combination with the label values that
-    remain on the aggregated Distribution timeseries to construct
-    the full label set for the exemplar values.  The resulting full
-    label set may be used to identify the specific task/job/instance
-    (for example) which may be contributing to a long-tail, while
-    allowing the storage savings of only storing aggregated
-    distribution values for a large group.
+    The full label set for the exemplars is constructed by using the
+    dropped pairs in combination with the label values that remain
+    on the aggregated Distribution time series. The constructed full
+    label set can be used to identify the specific entity, such as
+    the instance or job, which might be contributing to a long-tail.
+    However, with dropped labels, the storage requirements are
+    reduced because only the aggregated distribution values for a
+    large group of time series are stored.
 
     Note that there are no guarantees on ordering of the labels from
     exemplar-to-exemplar and from distribution-to-distribution in
@@ -42,7 +43,7 @@ class DroppedLabels(proto.Message):
     clients to resolve any ambiguities.
 
     Attributes:
-        label (Sequence[~.dropped_labels.DroppedLabels.LabelEntry]):
+        label (Sequence[google.cloud.monitoring_v3.types.DroppedLabels.LabelEntry]):
             Map from label to its value, for all labels
             dropped in any aggregation.
     """

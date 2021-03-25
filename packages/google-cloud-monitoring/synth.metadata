@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-monitoring.git",
-        "sha": "9f74808af641ce63787b64f2e3de713a50977a71"
+        "sha": "f716011b74c5f7b2ce59b432dfef585050cfd9d8"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "69697504d9eba1d064820c3085b4750767be6d08",
-        "internalRef": "348952930"
+        "sha": "a1af63efb82f54428ab35ea76869d9cd57ca52b8",
+        "internalRef": "364635275"
       }
     },
     {
@@ -42,6 +42,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -95,8 +96,15 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/monitoring_v3/alert_policy_service.rst",
+    "docs/monitoring_v3/group_service.rst",
+    "docs/monitoring_v3/metric_service.rst",
+    "docs/monitoring_v3/notification_channel_service.rst",
+    "docs/monitoring_v3/query_service.rst",
+    "docs/monitoring_v3/service_monitoring_service.rst",
     "docs/monitoring_v3/services.rst",
     "docs/monitoring_v3/types.rst",
+    "docs/monitoring_v3/uptime_check_service.rst",
     "docs/multiprocessing.rst",
     "google/cloud/monitoring/__init__.py",
     "google/cloud/monitoring/py.typed",
@@ -112,6 +120,7 @@
     "google/cloud/monitoring_v3/proto/mutation_record.proto",
     "google/cloud/monitoring_v3/proto/notification.proto",
     "google/cloud/monitoring_v3/proto/notification_service.proto",
+    "google/cloud/monitoring_v3/proto/query_service.proto",
     "google/cloud/monitoring_v3/proto/service.proto",
     "google/cloud/monitoring_v3/proto/service_service.proto",
     "google/cloud/monitoring_v3/proto/span_context.proto",
@@ -151,6 +160,14 @@
     "google/cloud/monitoring_v3/services/notification_channel_service/transports/base.py",
     "google/cloud/monitoring_v3/services/notification_channel_service/transports/grpc.py",
     "google/cloud/monitoring_v3/services/notification_channel_service/transports/grpc_asyncio.py",
+    "google/cloud/monitoring_v3/services/query_service/__init__.py",
+    "google/cloud/monitoring_v3/services/query_service/async_client.py",
+    "google/cloud/monitoring_v3/services/query_service/client.py",
+    "google/cloud/monitoring_v3/services/query_service/pagers.py",
+    "google/cloud/monitoring_v3/services/query_service/transports/__init__.py",
+    "google/cloud/monitoring_v3/services/query_service/transports/base.py",
+    "google/cloud/monitoring_v3/services/query_service/transports/grpc.py",
+    "google/cloud/monitoring_v3/services/query_service/transports/grpc_asyncio.py",
     "google/cloud/monitoring_v3/services/service_monitoring_service/__init__.py",
     "google/cloud/monitoring_v3/services/service_monitoring_service/async_client.py",
     "google/cloud/monitoring_v3/services/service_monitoring_service/client.py",
@@ -179,6 +196,7 @@
     "google/cloud/monitoring_v3/types/mutation_record.py",
     "google/cloud/monitoring_v3/types/notification.py",
     "google/cloud/monitoring_v3/types/notification_service.py",
+    "google/cloud/monitoring_v3/types/query_service.py",
     "google/cloud/monitoring_v3/types/service.py",
     "google/cloud/monitoring_v3/types/service_service.py",
     "google/cloud/monitoring_v3/types/span_context.py",
@@ -207,6 +225,7 @@
     "tests/unit/gapic/monitoring_v3/test_group_service.py",
     "tests/unit/gapic/monitoring_v3/test_metric_service.py",
     "tests/unit/gapic/monitoring_v3/test_notification_channel_service.py",
+    "tests/unit/gapic/monitoring_v3/test_query_service.py",
     "tests/unit/gapic/monitoring_v3/test_service_monitoring_service.py",
     "tests/unit/gapic/monitoring_v3/test_uptime_check_service.py"
   ]

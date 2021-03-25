@@ -21,6 +21,7 @@ import proto  # type: ignore
 from google.api import label_pb2 as label  # type: ignore
 from google.api import launch_stage_pb2 as ga_launch_stage  # type: ignore
 from google.cloud.monitoring_v3.types import common
+from google.cloud.monitoring_v3.types import mutation_record
 from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
 
@@ -47,9 +48,10 @@ class NotificationChannelDescriptor(proto.Message):
 
             In the above, ``[TYPE]`` is the value of the ``type`` field.
         type_ (str):
-            The type of notification channel, such as
-            "email", "sms", etc. Notification channel types
-            are globally unique.
+            The type of notification channel, such as "email" and "sms".
+            To view the full list of channels, see `Channel
+            descriptors <https://cloud.google.com/monitoring/alerts/using-channels-api#ncd>`__.
+            Notification channel types are globally unique.
         display_name (str):
             A human-readable name for the notification
             channel type.  This form of the name is suitable
@@ -59,16 +61,16 @@ class NotificationChannelDescriptor(proto.Message):
             notification channel type. The description may
             include a description of the properties of the
             channel and pointers to external documentation.
-        labels (Sequence[~.label.LabelDescriptor]):
+        labels (Sequence[google.api.label_pb2.LabelDescriptor]):
             The set of labels that must be defined to
             identify a particular channel of the
             corresponding type. Each label includes a
             description for how that field should be
             populated.
-        supported_tiers (Sequence[~.common.ServiceTier]):
+        supported_tiers (Sequence[google.cloud.monitoring_v3.types.ServiceTier]):
             The tiers that support this notification channel; the
             project service tier must be one of the supported_tiers.
-        launch_stage (~.ga_launch_stage.LaunchStage):
+        launch_stage (google.api.launch_stage_pb2.LaunchStage):
             The product launch stage for channels of this
             type.
     """
@@ -128,14 +130,14 @@ class NotificationChannel(proto.Message):
             provide additional details, beyond the display
             name, for the channel. This may not exceed 1024
             Unicode characters.
-        labels (Sequence[~.notification.NotificationChannel.LabelsEntry]):
+        labels (Sequence[google.cloud.monitoring_v3.types.NotificationChannel.LabelsEntry]):
             Configuration fields that define the channel and its
             behavior. The permissible and required labels are specified
             in the
             [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels]
             of the ``NotificationChannelDescriptor`` corresponding to
             the ``type`` field.
-        user_labels (Sequence[~.notification.NotificationChannel.UserLabelsEntry]):
+        user_labels (Sequence[google.cloud.monitoring_v3.types.NotificationChannel.UserLabelsEntry]):
             User-supplied key/value data that does not need to conform
             to the corresponding ``NotificationChannelDescriptor``'s
             schema, unlike the ``labels`` field. This field is intended
@@ -147,7 +149,7 @@ class NotificationChannel(proto.Message):
             is smaller. Labels and values can contain only lowercase
             letters, numerals, underscores, and dashes. Keys must begin
             with a letter.
-        verification_status (~.notification.NotificationChannel.VerificationStatus):
+        verification_status (google.cloud.monitoring_v3.types.NotificationChannel.VerificationStatus):
             Indicates whether this channel has been verified or not. On
             a
             [``ListNotificationChannels``][google.monitoring.v3.NotificationChannelService.ListNotificationChannels]
@@ -170,7 +172,7 @@ class NotificationChannel(proto.Message):
             [``UpdateNotificationChannel``][google.monitoring.v3.NotificationChannelService.UpdateNotificationChannel]
             operation. To change the value of this field, you must call
             [``VerifyNotificationChannel``][google.monitoring.v3.NotificationChannelService.VerifyNotificationChannel].
-        enabled (~.wrappers.BoolValue):
+        enabled (google.protobuf.wrappers_pb2.BoolValue):
             Whether notifications are forwarded to the
             described channel. This makes it possible to
             disable delivery of notifications to a
@@ -181,6 +183,10 @@ class NotificationChannel(proto.Message):
             notifications from the same set of alerting
             policies on the channel at some point in the
             future.
+        creation_record (google.cloud.monitoring_v3.types.MutationRecord):
+            Record of the creation of this channel.
+        mutation_records (Sequence[google.cloud.monitoring_v3.types.MutationRecord]):
+            Records of the modification of this channel.
     """
 
     class VerificationStatus(proto.Enum):
@@ -210,6 +216,14 @@ class NotificationChannel(proto.Message):
     verification_status = proto.Field(proto.ENUM, number=9, enum=VerificationStatus,)
 
     enabled = proto.Field(proto.MESSAGE, number=11, message=wrappers.BoolValue,)
+
+    creation_record = proto.Field(
+        proto.MESSAGE, number=12, message=mutation_record.MutationRecord,
+    )
+
+    mutation_records = proto.RepeatedField(
+        proto.MESSAGE, number=13, message=mutation_record.MutationRecord,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

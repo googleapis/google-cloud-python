@@ -30,7 +30,7 @@ class MutationRecord(proto.Message):
     r"""Describes a change made to a configuration.
 
     Attributes:
-        mutate_time (~.timestamp.Timestamp):
+        mutate_time (google.protobuf.timestamp_pb2.Timestamp):
             When the change occurred.
         mutated_by (str):
             The email address of the user making the

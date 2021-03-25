@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.api import metric_pb2 as ga_metric  # type: ignore
 from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
@@ -27,7 +36,7 @@ class ListMonitoredResourceDescriptorsPager:
     """A pager for iterating through ``list_monitored_resource_descriptors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.metric_service.ListMonitoredResourceDescriptorsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``resource_descriptors`` field.
 
@@ -36,7 +45,7 @@ class ListMonitoredResourceDescriptorsPager:
     through the ``resource_descriptors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.metric_service.ListMonitoredResourceDescriptorsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -54,9 +63,9 @@ class ListMonitoredResourceDescriptorsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.metric_service.ListMonitoredResourceDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest):
                 The initial request object.
-            response (:class:`~.metric_service.ListMonitoredResourceDescriptorsResponse`):
+            response (google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -91,7 +100,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
     """A pager for iterating through ``list_monitored_resource_descriptors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.metric_service.ListMonitoredResourceDescriptorsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``resource_descriptors`` field.
 
@@ -100,7 +109,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
     through the ``resource_descriptors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.metric_service.ListMonitoredResourceDescriptorsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -120,9 +129,9 @@ class ListMonitoredResourceDescriptorsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.metric_service.ListMonitoredResourceDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsRequest):
                 The initial request object.
-            response (:class:`~.metric_service.ListMonitoredResourceDescriptorsResponse`):
+            response (google.cloud.monitoring_v3.types.ListMonitoredResourceDescriptorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -163,7 +172,7 @@ class ListMetricDescriptorsPager:
     """A pager for iterating through ``list_metric_descriptors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.metric_service.ListMetricDescriptorsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``metric_descriptors`` field.
 
@@ -172,7 +181,7 @@ class ListMetricDescriptorsPager:
     through the ``metric_descriptors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.metric_service.ListMetricDescriptorsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -190,9 +199,9 @@ class ListMetricDescriptorsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.metric_service.ListMetricDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest):
                 The initial request object.
-            response (:class:`~.metric_service.ListMetricDescriptorsResponse`):
+            response (google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -225,7 +234,7 @@ class ListMetricDescriptorsAsyncPager:
     """A pager for iterating through ``list_metric_descriptors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.metric_service.ListMetricDescriptorsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``metric_descriptors`` field.
 
@@ -234,7 +243,7 @@ class ListMetricDescriptorsAsyncPager:
     through the ``metric_descriptors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.metric_service.ListMetricDescriptorsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -252,9 +261,9 @@ class ListMetricDescriptorsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.metric_service.ListMetricDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListMetricDescriptorsRequest):
                 The initial request object.
-            response (:class:`~.metric_service.ListMetricDescriptorsResponse`):
+            response (google.cloud.monitoring_v3.types.ListMetricDescriptorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -293,7 +302,7 @@ class ListTimeSeriesPager:
     """A pager for iterating through ``list_time_series`` requests.
 
     This class thinly wraps an initial
-    :class:`~.metric_service.ListTimeSeriesResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListTimeSeriesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``time_series`` field.
 
@@ -302,7 +311,7 @@ class ListTimeSeriesPager:
     through the ``time_series`` field on the
     corresponding responses.
 
-    All the usual :class:`~.metric_service.ListTimeSeriesResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListTimeSeriesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -320,9 +329,9 @@ class ListTimeSeriesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.metric_service.ListTimeSeriesRequest`):
+            request (google.cloud.monitoring_v3.types.ListTimeSeriesRequest):
                 The initial request object.
-            response (:class:`~.metric_service.ListTimeSeriesResponse`):
+            response (google.cloud.monitoring_v3.types.ListTimeSeriesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -355,7 +364,7 @@ class ListTimeSeriesAsyncPager:
     """A pager for iterating through ``list_time_series`` requests.
 
     This class thinly wraps an initial
-    :class:`~.metric_service.ListTimeSeriesResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListTimeSeriesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``time_series`` field.
 
@@ -364,7 +373,7 @@ class ListTimeSeriesAsyncPager:
     through the ``time_series`` field on the
     corresponding responses.
 
-    All the usual :class:`~.metric_service.ListTimeSeriesResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListTimeSeriesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -382,9 +391,9 @@ class ListTimeSeriesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.metric_service.ListTimeSeriesRequest`):
+            request (google.cloud.monitoring_v3.types.ListTimeSeriesRequest):
                 The initial request object.
-            response (:class:`~.metric_service.ListTimeSeriesResponse`):
+            response (google.cloud.monitoring_v3.types.ListTimeSeriesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

@@ -72,7 +72,7 @@ class ListUptimeCheckConfigsResponse(proto.Message):
     r"""The protocol for the ``ListUptimeCheckConfigs`` response.
 
     Attributes:
-        uptime_check_configs (Sequence[~.uptime.UptimeCheckConfig]):
+        uptime_check_configs (Sequence[google.cloud.monitoring_v3.types.UptimeCheckConfig]):
             The returned Uptime check configurations.
         next_page_token (str):
             This field represents the pagination token to retrieve the
@@ -127,7 +127,7 @@ class CreateUptimeCheckConfigRequest(proto.Message):
             ::
 
                 projects/[PROJECT_ID_OR_NUMBER]
-        uptime_check_config (~.uptime.UptimeCheckConfig):
+        uptime_check_config (google.cloud.monitoring_v3.types.UptimeCheckConfig):
             Required. The new Uptime check configuration.
     """
 
@@ -142,14 +142,14 @@ class UpdateUptimeCheckConfigRequest(proto.Message):
     r"""The protocol for the ``UpdateUptimeCheckConfig`` request.
 
     Attributes:
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. If present, only the listed fields
             in the current Uptime check configuration are
             updated with values from the new configuration.
             If this field is empty, then the current
             configuration is completely replaced with the
             new configuration.
-        uptime_check_config (~.uptime.UptimeCheckConfig):
+        uptime_check_config (google.cloud.monitoring_v3.types.UptimeCheckConfig):
             Required. If an ``updateMask`` has been specified, this
             field gives the values for the set of fields mentioned in
             the ``updateMask``. If an ``updateMask`` has not been given,
@@ -215,7 +215,7 @@ class ListUptimeCheckIpsResponse(proto.Message):
     r"""The protocol for the ``ListUptimeCheckIps`` response.
 
     Attributes:
-        uptime_check_ips (Sequence[~.uptime.UptimeCheckIp]):
+        uptime_check_ips (Sequence[google.cloud.monitoring_v3.types.UptimeCheckIp]):
             The returned list of IP addresses (including
             region and location) that the checkers run from.
         next_page_token (str):

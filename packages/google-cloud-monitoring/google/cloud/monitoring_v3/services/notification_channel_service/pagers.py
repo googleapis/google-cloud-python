@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.monitoring_v3.types import notification
 from google.cloud.monitoring_v3.types import notification_service
@@ -25,7 +34,7 @@ class ListNotificationChannelDescriptorsPager:
     """A pager for iterating through ``list_notification_channel_descriptors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.notification_service.ListNotificationChannelDescriptorsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``channel_descriptors`` field.
 
@@ -34,7 +43,7 @@ class ListNotificationChannelDescriptorsPager:
     through the ``channel_descriptors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.notification_service.ListNotificationChannelDescriptorsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -54,9 +63,9 @@ class ListNotificationChannelDescriptorsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.notification_service.ListNotificationChannelDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest):
                 The initial request object.
-            response (:class:`~.notification_service.ListNotificationChannelDescriptorsResponse`):
+            response (google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -93,7 +102,7 @@ class ListNotificationChannelDescriptorsAsyncPager:
     """A pager for iterating through ``list_notification_channel_descriptors`` requests.
 
     This class thinly wraps an initial
-    :class:`~.notification_service.ListNotificationChannelDescriptorsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``channel_descriptors`` field.
 
@@ -102,7 +111,7 @@ class ListNotificationChannelDescriptorsAsyncPager:
     through the ``channel_descriptors`` field on the
     corresponding responses.
 
-    All the usual :class:`~.notification_service.ListNotificationChannelDescriptorsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -123,9 +132,9 @@ class ListNotificationChannelDescriptorsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.notification_service.ListNotificationChannelDescriptorsRequest`):
+            request (google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsRequest):
                 The initial request object.
-            response (:class:`~.notification_service.ListNotificationChannelDescriptorsResponse`):
+            response (google.cloud.monitoring_v3.types.ListNotificationChannelDescriptorsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -166,7 +175,7 @@ class ListNotificationChannelsPager:
     """A pager for iterating through ``list_notification_channels`` requests.
 
     This class thinly wraps an initial
-    :class:`~.notification_service.ListNotificationChannelsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListNotificationChannelsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``notification_channels`` field.
 
@@ -175,7 +184,7 @@ class ListNotificationChannelsPager:
     through the ``notification_channels`` field on the
     corresponding responses.
 
-    All the usual :class:`~.notification_service.ListNotificationChannelsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListNotificationChannelsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -193,9 +202,9 @@ class ListNotificationChannelsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.notification_service.ListNotificationChannelsRequest`):
+            request (google.cloud.monitoring_v3.types.ListNotificationChannelsRequest):
                 The initial request object.
-            response (:class:`~.notification_service.ListNotificationChannelsResponse`):
+            response (google.cloud.monitoring_v3.types.ListNotificationChannelsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -228,7 +237,7 @@ class ListNotificationChannelsAsyncPager:
     """A pager for iterating through ``list_notification_channels`` requests.
 
     This class thinly wraps an initial
-    :class:`~.notification_service.ListNotificationChannelsResponse` object, and
+    :class:`google.cloud.monitoring_v3.types.ListNotificationChannelsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``notification_channels`` field.
 
@@ -237,7 +246,7 @@ class ListNotificationChannelsAsyncPager:
     through the ``notification_channels`` field on the
     corresponding responses.
 
-    All the usual :class:`~.notification_service.ListNotificationChannelsResponse`
+    All the usual :class:`google.cloud.monitoring_v3.types.ListNotificationChannelsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -257,9 +266,9 @@ class ListNotificationChannelsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.notification_service.ListNotificationChannelsRequest`):
+            request (google.cloud.monitoring_v3.types.ListNotificationChannelsRequest):
                 The initial request object.
-            response (:class:`~.notification_service.ListNotificationChannelsResponse`):
+            response (google.cloud.monitoring_v3.types.ListNotificationChannelsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

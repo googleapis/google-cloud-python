@@ -49,12 +49,13 @@ class CreateAlertPolicyRequest(proto.Message):
 
             Note that this field names the parent container in which the
             alerting policy will be written, not the name of the created
-            policy. The alerting policy that is returned will have a
-            name that contains a normalized representation of this name
-            as a prefix but adds a suffix of the form
-            ``/alertPolicies/[ALERT_POLICY_ID]``, identifying the policy
-            in the container.
-        alert_policy (~.alert.AlertPolicy):
+            policy. \|name\| must be a host project of a workspace,
+            otherwise INVALID_ARGUMENT error will return. The alerting
+            policy that is returned will have a name that contains a
+            normalized representation of this name as a prefix but adds
+            a suffix of the form ``/alertPolicies/[ALERT_POLICY_ID]``,
+            identifying the policy in the container.
+        alert_policy (google.cloud.monitoring_v3.types.AlertPolicy):
             Required. The requested alerting policy. You should omit the
             ``name`` field in this policy. The name will be returned in
             the new policy, including a new ``[ALERT_POLICY_ID]`` value.
@@ -136,13 +137,17 @@ class ListAlertPoliciesResponse(proto.Message):
     r"""The protocol for the ``ListAlertPolicies`` response.
 
     Attributes:
-        alert_policies (Sequence[~.alert.AlertPolicy]):
+        alert_policies (Sequence[google.cloud.monitoring_v3.types.AlertPolicy]):
             The returned alert policies.
         next_page_token (str):
             If there might be more results than were returned, then this
             field is set to a non-empty value. To see the additional
             results, use that value as ``page_token`` in the next call
             to this method.
+        total_size (int):
+            The total number of alert policies in all
+            pages. This number is only an estimate, and may
+            change in subsequent pages. https://aip.dev/158
     """
 
     @property
@@ -155,12 +160,14 @@ class ListAlertPoliciesResponse(proto.Message):
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
+    total_size = proto.Field(proto.INT32, number=4)
+
 
 class UpdateAlertPolicyRequest(proto.Message):
     r"""The protocol for the ``UpdateAlertPolicy`` request.
 
     Attributes:
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. A list of alerting policy field names. If this
             field is not empty, each listed field in the existing
             alerting policy is set to the value of the corresponding
@@ -188,7 +195,7 @@ class UpdateAlertPolicyRequest(proto.Message):
                ``name`` field with that ``[CONDITION_ID]``. If the
                supplied condition omits the ``name`` field, then a new
                ``[CONDITION_ID]`` is created.
-        alert_policy (~.alert.AlertPolicy):
+        alert_policy (google.cloud.monitoring_v3.types.AlertPolicy):
             Required. The updated alerting policy or the updated values
             for the fields listed in ``update_mask``. If ``update_mask``
             is not empty, any fields in this policy that are not in

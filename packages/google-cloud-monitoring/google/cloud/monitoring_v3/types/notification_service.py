@@ -83,7 +83,7 @@ class ListNotificationChannelDescriptorsResponse(proto.Message):
     r"""The ``ListNotificationChannelDescriptors`` response.
 
     Attributes:
-        channel_descriptors (Sequence[~.notification.NotificationChannelDescriptor]):
+        channel_descriptors (Sequence[google.cloud.monitoring_v3.types.NotificationChannelDescriptor]):
             The monitored resource descriptors supported
             for the specified project, optionally filtered.
         next_page_token (str):
@@ -138,7 +138,7 @@ class CreateNotificationChannelRequest(proto.Message):
             this field as a prefix, but will add
             ``/notificationChannels/[CHANNEL_ID]`` to identify the
             channel.
-        notification_channel (~.notification.NotificationChannel):
+        notification_channel (google.cloud.monitoring_v3.types.NotificationChannel):
             Required. The definition of the ``NotificationChannel`` to
             create.
     """
@@ -207,7 +207,7 @@ class ListNotificationChannelsResponse(proto.Message):
     r"""The ``ListNotificationChannels`` response.
 
     Attributes:
-        notification_channels (Sequence[~.notification.NotificationChannel]):
+        notification_channels (Sequence[google.cloud.monitoring_v3.types.NotificationChannel]):
             The notification channels defined for the
             specified project.
         next_page_token (str):
@@ -215,6 +215,11 @@ class ListNotificationChannelsResponse(proto.Message):
             match the request. Use the value in the ``page_token`` field
             in a subsequent request to fetch the next set of results. If
             empty, all results have been returned.
+        total_size (int):
+            The total number of notification channels in
+            all pages. This number is only an estimate, and
+            may change in subsequent pages.
+            https://aip.dev/158
     """
 
     @property
@@ -226,6 +231,8 @@ class ListNotificationChannelsResponse(proto.Message):
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
+
+    total_size = proto.Field(proto.INT32, number=4)
 
 
 class GetNotificationChannelRequest(proto.Message):
@@ -248,9 +255,9 @@ class UpdateNotificationChannelRequest(proto.Message):
     r"""The ``UpdateNotificationChannel`` request.
 
     Attributes:
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update.
-        notification_channel (~.notification.NotificationChannel):
+        notification_channel (google.cloud.monitoring_v3.types.NotificationChannel):
             Required. A description of the changes to be applied to the
             specified notification channel. The description must provide
             a definition for fields to be updated; the names of these
@@ -311,7 +318,7 @@ class GetNotificationChannelVerificationCodeRequest(proto.Message):
             retrieved. This must name a channel that is
             already verified; if the specified channel is
             not verified, the request will fail.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The desired expiration time. If specified,
             the API will guarantee that the returned code
             will not be valid after the specified timestamp;
@@ -344,7 +351,7 @@ class GetNotificationChannelVerificationCodeResponse(proto.Message):
             with the same fingerprint such as other email
             channels with the same email address or other
             sms channels with the same number).
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The expiration time associated with the code
             that was returned. If an expiration was provided
             in the request, this is the minimum of the
