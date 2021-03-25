@@ -30,8 +30,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.documentai_v1beta3.types import document
-from google.cloud.documentai_v1beta3.types import document_processor_service
+from google.cloud.documentai_v1.types import document
+from google.cloud.documentai_v1.types import document_processor_service
 
 from .transports.base import DocumentProcessorServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DocumentProcessorServiceGrpcAsyncIOTransport
@@ -201,7 +201,7 @@ class DocumentProcessorServiceAsyncClient:
         r"""Processes a single document.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.ProcessRequest`):
+            request (:class:`google.cloud.documentai_v1.types.ProcessRequest`):
                 The request object. Request message for the process
                 document method.
             name (:class:`str`):
@@ -219,7 +219,7 @@ class DocumentProcessorServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.documentai_v1beta3.types.ProcessResponse:
+            google.cloud.documentai_v1.types.ProcessResponse:
                 Response message for the process
                 document method.
 
@@ -284,7 +284,7 @@ class DocumentProcessorServiceAsyncClient:
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.BatchProcessRequest`):
+            request (:class:`google.cloud.documentai_v1.types.BatchProcessRequest`):
                 The request object. Request message for batch process
                 document method.
             name (:class:`str`):
@@ -306,7 +306,7 @@ class DocumentProcessorServiceAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.BatchProcessResponse`
+                :class:`google.cloud.documentai_v1.types.BatchProcessResponse`
                 Response message for batch process document method.
 
         """
@@ -378,7 +378,7 @@ class DocumentProcessorServiceAsyncClient:
         should be processed by the specified processor.
 
         Args:
-            request (:class:`google.cloud.documentai_v1beta3.types.ReviewDocumentRequest`):
+            request (:class:`google.cloud.documentai_v1.types.ReviewDocumentRequest`):
                 The request object. Request message for review document
                 method.
             human_review_config (:class:`str`):
@@ -401,7 +401,7 @@ class DocumentProcessorServiceAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.documentai_v1beta3.types.ReviewDocumentResponse`
+                :class:`google.cloud.documentai_v1.types.ReviewDocumentResponse`
                 Response message for review document method.
 
         """

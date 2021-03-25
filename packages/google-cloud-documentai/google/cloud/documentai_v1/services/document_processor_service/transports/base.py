@@ -26,8 +26,7 @@ from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials  # type: ignore
 
-from google.cloud.documentai_v1beta2.types import document
-from google.cloud.documentai_v1beta2.types import document_understanding
+from google.cloud.documentai_v1.types import document_processor_service
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 
@@ -41,8 +40,8 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-class DocumentUnderstandingServiceTransport(abc.ABC):
-    """Abstract transport class for DocumentUnderstandingService."""
+class DocumentProcessorServiceTransport(abc.ABC):
+    """Abstract transport class for DocumentProcessorService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -109,6 +108,20 @@ class DocumentUnderstandingServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.process_document: gapic_v1.method.wrap_method(
+                self.process_document,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
             self.batch_process_documents: gapic_v1.method.wrap_method(
                 self.batch_process_documents,
                 default_retry=retries.Retry(
@@ -123,8 +136,8 @@ class DocumentUnderstandingServiceTransport(abc.ABC):
                 default_timeout=120.0,
                 client_info=client_info,
             ),
-            self.process_document: gapic_v1.method.wrap_method(
-                self.process_document,
+            self.review_document: gapic_v1.method.wrap_method(
+                self.review_document,
                 default_retry=retries.Retry(
                     initial=0.1,
                     maximum=60.0,
@@ -145,22 +158,34 @@ class DocumentUnderstandingServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def process_document(
+        self,
+    ) -> typing.Callable[
+        [document_processor_service.ProcessRequest],
+        typing.Union[
+            document_processor_service.ProcessResponse,
+            typing.Awaitable[document_processor_service.ProcessResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def batch_process_documents(
         self,
     ) -> typing.Callable[
-        [document_understanding.BatchProcessDocumentsRequest],
+        [document_processor_service.BatchProcessRequest],
         typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def process_document(
+    def review_document(
         self,
     ) -> typing.Callable[
-        [document_understanding.ProcessDocumentRequest],
-        typing.Union[document.Document, typing.Awaitable[document.Document]],
+        [document_processor_service.ReviewDocumentRequest],
+        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
     ]:
         raise NotImplementedError()
 
 
-__all__ = ("DocumentUnderstandingServiceTransport",)
+__all__ = ("DocumentProcessorServiceTransport",)

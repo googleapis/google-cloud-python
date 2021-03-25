@@ -35,19 +35,17 @@ from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.documentai_v1beta3.services.document_processor_service import (
+from google.cloud.documentai_v1.services.document_processor_service import (
     DocumentProcessorServiceAsyncClient,
 )
-from google.cloud.documentai_v1beta3.services.document_processor_service import (
+from google.cloud.documentai_v1.services.document_processor_service import (
     DocumentProcessorServiceClient,
 )
-from google.cloud.documentai_v1beta3.services.document_processor_service import (
-    transports,
-)
-from google.cloud.documentai_v1beta3.types import document
-from google.cloud.documentai_v1beta3.types import document_io
-from google.cloud.documentai_v1beta3.types import document_processor_service
-from google.cloud.documentai_v1beta3.types import geometry
+from google.cloud.documentai_v1.services.document_processor_service import transports
+from google.cloud.documentai_v1.types import document
+from google.cloud.documentai_v1.types import document_io
+from google.cloud.documentai_v1.types import document_processor_service
+from google.cloud.documentai_v1.types import geometry
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2 as gp_any  # type: ignore
@@ -476,7 +474,7 @@ def test_document_processor_service_client_client_options_credentials_file(
 
 def test_document_processor_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceGrpcTransport.__init__"
+        "google.cloud.documentai_v1.services.document_processor_service.transports.DocumentProcessorServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = DocumentProcessorServiceClient(
@@ -507,9 +505,7 @@ def test_process_document(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = document_processor_service.ProcessResponse(
-            human_review_operation="human_review_operation_value",
-        )
+        call.return_value = document_processor_service.ProcessResponse()
 
         response = client.process_document(request)
 
@@ -522,8 +518,6 @@ def test_process_document(
     # Establish that the response is the type that we expect.
 
     assert isinstance(response, document_processor_service.ProcessResponse)
-
-    assert response.human_review_operation == "human_review_operation_value"
 
 
 def test_process_document_from_dict():
@@ -563,9 +557,7 @@ async def test_process_document_async(
     with mock.patch.object(type(client.transport.process_document), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            document_processor_service.ProcessResponse(
-                human_review_operation="human_review_operation_value",
-            )
+            document_processor_service.ProcessResponse()
         )
 
         response = await client.process_document(request)
@@ -578,8 +570,6 @@ async def test_process_document_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_processor_service.ProcessResponse)
-
-    assert response.human_review_operation == "human_review_operation_value"
 
 
 @pytest.mark.asyncio
@@ -1263,7 +1253,7 @@ def test_document_processor_service_base_transport_error():
 def test_document_processor_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport.__init__"
+        "google.cloud.documentai_v1.services.document_processor_service.transports.DocumentProcessorServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.DocumentProcessorServiceTransport(
@@ -1292,7 +1282,7 @@ def test_document_processor_service_base_transport_with_credentials_file():
     with mock.patch.object(
         auth, "load_credentials_from_file"
     ) as load_creds, mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
+        "google.cloud.documentai_v1.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (credentials.AnonymousCredentials(), None)
@@ -1309,7 +1299,7 @@ def test_document_processor_service_base_transport_with_credentials_file():
 def test_document_processor_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(auth, "default") as adc, mock.patch(
-        "google.cloud.documentai_v1beta3.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
+        "google.cloud.documentai_v1.services.document_processor_service.transports.DocumentProcessorServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (credentials.AnonymousCredentials(), None)

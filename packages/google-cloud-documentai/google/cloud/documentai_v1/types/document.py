@@ -18,7 +18,7 @@
 import proto  # type: ignore
 
 
-from google.cloud.documentai_v1beta3.types import geometry
+from google.cloud.documentai_v1.types import geometry
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.rpc import status_pb2 as status  # type: ignore
 from google.type import color_pb2 as gt_color  # type: ignore
@@ -29,7 +29,7 @@ from google.type import postal_address_pb2 as postal_address  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.documentai.v1beta3", manifest={"Document",},
+    package="google.cloud.documentai.v1", manifest={"Document",},
 )
 
 
@@ -60,26 +60,26 @@ class Document(proto.Message):
         text (str):
             Optional. UTF-8 encoded text in reading order
             from the document.
-        text_styles (Sequence[google.cloud.documentai_v1beta3.types.Document.Style]):
+        text_styles (Sequence[google.cloud.documentai_v1.types.Document.Style]):
             Styles for the
-            [Document.text][google.cloud.documentai.v1beta3.Document.text].
-        pages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page]):
+            [Document.text][google.cloud.documentai.v1.Document.text].
+        pages (Sequence[google.cloud.documentai_v1.types.Document.Page]):
             Visual page layout for the
-            [Document][google.cloud.documentai.v1beta3.Document].
-        entities (Sequence[google.cloud.documentai_v1beta3.types.Document.Entity]):
+            [Document][google.cloud.documentai.v1.Document].
+        entities (Sequence[google.cloud.documentai_v1.types.Document.Entity]):
             A list of entities detected on
-            [Document.text][google.cloud.documentai.v1beta3.Document.text].
+            [Document.text][google.cloud.documentai.v1.Document.text].
             For document shards, entities in this list may cross shard
             boundaries.
-        entity_relations (Sequence[google.cloud.documentai_v1beta3.types.Document.EntityRelation]):
+        entity_relations (Sequence[google.cloud.documentai_v1.types.Document.EntityRelation]):
             Relationship among
-            [Document.entities][google.cloud.documentai.v1beta3.Document.entities].
-        text_changes (Sequence[google.cloud.documentai_v1beta3.types.Document.TextChange]):
+            [Document.entities][google.cloud.documentai.v1.Document.entities].
+        text_changes (Sequence[google.cloud.documentai_v1.types.Document.TextChange]):
             A list of text corrections made to [Document.text]. This is
             usually used for annotating corrections to OCR mistakes.
             Text changes for a given revision may not overlap with each
             other.
-        shard_info (google.cloud.documentai_v1beta3.types.Document.ShardInfo):
+        shard_info (google.cloud.documentai_v1.types.Document.ShardInfo):
             Information about the sharding if this
             document is sharded part of a larger document.
             If the document is not sharded, this message is
@@ -87,7 +87,7 @@ class Document(proto.Message):
         error (google.rpc.status_pb2.Status):
             Any error that occurred while processing this
             document.
-        revisions (Sequence[google.cloud.documentai_v1beta3.types.Document.Revision]):
+        revisions (Sequence[google.cloud.documentai_v1.types.Document.Revision]):
             Revision history of this document.
     """
 
@@ -103,8 +103,8 @@ class Document(proto.Message):
                 Total number of shards.
             text_offset (int):
                 The index of the first character in
-                [Document.text][google.cloud.documentai.v1beta3.Document.text]
-                in the overall document global text.
+                [Document.text][google.cloud.documentai.v1.Document.text] in
+                the overall document global text.
         """
 
         shard_index = proto.Field(proto.INT64, number=1)
@@ -118,9 +118,9 @@ class Document(proto.Message):
         CSS conventions as much as possible.
 
         Attributes:
-            text_anchor (google.cloud.documentai_v1beta3.types.Document.TextAnchor):
+            text_anchor (google.cloud.documentai_v1.types.Document.TextAnchor):
                 Text anchor indexing into the
-                [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                [Document.text][google.cloud.documentai.v1.Document.text].
             color (google.type.color_pb2.Color):
                 Text color.
             background_color (google.type.color_pb2.Color):
@@ -134,7 +134,7 @@ class Document(proto.Message):
             text_decoration (str):
                 Text decoration. Follows CSS standard.
                 https://www.w3schools.com/cssref/pr_text_text-decoration.asp
-            font_size (google.cloud.documentai_v1beta3.types.Document.Style.FontSize):
+            font_size (google.cloud.documentai_v1.types.Document.Style.FontSize):
                 Font size.
         """
 
@@ -172,56 +172,56 @@ class Document(proto.Message):
         )
 
     class Page(proto.Message):
-        r"""A page in a [Document][google.cloud.documentai.v1beta3.Document].
+        r"""A page in a [Document][google.cloud.documentai.v1.Document].
 
         Attributes:
             page_number (int):
                 1-based index for current
-                [Page][google.cloud.documentai.v1beta3.Document.Page] in a
-                parent [Document][google.cloud.documentai.v1beta3.Document].
-                Useful when a page is taken out of a
-                [Document][google.cloud.documentai.v1beta3.Document] for
+                [Page][google.cloud.documentai.v1.Document.Page] in a parent
+                [Document][google.cloud.documentai.v1.Document]. Useful when
+                a page is taken out of a
+                [Document][google.cloud.documentai.v1.Document] for
                 individual processing.
-            image (google.cloud.documentai_v1beta3.types.Document.Page.Image):
+            image (google.cloud.documentai_v1.types.Document.Page.Image):
                 Rendered image for this page. This image is
                 preprocessed to remove any skew, rotation, and
                 distortions such that the annotation bounding
                 boxes can be upright and axis-aligned.
-            transforms (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Matrix]):
+            transforms (Sequence[google.cloud.documentai_v1.types.Document.Page.Matrix]):
                 Transformation matrices that were applied to the original
                 document image to produce
-                [Page.image][google.cloud.documentai.v1beta3.Document.Page.image].
-            dimension (google.cloud.documentai_v1beta3.types.Document.Page.Dimension):
+                [Page.image][google.cloud.documentai.v1.Document.Page.image].
+            dimension (google.cloud.documentai_v1.types.Document.Page.Dimension):
                 Physical dimension of the page.
-            layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+            layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                 for the page.
-            detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+            detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                 A list of detected languages together with
                 confidence.
-            blocks (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Block]):
+            blocks (Sequence[google.cloud.documentai_v1.types.Document.Page.Block]):
                 A list of visually detected text blocks on
                 the page. A block has a set of lines (collected
                 into paragraphs) that have a common line-spacing
                 and orientation.
-            paragraphs (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Paragraph]):
+            paragraphs (Sequence[google.cloud.documentai_v1.types.Document.Page.Paragraph]):
                 A list of visually detected text paragraphs
                 on the page. A collection of lines that a human
                 would perceive as a paragraph.
-            lines (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Line]):
+            lines (Sequence[google.cloud.documentai_v1.types.Document.Page.Line]):
                 A list of visually detected text lines on the
                 page. A collection of tokens that a human would
                 perceive as a line.
-            tokens (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Token]):
+            tokens (Sequence[google.cloud.documentai_v1.types.Document.Page.Token]):
                 A list of visually detected tokens on the
                 page.
-            visual_elements (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.VisualElement]):
+            visual_elements (Sequence[google.cloud.documentai_v1.types.Document.Page.VisualElement]):
                 A list of detected non-text visual elements
                 e.g. checkbox, signature etc. on the page.
-            tables (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Table]):
+            tables (Sequence[google.cloud.documentai_v1.types.Document.Page.Table]):
                 A list of visually detected tables on the
                 page.
-            form_fields (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.FormField]):
+            form_fields (Sequence[google.cloud.documentai_v1.types.Document.Page.FormField]):
                 A list of visually detected form fields on
                 the page.
         """
@@ -297,21 +297,21 @@ class Document(proto.Message):
             r"""Visual element describing a layout unit on a page.
 
             Attributes:
-                text_anchor (google.cloud.documentai_v1beta3.types.Document.TextAnchor):
+                text_anchor (google.cloud.documentai_v1.types.Document.TextAnchor):
                     Text anchor indexing into the
-                    [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                    [Document.text][google.cloud.documentai.v1.Document.text].
                 confidence (float):
                     Confidence of the current
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     within context of the object this layout is for. e.g.
                     confidence can be for a single token, a table, a visual
                     element, etc. depending on context. Range [0, 1].
-                bounding_poly (google.cloud.documentai_v1beta3.types.BoundingPoly):
+                bounding_poly (google.cloud.documentai_v1.types.BoundingPoly):
                     The bounding polygon for the
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout].
-                orientation (google.cloud.documentai_v1beta3.types.Document.Page.Layout.Orientation):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout].
+                orientation (google.cloud.documentai_v1.types.Document.Page.Layout.Orientation):
                     Detected orientation for the
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout].
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout].
             """
 
             class Orientation(proto.Enum):
@@ -341,14 +341,13 @@ class Document(proto.Message):
             have a common line-spacing and orientation.
 
             Attributes:
-                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
-                    for
-                    [Block][google.cloud.documentai.v1beta3.Document.Page.Block].
-                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
+                    for [Block][google.cloud.documentai.v1.Document.Page.Block].
+                detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
-                provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
+                provenance (google.cloud.documentai_v1.types.Document.Provenance):
                     The history of this annotation.
             """
 
@@ -369,14 +368,14 @@ class Document(proto.Message):
             paragraph.
 
             Attributes:
-                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     for
-                    [Paragraph][google.cloud.documentai.v1beta3.Document.Page.Paragraph].
-                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                    [Paragraph][google.cloud.documentai.v1.Document.Page.Paragraph].
+                detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
-                provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
+                provenance (google.cloud.documentai_v1.types.Document.Provenance):
                     The  history of this annotation.
             """
 
@@ -398,14 +397,13 @@ class Document(proto.Message):
             etc.
 
             Attributes:
-                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
-                    for
-                    [Line][google.cloud.documentai.v1beta3.Document.Page.Line].
-                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
+                    for [Line][google.cloud.documentai.v1.Document.Page.Line].
+                detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
-                provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
+                provenance (google.cloud.documentai_v1.types.Document.Provenance):
                     The  history of this annotation.
             """
 
@@ -425,26 +423,25 @@ class Document(proto.Message):
             r"""A detected token.
 
             Attributes:
-                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
-                    for
-                    [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
-                detected_break (google.cloud.documentai_v1beta3.types.Document.Page.Token.DetectedBreak):
+                layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
+                    for [Token][google.cloud.documentai.v1.Document.Page.Token].
+                detected_break (google.cloud.documentai_v1.types.Document.Page.Token.DetectedBreak):
                     Detected break at the end of a
-                    [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
-                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                    [Token][google.cloud.documentai.v1.Document.Page.Token].
+                detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
-                provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
+                provenance (google.cloud.documentai_v1.types.Document.Provenance):
                     The  history of this annotation.
             """
 
             class DetectedBreak(proto.Message):
                 r"""Detected break at the end of a
-                [Token][google.cloud.documentai.v1beta3.Document.Page.Token].
+                [Token][google.cloud.documentai.v1.Document.Page.Token].
 
                 Attributes:
-                    type_ (google.cloud.documentai_v1beta3.types.Document.Page.Token.DetectedBreak.Type):
+                    type_ (google.cloud.documentai_v1.types.Document.Page.Token.DetectedBreak.Type):
                         Detected break type.
                 """
 
@@ -480,14 +477,14 @@ class Document(proto.Message):
             etc. on the page.
 
             Attributes:
-                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     for
-                    [VisualElement][google.cloud.documentai.v1beta3.Document.Page.VisualElement].
+                    [VisualElement][google.cloud.documentai.v1.Document.Page.VisualElement].
                 type_ (str):
                     Type of the
-                    [VisualElement][google.cloud.documentai.v1beta3.Document.Page.VisualElement].
-                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                    [VisualElement][google.cloud.documentai.v1.Document.Page.VisualElement].
+                detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
             """
@@ -506,15 +503,14 @@ class Document(proto.Message):
             r"""A table representation similar to HTML table structure.
 
             Attributes:
-                layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
-                    for
-                    [Table][google.cloud.documentai.v1beta3.Document.Page.Table].
-                header_rows (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Table.TableRow]):
+                layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
+                    for [Table][google.cloud.documentai.v1.Document.Page.Table].
+                header_rows (Sequence[google.cloud.documentai_v1.types.Document.Page.Table.TableRow]):
                     Header rows of the table.
-                body_rows (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Table.TableRow]):
+                body_rows (Sequence[google.cloud.documentai_v1.types.Document.Page.Table.TableRow]):
                     Body rows of the table.
-                detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages together with
                     confidence.
             """
@@ -523,7 +519,7 @@ class Document(proto.Message):
                 r"""A row of table cells.
 
                 Attributes:
-                    cells (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.Table.TableCell]):
+                    cells (Sequence[google.cloud.documentai_v1.types.Document.Page.Table.TableCell]):
                         Cells that make up this row.
                 """
 
@@ -535,15 +531,15 @@ class Document(proto.Message):
                 r"""A cell representation inside the table.
 
                 Attributes:
-                    layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                        [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                    layout (google.cloud.documentai_v1.types.Document.Page.Layout):
+                        [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                         for
-                        [TableCell][google.cloud.documentai.v1beta3.Document.Page.Table.TableCell].
+                        [TableCell][google.cloud.documentai.v1.Document.Page.Table.TableCell].
                     row_span (int):
                         How many rows this cell spans.
                     col_span (int):
                         How many columns this cell spans.
-                    detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                    detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                         A list of detected languages together with
                         confidence.
                 """
@@ -580,21 +576,21 @@ class Document(proto.Message):
             r"""A form field detected on the page.
 
             Attributes:
-                field_name (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                field_name (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     for the
-                    [FormField][google.cloud.documentai.v1beta3.Document.Page.FormField]
+                    [FormField][google.cloud.documentai.v1.Document.Page.FormField]
                     name. e.g. ``Address``, ``Email``, ``Grand total``,
                     ``Phone number``, etc.
-                field_value (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
-                    [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
+                field_value (google.cloud.documentai_v1.types.Document.Page.Layout):
+                    [Layout][google.cloud.documentai.v1.Document.Page.Layout]
                     for the
-                    [FormField][google.cloud.documentai.v1beta3.Document.Page.FormField]
+                    [FormField][google.cloud.documentai.v1.Document.Page.FormField]
                     value.
-                name_detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                name_detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages for name
                     together with confidence.
-                value_detected_languages (Sequence[google.cloud.documentai_v1beta3.types.Document.Page.DetectedLanguage]):
+                value_detected_languages (Sequence[google.cloud.documentai_v1.types.Document.Page.DetectedLanguage]):
                     A list of detected languages for value
                     together with confidence.
                 value_type (str):
@@ -691,10 +687,10 @@ class Document(proto.Message):
         person, an organization, or location.
 
         Attributes:
-            text_anchor (google.cloud.documentai_v1beta3.types.Document.TextAnchor):
+            text_anchor (google.cloud.documentai_v1.types.Document.TextAnchor):
                 Optional. Provenance of the entity. Text anchor indexing
                 into the
-                [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                [Document.text][google.cloud.documentai.v1.Document.text].
             type_ (str):
                 Entity type from a schema e.g. ``Address``.
             mention_text (str):
@@ -705,24 +701,24 @@ class Document(proto.Message):
             confidence (float):
                 Optional. Confidence of detected Schema entity. Range [0,
                 1].
-            page_anchor (google.cloud.documentai_v1beta3.types.Document.PageAnchor):
+            page_anchor (google.cloud.documentai_v1.types.Document.PageAnchor):
                 Optional. Represents the provenance of this
                 entity wrt. the location on the page where it
                 was found.
             id (str):
                 Optional. Canonical id. This will be a unique
                 value in the entity list for this document.
-            normalized_value (google.cloud.documentai_v1beta3.types.Document.Entity.NormalizedValue):
+            normalized_value (google.cloud.documentai_v1.types.Document.Entity.NormalizedValue):
                 Optional. Normalized entity value. Absent if
                 the extracted value could not be converted or
                 the type (e.g. address) is not supported for
                 certain parsers. This field is also only
                 populated for certain supported document types.
-            properties (Sequence[google.cloud.documentai_v1beta3.types.Document.Entity]):
+            properties (Sequence[google.cloud.documentai_v1.types.Document.Entity]):
                 Optional. Entities can be nested to form a
                 hierarchical data structure representing the
                 content in the document.
-            provenance (google.cloud.documentai_v1beta3.types.Document.Provenance):
+            provenance (google.cloud.documentai_v1.types.Document.Provenance):
                 Optional. The history of this annotation.
             redacted (bool):
                 Optional. Whether the entity will be redacted
@@ -824,7 +820,7 @@ class Document(proto.Message):
 
     class EntityRelation(proto.Message):
         r"""Relationship between
-        [Entities][google.cloud.documentai.v1beta3.Document.Entity].
+        [Entities][google.cloud.documentai.v1.Document.Entity].
 
         Attributes:
             subject_id (str):
@@ -843,12 +839,12 @@ class Document(proto.Message):
 
     class TextAnchor(proto.Message):
         r"""Text reference indexing into the
-        [Document.text][google.cloud.documentai.v1beta3.Document.text].
+        [Document.text][google.cloud.documentai.v1.Document.text].
 
         Attributes:
-            text_segments (Sequence[google.cloud.documentai_v1beta3.types.Document.TextAnchor.TextSegment]):
+            text_segments (Sequence[google.cloud.documentai_v1.types.Document.TextAnchor.TextSegment]):
                 The text segments from the
-                [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                [Document.text][google.cloud.documentai.v1.Document.text].
             content (str):
                 Contains the content of the text span so that users do not
                 have to look it up in the text_segments.
@@ -856,20 +852,20 @@ class Document(proto.Message):
 
         class TextSegment(proto.Message):
             r"""A text segment in the
-            [Document.text][google.cloud.documentai.v1beta3.Document.text]. The
+            [Document.text][google.cloud.documentai.v1.Document.text]. The
             indices may be out of bounds which indicate that the text extends
             into another document shard for large sharded documents. See
-            [ShardInfo.text_offset][google.cloud.documentai.v1beta3.Document.ShardInfo.text_offset]
+            [ShardInfo.text_offset][google.cloud.documentai.v1.Document.ShardInfo.text_offset]
 
             Attributes:
                 start_index (int):
-                    [TextSegment][google.cloud.documentai.v1beta3.Document.TextAnchor.TextSegment]
+                    [TextSegment][google.cloud.documentai.v1.Document.TextAnchor.TextSegment]
                     start UTF-8 char index in the
-                    [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                    [Document.text][google.cloud.documentai.v1.Document.text].
                 end_index (int):
-                    [TextSegment][google.cloud.documentai.v1beta3.Document.TextAnchor.TextSegment]
+                    [TextSegment][google.cloud.documentai.v1.Document.TextAnchor.TextSegment]
                     half open end UTF-8 char index in the
-                    [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                    [Document.text][google.cloud.documentai.v1.Document.text].
             """
 
             start_index = proto.Field(proto.INT64, number=1)
@@ -884,12 +880,12 @@ class Document(proto.Message):
 
     class PageAnchor(proto.Message):
         r"""Referencing the visual context of the entity in the
-        [Document.pages][google.cloud.documentai.v1beta3.Document.pages].
-        Page anchors can be cross-page, consist of multiple bounding
-        polygons and optionally reference specific layout element types.
+        [Document.pages][google.cloud.documentai.v1.Document.pages]. Page
+        anchors can be cross-page, consist of multiple bounding polygons and
+        optionally reference specific layout element types.
 
         Attributes:
-            page_refs (Sequence[google.cloud.documentai_v1beta3.types.Document.PageAnchor.PageRef]):
+            page_refs (Sequence[google.cloud.documentai_v1.types.Document.PageAnchor.PageRef]):
                 One or more references to visual page
                 elements
         """
@@ -901,17 +897,17 @@ class Document(proto.Message):
             Attributes:
                 page (int):
                     Required. Index into the
-                    [Document.pages][google.cloud.documentai.v1beta3.Document.pages]
+                    [Document.pages][google.cloud.documentai.v1.Document.pages]
                     element, for example using [Document.pages][page_refs.page]
                     to locate the related page element.
-                layout_type (google.cloud.documentai_v1beta3.types.Document.PageAnchor.PageRef.LayoutType):
+                layout_type (google.cloud.documentai_v1.types.Document.PageAnchor.PageRef.LayoutType):
                     Optional. The type of the layout element that
                     is being referenced if any.
                 layout_id (str):
                     Optional. Deprecated. Use
-                    [PageRef.bounding_poly][google.cloud.documentai.v1beta3.Document.PageAnchor.PageRef.bounding_poly]
+                    [PageRef.bounding_poly][google.cloud.documentai.v1.Document.PageAnchor.PageRef.bounding_poly]
                     instead.
-                bounding_poly (google.cloud.documentai_v1beta3.types.BoundingPoly):
+                bounding_poly (google.cloud.documentai_v1.types.BoundingPoly):
                     Optional. Identifies the bounding polygon of
                     a layout element on the page.
             """
@@ -954,10 +950,10 @@ class Document(proto.Message):
             id (int):
                 The Id of this operation.  Needs to be unique
                 within the scope of the revision.
-            parents (Sequence[google.cloud.documentai_v1beta3.types.Document.Provenance.Parent]):
+            parents (Sequence[google.cloud.documentai_v1.types.Document.Provenance.Parent]):
                 References to the original elements that are
                 replaced.
-            type_ (google.cloud.documentai_v1beta3.types.Document.Provenance.OperationType):
+            type_ (google.cloud.documentai_v1.types.Document.Provenance.OperationType):
                 The type of provenance operation.
         """
 
@@ -1021,7 +1017,7 @@ class Document(proto.Message):
                 field represents the index into the ``revisions`` field.
             create_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time that the revision was created.
-            human_review (google.cloud.documentai_v1beta3.types.Document.Revision.HumanReview):
+            human_review (google.cloud.documentai_v1.types.Document.Revision.HumanReview):
                 Human Review information of this revision.
         """
 
@@ -1060,16 +1056,16 @@ class Document(proto.Message):
         r"""This message is used for text changes aka. OCR corrections.
 
         Attributes:
-            text_anchor (google.cloud.documentai_v1beta3.types.Document.TextAnchor):
+            text_anchor (google.cloud.documentai_v1.types.Document.TextAnchor):
                 Provenance of the correction. Text anchor indexing into the
-                [Document.text][google.cloud.documentai.v1beta3.Document.text].
+                [Document.text][google.cloud.documentai.v1.Document.text].
                 There can only be a single ``TextAnchor.text_segments``
                 element. If the start and end index of the text segment are
                 the same, the text change is inserted before that index.
             changed_text (str):
                 The text that replaces the text identified in the
                 ``text_anchor``.
-            provenance (Sequence[google.cloud.documentai_v1beta3.types.Document.Provenance]):
+            provenance (Sequence[google.cloud.documentai_v1.types.Document.Provenance]):
                 The history of this annotation.
         """
 

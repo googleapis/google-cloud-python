@@ -25,12 +25,11 @@ logging.basicConfig(level=logging.DEBUG)
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
+# add the highest stable version to the end
+versions = ["v1beta2", "v1beta3", "v1"]
 # ----------------------------------------------------------------------------
 # Generate document AI GAPIC layer
 # ----------------------------------------------------------------------------
-
-versions = ["v1beta2", "v1beta3"]
-
 for version in versions:
     library = gapic.py_library(
         service="documentai",
@@ -38,21 +37,26 @@ for version in versions:
         bazel_target=f"//google/cloud/documentai/{version}:documentai-{version}-py",
     )
 
-    excludes = ["README.rst", "nox.py", "docs/index.rst", "setup.py"]
+    excludes = [
+        "README.rst",
+        "nox.py",
+        "docs/index.rst",
+        "setup.py",
+        "scripts/fixup_documentai_v*",  # this library was always generated with the microgenerator
+    ]
     s.move(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=100,
-    microgenerator=True,
-    samples=False,  # set to true if there are samples
+    cov_level=99, microgenerator=True, samples=False, # set to true if there are samples
 )
+
 s.move(
     templated_files,
     excludes=[".coveragerc"],  # microgenerator has a good .coveragerc file
-) 
+)
 
 python.py_samples(skip_readmes=True)
 

@@ -27,7 +27,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.documentai_v1beta3.types import document_processor_service
+from google.cloud.documentai_v1.types import document_processor_service
 from google.longrunning import operations_pb2 as operations  # type: ignore
 
 from .base import DocumentProcessorServiceTransport, DEFAULT_CLIENT_INFO
@@ -265,7 +265,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # to pass in the functions for each.
         if "process_document" not in self._stubs:
             self._stubs["process_document"] = self.grpc_channel.unary_unary(
-                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ProcessDocument",
+                "/google.cloud.documentai.v1.DocumentProcessorService/ProcessDocument",
                 request_serializer=document_processor_service.ProcessRequest.serialize,
                 response_deserializer=document_processor_service.ProcessResponse.deserialize,
             )
@@ -294,7 +294,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # to pass in the functions for each.
         if "batch_process_documents" not in self._stubs:
             self._stubs["batch_process_documents"] = self.grpc_channel.unary_unary(
-                "/google.cloud.documentai.v1beta3.DocumentProcessorService/BatchProcessDocuments",
+                "/google.cloud.documentai.v1.DocumentProcessorService/BatchProcessDocuments",
                 request_serializer=document_processor_service.BatchProcessRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )
@@ -323,7 +323,7 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
         # to pass in the functions for each.
         if "review_document" not in self._stubs:
             self._stubs["review_document"] = self.grpc_channel.unary_unary(
-                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ReviewDocument",
+                "/google.cloud.documentai.v1.DocumentProcessorService/ReviewDocument",
                 request_serializer=document_processor_service.ReviewDocumentRequest.serialize,
                 response_deserializer=operations.Operation.FromString,
             )

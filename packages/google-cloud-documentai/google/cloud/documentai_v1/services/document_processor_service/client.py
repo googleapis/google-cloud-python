@@ -34,17 +34,16 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.documentai_v1beta2.types import document
-from google.cloud.documentai_v1beta2.types import document_understanding
-from google.rpc import status_pb2 as status  # type: ignore
+from google.cloud.documentai_v1.types import document
+from google.cloud.documentai_v1.types import document_processor_service
 
-from .transports.base import DocumentUnderstandingServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import DocumentUnderstandingServiceGrpcTransport
-from .transports.grpc_asyncio import DocumentUnderstandingServiceGrpcAsyncIOTransport
+from .transports.base import DocumentProcessorServiceTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import DocumentProcessorServiceGrpcTransport
+from .transports.grpc_asyncio import DocumentProcessorServiceGrpcAsyncIOTransport
 
 
-class DocumentUnderstandingServiceClientMeta(type):
-    """Metaclass for the DocumentUnderstandingService client.
+class DocumentProcessorServiceClientMeta(type):
+    """Metaclass for the DocumentProcessorService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -53,15 +52,13 @@ class DocumentUnderstandingServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[DocumentUnderstandingServiceTransport]]
-    _transport_registry["grpc"] = DocumentUnderstandingServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = DocumentUnderstandingServiceGrpcAsyncIOTransport
+    )  # type: Dict[str, Type[DocumentProcessorServiceTransport]]
+    _transport_registry["grpc"] = DocumentProcessorServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = DocumentProcessorServiceGrpcAsyncIOTransport
 
     def get_transport_class(
         cls, label: str = None,
-    ) -> Type[DocumentUnderstandingServiceTransport]:
+    ) -> Type[DocumentProcessorServiceTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -80,12 +77,12 @@ class DocumentUnderstandingServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class DocumentUnderstandingServiceClient(
-    metaclass=DocumentUnderstandingServiceClientMeta
-):
-    """Service to parse structured information from unstructured or
-    semi-structured documents using state-of-the-art Google AI such
-    as natural language, computer vision, and translation.
+class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMeta):
+    """Service to call Cloud DocumentAI to process documents
+    according to the processor's definition. Processors are built
+    using state-of-the-art Google AI such as natural language,
+    computer vision, and translation to extract structured
+    information from unstructured or semi-structured documents.
     """
 
     @staticmethod
@@ -132,7 +129,7 @@ class DocumentUnderstandingServiceClient(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DocumentUnderstandingServiceClient: The constructed client.
+            DocumentProcessorServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -150,7 +147,7 @@ class DocumentUnderstandingServiceClient(
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DocumentUnderstandingServiceClient: The constructed client.
+            DocumentProcessorServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -159,13 +156,45 @@ class DocumentUnderstandingServiceClient(
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> DocumentUnderstandingServiceTransport:
+    def transport(self) -> DocumentProcessorServiceTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            DocumentUnderstandingServiceTransport: The transport used by the client instance.
+            DocumentProcessorServiceTransport: The transport used by the client instance.
         """
         return self._transport
+
+    @staticmethod
+    def human_review_config_path(project: str, location: str, processor: str,) -> str:
+        """Return a fully-qualified human_review_config string."""
+        return "projects/{project}/locations/{location}/processors/{processor}/humanReviewConfig".format(
+            project=project, location=location, processor=processor,
+        )
+
+    @staticmethod
+    def parse_human_review_config_path(path: str) -> Dict[str, str]:
+        """Parse a human_review_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/processors/(?P<processor>.+?)/humanReviewConfig$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def processor_path(project: str, location: str, processor: str,) -> str:
+        """Return a fully-qualified processor string."""
+        return "projects/{project}/locations/{location}/processors/{processor}".format(
+            project=project, location=location, processor=processor,
+        )
+
+    @staticmethod
+    def parse_processor_path(path: str) -> Dict[str, str]:
+        """Parse a processor path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/processors/(?P<processor>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
@@ -230,11 +259,11 @@ class DocumentUnderstandingServiceClient(
         self,
         *,
         credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, DocumentUnderstandingServiceTransport, None] = None,
+        transport: Union[str, DocumentProcessorServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the document understanding service client.
+        """Instantiate the document processor service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -242,7 +271,7 @@ class DocumentUnderstandingServiceClient(
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DocumentUnderstandingServiceTransport]): The
+            transport (Union[str, DocumentProcessorServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
@@ -314,8 +343,8 @@ class DocumentUnderstandingServiceClient(
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, DocumentUnderstandingServiceTransport):
-            # transport is a DocumentUnderstandingServiceTransport instance.
+        if isinstance(transport, DocumentProcessorServiceTransport):
+            # transport is a DocumentProcessorServiceTransport instance.
             if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -339,11 +368,85 @@ class DocumentUnderstandingServiceClient(
                 client_info=client_info,
             )
 
+    def process_document(
+        self,
+        request: document_processor_service.ProcessRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> document_processor_service.ProcessResponse:
+        r"""Processes a single document.
+
+        Args:
+            request (google.cloud.documentai_v1.types.ProcessRequest):
+                The request object. Request message for the process
+                document method.
+            name (str):
+                Required. The processor resource
+                name.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.documentai_v1.types.ProcessResponse:
+                Response message for the process
+                document method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.ProcessRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_processor_service.ProcessRequest):
+            request = document_processor_service.ProcessRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.process_document]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
     def batch_process_documents(
         self,
-        request: document_understanding.BatchProcessDocumentsRequest = None,
+        request: document_processor_service.BatchProcessRequest = None,
         *,
-        requests: Sequence[document_understanding.ProcessDocumentRequest] = None,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -352,15 +455,14 @@ class DocumentUnderstandingServiceClient(
         written to Cloud Storage as JSON in the [Document] format.
 
         Args:
-            request (google.cloud.documentai_v1beta2.types.BatchProcessDocumentsRequest):
-                The request object. Request to batch process documents
-                as an asynchronous operation. The output is written to
-                Cloud Storage as JSON in the [Document] format.
-            requests (Sequence[google.cloud.documentai_v1beta2.types.ProcessDocumentRequest]):
-                Required. Individual requests for
-                each document.
+            request (google.cloud.documentai_v1.types.BatchProcessRequest):
+                The request object. Request message for batch process
+                document method.
+            name (str):
+                Required. The processor resource
+                name.
 
-                This corresponds to the ``requests`` field
+                This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -374,14 +476,15 @@ class DocumentUnderstandingServiceClient(
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.documentai_v1beta2.types.BatchProcessDocumentsResponse` Response to an batch document processing request. This is returned in
-                   the LRO Operation after the operation is complete.
+                The result type for the operation will be
+                :class:`google.cloud.documentai_v1.types.BatchProcessResponse`
+                Response message for batch process document method.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([requests])
+        has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -389,17 +492,17 @@ class DocumentUnderstandingServiceClient(
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a document_understanding.BatchProcessDocumentsRequest.
+        # in a document_processor_service.BatchProcessRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, document_understanding.BatchProcessDocumentsRequest):
-            request = document_understanding.BatchProcessDocumentsRequest(request)
+        if not isinstance(request, document_processor_service.BatchProcessRequest):
+            request = document_processor_service.BatchProcessRequest(request)
 
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
 
-            if requests is not None:
-                request.requests = requests
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -408,7 +511,7 @@ class DocumentUnderstandingServiceClient(
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -418,26 +521,37 @@ class DocumentUnderstandingServiceClient(
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            document_understanding.BatchProcessDocumentsResponse,
-            metadata_type=document_understanding.OperationMetadata,
+            document_processor_service.BatchProcessResponse,
+            metadata_type=document_processor_service.BatchProcessMetadata,
         )
 
         # Done; return the response.
         return response
 
-    def process_document(
+    def review_document(
         self,
-        request: document_understanding.ProcessDocumentRequest = None,
+        request: document_processor_service.ReviewDocumentRequest = None,
         *,
+        human_review_config: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> document.Document:
-        r"""Processes a single document.
+    ) -> operation.Operation:
+        r"""Send a document for Human Review. The input document
+        should be processed by the specified processor.
 
         Args:
-            request (google.cloud.documentai_v1beta2.types.ProcessDocumentRequest):
-                The request object. Request to process one document.
+            request (google.cloud.documentai_v1.types.ReviewDocumentRequest):
+                The request object. Request message for review document
+                method.
+            human_review_config (str):
+                Required. The resource name of the
+                HumanReviewConfig that the document will
+                be reviewed with.
+
+                This corresponds to the ``human_review_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -446,37 +560,59 @@ class DocumentUnderstandingServiceClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.documentai_v1beta2.types.Document:
-                Document represents the canonical
-                document resource in Document
-                Understanding AI. It is an interchange
-                format that provides insights into
-                documents and allows for collaboration
-                between users and Document Understanding
-                AI to iterate and optimize for quality.
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.documentai_v1.types.ReviewDocumentResponse`
+                Response message for review document method.
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([human_review_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a document_understanding.ProcessDocumentRequest.
+        # in a document_processor_service.ReviewDocumentRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, document_understanding.ProcessDocumentRequest):
-            request = document_understanding.ProcessDocumentRequest(request)
+        if not isinstance(request, document_processor_service.ReviewDocumentRequest):
+            request = document_processor_service.ReviewDocumentRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if human_review_config is not None:
+                request.human_review_config = human_review_config
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.process_document]
+        rpc = self._transport._wrapped_methods[self._transport.review_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("human_review_config", request.human_review_config),)
+            ),
         )
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            document_processor_service.ReviewDocumentResponse,
+            metadata_type=document_processor_service.ReviewDocumentOperationMetadata,
+        )
 
         # Done; return the response.
         return response
@@ -492,4 +628,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("DocumentUnderstandingServiceClient",)
+__all__ = ("DocumentProcessorServiceClient",)
