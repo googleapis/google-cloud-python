@@ -4,6 +4,31 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.3.0](https://www.github.com/googleapis/python-spanner/compare/v3.2.0...v3.3.0) (2021-03-25)
+
+
+### Features
+
+* add encryption_info to Database ([#284](https://www.github.com/googleapis/python-spanner/issues/284)) ([2fd0352](https://www.github.com/googleapis/python-spanner/commit/2fd0352f695d7ab85e57d8c4388f42f91cf39435))
+* add support for CMEK ([#105](https://www.github.com/googleapis/python-spanner/issues/105)) ([e990ff7](https://www.github.com/googleapis/python-spanner/commit/e990ff70342e7c2e27059e82c8d74cce39eb85d0))
+* add support for custom timeout and retry parameters in execute_update method in transactions ([#251](https://www.github.com/googleapis/python-spanner/issues/251)) ([8abaebd](https://www.github.com/googleapis/python-spanner/commit/8abaebd9edac198596e7bd51d068d50147d0391d))
+* added retry and timeout params to partition read in database and snapshot class ([#278](https://www.github.com/googleapis/python-spanner/issues/278)) ([1a7c9d2](https://www.github.com/googleapis/python-spanner/commit/1a7c9d296c23dfa7be7b07ea511a4a8fc2c0693f))
+* **db_api:** support executing several DDLs separated by semicolon ([#277](https://www.github.com/googleapis/python-spanner/issues/277)) ([801ddc8](https://www.github.com/googleapis/python-spanner/commit/801ddc87434ff9e3c86b1281ebfeac26195c06e8))
+
+
+### Bug Fixes
+
+* avoid consuming pending null values when merging ([#286](https://www.github.com/googleapis/python-spanner/issues/286)) ([c6cba9f](https://www.github.com/googleapis/python-spanner/commit/c6cba9fbe4c717f1f8e2a97e3f76bfe6b956e55b))
+* **db_api:** allow file path for credentials ([#221](https://www.github.com/googleapis/python-spanner/issues/221)) ([1de0284](https://www.github.com/googleapis/python-spanner/commit/1de028430b779a50d38242fe70567e92b560df5a))
+* **db_api:** ensure DDL statements are being executed ([#290](https://www.github.com/googleapis/python-spanner/issues/290)) ([baa02ee](https://www.github.com/googleapis/python-spanner/commit/baa02ee1a352f7c509a3e169927cf220913e521f))
+* **db_api:** revert Mutations API usage ([#285](https://www.github.com/googleapis/python-spanner/issues/285)) ([e5d4901](https://www.github.com/googleapis/python-spanner/commit/e5d4901e9b7111b39dfec4c56032875dc7c6e74c))
+
+
+### Documentation
+
+* fix docstring types and typos ([#259](https://www.github.com/googleapis/python-spanner/issues/259)) ([1b0ce1d](https://www.github.com/googleapis/python-spanner/commit/1b0ce1d2986085ce4033cf773eb6c5d3b904473c))
+* fix snapshot usage ([#291](https://www.github.com/googleapis/python-spanner/issues/291)) ([eee2181](https://www.github.com/googleapis/python-spanner/commit/eee218164c3177586b73278aa21495280984af89))
+
 ## [3.2.0](https://www.github.com/googleapis/python-spanner/compare/v3.1.0...v3.2.0) (2021-03-02)
 
 
