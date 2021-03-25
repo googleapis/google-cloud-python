@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-documentai/compare/v0.3.0...v0.4.0) (2021-03-25)
+
+
+### Features
+
+* add 'from_service_account_info' factory to clients ([d6f183a](https://www.github.com/googleapis/python-documentai/commit/d6f183a696b211c6d29bc28e9bbd0a8537f65577))
+* add common resource path helpers, expose client transport ([#43](https://www.github.com/googleapis/python-documentai/issues/43)) ([4918e62](https://www.github.com/googleapis/python-documentai/commit/4918e62033b4c118bf99ba83730377b4ecc86d17))
+* add documentai v1 ([#101](https://www.github.com/googleapis/python-documentai/issues/101)) ([74fabb5](https://www.github.com/googleapis/python-documentai/commit/74fabb5e260ecc27e9cf005502d79590fa7f72e4))
+* add from_service_account_info factory and fix sphinx identifiers  ([#80](https://www.github.com/googleapis/python-documentai/issues/80)) ([d6f183a](https://www.github.com/googleapis/python-documentai/commit/d6f183a696b211c6d29bc28e9bbd0a8537f65577))
+
+
+### Bug Fixes
+
+* added if statement to filter out dir blob files ([#63](https://www.github.com/googleapis/python-documentai/issues/63)) ([7f7f541](https://www.github.com/googleapis/python-documentai/commit/7f7f541bcf4d2f42b2f619c2ceb45f53c5d0e9eb))
+* adds comment with explicit hostname change ([#94](https://www.github.com/googleapis/python-documentai/issues/94)) ([bb639f9](https://www.github.com/googleapis/python-documentai/commit/bb639f9470304b9c408143a3e8091a4ca8c54160))
+* fix sphinx identifiers ([d6f183a](https://www.github.com/googleapis/python-documentai/commit/d6f183a696b211c6d29bc28e9bbd0a8537f65577))
+* moves import statment inside region tags ([#71](https://www.github.com/googleapis/python-documentai/issues/71)) ([a04fbea](https://www.github.com/googleapis/python-documentai/commit/a04fbeaf026d3d204dbb6c6cecf181068ddcc882))
+* remove client recv msg limit and add enums to `types/__init__.py` ([#72](https://www.github.com/googleapis/python-documentai/issues/72)) ([c94afd5](https://www.github.com/googleapis/python-documentai/commit/c94afd55124b0abc8978bf86b84743dd4afb0778))
+* removes C-style semicolons and slash comments ([#59](https://www.github.com/googleapis/python-documentai/issues/59)) ([1b24bfd](https://www.github.com/googleapis/python-documentai/commit/1b24bfdfc603952db8d1c633dfde108a396aa707))
+* **samples:** swaps 'continue' for 'return' ([#93](https://www.github.com/googleapis/python-documentai/issues/93)) ([dabe48e](https://www.github.com/googleapis/python-documentai/commit/dabe48e8c1439ceb8a50c18aa3c7dca848a9117a))
+
+
+### Documentation
+
+* fix pypi link ([#46](https://www.github.com/googleapis/python-documentai/issues/46)) ([5162674](https://www.github.com/googleapis/python-documentai/commit/5162674091b9a2111b90eb26739b4e11f9119582))
+* **samples:** new Doc AI samples for v1beta3 ([#44](https://www.github.com/googleapis/python-documentai/issues/44)) ([cc8c58d](https://www.github.com/googleapis/python-documentai/commit/cc8c58d1bade4be53fde08f6a3497eb3f79f63b1))
+
 ## [0.3.0](https://www.github.com/googleapis/python-documentai/compare/v0.2.0...v0.3.0) (2020-09-30)
 
 
