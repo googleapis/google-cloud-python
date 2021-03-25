@@ -65,16 +65,16 @@ Read Table Data
 
 To read data for selected rows from a table in the database, call
 :meth:`~google.cloud.spanner_v1.snapshot.Snapshot.read` which will return
-all rows specified in ``key_set``, or fail if the result set is too large,
+all rows specified in ``keyset``, or fail if the result set is too large,
 
 .. code:: python
 
     with database.snapshot() as snapshot:
         result = snapshot.read(
             table='table-name', columns=['first_name', 'last_name', 'age'],
-            key_set=['phred@example.com', 'bharney@example.com'])
+            keyset=spanner.KeySet([['phred@example.com'], ['bharney@example.com']]))
 
-        for row in result.rows:
+        for row in result:
             print(row)
 
 .. note::
@@ -100,7 +100,7 @@ result set is too large,
             'WHERE p.employee_id == e.employee_id')
         result = snapshot.execute_sql(QUERY)
 
-        for row in list(result):
+        for row in result:
             print(row)
 
 .. note::
