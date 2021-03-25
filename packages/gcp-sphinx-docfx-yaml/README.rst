@@ -35,11 +35,11 @@ Basic Workflow
 Install
 -------
 
-First you need to install docfx-yaml:
+To use this forked version, install GCP docfx-yaml:
 
 .. code:: bash
 
-    pip install sphinx-docfx-yaml
+    pip install gcp-sphinx-docfx-yaml
 
 Then add it to your Sphinx project's ``conf.py``:
 
