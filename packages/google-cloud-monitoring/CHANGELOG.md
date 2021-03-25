@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-monitoring/compare/v2.1.0...v2.2.0) (2021-03-25)
+
+
+### Features
+
+* add `client_cert_source_for_mtls` ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added `IstioCanonicalService` for service monitoring. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added `total_size` to the response of `ListAlertPolicies`. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added creation and mutation records to notification channels. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added support for Monitoring Query Language ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added support for Monitoring Query Language ([#101](https://www.github.com/googleapis/python-monitoring/issues/101)) ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added support for querying metrics for folders and organizations. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added support for secondary aggregation when querying metrics. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Added support for units in the `MetricService` ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+
+
+### Bug Fixes
+
+* Extended the default deadline for `UpdateGroup` to 180s. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* Un-deprecated `cluster_istio` for service monitoring. ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+* use correct retry deadline ([0eb2ca6](https://www.github.com/googleapis/python-monitoring/commit/0eb2ca6b5044553c11d5f5e0f4859bf65387909b))
+
 ## [2.1.0](https://www.github.com/googleapis/python-monitoring/compare/v2.0.1...v2.1.0) (2021-03-12)
 
 
