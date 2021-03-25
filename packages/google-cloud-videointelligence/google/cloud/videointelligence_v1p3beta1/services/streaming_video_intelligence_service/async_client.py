@@ -95,9 +95,36 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         StreamingVideoIntelligenceServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = (
-        StreamingVideoIntelligenceServiceClient.from_service_account_file
-    )
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            StreamingVideoIntelligenceServiceAsyncClient: The constructed client.
+        """
+        return StreamingVideoIntelligenceServiceClient.from_service_account_info.__func__(StreamingVideoIntelligenceServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            StreamingVideoIntelligenceServiceAsyncClient: The constructed client.
+        """
+        return StreamingVideoIntelligenceServiceClient.from_service_account_file.__func__(StreamingVideoIntelligenceServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -180,7 +207,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         (not REST).
 
         Args:
-            requests (AsyncIterator[`~.video_intelligence.StreamingAnnotateVideoRequest`]):
+            requests (AsyncIterator[`google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoRequest`]):
                 The request object AsyncIterator. The top-level message sent by the
                 client for the `StreamingAnnotateVideo` method. Multiple
                 `StreamingAnnotateVideoRequest` messages are sent. The
@@ -194,12 +221,11 @@ class StreamingVideoIntelligenceServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            AsyncIterable[~.video_intelligence.StreamingAnnotateVideoResponse]:
-                ``StreamingAnnotateVideoResponse`` is the only message
-                returned to the client by ``StreamingAnnotateVideo``. A
-                series of zero or more
-                ``StreamingAnnotateVideoResponse`` messages are streamed
-                back to the client.
+            AsyncIterable[google.cloud.videointelligence_v1p3beta1.types.StreamingAnnotateVideoResponse]:
+                StreamingAnnotateVideoResponse is the only message returned to the client
+                   by StreamingAnnotateVideo. A series of zero or more
+                   StreamingAnnotateVideoResponse messages are streamed
+                   back to the client.
 
         """
 
@@ -214,6 +240,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=10800.0,
             ),
             default_timeout=10800.0,
             client_info=DEFAULT_CLIENT_INFO,

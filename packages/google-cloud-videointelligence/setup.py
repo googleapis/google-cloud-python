@@ -28,7 +28,7 @@ version = "2.0.0"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
-dependencies = ["google-api-core[grpc] >= 1.22.0, < 2.0.0dev", "proto-plus >= 1.10.0"]
+dependencies = ["google-api-core[grpc] >= 1.22.2, < 2.0.0dev", "proto-plus >= 1.10.0"]
 extras = {"libcst": "libcst >= 0.2.5"}
 scripts = ["scripts/fixup_keywords.py"]
 

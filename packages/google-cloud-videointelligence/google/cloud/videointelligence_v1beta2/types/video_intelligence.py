@@ -103,10 +103,10 @@ class AnnotateVideoRequest(proto.Message):
             The video data bytes. If unset, the input video(s) should be
             specified via ``input_uri``. If set, ``input_uri`` should be
             unset.
-        features (Sequence[~.video_intelligence.Feature]):
+        features (Sequence[google.cloud.videointelligence_v1beta2.types.Feature]):
             Required. Requested video annotation
             features.
-        video_context (~.video_intelligence.VideoContext):
+        video_context (google.cloud.videointelligence_v1beta2.types.VideoContext):
             Additional video context and/or feature-
             pecific parameters.
         output_uri (str):
@@ -142,18 +142,18 @@ class VideoContext(proto.Message):
     r"""Video context and/or feature-specific parameters.
 
     Attributes:
-        segments (Sequence[~.video_intelligence.VideoSegment]):
+        segments (Sequence[google.cloud.videointelligence_v1beta2.types.VideoSegment]):
             Video segments to annotate. The segments may
             overlap and are not required to be contiguous or
             span the whole video. If unspecified, each video
             is treated as a single segment.
-        label_detection_config (~.video_intelligence.LabelDetectionConfig):
+        label_detection_config (google.cloud.videointelligence_v1beta2.types.LabelDetectionConfig):
             Config for LABEL_DETECTION.
-        shot_change_detection_config (~.video_intelligence.ShotChangeDetectionConfig):
+        shot_change_detection_config (google.cloud.videointelligence_v1beta2.types.ShotChangeDetectionConfig):
             Config for SHOT_CHANGE_DETECTION.
-        explicit_content_detection_config (~.video_intelligence.ExplicitContentDetectionConfig):
+        explicit_content_detection_config (google.cloud.videointelligence_v1beta2.types.ExplicitContentDetectionConfig):
             Config for EXPLICIT_CONTENT_DETECTION.
-        face_detection_config (~.video_intelligence.FaceDetectionConfig):
+        face_detection_config (google.cloud.videointelligence_v1beta2.types.FaceDetectionConfig):
             Config for FACE_DETECTION.
     """
 
@@ -180,7 +180,7 @@ class LabelDetectionConfig(proto.Message):
     r"""Config for LABEL_DETECTION.
 
     Attributes:
-        label_detection_mode (~.video_intelligence.LabelDetectionMode):
+        label_detection_mode (google.cloud.videointelligence_v1beta2.types.LabelDetectionMode):
             What labels should be detected with LABEL_DETECTION, in
             addition to video-level labels or segment-level labels. If
             unspecified, defaults to ``SHOT_MODE``.
@@ -250,11 +250,11 @@ class VideoSegment(proto.Message):
     r"""Video segment.
 
     Attributes:
-        start_time_offset (~.duration.Duration):
+        start_time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
             video, corresponding to the start of the segment
             (inclusive).
-        end_time_offset (~.duration.Duration):
+        end_time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
             video, corresponding to the end of the segment
             (inclusive).
@@ -269,7 +269,7 @@ class LabelSegment(proto.Message):
     r"""Video segment level annotation results for label detection.
 
     Attributes:
-        segment (~.video_intelligence.VideoSegment):
+        segment (google.cloud.videointelligence_v1beta2.types.VideoSegment):
             Video segment where a label was detected.
         confidence (float):
             Confidence that the label is accurate. Range: [0, 1].
@@ -284,7 +284,7 @@ class LabelFrame(proto.Message):
     r"""Video frame level annotation results for label detection.
 
     Attributes:
-        time_offset (~.duration.Duration):
+        time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
             video, corresponding to the video frame for this
             location.
@@ -322,17 +322,17 @@ class LabelAnnotation(proto.Message):
     r"""Label annotation.
 
     Attributes:
-        entity (~.video_intelligence.Entity):
+        entity (google.cloud.videointelligence_v1beta2.types.Entity):
             Detected entity.
-        category_entities (Sequence[~.video_intelligence.Entity]):
+        category_entities (Sequence[google.cloud.videointelligence_v1beta2.types.Entity]):
             Common categories for the detected entity. E.g. when the
             label is ``Terrier`` the category is likely ``dog``. And in
             some cases there might be more than one categories e.g.
             ``Terrier`` could also be a ``pet``.
-        segments (Sequence[~.video_intelligence.LabelSegment]):
+        segments (Sequence[google.cloud.videointelligence_v1beta2.types.LabelSegment]):
             All video segments where a label was
             detected.
-        frames (Sequence[~.video_intelligence.LabelFrame]):
+        frames (Sequence[google.cloud.videointelligence_v1beta2.types.LabelFrame]):
             All video frames where a label was detected.
     """
 
@@ -349,11 +349,11 @@ class ExplicitContentFrame(proto.Message):
     r"""Video frame level annotation results for explicit content.
 
     Attributes:
-        time_offset (~.duration.Duration):
+        time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
             video, corresponding to the video frame for this
             location.
-        pornography_likelihood (~.video_intelligence.Likelihood):
+        pornography_likelihood (google.cloud.videointelligence_v1beta2.types.Likelihood):
             Likelihood of the pornography content..
     """
 
@@ -368,7 +368,7 @@ class ExplicitContentAnnotation(proto.Message):
     frame, no annotations are present for that frame.
 
     Attributes:
-        frames (Sequence[~.video_intelligence.ExplicitContentFrame]):
+        frames (Sequence[google.cloud.videointelligence_v1beta2.types.ExplicitContentFrame]):
             All video frames where explicit content was
             detected.
     """
@@ -406,7 +406,7 @@ class FaceSegment(proto.Message):
     r"""Video segment level annotation results for face detection.
 
     Attributes:
-        segment (~.video_intelligence.VideoSegment):
+        segment (google.cloud.videointelligence_v1beta2.types.VideoSegment):
             Video segment where a face was detected.
     """
 
@@ -417,12 +417,12 @@ class FaceFrame(proto.Message):
     r"""Video frame level annotation results for face detection.
 
     Attributes:
-        normalized_bounding_boxes (Sequence[~.video_intelligence.NormalizedBoundingBox]):
+        normalized_bounding_boxes (Sequence[google.cloud.videointelligence_v1beta2.types.NormalizedBoundingBox]):
             Normalized Bounding boxes in a frame.
             There can be more than one boxes if the same
             face is detected in multiple locations within
             the current frame.
-        time_offset (~.duration.Duration):
+        time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
             video, corresponding to the video frame for this
             location.
@@ -442,9 +442,9 @@ class FaceAnnotation(proto.Message):
         thumbnail (bytes):
             Thumbnail of a representative face view (in
             JPEG format).
-        segments (Sequence[~.video_intelligence.FaceSegment]):
+        segments (Sequence[google.cloud.videointelligence_v1beta2.types.FaceSegment]):
             All video segments where a face was detected.
-        frames (Sequence[~.video_intelligence.FaceFrame]):
+        frames (Sequence[google.cloud.videointelligence_v1beta2.types.FaceFrame]):
             All video frames where a face was detected.
     """
 
@@ -462,27 +462,27 @@ class VideoAnnotationResults(proto.Message):
         input_uri (str):
             Video file location in `Google Cloud
             Storage <https://cloud.google.com/storage/>`__.
-        segment_label_annotations (Sequence[~.video_intelligence.LabelAnnotation]):
+        segment_label_annotations (Sequence[google.cloud.videointelligence_v1beta2.types.LabelAnnotation]):
             Label annotations on video level or user
             specified segment level. There is exactly one
             element for each unique label.
-        shot_label_annotations (Sequence[~.video_intelligence.LabelAnnotation]):
+        shot_label_annotations (Sequence[google.cloud.videointelligence_v1beta2.types.LabelAnnotation]):
             Label annotations on shot level.
             There is exactly one element for each unique
             label.
-        frame_label_annotations (Sequence[~.video_intelligence.LabelAnnotation]):
+        frame_label_annotations (Sequence[google.cloud.videointelligence_v1beta2.types.LabelAnnotation]):
             Label annotations on frame level.
             There is exactly one element for each unique
             label.
-        face_annotations (Sequence[~.video_intelligence.FaceAnnotation]):
+        face_annotations (Sequence[google.cloud.videointelligence_v1beta2.types.FaceAnnotation]):
             Face annotations. There is exactly one
             element for each unique face.
-        shot_annotations (Sequence[~.video_intelligence.VideoSegment]):
+        shot_annotations (Sequence[google.cloud.videointelligence_v1beta2.types.VideoSegment]):
             Shot annotations. Each shot is represented as
             a video segment.
-        explicit_annotation (~.video_intelligence.ExplicitContentAnnotation):
+        explicit_annotation (google.cloud.videointelligence_v1beta2.types.ExplicitContentAnnotation):
             Explicit content annotation.
-        error (~.status.Status):
+        error (google.rpc.status_pb2.Status):
             If set, indicates an error. Note that for a single
             ``AnnotateVideoRequest`` some videos may succeed and some
             may fail.
@@ -523,7 +523,7 @@ class AnnotateVideoResponse(proto.Message):
     ``google::longrunning::Operations`` service.
 
     Attributes:
-        annotation_results (Sequence[~.video_intelligence.VideoAnnotationResults]):
+        annotation_results (Sequence[google.cloud.videointelligence_v1beta2.types.VideoAnnotationResults]):
             Annotation results for all videos specified in
             ``AnnotateVideoRequest``.
     """
@@ -543,9 +543,9 @@ class VideoAnnotationProgress(proto.Message):
         progress_percent (int):
             Approximate percentage processed thus far.
             Guaranteed to be 100 when fully processed.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the request was received.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time of the most recent update.
     """
 
@@ -564,7 +564,7 @@ class AnnotateVideoProgress(proto.Message):
     ``google::longrunning::Operations`` service.
 
     Attributes:
-        annotation_progress (Sequence[~.video_intelligence.VideoAnnotationProgress]):
+        annotation_progress (Sequence[google.cloud.videointelligence_v1beta2.types.VideoAnnotationProgress]):
             Progress metadata for all videos specified in
             ``AnnotateVideoRequest``.
     """

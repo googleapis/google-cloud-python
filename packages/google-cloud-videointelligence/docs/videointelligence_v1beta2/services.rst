@@ -1,6 +1,6 @@
 Services for Google Cloud Videointelligence v1beta2 API
 =======================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.videointelligence_v1beta2.services.video_intelligence_service
-    :members:
-    :inherited-members:
+    video_intelligence_service
