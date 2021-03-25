@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-container/compare/v2.3.1...v2.4.0) (2021-03-24)
+
+
+### Features
+
+* add `from_service_account_info` ([#66](https://www.github.com/googleapis/python-container/issues/66)) ([f4f154d](https://www.github.com/googleapis/python-container/commit/f4f154db737fed68c49303133f4479199c0fdb12))
+
 ### [2.3.1](https://www.github.com/googleapis/python-container/compare/v2.3.0...v2.3.1) (2021-02-18)
 
 
